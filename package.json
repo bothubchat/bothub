@@ -1,0 +1,14 @@
+{
+  "name": "@bhub/packages",
+  "version": "0.0.0",
+  "description": "Bothub packages",
+  "license": "MIT",
+  "author": "dev2alert <atmpotn@yandex.ru>",
+  "homepage": "https://bothub.chat/",
+  "scripts": {
+    "build": "yarn lerna run build"
+  },
+  "devDependencies": {
+    "lerna": "^7.2.0"
+  }
+}

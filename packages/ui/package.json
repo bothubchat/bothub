@@ -1,0 +1,80 @@
+{
+  "name": "@bothub-chat/ui",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Bothub UI Components",
+  "keywords": [
+    "bothub",
+    "bot",
+    "chat",
+    "chatgpt",
+    "ai",
+    "react"
+  ],
+  "repository": {
+    "url": "https://github.com/matbea-dev/bothub.git",
+    "type": "git",
+    "directory": "./packages/ui"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": "dev2alert <atmpotn@yandex.ru>",
+  "license": "MIT",
+  "homepage": "https://bothub.chat/",
+  "files": [
+    "./dist",
+    "./dist/style.css"
+  ],
+  "main": "./dist/index.umd.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "start": "vite build --watch",
+    "build": "vite build",
+    "sb": "storybook dev -p 6006",
+    "build:sb": "storybook build"
+  },
+  "peerDependencies": {
+    "framer-motion": "10.16.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "styled-components": "6.0.7"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "7.4.0",
+    "@storybook/addon-interactions": "7.4.0",
+    "@storybook/addon-links": "7.4.0",
+    "@storybook/addon-onboarding": "1.0.8",
+    "@storybook/blocks": "7.4.0",
+    "@storybook/react": "^7.4.0",
+    "@storybook/react-vite": "7.4.0",
+    "@storybook/testing-library": "0.2.0",
+    "@types/node": "20.5.6",
+    "@types/react": "^18.2.21",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "@vitejs/plugin-react": "^4.0.4",
+    "eslint": "^8.35.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-standard-with-typescript": "^39.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^0.6.13",
+    "framer-motion": "10.16.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-router-dom": "^6.15.0",
+    "storybook": "7.4.0",
+    "styled-components": "6.0.7",
+    "typescript": "^5.2.2",
+    "vite": "^4.4.9",
+    "vite-plugin-dts": "^3.5.3"
+  }
+}
