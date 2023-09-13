@@ -1,12 +1,20 @@
 /// <reference path="./styled.d.ts" />
 
-import 'normalize.css';
 import React, { useContext, useMemo } from 'react';
-import { ThemeProvider as StyledThemeProvider, ThemeContext } from 'styled-components';
+import { ThemeProvider as StyledThemeProvider, ThemeContext, createGlobalStyle } from 'styled-components';
 import { Theme } from './types';
-import { GlobalStyle } from './global-style';
 
-export const ThemeProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
+export const StorybookGlobalStyle = createGlobalStyle`
+  body {
+    background: ${({ theme }) => theme.colors.base.black};
+  }
+`;
+
+export interface ThemeProviderProps extends React.PropsWithChildren {
+  sbMode?: boolean;
+}
+
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ sbMode = false, children }) => {
   const theme = useMemo<Theme>(() => ({
     colors: {
       base: {
@@ -43,13 +51,24 @@ export const ThemeProvider: React.FC<React.PropsWithChildren> = ({ children }) =
     },
     mobile: {
       maxWidth: '605px'
+    },
+    zIndex: {
+      header: 2,
+      backdrop: 3,
+      modal: 4
+    },
+    header: {
+      height: '89px',
+      mobile: {
+        height: '70px'
+      }
     }
   }), []);
 
   return (
     <StyledThemeProvider theme={theme}>
       {children}
-      <GlobalStyle />  
+      {sbMode && <StorybookGlobalStyle />}
     </StyledThemeProvider>
   );
 };

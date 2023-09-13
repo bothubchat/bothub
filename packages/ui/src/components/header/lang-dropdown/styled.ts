@@ -1,6 +1,6 @@
 import { css, styled } from 'styled-components';
-import { ArrowDownIcon, LanguageIcon } from '@/components/icons';
-import { Typography } from '@/components/typography';
+import { ArrowDownIcon, LanguageIcon } from '../../icons';
+import { Typography } from '../../typography';
 
 export const HeaderLangDropdownStyled = styled.div``;
 
@@ -69,20 +69,4 @@ export const HeaderLangDropdownList = styled.ul`
   width: 80px;
   padding: 10px 16px;
   box-sizing: border-box;
-`;
-
-export const HeaderLangDropdownItem = styled.li`
-  display: inline-flex;
-  width: 100%;
-  justify-content: center;
-  line-height: 22px;
-  padding: 6px 0px;
-  color: ${({ theme }) => theme.colors.base.white};
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.bold};
-  font-size: 16px;
-  text-transform: uppercase;
-  cursor: pointer;
-  &:hover {
-    color: ${({ theme }) => theme.colors.accent.primaryLight};
-  }
 `;

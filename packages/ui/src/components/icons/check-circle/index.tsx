@@ -1,4 +1,4 @@
-import { Icon, icon } from '@/components/icon';
+import { Icon, icon } from '../../icon';
 
 export const CheckCircleIcon = icon(({ ...props }) => (
   <Icon size={24} viewBox="0 0 24 24" fill="none" {...props}>

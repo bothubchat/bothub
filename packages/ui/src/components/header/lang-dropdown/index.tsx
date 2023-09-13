@@ -9,6 +9,7 @@ import {
   HeaderLangDropdownTogglerIcon, 
   HeaderLangDropdownTogglerText 
 } from './styled';
+import { HeaderLangDropdownProvider } from './context';
 
 export interface HeaderLangDropdownProps extends 
   React.ComponentProps<typeof HeaderLangDropdownStyled> {
@@ -47,28 +48,31 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
   }, []);
 
   return (
-    <HeaderLangDropdownStyled {...props} ref={dropdownRef}>
-      <HeaderLangDropdownToggler $open={isOpen} onClick={handleToggle}>
-        <HeaderLangDropdownTogglerIcon />
-        <HeaderLangDropdownTogglerText>
-          {lang}
-        </HeaderLangDropdownTogglerText>
-        <HeaderLangDropdownTogglerArrow 
-          initial={{
-            transform: `translateX(${isOpen ? 180 : 0}deg)`
-          }}
-          animate={{
-            transform: `translateX(${isOpen ? 180 : 0}deg)`
-          }}
-        />
-      </HeaderLangDropdownToggler>
-      {isOpen && (
-        <HeaderLangDropdownContent>
-          {children}
-        </HeaderLangDropdownContent>
-      )}
-    </HeaderLangDropdownStyled>
+    <HeaderLangDropdownProvider setIsOpen={setIsOpen}>
+      <HeaderLangDropdownStyled {...props} ref={dropdownRef}>
+        <HeaderLangDropdownToggler $open={isOpen} onClick={handleToggle}>
+          <HeaderLangDropdownTogglerIcon />
+          <HeaderLangDropdownTogglerText>
+            {lang}
+          </HeaderLangDropdownTogglerText>
+          <HeaderLangDropdownTogglerArrow 
+            initial={{
+              transform: `rotateZ(${isOpen ? -180 : 0}deg)`
+            }}
+            animate={{
+              transform: `rotateZ(${isOpen ? -180 : 0}deg)`
+            }}
+          />
+        </HeaderLangDropdownToggler>
+        {isOpen && (
+          <HeaderLangDropdownContent>
+            {children}
+          </HeaderLangDropdownContent>
+        )}
+      </HeaderLangDropdownStyled>
+    </HeaderLangDropdownProvider>
   );
 };
 
 export * from './styled';
+export * from './item';

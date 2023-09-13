@@ -1,8 +1,10 @@
 import { css, styled } from 'styled-components';
-import { TypographyVariant } from './types';
+import { TypographyAlign, TypographyVariant } from './types';
 
 export interface TypographyStyledProps {
   $variant: TypographyVariant;
+  $align: TypographyAlign;
+  $fullWidth: boolean;
 }
 
 export const TypographyStyled = styled.span<TypographyStyledProps>`
@@ -10,6 +12,10 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
   color: ${({ theme }) => theme.colors.base.white};
   font-weight: normal;
   text-decoration: none;
+  text-align: ${({ $align }) => $align};
+  ${({ $fullWidth }) => $fullWidth && css`
+    width: 100%;
+  `}
   ${({ theme, $variant }) => {
     switch ($variant) {
       case 'h1':

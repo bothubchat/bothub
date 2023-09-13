@@ -3,6 +3,8 @@ export interface Theme {
   fonts: ThemeFonts;
   tablet: ThemeTablet;
   mobile: ThemeMobile;
+  zIndex: ThemeZIndex;
+  header: ThemeHeader;
 }
 
 export interface ThemeTablet {
@@ -51,4 +53,19 @@ export interface ThemeIbmPlexSansFonts {
 
 export interface ThemeFonts {
   ibmPlexSans: ThemeIbmPlexSansFonts;
+}
+
+export interface ThemeZIndex {
+  header: number;
+  backdrop: number;
+  modal: number;
+}
+
+export interface ThemeHeaderMobile {
+  height: string;
+}
+
+export interface ThemeHeader {
+  height: string;
+  mobile: ThemeHeaderMobile;
 }

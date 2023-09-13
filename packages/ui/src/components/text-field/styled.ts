@@ -5,6 +5,7 @@ export const TextFieldStyled = styled.label<{ $fullWidth: boolean }>`
   flex-direction: column;
   align-items: flex-start;
   width: ${({ $fullWidth }) => ($fullWidth ? '100%' : '420px')};
+  box-sizing: border-box;
 `;
 
 export const TextFieldLabel = styled.span`
@@ -28,6 +29,7 @@ export const TextFieldInputContainer = styled.span<TextFieldInputContainerProps>
   align-items: center;
   gap: 10px;
   width: 100%;
+  box-sizing: border-box;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray1};
   border-radius: 8px;
   overflow: hidden;

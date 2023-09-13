@@ -1,4 +1,4 @@
-import { Icon, icon } from '@/components/icon';
+import { Icon, icon } from '../../icon';
 
 export const YoucassaIcon = icon(({ ...props }) => (
   <Icon size={18} viewBox="0 0 18 18" fill="none" {...props}>

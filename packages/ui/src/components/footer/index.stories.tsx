@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/theme/story-decorator';
+import { ThemeStoryDecorator } from '../../theme/story-decorator';
 import { Logo } from '../logo';
 import {
   Footer, FooterColumn, FooterColumnLabel, FooterLogoLink, FooterNav, FooterNavLink, FooterText 
@@ -78,7 +78,7 @@ export const Basic: FooterStory = {
 };
 
 export default {
-  title: 'Footer',
+  title: 'UI Components/Footer',
   component: Footer,
   decorators: [ThemeStoryDecorator()]
 } as FooterMeta;

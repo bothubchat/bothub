@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { DescriptionCard } from '.';
-import { ThemeStoryDecorator } from '@/theme/story-decorator';
-import { DescriptionCardButton, DescriptionCardText, DescriptionCardTitle } from './styled';
+import { ThemeStoryDecorator } from '../../theme/story-decorator';
 
 export type DescriptionCardMeta = Meta<typeof DescriptionCard>;
 
@@ -9,30 +8,30 @@ export type DescriptionCardStory = StoryObj<typeof DescriptionCard>;
 
 export const Basic: DescriptionCardStory = {
   args: {
-    title: (
-      <DescriptionCardTitle>ChatGPT: Удобство в Telegram</DescriptionCardTitle>
-    ),
-    text: (
-      <DescriptionCardText>
-        Создайте потрясающий опыт взаимодействия с искусственным интеллектом, 
-        используя Midjourney и ChatGPT для различных потребностей.
-      </DescriptionCardText>
-    ),
-    button: (
-      <DescriptionCardButton>
-        Подробнее
-      </DescriptionCardButton>
-    )
+    title: 'ChatGPT: Удобство в Telegram',
+    text: 'Создайте потрясающий опыт взаимодействия с искусственным интеллектом, используя Midjourney и ChatGPT для различных потребностей.',
+    button: true
   }
 };
 
 export default {
-  title: 'DescriptionCard',
+  title: 'UI Components/DescriptionCard',
   component: DescriptionCard,
   decorators: [ThemeStoryDecorator()],
   parameters: {
     actions: {
       disable: true
+    }
+  },
+  argTypes: {
+    title: {
+      type: 'string'
+    },
+    text: {
+      type: 'string'
+    },
+    button: {
+      type: 'boolean'
     }
   }
 } as DescriptionCardMeta;

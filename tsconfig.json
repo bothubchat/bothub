@@ -14,14 +14,7 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["./*"]
-    }
+    "jsx": "react-jsx"
   },
-  "include": ["./src"],
-  "exclude": ["./dist"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["./packages/*/src", "./rollup.config.ts"]
 }

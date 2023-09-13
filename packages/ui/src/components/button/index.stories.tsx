@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { LanguageIcon } from '@/components/icons/language';
+import { LanguageIcon } from '../icons/language';
 import { Button } from '.';
-import { ThemeStoryDecorator } from '@/theme/story-decorator';
+import { ThemeStoryDecorator } from '../../theme/story-decorator';
 
 export type ButtonMeta = Meta<typeof Button>;
 
@@ -41,7 +41,7 @@ export const Icon: ButtonStory = {
 };
 
 export default {
-  title: 'Button',
+  title: 'UI Components/Button',
   component: Button,
   decorators: [ThemeStoryDecorator()],
   parameters: {

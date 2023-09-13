@@ -1,5 +1,5 @@
 import { motion, HTMLMotionProps } from 'framer-motion';
-import { css, styled } from 'styled-components';
+import { css, styled, ExecutionProps as StyledProps } from 'styled-components';
 import { ButtonCorner, ButtonSize } from './types';
 
 export interface ButtonStyledProps extends HTMLMotionProps<'button'> {

@@ -16,3 +16,6 @@ export * from './menu';
 export * from './tg-circle';
 export * from './tg-colored';
 export * from './youcassa';
+export * from './dashboard';
+export * from './user-profile';
+export * from './logout';

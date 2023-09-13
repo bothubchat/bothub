@@ -1,4 +1,4 @@
-import { Icon, IconConsumer, icon } from '@/components/icon';
+import { Icon, IconConsumer, icon } from '../../icon';
 
 export const EmailCircleIcon = icon(({ ...props }) => (
   <Icon size={24} viewBox="0 0 24 24" fill="none" {...props}>

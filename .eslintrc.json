@@ -18,7 +18,7 @@
   },
   "ignorePatterns": [
     ".eslintrc.json",
-    "vite.config.ts"
+    "rollup.config.ts"
   ],
   "plugins": [
     "react",
@@ -61,6 +61,8 @@
     "react/require-default-props": "off",
     "import/no-cycle": "off",
     "@typescript-eslint/triple-slash-reference": "off",
-    "import/no-extraneous-dependencies": "off"
+    "import/no-extraneous-dependencies": "off",
+    "react/jsx-no-bind": "off",
+    "import/export": "import/export"
   }
 }

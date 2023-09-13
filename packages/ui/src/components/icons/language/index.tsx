@@ -1,4 +1,4 @@
-import { Icon, IconConsumer, icon } from '@/components/icon';
+import { Icon, IconConsumer, icon } from '../../icon';
 
 export const LanguageIcon = icon(({ ...props }) => (
   <Icon size={18} viewBox="0 0 18 18" fill="none" {...props}>

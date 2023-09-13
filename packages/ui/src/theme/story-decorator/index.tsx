@@ -3,7 +3,7 @@ import { StoryFn } from '@storybook/react';
 import { ThemeProvider } from '..';
 
 export const ThemeStoryDecorator = () => (Story: StoryFn): React.ReactElement => (
-  <ThemeProvider>
+  <ThemeProvider sbMode>
     <Story />
   </ThemeProvider>
 );

@@ -9,7 +9,15 @@ export const FooterStyled = styled.footer`
 `;
 
 export const FooterContainer = styled(Container)`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 export const FooterLogoLink = styled.a`

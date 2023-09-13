@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { TextField } from '.';
-import { ThemeStoryDecorator } from '@/theme/story-decorator';
+import { ThemeStoryDecorator } from '../../theme/story-decorator';
 import { EmailCircleIcon } from '../icons';
 
 export type TextFieldMeta = Meta<typeof TextField>;
@@ -43,7 +43,7 @@ export const Error: TextFieldStory = {
 };
 
 export default {
-  title: 'TextField',
+  title: 'UI Components/TextField',
   component: TextField,
   decorators: [ThemeStoryDecorator()],
   argTypes: {

@@ -1,4 +1,4 @@
-import { Icon, icon } from '@/components/icon';
+import { Icon, icon } from '../../icon';
 
 export const BusinessColoredIcon = icon(({ ...props }) => (
   <Icon size={36} viewBox="0 0 36 36" fill="none" {...props}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ButtonStyled } from './styled';
-import { useTheme } from '@/theme';
-import { IconProvider, IconProviderProps, isIconComponent } from '@/components/icon';
+import { useTheme } from '../../theme';
+import { IconProvider, IconProviderProps, isIconComponent } from '../icon';
 import { ButtonCorner, ButtonSize } from './types';
 
 export interface ButtonProps extends Omit<React.ComponentProps<'button'>, 'onAnimationStart' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {

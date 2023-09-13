@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Typography } from '.';
-import { ThemeStoryDecorator } from '@/theme/story-decorator';
+import { ThemeStoryDecorator } from '../../theme/story-decorator';
 
 export type TypographyMeta = Meta<typeof Typography>;
 
@@ -13,7 +13,7 @@ export const Basic: TypographyStory = {
 };
 
 export default {
-  title: 'Typography',
+  title: 'UI Components/Typography',
   component: Typography,
   decorators: [ThemeStoryDecorator()]
 } as TypographyMeta;

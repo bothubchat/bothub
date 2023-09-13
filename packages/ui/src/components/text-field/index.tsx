@@ -4,17 +4,20 @@ import {
   TextFieldInput, TextFieldInputContainer, TextFieldLabel, TextFieldStyled 
 } from './styled';
 import { IconProvider, IconProviderProps } from '../icon';
-import { useTheme } from '@/theme';
+import { useTheme } from '../../theme';
+import { TextFieldType } from './types';
 
-export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFieldStyled>, 'onChange' | 'onFocus' | 'onBlur' | 'onMouseEnter' | 'onMouseLeave'> {
+export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFieldStyled>, 'onChange' | 'onFocus' | 'onBlur' | 'onMouseEnter' | 'onMouseLeave' | '$fullWidth'> {
   label?: string;
   placeholder?: string;
   value?: string;
   defaultValue?: string;
-  error?: string;
+  error?: string | boolean;
   fullWidth?: boolean;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
+  name?: string;
+  type?: TextFieldType;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => unknown;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => unknown;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => unknown;
@@ -23,7 +26,7 @@ export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFie
 }
 
 export const TextField: React.FC<TextFieldProps> = ({ 
-  label, placeholder, value, defaultValue, error, fullWidth = false, startIcon, endIcon,
+  label, placeholder, value, defaultValue, error, name, type, fullWidth = false, startIcon, endIcon,
   onChange, onFocus, onBlur, onMouseEnter, onMouseLeave, 
   ...props 
 }) => {
@@ -68,6 +71,8 @@ export const TextField: React.FC<TextFieldProps> = ({
         )}
         <TextFieldInput 
           value={value}
+          type={type}
+          name={name}
           defaultValue={defaultValue}
           placeholder={placeholder}
           onChange={onChange}
@@ -86,3 +91,5 @@ export const TextField: React.FC<TextFieldProps> = ({
     </TextFieldStyled>
   );
 };
+
+export * from './types';

@@ -1,4 +1,4 @@
-import { Icon, icon } from '@/components/icon';
+import { Icon, icon } from '../../icon';
 
 export const ArrowUpIcon = icon(({ ...props }) => (
   <Icon size={16} viewBox="0 0 16 16" fill="none" {...props}>
