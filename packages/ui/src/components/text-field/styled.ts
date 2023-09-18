@@ -77,6 +77,14 @@ export const TextFieldInput = styled.input`
   &::placeholder {
     color: ${({ theme }) => theme.colors.grayScale.gray6};
   }
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:active {
+    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray5} inset !important;
+  }
+  &:-webkit-autofill:focus {
+    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray2} inset !important;
+  }
 `;
 
 export const TextFieldErrorText = styled.span`

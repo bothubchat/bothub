@@ -1,8 +1,14 @@
 import styled, { css } from 'styled-components';
 import { Typography } from '../../typography';
 import { ArrowDownIcon } from '../../icons';
+import { HTMLMotionProps, motion } from 'framer-motion';
+import React from 'react';
 
-export const HeaderAuthUserHead = styled.div`
+export interface HeaderAuthUserHeadProps {
+  $inMenu: boolean;
+}
+
+export const HeaderAuthUserHead: React.FC<React.ComponentProps<"div"> & HTMLMotionProps<"div"> & HeaderAuthUserHeadProps> = styled(motion.div)`
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -11,18 +17,15 @@ export const HeaderAuthUserHead = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 6px;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
-  &:hover {
-    background: ${({ theme }) => theme.colors.grayScale.gray3};
-  }
+  ${({ $inMenu }) => $inMenu && css`
+    width: 100%;
+    justify-content: space-between;
+  `}
 `;
 
 export const HeaderAuthUserStyled = styled.div<{ $inMenu: boolean }>`
   ${({ $inMenu }) => $inMenu && css`
     width: 100%;
-    > ${HeaderAuthUserHead} {
-      width: 100%;
-      justify-content: space-between;
-    }
   `}
 `;
 
@@ -57,15 +60,23 @@ export const HeaderAuthUserTokens = styled(Typography)`
 
 export const HeaderAuthUserArrow = styled(ArrowDownIcon)``;
 
-export const HeaderAuthUserBody = styled.div<{ $width: number }>`
+export interface HeaderAuthUserBodyProps {
+  $width: number;
+  $inMenu: boolean;
+}
+
+export const HeaderAuthUserBody = styled(motion.div)<HeaderAuthUserBodyProps>`
   display: flex;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 6px;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
-  position: absolute;
   margin-top: 14px;
   padding: 14px 0px;
   width: ${({ $width }) => $width ? `${$width}px` : '170px'};
+  transform-origin: top center;
+  ${({ $inMenu }) => !$inMenu && css`
+    position: absolute;
+  `}
 `;
 
 export const HeaderAuthUserList = styled.div`

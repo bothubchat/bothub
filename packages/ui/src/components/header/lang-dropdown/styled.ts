@@ -1,6 +1,8 @@
 import { css, styled } from 'styled-components';
 import { ArrowDownIcon, LanguageIcon } from '../../icons';
 import { Typography } from '../../typography';
+import { HTMLMotionProps, motion } from 'framer-motion';
+import React from 'react';
 
 export const HeaderLangDropdownStyled = styled.div``;
 
@@ -52,9 +54,10 @@ export const HeaderLangDropdownToggler = styled.button<{ $open: boolean }>`
   `}
 `;
 
-export const HeaderLangDropdownContent = styled.div`
+export const HeaderLangDropdownContent: React.FC<React.ComponentProps<"div"> & HTMLMotionProps<"div">> = styled(motion.div)`
   display: flex;
   position: fixed;
+  transform-origin: top center;
 `;
 
 export const HeaderLangDropdownList = styled.ul`

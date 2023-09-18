@@ -12,6 +12,7 @@ export const HeaderMenuStyled = styled.div`
   background: ${({ theme }) => theme.colors.base.black};
   padding: 42px 40px;
   gap: 30px;
+  overflow: auto;
   @media not (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     display: none;
   }

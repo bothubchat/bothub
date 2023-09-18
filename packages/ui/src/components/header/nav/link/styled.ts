@@ -8,6 +8,9 @@ export const HeaderNavLinkStyled = styled.a<{ $inMenu: boolean }>`
         font-size: 16px;
         line-height: 22px;
         color: ${theme.colors.base.white};
+        &:hover {
+          color: ${theme.colors.accent.primaryLight};
+        }
       `;
     }
 

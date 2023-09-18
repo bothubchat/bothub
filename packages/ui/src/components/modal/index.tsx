@@ -25,8 +25,14 @@ export const Modal: React.FC<ModalProps> = ({
       <ModalStyled>
         <Backdrop open={open} onClick={onClose} />
         <ModalWindow
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{
+            opacity: 0,
+            transform: 'scale(0.9)'
+          }}
+          animate={{ 
+            opacity: 1,
+            transform: 'scale(1)'
+          }}
         >
           <ModalWindowBody>
             {title ? <ModalTitle>{title}</ModalTitle> : null}

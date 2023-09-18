@@ -1,6 +1,13 @@
+import { AnimationProps, HTMLMotionProps, motion } from 'framer-motion';
+import React from 'react';
 import styled from 'styled-components';
 
 export const HeaderAuthUserItemStyled = styled.a`
+  display: inline-flex;
+  width: 100%;
+`;
+
+export const HeaderAuthUserItemContent: React.FC<React.ComponentProps<"span"> & HTMLMotionProps<"span">> = styled(motion.span)`
   display: inline-flex;
   width: 100%;
   padding: 8px 16px;
@@ -11,7 +18,4 @@ export const HeaderAuthUserItemStyled = styled.a`
   gap: 10px;
   cursor: pointer;
   box-sizing: border-box;
-  &:hover {
-    background: ${({ theme }) => theme.colors.grayScale.gray2};
-  }
 `;

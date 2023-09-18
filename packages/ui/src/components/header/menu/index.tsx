@@ -11,6 +11,9 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
 
   useEffect(() => {
     if (isOpen) {
+      window.scrollTo({
+        top: 0
+      });
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.removeProperty('overflow');

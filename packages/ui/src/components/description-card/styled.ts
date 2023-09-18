@@ -10,6 +10,7 @@ export const DescriptionCardBorderWrapper = styled.div`
   background: radial-gradient(100% 100% at 0px 0px, ${({ theme }) => theme.colors.accent.primary}, rgba(0, 0, 0, 0.0));
   border-radius: 12px;
   height: 100%;
+  width: 100%;
 `;
 
 export const DescriptionCardBackgroundWrapper = styled.div`
@@ -18,11 +19,13 @@ export const DescriptionCardBackgroundWrapper = styled.div`
   border-radius: 12px;
   height: 100%;
   overflow: hidden;
+  width: 100%;
 `;
 
 export const DescriptionCardContent = styled.div`
   position: relative;
   padding: 47px 25px;
+  width: 100%;
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     padding: 26px 10px;
   }

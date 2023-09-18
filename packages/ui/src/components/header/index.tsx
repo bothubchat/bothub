@@ -5,6 +5,7 @@ import {
 import { HeaderMenu } from './menu';
 
 export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang'> {
+  id?: string;
   logo?: React.ReactNode;
   nav?: React.ReactNode;
   lang?: React.ReactNode;
@@ -12,10 +13,10 @@ export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyl
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  logo, nav, lang, user, ...props 
+  id, logo, nav, lang, user, ...props 
 }) => (
   <>
-    <HeaderStyled {...props}>
+    <HeaderStyled {...props} id={id}>
       <HeaderContainer>
         <HeaderLeft>
           {logo}

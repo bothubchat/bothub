@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { HeaderNavLinkStyled } from '../link/styled';
 import { ArrowDownIcon } from '../../../icons';
+import { motion } from 'framer-motion';
 
 export const HeaderNavDropdownStyled = styled.div<{ $inMenu: boolean }>`
   ${({ $inMenu }) => $inMenu && css`
@@ -14,6 +15,7 @@ export const HeaderNavDropdownHead = styled(HeaderNavLinkStyled)<{ $active: bool
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
   ${({ $active }) => ($active ? css`
     color: ${({ theme }) => theme.colors.accent.primaryLight};
     > ${HeaderNavDropdownArrow} path {
@@ -34,7 +36,7 @@ export const HeaderNavDropdownHead = styled(HeaderNavLinkStyled)<{ $active: bool
   `}
 `;
 
-export const HeaderNavDropdownBody = styled.div<{ $inMenu: boolean }>`
+export const HeaderNavDropdownBody = styled(motion.div)<{ $inMenu: boolean }>`
   ${({ theme, $inMenu }) => {
     if ($inMenu) {
       return css`
@@ -62,6 +64,7 @@ export const HeaderNavDropdownBody = styled.div<{ $inMenu: boolean }>`
       margin-top: 50px;
       width: 100%;
       max-width: 700px;
+      transform-origin: top left;
     `;
   }}
 `;

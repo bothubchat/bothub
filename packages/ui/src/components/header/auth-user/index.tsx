@@ -13,6 +13,8 @@ import {
 } from './styled';
 import { HeaderAuthUserProvider } from './context';
 import { useHeaderMenu } from '../menu/context';
+import { useTheme } from '../../../theme';
+import { AnimatePresence } from 'framer-motion';
 
 export interface HeaderAuthUserProps extends React.PropsWithChildren {
   avatar: React.ReactNode;
@@ -23,6 +25,7 @@ export interface HeaderAuthUserProps extends React.PropsWithChildren {
 export const HeaderAuthUser: React.FC<HeaderAuthUserProps> = ({
   avatar, name, tokens, children 
 }) => {
+  const theme = useTheme();
   const { isInMenu } = useHeaderMenu();
 
   const userRef = useRef<HTMLDivElement>(null);
@@ -66,7 +69,17 @@ export const HeaderAuthUser: React.FC<HeaderAuthUserProps> = ({
   return (
     <HeaderAuthUserProvider setIsOpen={setIsOpen}>
       <HeaderAuthUserStyled ref={userRef} $inMenu={isInMenu}>
-        <HeaderAuthUserHead ref={headRef} onClick={toggle}>
+        <HeaderAuthUserHead
+          $inMenu={isInMenu}
+          ref={headRef}
+          initial={{
+            background: theme.colors.grayScale.gray4
+          }}
+          whileHover={{
+            background: theme.colors.grayScale.gray3
+          }}
+          onClick={toggle}
+        >
           <HeaderAuthUserInfo>
             {avatar}
             <HeaderAuthUserInfoText>
@@ -87,11 +100,24 @@ export const HeaderAuthUser: React.FC<HeaderAuthUserProps> = ({
             }}
           />
         </HeaderAuthUserHead>
-        {isOpen && (
-          <HeaderAuthUserBody $width={width}>
-            {children}
-          </HeaderAuthUserBody>
-        )}
+        <AnimatePresence>
+          {isOpen && (
+            <HeaderAuthUserBody 
+              $width={width} 
+              $inMenu={isInMenu}
+              animate={{
+                opacity: isOpen ? 1 : 0.5,
+                transform: 'scale(' + (isOpen ? 1 : 0.95) + ')'
+              }}
+              exit={{
+                opacity: 0,
+                transform: 'scale(0.95)'
+              }}
+            >
+              {children}
+            </HeaderAuthUserBody>
+          )}
+        </AnimatePresence>
       </HeaderAuthUserStyled>
     </HeaderAuthUserProvider>
   );

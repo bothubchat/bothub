@@ -6,6 +6,7 @@ import {
 } from './styled';
 import { HeaderNavDropdownProvider } from './context';
 import { useHeaderMenu } from '../../menu/context';
+import { AnimatePresence } from 'framer-motion';
 
 export interface HeaderNavDropdownProps extends React.PropsWithChildren {
   label: string;
@@ -59,11 +60,25 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
             }}
           />
         </HeaderNavDropdownHead>
-        {isOpen && (
-          <HeaderNavDropdownBody $inMenu={isInMenu}>
-            {children}
-          </HeaderNavDropdownBody>
-        )}
+        <AnimatePresence>
+          {isOpen && (
+            <HeaderNavDropdownBody 
+              $inMenu={isInMenu}
+              {...(!isInMenu ? {
+                animate: {
+                  opacity: isOpen ? 1 : 0.5,
+                  transform: 'scale(' + (isOpen ? 1 : 0.95) + ')'
+                },
+                exit: {
+                  opacity: 0,
+                  transform: 'scale(0.95)'
+                }
+              } : {})}  
+            >
+              {children}
+            </HeaderNavDropdownBody>
+          )}
+        </AnimatePresence>
       </HeaderNavDropdownStyled>
     </HeaderNavDropdownProvider>
   );

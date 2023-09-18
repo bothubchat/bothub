@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import {
-  HeaderNavDropdownInfo, HeaderNavDropdownItemStyled, HeaderNavDropdownText, HeaderNavDropdownTitle 
+  HeaderNavDropdownInfo, HeaderNavDropdownItemContent, HeaderNavDropdownItemStyled, HeaderNavDropdownText, HeaderNavDropdownTitle 
 } from './styled';
 import { useHeaderNavDropdown } from '../context';
 
@@ -23,12 +23,30 @@ export const HeaderNavDropdownItem: React.FC<HeaderNavDropdownItemProps> = ({
   }, [props.onClick]);
 
   return (
-    <HeaderNavDropdownItemStyled {...props} as={as} to={to} onClick={handleClick}>
-      {icon}
-      <HeaderNavDropdownInfo>
-        <HeaderNavDropdownTitle>{title}</HeaderNavDropdownTitle>
-        <HeaderNavDropdownText>{text}</HeaderNavDropdownText>
-      </HeaderNavDropdownInfo>
+    <HeaderNavDropdownItemStyled 
+      {...props} 
+      as={as} 
+      to={to}
+      onClick={handleClick}
+    >
+      <HeaderNavDropdownItemContent
+        initial={{
+          transform: 'scale(1)',
+          background: 'rgba(255, 255, 255, 0)'
+        }}
+        whileHover={{
+          background: 'rgba(255, 255, 255, 0.045)'
+        }}
+        whileTap={{
+          transform: 'scale(0.95)'
+        }}
+      >
+        {icon}
+        <HeaderNavDropdownInfo>
+          <HeaderNavDropdownTitle>{title}</HeaderNavDropdownTitle>
+          <HeaderNavDropdownText>{text}</HeaderNavDropdownText>
+        </HeaderNavDropdownInfo>
+      </HeaderNavDropdownItemContent>
     </HeaderNavDropdownItemStyled>
   );
 };
