@@ -1,0 +1,1 @@
+export type TariffColor = 'gray' | 'blue' | 'blue-lilac';

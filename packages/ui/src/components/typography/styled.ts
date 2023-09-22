@@ -23,6 +23,10 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
           font-family: ${theme.fonts.ibmPlexSans.bold};
           font-size: 46px;
           line-height: 60px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 40px;
+            line-height: 52px;
+          }
           @media (max-width: ${theme.mobile.maxWidth}) {
             font-size: 28px;
             line-height: 36px;

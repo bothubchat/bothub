@@ -4,19 +4,32 @@ import { Typography } from '../typography';
 
 export const FooterStyled = styled.footer`
   padding: 64px 0px;
-  background: radial-gradient(51.67% 103.33% at 50% -3.33%, rgba(28, 100, 242, 0.50) 0%, rgba(8, 16, 39, 0.00) 70.32%), #121825;
+  background: radial-gradient(51.67% 103.33% at 50% -3.33%, rgba(28, 100, 242, 0.35) 0%, rgba(8, 16, 39, 0.00) 53.98%), #121825;
+  background-repeat: no-repeat;
+  background-size: 100% 400px;
   border-top: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    background-size: 100% 200px;
+  }
 `;
 
 export const FooterContainer = styled(Container)`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
+  grid-template-columns: 300px 1fr 1fr 1fr 1fr;
+  column-gap: 75px;
+  row-gap: 46px;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media (max-width: 1100px) {
     grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 880px) {
+    grid-template-columns: repeat(2, 1fr);
   }
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     grid-template-columns: repeat(1, 1fr);
+    row-gap: 36px;
   }
 `;
 
@@ -54,6 +67,7 @@ export const FooterText = styled(Typography)`
 
 export const FooterNavLink = styled.a`
   display: inline-flex;
+  white-space: nowrap;
   align-items: center;
   gap: 8px;
   font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
@@ -68,6 +82,14 @@ export const FooterNavLink = styled.a`
     color: ${({ theme }) => theme.colors.accent.primaryLight};
     svg path {
       fill: ${({ theme }) => theme.colors.accent.primaryLight};
+    }
+  }
+`;
+
+export const FooterMainColumn = styled(FooterColumn)`
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    & + ${FooterColumn} {
+      grid-column-start: 1;
     }
   }
 `;

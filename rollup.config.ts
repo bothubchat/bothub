@@ -1,6 +1,5 @@
 import { join } from 'path';
 import { defineConfig, ExternalOption, RollupOptions } from 'rollup';
-import nodeExternals from 'rollup-plugin-node-externals';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import esbuild from 'rollup-plugin-esbuild';
 import postcss from 'rollup-plugin-postcss';
@@ -46,7 +45,6 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
       ],
       plugins: [
         commonjs(),
-        nodeExternals(),
         esbuild({
           minify: true,
           tsconfig: join(rootPath, './tsconfig.json'),

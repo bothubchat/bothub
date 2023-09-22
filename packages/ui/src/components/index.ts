@@ -15,3 +15,6 @@ export * from './form';
 export * from './link';
 export * from './divider';
 export * from './portal';
+export * from './tariff';
+export * from './background';
+export * from './accordion';

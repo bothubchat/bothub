@@ -1,5 +1,5 @@
 import React from 'react';
-import { FooterColumn, FooterContainer, FooterStyled } from './styled';
+import { FooterMainColumn, FooterContainer, FooterStyled } from './styled';
 
 export interface FooterProps extends React.PropsWithChildren {
   id?: string; 
@@ -10,10 +10,10 @@ export interface FooterProps extends React.PropsWithChildren {
 export const Footer: React.FC<FooterProps> = ({ id, logo, nav, children }) => (
   <FooterStyled id={id}>
     <FooterContainer>
-      <FooterColumn>
+      <FooterMainColumn>
         {logo}
         {nav}
-      </FooterColumn>
+      </FooterMainColumn>
       {children}
     </FooterContainer>
   </FooterStyled>

@@ -107,11 +107,11 @@ export const HeaderAuthUser: React.FC<HeaderAuthUserProps> = ({
               $inMenu={isInMenu}
               animate={{
                 opacity: isOpen ? 1 : 0.5,
-                transform: 'scale(' + (isOpen ? 1 : 0.95) + ')'
+                transform: 'scale(' + (isOpen ? 1 : 0.98) + ')'
               }}
               exit={{
                 opacity: 0,
-                transform: 'scale(0.95)'
+                transform: 'scale(0.98)'
               }}
             >
               {children}

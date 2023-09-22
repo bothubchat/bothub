@@ -1,5 +1,5 @@
-/// <reference path="./styled.d.ts" />
-
+import '../styles';
+import './styled.d.ts';
 import React, { useContext, useMemo } from 'react';
 import { ThemeProvider as StyledThemeProvider, ThemeContext, createGlobalStyle } from 'styled-components';
 import { Theme } from './types';
@@ -82,3 +82,5 @@ export function useTheme(): Theme {
 
   return value;
 }
+
+export * from './types';
