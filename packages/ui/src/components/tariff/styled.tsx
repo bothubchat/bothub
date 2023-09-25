@@ -15,11 +15,27 @@ export const TariffContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: space-between;
   background: ${({ theme }) => theme.colors.base.black};
   border-radius: 16px;
   padding: 20px 18px;
   height: 100%;
   box-sizing: border-box;
+  min-height: 508px;
+`;
+
+export const TariffTop = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+`;
+
+export const TariffBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
 `;
 
 export const TariffName = styled(Typography).attrs({ variant: 'h3', component: 'h3' })`
@@ -89,7 +105,7 @@ export const TariffValidityPeriod = styled(Typography)`
 `;
 
 export const TariffStyled = styled(SwiperSlide)<{ $color: TariffColor }>`
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   overflow: hidden;
   ${TariffBorderWrapper} {
@@ -122,5 +138,6 @@ export const TariffStyled = styled(SwiperSlide)<{ $color: TariffColor }>`
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     flex-shrink: 0;
     width: 320px !important;
+    height: 100% !important;
   }
 `;

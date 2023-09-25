@@ -7,9 +7,10 @@ import React from "react";
 export const AccordionStyled: React.FC<React.ComponentProps<'div'> & AnimationProps & HoverHandlers> = styled(motion.div)`
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
   background: ${({ theme }) => theme.colors.grayScale.gray2};
   width: 100%;
-  max-width: 738px;
+  max-width: 638px;
   box-sizing: border-box;
   border-radius: 8px;
   overflow: hidden;
