@@ -48,7 +48,7 @@ export const Modal: React.FC<ModalProps> = ({
 
   return (
     <Portal>
-        {modalNode}
+      {modalNode}
     </Portal>
   );
 };

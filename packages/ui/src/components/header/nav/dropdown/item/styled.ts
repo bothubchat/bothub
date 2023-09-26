@@ -5,6 +5,9 @@ import React from 'react';
 
 export const HeaderNavDropdownItemStyled = styled.a`
   display: flex;
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    width: 100%;
+  }
 `;
 
 export const HeaderNavDropdownItemContent: React.FC<React.ComponentProps<"div"> & HTMLMotionProps<"div">> = styled(motion.div)`
@@ -14,6 +17,7 @@ export const HeaderNavDropdownItemContent: React.FC<React.ComponentProps<"div"> 
   cursor: pointer;
   padding: 14px;
   border-radius: 8px;
+  width: 100%;
 `;
 
 export const HeaderNavDropdownInfo = styled.div`

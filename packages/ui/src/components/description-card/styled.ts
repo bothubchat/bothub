@@ -5,12 +5,18 @@ import bg from './assets/bg.png';
 import mainBg from './assets/main-bg.png';
 import { DescriptionCardVariant } from './types';
 
-export const DescriptionCardBorderWrapper = styled.div<{ $variant: DescriptionCardVariant }>`
+export interface DescriptionCardBorderWrapperProps {
+  $variant: DescriptionCardVariant;
+  $hoverX: number;
+  $hoverY: number;
+}
+
+export const DescriptionCardBorderWrapper = styled.div<DescriptionCardBorderWrapperProps>`
   padding: 1px;
   border-radius: 12px;
   height: 100%;
   width: 100%;
-  ${({ $variant }) => {
+  ${({ $variant, $hoverX, $hoverY }) => {
     switch ($variant) {
       case 'tertiary':
         return css`
@@ -18,25 +24,31 @@ export const DescriptionCardBorderWrapper = styled.div<{ $variant: DescriptionCa
         `;
       default:
         return css`
-          background: radial-gradient(100% 100% at 0px 0px, ${({ theme }) => theme.colors.accent.primary}, rgba(0, 0, 0, 0.0));
+          background: radial-gradient(100% 100% at ${$hoverX}px ${$hoverY}px, ${({ theme }) => theme.colors.accent.primary}, rgba(0, 0, 0, 0.0));
         `;
     }
   }}
 `;
 
-export const DescriptionCardBackgroundWrapper = styled.div<{ $variant: DescriptionCardVariant }>`
+export interface DescriptionCardBackgroundWrapperProps {
+  $variant: DescriptionCardVariant;
+  $hoverX: number;
+  $hoverY: number;
+}
+
+export const DescriptionCardBackgroundWrapper = styled.div<DescriptionCardBackgroundWrapperProps>`
   position: relative;
   border-radius: 12px;
   overflow: hidden;
   height: 100%;
   width: 100%;
-  ${({ $variant }) => {
+  ${({ $variant, $hoverX, $hoverY }) => {
     switch ($variant) {
       case 'tertiary':
         return css``;
       default:
         return css`
-          background: radial-gradient(80% 70% at 0px 0px, rgba(28, 100, 242, 0.38) 9.34%, rgba(0, 0, 0, 0.00) 100%), #121825;
+          background: radial-gradient(80% 70% at ${$hoverX}px ${$hoverY}px, rgba(28, 100, 242, 0.38) 9.34%, rgba(0, 0, 0, 0.00) 100%), #121825;
         `;
     }
   }}
@@ -61,6 +73,9 @@ export const DescriptionCardContent = styled.div<{ $variant: DescriptionCardVari
         `;
       default:
         return css`
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
           padding: 47px 25px;
           @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
             padding: 26px 10px;
@@ -129,6 +144,7 @@ export const DescriptionCardButton = styled(Button)`
     display: block;
     margin: auto;
     margin-top: 14px;
+    margin-bottom: 0px;
   }
 `;
 

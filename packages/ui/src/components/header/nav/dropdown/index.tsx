@@ -67,11 +67,11 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
               {...(!isInMenu ? {
                 animate: {
                   opacity: isOpen ? 1 : 0.5,
-                  transform: 'scale(' + (isOpen ? 1 : 0.98) + ')'
+                  transform: 'scale(' + (isOpen ? 1 : 0.999) + ')'
                 },
                 exit: {
                   opacity: 0,
-                  transform: 'scale(0.98)'
+                  transform: 'scale(0.999)'
                 }
               } : {})}  
             >

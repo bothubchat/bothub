@@ -74,6 +74,7 @@ export const HeaderNavDropdownList = styled.div`
   grid-template-columns: repeat(2, 1fr);
   column-gap: 40px;
   row-gap: 28px;
+  width: 100%;
   @media (max-width: 775px) {
     grid-template-columns: 1fr;
   }

@@ -3,10 +3,13 @@ import { HeaderMenuStyled } from "./styled";
 import { HeaderMenuToggleButton } from "./toggle-button";
 import { Portal } from "../../portal";
 import { HeaderMenuProvider } from "./context";
+import { useTheme } from "../../../theme";
+import { AnimatePresence } from "framer-motion";
 
 export interface HeaderMenuProps extends React.PropsWithChildren {}
 
 export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
+  const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -30,13 +33,28 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
     isInMenu
   >
     <HeaderMenuToggleButton />
-    {isOpen ? (
-      <Portal>
-        <HeaderMenuStyled>
-          {children}
-        </HeaderMenuStyled>
-      </Portal>
-    ) : null}
+    <AnimatePresence>
+      {isOpen ? (
+        <Portal>
+          <HeaderMenuStyled
+            initial={{
+              opacity: 0,
+              top: -window.innerHeight
+            }}
+            animate={{
+              opacity: 1,
+              top: window.innerWidth <= 605 ? theme.header.mobile.height : theme.header.height
+            }}
+            exit={{
+              opacity: 0,
+              top: -window.innerHeight
+            }}
+          >
+            {children}
+          </HeaderMenuStyled>
+        </Portal>
+      ) : null}
+    </AnimatePresence>
   </HeaderMenuProvider>
 };
 
