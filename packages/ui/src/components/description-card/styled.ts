@@ -76,7 +76,11 @@ export const DescriptionCardContent = styled.div<{ $variant: DescriptionCardVari
           display: flex;
           flex-direction: column;
           justify-content: center;
+          align-items: flex-start;
           padding: 47px 25px;
+          @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+            align-items: center;
+          }
           @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
             padding: 26px 10px;
           }
@@ -102,6 +106,8 @@ export const DescriptionCardBackground = styled.div<{ $variant: DescriptionCardV
       default:
         return css`
           background-image: url(${bg});
+          background-position-y: bottom;
+          background-repeat: no-repeat;
         `;
     }
   }}
@@ -169,6 +175,7 @@ export const DescriptionCardStyled = styled.div<{ $variant: DescriptionCardVaria
       height: 380px;
     }
     ${DescriptionCardContent} {
+      align-items: center;
       > ${DescriptionCardTitle} {
         text-align: center;
       }

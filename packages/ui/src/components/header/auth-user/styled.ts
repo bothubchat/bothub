@@ -1,8 +1,9 @@
+import React from 'react';
+import { HTMLMotionProps, motion } from 'framer-motion';
 import styled, { css } from 'styled-components';
 import { Typography } from '../../typography';
 import { ArrowDownIcon } from '../../icons';
-import { HTMLMotionProps, motion } from 'framer-motion';
-import React from 'react';
+import defaultAvatar from './assets/default-avatar.png';
 
 export interface HeaderAuthUserHeadProps {
   $inMenu: boolean;
@@ -41,7 +42,12 @@ export const HeaderAuthUserAvatar = styled.img`
   height: 32px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => theme.colors.grayScale.gray2};
+`;
+
+export const HeaderAuthUserDefaultAvatar = styled(HeaderAuthUserAvatar).attrs({ as: 'span' })`
+  background: url(${defaultAvatar});
+  background-size: cover;
 `;
 
 export const HeaderAuthUserInfoText = styled.span``;
