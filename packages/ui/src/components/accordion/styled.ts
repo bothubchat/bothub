@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Typography } from "../typography";
 import { Arrow2DownIcon } from "../icons";
 import { AnimationProps, HoverHandlers, motion } from "framer-motion";

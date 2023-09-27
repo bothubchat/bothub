@@ -33,6 +33,9 @@ export const Modal: React.FC<ModalProps> = ({
             opacity: 1,
             transform: 'scale(1)'
           }}
+          transition={{
+            duration: 0.15
+          }}
         >
           <ModalWindowBody>
             {title ? <ModalTitle>{title}</ModalTitle> : null}

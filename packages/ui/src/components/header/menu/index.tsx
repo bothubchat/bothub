@@ -49,6 +49,9 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
               opacity: 0,
               top: -window.innerHeight
             }}
+            transition={{
+              duration: 0.15
+            }}
           >
             {children}
           </HeaderMenuStyled>
@@ -58,3 +61,4 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
   </HeaderMenuProvider>
 };
 
+export * from './context';

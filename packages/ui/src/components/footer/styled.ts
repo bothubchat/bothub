@@ -75,6 +75,10 @@ export const FooterNavLink = styled.a`
   line-height: 22px;
   color: ${({ theme }) => theme.colors.base.white};
   text-decoration: none;
+  cursor: default;
+  &[href] {
+    cursor: pointer;
+  }
   svg path {
     fill: ${({ theme }) => theme.colors.base.white};
   }

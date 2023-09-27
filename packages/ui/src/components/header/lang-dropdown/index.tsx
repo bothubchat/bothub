@@ -61,7 +61,10 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
               transform: `rotateZ(${isOpen ? -180 : 0}deg)`
             }}
             animate={{
-              transform: `rotateZ(${isOpen ? -180 : 0}deg)`
+              transform: `rotateZ(${isOpen ? -180 : 0}deg)`,
+              transition: {
+                duration: 0.15
+              }
             }}
           />
         </HeaderLangDropdownToggler>
@@ -70,7 +73,10 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
             <HeaderLangDropdownContent
               animate={{
                 opacity: isOpen ? 1 : 0.5,
-                transform: 'scale(' + (isOpen ? 1 : 0.999) + ')'
+                transform: 'scale(' + (isOpen ? 1 : 0.999) + ')',
+                transition: {
+                  duration: 0.15
+                }
               }}
               exit={{
                 opacity: 0,

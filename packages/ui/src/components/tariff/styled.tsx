@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { Typography } from "../typography";
 import { Button } from "../button";
 import { SwiperSlide } from 'swiper/react';

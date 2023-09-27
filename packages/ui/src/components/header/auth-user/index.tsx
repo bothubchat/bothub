@@ -96,7 +96,10 @@ export const HeaderAuthUser: React.FC<HeaderAuthUserProps> = ({
               transform: `rotateZ(${isOpen ? -180 : 0}deg)`
             }}
             animate={{
-              transform: `rotateZ(${isOpen ? -180 : 0}deg)`
+              transform: `rotateZ(${isOpen ? -180 : 0}deg)`,
+              transition: {
+                duration: 0.15
+              }
             }}
           />
         </HeaderAuthUserHead>
@@ -105,14 +108,19 @@ export const HeaderAuthUser: React.FC<HeaderAuthUserProps> = ({
             <HeaderAuthUserBody 
               $width={width} 
               $inMenu={isInMenu}
-              animate={{
-                opacity: isOpen ? 1 : 0.5,
-                transform: 'scale(' + (isOpen ? 1 : 0.999) + ')'
-              }}
-              exit={{
-                opacity: 0,
-                transform: 'scale(0.999)'
-              }}
+              {...(!isInMenu ? {
+                animate: {
+                  opacity: isOpen ? 1 : 0.5,
+                  transform: 'scale(' + (isOpen ? 1 : 0.999) + ')',
+                  transition: {
+                    duration: 0.15
+                  }
+                },
+                exit: {
+                  opacity: 0,
+                  transform: 'scale(0.999)'
+                }
+              } : {})}
             >
               {children}
             </HeaderAuthUserBody>

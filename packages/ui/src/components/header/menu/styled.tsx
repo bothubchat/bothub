@@ -1,5 +1,5 @@
 import { AnimationProps, motion } from "framer-motion";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 export const HeaderMenuStyled: React.FC<AnimationProps & React.PropsWithChildren> = styled(motion.div)`
   display: flex;

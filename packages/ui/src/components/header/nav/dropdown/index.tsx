@@ -72,6 +72,9 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
                 exit: {
                   opacity: 0,
                   transform: 'scale(0.999)'
+                },
+                transition: {
+                  duration: 0.15
                 }
               } : {})}  
             >

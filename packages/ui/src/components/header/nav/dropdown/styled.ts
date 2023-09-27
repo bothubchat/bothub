@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { HeaderNavLinkStyled } from '../link/styled';
 import { ArrowDownIcon } from '../../../icons';
 import { motion } from 'framer-motion';

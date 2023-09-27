@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { Typography } from '../../../../typography';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import React from 'react';

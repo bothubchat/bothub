@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { AnimationProps, motion } from 'framer-motion';
 
 export const BackdropStyled: React.FC<React.ComponentProps<'div'> & AnimationProps> = styled(motion.div)`

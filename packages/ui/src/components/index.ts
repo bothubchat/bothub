@@ -18,3 +18,4 @@ export * from './portal';
 export * from './tariff';
 export * from './background';
 export * from './accordion';
+export * from './main';

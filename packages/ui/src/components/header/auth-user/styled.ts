@@ -1,6 +1,6 @@
 import React from 'react';
 import { HTMLMotionProps, motion } from 'framer-motion';
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { Typography } from '../../typography';
 import { ArrowDownIcon } from '../../icons';
 import defaultAvatar from './assets/default-avatar.png';

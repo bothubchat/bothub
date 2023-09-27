@@ -41,3 +41,4 @@ export * from './nav';
 export * from './lang-dropdown';
 export * from './user';
 export * from './auth-user';
+export * from './menu';

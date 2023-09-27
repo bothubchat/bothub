@@ -1,5 +1,5 @@
 import { AnimationProps, motion } from 'framer-motion';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { Typography } from '../typography';
 import { CloseIcon } from '../icons';
 
