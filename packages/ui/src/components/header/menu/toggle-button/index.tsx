@@ -10,7 +10,7 @@ export const HeaderMenuToggleButton: React.FC = () => {
   }, [isOpen]);
 
   return (
-    <HeaderMenuToggleButtonStyled onClick={toggleMenu}>
+    <HeaderMenuToggleButtonStyled aria-label="Menu Toggle Button" onClick={toggleMenu}>
       <HeaderMenuToggleIcon />
     </HeaderMenuToggleButtonStyled>
   );

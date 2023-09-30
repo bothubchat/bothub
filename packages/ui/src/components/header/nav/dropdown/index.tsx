@@ -49,7 +49,7 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
   return (
     <HeaderNavDropdownProvider setIsOpen={setIsOpen}>
       <HeaderNavDropdownStyled $inMenu={isInMenu} ref={dropdownRef}>
-        <HeaderNavDropdownHead $active={isOpen} $inMenu={isInMenu} onClick={toggleDropdown}>
+        <HeaderNavDropdownHead as="span" $active={isOpen} $inMenu={isInMenu} onClick={toggleDropdown}>
           {label}
           <HeaderNavDropdownArrow 
             initial={{

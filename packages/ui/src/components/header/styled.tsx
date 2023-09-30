@@ -55,4 +55,8 @@ export const HeaderRight = styled.div`
 
 export const HeaderLogoLink = styled.a`
   display: inline-flex;
+  transition: 0.35s opacity;
+  &:hover {
+    opacity: 0.7;
+  }
 `;

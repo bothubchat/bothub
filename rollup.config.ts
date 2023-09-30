@@ -54,7 +54,7 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
           ]
         }),
         image({
-          include: ['**/*.png', '**/*.svg']
+          include: ['**/*.png', '**/*.svg', '**/*.webp']
         }),
         postcss({
           extract: true,

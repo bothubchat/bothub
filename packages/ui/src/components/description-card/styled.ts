@@ -1,14 +1,12 @@
 import { css, styled } from 'styled-components';
 import { Typography, TypographyProps } from '../typography';
 import { Button } from '../button';
-import bg from './assets/bg.png';
-import mainBg from './assets/main-bg.png';
+import bg from './assets/bg.svg';
+import mainBg from './assets/main-bg.webp';
 import { DescriptionCardVariant } from './types';
 
 export interface DescriptionCardBorderWrapperProps {
   $variant: DescriptionCardVariant;
-  $hoverX: number;
-  $hoverY: number;
 }
 
 export const DescriptionCardBorderWrapper = styled.div<DescriptionCardBorderWrapperProps>`
@@ -16,24 +14,20 @@ export const DescriptionCardBorderWrapper = styled.div<DescriptionCardBorderWrap
   border-radius: 12px;
   height: 100%;
   width: 100%;
-  ${({ $variant, $hoverX, $hoverY }) => {
+  ${({ $variant }) => {
     switch ($variant) {
       case 'tertiary':
         return css`
           background: radial-gradient(50% 100% at 150px -10%, ${({ theme }) => theme.colors.accent.primary}, rgba(0, 0, 0, 0.0));
         `;
       default:
-        return css`
-          background: radial-gradient(100% 100% at ${$hoverX}px ${$hoverY}px, ${({ theme }) => theme.colors.accent.primary}, rgba(0, 0, 0, 0.0));
-        `;
+        return css``;
     }
   }}
 `;
 
 export interface DescriptionCardBackgroundWrapperProps {
   $variant: DescriptionCardVariant;
-  $hoverX: number;
-  $hoverY: number;
 }
 
 export const DescriptionCardBackgroundWrapper = styled.div<DescriptionCardBackgroundWrapperProps>`
@@ -42,16 +36,6 @@ export const DescriptionCardBackgroundWrapper = styled.div<DescriptionCardBackgr
   overflow: hidden;
   height: 100%;
   width: 100%;
-  ${({ $variant, $hoverX, $hoverY }) => {
-    switch ($variant) {
-      case 'tertiary':
-        return css``;
-      default:
-        return css`
-          background: radial-gradient(80% 70% at ${$hoverX}px ${$hoverY}px, rgba(28, 100, 242, 0.38) 9.34%, rgba(0, 0, 0, 0.00) 100%), #121825;
-        `;
-    }
-  }}
 `;
 
 export const DescriptionCardContent = styled.div<{ $variant: DescriptionCardVariant }>`
@@ -105,7 +89,7 @@ export const DescriptionCardBackground = styled.div<{ $variant: DescriptionCardV
         `;
       default:
         return css`
-          background-image: url(${bg});
+          background-image: url(${JSON.stringify(bg)});
           background-position-y: bottom;
           background-repeat: no-repeat;
         `;
@@ -170,7 +154,7 @@ export const DescriptionCardStyled = styled.div<{ $variant: DescriptionCardVaria
   min-height: 244px;
   max-width: 630px;
   ${({ $variant }) => $variant === 'main' && css`
-    height: 512px;
+    height: 532px;
     @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
       height: 380px;
     }
@@ -189,7 +173,7 @@ export const DescriptionCardStyled = styled.div<{ $variant: DescriptionCardVaria
       }
     }
     ${DescriptionCardBackground} {
-      background-image: url(${mainBg});
+      background-image: url(${JSON.stringify(mainBg)});
       background-size: contain;
       background-repeat: no-repeat;
       background-position: bottom;

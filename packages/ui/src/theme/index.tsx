@@ -53,9 +53,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ sbMode = false, ch
       maxWidth: '605px'
     },
     zIndex: {
-      header: 2,
-      backdrop: 3,
-      modal: 4
+      menu: 2,
+      header: 3,
+      backdrop: 4,
+      modal: 5
     },
     header: {
       height: '89px',

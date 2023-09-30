@@ -37,10 +37,10 @@ export const TariffList: React.FC<TariffListProps> = ({ children }) => {
         {children}
       </TariffSliderList>
       <TariffSliderActions>
-        <Button corner="rounded" size="small" onClick={handlePrev}>
+        <Button corner="rounded" size="small" aria-label="Prev Slide Button" onClick={handlePrev}>
           <ArrowNarrowLeftIcon />
         </Button>
-        <Button corner="rounded" size="small" onClick={handleNext}>
+        <Button corner="rounded" size="small" aria-label="Next Slide Button" onClick={handleNext}>
           <ArrowNarrowRightIcon />
         </Button>
       </TariffSliderActions>

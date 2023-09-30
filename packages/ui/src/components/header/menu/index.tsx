@@ -43,7 +43,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
             }}
             animate={{
               opacity: 1,
-              top: window.innerWidth <= 605 ? theme.header.mobile.height : theme.header.height
+              top: 0
             }}
             exit={{
               opacity: 0,

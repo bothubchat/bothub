@@ -13,6 +13,7 @@ import {
 } from './styled';
 import { DescriptionCardVariant } from './types';
 import { LinksIcon } from '../icons';
+import { useTheme } from '../../theme';
 
 export interface DescriptionCardProps extends Omit<React.ComponentProps<typeof DescriptionCardStyled>, 'title' | '$variant'> {
   icon?: React.ReactNode;
@@ -25,6 +26,8 @@ export interface DescriptionCardProps extends Omit<React.ComponentProps<typeof D
 export const DescriptionCard: React.FC<DescriptionCardProps> = ({
   icon = <LinksIcon />, title, text, button, variant = 'main', ...props 
 }) => {
+  const theme = useTheme();
+
   const [hoverX, setHoverX] = useState(0);
   const [hoverY, setHoverY] = useState(0);
 
@@ -53,13 +56,15 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
     >
       <DescriptionCardBorderWrapper 
         $variant={variant}
-        $hoverX={hoverX}
-        $hoverY={hoverY}  
+        style={variant !== 'tertiary' ? {
+          background: `radial-gradient(100% 100% at ${hoverX}px ${hoverY}px, ${theme.colors.accent.primary}, rgba(0, 0, 0, 0.0))`
+        } : {}}
       >
         <DescriptionCardBackgroundWrapper 
           $variant={variant}
-          $hoverX={hoverX}
-          $hoverY={hoverY}
+          style={variant !== 'tertiary' ? {
+            background: `radial-gradient(80% 70% at ${hoverX}px ${hoverY}px, rgba(28, 100, 242, 0.38) 9.34%, rgba(0, 0, 0, 0.00) 100%), #121825`
+          } : {}}
         >
           <DescriptionCardBackground $variant={variant} />
           <DescriptionCardContent $variant={variant}>

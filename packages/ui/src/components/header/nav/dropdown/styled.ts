@@ -31,7 +31,6 @@ export const HeaderNavDropdownHead = styled(HeaderNavLinkStyled)<{ $active: bool
   `)}
   ${({ $inMenu }) => $inMenu && css`
     width: 100%;
-    max-width: 790px;
     justify-content: space-between;
   `}
 `;
@@ -48,7 +47,6 @@ export const HeaderNavDropdownBody = styled(motion.div)<{ $inMenu: boolean }>`
         border-radius: 6px;
         margin-top: 14px;
         width: 100%;
-        max-width: 790px;
       `;
     }
 

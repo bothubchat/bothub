@@ -1,6 +1,9 @@
 import React from "react";
-import alri from './assets/alri.png';
+import alri from './assets/alri.webp';
+import { ImageProps } from "../../image";
 
-export const AlriIcon: React.FC = React.memo(() => (
-  <img src={alri} />
-));
+export type AlriIconProps = Omit<ImageProps, 'src'>;
+
+export const AlriIcon: React.FC<AlriIconProps> = (props) => (
+  <img {...props} src={alri} />
+);

@@ -59,6 +59,7 @@ export interface ThemeZIndex {
   header: number;
   backdrop: number;
   modal: number;
+  menu: number;
 }
 
 export interface ThemeHeaderMobile {
