@@ -3,6 +3,8 @@ import { Container } from '../container';
 import { Typography } from '../typography';
 
 export const FooterStyled = styled.footer`
+  min-width: ${({ theme }) => theme.mobile.minWidth};
+  width: 100%;
   padding: 64px 0px;
   background: radial-gradient(51.67% 103.33% at 50% -3.33%, rgba(28, 100, 242, 0.35) 0%, rgba(8, 16, 39, 0.00) 53.98%), #121825;
   background-repeat: no-repeat;

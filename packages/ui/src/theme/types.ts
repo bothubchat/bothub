@@ -13,6 +13,7 @@ export interface ThemeTablet {
 
 export interface ThemeMobile {
   maxWidth: string;
+  minWidth: string;
 }
 
 export interface ThemeBaseColors {

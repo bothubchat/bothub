@@ -33,4 +33,6 @@ export const BackgroundStyled = styled.div<{ $variant: BackgroundVariant  }>`
 
 export const BackgroundImage = styled.img``;
 
-export const BackgroundBluePurpleImage = styled(BackgroundImage).attrs({ src: bluePurple })``;
+export const BackgroundBluePurpleImage = styled(BackgroundImage).attrs({ src: bluePurple, width: 773, height: 576 })`
+  height: max-content;
+`;

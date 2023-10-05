@@ -50,7 +50,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ sbMode = false, ch
       maxWidth: '1377px'
     },
     mobile: {
-      maxWidth: '605px'
+      maxWidth: '605px',
+      minWidth: '400px'
     },
     zIndex: {
       menu: 2,

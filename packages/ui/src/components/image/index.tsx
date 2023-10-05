@@ -3,44 +3,60 @@ import { Helmet } from 'react-helmet';
 import { useTheme } from '../../theme';
 import { ImageImg, ImagePicture, ImageSource } from './styled';
 
+export interface ImageAdaptive {
+  src: string;
+  width?: string | number;
+  height?: string | number;
+}
+
 export interface ImageSrc {
-  mobile?: string;
-  tablet?: string;
-  desktop?: string;
+  mobile?: string | ImageAdaptive;
+  tablet?: string | ImageAdaptive;
+  desktop?: string | ImageAdaptive;
 }
 
 
-export interface ImageProps extends Omit<React.ComponentProps<'img'>, 'src' | 'alt'> {
+export interface ImageProps extends Omit<React.ComponentProps<'img'>, 'src' | 'alt' | 'width' | 'height'> {
   src: string | ImageSrc;
+  width?: string | number;
+  height?: string | number;
   alt: string;
 };
 
-export const Image: React.FC<ImageProps> = ({ src, alt, ...props }) => {
+export const Image: React.FC<ImageProps> = ({ src, alt, width, height, ...props }) => {
   const theme = useTheme();
 
   return (
     <>
       {typeof src === 'string' && (
-        <ImageImg {...props} src={src} alt={alt} />
+        <ImageImg {...props} src={src} width={width} height={height} alt={alt} />
       )}
       {typeof src !== 'string' && (
         <ImagePicture {...props}>
           {src.mobile && (
             <ImageSource 
-              srcSet={src.mobile} 
+              srcSet={typeof src.mobile === 'string' ? src.mobile : src.mobile.src}
+              width={typeof src.mobile === 'object' ? src.mobile.width : undefined}
+              height={typeof src.mobile === 'object' ? src.mobile.height : undefined}
               media={`(max-width: ${theme.mobile.maxWidth})`} 
             />
           )}
           {src.tablet && (
             <ImageSource 
-              srcSet={src.tablet} 
+              srcSet={typeof src.tablet === 'string' ? src.tablet : src.tablet.src}
+              width={typeof src.tablet === 'object' ? src.tablet.width : undefined}
+              height={typeof src.tablet === 'object' ? src.tablet.height : undefined}
               media={`(max-width: ${theme.tablet.maxWidth})`} 
             />
           )}
-          <ImageImg 
-            src={src.desktop ?? src.tablet ?? src.mobile}
-            alt={alt}  
-          />
+          {src.desktop && (
+            <ImageImg 
+              src={typeof src.desktop === 'string' ? src.desktop : src.desktop.src}
+              width={typeof src.desktop === 'object' ? src.desktop.width : undefined}
+              height={typeof src.desktop === 'object' ? src.desktop.height : undefined}
+              alt={alt}  
+            />
+          )}
         </ImagePicture>
       )}
       <Helmet>
@@ -50,7 +66,7 @@ export const Image: React.FC<ImageProps> = ({ src, alt, ...props }) => {
         {(typeof src !== 'string' && src.mobile) && (
           <link 
             rel="preload" 
-            href={src.mobile}
+            href={typeof src.mobile === 'string' ? src.mobile : src.mobile.src}
             as="image"
             media={`(max-width: ${theme.mobile.maxWidth})`} 
           />
@@ -58,7 +74,7 @@ export const Image: React.FC<ImageProps> = ({ src, alt, ...props }) => {
         {(typeof src !== 'string' && src.tablet) && (
           <link 
             rel="preload" 
-            href={src.tablet}
+            href={typeof src.tablet === 'string' ? src.tablet : src.tablet.src}
             as="image" 
             media={`(min-width: ${parseInt(theme.mobile.maxWidth) + 0.1}px) and (max-width: ${theme.tablet.maxWidth})`}
           />
@@ -66,7 +82,7 @@ export const Image: React.FC<ImageProps> = ({ src, alt, ...props }) => {
         {(typeof src !== 'string' && src.desktop) && (
           <link 
             rel="preload"
-            href={src.desktop}
+            href={typeof src.desktop === 'string' ? src.desktop : src.desktop.src}
             as="image"
             media={`(min-width: ${parseInt(theme.tablet.maxWidth) + 0.1}px)`}
           />

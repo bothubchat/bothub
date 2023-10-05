@@ -4,6 +4,7 @@ import { HeaderNavStyled } from './nav';
 
 export const HeaderOffset = styled.div`
   display: flex;
+  min-width: ${({ theme }) => theme.mobile.minWidth};
   width: 100%;
   height: ${({ theme }) => theme.header.height};
   background: ${({ theme }) => theme.colors.base.black};
@@ -21,6 +22,8 @@ export const HeaderStyled = styled.header`
   background: rgba(18, 24, 37, 0.40);
   backdrop-filter: blur(9px);
   border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  min-width: ${({ theme }) => theme.mobile.minWidth};
+  width: 100%;
   height: ${({ theme }) => theme.header.height};
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     ${HeaderNavStyled} {
