@@ -4,6 +4,7 @@ import bgLines from './assets/bg-lines.svg';
 export interface SectionStyledProps {
   $bg: boolean;
   $bgLines: boolean;
+  $fullHeight: boolean;
 }
 
 export const SectionStyled = styled.section<SectionStyledProps>`
@@ -16,6 +17,12 @@ export const SectionStyled = styled.section<SectionStyledProps>`
   ${({ $bg }) => $bg && css`
     position: relative;
     overflow: hidden;
+  `}
+  ${({ $fullHeight }) => $fullHeight && css`
+    min-height: calc(100vh - ${({ theme }) => theme.header.height});
+    @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+      min-height: calc(100vh - ${({ theme }) => theme.header.mobile.height});
+    }
   `}
 `;
 

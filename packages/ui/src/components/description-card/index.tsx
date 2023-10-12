@@ -12,8 +12,8 @@ import {
   DescriptionCardTertiaryText
 } from './styled';
 import { DescriptionCardVariant } from './types';
-import { LinksIcon } from '../icons';
-import { useTheme } from '../../theme';
+import { LinksIcon } from '@/ui/icons';
+import { useTheme } from '@/ui/theme';
 
 export interface DescriptionCardProps extends Omit<React.ComponentProps<typeof DescriptionCardStyled>, 'title' | '$variant'> {
   icon?: React.ReactNode;

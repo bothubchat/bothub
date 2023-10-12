@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "0.4.7",
+  "version": "1.0.0-beta.23",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -26,14 +26,28 @@
     "./dist",
     "./fonts"
   ],
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/es/index.js",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./fonts/*": "./fonts/*"
+  },
   "peerDependencies": {
     "framer-motion": ">=10.16.3",
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0",
     "styled-components": ">=6.0.7",
-    "react-helmet": ">=6.1.0"
+    "react-helmet": ">=6.1.0",
+    "swiper": ">=10.2.0",
+    "normalize.css": ">=8.0.1",
+    "react-slider": ">=2.0.6",
+    "react-markdown": ">=8.0.5",
+    "highlight.js": ">=11.9.0",
+    "react-highlight": ">=0.15.0"
   }
 }

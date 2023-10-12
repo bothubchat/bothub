@@ -18,7 +18,8 @@
   },
   "ignorePatterns": [
     ".eslintrc.json",
-    "rollup.config.ts"
+    "postcss.config.js",
+    "**/*.d.ts"
   ],
   "plugins": [
     "react",
@@ -63,6 +64,11 @@
     "@typescript-eslint/triple-slash-reference": "off",
     "import/no-extraneous-dependencies": "off",
     "react/jsx-no-bind": "off",
-    "import/export": "import/export"
+    "import/export": "off",
+    "radix": "off",
+    "default-case": "off",
+    "no-alert": "off",
+    "react/no-unstable-nested-components": "off",
+    "@typescript-eslint/no-use-before-define": "off"
   }
 }

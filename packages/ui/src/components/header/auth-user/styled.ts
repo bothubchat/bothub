@@ -1,15 +1,16 @@
 import React from 'react';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import { styled, css } from 'styled-components';
-import { Typography } from '../../typography';
-import { ArrowDownIcon } from '../../icons';
+import { Typography } from '@/ui/components/typography';
+import { ArrowDownIcon } from '@/ui/icons'; 
 import defaultAvatar from './assets/default-avatar.png';
+import { Avatar } from '@/ui/components/avatar';
 
 export interface HeaderAuthUserHeadProps {
   $inMenu: boolean;
 }
 
-export const HeaderAuthUserHead: React.FC<React.ComponentProps<"div"> & HTMLMotionProps<"div"> & HeaderAuthUserHeadProps> = styled(motion.div)`
+export const HeaderAuthUserHead: React.FC<React.ComponentProps<'div'> & HTMLMotionProps<'div'> & HeaderAuthUserHeadProps> = styled(motion.div)`
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -36,21 +37,13 @@ export const HeaderAuthUserInfo = styled.div`
   gap: 12px;
 `;
 
-export const HeaderAuthUserAvatar = styled.img`
-  display: inline-flex;
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: ${({ theme }) => theme.colors.grayScale.gray2};
-`;
+export const HeaderAuthUserAvatar = styled(Avatar).attrs({ size: 32 })``;
 
-export const HeaderAuthUserDefaultAvatar = styled(HeaderAuthUserAvatar).attrs({ as: 'span' })`
-  background: url(${defaultAvatar});
-  background-size: cover;
+export const HeaderAuthUserInfoText = styled.span`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `;
-
-export const HeaderAuthUserInfoText = styled.span``;
 
 export const HeaderAuthUserName = styled(Typography)`
   font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
@@ -78,7 +71,7 @@ export const HeaderAuthUserBody = styled(motion.div)<HeaderAuthUserBodyProps>`
   background: ${({ theme }) => theme.colors.grayScale.gray4};
   margin-top: 14px;
   padding: 14px 0px;
-  width: ${({ $width }) => $width ? `${$width}px` : '170px'};
+  width: ${({ $width }) => ($width ? `${$width}px` : '170px')};
   transform-origin: top center;
   ${({ $inMenu }) => !$inMenu && css`
     position: absolute;

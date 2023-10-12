@@ -1,4 +1,5 @@
 import { css, styled } from 'styled-components';
+import { Typography } from '@/ui/components/typography';
 
 export const TextFieldStyled = styled.label<{ $fullWidth: boolean }>`
   display: inline-flex;
@@ -8,29 +9,26 @@ export const TextFieldStyled = styled.label<{ $fullWidth: boolean }>`
   box-sizing: border-box;
 `;
 
-export const TextFieldLabel = styled.span`
+export const TextFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
   display: inline-flex;
-  color: ${({ theme }) => theme.colors.base.white};
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
-  font-size: 16px;
-  line-height: 22px;
   margin-bottom: 8px;
   width: 100%;
+  cursor: default;
 `;
 
-export interface TextFieldInputContainerProps {
+export interface TextFieldBlockProps {
   $error: boolean;
   $focus: boolean;
   $hover: boolean;
 }
 
-export const TextFieldInputContainer = styled.span<TextFieldInputContainerProps>`
+export const TextFieldBlock = styled.span<TextFieldBlockProps>`
   display: inline-flex;
   align-items: center;
   gap: 10px;
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray1};
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 8px;
   overflow: hidden;
   cursor: text;
@@ -50,12 +48,18 @@ export const TextFieldInputContainer = styled.span<TextFieldInputContainerProps>
   ${({ theme, $focus }) => {
     if ($focus) {
       return css`
-        background: ${theme.colors.grayScale.gray2};
+        background: ${theme.colors.grayScale.gray4};
+        > svg path {
+          fill: ${theme.colors.base.white};
+        }
       `;
     }
 
     return css`
-      background: ${theme.colors.grayScale.gray5};
+      background: ${theme.colors.grayScale.gray4};
+      > svg path {
+        fill: ${theme.colors.grayScale.gray1};
+      }
     `;
   }}
 `;
@@ -71,27 +75,37 @@ export const TextFieldInput = styled.input`
   font-size: 14px;
   font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
   line-height: 18px;
-  &:hover ~ ${TextFieldInputContainer} {
+  &:hover ~ ${TextFieldBlock} {
     border-color: ${({ theme }) => theme.colors.accent.primary};
   }
   &::placeholder {
+    color: ${({ theme }) => theme.colors.grayScale.gray1};
+  }
+  &:focus::placeholder {
     color: ${({ theme }) => theme.colors.grayScale.gray6};
   }
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
   &:-webkit-autofill:active {
-    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray5} inset !important;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
+    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray4} inset !important;
   }
   &:-webkit-autofill:focus {
-    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray2} inset !important;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
+    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray4} inset !important;
+  }
+  &::-webkit-search-decoration,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    -webkit-appearance: none;
   }
 `;
 
-export const TextFieldErrorText = styled.span`
+export const TextFieldErrorText = styled(Typography).attrs({ variant: 'input-sm' })`
   display: inline-flex;
   margin-top: 8px;
   color: ${({ theme }) => theme.colors.critic};
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
-  font-size: 16px;
-  line-height: 22px;
 `;

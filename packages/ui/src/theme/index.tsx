@@ -36,7 +36,11 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ sbMode = false, ch
         gray6: '#9CA3AF'
       },
       premiumGradient: 'linear-gradient(90deg, #1C64F2 -0.39%, #D41CF2 99.61%)',
-      critic: '#FE4242'
+      critic: '#FE4242',
+      orange: '#F29C1C',
+      purple: '#941CF2',
+      aqua: '#1CB2F2',
+      green: '#1ABB34'
     },
     fonts: {
       ibmPlexSans: {
@@ -57,12 +61,29 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ sbMode = false, ch
       menu: 2,
       header: 3,
       backdrop: 4,
-      modal: 5
+      modal: 5,
+      select: 6,
+      notifications: 7,
+      tooltip: 8
     },
     header: {
       height: '89px',
       mobile: {
         height: '70px'
+      }
+    },
+    dashboard: {
+      header: {
+        height: '82px',
+        tablet: {
+          height: '76px'
+        },
+        mobile: {
+          height: '58px'
+        }
+      },
+      chat: {
+        containerWidth: '1009px'
       }
     }
   }), []);

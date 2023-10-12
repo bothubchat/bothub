@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
-import { Typography } from '../../../../typography';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import React from 'react';
+import { Typography } from '@/ui/components/typography';
 
 export const HeaderNavDropdownItemStyled = styled.a`
   display: flex;
@@ -10,7 +10,7 @@ export const HeaderNavDropdownItemStyled = styled.a`
   }
 `;
 
-export const HeaderNavDropdownItemContent: React.FC<React.ComponentProps<"div"> & HTMLMotionProps<"div">> = styled(motion.div)`
+export const HeaderNavDropdownItemContent: React.FC<React.ComponentProps<'div'> & HTMLMotionProps<'div'>> = styled(motion.div)`
   display: flex;
   gap: 14px;
   align-items: center;

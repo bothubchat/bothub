@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Logo } from '.';
-import { ThemeStoryDecorator } from '../../theme/story-decorator';
+import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
 
 export type LogoMeta = Meta<typeof Logo>;
 

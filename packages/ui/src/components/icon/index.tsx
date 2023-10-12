@@ -8,7 +8,7 @@ export interface IconProps extends Omit<React.ComponentProps<'svg'>, 'ref' | 'on
 }
 
 export const Icon: React.FC<IconProps> = ({ size: defaultSize = 18, ...props }) => {
-  const { size } = useIconOrNull() ?? { size: defaultSize };
+  const { size = defaultSize } = useIconOrNull() ?? { size: defaultSize };
 
   return <IconStyled {...props} width={size} height={size} />;
 };

@@ -6,12 +6,14 @@ export interface SectionProps extends React.ComponentProps<'div'> {
   disableContainer?: boolean;
   bg?: React.ReactNode;
   bgLines?: boolean;
+  fullHeight?: boolean;
 }
 
 export const Section: React.FC<SectionProps> = ({
   disableContainer = false,
   bg = null,
   bgLines = false,
+  fullHeight = false,
   children, 
   ...props
 }) => {
@@ -39,7 +41,12 @@ export const Section: React.FC<SectionProps> = ({
   }
 
   return (
-    <SectionStyled {...props} $bg={bg !== null} $bgLines={bgLines}>
+    <SectionStyled
+      $bg={bg !== null} 
+      $bgLines={bgLines}
+      $fullHeight={fullHeight}
+      {...props}
+    >
       {childrenNode}
     </SectionStyled>
   );  

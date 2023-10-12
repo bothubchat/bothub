@@ -5,6 +5,7 @@ export interface Theme {
   mobile: ThemeMobile;
   zIndex: ThemeZIndex;
   header: ThemeHeader;
+  dashboard: ThemeDashboard;
 }
 
 export interface ThemeTablet {
@@ -43,6 +44,10 @@ export interface ThemeColors {
   grayScale: ThemeGrayScaleColors;
   premiumGradient: string;
   critic: string;
+  orange: string;
+  purple: string;
+  aqua: string;
+  green: string;
 }
 
 export interface ThemeIbmPlexSansFonts {
@@ -61,6 +66,9 @@ export interface ThemeZIndex {
   backdrop: number;
   modal: number;
   menu: number;
+  select: number;
+  notifications: number;
+  tooltip: number;
 }
 
 export interface ThemeHeaderMobile {
@@ -70,4 +78,23 @@ export interface ThemeHeaderMobile {
 export interface ThemeHeader {
   height: string;
   mobile: ThemeHeaderMobile;
+}
+
+export type ThemeDashboardHeaderMobile = ThemeHeaderMobile;
+
+export type ThemeDashboardHeaderTablet = ThemeHeaderMobile;
+
+export interface ThemeDashboardHeader {
+  height: string;
+  tablet: ThemeDashboardHeaderTablet;
+  mobile: ThemeDashboardHeaderMobile;
+}
+
+export interface ThemeDashboardChat {
+  containerWidth: string;
+}
+
+export interface ThemeDashboard {
+  header: ThemeDashboardHeader;
+  chat: ThemeDashboardChat;
 }

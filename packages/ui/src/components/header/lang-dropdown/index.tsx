@@ -1,6 +1,7 @@
 import React, {
   useCallback, useEffect, useRef, useState 
 } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import {
   HeaderLangDropdownContent, 
   HeaderLangDropdownStyled, 
@@ -10,7 +11,6 @@ import {
   HeaderLangDropdownTogglerText 
 } from './styled';
 import { HeaderLangDropdownProvider } from './context';
-import { AnimatePresence } from 'framer-motion';
 
 export interface HeaderLangDropdownProps extends 
   React.ComponentProps<typeof HeaderLangDropdownStyled> {
@@ -73,7 +73,7 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
             <HeaderLangDropdownContent
               animate={{
                 opacity: isOpen ? 1 : 0.5,
-                transform: 'scale(' + (isOpen ? 1 : 0.999) + ')',
+                transform: `scale(${isOpen ? 1 : 0.999})`,
                 transition: {
                   duration: 0.15
                 }

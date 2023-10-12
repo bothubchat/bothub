@@ -1,6 +1,8 @@
-import React, { useCallback, useState } from "react";
-import { AccordionArrow, AccordionBody, AccordionHead, AccordionStyled, AccordionText, AccordionLabel } from "./styled";
-import { useTheme } from "../../theme";
+import React, { useCallback, useState } from 'react';
+import {
+  AccordionArrow, AccordionBody, AccordionHead, AccordionStyled, AccordionText, AccordionLabel 
+} from './styled';
+import { useTheme } from '../../theme';
 
 export interface AccordionProps extends React.ComponentProps<'div'> {
   label: string;

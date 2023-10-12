@@ -15,15 +15,16 @@ export interface ImageSrc {
   desktop?: string | ImageAdaptive;
 }
 
-
 export interface ImageProps extends Omit<React.ComponentProps<'img'>, 'src' | 'alt' | 'width' | 'height'> {
   src: string | ImageSrc;
   width?: string | number;
   height?: string | number;
   alt: string;
-};
+}
 
-export const Image: React.FC<ImageProps> = ({ src, alt, width, height, ...props }) => {
+export const Image: React.FC<ImageProps> = ({
+  src, alt, width, height, ...props 
+}) => {
   const theme = useTheme();
 
   return (
@@ -90,6 +91,6 @@ export const Image: React.FC<ImageProps> = ({ src, alt, width, height, ...props 
       </Helmet>
     </>
   );
-}
+};
 
 export * from './styled';

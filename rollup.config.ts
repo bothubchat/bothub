@@ -1,14 +1,18 @@
 import { join } from 'path';
-import { defineConfig, ExternalOption, RollupOptions } from 'rollup';
+import {
+  defineConfig, ExternalOption, Plugin, RollupOptions 
+} from 'rollup';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import esbuild from 'rollup-plugin-esbuild';
 import postcss from 'rollup-plugin-postcss';
 import image from '@rollup/plugin-image';
 import commonjs from '@rollup/plugin-commonjs';
+import alias from '@rollup/plugin-alias';
 import dts from 'rollup-plugin-dts';
-import postcssUrl from 'postcss-url';
-import postcssImport from 'postcss-import';
-import { readFileSync, copyFileSync } from 'fs';
+import { readFileSync } from 'fs';
+import del from 'rollup-plugin-delete';
+import terser from '@rollup/plugin-terser';
+import nodeExternals from 'rollup-plugin-node-externals';
 
 export interface CreateConfigOptions {
   packageName: string;
@@ -25,28 +29,37 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
   const external: ExternalOption = [
     ...Object.keys(packageConfig.peerDependencies)
   ];
+  const aliasPlugin: Plugin = alias({
+    entries: [
+      { find: '@/ui', replacement: srcPath }
+    ]
+  });
 
   return [
     {
       input: join(srcPath, './index.ts'),
       output: [
         {
-          dir: join(distPath, './es'),
+          dir: distPath,
           format: 'es',
           sourcemap: true,
-          interop: 'compat'
-        },
-        {
-          dir: join(distPath, './cjs'),
-          format: 'cjs',
-          sourcemap: true,
-          interop: 'compat'
+          externalLiveBindings: false
         }
       ],
       plugins: [
+        del({
+          targets: [
+            join(distPath, './*')
+          ],
+          runOnce: true
+        }),
+        aliasPlugin,
+        nodeExternals(),
+        nodeResolve({
+          extensions: ['.css', '.ts', '.tsx', '.js', '.jsx']
+        }),
         commonjs(),
         esbuild({
-          minify: true,
           tsconfig: join(rootPath, './tsconfig.json'),
           exclude: [
             'node_modules/**',
@@ -56,18 +69,8 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
         image({
           include: ['**/*.png', '**/*.svg', '**/*.webp']
         }),
-        postcss({
-          extract: true,
-          plugins: [
-            postcssImport(),
-            postcssUrl({
-              url: 'inline'
-            })
-          ]
-        }),
-        nodeResolve({
-          extensions: ['.css', '.ts', '.tsx', '.js', '.jsx']
-        })
+        postcss(),
+        terser()
       ],
       external
     },
@@ -81,20 +84,11 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
       ],
       plugins: [
         dts(),
+        aliasPlugin,
         postcss({
           inject: false,
           extract: false
-        }),
-        {
-          name: 'copy',
-          buildEnd: (error) => {
-            if (error) {
-              throw error;
-            }
-
-            copyFileSync(join(distPath, './es/index.css'), join(distPath, './style.css'));
-          }
-        }
+        })
       ],
       external
     }

@@ -1,18 +1,20 @@
 import React, {
   useCallback, useEffect, useRef, useState 
 } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import {
   HeaderNavDropdownArrow, HeaderNavDropdownBody, HeaderNavDropdownHead, HeaderNavDropdownStyled 
 } from './styled';
 import { HeaderNavDropdownProvider } from './context';
 import { useHeaderMenu } from '../../menu/context';
-import { AnimatePresence } from 'framer-motion';
+import { useHeader } from '../../context';
 
 export interface HeaderNavDropdownProps extends React.PropsWithChildren {
   label: string;
 }
 
 export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, children }) => {
+  const { variant } = useHeader();
   const { isInMenu } = useHeaderMenu();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -46,10 +48,20 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
     }
   }, []);
 
+  if (variant === 'dashboard') {
+    return null;
+  }
+
   return (
     <HeaderNavDropdownProvider setIsOpen={setIsOpen}>
       <HeaderNavDropdownStyled $inMenu={isInMenu} ref={dropdownRef}>
-        <HeaderNavDropdownHead as="span" $active={isOpen} $inMenu={isInMenu} onClick={toggleDropdown}>
+        <HeaderNavDropdownHead 
+          as="span"
+          $variant={variant}
+          $active={isOpen} 
+          $inMenu={isInMenu}
+          onClick={toggleDropdown}
+        >
           {label}
           <HeaderNavDropdownArrow 
             initial={{
@@ -67,7 +79,7 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
               {...(!isInMenu ? {
                 animate: {
                   opacity: isOpen ? 1 : 0.5,
-                  transform: 'scale(' + (isOpen ? 1 : 0.999) + ')'
+                  transform: `scale(${isOpen ? 1 : 0.999})`
                 },
                 exit: {
                   opacity: 0,

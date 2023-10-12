@@ -1,11 +1,14 @@
 import React from 'react';
 import {
-  HeaderContainer, HeaderLeft, HeaderOffset, HeaderRight, HeaderStyled 
+  HeaderContainer, HeaderContent, HeaderLeft, HeaderOffset, HeaderRight, HeaderStyled 
 } from './styled';
 import { HeaderMenu } from './menu';
+import { HeaderVariant } from './types';
+import { HeaderProvider } from './context';
 
-export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang'> {
+export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang' | '$variant'> {
   id?: string;
+  variant?: HeaderVariant;
   logo?: React.ReactNode;
   nav?: React.ReactNode;
   lang?: React.ReactNode;
@@ -13,27 +16,29 @@ export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyl
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  id, logo, nav, lang, user, ...props 
+  id, variant = 'main-page', logo, nav, lang, user, ...props 
 }) => (
-  <>
-    <HeaderStyled {...props} id={id}>
-      <HeaderContainer>
-        <HeaderLeft>
-          {logo}
-          {nav}
-        </HeaderLeft>
-        <HeaderRight>
-          {lang}
-          {user}
-          <HeaderMenu>
+  <HeaderProvider variant={variant}>
+    <HeaderStyled {...props} id={id} $variant={variant}>
+      <HeaderContainer disabled={variant === 'dashboard'}>
+        <HeaderContent $variant={variant}>
+          <HeaderLeft>
+            {logo}
             {nav}
+          </HeaderLeft>
+          <HeaderRight>
+            {lang}
             {user}
-          </HeaderMenu>
-        </HeaderRight>
+            <HeaderMenu>
+              {nav}
+              {user}
+            </HeaderMenu>
+          </HeaderRight>
+        </HeaderContent>
       </HeaderContainer>
     </HeaderStyled>
-    <HeaderOffset />
-  </>
+    {variant === 'main-page' && <HeaderOffset />}
+  </HeaderProvider>
 );
 
 export * from './styled';
@@ -42,3 +47,5 @@ export * from './lang-dropdown';
 export * from './user';
 export * from './auth-user';
 export * from './menu';
+export * from './types';
+export * from './context';

@@ -1,4 +1,4 @@
-export type ButtonVariant = 'primary';
+export type ButtonVariant = 'primary' | 'secondary' | 'text';
 
 export type ButtonSize = 'small' | 'md';
 

@@ -1,9 +1,9 @@
-import { styled, css } from "styled-components";
+import { styled, css } from 'styled-components';
 import grid from './assets/grid.svg';
-import { BackgroundVariant } from "./types";
+import { BackgroundVariant } from './types';
 import bluePurple from './assets/blue-purple.webp';
 
-export const BackgroundStyled = styled.div<{ $variant: BackgroundVariant  }>`
+export const BackgroundStyled = styled.div<{ $variant: BackgroundVariant }>`
   display: flex;
   justify-content: center;
   align-items: center;

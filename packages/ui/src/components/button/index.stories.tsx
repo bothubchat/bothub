@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { LanguageIcon } from '../icons/language';
+import { LanguageIcon } from '@/ui/icons/language';
 import { Button } from '.';
-import { ThemeStoryDecorator } from '../../theme/story-decorator';
+import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
 
 export type ButtonMeta = Meta<typeof Button>;
 
@@ -37,6 +37,20 @@ export const Icon: ButtonStory = {
         disable: true
       }
     }
+  }
+};
+
+export const Disabled: ButtonStory = {
+  args: {
+    ...Basic.args,
+    disabled: true
+  }
+};
+
+export const Skeleton: ButtonStory = {
+  args: {
+    ...Basic.args,
+    skeleton: true
   }
 };
 

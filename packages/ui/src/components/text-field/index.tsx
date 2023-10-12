@@ -1,11 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import {
   TextFieldErrorText,
-  TextFieldInput, TextFieldInputContainer, TextFieldLabel, TextFieldStyled 
+  TextFieldInput, 
+  TextFieldBlock, 
+  TextFieldLabel, 
+  TextFieldStyled 
 } from './styled';
-import { IconProvider, IconProviderProps } from '../icon';
-import { useTheme } from '../../theme';
+import { IconProvider, IconProviderProps } from '@/ui/components/icon';
+import { useTheme } from '@/ui/theme';
+import { SearchCircleIcon } from '@/ui/icons';
 import { TextFieldType } from './types';
+
+export type TextFieldValueChangeEventHandler = (value: string) => unknown;
 
 export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFieldStyled>, 'onChange' | 'onFocus' | 'onBlur' | 'onMouseEnter' | 'onMouseLeave' | '$fullWidth'> {
   label?: string;
@@ -18,22 +24,20 @@ export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFie
   endIcon?: React.ReactNode;
   name?: string;
   type?: TextFieldType;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => unknown;
-  onFocus?: (event: React.FocusEvent<HTMLInputElement>) => unknown;
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => unknown;
-  onMouseEnter?: (event: React.MouseEvent<HTMLInputElement>) => unknown;
-  onMouseLeave?: (event: React.MouseEvent<HTMLInputElement>) => unknown;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement>;
+  onMouseEnter?: React.MouseEventHandler<HTMLInputElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLInputElement>;
+  onValueChange?: TextFieldValueChangeEventHandler;
 }
 
 export const TextField: React.FC<TextFieldProps> = ({ 
   label, placeholder, value, defaultValue, error, name, type, fullWidth = false, startIcon, endIcon,
-  onChange, onFocus, onBlur, onMouseEnter, onMouseLeave, 
+  onChange, onFocus, onBlur, onMouseEnter, onMouseLeave, onValueChange,
   ...props 
 }) => {
   const theme = useTheme();
-
-  const isLabel = !!label;
-  const isError = !!error;
 
   const [isFocus, setIsFocus] = useState(false);
   const [isHover, setIsHover] = useState(false);
@@ -55,6 +59,11 @@ export const TextField: React.FC<TextFieldProps> = ({
     setIsHover(false);
   }, [onMouseLeave]);
 
+  const handleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => {
+    onChange?.(event);
+    onValueChange?.(event.target.value);
+  }, [onChange, onValueChange]);
+
   const iconProps: IconProviderProps = {
     size: 16,
     fill: theme.colors.base.white
@@ -62,11 +71,12 @@ export const TextField: React.FC<TextFieldProps> = ({
 
   return (
     <TextFieldStyled {...props} $fullWidth={fullWidth}>
-      {isLabel && <TextFieldLabel>{label}</TextFieldLabel>}
-      <TextFieldInputContainer $error={isError} $hover={isHover} $focus={isFocus}>
-        {startIcon && (
+      {label && <TextFieldLabel>{label}</TextFieldLabel>}
+      <TextFieldBlock $error={!!error} $hover={isHover} $focus={isFocus}>
+        {(type === 'search' || startIcon) && (
           <IconProvider {...iconProps}>
             {startIcon}
+            {type === 'search' && <SearchCircleIcon />}
           </IconProvider>
         )}
         <TextFieldInput 
@@ -75,7 +85,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           name={name}
           defaultValue={defaultValue}
           placeholder={placeholder}
-          onChange={onChange}
+          onChange={handleChange}
           onFocus={handleFocus}
           onBlur={handleBlur}
           onMouseEnter={handleMouseEnter}
@@ -86,8 +96,10 @@ export const TextField: React.FC<TextFieldProps> = ({
             {endIcon}
           </IconProvider>
         )}
-      </TextFieldInputContainer>
-      {isError && <TextFieldErrorText>{error}</TextFieldErrorText>}
+      </TextFieldBlock>
+      {error && (
+        <TextFieldErrorText>{error}</TextFieldErrorText>
+      )}
     </TextFieldStyled>
   );
 };

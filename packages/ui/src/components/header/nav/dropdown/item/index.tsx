@@ -1,6 +1,10 @@
 import React, { useCallback } from 'react';
 import {
-  HeaderNavDropdownInfo, HeaderNavDropdownItemContent, HeaderNavDropdownItemStyled, HeaderNavDropdownText, HeaderNavDropdownTitle 
+  HeaderNavDropdownInfo, 
+  HeaderNavDropdownItemContent, 
+  HeaderNavDropdownItemStyled, 
+  HeaderNavDropdownText, 
+  HeaderNavDropdownTitle 
 } from './styled';
 import { useHeaderNavDropdown } from '../context';
 
@@ -8,7 +12,7 @@ export interface HeaderNavDropdownItemProps extends Omit<React.ComponentProps<ty
   icon: React.ReactNode;
   title: string;
   text: string;
-  as?: any;
+  as?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   to?: string;
 }
 

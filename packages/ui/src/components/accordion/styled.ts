@@ -1,8 +1,8 @@
-import { styled } from "styled-components";
-import { Typography } from "../typography";
-import { Arrow2DownIcon } from "../icons";
-import { AnimationProps, HoverHandlers, motion } from "framer-motion";
-import React from "react";
+import { styled } from 'styled-components';
+import { AnimationProps, HoverHandlers, motion } from 'framer-motion';
+import React from 'react';
+import { Typography } from '../typography';
+import { Arrow2DownIcon } from '@/ui/icons';
 
 export const AccordionStyled: React.FC<React.ComponentProps<'div'> & AnimationProps & HoverHandlers> = styled(motion.div)`
   display: flex;
@@ -35,6 +35,6 @@ export const AccordionBody = styled.div`
   margin-top: -4px;
 `;
 
-export const AccordionText = styled(Typography).attrs({ variant: 'body-m-regular' })`
+export const AccordionText = styled(Typography).attrs({ variant: 'body-m-regular', component: 'p' })`
   white-space: pre-wrap;
 `;

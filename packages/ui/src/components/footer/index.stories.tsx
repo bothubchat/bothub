@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '../../theme/story-decorator';
-import { Logo } from '../logo';
+import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { Logo } from '@/ui/components/logo';
 import {
   Footer, FooterColumn, FooterColumnLabel, FooterLogoLink, FooterNav, FooterNavLink, FooterText 
 } from '.';
 import {
   BotCircleIcon, EmailCircleIcon, MediumCircleIcon, TgCircleIcon 
-} from '../icons';
+} from '@/ui/icons';
 
 export type FooterMeta = Meta<typeof Footer>;
 
@@ -80,5 +80,27 @@ export const Basic: FooterStory = {
 export default {
   title: 'UI Components/Footer',
   component: Footer,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [ThemeStoryDecorator()],
+  argTypes: {
+    id: {
+      table: {
+        disable: true
+      }
+    },
+    logo: {
+      table: {
+        disable: true
+      }
+    },
+    nav: {
+      table: {
+        disable: true
+      }
+    },
+    children: {
+      table: {
+        disable: true
+      }
+    }
+  }
 } as FooterMeta;

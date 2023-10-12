@@ -47,6 +47,9 @@ export const DescriptionCardContent = styled.div<{ $variant: DescriptionCardVari
     switch ($variant) {
       case 'tertiary':
         return css`
+          display: flex; 
+          flex-direction: column;
+          align-items: flex-start;
           padding: 24px 20px;
           @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
             padding: 24px 18px;
@@ -117,14 +120,14 @@ export const DescriptionCardTertiaryTitle = styled(Typography).attrs({ variant: 
   }
 `;
 
-export const DescriptionCardText = styled(Typography).attrs({ variant: 'body-m-regular' })`
+export const DescriptionCardText = styled(Typography).attrs({ variant: 'body-m-regular', component: 'p' })`
   margin-top: 16px;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     text-align: center;
   }
 `;
 
-export const DescriptionCardTertiaryText = styled(Typography).attrs({ variant: 'body-m-regular' })`
+export const DescriptionCardTertiaryText = styled(Typography).attrs({ variant: 'body-m-regular', component: 'p' })`
   margin-top: 12px;
 `;
 

@@ -1,4 +1,4 @@
-import { AnimationProps, HTMLMotionProps, motion } from 'framer-motion';
+import { HTMLMotionProps, motion } from 'framer-motion';
 import React from 'react';
 import { styled } from 'styled-components';
 
@@ -7,7 +7,7 @@ export const HeaderAuthUserItemStyled = styled.a`
   width: 100%;
 `;
 
-export const HeaderAuthUserItemContent: React.FC<React.ComponentProps<"span"> & HTMLMotionProps<"span">> = styled(motion.span)`
+export const HeaderAuthUserItemContent: React.FC<React.ComponentProps<'span'> & HTMLMotionProps<'span'>> = styled(motion.span)`
   display: inline-flex;
   width: 100%;
   padding: 8px 16px;

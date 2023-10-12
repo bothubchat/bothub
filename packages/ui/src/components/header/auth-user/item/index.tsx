@@ -3,6 +3,7 @@ import { ExecutionProps as StyledProps } from 'styled-components';
 import { HeaderAuthUserItemContent, HeaderAuthUserItemStyled } from './styled';
 import { useHeaderAuthUser } from '../context';
 import { useTheme } from '../../../../theme';
+import { IconProvider } from '@/ui/components/icon';
 
 export interface HeaderAuthUserItemProps extends React.ComponentProps<'a'>, StyledProps {
   icon: React.ReactNode;
@@ -30,7 +31,12 @@ export const HeaderAuthUserItem: React.FC<HeaderAuthUserItemProps> = ({
           background: theme.colors.grayScale.gray2
         }}
       >
-        {icon}
+        <IconProvider 
+          size={18}
+          fill={theme.colors.base.white}  
+        >
+          {icon}
+        </IconProvider>
         {children}
       </HeaderAuthUserItemContent>
     </HeaderAuthUserItemStyled>

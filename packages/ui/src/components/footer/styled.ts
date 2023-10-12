@@ -40,6 +40,8 @@ export const FooterLogoLink = styled.a`
 `;
 
 export const FooterColumn = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   > ${FooterLogoLink} {
     margin-bottom: 20px;

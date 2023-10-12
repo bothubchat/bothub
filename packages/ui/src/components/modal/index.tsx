@@ -2,19 +2,28 @@ import React from 'react';
 import {
   ModalCloseButton,
   ModalCloseButtonIcon,
-  ModalStyled, ModalTitle, ModalWindow, ModalWindowBody 
+  ModalContent,
+  ModalStyled, 
+  ModalTitle, 
+  ModalWindow,
+  ModalWindowBody, 
+  ModalWindowBodyContent,
+  ModalWindowBodyScrollbarWrapper
 } from './styled';
-import { Backdrop } from '../backdrop';
-import { Portal } from '../portal';
+import { Backdrop } from '@/ui/components/backdrop';
+import { Portal } from '@/ui/components/portal';
+
+export type ModalCloseEventHandler = () => unknown;
 
 export interface ModalProps extends React.PropsWithChildren {
   open: boolean;
   title?: string | null;
-  onClose?: () => unknown;
+  scrollbar?: boolean; 
+  onClose?: ModalCloseEventHandler;
 }
 
 export const Modal: React.FC<ModalProps> = ({
-  open, title = null, children, onClose 
+  open, title = null, scrollbar = false, children, onClose 
 }) => {
   let modalNode: React.ReactNode;
 
@@ -42,7 +51,15 @@ export const Modal: React.FC<ModalProps> = ({
             <ModalCloseButton onClick={onClose}>
               <ModalCloseButtonIcon size={24} />
             </ModalCloseButton>
-            {children}
+            <ModalWindowBodyContent>
+              <ModalWindowBodyScrollbarWrapper
+                disabled={!scrollbar}
+              >
+                <ModalContent>
+                  {children}
+                </ModalContent>
+              </ModalWindowBodyScrollbarWrapper>
+            </ModalWindowBodyContent>
           </ModalWindowBody>
         </ModalWindow>
       </ModalStyled>

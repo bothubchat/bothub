@@ -14,12 +14,24 @@ import {
   HeaderUser, 
   HeaderUserButton
 } from '.';
-import { ThemeStoryDecorator } from '../../theme/story-decorator';
-import { Logo } from '../logo';
+import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { Logo } from '@/ui/components/logo';
 import { HeaderLangDropdown, HeaderLangDropdownItem, HeaderLangDropdownList } from './lang-dropdown';
 import {
-  BothubAggIcon, BusinessColoredIcon, DashboardIcon, LogoutIcon, TgColoredIcon, UserProfileIcon 
-} from '../icons';
+  BookmarksBigIcon,
+  BothubAggIcon, 
+  BusinessColoredIcon, 
+  ChatsIcon, 
+  CoderIcon, 
+  DashboardIcon, 
+  LogoutIcon, 
+  PresetsBigIcon, 
+  ReferalIcon, 
+  SettingsIcon, 
+  TariffIcon, 
+  TgColoredIcon, 
+  UserProfileIcon 
+} from '@/ui/icons';
 
 export type HeaderMeta = Meta<typeof Header>;
 
@@ -81,50 +93,7 @@ export const Basic: HeaderStory = {
 
 export const Authorized: HeaderStory = {
   args: {
-    logo: (
-      <HeaderLogoLink href="#home">
-        <Logo />
-      </HeaderLogoLink>
-    ),
-    nav: (
-      <HeaderNav>
-        <HeaderNavLink href="#">Главная</HeaderNavLink>
-        <HeaderNavDropdown label="Продукты">
-          <HeaderNavDropdownList>
-            <HeaderNavDropdownItem 
-              icon={<BothubAggIcon />}
-              title="Агрегатор нейросетей BotHub"
-              text="ChatGPT на базе 3.5 и 4.0 версии OpenAI"
-            />
-            <HeaderNavDropdownItem
-              icon={<TgColoredIcon />}
-              title="Telegram бот"
-              text="Удобный бот в Telegram который всегда под рукой"
-            />
-            <HeaderNavDropdownItem
-              icon={<BusinessColoredIcon />}
-              title="Бизнес бот"
-              text="ChatGPT для эффективного решения бизнес задач"
-            />
-          </HeaderNavDropdownList>
-        </HeaderNavDropdown>
-        <HeaderNavLink href="#">Тарифы</HeaderNavLink>
-        <HeaderNavLink href="#">Контакты</HeaderNavLink>
-        <HeaderNavLink href="#">Наши возможности</HeaderNavLink>
-        <HeaderNavLink href="#">О Нас</HeaderNavLink>
-        <HeaderNavLink href="#">Документация</HeaderNavLink>
-      </HeaderNav>
-    ),
-    lang: (
-      <HeaderLangDropdown lang="ru">
-        <HeaderLangDropdownList>
-          <HeaderLangDropdownItem>ru</HeaderLangDropdownItem>
-          <HeaderLangDropdownItem>en</HeaderLangDropdownItem>
-          <HeaderLangDropdownItem>es</HeaderLangDropdownItem>
-          <HeaderLangDropdownItem>de</HeaderLangDropdownItem>
-        </HeaderLangDropdownList>
-      </HeaderLangDropdown>
-    ),
+    ...Basic.args,
     user: (
       <HeaderUser>
         <HeaderAuthUser 
@@ -139,6 +108,9 @@ export const Authorized: HeaderStory = {
             <HeaderAuthUserItem icon={<UserProfileIcon />}>
               Профиль
             </HeaderAuthUserItem>
+            <HeaderAuthUserItem icon={<SettingsIcon />}>
+              Настройки
+            </HeaderAuthUserItem>
             <HeaderAuthUserItem icon={<LogoutIcon />}>
               Выйти
             </HeaderAuthUserItem>
@@ -149,8 +121,67 @@ export const Authorized: HeaderStory = {
   }
 };
 
+export const Dashboard: HeaderStory = {
+  args: {
+    ...Basic.args,
+    variant: 'dashboard',
+    nav: (
+      <HeaderNav>
+        <HeaderNavLink icon={<ChatsIcon />} href="#">Чаты</HeaderNavLink>
+        <HeaderNavLink icon={<BookmarksBigIcon />} href="#">Закладки</HeaderNavLink>
+        <HeaderNavLink icon={<PresetsBigIcon />} href="#">Пресеты</HeaderNavLink>
+        <HeaderNavLink icon={<ReferalIcon />} href="#">Партнерская программа</HeaderNavLink>
+        <HeaderNavLink icon={<TariffIcon />} href="#">Подписка</HeaderNavLink>
+        <HeaderNavLink icon={<CoderIcon />} href="#">Для разработчиков</HeaderNavLink>
+      </HeaderNav>
+    )
+  },
+  argTypes: {
+    variant: {
+      table: {
+        disable: true
+      }
+    }
+  }
+};
+
+export const DashboardAuthorized: HeaderStory = {
+  ...Dashboard,
+  args: {
+    ...Dashboard.args,
+    user: Authorized.args?.user
+  }
+};
+
 export default {
   title: 'UI Components/Header',
   component: Header,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [ThemeStoryDecorator()],
+  argTypes: {
+    logo: {
+      table: {
+        disable: true
+      }
+    },
+    nav: {
+      table: {
+        disable: true
+      }
+    },
+    lang: {
+      table: {
+        disable: true
+      }
+    },
+    user: {
+      table: {
+        disable: true
+      }
+    },
+    id: {
+      table: {
+        disable: true
+      }
+    }
+  }
 } as HeaderMeta;

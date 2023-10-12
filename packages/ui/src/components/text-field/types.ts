@@ -1,1 +1,1 @@
-export type TextFieldType = 'text' | 'password';
+export type TextFieldType = 'text' | 'password' | 'search';

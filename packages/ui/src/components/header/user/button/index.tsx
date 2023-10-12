@@ -1,6 +1,6 @@
-import React from "react";
-import { Button, ButtonProps } from "../../../button";
-import { useHeaderMenu } from "../../menu/context";
+import React from 'react';
+import { Button, ButtonProps } from '@/ui/components/button';
+import { useHeaderMenu } from '@/ui/components/header/menu/context';
 
 export const HeaderUserButton: React.FC<ButtonProps> = ({ ...props }) => {
   const { isInMenu } = useHeaderMenu();

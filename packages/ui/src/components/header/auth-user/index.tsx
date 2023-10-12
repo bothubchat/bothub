@@ -1,6 +1,7 @@
 import React, {
   useCallback, useEffect, useRef, useState 
 } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import {
   HeaderAuthUserArrow,
   HeaderAuthUserBody,
@@ -14,7 +15,6 @@ import {
 import { HeaderAuthUserProvider } from './context';
 import { useHeaderMenu } from '../menu/context';
 import { useTheme } from '../../../theme';
-import { AnimatePresence } from 'framer-motion';
 
 export interface HeaderAuthUserProps extends React.PropsWithChildren {
   avatar: React.ReactNode;
@@ -111,7 +111,7 @@ export const HeaderAuthUser: React.FC<HeaderAuthUserProps> = ({
               {...(!isInMenu ? {
                 animate: {
                   opacity: isOpen ? 1 : 0.5,
-                  transform: 'scale(' + (isOpen ? 1 : 0.999) + ')',
+                  transform: `scale(${isOpen ? 1 : 0.999})`,
                   transition: {
                     duration: 0.15
                   }

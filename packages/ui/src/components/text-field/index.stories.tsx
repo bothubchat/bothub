@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { TextField } from '.';
-import { ThemeStoryDecorator } from '../../theme/story-decorator';
-import { EmailCircleIcon } from '../icons';
+import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { EmailCircleIcon } from '@/ui/icons';
 
 export type TextFieldMeta = Meta<typeof TextField>;
 
@@ -39,6 +39,14 @@ export const Error: TextFieldStory = {
     label: 'Label',
     placeholder: 'Placeholder',
     error: 'Error message'
+  }
+};
+
+export const Search: TextFieldStory = {
+  args: {
+    type: 'search',
+    label: 'Search',
+    placeholder: 'Search'
   }
 };
 

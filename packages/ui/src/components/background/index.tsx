@@ -1,12 +1,12 @@
-import React from "react";
-import { BackgroundVariant } from "./types";
-import { BackgroundBluePurpleImage, BackgroundStyled } from "./styled";
+import React from 'react';
+import { BackgroundVariant } from './types';
+import { BackgroundBluePurpleImage, BackgroundStyled } from './styled';
 
 export interface BackgroundProps extends React.ComponentProps<'div'> {
   variant?: BackgroundVariant;
 }
 
-export const Background: React.FC<BackgroundProps> = ({ variant = null, ...props }) => {
+export const Background: React.FC<BackgroundProps> = ({ variant = 'grid', ...props }) => {
   let imageNode: React.ReactNode;
   switch (variant) {
     case 'blue-purple':

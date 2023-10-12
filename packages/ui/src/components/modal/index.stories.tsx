@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Modal } from '.';
-import { ThemeStoryDecorator } from '../../theme/story-decorator';
-import { Form } from '../form';
-import { TextField } from '../text-field';
-import { EmailCircleIcon, LockCircleIcon } from '../icons';
-import { Button } from '../button';
-import { Link } from '../link';
-import { Typography } from '../typography';
-import { Divider } from '../divider';
+import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { Form } from '@/ui/components/form';
+import { TextField } from '@/ui/components/text-field';
+import { EmailCircleIcon, LockCircleIcon } from '@/ui/icons';
+import { Button } from '@/ui/components/button';
+import { Link } from '@/ui/components/link';
+import { Typography } from '@/ui/components/typography';
+import { Divider } from '@/ui/components/divider';
 
 export type ModalMeta = Meta<typeof Modal>;
 
@@ -55,5 +55,12 @@ export default {
   decorators: [ThemeStoryDecorator()],
   args: {
     open: true
+  },
+  argTypes: {
+    children: {
+      table: {
+        disable: true
+      }
+    }
   }
 } as ModalMeta;

@@ -1,7 +1,8 @@
 import { AnimationProps, motion } from 'framer-motion';
 import { styled } from 'styled-components';
-import { Typography } from '../typography';
-import { CloseIcon } from '../icons';
+import { Typography } from '@/ui/components/typography';
+import { CloseIcon } from '@/ui/icons';
+import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 
 export const ModalStyled = styled.div`
   display: flex;
@@ -27,6 +28,7 @@ export const ModalWindow: React.FC<React.ComponentProps<'div'> & AnimationProps>
   border-radius: 17px;
   position: relative;
   z-index: ${({ theme }) => theme.zIndex.modal + 1};
+  max-height: 80%;
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     margin: 0px 10px;
   }
@@ -38,14 +40,49 @@ export const ModalWindowBody = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   padding: 20px;
+  padding-right: 10px;
   width: 100%;
   box-sizing: border-box;
+  flex-grow: 1;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     padding: 18px;
+    padding-right: 9px;
   }
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     padding: 14px 18px;
+    padding-right: 9px;
   }
+`;
+
+export const ModalWindowBodyContent = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+export const ModalWindowBodyScrollbarWrapper = styled(Scrollbar).attrs(({ theme }) => ({
+  variant: 'secondary',
+  scrollShadows: {
+    color: theme.colors.grayScale.gray3,
+    top: <ScrollbarShadow side="top" />,
+    bottom: <ScrollbarShadow side="bottom" />
+  }
+}))`
+  display: flex;
+  width: 100%;
+  overflow: auto;
+  height: 100%;
+  padding-right: 10px;
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    padding-right: 9px;
+  }
+`;
+
+export const ModalContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
 `;
 
 export const ModalTitle = styled(Typography)`

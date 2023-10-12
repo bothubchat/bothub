@@ -1,7 +1,16 @@
-import { styled, css } from "styled-components";
+import { styled, css } from 'styled-components';
+import { HeaderVariant } from '../../types';
 
-export const HeaderNavLinkStyled = styled.a<{ $inMenu: boolean }>`
-  ${({ theme, $inMenu }) => {
+export interface HeaderNavLinkStyledProps {
+  $variant: HeaderVariant;
+  $inMenu: boolean;
+  $active: boolean;
+}
+
+export const HeaderNavLinkStyled = styled.a<HeaderNavLinkStyledProps>`
+  ${({
+    theme, $variant, $inMenu, $active 
+  }) => {
     if ($inMenu) {
       return css`
         font-family: ${theme.fonts.ibmPlexSans.semiBold};
@@ -17,14 +26,33 @@ export const HeaderNavLinkStyled = styled.a<{ $inMenu: boolean }>`
     return css`
       display: inline-flex;
       text-decoration: none;
-      color: ${theme.colors.base.white};
       font-size: 16px;
-      font-family: ${theme.fonts.ibmPlexSans.semiBold};
       line-height: 22px;
       cursor: pointer;
-      &:hover {
-        color: ${theme.colors.accent.primaryLight};
-      }
+      color: ${theme.colors.base.white};
+      ${() => {
+    switch ($variant) {
+      case 'main-page':
+        return css`
+          font-family: ${theme.fonts.ibmPlexSans.semiBold};
+          &:hover {
+            color: ${theme.colors.accent.primaryLight};
+          }
+        `;
+      case 'dashboard':
+        return css`
+          align-items: center;
+          gap: 10px;
+          font-family: ${theme.fonts.ibmPlexSans.medium};
+          opacity: ${$active ? 1 : 0.5};
+          ${!$active && css`
+            &:hover {
+              opacity: 1;
+            }
+          `}
+        `;
+    }
+  }}
     `;
   }}
 `;

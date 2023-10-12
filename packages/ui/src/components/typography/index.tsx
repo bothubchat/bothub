@@ -10,7 +10,7 @@ export interface TypographyProps extends Omit<React.ComponentProps<typeof Typogr
 }
 
 export const Typography: React.FC<TypographyProps> = ({
-  variant = 'body-m-medium', component = 'p', align = 'left', fullWidth = false, ...props 
+  variant = 'body-m-medium', component = 'span', align = 'left', fullWidth = false, ...props 
 }) => (
   <TypographyStyled 
     {...props} 
