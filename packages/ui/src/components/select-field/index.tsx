@@ -18,6 +18,7 @@ import {
   SelectFieldPlaceholder, 
   SelectFieldScrollbarWrapper, 
   SelectFieldSelect, 
+  SelectFieldSkeleton, 
   SelectFieldStyled,
   SelectFieldValue,
   SelectFieldValueColor,
@@ -25,19 +26,22 @@ import {
 } from './styled';
 import { SelectFieldData, SelectFieldDataItem } from './types';
 import { useTheme } from '@/ui/theme';
+import { Skeleton } from '@/ui/components/skeleton';
 
 export type SelectFieldChangeEventHandler = (item: SelectFieldDataItem) => unknown;
 
 export type SelectFieldValueChangeEventHandler = (value: string) => unknown;
 
 export interface SelectFieldProps {
-  label?: string;
+  label?: string | boolean;
   value?: SelectFieldDataItem;
   placeholder?: string;
-  data: SelectFieldData;
+  data?: SelectFieldData;
   fullWidth?: boolean;
   error?: string;
   tabIndex?: number;
+  disabled?: boolean;
+  skeleton?: boolean;
   onChange?: SelectFieldChangeEventHandler;
   onValueChange?: SelectFieldValueChangeEventHandler;
 }
@@ -46,10 +50,12 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   label, 
   value: initialValue, 
   placeholder, 
-  data, 
+  data = [], 
   fullWidth = false, 
   error, 
   tabIndex = 0, 
+  disabled = false,
+  skeleton = false,
   onChange,
   onValueChange
 }) => {
@@ -78,56 +84,74 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   return (
     <SelectFieldStyled 
       $fullWidth={fullWidth}
+      $disabled={disabled}
       ref={elementRef}
       tabIndex={tabIndex}
-      onFocus={setIsOpen.bind(null, true)}
+      onFocus={setIsOpen.bind(null, !disabled && !skeleton)}
       onBlur={setIsOpen.bind(null, false)}
     >
       {label && (
         <SelectFieldLabel>
-          {label}
+          {!skeleton && label}
+          {skeleton && (
+            <Skeleton width={100} />
+          )}
         </SelectFieldLabel>
       )}
       <SelectFieldSelect>
-        <SelectFieldHead 
-          $open={isOpen}
-          $error={!!error}  
-        >
-          {!value && (
-            <SelectFieldPlaceholder
-              $open={isOpen}
-            >
-              {placeholder}
-            </SelectFieldPlaceholder>
-          )}
-          {(typeof value === 'string' && value !== '') && (
-            <SelectFieldValue>
-              <SelectFieldValueText>
-                {value}
-              </SelectFieldValueText>
-            </SelectFieldValue>
-          )}
-          {typeof value === 'object' && (
-            <SelectFieldValue>
-              {value.color && (
-                <SelectFieldValueColor $color={value.color} />
-              )}
-              {value.value && (
-                <SelectFieldColorValueText>
-                  {value.value}
-                </SelectFieldColorValueText>
-              )}
-            </SelectFieldValue>
-          )}
-          <SelectFieldArrow 
-            initial={{
-              transform: `rotateZ(${isOpen ? 180 : 0}deg)`
-            }}
-            animate={{
-              transform: `rotateZ(${isOpen ? 180 : 0}deg)`
-            }}
-          />
-        </SelectFieldHead>
+        {!skeleton && (
+          <SelectFieldHead 
+            $open={isOpen}
+            $error={!!error}
+            $disabled={disabled}
+            $skeleton={false}
+          >
+            {!value && (
+              <SelectFieldPlaceholder
+                $open={isOpen}
+              >
+                {placeholder}
+              </SelectFieldPlaceholder>
+            )}
+            {(typeof value === 'string' && value !== '') && (
+              <SelectFieldValue>
+                <SelectFieldValueText>
+                  {value}
+                </SelectFieldValueText>
+              </SelectFieldValue>
+            )}
+            {typeof value === 'object' && (
+              <SelectFieldValue>
+                {value.color && (
+                  <SelectFieldValueColor $color={value.color} />
+                )}
+                {value.value && (
+                  <SelectFieldColorValueText>
+                    {value.value}
+                  </SelectFieldColorValueText>
+                )}
+              </SelectFieldValue>
+            )}
+            <SelectFieldArrow 
+              initial={{
+                transform: `rotateZ(${isOpen ? 180 : 0}deg)`
+              }}
+              animate={{
+                transform: `rotateZ(${isOpen ? 180 : 0}deg)`
+              }}
+            />
+          </SelectFieldHead>
+        )}
+        {skeleton && (
+          <SelectFieldHead
+            $open={false}
+            $error={false}
+            $disabled={false}
+            $skeleton
+          >
+            <SelectFieldSkeleton />
+          </SelectFieldHead>
+        )}
         {isOpen && (
           <SelectFieldBody>
             <SelectFieldBodyBackgroundWrapper>
@@ -174,7 +198,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                             />
                           )}
                           {item.color && (
-                            <SelectFieldColorOptionText $selected={selected}>
+                            <SelectFieldColorOptionText>
                               {item.value}
                             </SelectFieldColorOptionText>
                           )}

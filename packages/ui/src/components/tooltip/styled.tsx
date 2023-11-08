@@ -1,20 +1,36 @@
-import { styled } from 'styled-components';
-import { AnimationProps, motion } from 'framer-motion';
+import { css, styled } from 'styled-components';
+import { HTMLMotionProps, motion } from 'framer-motion';
 import React from 'react';
 import { Typography } from '@/ui/components/typography';
-import { TooltipVariant } from './types';
+import { TooltipPlacement, TooltipVariant } from './types';
 
-export const TooltipStyled: React.FC<React.ComponentProps<'div'> & AnimationProps> = styled(motion.div)`
+export interface TooltipStyledProps {
+  $placement: TooltipPlacement;
+  ref: React.RefObject<HTMLDivElement>;
+}
+
+export const TooltipStyled: React.FC<HTMLMotionProps<'div'> & TooltipStyledProps> = styled(motion.div)<TooltipStyledProps>`
   display: inline-flex;
   position: absolute;
   top: 0px;
   left: 0px;
   flex-direction: column;
-  align-items: center;
   width: auto;
   pointer-events: none;
   user-select: none;
   z-index: ${({ theme }) => theme.zIndex.tooltip};
+  ${({ $placement }) => {
+    switch ($placement) {
+      case 'top-left':
+        return css`
+          align-items: flex-start;
+        `;
+      case 'top':
+        return css`
+          align-items: center;
+        `;
+    }
+  }}
 `;
 
 export interface TooltipBlockProps {

@@ -1,19 +1,26 @@
 import React, { useCallback } from 'react';
 import {
-  CheckboxCheckedIcon, CheckboxLabel, CheckboxInput, CheckboxStyled, CheckboxBlock 
+  CheckboxCheckedIcon, 
+  CheckboxLabel, 
+  CheckboxInput, 
+  CheckboxStyled, 
+  CheckboxBlock, 
+  CheckboxBlockSkeleton 
 } from './styled';
 import { useTooltip } from '@/ui/components/tooltip';
+import { Skeleton } from '@/ui/components/skeleton';
 
 export type CheckboxValueChangeEventHandler = (checked: boolean) => unknown;
 
 export interface CheckboxProps extends React.ComponentProps<'input'> {
   className?: string;
-  label?: string;
+  label?: string | boolean;
+  skeleton?: boolean;
   onValueChange?: CheckboxValueChangeEventHandler;
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({ 
-  className, label, onValueChange, ...props 
+  className, label, skeleton = false, onValueChange, ...props 
 }) => {
   const {
     handleTooltipMouseEnter,
@@ -32,17 +39,27 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       onMouseEnter={handleTooltipMouseEnter}
       onMouseLeave={handleTooltipMouseLeave}
     >
-      <CheckboxInput 
-        {...props} 
-        type="checkbox"
-        onChange={handleChange}
-      />
-      <CheckboxBlock>
-        <CheckboxCheckedIcon />
-      </CheckboxBlock>
-      {typeof label === 'string' && (
+      {!skeleton && (
+        <>
+          <CheckboxInput 
+            {...props} 
+            type="checkbox"
+            onChange={handleChange}
+          />
+          <CheckboxBlock>
+            <CheckboxCheckedIcon />
+          </CheckboxBlock>
+        </>
+      )}
+      {skeleton && (
+        <CheckboxBlockSkeleton />
+      )}
+      {label && (
         <CheckboxLabel>
-          {label}
+          {!skeleton && label}
+          {skeleton && (
+            <Skeleton width={200} />
+          )}
         </CheckboxLabel>
       )}
     </CheckboxStyled>

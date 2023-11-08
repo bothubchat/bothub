@@ -27,7 +27,7 @@ export const AccordionHead = styled.div`
 
 export const AccordionLabel = styled(Typography).attrs({ variant: 'body-m-semibold' })``;
 
-export const AccordionArrow = styled(Arrow2DownIcon)``;
+export const AccordionArrow = styled(Arrow2DownIcon).attrs({ size: 24 })``;
 
 export const AccordionBody = styled.div`
   padding: 18px;

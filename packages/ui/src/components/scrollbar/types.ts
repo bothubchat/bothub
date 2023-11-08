@@ -16,3 +16,5 @@ export type ScrollbarLockedSide = 'bottom';
 export interface ScrollbarLockedProps {
   side: ScrollbarLockedSide;
 }
+
+export type ScrollbarOverflow = 'auto' | 'visible';

@@ -1,5 +1,7 @@
 import React from 'react';
-import { TableBody, TableContent, TableStyled } from './styled';
+import {
+  TableBody, TableContent, TableScrollbarWrapper, TableStyled 
+} from './styled';
 
 export interface TableProps extends Omit<React.ComponentProps<'table'>, 'ref'> {
   head?: React.ReactNode;
@@ -11,12 +13,14 @@ export const Table: React.FC<TableProps> = ({
   <TableStyled
     {...props}
   >
-    <TableContent>
-      {head}
-      <TableBody>
-        {children}
-      </TableBody>
-    </TableContent>
+    <TableScrollbarWrapper>
+      <TableContent>
+        {head}
+        <TableBody>
+          {children}
+        </TableBody>
+      </TableContent>
+    </TableScrollbarWrapper>
   </TableStyled>
 );
 

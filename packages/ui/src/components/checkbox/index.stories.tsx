@@ -26,6 +26,13 @@ export const DisabledChecked: CheckboxStory = {
   }
 };
 
+export const Skeleton: CheckboxStory = {
+  args: {
+    ...Basic.args,
+    skeleton: true
+  }
+};
+
 export default {
   title: 'UI Components/Checkbox',
   component: Checkbox,

@@ -13,7 +13,7 @@ export const Basic: TabStory = {
 };
 
 export default {
-  title: 'UI Components/Tab',
+  title: 'UI Components/Tab/Item',
   component: Tab,
   decorators: [ThemeStoryDecorator()]
 } as TabMeta;

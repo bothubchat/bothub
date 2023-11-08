@@ -1,11 +1,12 @@
 import React, {
   useState, useCallback, useRef, useEffect 
 } from 'react';
+import ContentEditable from 'react-contenteditable';
 import {
   InputMessageContent, 
   InputMessageSendButton,
   InputMessageStyled, 
-  InputMessageContentEditable 
+  InputMessageContentEditable
 } from './styled';
 import { ButtonRef } from '@/ui/components/button';
 
@@ -54,12 +55,13 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       return;
     }
 
-    const message: string = event.currentTarget.innerText;
+    const message: string = event.currentTarget.innerHTML;
 
     setMessage?.(message);
   }, [setMessage, isFocus]);
   const handleSend = useCallback(() => {
     const contentEditableEl: HTMLElement | null = contentEditableRef.current;
+    
     if (contentEditableEl === null) {
       return;
     }
@@ -70,6 +72,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     setIsFocus(false);
   }, [onSend, contentEditableRef, setMessage]);
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    event.stopPropagation();
+    
     if (isFocus && event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
       handleSend();
@@ -77,6 +81,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   }, [isFocus, handleSend]);
   const handleFocus = useCallback((event: React.FocusEvent<HTMLDivElement>) => {
     const sendButton: ButtonRef | null = sendButtonRef.current;
+
     if (
       sendButton !== null 
       && sendButton.element !== null 
@@ -114,31 +119,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     };
   }, [handleKeyDown]);
 
+  const [isInited, setIsInited] = useState(false);
+
   useEffect(() => {
-    const contentEditableEl: HTMLElement | null = contentEditableRef.current;
-
-    if (contentEditableEl !== null && isFocus) {
-      const target: Text = document.createTextNode('');
-
-      contentEditableEl.appendChild(target);
-      
-      if (target !== null && target.nodeValue !== null) {
-        const selection: Selection | null = window.getSelection();
-
-        if (selection !== null) {
-          const range: Range = document.createRange();
-
-          range.setStart(target, target.nodeValue.length);
-          range.collapse(true);
-          selection.removeAllRanges();
-          selection.addRange(range);
-        }
-        if (contentEditableEl instanceof HTMLElement) {
-          contentEditableEl.focus();
-        }
-      }
-    }
-  }, [message]);
+    setIsInited(true);
+  }, []);
 
   return (
     <InputMessageStyled
@@ -152,16 +137,23 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       onClick={handleClick}
     >
       <InputMessageContent>
-        <InputMessageContentEditable
-          $placeholder={isPlaceholderMode}
-          ref={(element) => {
-            contentEditableRef.current = element;
-          }}
-          contentEditable={disabled ? undefined : 'plaintext-only' as any} // eslint-disable-line @typescript-eslint/no-explicit-any
-          dangerouslySetInnerHTML={{ __html: isPlaceholderMode ? (placeholder ?? '') : message }}
-          onInput={handleChange}
-          onBlur={handleChange}
-        />
+        {isInited && (
+          <InputMessageContentEditable
+            $placeholder={isPlaceholderMode}
+            as={ContentEditable}
+            innerRef={contentEditableRef}
+            html={(isPlaceholderMode ? placeholder : message) ?? ''}
+            disabled={disabled}
+            onChange={handleChange}
+          />
+        )}
+        {!isInited && (
+          <InputMessageContentEditable
+            $placeholder={isPlaceholderMode}
+          >
+            {(isPlaceholderMode ? placeholder : message) ?? ''}
+          </InputMessageContentEditable>
+        )}
         <InputMessageSendButton
           ref={sendButtonRef} 
           disabled={disabled || sendDisabled}

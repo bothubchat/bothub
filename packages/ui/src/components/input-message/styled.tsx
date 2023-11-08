@@ -44,9 +44,6 @@ export interface InputMessageContentEditableProps {
 }
 
 export const InputMessageContentEditable = styled.div<InputMessageContentEditableProps>`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   width: 100%;
   max-height: 270px;
   background: none;
@@ -63,6 +60,7 @@ export const InputMessageContentEditable = styled.div<InputMessageContentEditabl
   }
   ${({ $placeholder }) => $placeholder && css`
     user-select: none;
+    pointer-events: none;
   `}
 `;
 

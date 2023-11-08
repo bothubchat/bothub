@@ -10,7 +10,6 @@ export type TooltipStory = StoryObj<typeof Tooltip>;
 export const Basic: TooltipStory = {
   args: {
     label: 'Tooltip text',
-    disablePortal: true,
     children: (
       <Button>
         Hover Me

@@ -1,1 +1,1 @@
-export type DescriptionCardVariant = 'main' | 'secondary' | 'tertiary';
+export type DescriptionCardVariant = 'main' | 'secondary' | 'tertiary' | 'quaternary';

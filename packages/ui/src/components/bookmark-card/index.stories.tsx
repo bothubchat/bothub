@@ -31,6 +31,13 @@ export const Basic: BookmarkCardStory = {
   }
 };
 
+export const LongName: BookmarkCardStory = {
+  args: {
+    ...Basic.args,
+    name: 'Длинное название закладки Длинное название закладки Длинное название закладки Длинное название закладки Длинное название закладки Длинное название закладки'
+  }
+};
+
 export const Skeleton: BookmarkCardStory = {
   args: {
     skeleton: true,
@@ -44,7 +51,7 @@ export const Skeleton: BookmarkCardStory = {
 };
 
 export default {
-  title: 'UI Components/BookmarkCard',
+  title: 'UI Components/Bookmark/Card',
   component: BookmarkCard,
   decorators: [ThemeStoryDecorator()]
 } as BookmarkCardMeta;

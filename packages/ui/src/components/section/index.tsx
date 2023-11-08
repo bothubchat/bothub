@@ -1,6 +1,5 @@
 import React from 'react';
-import { SectionContent, SectionStyled } from './styled';
-import { Container } from '../container';
+import { SectionContainer, SectionContent, SectionStyled } from './styled';
 
 export interface SectionProps extends React.ComponentProps<'div'> {
   disableContainer?: boolean;
@@ -22,7 +21,11 @@ export const Section: React.FC<SectionProps> = ({
     containerNode = children;
   } else {
     containerNode = (
-      <Container>{children}</Container>
+      <SectionContainer
+        $fullHeight={fullHeight}
+      >
+        {children}
+      </SectionContainer>
     );
   }
 
@@ -33,7 +36,9 @@ export const Section: React.FC<SectionProps> = ({
     childrenNode = (
       <>
         {bg}
-        <SectionContent>
+        <SectionContent
+          $fullHeight={fullHeight}
+        >
           {containerNode}
         </SectionContent>
       </>

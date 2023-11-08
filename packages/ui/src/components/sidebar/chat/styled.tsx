@@ -28,8 +28,20 @@ export const SidebarChatColor = styled.span<SidebarChatColorProps>`
   `}
 `;
 
-export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-medium', component: 'span' })`
+export interface SidebarChatNameProps {
+  $open: boolean;
+}
+
+export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-medium', component: 'span' })<SidebarChatNameProps>`
   margin-left: 8px;
+  white-space: nowrap;
+  transition: opacity 0.3s;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  ${({ $open }) => !$open && css`
+    opacity: 0 !important;
+  `}
 `;
 
 export const SidebarChatNameSkeleton = styled(Skeleton)`
@@ -46,12 +58,20 @@ export const SidebarChatEditAction = styled(Button).attrs({ variant: 'text', chi
 
 export const SidebarChatDeleteAction = styled(Button).attrs({ variant: 'text', children: <TrashIcon /> })``;
 
-export const SidebarChatNumbers = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })`
+export interface SidebarChatNumbersProps {
+  $open: boolean;
+}
+
+export const SidebarChatNumbers = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })<SidebarChatNumbersProps>`
   display: inline-flex;
   padding: 4px 8px;
   background: ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 10px;
   cursor: default;
+  transition: opacity 0.3s;
+  ${({ $open }) => !$open && css`
+    opacity: 0 !important;
+  `}
 `;
 
 export interface SidebarChatStyledProps {

@@ -20,8 +20,22 @@ export const Error: TextAreaFieldStory = {
   }
 };
 
+export const Disabled: TextAreaFieldStory = {
+  args: {
+    ...Basic.args,
+    disabled: true
+  }
+};
+
+export const Skeleton: TextAreaFieldStory = {
+  args: {
+    ...Basic.args,
+    skeleton: true
+  }
+};
+
 export default {
-  title: 'UI Components/TextAreaField',
+  title: 'UI Components/Fields/TextArea',
   component: TextAreaField,
   decorators: [ThemeStoryDecorator()]
 } as TextAreaFieldMeta;

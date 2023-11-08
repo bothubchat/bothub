@@ -1,6 +1,7 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import { Typography } from '@/ui/components/typography';
+import { adaptive } from '@/ui/adaptive';
 
 export interface TabStyledProps {
   $active: boolean;
@@ -16,8 +17,16 @@ export const TabStyled: React.FC<HTMLMotionProps<'button'> & TabStyledProps> = s
   cursor: ${({ $active }) => ($active ? 'default' : 'pointer')};
   overflow: hidden;
   box-sizing: border-box;
-  padding: 10px 20px;
   flex-shrink: 0;
+  ${adaptive(() => ({
+    merge: true,
+    desktop: css`
+      padding: 10px 20px;
+    `,
+    tablet: css`
+      padding: 12px 20px;
+    `
+  }))}
 `; 
 
 export const TabText = styled(Typography).attrs({ variant: 'body-m-semibold' })``;

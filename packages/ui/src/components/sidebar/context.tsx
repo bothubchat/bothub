@@ -20,3 +20,5 @@ export const SidebarProvider: React.FC<SidebarContextValue & React.PropsWithChil
 );
 
 export const useSidebar = () => useContext(SidebarContext);
+
+export const SidebarConsumer = SidebarContext.Consumer;

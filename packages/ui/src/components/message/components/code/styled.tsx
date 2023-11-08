@@ -1,8 +1,6 @@
 import { css, styled } from 'styled-components';
 import Highlight from 'react-highlight';
 import { Typography } from '@/ui/components/typography';
-import { Button } from '@/ui/components/button';
-import { CopyIcon } from '@/ui/icons';
 import { MessageVariant } from '../../types';
 
 export interface MessageUnlineCodeProps {
@@ -70,35 +68,6 @@ export const MessageCodeLanguage = styled(Typography).attrs({ variant: 'body-s-m
         return theme.colors.base.white;
     }
   }};  
-`;
-
-export interface MessageCodeCopyButtonProps {
-  $messageVariant: MessageVariant;
-}
-
-export const MessageCodeCopyButton = styled(Button).attrs({ variant: 'text', children: <CopyIcon /> })<MessageCodeCopyButtonProps>`
-  > svg path {
-    fill: ${({ theme, $messageVariant }) => {
-    switch ($messageVariant) {
-      case 'user':
-        return theme.colors.accent.primary;
-      case 'assistant':
-        return theme.colors.base.white;
-    }
-  }} !important;
-  }
-  &:hover {
-    > svg path {
-      fill: ${({ theme, $messageVariant }) => {
-    switch ($messageVariant) {
-      case 'user':
-        return theme.colors.accent.primary;
-      case 'assistant':
-        return theme.colors.base.white;
-    }
-  }} !important;
-    }
-  }
 `;
 
 export const MessageCodeBody = styled.div`

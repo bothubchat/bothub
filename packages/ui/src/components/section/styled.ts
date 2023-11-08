@@ -1,5 +1,6 @@
 import { css, styled } from 'styled-components';
 import bgLines from './assets/bg-lines.svg';
+import { Container } from '@/ui/components/container';
 
 export interface SectionStyledProps {
   $bg: boolean;
@@ -26,6 +27,23 @@ export const SectionStyled = styled.section<SectionStyledProps>`
   `}
 `;
 
-export const SectionContent = styled.div`
+export interface SectionContentProps {
+  $fullHeight: boolean;
+}
+
+export const SectionContent = styled.div<SectionContentProps>`
   position: relative;
+  ${({ $fullHeight }) => $fullHeight && css`
+    min-height: inherit;
+  `}
+`;
+
+export interface SectionContainerProps {
+  $fullHeight: boolean;
+}
+
+export const SectionContainer = styled(Container)<SectionContainerProps>`
+  ${({ $fullHeight }) => $fullHeight && css`
+    min-height: inherit;
+  `}
 `;

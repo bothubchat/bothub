@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   SidebarBody,
   SidebarBodyContent,
@@ -10,19 +10,31 @@ import {
   SidebarTop 
 } from './styled';
 import { SidebarProvider } from './context';
+import { useTheme } from '@/ui/theme';
+
+export type SidebarChangeEventHandler = (open: boolean) => unknown;
 
 export interface SidebarProps extends React.PropsWithChildren {
+  open?: boolean;
   className?: string;
   id?: string;
   createChat?: React.ReactNode;
   toggle?: React.ReactNode;
   user?: React.ReactNode;
+  onChange?: SidebarChangeEventHandler;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ 
-  className, id, user, createChat, toggle, children 
+  open: initialIsOpen, className, id, user, createChat, toggle, children, onChange
 }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const theme = useTheme();
+
+  const setInitialIsOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
+    if (typeof open === 'boolean') {
+      onChange?.(open);
+    }
+  }, [onChange]);
+  const [isOpen, setIsOpen] = typeof initialIsOpen === 'boolean' ? [initialIsOpen, setInitialIsOpen] : useState(true);
 
   return (
     <SidebarProvider
@@ -32,6 +44,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <SidebarStyled
         className={className}
         id={id}
+        variants={{
+          open: {
+            minWidth: theme.sidebar.width,
+            maxWidth: theme.sidebar.width
+          },
+          close: {
+            minWidth: theme.sidebar.minimizedWidth,
+            maxWidth: theme.sidebar.minimizedWidth
+          }
+        }}
+        initial={isOpen ? 'open' : 'close'}
+        animate={isOpen ? 'open' : 'close'}
       >
         <SidebarContent>
           <SidebarTop>
@@ -40,7 +64,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
               {toggle}
             </SidebarHead>
             <SidebarBody>
-              <SidebarBodyScrollbarWrapper>
+              <SidebarBodyScrollbarWrapper
+                disabled={!isOpen}
+              >
                 <SidebarBodyContent>
                   {children}
                 </SidebarBodyContent>

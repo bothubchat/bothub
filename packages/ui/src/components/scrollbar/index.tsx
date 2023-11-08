@@ -3,7 +3,9 @@ import React, {
 } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { ScrollbarContent, ScrollbarShadows, ScrollbarStyled } from './styled';
-import { ScrollbarLockedProps, ScrollbarShadowsProps, ScrollbarVariant } from './types';
+import {
+  ScrollbarLockedProps, ScrollbarOverflow, ScrollbarShadowsProps, ScrollbarVariant 
+} from './types';
 import { ScrollbarProvider } from './context';
 
 export interface ScrollbarProps extends React.PropsWithChildren {
@@ -13,12 +15,13 @@ export interface ScrollbarProps extends React.PropsWithChildren {
   size?: number;
   scrollShadows?: ScrollbarShadowsProps;
   scrollLocked?: ScrollbarLockedProps;
-  disableOverflowHidden?: boolean;
+  overflow?: ScrollbarOverflow;
   disabled?: boolean;
+  disableShadows?: boolean;
 }
 
 export const Scrollbar: React.FC<ScrollbarProps> = ({ 
-  className, scrollbarClassName, variant = 'primary', size = 6, scrollShadows, scrollLocked, disableOverflowHidden = false, disabled = false, children 
+  className, scrollbarClassName, variant = 'primary', size = 6, scrollShadows, scrollLocked, overflow = 'auto', disabled = false, disableShadows = false, children 
 }) => {
   const scrollbarRef = useRef<HTMLDivElement>(null);
   const [isLeft, setIsLeft] = useState<boolean>(false);
@@ -30,6 +33,7 @@ export const Scrollbar: React.FC<ScrollbarProps> = ({
 
   const handleScroll = useCallback(() => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
+    
     if (scrollbarEl === null) {
       return;
     }
@@ -43,7 +47,11 @@ export const Scrollbar: React.FC<ScrollbarProps> = ({
     setIsRight(scrollLeft < scrollWidth - clientWidth);
     setIsTop(scrollTop !== 0);
     setIsBottom(scrollTop < scrollHeight - clientHeight);
-  }, [scrollbarRef]);
+
+    if (disabled) {
+      scrollbarEl.scrollTo(0, 0);
+    }
+  }, [scrollbarRef, disabled]);
 
   const lockScroll = useCallback(() => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
@@ -103,6 +111,7 @@ export const Scrollbar: React.FC<ScrollbarProps> = ({
       $variant={variant}
       $size={size}
       $disabled={disabled}
+      $overflow={overflow}
       ref={scrollbarRef}
       className={className}
       onScroll={handleScroll}
@@ -121,21 +130,26 @@ export const Scrollbar: React.FC<ScrollbarProps> = ({
       lockScroll={lockScroll}
     >
       <ScrollbarStyled
-        $disableOverflowHidden={disableOverflowHidden}
-        $disabled={disabled}
+        $overflow={overflow}
         className={scrollbarClassName}
       >
         {contentNode}
-        <AnimatePresence>
-          {!disabled && (
-            <ScrollbarShadows>
+        {!disableShadows && (
+          <ScrollbarShadows>
+            <AnimatePresence>
               {isLeft && scrollShadows.left}
+            </AnimatePresence>
+            <AnimatePresence>
               {isRight && scrollShadows.right}
+            </AnimatePresence>
+            <AnimatePresence>
               {isTop && scrollShadows.top}
+            </AnimatePresence>
+            <AnimatePresence>
               {isBottom && scrollShadows.bottom}
-            </ScrollbarShadows>
-          )}
-        </AnimatePresence>
+            </AnimatePresence>
+          </ScrollbarShadows>
+        )}
       </ScrollbarStyled>
     </ScrollbarProvider>
   );

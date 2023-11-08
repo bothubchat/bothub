@@ -1,8 +1,10 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
+import { Skeleton } from '@/ui/components/skeleton';
 
 export interface TextAreaFieldStyledProps {
   $fullWidth: boolean;
+  $disabled: boolean;
 }
 
 export const TextAreaFieldStyled = styled.label<TextAreaFieldStyledProps>`
@@ -14,16 +16,24 @@ export const TextAreaFieldStyled = styled.label<TextAreaFieldStyledProps>`
   ${({ $fullWidth }) => !$fullWidth && css`
     max-width: 263px;
   `}
+  ${({ $disabled }) => $disabled && css`
+    cursor: not-allowed;
+  `}
+  ${({ $disabled }) => !$disabled && css`
+    cursor: default;
+  `}
 `;
 
 export const TextAreaFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
   margin-bottom: 8px;
-  cursor: default;
+  cursor: inherit;
 `;
 
 export interface TextAreaFieldBlockProps {
   $focus: boolean;
   $error: boolean;
+  $disabled: boolean;
+  $skeleton: boolean;
 }
 
 export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
@@ -31,7 +41,12 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
   width: 100%;
   height: 165px;
   overflow: hidden;
-  border: 1px solid ${({ theme, $error, $focus }) => {
+  border: 1px solid ${({
+    theme, $error, $focus, $disabled, $skeleton
+  }) => {
+    if ($disabled || $skeleton) {
+      return theme.colors.grayScale.gray2;
+    }
     if ($error) {
       return theme.colors.critic;
     } 
@@ -41,12 +56,31 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
     return theme.colors.grayScale.gray2;
   }};
   border-radius: 10px;
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
-  ${({ theme, $error }) => !$error && css`
+  background: ${({ theme, $disabled, $skeleton }) => {
+    if ($disabled || $skeleton) {
+      return theme.colors.grayScale.gray3;
+    }
+
+    return theme.colors.grayScale.gray4;
+  }};
+  cursor: ${({ $disabled, $skeleton }) => {
+    if ($skeleton) {
+      return 'progress';
+    }
+
+    return $disabled ? 'not-allowed' : 'text';
+  }};
+  ${({
+    theme, $error, $disabled, $skeleton 
+  }) => (!$error && !$disabled && !$skeleton) && css`
     &:hover {
       border-color: ${theme.colors.accent.primary};
     }
   `}
+`;
+
+export const TextAreaFieldSkeleton = styled(Skeleton).attrs({ width: 160, height: 18 })`
+  margin: 14px 16px;
 `;
 
 export const TextAreaFieldTextArea = styled.textarea`
@@ -63,6 +97,7 @@ export const TextAreaFieldTextArea = styled.textarea`
   font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
   font-size: 14px;
   line-height: 18px;
+  cursor: inherit;
   &::placeholder {
     color: ${({ theme }) => theme.colors.grayScale.gray1};
   }

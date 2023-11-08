@@ -4,7 +4,12 @@ import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons';
 
-export const BookmarkName = styled(Typography).attrs({ variant: 'body-m-semibold', component: 'span' })``;
+export const BookmarkName = styled(Typography).attrs({ variant: 'body-m-semibold', component: 'span' })`
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 export const BookmarkCloseButton = styled(Button).attrs({ variant: 'text', iconSize: 14, children: <CloseIcon /> })``;
 

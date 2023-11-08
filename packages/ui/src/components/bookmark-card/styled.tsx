@@ -72,7 +72,11 @@ export const BookmarkCardBody = styled.div`
   margin-top: 14px;
 `;
 
-export const BookmarkCardName = styled(Typography).attrs({ variant: 'body-m-semibold' })``;
+export const BookmarkCardName = styled(Typography).attrs({ variant: 'body-m-semibold' })`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 export const BookmarkCardActions = styled.div`
   display: flex;

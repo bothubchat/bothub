@@ -85,6 +85,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ sbMode = false, ch
       chat: {
         containerWidth: '1009px'
       }
+    },
+    sidebar: {
+      width: '445px',
+      minimizedWidth: '74px'
     }
   }), []);
 

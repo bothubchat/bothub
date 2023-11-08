@@ -155,7 +155,7 @@ export const Basic: TariffsStory = {
 };
 
 export default {
-  title: 'UI Components/Tariffs',
+  title: 'UI Components/Tariff/List',
   component: Tariffs,
   decorators: [ThemeStoryDecorator()],
   argTypes: {

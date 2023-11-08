@@ -22,8 +22,23 @@ export const Error: RangeFieldStory = {
   }
 };
 
+export const Disabled: RangeFieldStory = {
+  args: {
+    ...Basic.args,
+    value: 50,
+    disabled: true
+  }
+};
+
+export const Skeleton: RangeFieldStory = {
+  args: {
+    ...Basic.args,
+    skeleton: true
+  }
+};
+
 export default {
-  title: 'UI Components/RangeField',
+  title: 'UI Components/Fields/Range',
   component: RangeField,
   decorators: [ThemeStoryDecorator()]
 } as RangeFieldMeta;

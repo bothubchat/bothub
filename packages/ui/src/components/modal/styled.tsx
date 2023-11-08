@@ -28,7 +28,6 @@ export const ModalWindow: React.FC<React.ComponentProps<'div'> & AnimationProps>
   border-radius: 17px;
   position: relative;
   z-index: ${({ theme }) => theme.zIndex.modal + 1};
-  max-height: 80%;
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     margin: 0px 10px;
   }
@@ -43,7 +42,6 @@ export const ModalWindowBody = styled.div`
   padding-right: 10px;
   width: 100%;
   box-sizing: border-box;
-  flex-grow: 1;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     padding: 18px;
     padding-right: 9px;
@@ -52,11 +50,6 @@ export const ModalWindowBody = styled.div`
     padding: 14px 18px;
     padding-right: 9px;
   }
-`;
-
-export const ModalWindowBodyContent = styled.div`
-  display: flex;
-  width: 100%;
 `;
 
 export const ModalWindowBodyScrollbarWrapper = styled(Scrollbar).attrs(({ theme }) => ({
@@ -69,12 +62,18 @@ export const ModalWindowBodyScrollbarWrapper = styled(Scrollbar).attrs(({ theme 
 }))`
   display: flex;
   width: 100%;
-  overflow: auto;
   height: 100%;
   padding-right: 10px;
+  max-height: 80vh;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     padding-right: 9px;
   }
+`;
+
+export const ModalWindowBodyContent = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
 `;
 
 export const ModalContent = styled.div`

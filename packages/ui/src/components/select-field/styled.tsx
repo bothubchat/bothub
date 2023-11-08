@@ -1,9 +1,11 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons';
+import { Skeleton } from '@/ui/components/skeleton';
 
 export interface SelectFieldStyledProps {
   $fullWidth: boolean;
+  $disabled: boolean;
 }
 
 export const SelectFieldStyled = styled.div<SelectFieldStyledProps>`
@@ -15,11 +17,17 @@ export const SelectFieldStyled = styled.div<SelectFieldStyledProps>`
   ${({ $fullWidth }) => !$fullWidth && css`
     max-width: 259px;
   `}
+  ${({ $disabled }) => $disabled && css`
+    cursor: not-allowed; 
+  `}
+  ${({ $disabled }) => !$disabled && css`
+    cursor: default; 
+  `}
 `;
 
 export const SelectFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
   margin-bottom: 8px;
-  cursor: default;
+  cursor: inherit;
 `;
 
 export const SelectFieldSelect = styled.div`
@@ -31,6 +39,8 @@ export const SelectFieldSelect = styled.div`
 export interface SelectFieldHeadProps {
   $open: boolean;
   $error: boolean;
+  $disabled: boolean;
+  $skeleton: boolean;
 }
 
 export const SelectFieldHead = styled.div<SelectFieldHeadProps>`
@@ -38,7 +48,12 @@ export const SelectFieldHead = styled.div<SelectFieldHeadProps>`
   align-items: center;
   width: 100%;
   justify-content: space-between;
-  border: 1px solid ${({ theme, $error, $open }) => {
+  border: 1px solid ${({
+    theme, $disabled, $error, $open, $skeleton 
+  }) => {
+    if ($disabled || $skeleton) {
+      return theme.colors.grayScale.gray5;
+    }
     if ($error) {
       return theme.colors.critic;
     }
@@ -51,9 +66,26 @@ export const SelectFieldHead = styled.div<SelectFieldHeadProps>`
   border-radius: 10px;
   padding: 14px 16px;
   box-sizing: border-box;
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
-  cursor: ${({ $open }) => ($open ? 'default' : 'pointer')};
-  ${({ theme, $error }) => !$error && css`
+  background: ${({ theme, $disabled, $skeleton }) => {
+    if ($disabled || $skeleton) {
+      return theme.colors.grayScale.gray3;
+    }
+
+    return theme.colors.grayScale.gray4;
+  }};
+  cursor: ${({ $open, $disabled, $skeleton }) => {
+    if ($skeleton) {
+      return 'progress';
+    }
+    if ($disabled) {
+      return 'not-allowed';
+    }
+
+    return $open ? 'default' : 'pointer';
+  }};
+  ${({
+    theme, $error, $disabled, $skeleton 
+  }) => (!$error && !$disabled && !$skeleton) && css`
     &:hover {
       border-color: ${theme.colors.accent.primary};
     }
@@ -193,22 +225,17 @@ export const SelectFieldOptionColor = styled.span<SelectFieldOptionColorProps>`
 
 export const SelectFieldOptionText = styled(Typography).attrs({ variant: 'input-sm' })``;
 
-export interface SelectFieldColorOptionTextProps {
-  $selected: boolean;
-}
-
-export const SelectFieldColorOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldColorOptionTextProps>`
-  color: ${({ theme, $selected }) => {
-    if ($selected) {
-      return theme.colors.base.white;
-    }
-
-    return theme.colors.grayScale.gray1;
-  }};
+export const SelectFieldColorOptionText = styled(Typography).attrs({ variant: 'input-sm' })`
+  color: ${({ theme }) => theme.colors.base.white};
 `;
 
 export const SelectFieldErrorText = styled(Typography).attrs({ variant: 'input-sm' })`
   display: inline-flex;
   margin-top: 8px;
   color: ${({ theme }) => theme.colors.critic};
+`;
+
+export const SelectFieldSkeleton = styled(Skeleton)`
+  width: 100%;
+  height: 18px;
 `;

@@ -50,8 +50,22 @@ export const Search: TextFieldStory = {
   }
 };
 
+export const Disabled: TextFieldStory = {
+  args: {
+    ...Basic.args,
+    disabled: true
+  }
+};
+
+export const Skeleton: TextFieldStory = {
+  args: {
+    ...Basic.args,
+    skeleton: true
+  }
+};
+
 export default {
-  title: 'UI Components/TextField',
+  title: 'UI Components/Fields/Text',
   component: TextField,
   decorators: [ThemeStoryDecorator()],
   argTypes: {

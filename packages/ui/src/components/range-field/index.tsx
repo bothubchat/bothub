@@ -6,19 +6,23 @@ import {
   RangeFieldRange, 
   RangeFieldRangeThumb, 
   RangeFieldRangeTrack, 
+  RangeFieldSkeleton, 
   RangeFieldStyled 
 } from './styled';
 import { RangeFieldValue } from './types';
+import { Skeleton } from '@/ui/components/skeleton';
 
 export interface RangeFieldProps {
   className?: string;
-  label?: string;
+  label?: string | boolean;
   error?: string;
   min?: number;
   max?: number;
   step?: number;
   value?: RangeFieldValue;
   fullWidth?: boolean;
+  disabled?: boolean;
+  skeleton?: boolean;
   onChange?: (value: RangeFieldValue) => unknown;
 }
 
@@ -29,7 +33,9 @@ export const RangeField: React.FC<RangeFieldProps> = ({
   max, 
   step, 
   value: initialValue, 
-  fullWidth = false, 
+  fullWidth = false,
+  disabled = false,
+  skeleton = false,
   onChange, 
   ...props 
 }) => {
@@ -47,49 +53,66 @@ export const RangeField: React.FC<RangeFieldProps> = ({
   }, [setValue]);
 
   return (
-    <RangeFieldStyled $fullWidth={fullWidth}>
+    <RangeFieldStyled 
+      $fullWidth={fullWidth}
+      $disabled={disabled}  
+    >
       {label && (
         <RangeFieldLabel
           onMouseEnter={handleTooltipMouseEnter}
           onMouseLeave={handleTooltipMouseLeave}
         >
-          {label}
+          {!skeleton && label}
+          {skeleton && (
+            <Skeleton width={100} />
+          )}
         </RangeFieldLabel>
       )}
-      <Tooltip label={String(value)}>
-        <TooltipConsumer>
-          {({ 
-            handleTooltipMouseEnter, 
-            handleTooltipMouseLeave,
-            handleTooltipMouseDown,
-            handleTooltipMouseUp
-          }) => (
-            <RangeFieldRange 
-              {...props}
-              min={min}
-              max={max}
-              step={step}
-              value={value}
-              renderTrack={(props, state) => (
-                <RangeFieldRangeTrack 
-                  {...props} 
-                  $index={state.index}
-                />
-              )}
-              renderThumb={(props) => (
-                <RangeFieldRangeThumb 
-                  {...props}
-                  onMouseEnter={handleTooltipMouseEnter}
-                  onMouseLeave={handleTooltipMouseLeave}
-                  onMouseDown={handleTooltipMouseDown}
-                  onMouseUp={handleTooltipMouseUp}
-                />
-              )}
-              onChange={handleChange}
-            />
-          )}
-        </TooltipConsumer>
-      </Tooltip>
+      {!skeleton && (
+        <Tooltip 
+          label={String(value)}
+          disabled={disabled}
+        >
+          <TooltipConsumer>
+            {({ 
+              handleTooltipMouseEnter, 
+              handleTooltipMouseLeave,
+              handleTooltipMouseDown,
+              handleTooltipMouseUp
+            }) => (
+              <RangeFieldRange 
+                {...props}
+                min={min}
+                max={max}
+                step={step}
+                value={value}
+                disabled={disabled}
+                renderTrack={(props, state) => (
+                  <RangeFieldRangeTrack 
+                    {...props} 
+                    $index={state.index}
+                    $disabled={disabled}
+                  />
+                )}
+                renderThumb={(props) => (
+                  <RangeFieldRangeThumb 
+                    {...props}
+                    $disabled={disabled}
+                    onMouseEnter={handleTooltipMouseEnter}
+                    onMouseLeave={handleTooltipMouseLeave}
+                    onMouseDown={handleTooltipMouseDown}
+                    onMouseUp={handleTooltipMouseUp}
+                  />
+                )}
+                onChange={handleChange}
+              />
+            )}
+          </TooltipConsumer>
+        </Tooltip>
+      )}
+      {skeleton && (
+        <RangeFieldSkeleton />
+      )}
       {error && (
         <RangeFieldErrorText>
           {error}

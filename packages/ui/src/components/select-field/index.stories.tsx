@@ -58,8 +58,22 @@ export const Error: SelectFieldStory = {
   }
 };
 
+export const Disabled: SelectFieldStory = {
+  args: {
+    ...Basic.args,
+    disabled: true
+  }
+};
+
+export const Skeleton: SelectFieldStory = {
+  args: {
+    ...Basic.args,
+    skeleton: true
+  }
+};
+
 export default {
-  title: 'UI Components/SelectField',
+  title: 'UI Components/Fields/Select',
   component: SelectField,
   decorators: [ThemeStoryDecorator()]
 } as SelectFieldMeta;

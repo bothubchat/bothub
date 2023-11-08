@@ -16,20 +16,43 @@ export const ScrollbarShadow: React.FC<ScrollbarShadowProps> = ({ side, ...props
 
   const size: number = props.size ?? scrollShadows?.size ?? 80;
   const color: string = props.color ?? scrollShadows?.color ?? theme.colors.grayScale.gray4;
+  const isLeft: boolean = side === 'left';
+  const isRight: boolean = side === 'right';
+  const isTop: boolean = side === 'top';
+  const isBottom: boolean = side === 'bottom';
+
+  const style: Record<string, string> = {
+    background: `linear-gradient(to ${side}, rgba(0, 0, 0, 0), ${color})`
+  };
+
+  const initialStyle: Record<string, string | number> = {
+    opacity: 0
+  };
+  if (isLeft || isRight) {
+    initialStyle.width = 0;
+  } else if (isTop || isBottom) {
+    initialStyle.height = 0;
+  }
+
+  const animateStyle: Record<string, string | number> = {
+    opacity: 1
+  };
+  if (isLeft || isRight) {
+    initialStyle.width = size;
+  } else if (isTop || isBottom) {
+    initialStyle.height = size;
+  }
 
   return (
     <ScrollbarShadowStyled 
       $side={side}
-      $size={size}
       $scrollbarSize={scrollbarSize}
     >
       <ScrollbarShadowContent
-        animate={{
-          background: `linear-gradient(to ${side}, rgba(0, 0, 0, 0), ${color})`
-        }}
-        exit={{
-          background: 'rgba(0, 0, 0, 0)'
-        }}
+        style={style}
+        initial={initialStyle}
+        animate={animateStyle}
+        exit={initialStyle}
       />
     </ScrollbarShadowStyled>
   );

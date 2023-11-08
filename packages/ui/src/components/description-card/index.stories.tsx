@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { DescriptionCard } from '.';
-import { ThemeStoryDecorator } from '../../theme/story-decorator';
+import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
 
 export type DescriptionCardMeta = Meta<typeof DescriptionCard>;
 
@@ -15,7 +15,7 @@ export const Basic: DescriptionCardStory = {
 };
 
 export default {
-  title: 'UI Components/DescriptionCard',
+  title: 'UI Components/Description/Card',
   component: DescriptionCard,
   decorators: [ThemeStoryDecorator()],
   parameters: {

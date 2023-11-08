@@ -56,7 +56,7 @@ export const Basic: TariffCardStory = {
 };
 
 export default {
-  title: 'UI Components/TariffCard',
+  title: 'UI Components/Tariff/Card',
   component: TariffCard,
   decorators: [ThemeStoryDecorator()]
 } as TariffCardMeta;

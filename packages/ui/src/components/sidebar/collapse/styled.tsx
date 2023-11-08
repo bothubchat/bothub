@@ -7,6 +7,7 @@ export const SidebarCollapseStyled = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  flex-shrink: 0;
   width: 100%;
 `;
 
@@ -18,10 +19,16 @@ export const SidebarCollapseArrow = styled(ArrowUpIcon).attrs({ size: 16 })`
 
 export const SidebarCollapseLabel = styled(Typography).attrs({ variant: 'body-m-medium', component: 'span' })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
+  white-space: nowrap;
+  transition: opacity 0.3s;
 `;
 
-export const SidebarCollapseLabelSkeleton = styled(Skeleton)`
-  width: 180px;
+export interface SidebarCollapseLabelSkeletonProps {
+  $open: boolean;
+}
+
+export const SidebarCollapseLabelSkeleton = styled(Skeleton)<SidebarCollapseLabelSkeletonProps>`
+  width: ${({ $open }) => ($open ? '180px' : '30px')};
 `;
 
 export const SidebarCollapseHead = styled.div`

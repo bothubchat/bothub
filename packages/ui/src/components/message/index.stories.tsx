@@ -106,7 +106,7 @@ export const UserInlineCode: MessageStory = {
 };
 
 export default {
-  title: 'UI Components/Message',
+  title: 'UI Components/Message/Item',
   component: Message,
   decorators: [ThemeStoryDecorator()],
   argTypes: {

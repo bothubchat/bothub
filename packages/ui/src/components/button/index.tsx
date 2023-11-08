@@ -13,19 +13,20 @@ export interface ButtonRef {
   element: HTMLButtonElement | null;
 }
 
-export interface ButtonProps extends Omit<React.ComponentProps<'button'>, 'ref' | 'onAnimationStart' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
-  disabled?: boolean;
-  fullWidth?: boolean;
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  corner?: ButtonCorner;
-  startIcon?: React.ReactNode | null;
-  endIcon?: React.ReactNode | null;
-  iconSize?: number;
-  iconFill?: string;
-  skeleton?: boolean;
-  children?: React.ReactNode;
-}
+export type ButtonProps = 
+  Omit<React.ComponentProps<'button'>, 'ref' | 'onAnimationStart' | 'onDrag' | 'onDragStart' | 'onDragEnd'> & {
+    disabled?: boolean;
+    fullWidth?: boolean;
+    variant?: ButtonVariant;
+    size?: ButtonSize;
+    corner?: ButtonCorner;
+    startIcon?: React.ReactNode | null;
+    endIcon?: React.ReactNode | null;
+    iconSize?: number;
+    iconFill?: string;
+    skeleton?: boolean;
+    children?: React.ReactNode;
+  };
 
 export const Button = forwardRef<ButtonRef, ButtonProps>(({
   children, 

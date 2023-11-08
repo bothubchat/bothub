@@ -120,7 +120,7 @@ export const Basic: PromptsStory = {
 };
 
 export default {
-  title: 'UI Components/Prompts',
+  title: 'UI Components/Prompt/List',
   component: Prompts,
   decorators: [ThemeStoryDecorator()],
   argTypes: {

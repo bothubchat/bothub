@@ -22,6 +22,7 @@ export const TableCellStyled = styled.td<TableCellStyledProps>`
         return css`
           padding: 23px;
           width: 215px;
+          min-width: 120px;
         `;
     }
   }}

@@ -12,7 +12,7 @@ export interface AvatarProps extends React.ComponentProps<'img'> {
 }
 
 export const Avatar: React.FC<AvatarProps> = ({
-  className, style, variant = 'my', size = 40, src, alt, children
+  className, style, variant = 'my', size = 40, src, alt, children, ...props
 }) => {
   const isSkeleton = React.isValidElement(children) && (children.type as React.FC).displayName === 'Skeleton';
 
@@ -32,6 +32,7 @@ export const Avatar: React.FC<AvatarProps> = ({
 
   return (
     <AvatarStyled
+      {...props}
       $size={size}
       className={className}
       style={style}

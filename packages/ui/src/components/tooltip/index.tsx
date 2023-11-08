@@ -5,17 +5,19 @@ import { Portal } from '@/ui/components/portal';
 import { TooltipBlock, TooltipLabel, TooltipStyled } from './styled';
 import { TooltipArrow } from './arrow';
 import { TooltipProvider } from './context';
-import { TooltipVariant } from './types';
+import { TooltipPlacement, TooltipVariant } from './types';
 
 export interface TooltipProps extends React.PropsWithChildren {
   className?: string;
   variant?: TooltipVariant;
+  placement?: TooltipPlacement;
   label?: string;
-  disablePortal?: boolean;
+  disabled?: boolean;
+  disableHiddenAnimation?: boolean;
 }
 
 export const Tooltip: React.FC<TooltipProps> = ({ 
-  className, variant = 'primary', label, disablePortal = false, children 
+  className, variant = 'primary', placement = 'top', label, disabled = false, disableHiddenAnimation = false, children 
 }) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [element, setElement] = useState<Element | null>(null);
@@ -24,7 +26,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const [y, setY] = useState(0);
   const [isHover, setIsHover] = useState(false);
   const [isPressed, setIsPressed] = useState(false);
-  const isDisabled = !label;
+  const isDisabled = !label || disabled;
 
   const getTooltipPosition = useCallback((el: Element) => {
     const tooltipEl: HTMLDivElement | null = tooltipRef.current;
@@ -39,11 +41,19 @@ export const Tooltip: React.FC<TooltipProps> = ({
       x: elX, y: elY, width: elWidth
     } = el.getBoundingClientRect();
 
-    const x: number = elX + (elWidth / 2) - (tooltipWidth / 2);
+    let x: number;
+    switch (placement) {
+      case 'top-left':
+        x = elX + (elWidth / 2) - 15;
+        break;
+      case 'top':
+        x = elX + (elWidth / 2) - (tooltipWidth / 2);
+        break;
+    }
     const y: number = elY - tooltipHeight - 5;
 
     return [x, y];
-  }, []);
+  }, [placement]);
 
   const handleMouseEnter = useCallback<React.MouseEventHandler<Element>>((event) => {
     if (isDisabled) {
@@ -74,6 +84,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
   }, [isPressed]);
 
   const handleMouseDown = useCallback(() => {
+    if (isDisabled) {
+      return;
+    }
+
     setIsVisible(true);
     setIsPressed(true);
   }, []);
@@ -114,6 +128,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
   const tooltipNode: React.ReactNode = (
     <TooltipStyled
+      $placement={placement}
       ref={tooltipRef}
       className={className}
       style={{
@@ -124,17 +139,16 @@ export const Tooltip: React.FC<TooltipProps> = ({
         hidden: {
           opacity: 0,
           y: -6,
-          transitionEnd: {
-            visibility: 'hidden'
+          transition: {
+            duration: disableHiddenAnimation ? 0 : 0.3
           }
         },
         visible: {
           opacity: 1,
-          y: 0,
-          visibility: 'visible'
+          y: 0
         }
       }}
-      initial="hidden"
+      initial={isVisible ? 'visible' : 'hidden'}
       animate={isVisible ? 'visible' : 'hidden'}
     >
       <TooltipBlock
@@ -145,6 +159,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
         </TooltipLabel>
       </TooltipBlock>
       <TooltipArrow 
+        placement={placement}
         variant={variant}
       />
     </TooltipStyled>
@@ -157,12 +172,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
       handleTooltipMouseUp={handleMouseUp}
       handleTooltipMouseDown={handleMouseDown}
     >
-      {disablePortal && tooltipNode}
-      {!disablePortal && (
-        <Portal>
-          {tooltipNode}
-        </Portal>
-      )}
+      <Portal>
+        {tooltipNode}
+      </Portal>
       {children}
     </TooltipProvider>
   );

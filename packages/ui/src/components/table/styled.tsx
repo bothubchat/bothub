@@ -1,9 +1,20 @@
 import { styled, css } from 'styled-components';
 import { TableCellStyled, TableCellText } from './cell/styled';
+import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 
 export const TableStyled = styled.div`
-  display: inline-flex;
+  display: flex;
+  width: 100%;
 `;
+
+export const TableScrollbarWrapper = styled(Scrollbar).attrs(({ theme }) => ({
+  variant: 'secondary',
+  scrollShadows: {
+    color: theme.colors.base.black,
+    left: <ScrollbarShadow side="left" />,
+    right: <ScrollbarShadow side="right" />
+  }
+}))``;
 
 export const TableContent = styled.table`
   border-collapse: separate;

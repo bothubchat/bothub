@@ -1,25 +1,39 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
+import { Skeleton } from '@/ui/components/skeleton';
 
-export const TextFieldStyled = styled.label<{ $fullWidth: boolean }>`
+export interface TextFieldStyledProps {
+  $fullWidth: boolean;
+  $disabled: boolean;
+}
+
+export const TextFieldStyled = styled.label<TextFieldStyledProps>`
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
   width: ${({ $fullWidth }) => ($fullWidth ? '100%' : '420px')};
   box-sizing: border-box;
+  ${({ $disabled }) => $disabled && css`
+    cursor: not-allowed;
+  `}
+  ${({ $disabled }) => !$disabled && css`
+    cursor: default;
+  `}
 `;
 
 export const TextFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
   display: inline-flex;
   margin-bottom: 8px;
   width: 100%;
-  cursor: default;
+  cursor: inherit;
 `;
 
 export interface TextFieldBlockProps {
   $error: boolean;
   $focus: boolean;
   $hover: boolean;
+  $disabled: boolean;
+  $skeleton: boolean;
 }
 
 export const TextFieldBlock = styled.span<TextFieldBlockProps>`
@@ -31,21 +45,40 @@ export const TextFieldBlock = styled.span<TextFieldBlockProps>`
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 8px;
   overflow: hidden;
-  cursor: text;
+  cursor: ${({ $disabled, $skeleton }) => {
+    if ($skeleton) {
+      return 'progress';
+    }
+
+    return ($disabled ? 'not-allowed' : 'text');
+  }};
   padding: 0px 16px;
   ${({
-    theme, $error, $hover, $focus 
+    theme, $error, $hover, $focus, $disabled, $skeleton
   }) => {
+    if ($disabled || $skeleton) {
+      return css`
+        border-color: ${({ theme }) => theme.colors.grayScale.gray2};
+      `;
+    }
     if ($error) {
       return css`
         border-color: ${theme.colors.critic};
       `;
     }
+
     return ($hover || $focus) && css`
       border-color: ${theme.colors.accent.primary};
     `;
   }}
-  ${({ theme, $focus }) => {
+  ${({
+    theme, $focus, $disabled, $skeleton 
+  }) => {
+    if ($disabled || $skeleton) {
+      return css`
+        background: ${theme.colors.grayScale.gray3};
+      `;
+    }
     if ($focus) {
       return css`
         background: ${theme.colors.grayScale.gray4};
@@ -75,6 +108,7 @@ export const TextFieldInput = styled.input`
   font-size: 14px;
   font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
   line-height: 18px;
+  cursor: inherit;
   &:hover ~ ${TextFieldBlock} {
     border-color: ${({ theme }) => theme.colors.accent.primary};
   }
@@ -108,4 +142,10 @@ export const TextFieldErrorText = styled(Typography).attrs({ variant: 'input-sm'
   display: inline-flex;
   margin-top: 8px;
   color: ${({ theme }) => theme.colors.critic};
+`;
+
+export const TextFieldSkeleton = styled(Skeleton)`
+  width: 100%;
+  height: 18px;
+  margin: 14px 0px;
 `;

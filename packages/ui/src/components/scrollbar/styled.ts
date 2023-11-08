@@ -1,54 +1,56 @@
 import { styled, css } from 'styled-components';
-import { ScrollbarVariant } from './types';
+import { ScrollbarOverflow, ScrollbarVariant } from './types';
+import { adaptive } from '@/ui/adaptive';
 
 export interface ScrollbarStyledProps {
-  $disableOverflowHidden: boolean;
-  $disabled: boolean;
+  $overflow: ScrollbarOverflow;
 }
 
 export const ScrollbarStyled = styled.div<ScrollbarStyledProps>`
-  ${({ $disabled, $disableOverflowHidden }) => {
-    if ($disabled) {
-      return css`
-        overflow: visible !important;
-        width: inherit;
-        height: inherit;
-      `;
+  position: relative;
+  width: inherit;
+  height: inherit;
+  overflow: ${({ $overflow }) => {
+    switch ($overflow) {
+      case 'auto':
+        return 'hidden';
+      case 'visible':
+        return 'visible';
     }
-
-    return css`
-      position: relative;
-      width: inherit;
-      height: inherit;
-      ${!$disableOverflowHidden && css`
-        overflow: hidden;
-      `}
-    `;
-  }}
+  }};
 `;
 
 export interface ScrollbarContentProps {
   $variant: ScrollbarVariant;
   $size: number;
   $disabled: boolean;
+  $overflow: ScrollbarOverflow;
 }
 
 export const ScrollbarContent = styled.div<ScrollbarContentProps>`
+  position: relative;
+  width: inherit;
+  height: inherit;
+  overflow: ${({ $overflow }) => {
+    switch ($overflow) {
+      case 'auto':
+        return 'auto';
+      case 'visible':
+        return 'visible';
+    }
+  }};
   ${({
-    theme, $variant, $size, $disabled 
+    theme, $disabled, $size, $variant 
   }) => {
     if ($disabled) {
       return css`
-        overflow: visible !important;
-        width: inherit;
-        height: inherit;
+        &::-webkit-scrollbar {
+          display: none;
+        }
       `;
     }
 
     return css`
-      position: relative;
-      width: inherit;
-      height: inherit;
       &::-webkit-scrollbar {
         width: ${`${$size}px`};
         height: ${`${$size}px`};
@@ -69,6 +71,13 @@ export const ScrollbarContent = styled.div<ScrollbarContentProps>`
       &::-webkit-scrollbar-corner {
         display: none;
       }
+      ${adaptive(() => ({
+    touch: css`
+          &::-webkit-scrollbar {
+            display: none; 
+          }
+        `
+  }))}
     `;
   }}
 `;

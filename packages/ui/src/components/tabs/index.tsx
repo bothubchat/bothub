@@ -1,5 +1,7 @@
 import React from 'react';
-import { TabList, TabsStyled } from './styled';
+import {
+  TabDesktopList, TabMobileList, TabMobileListContent, TabMobileListScrollbarWrapper, TabsStyled 
+} from './styled';
 
 export interface TabsProps extends React.PropsWithChildren {
   className?: string;
@@ -11,8 +13,15 @@ export const Tabs: React.FC<TabsProps> = ({
   <TabsStyled
     className={className}
   >
-    <TabList>
+    <TabDesktopList>
       {children}
-    </TabList>
+    </TabDesktopList>
+    <TabMobileList>
+      <TabMobileListScrollbarWrapper>
+        <TabMobileListContent>
+          {children}
+        </TabMobileListContent>
+      </TabMobileListScrollbarWrapper>
+    </TabMobileList>
   </TabsStyled>
 );

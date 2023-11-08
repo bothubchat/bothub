@@ -1,23 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
+import { PortalElement } from './styled';
 
-export const Portal: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const elementRef = useRef<Element | null>(null);
-  const [mounted, setMounted] = useState(false);
+export interface PortalProps extends React.PropsWithChildren {
+  element?: Element | null;
+}
+
+export const Portal: React.FC<PortalProps> = ({
+  children, ...props
+}) => {
+  const [element, setElement] = useState<Element | null>(null);
 
   useEffect(() => {
-    elementRef.current = document.querySelector('#bothub_portal');
-    setMounted(true);
-  }, []);
+    if (typeof props.element !== 'undefined') {
+      setElement(props.element);
+    } else {
+      setElement(document.querySelector(String(PortalElement)));
+    }
+  }, [props.element]);
 
-  if (!mounted) {
+  if (element === null) {
     return null;
   }
-  if (!elementRef.current) {
-    return children;
-  }
 
-  return ReactDOM.createPortal(children, elementRef.current);
+  return ReactDOM.createPortal(children, element);
 };
 
-export const PortalElement: React.FC = () => <div id="bothub_portal" />;
+export * from './styled';

@@ -1,17 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { 
   MessageBlock,
   MessageContent,
   MessageMarkdown,
   MessageStyled
 } from './styled';
-import { MessageVariant } from './types';
+import { MessageCopyEventHandler, MessageVariant } from './types';
 import {
-  MessageCode, MessageComponentsProps, MessageParagraph, MessagePre, MessageStrong 
+  MessageCode, 
+  MessageComponentsProps, 
+  MessageParagraph,
+  MessagePre, 
+  MessageStrong 
 } from './components';
 import { useScrollbar } from '@/ui/components/scrollbar';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
+import { MessageProvider } from './context';
 
 export interface MessageProps {
   className?: string;
@@ -23,6 +28,8 @@ export interface MessageProps {
   typing?: boolean;
   skeleton?: boolean;
   children?: string;
+  onCopy?: MessageCopyEventHandler;
+  onCodeCopy?: MessageCopyEventHandler;
 }
 
 export const Message: React.FC<MessageProps> = ({ 
@@ -34,7 +41,9 @@ export const Message: React.FC<MessageProps> = ({
   components = {},
   typing = false,
   skeleton = false,
-  children
+  children,
+  onCopy,
+  onCodeCopy
 }) => {
   const theme = useTheme();
 
@@ -44,87 +53,98 @@ export const Message: React.FC<MessageProps> = ({
     lockScroll();
   }, [children]);
 
+  const messageRef = useRef<HTMLDivElement>(null);
+
   return (
-    <MessageStyled
-      $variant={variant}
-      className={className}
+    <MessageProvider
+      message={children ?? ''}
+      onCopy={onCopy}
+      onCodeCopy={onCodeCopy}
     >
-      <MessageContent $variant={variant}>
-        {avatar}
-        <MessageBlock $variant={variant}>
-          {typeof children === 'string' && (
-            <MessageMarkdown
-              $typing={typing}
-              components={{
-                p: ({ className, children }) => (
-                  <MessageParagraph 
-                    {...components.paragraph}
-                    className={className}
-                  >
-                    {children}
-                  </MessageParagraph>
-                ),
-                strong: ({ className, children }) => (
-                  <MessageStrong
-                    {...components.strong} 
-                    className={className}
-                  >
-                    {children}
-                  </MessageStrong>
-                ),
-                pre: ({ className, children }) => (
-                  <MessagePre 
-                    {...components.pre}
-                    className={className}
-                  >
-                    {children}
-                  </MessagePre>
-                ),
-                code: ({ className, inline = false, children }) => {
-                  const code = String(children);
-                  if (!code) {
-                    return null;
-                  }
-      
-                  return (
-                    <MessageCode
-                      {...components.code}
+      <MessageStyled
+        $variant={variant}
+        ref={messageRef}
+        className={className}
+      >
+        <MessageContent $variant={variant}>
+          {avatar}
+          <MessageBlock $variant={variant}>
+            {typeof children === 'string' && (
+              <MessageMarkdown
+                $typing={typing}
+                components={{
+                  p: ({ className, children }) => (
+                    <MessageParagraph 
+                      {...components.paragraph}
                       className={className}
-                      variant={inline ? 'inline' : 'multiline'}
-                      messageVariant={variant}
                     >
-                      {code}
-                    </MessageCode>
-                  );
-                }
-              }}
-            >
-              {children}
-            </MessageMarkdown>
-          )}
-          {skeleton && (
-            <MessageParagraph
-              disableMargin
-            >
-              <Skeleton
-                width={260}
-                opacity={[
-                  0.15,
-                  0.45
-                ]}
-                colors={[
-                  theme.colors.base.white
-                ]}
-              />
-            </MessageParagraph>
-          )}
-        </MessageBlock>
-        {tokens}
-        {actions}
-      </MessageContent>
-    </MessageStyled>
+                      {children}
+                    </MessageParagraph>
+                  ),
+                  strong: ({ className, children }) => (
+                    <MessageStrong
+                      {...components.strong} 
+                      className={className}
+                    >
+                      {children}
+                    </MessageStrong>
+                  ),
+                  pre: ({ className, children }) => (
+                    <MessagePre 
+                      {...components.pre}
+                      className={className}
+                    >
+                      {children}
+                    </MessagePre>
+                  ),
+                  code: ({ className, inline = false, children }) => {
+                    const code = String(children);
+                    if (!code) {
+                      return null;
+                    }
+        
+                    return (
+                      <MessageCode
+                        {...components.code}
+                        className={className}
+                        variant={inline ? 'inline' : 'multiline'}
+                        messageVariant={variant}
+                      >
+                        {code}
+                      </MessageCode>
+                    );
+                  }
+                }}
+              >
+                {children}
+              </MessageMarkdown>
+            )}
+            {skeleton && (
+              <MessageParagraph
+                disableMargin
+              >
+                <Skeleton
+                  width={260}
+                  opacity={[
+                    0.15,
+                    0.45
+                  ]}
+                  colors={[
+                    theme.colors.base.white
+                  ]}
+                />
+              </MessageParagraph>
+            )}
+          </MessageBlock>
+          {tokens}
+          {actions}
+        </MessageContent>
+      </MessageStyled>
+    </MessageProvider>
   );
 };
 
 export * from './types';
 export * from './styled';
+export * from './context';
+export * from './copy';

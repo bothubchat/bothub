@@ -18,6 +18,11 @@ export const SidebarGroupStyled = styled.div`
 
 export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-xs-regular', component: 'span' })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  cursor: default;
 `;
 
 export const SidebarChatList = styled.div`

@@ -5,7 +5,7 @@ import React from 'react';
 import { Avatar } from '@/ui/components/avatar';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
-import { CopyIcon, EditIcon } from '@/ui/icons';
+import { EditIcon } from '@/ui/icons';
 import { MessageVariant } from './types';
 
 export interface MessageStyledProps {
@@ -166,7 +166,5 @@ export const MessageActions = styled.div`
 `;
 
 export const MessageAction = styled(Button).attrs({ variant: 'text', iconSize: 18 })``;
-
-export const MessageCopyAction = styled(MessageAction).attrs({ children: <CopyIcon /> })``;
 
 export const MessageEditAction = styled(MessageAction).attrs({ children: <EditIcon /> })``;

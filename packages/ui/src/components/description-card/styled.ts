@@ -58,6 +58,17 @@ export const DescriptionCardContent = styled.div<{ $variant: DescriptionCardVari
             padding: 24px 14px;
           }
         `;
+      case 'quaternary':
+        return css`
+          padding: 28px 24px;
+          @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+            padding: 24px 18px;
+            align-items: center;
+          }
+          @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+            padding: 30px 16px;
+          }
+        `;
       default:
         return css`
           display: flex;
@@ -104,7 +115,7 @@ export interface DescriptionCardTitleProps extends TypographyProps {
   $variant: DescriptionCardVariant;
 }
 
-export const DescriptionCardTitle = styled(Typography).attrs({ variant: 'body-xl-semibold' })`
+export const DescriptionCardTitle = styled(Typography).attrs({ variant: 'body-xl-semibold', component: 'h3' })`
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     text-align: center;
   }
@@ -138,16 +149,6 @@ export const DescriptionCardButton = styled(Button)`
     margin: auto;
     margin-top: 14px;
     margin-bottom: 0px;
-  }
-`;
-
-export const DescriptionCardGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
-  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    grid-template-columns: 1fr;
-    justify-items: center;
   }
 `;
 

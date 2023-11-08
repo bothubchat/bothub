@@ -16,8 +16,10 @@ import {
   SidebarUserInfoFreeTariff,
   SidebarUserInfoBasicTariff,
   SidebarUserInfoPremiumTariff,
-  SidebarUserInfoEliteTariff
+  SidebarUserInfoEliteTariff,
+  SidebarConsumer
 } from '.';
+import { Tooltip } from '@/ui/components/tooltip';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
 
@@ -26,28 +28,48 @@ export type SidebarStory = StoryObj<typeof Sidebar>;
 export const Basic: SidebarStory = {
   args: {
     toggle: (
-      <SidebarToggleButton />
+      <SidebarConsumer>
+        {({ isOpen }) => (
+          <Tooltip
+            label={isOpen ? 'Скрыть боковую панель' : 'Открыть боковую панель'}
+            placement={isOpen ? 'top' : 'top-left'}
+            disableHiddenAnimation
+          >
+            <SidebarToggleButton />
+          </Tooltip>
+        )}
+      </SidebarConsumer>
     ),
     createChat: (
       <SidebarCreateChatButton />
     ),
     user: (
-      <SidebarUserInfo 
-        avatar={(
-          <SidebarUserInfoAvatar
-            src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
-            alt="Артём"
-          />
+      <SidebarConsumer>
+        {({ isOpen }) => (
+          <Tooltip
+            label="Профиль"
+            placement="top-left"
+            disabled={isOpen}
+          >
+            <SidebarUserInfo 
+              avatar={(
+                <SidebarUserInfoAvatar
+                  src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
+                  alt="Артём"
+                />
+              )}
+              name="Артём"
+              tokens="9 012 TKN"
+              tariff={(
+                <SidebarUserInfoFreeTariff />
+              )}
+              updateTariff={(
+                <SidebarUserInfoUpdateTariffButton />
+              )}
+            />
+          </Tooltip>
         )}
-        name="Артём"
-        tokens="9 012 TKN"
-        tariff={(
-          <SidebarUserInfoFreeTariff />
-        )}
-        updateTariff={(
-          <SidebarUserInfoUpdateTariffButton />
-        )}
-      />
+      </SidebarConsumer>
     ),
     children: (
       <SidebarCollapse label="Список чатов">
@@ -112,6 +134,16 @@ export const Basic: SidebarStory = {
               color="#F2DD1C"
               name="Придумай мне резюме"
               numbers="6.9K"
+              actions={(
+                <SidebarChatActions>
+                  <SidebarChatDeleteAction />
+                </SidebarChatActions>
+              )}
+            />
+            <SidebarChat
+              color="#941CF2"
+              name="Длинное название чата Длинное название чата Длинное название чата Длинное название чата Длинное название чата"
+              numbers="1.7K"
               actions={(
                 <SidebarChatActions>
                   <SidebarChatDeleteAction />
@@ -241,6 +273,13 @@ export const Skeleton: SidebarStory = {
         </SidebarGroups>
       </SidebarCollapse>
     )
+  }
+};
+
+export const SkeletonClosed: SidebarStory = {
+  args: {
+    ...Skeleton.args,
+    open: false
   }
 };
 

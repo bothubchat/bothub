@@ -23,7 +23,7 @@ export const Basic: TabsStory = {
 };
 
 export default {
-  title: 'UI Components/Tabs',
+  title: 'UI Components/Tab/List',
   component: Tabs,
   decorators: [ThemeStoryDecorator()],
   argTypes: {

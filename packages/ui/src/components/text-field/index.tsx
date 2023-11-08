@@ -4,17 +4,19 @@ import {
   TextFieldInput, 
   TextFieldBlock, 
   TextFieldLabel, 
-  TextFieldStyled 
+  TextFieldStyled, 
+  TextFieldSkeleton
 } from './styled';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { SearchCircleIcon } from '@/ui/icons';
 import { TextFieldType } from './types';
+import { Skeleton } from '@/ui/components/skeleton';
 
 export type TextFieldValueChangeEventHandler = (value: string) => unknown;
 
-export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFieldStyled>, 'onChange' | 'onFocus' | 'onBlur' | 'onMouseEnter' | 'onMouseLeave' | '$fullWidth'> {
-  label?: string;
+export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFieldStyled>, 'onChange' | 'onFocus' | 'onBlur' | 'onMouseEnter' | 'onMouseLeave' | '$fullWidth' | '$disabled'> {
+  label?: string | boolean;
   placeholder?: string;
   value?: string;
   defaultValue?: string;
@@ -24,6 +26,8 @@ export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFie
   endIcon?: React.ReactNode;
   name?: string;
   type?: TextFieldType;
+  disabled?: boolean;
+  skeleton?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -33,7 +37,8 @@ export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFie
 }
 
 export const TextField: React.FC<TextFieldProps> = ({ 
-  label, placeholder, value, defaultValue, error, name, type, fullWidth = false, startIcon, endIcon,
+  label, placeholder, value, defaultValue, error, name, 
+  type, fullWidth = false, disabled = false, startIcon, endIcon, skeleton = false,
   onChange, onFocus, onBlur, onMouseEnter, onMouseLeave, onValueChange,
   ...props 
 }) => {
@@ -70,33 +75,64 @@ export const TextField: React.FC<TextFieldProps> = ({
   };
 
   return (
-    <TextFieldStyled {...props} $fullWidth={fullWidth}>
-      {label && <TextFieldLabel>{label}</TextFieldLabel>}
-      <TextFieldBlock $error={!!error} $hover={isHover} $focus={isFocus}>
-        {(type === 'search' || startIcon) && (
-          <IconProvider {...iconProps}>
-            {startIcon}
-            {type === 'search' && <SearchCircleIcon />}
-          </IconProvider>
-        )}
-        <TextFieldInput 
-          value={value}
-          type={type}
-          name={name}
-          defaultValue={defaultValue}
-          placeholder={placeholder}
-          onChange={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        />
-        {endIcon && (
-          <IconProvider {...iconProps}>
-            {endIcon}
-          </IconProvider>
-        )}
-      </TextFieldBlock>
+    <TextFieldStyled 
+      {...props} 
+      $fullWidth={fullWidth}
+      $disabled={disabled}
+    >
+      {label && (
+        <TextFieldLabel>
+          {!skeleton && label}
+          {skeleton && (
+            <Skeleton width={100} />
+          )}
+        </TextFieldLabel>
+      )}
+      {!skeleton && (
+        <TextFieldBlock 
+          $error={!!error} 
+          $hover={isHover} 
+          $focus={isFocus}
+          $disabled={disabled}
+          $skeleton={false}
+        >
+          {(type === 'search' || startIcon) && (
+            <IconProvider {...iconProps}>
+              {startIcon}
+              {type === 'search' && <SearchCircleIcon />}
+            </IconProvider>
+          )}
+          <TextFieldInput 
+            value={value}
+            type={type}
+            name={name}
+            defaultValue={defaultValue}
+            placeholder={placeholder}
+            disabled={disabled}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          />
+          {endIcon && (
+            <IconProvider {...iconProps}>
+              {endIcon}
+            </IconProvider>
+          )}
+        </TextFieldBlock>
+      )}
+      {skeleton && (
+        <TextFieldBlock
+          $error={false}
+          $hover={false}
+          $focus={false}
+          $disabled={false}
+          $skeleton
+        >
+          <TextFieldSkeleton />
+        </TextFieldBlock>
+      )}
       {error && (
         <TextFieldErrorText>{error}</TextFieldErrorText>
       )}

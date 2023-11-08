@@ -1,16 +1,14 @@
 import { styled } from 'styled-components';
-import { Avatar } from '@/ui/components/avatar';
+import { AnimationProps, motion } from 'framer-motion';
+import React from 'react';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 
-export const SidebarUserInfoStyled = styled.div`
+export const SidebarUserInfoStyled: React.FC<AnimationProps & React.PropsWithChildren> = styled(motion.div)`
   display: flex;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  border-radius: 18px;
   overflow: hidden;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
   width: 100%;
-  padding: 20px;
 `;
 
 export const SidebarUserInfoContent = styled.div`
@@ -23,7 +21,6 @@ export const SidebarUserInfoTop = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 26px;
 `;
 
 export const SidebarUserInfoTopLeft = styled.div`
@@ -33,12 +30,13 @@ export const SidebarUserInfoTopLeft = styled.div`
 
 export const SidebarUserInfoTopRight = styled.div``;
 
-export const SidebarUserInfoBottom = styled.div`
+export const SidebarUserInfoBottom: React.FC<AnimationProps & React.PropsWithChildren> = styled(motion.div)`
   display: flex;
   width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-top: 26px;
 `;
-
-export const SidebarUserInfoAvatar = styled(Avatar)``;
 
 export const SidebarUserInfoText = styled.div`
   display: flex;
@@ -46,10 +44,13 @@ export const SidebarUserInfoText = styled.div`
   margin-left: 12px;
 `;
 
-export const SidebarUserInfoName = styled(Typography).attrs({ variant: 'body-m-semibold', component: 'span' })``;
+export const SidebarUserInfoName = styled(Typography).attrs({ variant: 'body-m-semibold', component: 'span' })`
+  white-space: nowrap;
+`;
 
 export const SidebarUserInfoTokens = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
+  white-space: nowrap;
 `;
 
 export const SidebarUserInfoTariff = styled(Typography).attrs({ variant: 'body-m-medium', component: 'span' })`

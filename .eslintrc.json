@@ -69,6 +69,7 @@
     "default-case": "off",
     "no-alert": "off",
     "react/no-unstable-nested-components": "off",
-    "@typescript-eslint/no-use-before-define": "off"
+    "@typescript-eslint/no-use-before-define": "off",
+    "react/jsx-no-useless-fragment": "off"
   }
 }

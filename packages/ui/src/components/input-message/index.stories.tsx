@@ -8,8 +8,14 @@ export type InputMessageStory = StoryObj<typeof InputMessage>;
 
 export const Basic: InputMessageStory = {};
 
+export const Disabled: InputMessageStory = {
+  args: {
+    disabled: true
+  }
+};
+
 export default {
-  title: 'UI Components/InputMessage',
+  title: 'UI Components/Message/Input',
   component: InputMessage,
   decorators: [ThemeStoryDecorator()],
   args: {

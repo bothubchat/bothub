@@ -1,15 +1,14 @@
 import { styled } from 'styled-components';
+import { AnimationProps, motion } from 'framer-motion';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 
-export const SidebarStyled = styled.aside`
+export const SidebarStyled: React.FC<React.ComponentProps<'aside'> & AnimationProps> = styled(motion.aside)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   flex-shrink: 0;
   width: 100%;
   height: 100%;
-  min-width: 445px;
-  max-width: 445px;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
   border-radius: 18px;
   overflow: hidden;
@@ -28,6 +27,8 @@ export const SidebarContent = styled.div`
 
 export const SidebarHead = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
 `;
 
@@ -61,7 +62,8 @@ export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs({
   }
 })`
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const SidebarBodyContent = styled.div`

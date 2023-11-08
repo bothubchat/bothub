@@ -124,7 +124,7 @@ export const Skeleton: MessagesStory = {
 };
 
 export default {
-  title: 'UI Components/Messages',
+  title: 'UI Components/Message/List',
   component: Messages,
   decorators: [ThemeStoryDecorator()],
   argTypes: {

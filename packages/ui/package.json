@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "1.0.0-beta.23",
+  "version": "1.0.0-beta.36",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -37,6 +37,7 @@
     },
     "./fonts/*": "./fonts/*"
   },
+  "sideEffects": false,
   "peerDependencies": {
     "framer-motion": ">=10.16.3",
     "react": ">=18.2.0",
@@ -48,6 +49,7 @@
     "react-slider": ">=2.0.6",
     "react-markdown": ">=8.0.5",
     "highlight.js": ">=11.9.0",
-    "react-highlight": ">=0.15.0"
+    "react-highlight": ">=0.15.0",
+    "react-contenteditable": ">=3.3.7"
   }
 }

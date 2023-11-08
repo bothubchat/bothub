@@ -1,6 +1,7 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { CopyIcon } from '@/ui/icons';
 import { Typography } from '@/ui/components/typography';
+import { adaptive } from '@/ui/adaptive';
 
 export const PromptCardStyled = styled.div`
   display: flex;
@@ -9,7 +10,6 @@ export const PromptCardStyled = styled.div`
   background: ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 12px;
   overflow: hidden;
-  padding: 16px;
   cursor: pointer;
   &:hover {
     box-shadow: inset 0px 0px 0px 1px ${({ theme }) => theme.colors.accent.primary};
@@ -18,6 +18,17 @@ export const PromptCardStyled = styled.div`
     cursor: default;
     box-shadow: inset 0px 0px 0px 1px ${({ theme }) => theme.colors.accent.primary};
   }
+  ${adaptive(() => ({
+    desktop: css`
+      padding: 16px;
+    `,
+    tablet: css`
+      padding: 14px;
+    `,
+    mobile: css`
+      padding: 10px;
+    `
+  }))}
 `;
 
 export const PromptCardContent = styled.div`

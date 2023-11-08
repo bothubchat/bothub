@@ -52,7 +52,7 @@ export const Basic: NotificationsStory = {
 };
 
 export default {
-  title: 'UI Components/Notifications',
+  title: 'UI Components/Notification/List',
   component: Notifications,
   decorators: [ThemeStoryDecorator()]
 } as NotificationsMeta;

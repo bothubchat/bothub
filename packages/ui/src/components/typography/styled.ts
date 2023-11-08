@@ -42,6 +42,11 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
           font-size: 34px;
           line-height: 44px;
           --skeleton-height: 44px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 30px;
+            line-height: 40px;
+            --skeleton-height: 40px;
+          }
           @media (max-width: ${theme.mobile.maxWidth}) {
             font-size: 24px;
             line-height: 32px;

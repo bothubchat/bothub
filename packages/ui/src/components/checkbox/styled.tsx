@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { CheckSmallIcon } from '@/ui/icons';
 import { Typography } from '@/ui/components/typography';
+import { Skeleton } from '@/ui/components/skeleton';
 
 export interface CheckboxStyledProps {
   $disabled: boolean;
@@ -39,6 +40,12 @@ export const CheckboxBlock = styled.span`
   &:hover {
     border-color: ${({ theme }) => theme.colors.accent.primary};
   }
+`;
+
+export const CheckboxBlockSkeleton = styled(Skeleton)`
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
 `;
 
 export const CheckboxLabel = styled(Typography).attrs({ variant: 'body-m-medium' })``;

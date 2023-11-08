@@ -1,8 +1,7 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { 
   MessageCodeBody,
   MessageCodeContent,
-  MessageCodeCopyButton,
   MessageCodeHead, 
   MessageCodeLanguage, 
   MessageMultilineCode, 
@@ -11,8 +10,7 @@ import {
 import { MessageVariant } from '@/ui/components/message';
 import { MessageCodeVariant } from './types';
 import { Tooltip } from '@/ui/components/tooltip';
-
-export type MessageCodeCopyEventHandler = (code: string) => unknown;
+import { MessageCodeCopyButton } from './copy';
 
 export interface MessageCodeProps {
   className?: string;
@@ -20,7 +18,6 @@ export interface MessageCodeProps {
   messageVariant?: MessageVariant;
   copyLabel?: string;
   children: string;
-  onCopy?: MessageCodeCopyEventHandler;
 }
 
 export const MessageCode: React.FC<MessageCodeProps> = ({ 
@@ -28,17 +25,12 @@ export const MessageCode: React.FC<MessageCodeProps> = ({
   variant = 'multiline',
   messageVariant = 'user',
   copyLabel,
-  children,
-  onCopy
+  children
 }) => {
   const classNameRegexp = /language-(\w+)/;
   const classNameMatch = classNameRegexp.exec(className || '');
   const languageName: string = className?.replace(classNameRegexp, '$1') ?? 'text';
   const codeClassName: string = classNameMatch ? classNameMatch[1] : '';
-
-  const handleCopy = useCallback(() => {
-    onCopy?.(children);
-  }, [children, onCopy]);
 
   switch (variant) {
     case 'multiline':
@@ -56,9 +48,9 @@ export const MessageCode: React.FC<MessageCodeProps> = ({
               variant="secondary"
               label={copyLabel}
             >
-              <MessageCodeCopyButton 
-                $messageVariant={messageVariant}
-                onClick={handleCopy}
+              <MessageCodeCopyButton
+                code={children}
+                messageVariant={messageVariant}
               />
             </Tooltip>
           </MessageCodeHead>

@@ -27,7 +27,7 @@ export const Clipboard: NotificationStory = {
 };
 
 export default {
-  title: 'UI Components/Notification',
+  title: 'UI Components/Notification/Item',
   component: Notification,
   decorators: [ThemeStoryDecorator()]
 } as NotificationMeta;

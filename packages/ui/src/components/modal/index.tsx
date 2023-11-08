@@ -53,7 +53,9 @@ export const Modal: React.FC<ModalProps> = ({
             </ModalCloseButton>
             <ModalWindowBodyContent>
               <ModalWindowBodyScrollbarWrapper
+                overflow={scrollbar ? 'auto' : 'visible'}
                 disabled={!scrollbar}
+                disableShadows={!scrollbar}
               >
                 <ModalContent>
                   {children}

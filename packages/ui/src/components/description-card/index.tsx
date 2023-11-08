@@ -93,3 +93,4 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
 
 export * from './styled';
 export * from './types';
+export * from './grid';

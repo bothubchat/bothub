@@ -9,6 +9,8 @@ import {
   SidebarChatStyled 
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
+import { useSidebar } from '../context';
+import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 
 export interface SidebarChatDefaultProps {
   color: string;
@@ -29,38 +31,61 @@ export type SidebarChatProps = (SidebarChatDefaultProps | SidebarChatSkeletonPro
 
 export const SidebarChat: React.FC<SidebarChatProps> = ({
   onClick, ...props
-}) => (
-  <SidebarChatStyled 
-    $active={(!props.skeleton && props.active) ?? false}
-    $skeleton={!!props.skeleton}
-    onClick={onClick} 
-  >
-    <SidebarChatLeft>
-      {!props.skeleton && (
-        <SidebarChatColor 
-          $color={props.color} 
-        />
-      )}
-      {props.skeleton && (
-        <SidebarChatColor
-          $skeleton
-          as={Skeleton}
-        />
-      )}
-      <SidebarChatName>
-        {!props.skeleton && props.name}
-        {props.skeleton && <SidebarChatNameSkeleton />}
-      </SidebarChatName>
-      {!props.skeleton && props.actions}
-    </SidebarChatLeft>
-    <SidebarChatRight>
-      {(!props.skeleton && props.numbers) && (
-        <SidebarChatNumbers>
-          {props.numbers}
-        </SidebarChatNumbers>
-      )}
-    </SidebarChatRight>
-  </SidebarChatStyled>
-);
+}) => {
+  const { isOpen } = useSidebar();
+
+  return (
+    <SidebarChatStyled 
+      $active={(!props.skeleton && props.active) ?? false}
+      $skeleton={!!props.skeleton}
+      onClick={onClick} 
+    >
+      <SidebarChatLeft>
+        {!props.skeleton && (
+          <Tooltip 
+            label={props.name}
+            placement="top-left"
+            disabled={isOpen}
+          >
+            <TooltipConsumer>
+              {({
+                handleTooltipMouseEnter,
+                handleTooltipMouseLeave
+              }) => (
+                <SidebarChatColor 
+                  $color={props.color}
+                  onMouseEnter={handleTooltipMouseEnter}
+                  onMouseLeave={handleTooltipMouseLeave}
+                />
+              )}
+            </TooltipConsumer>
+          </Tooltip>
+        )}
+        {props.skeleton && (
+          <SidebarChatColor
+            $skeleton
+            as={Skeleton}
+          />
+        )}
+        <SidebarChatName
+          $open={isOpen}
+        >
+          {!props.skeleton && props.name}
+          {props.skeleton && <SidebarChatNameSkeleton />}
+        </SidebarChatName>
+        {!props.skeleton && props.actions}
+      </SidebarChatLeft>
+      <SidebarChatRight>
+        {(!props.skeleton && props.numbers) && (
+          <SidebarChatNumbers
+            $open={isOpen}
+          >
+            {props.numbers}
+          </SidebarChatNumbers>
+        )}
+      </SidebarChatRight>
+    </SidebarChatStyled>
+  );
+};
 
 export * from './styled';
