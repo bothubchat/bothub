@@ -4,6 +4,7 @@ import { HeaderAuthUserItemContent, HeaderAuthUserItemStyled } from './styled';
 import { useHeaderAuthUser } from '../context';
 import { useTheme } from '../../../../theme';
 import { IconProvider } from '@/ui/components/icon';
+import { useHeader } from '../../context';
 
 export interface HeaderAuthUserItemProps extends React.ComponentProps<'a'>, StyledProps {
   icon: React.ReactNode;
@@ -14,11 +15,13 @@ export const HeaderAuthUserItem: React.FC<HeaderAuthUserItemProps> = ({
   icon, to, children, ...props 
 }) => {
   const theme = useTheme();
+  const { setIsMenuOpen } = useHeader();
   const { setIsOpen } = useHeaderAuthUser();
 
   const handleClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
     props.onClick?.(event);
     setIsOpen(false);
+    setIsMenuOpen(false);
   }, [props.onClick]);
 
   return (

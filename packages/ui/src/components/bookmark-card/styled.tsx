@@ -2,6 +2,7 @@ import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { CloseIcon, EditIcon } from '@/ui/icons';
+import { adaptive } from '@/ui/adaptive';
 
 export interface BookmarkCardStyledProps {
   $skeleton: boolean;
@@ -11,7 +12,6 @@ export const BookmarkCardStyled = styled.div<BookmarkCardStyledProps>`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 314px;
   border-radius: 14px;
   overflow: hidden;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
@@ -26,6 +26,23 @@ export const BookmarkCardStyled = styled.div<BookmarkCardStyledProps>`
       }
     }
   `}
+  ${() => adaptive({
+    variant: 'dashboard',
+    desktop: css`
+      max-width: 314px;
+    `,
+    tablet: css`
+      max-width: 341px;
+    `,
+    mobile: css`
+      max-width: 343px;
+    `,
+    touch: css`
+      ${BookmarkCardActions} {
+        visibility: visible !important;
+      }
+    `
+  })}
 `;
 
 export const BookmarkCardContent = styled.div`

@@ -8,6 +8,12 @@ export type AdaptiveStory = StoryObj<typeof AdaptiveBlock>;
 
 export const Basic: AdaptiveStory = {};
 
+export const WithoutMiniTablet: AdaptiveStory = {
+  args: {
+    disableMiniTablet: true
+  }
+};
+
 export const Merge: AdaptiveStory = {
   args: {
     merge: true

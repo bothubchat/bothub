@@ -1,49 +1,66 @@
 import { styled, css } from 'styled-components';
 import { Block } from '@/ui/components/block';
 import { Typography } from '@/ui/components/typography';
-import { adaptive } from '@/ui/adaptive';
+import { AdaptiveVariant, adaptive } from '@/ui/adaptive';
 
 export const AdaptiveBlockText = styled(Typography).attrs({ variant: 'h1', component: 'h1' })`
-  display: none;
+  opacity: 0.3;
+  transition: opacity 0.3s;
 `; 
 
-export const AdaptiveBlockDesktopText = styled(AdaptiveBlockText)``;
+export const AdaptiveBlockDesktopText = styled(AdaptiveBlockText)`
+  color: ${({ theme }) => theme.colors.green};
+`;
 
-export const AdaptiveBlockTabletText = styled(AdaptiveBlockText)``;
+export const AdaptiveBlockTabletText = styled(AdaptiveBlockText)`
+  color: ${({ theme }) => theme.colors.critic};
+`;
 
-export const AdaptiveBlockMobileText = styled(AdaptiveBlockText)``;
+export const AdaptiveBlockMiniTabletText = styled(AdaptiveBlockText)`
+  color: ${({ theme }) => theme.colors.orange};
+`;
 
-export const AdaptiveBlockTouchText = styled(AdaptiveBlockText)``;
+export const AdaptiveBlockMobileText = styled(AdaptiveBlockText)`
+  color: ${({ theme }) => theme.colors.purple};
+`;
+
+export const AdaptiveBlockTouchText = styled(AdaptiveBlockText)`
+  color: ${({ theme }) => theme.colors.aqua};
+`;
 
 export interface AdaptiveBlockStyledProps {
+  $variant: AdaptiveVariant;
   $merge: boolean;
+  $disableMiniTablet: boolean;
 }
 
 export const AdaptiveBlockStyled = styled(Block)<AdaptiveBlockStyledProps>`
-  ${adaptive(({ theme, $merge }) => ({
+  ${adaptive(({ $variant, $merge, $disableMiniTablet }) => ({
+    variant: $variant,
     merge: $merge,
     desktop: css`
       ${AdaptiveBlockDesktopText} {
-        display: block;
-        color: ${theme.colors.green};
+        opacity: 1;
       }
     `,
     tablet: css`
       ${AdaptiveBlockTabletText} {
-        display: block;
-        color: ${theme.colors.critic};
+        opacity: 1;
+      }
+    `,
+    miniTablet: !$disableMiniTablet && css`
+      ${AdaptiveBlockMiniTabletText} {
+        opacity: 1;
       }
     `,
     mobile: css`
       ${AdaptiveBlockMobileText} {
-        display: block;
-        color: ${theme.colors.purple};
+        opacity: 1;
       }
     `,
     touch: css`
       ${AdaptiveBlockTouchText} {
-        display: block;
-        color: ${theme.colors.aqua};
+        opacity: 1;
       }
     `
   }))}

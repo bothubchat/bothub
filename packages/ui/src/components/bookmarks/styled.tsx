@@ -1,23 +1,39 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { Button } from '@/ui/components/button';
 import { Plus2Icon } from '@/ui/icons';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
+import { adaptive } from '@/ui/adaptive';
 
 export const BookmarksStyled = styled.div`
   display: flex;
   width: 100%;
   grid-area: tabs;
   box-sizing: border-box;
-  padding: 16px 20px;
   padding-bottom: 8px;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
   border-radius: 18px;
+  ${adaptive({
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
+      padding: 16px 20px;
+      padding-bottom: 8px;
+    `,
+    tablet: css`
+      padding: 16px 18px;
+      padding-bottom: 8px;
+    `,
+    mobile: css`
+      padding: 10px 16px;
+      padding-bottom: 5px;
+    `
+  })}
 `;
 
 export const BookmarksContent = styled.div`
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
   width: 100%;
 `;
 
@@ -36,7 +52,16 @@ export const BookmarkListScrollbarWrapper = styled(Scrollbar).attrs({
 })`
   display: flex;
   overflow: auto;
-  padding-bottom: 8px;
+  ${adaptive({
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
+      padding-bottom: 8px;
+    `,
+    mobile: css`
+      padding-bottom: 5px;
+    `
+  })}
 `;
 
 export const BookmarkListContent = styled.div`
@@ -45,5 +70,14 @@ export const BookmarkListContent = styled.div`
 `;
 
 export const AddBookmarkButton = styled(Button).attrs({ children: <Plus2Icon /> })`
-  margin-bottom: 8px;
+  ${adaptive({
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
+      margin-bottom: 8px;
+    `,
+    mobile: css`
+      margin-bottom: 5px;
+    `
+  })}
 `;

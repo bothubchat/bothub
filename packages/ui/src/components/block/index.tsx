@@ -15,6 +15,7 @@ export const Block: React.FC<BlockProps> = ({
   className, title, toolbar, background, fullHeight = false, children 
 }) => {
   const isHead = !!title;
+  const isToolbar = !!toolbar;
 
   return (
     <BlockStyled 
@@ -22,7 +23,7 @@ export const Block: React.FC<BlockProps> = ({
     >
       {isHead && (
         <BlockHead
-          $toolbar={!!toolbar}
+          $toolbar={isToolbar}
         >
           {title && (
             <BlockTitle>

@@ -8,7 +8,7 @@ export interface MessageParagraphStyledProps {
 export const MessageParagraphStyled = styled(Typography).attrs({ variant: 'body-m-regular', component: 'p' })<MessageParagraphStyledProps>`
   color: ${({ theme }) => theme.colors.base.white};
   ${({ $disableMargin }) => !$disableMargin && css`
-    margin: 16px 0px;
+    margin: 10px 0px;
   `}
   &::selection {
     background: ${({ theme }) => theme.colors.base.white};

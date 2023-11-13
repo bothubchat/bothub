@@ -1,5 +1,6 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
+import { adaptive } from '@/ui/adaptive';
 
 export const MessagesStyled = styled.div`
   display: flex;
@@ -18,8 +19,21 @@ export const MessagesScrollbarWrapper = styled(Scrollbar).attrs({
 })`
   overflow: auto;
   height: 100%;
-  padding: 43px 34px;
-  padding-bottom: 106px;
+  ${adaptive({
+    variant: 'dashboard',
+    desktop: css`
+      padding: 43px 34px;
+      padding-bottom: 106px;
+    `,
+    tablet: css`
+      padding: 43px 24px;
+      padding-bottom: 106px;
+    `,
+    mobile: css`
+      padding: 24px 16px;
+      padding-bottom: 156px;
+    `
+  })}
 `;
 
 export const MessagesContent = styled.div`

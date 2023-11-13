@@ -1,7 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Container } from '../container';
-import { HeaderNavStyled } from './nav';
 import { HeaderVariant } from './types';
+import { adaptive } from '@/ui/adaptive';
 
 export const HeaderOffset = styled.div`
   display: flex;
@@ -14,41 +14,105 @@ export const HeaderOffset = styled.div`
   }
 `;
 
-export const HeaderStyled = styled.header<{ $variant: HeaderVariant }>`
+export interface HeaderStyledProps {
+  $variant: HeaderVariant;
+}
+
+export const HeaderStyled = styled.header<HeaderStyledProps>`
   z-index: ${({ theme }) => theme.zIndex.header};
-  min-width: ${({ theme }) => theme.mobile.minWidth};
-  width: 100%;
-  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    ${HeaderNavStyled} {
-      display: none;
+  min-width: ${({ theme, $variant }) => {
+    switch ($variant) {
+      case 'main':
+        return theme.mobile.minWidth;
+      case 'dashboard':
+        return '300px';
     }
-  }
+  }};
+  width: 100%;
   ${({ theme, $variant }) => {
     switch ($variant) {
-      case 'main-page':
+      case 'main': {
+        const adaptiveStyle = adaptive({
+          merge: true,
+          desktop: css`
+            height: ${theme.header.height};
+          `,
+          mobile: css`
+            height: ${theme.header.mobile.height};
+          `
+        });
+
         return css`
           position: fixed;
           top: 0px;
           left: 0px;
           right: 0px;
+          ${adaptiveStyle}
+        `;
+      }
+      case 'dashboard': {
+        const adaptiveStyle = adaptive({
+          variant: 'dashboard',
+          desktop: css`
+            height: ${theme.dashboard.header.height};
+          `,
+          tablet: css`
+            height: ${theme.dashboard.header.tablet.height};
+          `,
+          mobile: css`
+            height: ${theme.dashboard.header.mobile.height};
+          `
+        });
+
+        return css`
+          position: relative;
+          ${adaptiveStyle}
+        `;
+      }
+    }
+  }}
+`;
+
+export interface HeaderContentProps {
+  $variant: HeaderVariant;
+}
+
+export const HeaderContent = styled.div<HeaderContentProps>`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: inherit;
+  z-index: ${({ theme }) => theme.zIndex.header};
+  ${({ theme, $variant }) => {
+    switch ($variant) {
+      case 'main':
+        return css`
           border-bottom: 1px solid ${theme.colors.grayScale.gray3};
           backdrop-filter: blur(9px);
           background: rgba(18, 24, 37, 0.40);
-          height: ${theme.header.height};
-          @media (max-width: ${theme.mobile.maxWidth}) {
-            height: ${theme.header.mobile.height};
-          }
         `;
-      case 'dashboard':
+      case 'dashboard': {
+        const adaptiveStyle = adaptive({
+          variant: 'dashboard',
+          desktop: css`
+            border-radius: 17px;
+            padding: 0px 26.5px;
+          `,
+          tablet: css`
+            border-radius: 17px;
+            padding: 0px 18px;
+          `,
+          mobile: css`
+            border-radius: 10px;
+            padding: 0px 16px;
+          `
+        });
+
         return css`
-          height: ${theme.dashboard.header.height};
-          @media (max-width: ${theme.tablet.maxWidth}) {
-            height: ${theme.dashboard.header.tablet.height};
-          }
-          @media (max-width: ${theme.mobile.maxWidth}) {
-            height: ${theme.dashboard.header.mobile.height};
-          }
+          background: ${theme.colors.grayScale.gray4};
+          ${adaptiveStyle}
         `;
+      }
     }
   }}
 `;
@@ -58,27 +122,17 @@ export const HeaderContainer = styled(Container)`
   justify-content: space-between;
   align-items: center;
   height: inherit;
+  position: relative;
 `;
 
-export const HeaderContent = styled.div<{ $variant: HeaderVariant }>`
+export const HeaderContainerContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   height: inherit;
   box-sizing: border-box;
-  ${({ theme, $variant }) => {
-    switch ($variant) {
-      case 'main-page':
-        return css``;
-      case 'dashboard':
-        return css`
-          background: ${theme.colors.grayScale.gray4};
-          border-radius: 17px;
-          padding: 24px 26.5px;
-        `;
-    }
-  }}
+  position: relative;
 `;
 
 export const HeaderLeft = styled.div`

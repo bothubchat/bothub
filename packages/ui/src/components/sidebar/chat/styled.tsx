@@ -3,6 +3,7 @@ import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { EditIcon, TrashIcon } from '@/ui/icons';
 import { Skeleton } from '@/ui/components/skeleton';
+import { adaptive } from '@/ui/adaptive';
 
 export const SidebarChatLeft = styled.div`
   display: flex;
@@ -36,12 +37,26 @@ export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-mediu
   margin-left: 8px;
   white-space: nowrap;
   transition: opacity 0.3s;
-  max-width: 260px;
   overflow: hidden;
   text-overflow: ellipsis;
   ${({ $open }) => !$open && css`
     opacity: 0 !important;
   `}
+  ${adaptive({
+    variant: 'dashboard',
+    desktop: css`
+      max-width: 260px;
+    `,
+    tablet: css`
+      max-width: 160px;
+    `,
+    miniTablet: css`
+      max-width: 260px;
+    `,
+    mobile: css`
+      max-width: 160px;
+    `
+  })}
 `;
 
 export const SidebarChatNameSkeleton = styled(Skeleton)`
@@ -92,13 +107,15 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
     return css`
       ${SidebarChatColor},
       ${SidebarChatName},
-      ${SidebarChatNumbers} {
+      ${SidebarChatNumbers},
+      ${SidebarChatActions} {
         opacity: 0.4;
       }
       &:hover {
         ${SidebarChatColor},
         ${SidebarChatName},
-        ${SidebarChatNumbers} {
+        ${SidebarChatNumbers},
+        ${SidebarChatActions} {
           opacity: 1;
         }
       }
@@ -112,4 +129,12 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
       visibility: visible;
     }
   }
+  ${adaptive({
+    variant: 'dashboard',
+    touch: css`
+      ${SidebarChatActions} {
+        visibility: visible;
+      }
+    `
+  })}
 `;

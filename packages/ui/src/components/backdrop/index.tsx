@@ -38,6 +38,17 @@ export const Backdrop: React.FC<BackdropProps> = ({
   return (
     <BackdropStyled
       {...props}
+      variants={{
+        visible: {
+          background: 'rgba(0, 0, 0, 0.55)'
+        },
+        hidden: {
+          background: 'rgba(0, 0, 0, 0)'
+        }
+      }}
+      initial="hidden"
+      animate="visible"
+      exit="hidden"
       ref={backdropRef}
       onClick={handleClick}
     >

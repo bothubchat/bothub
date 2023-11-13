@@ -2,18 +2,22 @@ import React from 'react';
 import {
   TableBody, TableContent, TableScrollbarWrapper, TableStyled 
 } from './styled';
+import { ScrollbarShadowsProps } from '@/ui/components/scrollbar';
 
 export interface TableProps extends Omit<React.ComponentProps<'table'>, 'ref'> {
   head?: React.ReactNode;
+  scrollShadows?: ScrollbarShadowsProps;
 }
 
 export const Table: React.FC<TableProps> = ({
-  head, children, ...props
+  head, scrollShadows, children, ...props
 }) => (
   <TableStyled
     {...props}
   >
-    <TableScrollbarWrapper>
+    <TableScrollbarWrapper
+      scrollShadows={scrollShadows}
+    >
       <TableContent>
         {head}
         <TableBody>

@@ -2,6 +2,8 @@ import { css, styled } from 'styled-components';
 import Highlight from 'react-highlight';
 import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '../../types';
+import { ScrollbarStyle } from '@/ui/components/scrollbar';
+import { adaptive } from '@/ui/adaptive';
 
 export interface MessageUnlineCodeProps {
   $messageVariant: MessageVariant;
@@ -76,4 +78,30 @@ export const MessageCodeBody = styled.div`
   }
 `;
 
-export const MessageCodeContent = styled(Highlight)``;
+export const MessageCodeContent = styled(Highlight)`
+  ${ScrollbarStyle}
+  line-height: 1.3;
+  span {
+    line-height: 1.3;
+  }
+  ${adaptive({
+    variant: 'dashboard',
+    miniTablet: css`
+      font-size: 14px !important;
+      span {
+        font-size: 14px !important;
+      }
+    `,
+    mobile: css`
+      font-size: 12px !important;
+      span {
+        font-size: 12px !important;
+      }
+    `,
+    touch: css`
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    `
+  })}
+`;

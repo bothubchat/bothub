@@ -15,6 +15,7 @@ export const ReferralRadioStyled = styled.div<ReferralRadioStyledProps>`
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 10px;
   overflow: hidden;
+  min-width: 324px;
   ${({ $checked, $skeleton }) => {
     if ($skeleton) {
       return css``;

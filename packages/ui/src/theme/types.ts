@@ -66,10 +66,11 @@ export interface ThemeZIndex {
   header: number;
   backdrop: number;
   modal: number;
-  menu: number;
+  headerMenu: number;
   select: number;
   notifications: number;
   tooltip: number;
+  menu: number;
 }
 
 export interface ThemeHeaderMobile {
@@ -98,9 +99,30 @@ export interface ThemeDashboardChat {
 export interface ThemeDashboard {
   header: ThemeDashboardHeader;
   chat: ThemeDashboardChat;
+  tablet: ThemeTablet;
+  miniTablet: ThemeTablet;
+  mobile: ThemeMobile;
+}
+
+export interface ThemeSidebarTablet {
+  width: string;
+  minimizedWidth: string;
+}
+
+export interface ThemeSidebarMiniTablet {
+  width: string;
+  minimizedWidth: string;
+}
+
+export interface ThemeSidebarMobile {
+  width: string;
+  minimizedWidth: string;
 }
 
 export interface ThemeSidebar {
   width: string;
   minimizedWidth: string;
+  tablet: ThemeSidebarTablet;
+  miniTablet: ThemeSidebarMiniTablet;
+  mobile: ThemeSidebarMobile;
 }

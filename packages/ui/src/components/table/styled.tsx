@@ -7,12 +7,13 @@ export const TableStyled = styled.div`
   width: 100%;
 `;
 
-export const TableScrollbarWrapper = styled(Scrollbar).attrs(({ theme }) => ({
+export const TableScrollbarWrapper = styled(Scrollbar).attrs(({ theme, scrollShadows }) => ({
   variant: 'secondary',
   scrollShadows: {
     color: theme.colors.base.black,
     left: <ScrollbarShadow side="left" />,
-    right: <ScrollbarShadow side="right" />
+    right: <ScrollbarShadow side="right" />,
+    ...scrollShadows
   }
 }))``;
 

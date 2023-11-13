@@ -21,6 +21,7 @@ export interface SidebarUserInfoProps {
   updateTariff?: React.ReactNode;
   linkAs?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   to?: string;
+  onClick?: React.MouseEventHandler;
 }
 
 export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
@@ -30,24 +31,24 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   tariff,
   updateTariff,
   linkAs,
-  to
+  to,
+  onClick
 }) => {
   const theme = useTheme();
   const { isOpen } = useSidebar();
 
   return (
     <SidebarUserInfoStyled
+      $open={isOpen}
       variants={{
         open: {
           border: `1px solid ${theme.colors.grayScale.gray2}`,
           borderRadius: 18,
-          padding: 20,
           background: theme.colors.grayScale.gray3
         },
         close: {
           border: '0px solid rgba(0, 0, 0, 0)',
           borderRadius: 0,
-          padding: 0,
           background: 'rgba(0, 0, 0, 0)'
         }
       }}
@@ -55,7 +56,11 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
       animate={isOpen ? 'open' : 'close'}
     >
       <SidebarUserInfoContent>
-        <SidebarUserInfoTop as={linkAs} to={to}>
+        <SidebarUserInfoTop 
+          as={linkAs} 
+          to={to}
+          onClick={onClick}  
+        >
           <SidebarUserInfoTopLeft>
             {avatar}
             <SidebarUserInfoText>

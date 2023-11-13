@@ -38,7 +38,7 @@ export const Basic: MessagesStory = {
           )}
           tokens={(
             <MessageTokens>
-              -223 tkn
+              -223 CAPS
             </MessageTokens>
           )}
           actions={(
@@ -67,7 +67,7 @@ export const Basic: MessagesStory = {
           )}
           tokens={(
             <MessageTokens>
-              -1571 tkn
+              -1571 CAPS
             </MessageTokens>
           )}
           actions={(

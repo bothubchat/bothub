@@ -7,6 +7,7 @@ import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { EditIcon } from '@/ui/icons';
 import { MessageVariant } from './types';
+import { adaptive } from '@/ui/adaptive';
 
 export interface MessageStyledProps {
   $variant: MessageVariant;
@@ -35,6 +36,14 @@ export const MessageStyled = styled.div<MessageStyledProps>`
       }
     }
   `}
+  ${adaptive(() => ({
+    variant: 'dashboard',
+    touch: css`
+      ${MessageActions} {
+        visibility: visible !important;
+      }
+    `
+  }))}
 `;
 
 export interface MessageContentProps {
@@ -45,7 +54,6 @@ export const MessageContent = styled.div<MessageContentProps>`
   display: grid;
   grid-template-areas: "avatar block actions" ". tokens .";
   column-gap: 10px;
-  max-width: 90%;
   ${({ $variant }) => {
     switch ($variant) {
       case 'user':
@@ -56,6 +64,17 @@ export const MessageContent = styled.div<MessageContentProps>`
         return css``;
     }
   }}
+  ${adaptive({
+    desktop: css`
+      max-width: 90%;
+    `,
+    tablet: css`
+      max-width: 95%;
+    `,
+    mobile: css`
+      max-width: 100%;
+    `
+  })}
 `;
 
 export const MessageAvatar = styled(Avatar)`
@@ -72,7 +91,6 @@ export const MessageBlock = styled.div<MessageBlockProps>`
   grid-area: block;
   border-radius: 10px;
   overflow: hidden;
-  padding: 14px 16px;
   ${({ theme, $variant }) => {
     switch ($variant) {
       case 'user':
@@ -87,6 +105,16 @@ export const MessageBlock = styled.div<MessageBlockProps>`
         `;
     }
   }}
+  ${adaptive({
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
+      padding: 14px 16px;
+    `,
+    tablet: css`
+      padding: 14px;
+    `
+  })}
 `;
 
 export const messageTextCursorOpacity = keyframes`

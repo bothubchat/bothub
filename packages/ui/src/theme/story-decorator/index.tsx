@@ -18,7 +18,7 @@ export const ThemeStoryDecorator = ({
   <ThemeProvider sbMode>
     <Story />
     <BothubGlobalStyle 
-      $margin={margin}
+      margin={margin}
     />
     <PortalElement />
   </ThemeProvider>

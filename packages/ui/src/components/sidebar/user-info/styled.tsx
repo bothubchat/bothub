@@ -1,14 +1,35 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { AnimationProps, motion } from 'framer-motion';
 import React from 'react';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
+import { adaptive } from '@/ui/adaptive';
 
-export const SidebarUserInfoStyled: React.FC<AnimationProps & React.PropsWithChildren> = styled(motion.div)`
+export interface SidebarUserInfoStyledProps {
+  $open: boolean;
+}
+
+export const SidebarUserInfoStyled: React.FC<AnimationProps & SidebarUserInfoStyledProps & React.PropsWithChildren> = styled(motion.div)`
   display: flex;
   overflow: hidden;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
   width: 100%;
+  transition: padding 0.3s;
+  ${({ $open }) => $open && adaptive({
+    variant: 'dashboard',
+    desktop: css`
+      padding: 20px;
+    `,
+    tablet: css`
+      padding: 18px;
+    `,
+    mobile: css`
+      padding: 14px;
+    `
+  })}
+  ${({ $open }) => !$open && css`
+    padding: 0px;
+  `}
 `;
 
 export const SidebarUserInfoContent = styled.div`

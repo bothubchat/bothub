@@ -1,8 +1,17 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { Button } from '../../../button';
+import { HeaderVariant } from '../../types';
+import { adaptive } from '@/ui/adaptive';
 
-export const HeaderMenuToggleButtonStyled = styled(Button)`
-  @media not (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    display: none;
-  }
+export interface HeaderMenuToggleButtonStyledProps {
+  $variant: HeaderVariant;
+}
+
+export const HeaderMenuToggleButtonStyled = styled(Button)<HeaderMenuToggleButtonStyledProps>`
+  ${adaptive(({ $variant }) => ({
+    variant: $variant,
+    desktop: css`
+      display: none;
+    `
+  }))}
 `;

@@ -26,7 +26,7 @@ export const TariffCardContent = styled.div<TariffCardContentProps>`
   padding: 20px 18px;
   height: 100%;
   box-sizing: border-box;
-  min-height: 508px;
+  min-height: 540px;
   ${({ theme, $variant }) => {
     switch ($variant) {
       case 'primary':

@@ -9,8 +9,8 @@ import {
   ReferralCardTableRow, 
   ReferralCardWithdrawButton 
 } from '@/ui/components/referral-card';
-import { Button } from '@/ui/components/button';
 import { Referrals } from '.';
+import { CreateReferralButton } from './styled';
 
 export type ReferralsMeta = Meta<typeof Referrals>;
 
@@ -19,9 +19,9 @@ export type ReferralsStory = StoryObj<typeof Referrals>;
 export const Basic: ReferralsStory = {
   args: {
     create: (
-      <Button size="md">
+      <CreateReferralButton>
         Создать программу
-      </Button>
+      </CreateReferralButton>
     ),
     children: [...Array(5)].map(() => (
       <ReferralCard

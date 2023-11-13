@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { HeaderMenuStyled } from './styled';
-import { HeaderMenuToggleButton } from './toggle-button';
-import { Portal } from '../../portal';
+import { HeaderMenuContent, HeaderMenuStyled } from './styled';
+import { useHeader } from '../context';
 import { HeaderMenuProvider } from './context';
 
 export interface HeaderMenuProps extends React.PropsWithChildren {}
 
 export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { variant, isMenuOpen } = useHeader();
 
   useEffect(() => {
-    if (isOpen) {
+    if (isMenuOpen) {
       window.scrollTo({
         top: 0
       });
@@ -23,19 +22,17 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
     return () => {
       document.body.style.removeProperty('overflow');
     };
-  }, [isOpen]);
+  }, [isMenuOpen]);
 
   return (
     <HeaderMenuProvider 
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
       isInMenu
     >
-      <HeaderMenuToggleButton />
       <AnimatePresence>
-        {isOpen ? (
-          <Portal>
-            <HeaderMenuStyled
+        {isMenuOpen && (
+          <HeaderMenuStyled>
+            <HeaderMenuContent
+              $variant={variant}
               initial={{
                 opacity: 0,
                 top: -window.innerHeight
@@ -53,12 +50,13 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
               }}
             >
               {children}
-            </HeaderMenuStyled>
-          </Portal>
-        ) : null}
+            </HeaderMenuContent>
+          </HeaderMenuStyled>
+        )}
       </AnimatePresence>
     </HeaderMenuProvider>
   );
 };
 
 export * from './context';
+export * from './toggle-button';

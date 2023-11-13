@@ -18,6 +18,9 @@ export const ReferralCardLinkText = styled(Typography).attrs({ variant: 'body-m-
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  @media (max-width: 400px) {
+    max-width: 228px;
+  }
 `;
 
 export const ReferralCardLinkCopyIcon = styled(CopyIcon)``;

@@ -1,24 +1,63 @@
 import { AnimationProps, motion } from 'framer-motion';
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
+import { HeaderVariant } from '../types';
+import { adaptive } from '@/ui/adaptive';
 
-export const HeaderMenuStyled: React.FC<AnimationProps & React.PropsWithChildren> = styled(motion.div)`
+export interface HeaderMenuStyledProps {
+  $variant: HeaderVariant;
+}
+
+export const HeaderMenuStyled = styled.div`
+  position: relative;
+`;
+
+export const HeaderMenuContent = styled(motion.div)<HeaderMenuStyledProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   position: fixed;
+  background: ${({ theme }) => theme.colors.base.black};
+  gap: 40px;
+  overflow: auto;
+  position: absolute;
   top: 0px;
-  bottom: 0px;
   left: 0px;
   right: 0px;
-  background: ${({ theme }) => theme.colors.base.black};
-  padding: calc(${({ theme }) => theme.header.height} + 42px) 40px;
-  gap: 30px;
-  overflow: auto;
-  z-index: ${({ theme }) => theme.zIndex.menu};
-  @media not (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    display: none;
-  }
-  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-    padding: calc(${({ theme }) => theme.header.mobile.height} + 42px) 40px;
-  }
-`;
+  z-index: ${({ theme }) => theme.zIndex.headerMenu};
+  ${({ theme, $variant }) => {
+    switch ($variant) {
+      case 'main':
+        return adaptive({
+          variant: $variant,
+          desktop: css`
+            display: none;
+            height: calc(100vh - ${theme.header.height});
+          `,
+          tablet: css`
+            padding: 42px 40px;
+            height: calc(100vh - ${theme.header.height});
+          `,
+          mobile: css`
+            padding: 32px 30px;
+            height: calc(100vh - ${theme.header.mobile.height});
+          `
+        });
+      case 'dashboard':
+        return adaptive({
+          variant: $variant,
+          desktop: css`
+            display: none;
+            height: calc(100vh - ${theme.dashboard.header.height});
+          `,
+          tablet: css`
+            padding: 42px 18px;
+            height: calc(100vh - ${theme.dashboard.header.tablet.height});
+          `,
+          mobile: css`
+            padding: 32px 16px;
+            height: calc(100vh - ${theme.dashboard.header.mobile.height});
+          `
+        });
+    }
+  }}
+` as React.FC<AnimationProps & HeaderMenuStyledProps & React.PropsWithChildren>;

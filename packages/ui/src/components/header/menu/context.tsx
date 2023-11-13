@@ -1,14 +1,10 @@
 import React, { useContext } from 'react';
 
 export interface HeaderMenuContextValue {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isInMenu: boolean;
 }
 
 export const HeaderMenuContext = React.createContext<HeaderMenuContextValue>({
-  isOpen: false,
-  setIsOpen: () => null,
   isInMenu: false
 });
 

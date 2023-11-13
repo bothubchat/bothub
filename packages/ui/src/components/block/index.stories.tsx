@@ -11,7 +11,6 @@ export type BlockStory = StoryObj<typeof Block>;
 
 export const Basic: BlockStory = {
   args: {
-    title: 'Title',
     children: (
       [...Array(50)].map((_, index) => (
         <Typography 
@@ -26,16 +25,23 @@ export const Basic: BlockStory = {
   }
 };
 
-export const Toolbar: BlockStory = {
+export const Title: BlockStory = {
   args: {
     ...Basic.args,
+    title: 'Title'
+  }
+};
+
+export const Toolbar: BlockStory = {
+  args: {
+    ...Title.args,
     toolbar: (
       <BlockToolbar>
         <BlockToolbarButtons>
           <Button
             startIcon={<Plus2Icon />}
           >
-            Создать закладку
+            Button
           </Button>
         </BlockToolbarButtons>
       </BlockToolbar>

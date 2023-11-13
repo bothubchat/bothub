@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 import { Typography } from '@/ui/components/typography';
+import { adaptive } from '@/ui/adaptive';
 
 export const BlockStyled = styled.div`
   display: flex;
@@ -10,9 +11,17 @@ export const BlockStyled = styled.div`
   width: 100%;
   height: 100%;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
-  border-radius: 18px;
   overflow: hidden;
   max-height: 100vh;
+  ${adaptive({
+    variant: 'dashboard',
+    desktop: css`
+      border-radius: 18px;
+    `,
+    tablet: css`
+      border-radius: 18px;
+    `
+  })}
 `;
 
 export interface BlockHeadProps {
@@ -27,14 +36,32 @@ export const BlockHead = styled.div<BlockHeadProps>`
   border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   ${({ $toolbar }) => {
     if ($toolbar) {
-      return css`
-        padding: 24px 28px;
-      `;
+      return adaptive({
+        variant: 'dashboard',
+        desktop: css`
+          padding: 24px 28px;
+        `,
+        tablet: css`
+          padding: 24px;
+        `,
+        mobile: css`
+          padding: 18px 16px;
+        `
+      });
     }
 
-    return css`
-      padding: 30px 28px;
-    `;
+    return adaptive({
+      variant: 'dashboard',
+      desktop: css`
+        padding: 30px 28px;
+      `,
+      tablet: css`
+        padding: 24px;
+      `,
+      mobile: css`
+        padding: 18px 16px;
+      `
+    });
   }}
 `;
 
@@ -59,11 +86,20 @@ export const BlockBody = styled.div<BlockBodyProps>`
   overflow: hidden;
   width: 100%;
   flex-grow: 1;
-  padding-bottom: 28px;
-  position: relative;
-  ${({ $head }) => !$head && css`
-    padding-top: 28px;
+  ${adaptive({
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
+      padding: 28px 0px;
+    `,
+    tablet: css`
+      padding: 24px 0px;
+    `
+  })}
+  ${({ $head }) => $head && css`
+    padding-top: 0px !important;
   `}
+  position: relative;
 `;
 
 export const BlockBodyScrollbarWrapper = styled(Scrollbar).attrs({
@@ -84,11 +120,28 @@ export interface BlockBodyContentProps {
 }
 
 export const BlockBodyContent = styled.div<BlockBodyContentProps>`
-  padding: 34px 28px;
-  padding-bottom: 0px;
-  ${({ $head }) => !$head && css`
-    padding-top: 0px;
-  `}
+  ${adaptive({
+    variant: 'dashboard',
+    desktop: css`
+      padding: 0px 28px;
+    `,
+    tablet: css`
+      padding: 0px 24px;
+    `,
+    mobile: css`
+      padding: 0px 16px;
+    `
+  })}
+  ${({ $head }) => $head && adaptive({
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
+      padding-top: 28px !important;
+    `,
+    tablet: css`
+      padding-top: 24px !important;
+    `
+  })}
   ${({ $fullHeight }) => $fullHeight && css`
     height: 100%;
   `}

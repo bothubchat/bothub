@@ -56,7 +56,7 @@ export const Basic: ReferralRadioStory = {
             Подарочное кол-во токенов:
           </ReferralRadioTableHeadCell>
           <ReferralRadioTableSelectedCell>
-            30000 TKN
+            30000 CAPS
           </ReferralRadioTableSelectedCell>
         </ReferralRadioTableRow>
       </ReferralRadioTable>

@@ -12,7 +12,11 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ ...props }) => {
   const { isInMenu } = useHeaderMenu();
 
   return (
-    <HeaderNavStyled {...props} $variant={variant} $inMenu={isInMenu} />
+    <HeaderNavStyled 
+      {...props} 
+      $variant={variant} 
+      $inMenu={isInMenu} 
+    />
   );
 };
 

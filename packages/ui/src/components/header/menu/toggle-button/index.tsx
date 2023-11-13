@@ -1,16 +1,21 @@
 import React, { useCallback } from 'react';
 import { HeaderMenuToggleIcon } from './icon';
-import { useHeaderMenu } from '../context';
 import { HeaderMenuToggleButtonStyled } from './styled';
+import { useHeader } from '../../context';
 
 export const HeaderMenuToggleButton: React.FC = () => {
-  const { isOpen, setIsOpen } = useHeaderMenu();
+  const { variant, isMenuOpen, setIsMenuOpen } = useHeader();
+
   const toggleMenu = useCallback(() => {
-    setIsOpen(!isOpen);
-  }, [isOpen]);
+    setIsMenuOpen(!isMenuOpen);
+  }, [isMenuOpen]);
 
   return (
-    <HeaderMenuToggleButtonStyled aria-label="Menu Toggle Button" onClick={toggleMenu}>
+    <HeaderMenuToggleButtonStyled
+      $variant={variant}
+      aria-label="Menu Toggle Button" 
+      onClick={toggleMenu}
+    >
       <HeaderMenuToggleIcon />
     </HeaderMenuToggleButtonStyled>
   );

@@ -15,7 +15,10 @@ export const Portal: React.FC<PortalProps> = ({
     if (typeof props.element !== 'undefined') {
       setElement(props.element);
     } else {
-      setElement(document.querySelector(String(PortalElement)));
+      setElement(
+        document.querySelector(String(PortalElement))
+        ?? document.getElementById('bothub_portal')  
+      );
     }
   }, [props.element]);
 

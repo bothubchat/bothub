@@ -11,7 +11,7 @@ export const HeaderNavLinkStyled = styled.a<HeaderNavLinkStyledProps>`
   ${({
     theme, $variant, $inMenu, $active 
   }) => {
-    if ($inMenu) {
+    if ($variant === 'main' && $inMenu) {
       return css`
         font-family: ${theme.fonts.ibmPlexSans.semiBold};
         font-size: 16px;
@@ -32,7 +32,7 @@ export const HeaderNavLinkStyled = styled.a<HeaderNavLinkStyledProps>`
       color: ${theme.colors.base.white};
       ${() => {
     switch ($variant) {
-      case 'main-page':
+      case 'main':
         return css`
           font-family: ${theme.fonts.ibmPlexSans.semiBold};
           &:hover {

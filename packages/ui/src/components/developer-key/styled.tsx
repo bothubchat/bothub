@@ -10,7 +10,8 @@ export const DeveloperKeyStyled = styled.div<DeveloperKeyStyledProps>`
   display: flex;
   align-items: center;
   gap: 10px;
-  width: 1000px;
+  width: 100%;
+  max-width: 1000px;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
   padding: 18px 16px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};

@@ -10,9 +10,8 @@ import {
   SidebarTop 
 } from './styled';
 import { SidebarProvider } from './context';
-import { useTheme } from '@/ui/theme';
 
-export type SidebarChangeEventHandler = (open: boolean) => unknown;
+export type SidebarOpenEventHandler = (open: boolean) => unknown;
 
 export interface SidebarProps extends React.PropsWithChildren {
   open?: boolean;
@@ -21,19 +20,18 @@ export interface SidebarProps extends React.PropsWithChildren {
   createChat?: React.ReactNode;
   toggle?: React.ReactNode;
   user?: React.ReactNode;
-  onChange?: SidebarChangeEventHandler;
+  onOpen?: SidebarOpenEventHandler;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ 
-  open: initialIsOpen, className, id, user, createChat, toggle, children, onChange
+  open, className, id, user, createChat, toggle, children, onOpen
 }) => {
-  const theme = useTheme();
-
+  const initialIsOpen = open;
   const setInitialIsOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
     if (typeof open === 'boolean') {
-      onChange?.(open);
+      onOpen?.(open);
     }
-  }, [onChange]);
+  }, [onOpen]);
   const [isOpen, setIsOpen] = typeof initialIsOpen === 'boolean' ? [initialIsOpen, setInitialIsOpen] : useState(true);
 
   return (
@@ -42,20 +40,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setIsOpen={setIsOpen}
     >
       <SidebarStyled
+        $open={isOpen}
         className={className}
         id={id}
-        variants={{
-          open: {
-            minWidth: theme.sidebar.width,
-            maxWidth: theme.sidebar.width
-          },
-          close: {
-            minWidth: theme.sidebar.minimizedWidth,
-            maxWidth: theme.sidebar.minimizedWidth
-          }
-        }}
-        initial={isOpen ? 'open' : 'close'}
-        animate={isOpen ? 'open' : 'close'}
       >
         <SidebarContent>
           <SidebarTop>

@@ -58,13 +58,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ sbMode = false, ch
       minWidth: '400px'
     },
     zIndex: {
-      menu: 2,
+      headerMenu: 2,
       header: 3,
       backdrop: 4,
-      modal: 5,
-      select: 6,
-      notifications: 7,
-      tooltip: 8
+      menu: 5,
+      modal: 6,
+      select: 7,
+      notifications: 8,
+      tooltip: 9
     },
     header: {
       height: '89px',
@@ -79,16 +80,38 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ sbMode = false, ch
           height: '76px'
         },
         mobile: {
-          height: '58px'
+          height: '70px'
         }
       },
       chat: {
         containerWidth: '1009px'
+      },
+      tablet: {
+        maxWidth: '1600px'
+      },
+      miniTablet: {
+        maxWidth: '1202px'
+      },
+      mobile: {
+        maxWidth: '805px',
+        minWidth: '400px'
       }
     },
     sidebar: {
       width: '445px',
-      minimizedWidth: '74px'
+      minimizedWidth: '74px',
+      tablet: {
+        width: '302px',
+        minimizedWidth: '70px'
+      },
+      miniTablet: {
+        width: '445px',
+        minimizedWidth: '70px'
+      },
+      mobile: {
+        width: '302px',
+        minimizedWidth: '62px'
+      }
     }
   }), []);
 

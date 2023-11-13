@@ -1,13 +1,13 @@
 import { SVGMotionProps, motion } from 'framer-motion';
 import { Icon, icon } from '@/ui/components/icon';
-import { useHeaderMenu } from '../../context';
+import { useHeader } from '../../../context';
 
 export const HeaderMenuToggleIconLine: React.FC<SVGMotionProps<SVGPathElement>> = (props) => (
   <motion.path stroke="#fff" strokeWidth="2" strokeLinecap="round" {...props} />
 );
 
 export const HeaderMenuToggleIcon = icon(() => {
-  const { isOpen } = useHeaderMenu();
+  const { isMenuOpen } = useHeader();
 
   return (
     <Icon 
@@ -15,8 +15,8 @@ export const HeaderMenuToggleIcon = icon(() => {
       height="18" 
       viewBox="0 0 18 18" 
       fill="none"
-      initial={isOpen ? 'open' : 'close'}
-      animate={isOpen ? 'open' : 'close'}
+      initial={isMenuOpen ? 'open' : 'close'}
+      animate={isMenuOpen ? 'open' : 'close'}
     >
       <HeaderMenuToggleIconLine
         variants={{

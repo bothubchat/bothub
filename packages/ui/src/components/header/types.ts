@@ -1,1 +1,1 @@
-export type HeaderVariant = 'main-page' | 'dashboard';
+export type HeaderVariant = 'main' | 'dashboard';

@@ -59,7 +59,7 @@ export const Basic: SidebarStory = {
                 />
               )}
               name="Артём"
-              tokens="9 012 TKN"
+              tokens="9 012 CAPS"
               tariff={(
                 <SidebarUserInfoFreeTariff />
               )}
@@ -169,7 +169,7 @@ export const BasicTariff: SidebarStory = {
           />
         )}
         name="Артём"
-        tokens="9 012 TKN"
+        tokens="9 012 CAPS"
         tariff={(
           <SidebarUserInfoBasicTariff />
         )}
@@ -193,7 +193,7 @@ export const PremiumTariff: SidebarStory = {
           />
         )}
         name="Артём"
-        tokens="9 012 TKN"
+        tokens="9 012 CAPS"
         tariff={(
           <SidebarUserInfoPremiumTariff />
         )}
@@ -217,7 +217,7 @@ export const EliteTariff: SidebarStory = {
           />
         )}
         name="Артём"
-        tokens="9 012 TKN"
+        tokens="9 012 CAPS"
         tariff={(
           <SidebarUserInfoEliteTariff />
         )}
@@ -246,7 +246,7 @@ export const Skeleton: SidebarStory = {
           />
         )}
         name="Артём"
-        tokens="9 012 TKN"
+        tokens="9 012 CAPS"
         tariff={(
           <SidebarUserInfoFreeTariff />
         )}

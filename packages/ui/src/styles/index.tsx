@@ -1,25 +1,30 @@
-import { createGlobalStyle, css } from 'styled-components';
-import { ScrollbarStyle } from '@/ui/components/scrollbar/style';
+import React, { useEffect } from 'react';
+import { BothubGlobalStyleStyled } from './styled';
 
 export interface BothubGlobalStyleProps {
-  $margin?: string;
+  margin?: string;
 }
 
-export const BothubGlobalStyle = createGlobalStyle<BothubGlobalStyleProps>`
-  body {
-    background: ${({ theme }) => theme.colors.base.black};
-    ${ScrollbarStyle}
-    ${({ $margin }) => typeof $margin === 'string' && css`
-      margin: ${$margin} !important;
-    `}
-  }
+export const BothubGlobalStyle: React.FC<BothubGlobalStyleProps> = ({
+  margin
+}) => {
+  useEffect(() => {
+    const resizeListener = () => {
+      const height = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--bothub-vh', `${height}px`);
+    };
 
-  * {
-    box-sizing: border-box;
-  }
+    resizeListener();
+    window.addEventListener('resize', resizeListener);
 
-  a {
-    text-decoration: none;
-    color: ${({ theme }) => theme.colors.base.white};
-  }
-`;
+    return () => {
+      window.removeEventListener('resize', resizeListener);
+    };
+  }, []);
+
+  return (
+    <BothubGlobalStyleStyled
+      $margin={margin}
+    />
+  );
+};

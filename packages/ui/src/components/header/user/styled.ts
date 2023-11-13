@@ -1,22 +1,38 @@
 import { styled, css } from 'styled-components';
+import { adaptive } from '@/ui/adaptive';
+import { HeaderVariant } from '../types';
 
-export const HeaderUserStyled = styled.div<{ $inMenu: boolean }>`
+export interface HeaderUserStyledProps {
+  $variant: HeaderVariant;
+  $inMenu: boolean;
+}
+
+export const HeaderUserStyled = styled.div<HeaderUserStyledProps>`
   display: flex;
   align-items: center;
-  ${({ $inMenu }) => {
+  ${({ $variant, $inMenu }) => {
     if ($inMenu) {
+      const adaptiveStyle = adaptive({
+        variant: $variant,
+        desktop: css`
+          display: none;
+        `,
+        tablet: css`
+          display: none;
+        `
+      });
+
       return css`
         width: 100%;
-        @media not (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-          display: none;
-        }
+        ${adaptiveStyle}
       `;
     }
 
-    return css`
-      @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    return adaptive({
+      variant: $variant,
+      mobile: css`
         display: none;
-      }
-    `;
+      `
+    });
   }}
 `;

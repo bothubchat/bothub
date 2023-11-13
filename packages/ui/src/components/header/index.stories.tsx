@@ -99,7 +99,7 @@ export const Authorized: HeaderStory = {
         <HeaderAuthUser 
           avatar={<HeaderAuthUserAvatar src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album" />}
           name="Артём"
-          tokens="2 023 TKN"
+          tokens="2 023 CAPS"
         >
           <HeaderAuthUserList>
             <HeaderAuthUserItem icon={<DashboardIcon />}>
@@ -123,7 +123,7 @@ export const Authorized: HeaderStory = {
 
 export const Dashboard: HeaderStory = {
   args: {
-    ...Basic.args,
+    ...Authorized.args,
     variant: 'dashboard',
     nav: (
       <HeaderNav>
@@ -135,21 +135,6 @@ export const Dashboard: HeaderStory = {
         <HeaderNavLink icon={<CoderIcon />} href="#">Для разработчиков</HeaderNavLink>
       </HeaderNav>
     )
-  },
-  argTypes: {
-    variant: {
-      table: {
-        disable: true
-      }
-    }
-  }
-};
-
-export const DashboardAuthorized: HeaderStory = {
-  ...Dashboard,
-  args: {
-    ...Dashboard.args,
-    user: Authorized.args?.user
   }
 };
 
@@ -158,6 +143,11 @@ export default {
   component: Header,
   decorators: [ThemeStoryDecorator()],
   argTypes: {
+    variant: {
+      table: {
+        disable: true
+      }
+    },
     logo: {
       table: {
         disable: true

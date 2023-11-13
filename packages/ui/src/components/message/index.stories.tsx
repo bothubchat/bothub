@@ -17,7 +17,7 @@ export const Assistant: MessageStory = {
     ),
     tokens: (
       <MessageTokens>
-        -1571 tkn
+        -1571 CAPS
       </MessageTokens>
     ),
     actions: (

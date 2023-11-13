@@ -88,6 +88,9 @@ export const Scrollbar: React.FC<ScrollbarProps> = ({
     }
 
     handleScroll();
+    const scrollTimeout = window.setTimeout(() => {
+      handleScroll();
+    }, 300);
 
     const observer = new MutationObserver(() => {
       handleScroll();
@@ -101,6 +104,7 @@ export const Scrollbar: React.FC<ScrollbarProps> = ({
     window.addEventListener('resize', resizeListener);
 
     return () => {
+      clearTimeout(scrollTimeout);
       observer.disconnect();
       window.removeEventListener('resize', resizeListener);
     };

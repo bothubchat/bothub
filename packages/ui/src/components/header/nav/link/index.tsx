@@ -15,12 +15,12 @@ React.ComponentProps<typeof HeaderNavLinkStyled>, keyof HeaderNavLinkStyledProps
 export const HeaderNavLink: React.FC<HeaderNavLinkProps> = ({ 
   as, to, icon, active = false, children, ...props 
 }) => {
-  const { variant } = useHeader();
-  const { isInMenu, setIsOpen } = useHeaderMenu();
+  const { variant, setIsMenuOpen } = useHeader();
+  const { isInMenu } = useHeaderMenu();
 
   const handleClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
     props.onClick?.(event);
-    setIsOpen(false);
+    setIsMenuOpen(false);
   }, [props.onClick]);
 
   return (
