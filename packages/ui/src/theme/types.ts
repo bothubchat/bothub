@@ -6,7 +6,6 @@ export interface Theme {
   zIndex: ThemeZIndex;
   header: ThemeHeader;
   dashboard: ThemeDashboard;
-  sidebar: ThemeSidebar;
 }
 
 export interface ThemeTablet {
@@ -117,12 +116,4 @@ export interface ThemeSidebarMiniTablet {
 export interface ThemeSidebarMobile {
   width: string;
   minimizedWidth: string;
-}
-
-export interface ThemeSidebar {
-  width: string;
-  minimizedWidth: string;
-  tablet: ThemeSidebarTablet;
-  miniTablet: ThemeSidebarMiniTablet;
-  mobile: ThemeSidebarMobile;
 }

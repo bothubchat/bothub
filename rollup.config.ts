@@ -13,6 +13,7 @@ import { readFileSync } from 'fs';
 import del from 'rollup-plugin-delete';
 import terser from '@rollup/plugin-terser';
 import nodeExternals from 'rollup-plugin-node-externals';
+import babel from '@rollup/plugin-babel';
 
 export interface CreateConfigOptions {
   packageName: string;
@@ -64,6 +65,18 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
           exclude: [
             'node_modules/**',
             '**/*.stories.ts'
+          ]
+        }),
+        babel({ 
+          babelHelpers: 'bundled',
+          exclude: 'node_modules/**',
+          extensions: ['.js', '.ts'],
+          presets: ['@babel/preset-react'],
+          plugins: [
+            ['babel-plugin-styled-components', {
+              ssr: true,
+              displayName: true
+            }]
           ]
         }),
         image({

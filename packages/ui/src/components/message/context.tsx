@@ -3,12 +3,14 @@ import { MessageCopyEventHandler } from './types';
 
 export interface MessageContextValue {
   message: string;
+  typing: boolean;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCopyEventHandler;
 }
 
 export const MessageContext = React.createContext<MessageContextValue>({
-  message: ''
+  message: '',
+  typing: false
 });
 
 export const MessageProvider: React.FC<MessageContextValue & React.PropsWithChildren> = ({

@@ -8,6 +8,7 @@ import { Button } from '@/ui/components/button';
 import { EditIcon } from '@/ui/icons';
 import { MessageVariant } from './types';
 import { adaptive } from '@/ui/adaptive';
+import { useMessage } from './context';
 
 export interface MessageStyledProps {
   $variant: MessageVariant;
@@ -193,6 +194,14 @@ export const MessageActions = styled.div`
   align-self: flex-end;
 `;
 
-export const MessageAction = styled(Button).attrs({ variant: 'text', iconSize: 18 })``;
+export const MessageAction = styled(Button).attrs(() => {
+  const { typing } = useMessage();
+
+  return { 
+    variant: 'text', 
+    iconSize: 18,
+    disabled: typing
+  };
+})``;
 
 export const MessageEditAction = styled(MessageAction).attrs({ children: <EditIcon /> })``;

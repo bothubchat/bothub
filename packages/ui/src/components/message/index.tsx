@@ -58,6 +58,7 @@ export const Message: React.FC<MessageProps> = ({
   return (
     <MessageProvider
       message={children ?? ''}
+      typing={typing}
       onCopy={onCopy}
       onCodeCopy={onCodeCopy}
     >

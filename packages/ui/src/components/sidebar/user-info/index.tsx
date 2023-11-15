@@ -27,7 +27,7 @@ export interface SidebarUserInfoProps {
 export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   avatar, 
   name, 
-  tokens,
+  tokens = '',
   tariff,
   updateTariff,
   linkAs,
@@ -56,7 +56,8 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
       animate={isOpen ? 'open' : 'close'}
     >
       <SidebarUserInfoContent>
-        <SidebarUserInfoTop 
+        <SidebarUserInfoTop
+          $length={tokens.length}
           as={linkAs} 
           to={to}
           onClick={onClick}  
@@ -76,25 +77,15 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
               )}
             </SidebarUserInfoText>
           </SidebarUserInfoTopLeft>
-          <SidebarUserInfoTopRight>
+          <SidebarUserInfoTopRight
+            $open={isOpen}
+          >
             {tariff}
           </SidebarUserInfoTopRight>
         </SidebarUserInfoTop>
         <SidebarUserInfoBottom
-          variants={{
-            open: {
-              opacity: 1,
-              height: 38,
-              marginTop: 26
-            },
-            close: {
-              opacity: 0,
-              height: 0,
-              marginTop: 0
-            }
-          }}
-          initial={isOpen ? 'open' : 'close'}
-          animate={isOpen ? 'open' : 'close'}
+          $open={isOpen}
+          $length={tokens.length}
         >
           {updateTariff}
         </SidebarUserInfoBottom>

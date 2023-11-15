@@ -12,20 +12,7 @@ export const SidebarCreateChatButton: React.FC<SidebarCreateChatButtonProps> = (
 
   return (
     <SidebarCreateChatButtonContainer
-      variants={{
-        open: {
-          opacity: 1,
-          width: 357,
-          marginRight: 24
-        },
-        close: {
-          opacity: 0,
-          width: 0,
-          marginRight: 0
-        }
-      }}
-      initial={isOpen ? 'open' : 'close'}
-      animate={isOpen ? 'open' : 'close'}
+      $open={isOpen}
     >
       <SidebarCreateChatButtonStyled 
         {...props}

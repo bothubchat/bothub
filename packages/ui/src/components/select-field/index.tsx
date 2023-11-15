@@ -87,7 +87,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
       $disabled={disabled}
       ref={elementRef}
       tabIndex={tabIndex}
-      onFocus={setIsOpen.bind(null, !disabled && !skeleton)}
+      onClick={setIsOpen.bind(null, !disabled && !skeleton && !isOpen)}
       onBlur={setIsOpen.bind(null, false)}
     >
       {label && (

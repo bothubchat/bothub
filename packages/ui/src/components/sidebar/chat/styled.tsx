@@ -39,24 +39,13 @@ export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-mediu
   transition: opacity 0.3s;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 260px;
+  @media (max-width: 1700px) {
+    max-width: 140px;
+  }
   ${({ $open }) => !$open && css`
     opacity: 0 !important;
   `}
-  ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
-      max-width: 260px;
-    `,
-    tablet: css`
-      max-width: 160px;
-    `,
-    miniTablet: css`
-      max-width: 260px;
-    `,
-    mobile: css`
-      max-width: 160px;
-    `
-  })}
 `;
 
 export const SidebarChatNameSkeleton = styled(Skeleton)`

@@ -23,7 +23,7 @@ export const HeaderLangDropdownTogglerArrow = styled(ArrowDownIcon).attrs({ size
 `;
 
 export const HeaderLangDropdownToggler = styled.button<{ $open: boolean }>`
-  display: inline-flex;
+  display: flex;
   background: none;
   border: none;
   outline: none;

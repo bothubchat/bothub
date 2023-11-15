@@ -38,10 +38,29 @@ export const SidebarUserInfoContent = styled.div`
   width: 100%;
 `;
 
-export const SidebarUserInfoTop = styled.div`
+export interface SidebarUserInfoTopProps {
+  $length: number;
+}
+
+export const SidebarUserInfoTop = styled.div<SidebarUserInfoTopProps>`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  ${({ $length }) => {
+    if ($length <= 10) {
+      return css`
+        align-items: center;
+        justify-content: space-between;
+      `;
+    }
+
+    return css`
+      flex-direction: column;
+      ${SidebarUserInfoTariff} {
+        margin-top: 14px;
+        justify-content: center;
+        width: 100%;
+      }
+    `;
+  }}
 `;
 
 export const SidebarUserInfoTopLeft = styled.div`
@@ -49,14 +68,42 @@ export const SidebarUserInfoTopLeft = styled.div`
   align-items: center;
 `;
 
-export const SidebarUserInfoTopRight = styled.div``;
+export interface SidebarUserInfoTopRightProps {
+  $open: boolean;
+}
 
-export const SidebarUserInfoBottom: React.FC<AnimationProps & React.PropsWithChildren> = styled(motion.div)`
+export const SidebarUserInfoTopRight = styled.div<SidebarUserInfoTopRightProps>`
+  ${({ $open }) => !$open && css`
+    display: none;
+  `}
+`;
+
+export interface SidebarUserInfoBottomProps {
+  $open: boolean;
+  $length: number;
+}
+
+export const SidebarUserInfoBottom = styled.div<SidebarUserInfoBottomProps>`
   display: flex;
+  transition: all 0.3s;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  margin-top: 26px;
+  ${({ $open, $length }) => {
+    if (!$open) {
+      return css`
+        opacity: 0;
+        height: 0px;
+        margin-top: 0px;
+      `;
+    }
+
+    return css`
+      opacity: 1;
+      height: auto;
+      margin-top: ${$length <= 10 ? 26 : 14}px;
+    `;
+  }}
 `;
 
 export const SidebarUserInfoText = styled.div`

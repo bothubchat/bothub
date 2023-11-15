@@ -131,7 +131,7 @@ export const Dashboard: HeaderStory = {
         <HeaderNavLink icon={<BookmarksBigIcon />} href="#">Закладки</HeaderNavLink>
         <HeaderNavLink icon={<PresetsBigIcon />} href="#">Пресеты</HeaderNavLink>
         <HeaderNavLink icon={<ReferalIcon />} href="#">Партнерская программа</HeaderNavLink>
-        <HeaderNavLink icon={<TariffIcon />} href="#">Подписка</HeaderNavLink>
+        <HeaderNavLink icon={<TariffIcon />} href="#">Пакеты</HeaderNavLink>
         <HeaderNavLink icon={<CoderIcon />} href="#">Для разработчиков</HeaderNavLink>
       </HeaderNav>
     )

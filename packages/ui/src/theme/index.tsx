@@ -51,10 +51,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ sbMode = false, ch
       }
     },
     tablet: {
-      maxWidth: '1377px'
+      maxWidth: '1060px'
     },
     mobile: {
-      maxWidth: '605px',
+      maxWidth: '550px',
       minWidth: '400px'
     },
     zIndex: {
@@ -87,30 +87,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ sbMode = false, ch
         containerWidth: '1009px'
       },
       tablet: {
-        maxWidth: '1600px'
+        maxWidth: '1060px'
       },
       miniTablet: {
-        maxWidth: '1202px'
+        maxWidth: '800px'
       },
       mobile: {
-        maxWidth: '805px',
+        maxWidth: '550px',
         minWidth: '400px'
-      }
-    },
-    sidebar: {
-      width: '445px',
-      minimizedWidth: '74px',
-      tablet: {
-        width: '302px',
-        minimizedWidth: '70px'
-      },
-      miniTablet: {
-        width: '445px',
-        minimizedWidth: '70px'
-      },
-      mobile: {
-        width: '302px',
-        minimizedWidth: '62px'
       }
     }
   }), []);

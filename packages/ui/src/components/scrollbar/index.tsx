@@ -44,9 +44,9 @@ export const Scrollbar: React.FC<ScrollbarProps> = ({
     } = scrollbarEl;
 
     setIsLeft(scrollLeft !== 0);
-    setIsRight(scrollLeft < scrollWidth - clientWidth);
+    setIsRight(Math.round(scrollLeft) + 1 < scrollWidth - clientWidth);
     setIsTop(scrollTop !== 0);
-    setIsBottom(scrollTop < scrollHeight - clientHeight);
+    setIsBottom(Math.round(scrollTop) + 1 < scrollHeight - clientHeight);
 
     if (disabled) {
       scrollbarEl.scrollTo(0, 0);

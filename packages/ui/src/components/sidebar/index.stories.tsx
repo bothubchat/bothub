@@ -169,7 +169,7 @@ export const BasicTariff: SidebarStory = {
           />
         )}
         name="Артём"
-        tokens="9 012 CAPS"
+        tokens="9 000 000 CAPS"
         tariff={(
           <SidebarUserInfoBasicTariff />
         )}
@@ -193,7 +193,7 @@ export const PremiumTariff: SidebarStory = {
           />
         )}
         name="Артём"
-        tokens="9 012 CAPS"
+        tokens="2 000 000 000 000 000 CAPS"
         tariff={(
           <SidebarUserInfoPremiumTariff />
         )}

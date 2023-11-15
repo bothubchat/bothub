@@ -48,6 +48,7 @@ export const SelectFieldHead = styled.div<SelectFieldHeadProps>`
   align-items: center;
   width: 100%;
   justify-content: space-between;
+  user-select: none;
   border: 1px solid ${({
     theme, $disabled, $error, $open, $skeleton 
   }) => {
@@ -73,7 +74,7 @@ export const SelectFieldHead = styled.div<SelectFieldHeadProps>`
 
     return theme.colors.grayScale.gray4;
   }};
-  cursor: ${({ $open, $disabled, $skeleton }) => {
+  cursor: ${({ $disabled, $skeleton }) => {
     if ($skeleton) {
       return 'progress';
     }
@@ -81,7 +82,7 @@ export const SelectFieldHead = styled.div<SelectFieldHeadProps>`
       return 'not-allowed';
     }
 
-    return $open ? 'default' : 'pointer';
+    return 'pointer';
   }};
   ${({
     theme, $error, $disabled, $skeleton 

@@ -1,12 +1,26 @@
-import { styled } from 'styled-components';
-import { AnimationProps, motion } from 'framer-motion';
+import { css, styled } from 'styled-components';
 import { Button } from '@/ui/components/button';
 import { Plus1Icon } from '@/ui/icons';
 
-export const SidebarCreateChatButtonContainer: React.FC<AnimationProps & React.PropsWithChildren> = styled(motion.div)`
+export interface SidebarCreateChatButtonContainerProps {
+  $open: boolean;
+}
+
+export const SidebarCreateChatButtonContainer = styled.div<SidebarCreateChatButtonContainerProps>`
   display: flex;
   overflow: hidden;
   width: 100%;
+  transition: all 0.3s;
+  ${({ $open }) => $open && css`
+    opacity: 1;
+    width: 367px;
+    margin-right: 24px;
+  `}
+  ${({ $open }) => !$open && css`
+    opacity: 0;
+    width: 0px;
+    margin-right: 0px;
+  `}
 `;
 
 export const SidebarCreateChatButtonStyled = styled(Button).attrs({

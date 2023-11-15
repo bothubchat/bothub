@@ -2,8 +2,7 @@ import React from 'react';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { ArrowDownIcon } from '@/ui/icons'; 
-import defaultAvatar from './assets/default-avatar.png';
+import { ArrowDownIcon } from '@/ui/icons';
 import { Avatar } from '@/ui/components/avatar';
 
 export interface HeaderAuthUserHeadProps {
@@ -60,7 +59,6 @@ export const HeaderAuthUserTokens = styled(Typography)`
 export const HeaderAuthUserArrow = styled(ArrowDownIcon)``;
 
 export interface HeaderAuthUserBodyProps {
-  $width: number;
   $inMenu: boolean;
 }
 
@@ -71,7 +69,7 @@ export const HeaderAuthUserBody = styled(motion.div)<HeaderAuthUserBodyProps>`
   background: ${({ theme }) => theme.colors.grayScale.gray4};
   margin-top: 14px;
   padding: 14px 0px;
-  width: ${({ $width }) => ($width ? `${$width}px` : '170px')};
+  width: 170px;
   transform-origin: top center;
   ${({ $inMenu }) => !$inMenu && css`
     position: absolute;

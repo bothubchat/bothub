@@ -14,31 +14,36 @@ export interface TariffDesktopListProps {
 
 export const TariffDesktopList = styled.div<TariffDesktopListProps>`
   display: grid;
-  ${({ $variant }) => {
-    switch ($variant) {
-      case 'default':
-        return css`
-          justify-content: center;
-        `;
-      case 'settings':
-        return css`
-          justify-content: flex-start;
-        `;
-    }
-  }}
-  ${adaptive({
+  ${adaptive(({ $variant }) => ({
+    variant: $variant === 'default' ? 'main' : 'dashboard',
     desktop: css`
       grid-template-columns: repeat(4, 300px);
       gap: 30px;
     `,
-    tablet: css`
-      grid-template-columns: repeat(2, auto);
-      gap: 24px;
-    `,
     mobile: css`
       display: none;
     `
-  })}
+  }))}
+  ${({ theme, $variant }) => {
+    switch ($variant) {
+      case 'default':
+        return css`
+          justify-content: center;
+          @media (max-width: ${theme.dashboard.tablet.maxWidth}) {
+            grid-template-columns: repeat(2, auto);
+            gap: 24px;
+          }
+        `;
+      case 'settings':
+        return css`
+          justify-content: flex-start;
+          @media (max-width: 1250px) {
+            grid-template-columns: repeat(2, auto);
+            gap: 24px;
+          }
+        `;
+    }
+  }}
 `;
 
 export const TariffSlider = styled.div`

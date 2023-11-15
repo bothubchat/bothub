@@ -18,53 +18,37 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   overflow: hidden;
   box-sizing: border-box;
   transition: all 0.3s;
-  ${adaptive(({ theme, $open }) => ({
-    variant: 'dashboard',
-    desktop: css`
-      padding: 24px 20px;
-      ${$open && css`
-        min-width: ${theme.sidebar.width};
-        max-width: ${theme.sidebar.width};
-      `}
-      ${!$open && css`
-        min-width: ${theme.sidebar.minimizedWidth};
-        max-width: ${theme.sidebar.minimizedWidth};
-      `}
-    `,
-    tablet: css`
-      padding: 18px;
-      ${$open && css`
-        min-width: ${theme.sidebar.tablet.width};
-        max-width: ${theme.sidebar.tablet.width};
-      `}
-      ${!$open && css`
-        min-width: ${theme.sidebar.tablet.minimizedWidth};
-        max-width: ${theme.sidebar.tablet.minimizedWidth};
-      `}
-    `,
-    miniTablet: css`
-      padding: 18px;
-      ${$open && css`
-        min-width: ${theme.sidebar.miniTablet.width};
-        max-width: ${theme.sidebar.miniTablet.width};
-      `}
-      ${!$open && css`
-        min-width: ${theme.sidebar.tablet.minimizedWidth};
-        max-width: ${theme.sidebar.tablet.minimizedWidth};
-      `}
-    `,
-    mobile: css`
-      padding: 14px;
-      ${$open && css`
-        min-width: ${theme.sidebar.mobile.width};
-        max-width: ${theme.sidebar.mobile.width};
-      `}
-      ${!$open && css`
-        min-width: ${theme.sidebar.mobile.minimizedWidth};
-        max-width: ${theme.sidebar.mobile.minimizedWidth};
-      `}
-    `
-  }))}
+  padding: 24px 20px;
+  ${({ $open }) => $open && css`
+    min-width: 445px;
+    max-width: 445px;
+  `}
+  ${({ $open }) => !$open && css`
+    min-width: 74px;
+    max-width: 74px;
+  `}
+  @media (max-width: 1700px) {
+    padding: 18px;
+    ${({ $open }) => $open && css`
+      min-width: 302px;
+      max-width: 302px;
+    `}
+    ${({ $open }) => !$open && css`
+      min-width: 74px;
+      max-width: 74px;
+    `}
+  }
+  @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
+    padding: 14px;
+    ${({ $open }) => $open && css`
+      min-width: 302px;
+      max-width: 302px;
+    `}
+    ${({ $open }) => !$open && css`
+      min-width: 62px;
+      max-width: 62px;
+    `}
+  }
 `;
 
 export const SidebarContent = styled.div`

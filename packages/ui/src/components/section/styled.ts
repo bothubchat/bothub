@@ -14,6 +14,7 @@ export const SectionStyled = styled.section<SectionStyledProps>`
     background-image: url(${JSON.stringify(bgLines)});
     background-position: center;
     background-repeat: no-repeat;
+    background-size: 1291px 4797px;
   `}
   ${({ $bg }) => $bg && css`
     position: relative;

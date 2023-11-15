@@ -105,9 +105,9 @@ export const HeaderAuthUser: React.FC<HeaderAuthUserProps> = ({
         </HeaderAuthUserHead>
         <AnimatePresence>
           {isOpen && (
-            <HeaderAuthUserBody 
-              $width={width} 
+            <HeaderAuthUserBody
               $inMenu={isInMenu}
+              style={{ width }}
               {...(!isInMenu ? {
                 animate: {
                   opacity: isOpen ? 1 : 0.5,

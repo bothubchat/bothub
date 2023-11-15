@@ -4,6 +4,8 @@ import { HeaderNavLinkStyled } from '../link/styled';
 import { ArrowDownIcon } from '@/ui/icons';
 
 export const HeaderNavDropdownStyled = styled.div<{ $inMenu: boolean }>`
+  display: flex;
+  flex-direction: column;
   ${({ $inMenu }) => $inMenu && css`
     width: 100%;
   `}

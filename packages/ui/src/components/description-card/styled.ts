@@ -104,6 +104,7 @@ export const DescriptionCardBackground = styled.div<{ $variant: DescriptionCardV
       default:
         return css`
           background-image: url(${JSON.stringify(bg)});
+          background-size: 630px 244px;
           background-position-y: bottom;
           background-repeat: no-repeat;
         `;
@@ -178,9 +179,10 @@ export const DescriptionCardStyled = styled.div<{ $variant: DescriptionCardVaria
     }
     ${DescriptionCardBackground} {
       background-image: url(${JSON.stringify(mainBg)});
-      background-size: contain;
+      background-size: 630px 512px;
+      background-size: cover;
       background-repeat: no-repeat;
-      background-position: bottom;
+      background-position: bottom right;
     }
   `}
   ${({ $variant }) => $variant === 'secondary' && css`

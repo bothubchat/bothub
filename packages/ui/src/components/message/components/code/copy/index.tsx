@@ -12,7 +12,7 @@ export interface MessageCodeCopyButtonProps {
 export const MessageCodeCopyButton: React.FC<MessageCodeCopyButtonProps> = ({
   code, messageVariant
 }) => {
-  const { onCodeCopy } = useMessage();
+  const { typing, onCodeCopy } = useMessage();
 
   const [isFocus, setIsFocus] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
@@ -39,6 +39,7 @@ export const MessageCodeCopyButton: React.FC<MessageCodeCopyButtonProps> = ({
     <MessageCodeCopyButtonStyled
       $focus={isFocus}
       $messageVariant={messageVariant}
+      disabled={typing}
       onBlur={handleBlur}
       onClick={handleClick}
     >
