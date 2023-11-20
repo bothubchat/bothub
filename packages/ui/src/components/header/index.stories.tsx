@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import {
   Header, 
-  HeaderAuthUser, 
-  HeaderAuthUserAvatar, 
-  HeaderAuthUserItem, 
-  HeaderAuthUserList, 
+  HeaderUserInfo, 
+  HeaderUserInfoAvatar, 
+  HeaderUserInfoItem, 
+  HeaderUserInfoList, 
   HeaderLogoLink, 
   HeaderNav, 
   HeaderNavDropdown, 
@@ -12,7 +12,8 @@ import {
   HeaderNavDropdownList, 
   HeaderNavLink, 
   HeaderUser, 
-  HeaderUserButton
+  HeaderUserButton,
+  HeaderThemeSwitcher
 } from '.';
 import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
 import { Logo } from '@/ui/components/logo';
@@ -96,26 +97,26 @@ export const Authorized: HeaderStory = {
     ...Basic.args,
     user: (
       <HeaderUser>
-        <HeaderAuthUser 
-          avatar={<HeaderAuthUserAvatar src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album" />}
+        <HeaderUserInfo 
+          avatar={<HeaderUserInfoAvatar src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album" />}
           name="Артём"
           tokens="2 023 CAPS"
         >
-          <HeaderAuthUserList>
-            <HeaderAuthUserItem icon={<DashboardIcon />}>
+          <HeaderUserInfoList>
+            <HeaderUserInfoItem icon={<DashboardIcon />}>
               Дашборд
-            </HeaderAuthUserItem>
-            <HeaderAuthUserItem icon={<UserProfileIcon />}>
+            </HeaderUserInfoItem>
+            <HeaderUserInfoItem icon={<UserProfileIcon />}>
               Профиль
-            </HeaderAuthUserItem>
-            <HeaderAuthUserItem icon={<SettingsIcon />}>
+            </HeaderUserInfoItem>
+            <HeaderUserInfoItem icon={<SettingsIcon />}>
               Настройки
-            </HeaderAuthUserItem>
-            <HeaderAuthUserItem icon={<LogoutIcon />}>
+            </HeaderUserInfoItem>
+            <HeaderUserInfoItem icon={<LogoutIcon />}>
               Выйти
-            </HeaderAuthUserItem>
-          </HeaderAuthUserList>
-        </HeaderAuthUser>
+            </HeaderUserInfoItem>
+          </HeaderUserInfoList>
+        </HeaderUserInfo>
       </HeaderUser>
     )
   }
@@ -134,6 +135,9 @@ export const Dashboard: HeaderStory = {
         <HeaderNavLink icon={<TariffIcon />} href="#">Пакеты</HeaderNavLink>
         <HeaderNavLink icon={<CoderIcon />} href="#">Для разработчиков</HeaderNavLink>
       </HeaderNav>
+    ),
+    themeSwitcher: (
+      <HeaderThemeSwitcher />
     )
   }
 };

@@ -1,5 +1,7 @@
 import React, { useCallback } from 'react';
-import { IconComponent, IconProps } from '@/ui/components';
+import {
+  IconComponent, IconProps, Tooltip, TooltipConsumer 
+} from '@/ui/components';
 import { IconItemStyled } from './styled';
 
 export interface IconItemProps extends Omit<IconProps, 'children'> {
@@ -14,8 +16,21 @@ export const IconItem: React.FC<IconItemProps> = ({ name, children, ...props }) 
   }, [name]);
   
   return (
-    <IconItemStyled title={name} onClick={handleClick}>
-      {React.createElement(children, props)}
-    </IconItemStyled>
+    <Tooltip label={name}>
+      <TooltipConsumer>
+        {({
+          handleTooltipMouseEnter,
+          handleTooltipMouseLeave
+        }) => (
+          <IconItemStyled 
+            onMouseEnter={handleTooltipMouseEnter}
+            onMouseLeave={handleTooltipMouseLeave}
+            onClick={handleClick}
+          >
+            {React.createElement(children, props)}
+          </IconItemStyled>
+        )}
+      </TooltipConsumer>
+    </Tooltip>
   );
 };

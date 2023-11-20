@@ -32,13 +32,13 @@ export const Skeleton: React.FC<SkeletonProps> = ({
       $fullWidth={fullWidth}
       className={className}
       initial={{
-        background: colors?.[0] ?? theme.colors.grayScale.gray5,
+        background: colors?.[0] ?? (theme.mode === 'light' ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray5),
         opacity: opacity?.[0] ?? 1
       }}
       animate={{
         background: colors ?? [
-          theme.colors.grayScale.gray5,
-          theme.colors.grayScale.gray1
+          theme.mode === 'light' ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray5,
+          theme.mode === 'light' ? theme.colors.grayScale.gray5 : theme.colors.grayScale.gray1
         ],
         opacity: opacity ?? [1],
         transition: {

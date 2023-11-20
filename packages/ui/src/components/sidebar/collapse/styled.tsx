@@ -38,10 +38,10 @@ export const SidebarCollapseHead = styled.div`
   cursor: pointer;
   &:hover {
     ${SidebarCollapseArrow} path {
-      stroke: ${({ theme }) => theme.colors.base.white};
+      stroke: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)} !important;
     }
     ${SidebarCollapseLabel} {
-      color: ${({ theme }) => theme.colors.base.white};
+      color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)} !important;
     }
   }
 `;

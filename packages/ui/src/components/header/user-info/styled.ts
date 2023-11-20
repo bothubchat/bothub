@@ -5,11 +5,11 @@ import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons';
 import { Avatar } from '@/ui/components/avatar';
 
-export interface HeaderAuthUserHeadProps {
+export interface HeaderUserInfoHeadProps {
   $inMenu: boolean;
 }
 
-export const HeaderAuthUserHead: React.FC<React.ComponentProps<'div'> & HTMLMotionProps<'div'> & HeaderAuthUserHeadProps> = styled(motion.div)`
+export const HeaderUserInfoHead: React.FC<React.ComponentProps<'div'> & HTMLMotionProps<'div'> & HeaderUserInfoHeadProps> = styled(motion.div)`
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -24,45 +24,38 @@ export const HeaderAuthUserHead: React.FC<React.ComponentProps<'div'> & HTMLMoti
   `}
 `;
 
-export const HeaderAuthUserStyled = styled.div<{ $inMenu: boolean }>`
+export const HeaderUserInfoStyled = styled.div<{ $inMenu: boolean }>`
+  user-select: none;
   ${({ $inMenu }) => $inMenu && css`
     width: 100%;
   `}
 `;
 
-export const HeaderAuthUserInfo = styled.div`
+export const HeaderUserInfoInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
 `;
 
-export const HeaderAuthUserAvatar = styled(Avatar).attrs({ size: 32 })``;
+export const HeaderUserInfoAvatar = styled(Avatar).attrs({ size: 32 })``;
 
-export const HeaderAuthUserInfoText = styled.span`
+export const HeaderUserInfoInfoText = styled.span`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 `;
 
-export const HeaderAuthUserName = styled(Typography)`
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
-  font-size: 14px;
-  line-height: 18px;
-`;
+export const HeaderUserInfoName = styled(Typography).attrs({ variant: 'body-s-medium' })``;
 
-export const HeaderAuthUserTokens = styled(Typography)`
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
-  font-size: 12px;
-  line-height: 16px;
-`;
+export const HeaderUserInfoTokens = styled(Typography).attrs({ variant: 'body-xs-regular' })``;
 
-export const HeaderAuthUserArrow = styled(ArrowDownIcon)``;
+export const HeaderUserInfoArrow = styled(ArrowDownIcon)``;
 
-export interface HeaderAuthUserBodyProps {
+export interface HeaderUserInfoBodyProps {
   $inMenu: boolean;
 }
 
-export const HeaderAuthUserBody = styled(motion.div)<HeaderAuthUserBodyProps>`
+export const HeaderUserInfoBody = styled(motion.div)<HeaderUserInfoBodyProps>`
   display: flex;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 6px;
@@ -76,7 +69,7 @@ export const HeaderAuthUserBody = styled(motion.div)<HeaderAuthUserBodyProps>`
   `}
 `;
 
-export const HeaderAuthUserList = styled.div`
+export const HeaderUserInfoList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;

@@ -17,7 +17,7 @@ export const MessageCodeCopyButtonStyled = styled(Button).attrs({ variant: 'text
       case 'user':
         return theme.colors.accent.primary;
       case 'assistant':
-        return theme.colors.base.white;
+        return theme.default.colors.base.white;
     }
   }} !important;
   }
@@ -28,7 +28,7 @@ export const MessageCodeCopyButtonStyled = styled(Button).attrs({ variant: 'text
       case 'user':
         return theme.colors.accent.primary;
       case 'assistant':
-        return theme.colors.base.white;
+        return theme.default.colors.base.white;
     }
   }} !important;
     }

@@ -12,7 +12,7 @@ export interface ScrollbarShadowProps {
 
 export const ScrollbarShadow: React.FC<ScrollbarShadowProps> = ({ side, ...props }) => {
   const theme = useTheme();
-  const { scrollbarSize, scrollShadows } = useScrollbar();
+  const { scrollbarSize, scrollShadows, disabled } = useScrollbar();
 
   const size: number = props.size ?? scrollShadows?.size ?? 80;
   const color: string = props.color ?? scrollShadows?.color ?? theme.colors.grayScale.gray4;
@@ -47,6 +47,7 @@ export const ScrollbarShadow: React.FC<ScrollbarShadowProps> = ({ side, ...props
     <ScrollbarShadowStyled 
       $side={side}
       $scrollbarSize={scrollbarSize}
+      $disabled={disabled}
     >
       <ScrollbarShadowContent
         style={style}

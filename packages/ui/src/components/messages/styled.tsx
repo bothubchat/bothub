@@ -7,16 +7,17 @@ export const MessagesStyled = styled.div`
   width: 100%;
 `;
 
-export const MessagesScrollbarWrapper = styled(Scrollbar).attrs({ 
+export const MessagesScrollbarWrapper = styled(Scrollbar).attrs(({ theme }) => ({ 
   variant: 'secondary',
   scrollShadows: {
     size: 140,
     top: <ScrollbarShadow side="top" />
   },
+  disableShadows: theme.mode === 'light',
   scrollLocked: {
     side: 'bottom'
   }
-})`
+}))`
   overflow: auto;
   height: 100%;
   ${adaptive({

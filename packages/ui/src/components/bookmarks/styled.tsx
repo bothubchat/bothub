@@ -6,12 +6,6 @@ import { adaptive } from '@/ui/adaptive';
 
 export const BookmarksStyled = styled.div`
   display: flex;
-  width: 100%;
-  grid-area: tabs;
-  box-sizing: border-box;
-  padding-bottom: 8px;
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
-  border-radius: 18px;
   ${adaptive({
     variant: 'dashboard',
     merge: true,

@@ -12,7 +12,7 @@ export const Form = styled.form`
 `;
 
 export const FormText = styled(Typography).attrs({ variant: 'body-m-medium', component: 'p' })`
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => theme.default.colors.grayScale.gray1};
   width: 100%;
   margin-bottom: 10px;
 `;

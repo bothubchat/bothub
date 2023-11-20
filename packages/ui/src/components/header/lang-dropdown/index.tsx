@@ -11,6 +11,8 @@ import {
   HeaderLangDropdownTogglerText 
 } from './styled';
 import { HeaderLangDropdownProvider } from './context';
+import { IconProvider } from '@/ui/components/icon';
+import { useTheme } from '@/ui/theme';
 
 export interface HeaderLangDropdownProps extends 
   React.ComponentProps<typeof HeaderLangDropdownStyled> {
@@ -20,6 +22,8 @@ export interface HeaderLangDropdownProps extends
 export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
   lang, children, ...props
 }) => {
+  const theme = useTheme();
+
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -51,23 +55,27 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
   return (
     <HeaderLangDropdownProvider setIsOpen={setIsOpen}>
       <HeaderLangDropdownStyled {...props} ref={dropdownRef}>
-        <HeaderLangDropdownToggler $open={isOpen} onClick={handleToggle}>
-          <HeaderLangDropdownTogglerIcon />
-          <HeaderLangDropdownTogglerText>
-            {lang}
-          </HeaderLangDropdownTogglerText>
-          <HeaderLangDropdownTogglerArrow 
-            initial={{
-              transform: `rotateZ(${isOpen ? -180 : 0}deg)`
-            }}
-            animate={{
-              transform: `rotateZ(${isOpen ? -180 : 0}deg)`,
-              transition: {
-                duration: 0.15
-              }
-            }}
-          />
-        </HeaderLangDropdownToggler>
+        <IconProvider
+          fill={theme.colors.base.white}
+        >
+          <HeaderLangDropdownToggler $open={isOpen} onClick={handleToggle}>
+            <HeaderLangDropdownTogglerIcon />
+            <HeaderLangDropdownTogglerText>
+              {lang}
+            </HeaderLangDropdownTogglerText>
+            <HeaderLangDropdownTogglerArrow 
+              initial={{
+                transform: `rotateZ(${isOpen ? -180 : 0}deg)`
+              }}
+              animate={{
+                transform: `rotateZ(${isOpen ? -180 : 0}deg)`,
+                transition: {
+                  duration: 0.15
+                }
+              }}
+            />
+          </HeaderLangDropdownToggler>
+        </IconProvider>
         <AnimatePresence>
           {isOpen && (
             <HeaderLangDropdownContent

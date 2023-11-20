@@ -21,12 +21,13 @@ export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyl
   nav?: React.ReactNode;
   lang?: React.ReactNode;
   user?: React.ReactNode;
+  themeSwitcher?: React.ReactNode;
   open?: boolean;
   onOpen?: HeaderOpenEventHandler;
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  id, variant = 'main', logo, nav, lang, user, open, onOpen, ...props 
+  id, variant = 'main', logo, nav, lang, user, themeSwitcher, open, onOpen, ...props 
 }) => {
   const initialIsMenuOpen = open;
   const setInitialIsMenuOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>(
@@ -42,6 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   const menuNode: React.ReactNode = (
     <HeaderMenu>
+      {themeSwitcher}
       {nav}
       {user}
     </HeaderMenu>
@@ -70,6 +72,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {nav}
               </HeaderLeft>
               <HeaderRight>
+                {themeSwitcher}
                 {lang}
                 {user}
                 <HeaderMenuToggleButton />
@@ -88,7 +91,8 @@ export * from './styled';
 export * from './nav';
 export * from './lang-dropdown';
 export * from './user';
-export * from './auth-user';
+export * from './user-info';
 export * from './menu';
 export * from './types';
 export * from './context';
+export * from './theme-switcher';

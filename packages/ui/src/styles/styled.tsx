@@ -7,6 +7,7 @@ export interface BothubGlobalStyleProps {
 
 export const BothubGlobalStyleStyled = createGlobalStyle<BothubGlobalStyleProps>`
   body {
+    transition: background 0.3s;
     background: ${({ theme }) => theme.colors.base.black};
     ${ScrollbarStyle}
     ${({ $margin }) => typeof $margin === 'string' && css`

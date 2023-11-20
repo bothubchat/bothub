@@ -21,7 +21,7 @@ export const SelectFieldStyled = styled.div<SelectFieldStyledProps>`
     cursor: not-allowed; 
   `}
   ${({ $disabled }) => !$disabled && css`
-    cursor: default; 
+    cursor: default;
   `}
 `;
 
@@ -192,7 +192,7 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
   padding: 8px;
   border-radius: 6px;
   gap: 8px;
-  ${({ $selected }) => {
+  ${({ theme, $selected }) => {
     if ($selected) {
       return css`
         cursor: default;
@@ -203,7 +203,7 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
     return css`
       cursor: pointer;
       &:hover {
-        background: rgba(255, 255, 255, 0.05);
+        background: ${theme.mode === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'};
       }
     `;
   }}
@@ -224,10 +224,20 @@ export const SelectFieldOptionColor = styled.span<SelectFieldOptionColorProps>`
   `}
 `;
 
-export const SelectFieldOptionText = styled(Typography).attrs({ variant: 'input-sm' })``;
+export interface SelectFieldOptionTextProps {
+  $selected: boolean;
+}
 
-export const SelectFieldColorOptionText = styled(Typography).attrs({ variant: 'input-sm' })`
-  color: ${({ theme }) => theme.colors.base.white};
+export const SelectFieldOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldOptionTextProps>`
+  color: ${({ theme, $selected }) => ($selected ? theme.default.colors.base.white : theme.colors.base.white)};
+`;
+
+export interface SelectFieldColorOptionTextProps {
+  $selected: boolean;
+}
+
+export const SelectFieldColorOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldColorOptionTextProps>`
+  color: ${({ theme, $selected }) => ($selected ? theme.default.colors.base.white : theme.colors.base.white)};
 `;
 
 export const SelectFieldErrorText = styled(Typography).attrs({ variant: 'input-sm' })`

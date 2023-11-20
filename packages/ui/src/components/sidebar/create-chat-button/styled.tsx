@@ -25,8 +25,7 @@ export const SidebarCreateChatButtonContainer = styled.div<SidebarCreateChatButt
 
 export const SidebarCreateChatButtonStyled = styled(Button).attrs({
   startIcon: <Plus1Icon />,
-  fullWidth: true,
-  children: 'Создать чат'
+  fullWidth: true
 })`
   margin-right: 24px;
   flex-shrink: 0;

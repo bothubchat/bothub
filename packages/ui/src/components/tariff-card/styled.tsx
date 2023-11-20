@@ -35,7 +35,7 @@ export const TariffCardContent = styled.div<TariffCardContentProps>`
         `;
       case 'secondary':
         return css`
-          background: ${theme.colors.grayScale.gray4};
+          background: ${theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4};
         `;
     }
   }}

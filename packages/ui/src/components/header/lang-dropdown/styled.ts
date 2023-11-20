@@ -63,12 +63,12 @@ export const HeaderLangDropdownContent: React.FC<React.ComponentProps<'div'> & H
 export const HeaderLangDropdownList = styled.ul`
   display: flex;
   flex-direction: column;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border: 1px solid ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray2)};
   border-radius: 8px;
   overflow: hidden;
   list-style: none;
   padding: 0px;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray4 : theme.colors.grayScale.gray3)};
   width: 80px;
   padding: 10px 16px;
   box-sizing: border-box;

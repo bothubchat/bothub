@@ -42,7 +42,7 @@ export const DeveloperKeyValue = styled(Typography).attrs({ variant: 'body-m-med
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => theme.default.colors.grayScale.gray1};
   user-select: none;
 `;
 

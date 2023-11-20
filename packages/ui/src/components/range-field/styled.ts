@@ -4,6 +4,7 @@ import React from 'react';
 import { Typography } from '@/ui/components/typography';
 import { RangeFieldValue } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
+import { adaptive } from '@/ui/adaptive';
 
 export interface RangeFieldStyledProps {
   $fullWidth: boolean;
@@ -78,17 +79,29 @@ export interface RangeFieldRangeThumbProps {
 export const RangeFieldRangeThumb = styled.span<RangeFieldRangeThumbProps>`
   display: inline-flex;
   position: relative;
-  width: 16px;
-  height: 16px;
   flex-shrink: 0;
-  border-radius: 8px;
-  background: ${({ theme }) => theme.colors.base.white};
+  border-radius: 50%;
+  background: ${({ theme }) => theme.default.colors.base.white};
   outline: none;
   ${({ $disabled }) => $disabled && css`
     cursor: not-allowed;
   `}
   ${({ $disabled }) => !$disabled && css`
     cursor: pointer;
+  `}
+  ${adaptive({
+    merge: true,
+    desktop: css`
+      width: 16px;
+      height: 16px;
+    `,
+    tablet: css`
+      width: 20px;
+      height: 20px;
+    `
+  })}
+  ${({ theme }) => theme.mode === 'light' && css`
+    box-shadow: 0px 0px 0px 1px ${theme.default.colors.grayScale.gray6};
   `}
 `;
 

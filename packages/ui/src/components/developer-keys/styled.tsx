@@ -11,20 +11,7 @@ export const DeveloperKeysStyled = styled.div`
   width: 100%;
 `;
 
-export const DeveloperKeysTitle = styled(Typography).attrs({ component: 'h3', variant: 'h2' })`
-  ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
-      margin-bottom: 20px;
-    `,
-    tablet: css`
-      margin-bottom: 18px;
-    `,
-    mobile: css`
-      margin-bottom: 14px;
-    `
-  })}
-`;
+export const DeveloperKeysTitle = styled(Typography).attrs({ component: 'h3', variant: 'h2' })``;
 
 export const DeveloperKeyList = styled.div`
   display: flex;
@@ -34,12 +21,15 @@ export const DeveloperKeyList = styled.div`
   ${adaptive({
     variant: 'dashboard',
     desktop: css`
+      margin: 20px 0px;
       gap: 20px;
     `,
     tablet: css`
+      margin: 18px 0px;
       gap: 18px;
     `,
     mobile: css`
+      margin: 14px 0px;
       gap: 14px;
     `
   })}
@@ -48,22 +38,6 @@ export const DeveloperKeyList = styled.div`
 export const DeveloperKeysButtons = styled.div`
   display: flex;
   flex-wrap: wrap;
-  ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
-      gap: 20px;
-      margin-top: 20px;
-    `,
-    tablet: css`
-      gap: 18px;
-      margin-top: 18px;
-    `,
-    mobile: css`
-      gap: 14px;
-      margin-top: 14px;
-    `
-  })}
-  
 `;
 
 export const AddDeveloperKeyButton = styled(Button).attrs({

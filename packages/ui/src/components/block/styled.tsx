@@ -10,6 +10,7 @@ export const BlockStyled = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 100%;
+  transition: background 0.3s;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
   overflow: hidden;
   max-height: 100vh;

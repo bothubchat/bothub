@@ -14,6 +14,16 @@ export const Badge: React.FC<BadgeProps> = ({
 }) => {
   const theme = useTheme();
 
+  let iconFill: string;
+  switch (variant) {
+    case 'info':
+      iconFill = theme.colors.base.white;
+      break;
+    default:
+      iconFill = theme.default.colors.base.white;
+      break;
+  }
+
   return (
     <BadgeStyled
       $variant={variant} 
@@ -21,13 +31,15 @@ export const Badge: React.FC<BadgeProps> = ({
     >
       <IconProvider
         size={12}
-        fill={theme.colors.base.white}
+        fill={iconFill}
       >
         {icon}
       </IconProvider>
       {typeof children !== 'string' && children}
       {typeof children === 'string' && (
-        <BadgeText>
+        <BadgeText
+          $variant={variant}
+        >
           {children}
         </BadgeText>
       )}

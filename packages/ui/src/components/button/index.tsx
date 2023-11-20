@@ -64,7 +64,14 @@ export const Button = forwardRef<ButtonRef, ButtonProps>(({
     if (disabled) {
       iconFill = theme.colors.grayScale.gray1;
     } else {
-      iconFill = theme.colors.base.white;
+      switch (variant) {
+        case 'primary':
+          iconFill = theme.default.colors.base.white;
+          break;
+        default:
+          iconFill = theme.colors.base.white;
+          break;
+      }
     }
   }
   

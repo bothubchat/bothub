@@ -35,7 +35,9 @@ export const Basic: ReferralsStory = {
           maxText: '20000 ₽'
         }}
         withdraw={(
-          <ReferralCardWithdrawButton />
+          <ReferralCardWithdrawButton>
+            Вывести средства
+          </ReferralCardWithdrawButton>
         )}
         dateCreated="Дата последнего вывода: 07.09.23, 15:33:47"
       >

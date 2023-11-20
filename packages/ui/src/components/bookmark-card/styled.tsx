@@ -14,7 +14,10 @@ export const BookmarkCardStyled = styled.div<BookmarkCardStyledProps>`
   width: 100%;
   border-radius: 14px;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray3)};
+  ${({ theme }) => theme.mode === 'light' && css`
+    box-shadow: inset 0px 0px 0px 1px ${theme.colors.grayScale.gray3};
+  `}
   cursor: ${({ $skeleton }) => ($skeleton ? 'progress' : 'pointer')};
   ${() => css`
     ${BookmarkCardActions} {

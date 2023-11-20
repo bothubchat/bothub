@@ -71,7 +71,7 @@ export const TextField: React.FC<TextFieldProps> = ({
 
   const iconProps: IconProviderProps = {
     size: 16,
-    fill: theme.colors.base.white
+    fill: theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white
   };
 
   return (

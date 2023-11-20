@@ -66,3 +66,5 @@ export * from './filters';
 export * from './info';
 export * from './search-circle';
 export * from './save';
+export * from './light';
+export * from './dark';

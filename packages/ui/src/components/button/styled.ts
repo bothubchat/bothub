@@ -20,7 +20,18 @@ export const ButtonStyled: React.FC<ButtonStyledProps> = styled(motion.button)`
   align-items: center;
   border: none;
   font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
-  color: ${({ theme, disabled }) => (disabled ? theme.colors.grayScale.gray1 : theme.colors.base.white)};
+  color: ${({ theme, $variant, disabled }) => {
+    if (disabled) {
+      return theme.colors.grayScale.gray1;
+    }
+
+    switch ($variant) {
+      case 'primary':
+        return theme.default.colors.base.white;
+      default:
+        return theme.colors.base.white;
+    }
+  }};
   cursor: ${({ disabled, $skeleton }) => {
     if (disabled) {
       return 'not-allowed';
@@ -38,7 +49,7 @@ export const ButtonStyled: React.FC<ButtonStyledProps> = styled(motion.button)`
     switch ($variant) {
       case 'primary':
         return css`
-          background: ${disabled || $skeleton ? theme.colors.grayScale.gray2 : theme.colors.accent.primary};
+          background: ${disabled || $skeleton ? theme.default.colors.grayScale.gray2 : theme.colors.accent.primary};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
         `;
       case 'secondary':
@@ -134,7 +145,7 @@ export const ButtonStyled: React.FC<ButtonStyledProps> = styled(motion.button)`
         }
         &:hover {
           svg path {
-            fill: ${theme.colors.base.white} !important;
+            fill: ${theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white} !important;
           }
         }
       `;

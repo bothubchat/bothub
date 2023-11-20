@@ -12,6 +12,7 @@ export const ReferralRadioStyled = styled.div<ReferralRadioStyledProps>`
   box-sizing: border-box;
   width: 100%;
   max-width: 463px;
+  background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : 'rgba(0, 0, 0, 0)')};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 10px;
   overflow: hidden;

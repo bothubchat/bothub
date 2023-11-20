@@ -117,6 +117,7 @@ export interface DescriptionCardTitleProps extends TypographyProps {
 }
 
 export const DescriptionCardTitle = styled(Typography).attrs({ variant: 'body-xl-semibold', component: 'h3' })`
+  color: ${({ theme }) => theme.default.colors.base.white};
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     text-align: center;
   }
@@ -133,6 +134,7 @@ export const DescriptionCardTertiaryTitle = styled(Typography).attrs({ variant: 
 `;
 
 export const DescriptionCardText = styled(Typography).attrs({ variant: 'body-m-regular', component: 'p' })`
+  color: ${({ theme }) => theme.default.colors.base.white};
   margin-top: 16px;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     text-align: center;

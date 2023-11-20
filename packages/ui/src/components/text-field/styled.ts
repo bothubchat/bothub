@@ -83,7 +83,7 @@ export const TextFieldBlock = styled.span<TextFieldBlockProps>`
       return css`
         background: ${theme.colors.grayScale.gray4};
         > svg path {
-          fill: ${theme.colors.base.white};
+          fill: ${theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white};
         }
       `;
     }
@@ -116,7 +116,7 @@ export const TextFieldInput = styled.input`
     color: ${({ theme }) => theme.colors.grayScale.gray1};
   }
   &:focus::placeholder {
-    color: ${({ theme }) => theme.colors.grayScale.gray6};
+    color: ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray1 : theme.colors.grayScale.gray6)};
   }
   &:-webkit-autofill,
   &:-webkit-autofill:hover,

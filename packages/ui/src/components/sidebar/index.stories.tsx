@@ -41,7 +41,9 @@ export const Basic: SidebarStory = {
       </SidebarConsumer>
     ),
     createChat: (
-      <SidebarCreateChatButton />
+      <SidebarCreateChatButton>
+        Создать чат
+      </SidebarCreateChatButton>
     ),
     user: (
       <SidebarConsumer>
@@ -64,7 +66,9 @@ export const Basic: SidebarStory = {
                 <SidebarUserInfoFreeTariff />
               )}
               updateTariff={(
-                <SidebarUserInfoUpdateTariffButton />
+                <SidebarUserInfoUpdateTariffButton>
+                  Обновить тариф
+                </SidebarUserInfoUpdateTariffButton>
               )}
             />
           </Tooltip>
@@ -174,7 +178,9 @@ export const BasicTariff: SidebarStory = {
           <SidebarUserInfoBasicTariff />
         )}
         updateTariff={(
-          <SidebarUserInfoUpdateTariffButton />
+          <SidebarUserInfoUpdateTariffButton>
+            Обновить тариф
+          </SidebarUserInfoUpdateTariffButton>
         )}
       />
     )
@@ -198,7 +204,9 @@ export const PremiumTariff: SidebarStory = {
           <SidebarUserInfoPremiumTariff />
         )}
         updateTariff={(
-          <SidebarUserInfoUpdateTariffButton />
+          <SidebarUserInfoUpdateTariffButton>
+            Обновить тариф
+          </SidebarUserInfoUpdateTariffButton>
         )}
       />
     )
@@ -222,7 +230,9 @@ export const EliteTariff: SidebarStory = {
           <SidebarUserInfoEliteTariff />
         )}
         updateTariff={(
-          <SidebarUserInfoUpdateTariffButton />
+          <SidebarUserInfoUpdateTariffButton>
+            Обновить тариф
+          </SidebarUserInfoUpdateTariffButton>
         )}
       />
     )
@@ -251,7 +261,9 @@ export const Skeleton: SidebarStory = {
           <SidebarUserInfoFreeTariff />
         )}
         updateTariff={(
-          <SidebarUserInfoUpdateTariffButton disabled />
+          <SidebarUserInfoUpdateTariffButton disabled>
+            Обновить тариф
+          </SidebarUserInfoUpdateTariffButton>
         )}
       />
     ),

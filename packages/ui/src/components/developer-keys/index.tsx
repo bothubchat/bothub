@@ -5,11 +5,12 @@ import {
 
 export interface DeveloperKeysProps extends React.PropsWithChildren {
   title?: string;
+  empty?: React.ReactNode;
   add?: React.ReactNode;
 }
 
 export const DeveloperKeys: React.FC<DeveloperKeysProps> = ({
-  title, add, children
+  title, empty, add, children
 }) => (
   <DeveloperKeysStyled>
     {title && (
@@ -17,9 +18,12 @@ export const DeveloperKeys: React.FC<DeveloperKeysProps> = ({
         {title}
       </DeveloperKeysTitle>
     )}
-    <DeveloperKeyList>
-      {children}
-    </DeveloperKeyList>
+    {React.Children.toArray(children).length === 0 && empty}
+    {React.Children.toArray(children).length !== 0 && (
+      <DeveloperKeyList>
+        {children}
+      </DeveloperKeyList>
+    )}
     <DeveloperKeysButtons>
       {add}
     </DeveloperKeysButtons>

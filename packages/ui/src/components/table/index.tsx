@@ -11,22 +11,28 @@ export interface TableProps extends Omit<React.ComponentProps<'table'>, 'ref'> {
 
 export const Table: React.FC<TableProps> = ({
   head, scrollShadows, children, ...props
-}) => (
-  <TableStyled
-    {...props}
-  >
-    <TableScrollbarWrapper
-      scrollShadows={scrollShadows}
+}) => {
+  if (React.Children.toArray(children).length === 0) {
+    return null;
+  }
+
+  return (
+    <TableStyled
+      {...props}
     >
-      <TableContent>
-        {head}
-        <TableBody>
-          {children}
-        </TableBody>
-      </TableContent>
-    </TableScrollbarWrapper>
-  </TableStyled>
-);
+      <TableScrollbarWrapper
+        scrollShadows={scrollShadows}
+      >
+        <TableContent>
+          {head}
+          <TableBody>
+            {children}
+          </TableBody>
+        </TableContent>
+      </TableScrollbarWrapper>
+    </TableStyled>
+  );
+};
 
 export * from './styled';
 export * from './cell';

@@ -102,7 +102,7 @@ export const TextAreaFieldTextArea = styled.textarea`
     color: ${({ theme }) => theme.colors.grayScale.gray1};
   }
   &:focus::placeholder {
-    color: ${({ theme }) => theme.colors.grayScale.gray6};
+    color: ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray1 : theme.colors.grayScale.gray6)};
   }
   &::-webkit-scrollbar {
     display: none;

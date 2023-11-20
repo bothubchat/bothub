@@ -11,7 +11,7 @@ export interface NotificationStyledProps {
 
 export const NotificationStyled = styled(motion.div)<NotificationStyledProps>`
   display: flex;
-  background: ${({ theme }) => theme.colors.grayScale.gray2};
+  background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray2)};
   border: 1px solid ${({ theme, $variant }) => {
     switch ($variant) {
       case 'info':
@@ -74,7 +74,7 @@ export const NotificationTitle = styled(Typography).attrs({ component: 'h3', var
 
 export const NotificationText = styled(Typography).attrs({ component: 'p', variant: 'body-m-regular' })`
   margin-top: 10px;
-  color: ${({ theme }) => theme.colors.grayScale.gray6};
+  color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.black : theme.colors.grayScale.gray6)};
 `;
 
 export const NotificationCloseButton = styled(Button).attrs({ variant: 'text', children: <CloseIcon /> })``;

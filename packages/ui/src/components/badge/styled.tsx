@@ -27,4 +27,17 @@ export const BadgeStyled = styled.span<BadgeStyledProps>`
   }};
 `;
 
-export const BadgeText = styled(Typography).attrs({ variant: 'body-s-medium' })``;
+export interface BadgeTextProps {
+  $variant: BadgeVariant;
+}
+
+export const BadgeText = styled(Typography).attrs({ variant: 'body-s-medium' })<BadgeTextProps>`
+  color: ${({ theme, $variant }) => {
+    switch ($variant) {
+      case 'info':
+        return theme.colors.base.white;
+      default:
+        return theme.default.colors.base.white;
+    }
+  }};
+`;

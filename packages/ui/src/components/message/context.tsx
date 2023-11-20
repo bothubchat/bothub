@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { MessageCopyEventHandler } from './types';
+import { MessageCopyEventHandler, MessageVariant } from './types';
 
 export interface MessageContextValue {
+  variant: MessageVariant;
   message: string;
   typing: boolean;
   onCopy?: MessageCopyEventHandler;
@@ -9,6 +10,7 @@ export interface MessageContextValue {
 }
 
 export const MessageContext = React.createContext<MessageContextValue>({
+  variant: 'user',
   message: '',
   typing: false
 });

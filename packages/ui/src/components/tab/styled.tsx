@@ -29,4 +29,16 @@ export const TabStyled: React.FC<HTMLMotionProps<'button'> & TabStyledProps> = s
   }))}
 `; 
 
-export const TabText = styled(Typography).attrs({ variant: 'body-m-semibold' })``;
+export interface TabTextProps {
+  $active: boolean;
+}
+
+export const TabText = styled(Typography).attrs({ variant: 'body-m-semibold' })<TabTextProps>`
+  color: ${({ theme, $active }) => {
+    if ($active) {
+      return theme.default.colors.base.white;
+    }
+
+    return theme.colors.base.white;
+  }};
+`;

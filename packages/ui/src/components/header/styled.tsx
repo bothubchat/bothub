@@ -109,6 +109,7 @@ export const HeaderContent = styled.div<HeaderContentProps>`
         });
 
         return css`
+          transition: background 0.3s;
           background: ${theme.colors.grayScale.gray4};
           ${adaptiveStyle}
         `;

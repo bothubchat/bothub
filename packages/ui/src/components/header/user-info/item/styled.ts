@@ -2,12 +2,12 @@ import { HTMLMotionProps, motion } from 'framer-motion';
 import React from 'react';
 import { styled } from 'styled-components';
 
-export const HeaderAuthUserItemStyled = styled.a`
+export const HeaderUserInfoItemStyled = styled.a`
   display: inline-flex;
   width: 100%;
 `;
 
-export const HeaderAuthUserItemContent: React.FC<React.ComponentProps<'span'> & HTMLMotionProps<'span'>> = styled(motion.span)`
+export const HeaderUserInfoItemContent: React.FC<React.ComponentProps<'span'> & HTMLMotionProps<'span'>> = styled(motion.span)`
   display: inline-flex;
   width: 100%;
   padding: 8px 16px;

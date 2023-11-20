@@ -1,22 +1,22 @@
 import React, { useCallback } from 'react';
 import { ExecutionProps as StyledProps } from 'styled-components';
-import { HeaderAuthUserItemContent, HeaderAuthUserItemStyled } from './styled';
-import { useHeaderAuthUser } from '../context';
-import { useTheme } from '../../../../theme';
+import { useTheme } from '@/ui/theme';
 import { IconProvider } from '@/ui/components/icon';
+import { HeaderUserInfoItemContent, HeaderUserInfoItemStyled } from './styled';
+import { useHeaderUserInfo } from '../context';
 import { useHeader } from '../../context';
 
-export interface HeaderAuthUserItemProps extends React.ComponentProps<'a'>, StyledProps {
+export interface HeaderUserInfoItemProps extends React.ComponentProps<'a'>, StyledProps {
   icon: React.ReactNode;
   to?: string;
 }
 
-export const HeaderAuthUserItem: React.FC<HeaderAuthUserItemProps> = ({
+export const HeaderUserInfoItem: React.FC<HeaderUserInfoItemProps> = ({
   icon, to, children, ...props 
 }) => {
   const theme = useTheme();
   const { setIsMenuOpen } = useHeader();
-  const { setIsOpen } = useHeaderAuthUser();
+  const { setIsOpen } = useHeaderUserInfo();
 
   const handleClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
     props.onClick?.(event);
@@ -25,8 +25,8 @@ export const HeaderAuthUserItem: React.FC<HeaderAuthUserItemProps> = ({
   }, [props.onClick]);
 
   return (
-    <HeaderAuthUserItemStyled {...props} to={to} onClick={handleClick}>
-      <HeaderAuthUserItemContent
+    <HeaderUserInfoItemStyled {...props} to={to} onClick={handleClick}>
+      <HeaderUserInfoItemContent
         initial={{
           background: theme.colors.grayScale.gray4
         }}
@@ -41,7 +41,7 @@ export const HeaderAuthUserItem: React.FC<HeaderAuthUserItemProps> = ({
           {icon}
         </IconProvider>
         {children}
-      </HeaderAuthUserItemContent>
-    </HeaderAuthUserItemStyled>
+      </HeaderUserInfoItemContent>
+    </HeaderUserInfoItemStyled>
   );
 };

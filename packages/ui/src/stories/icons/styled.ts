@@ -15,7 +15,7 @@ export const IconList = styled.div`
   flex-wrap: wrap;
   align-items: center;
   margin-top: 24px;
-  background: #181F2F;
+  background: ${({ theme }) => theme.colors.grayScale.gray4};
   border-radius: 8px;
   padding: 24px;
   gap: 20px;

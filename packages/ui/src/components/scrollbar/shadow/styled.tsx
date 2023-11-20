@@ -7,6 +7,7 @@ import { adaptive } from '@/ui/adaptive';
 export interface ScrollbarShadowStyledProps {
   $side: ScrollbarShadowSide;
   $scrollbarSize: number;
+  $disabled: boolean;
 }
 
 export const ScrollbarShadowStyled = styled.span<ScrollbarShadowStyledProps>`
@@ -38,7 +39,22 @@ export const ScrollbarShadowStyled = styled.span<ScrollbarShadowStyledProps>`
         `;
     }
   }}
-  ${({ $side, $scrollbarSize }) => {
+  ${({ $side, $scrollbarSize, $disabled }) => {
+    if ($disabled) {
+      switch ($side) {
+        case 'left':
+        case 'right':
+          return css`
+            height: 100%;
+          `;
+        case 'top':
+        case 'bottom':
+          return css`
+            width: 100%;
+          `;
+      }
+    }
+
     switch ($side) {
       case 'left':
       case 'right':

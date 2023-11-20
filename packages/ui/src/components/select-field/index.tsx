@@ -125,7 +125,12 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                 {value.color && (
                   <SelectFieldValueColor $color={value.color} />
                 )}
-                {value.value && (
+                {value.label && (
+                  <SelectFieldColorValueText>
+                    {value.label}
+                  </SelectFieldColorValueText>
+                )}
+                {(!value.label && value.value) && (
                   <SelectFieldColorValueText>
                     {value.value}
                   </SelectFieldColorValueText>
@@ -168,7 +173,9 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                             key={index}
                             onClick={handleChange.bind(null, item)}
                           >
-                            <SelectFieldOptionText>
+                            <SelectFieldOptionText
+                              $selected={selected}
+                            >
                               {item}
                             </SelectFieldOptionText>
                           </SelectFieldOption>
@@ -184,8 +191,10 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                           onClick={handleChange.bind(null, item)}
                         >
                           {!item.color && (
-                            <SelectFieldOptionText>
-                              {item.value}
+                            <SelectFieldOptionText
+                              $selected={selected}
+                            >
+                              {item.label ?? item.value}
                             </SelectFieldOptionText>
                           )}
                           {item.color && (
@@ -198,8 +207,10 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                             />
                           )}
                           {item.color && (
-                            <SelectFieldColorOptionText>
-                              {item.value}
+                            <SelectFieldColorOptionText
+                              $selected={selected}
+                            >
+                              {item.label ?? item.value}
                             </SelectFieldColorOptionText>
                           )}
                         </SelectFieldOption>

@@ -123,12 +123,15 @@ export const SidebarUserInfoTokens = styled(Typography).attrs({ variant: 'body-s
 
 export const SidebarUserInfoTariff = styled(Typography).attrs({ variant: 'body-m-medium', component: 'span' })`
   display: inline-flex;
-  background: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => theme.default.colors.base.white};
+  background: ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray1)};
   padding: 4px 8px;
   border-radius: 10px;
 `;
 
-export const SidebarUserInfoFreeTariff = styled(SidebarUserInfoTariff).attrs({ children: 'Free' })``;
+export const SidebarUserInfoFreeTariff = styled(SidebarUserInfoTariff).attrs({ children: 'Free' })`
+  color: ${({ theme }) => theme.colors.base.white};
+`;
 
 export const SidebarUserInfoBasicTariff = styled(SidebarUserInfoTariff).attrs({ children: 'Basic' })`
   background: ${({ theme }) => theme.colors.accent.primary};
@@ -141,6 +144,5 @@ export const SidebarUserInfoPremiumTariff = styled(SidebarUserInfoTariff).attrs(
 export const SidebarUserInfoEliteTariff = styled(SidebarUserInfoPremiumTariff).attrs({ children: 'Elite' })``;
 
 export const SidebarUserInfoUpdateTariffButton = styled(Button).attrs({ 
-  fullWidth: true,
-  children: 'Обновить тариф'
+  fullWidth: true
 })``;

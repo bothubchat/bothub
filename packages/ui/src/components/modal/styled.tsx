@@ -116,7 +116,7 @@ export const ModalCloseButton = styled.button`
     fill: ${({ theme }) => theme.colors.grayScale.gray1};
   }
   &:hover path {
-    fill: ${({ theme }) => theme.colors.grayScale.gray6};
+    fill: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.grayScale.gray6)};
   }
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     > svg {

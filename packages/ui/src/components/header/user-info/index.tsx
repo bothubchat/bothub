@@ -2,27 +2,27 @@ import React, {
   useCallback, useEffect, useRef, useState 
 } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import { useTheme } from '@/ui/theme';
 import {
-  HeaderAuthUserArrow,
-  HeaderAuthUserBody,
-  HeaderAuthUserHead, 
-  HeaderAuthUserInfo, 
-  HeaderAuthUserInfoText, 
-  HeaderAuthUserName, 
-  HeaderAuthUserStyled, 
-  HeaderAuthUserTokens 
+  HeaderUserInfoArrow,
+  HeaderUserInfoBody,
+  HeaderUserInfoHead, 
+  HeaderUserInfoInfo, 
+  HeaderUserInfoInfoText, 
+  HeaderUserInfoName, 
+  HeaderUserInfoStyled, 
+  HeaderUserInfoTokens 
 } from './styled';
-import { HeaderAuthUserProvider } from './context';
+import { HeaderUserInfoProvider } from './context';
 import { useHeaderMenu } from '../menu/context';
-import { useTheme } from '../../../theme';
 
-export interface HeaderAuthUserProps extends React.PropsWithChildren {
+export interface HeaderUserInfoProps extends React.PropsWithChildren {
   avatar: React.ReactNode;
   name: string;
   tokens: string;
 }
 
-export const HeaderAuthUser: React.FC<HeaderAuthUserProps> = ({
+export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
   avatar, name, tokens, children 
 }) => {
   const theme = useTheme();
@@ -67,31 +67,36 @@ export const HeaderAuthUser: React.FC<HeaderAuthUserProps> = ({
   }, []);
 
   return (
-    <HeaderAuthUserProvider setIsOpen={setIsOpen}>
-      <HeaderAuthUserStyled ref={userRef} $inMenu={isInMenu}>
-        <HeaderAuthUserHead
+    <HeaderUserInfoProvider setIsOpen={setIsOpen}>
+      <HeaderUserInfoStyled ref={userRef} $inMenu={isInMenu}>
+        <HeaderUserInfoHead
           $inMenu={isInMenu}
           ref={headRef}
-          initial={{
-            background: theme.colors.grayScale.gray4
-          }}
-          whileHover={{
-            background: theme.colors.grayScale.gray3
+          initial="default"
+          animate="default"
+          whileHover="hover"
+          variants={{
+            default: {
+              background: theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4
+            },
+            hover: {
+              background: theme.colors.grayScale.gray3
+            }
           }}
           onClick={toggle}
         >
-          <HeaderAuthUserInfo>
+          <HeaderUserInfoInfo>
             {avatar}
-            <HeaderAuthUserInfoText>
-              <HeaderAuthUserName>
+            <HeaderUserInfoInfoText>
+              <HeaderUserInfoName>
                 {name}
-              </HeaderAuthUserName>
-              <HeaderAuthUserTokens>
+              </HeaderUserInfoName>
+              <HeaderUserInfoTokens>
                 {tokens}
-              </HeaderAuthUserTokens>
-            </HeaderAuthUserInfoText>
-          </HeaderAuthUserInfo>
-          <HeaderAuthUserArrow 
+              </HeaderUserInfoTokens>
+            </HeaderUserInfoInfoText>
+          </HeaderUserInfoInfo>
+          <HeaderUserInfoArrow 
             initial={{
               transform: `rotateZ(${isOpen ? -180 : 0}deg)`
             }}
@@ -102,10 +107,10 @@ export const HeaderAuthUser: React.FC<HeaderAuthUserProps> = ({
               }
             }}
           />
-        </HeaderAuthUserHead>
+        </HeaderUserInfoHead>
         <AnimatePresence>
           {isOpen && (
-            <HeaderAuthUserBody
+            <HeaderUserInfoBody
               $inMenu={isInMenu}
               style={{ width }}
               {...(!isInMenu ? {
@@ -123,11 +128,11 @@ export const HeaderAuthUser: React.FC<HeaderAuthUserProps> = ({
               } : {})}
             >
               {children}
-            </HeaderAuthUserBody>
+            </HeaderUserInfoBody>
           )}
         </AnimatePresence>
-      </HeaderAuthUserStyled>
-    </HeaderAuthUserProvider>
+      </HeaderUserInfoStyled>
+    </HeaderUserInfoProvider>
   );
 };
 

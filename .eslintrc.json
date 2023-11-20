@@ -70,6 +70,7 @@
     "no-alert": "off",
     "react/no-unstable-nested-components": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "react/jsx-no-useless-fragment": "off"
+    "react/jsx-no-useless-fragment": "off",
+    "react/destructuring-assignment": "off"
   }
 }

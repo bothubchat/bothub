@@ -26,7 +26,9 @@ export const Basic: ReferralCardStory = {
       maxText: '20000 ₽'
     },
     withdraw: (
-      <ReferralCardWithdrawButton />
+      <ReferralCardWithdrawButton>
+        Вывести средства
+      </ReferralCardWithdrawButton>
     ),
     dateCreated: 'Дата последнего вывода: 07.09.23, 15:33:47',
     children: (
@@ -76,7 +78,9 @@ export const Skeleton: ReferralCardStory = {
   args: {
     skeleton: true,
     withdraw: (
-      <ReferralCardWithdrawButton disabled />
+      <ReferralCardWithdrawButton disabled>
+        Вывести средства
+      </ReferralCardWithdrawButton>
     ),
     children: (
       <ReferralCardTable>

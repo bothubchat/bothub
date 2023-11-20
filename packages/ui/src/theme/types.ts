@@ -1,4 +1,5 @@
 export interface Theme {
+  mode: ThemeMode;
   colors: ThemeColors;
   fonts: ThemeFonts;
   tablet: ThemeTablet;
@@ -6,7 +7,12 @@ export interface Theme {
   zIndex: ThemeZIndex;
   header: ThemeHeader;
   dashboard: ThemeDashboard;
+  default: DefaultTheme;
 }
+
+export type DefaultTheme = Omit<Theme, 'default'>;
+
+export type ThemeMode = 'dark' | 'light';
 
 export interface ThemeTablet {
   maxWidth: string;

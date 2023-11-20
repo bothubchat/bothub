@@ -64,14 +64,7 @@ export const Scrollbar: React.FC<ScrollbarProps> = ({
 
       switch (side) {
         case 'bottom':
-          if (scrollbarEl.scrollTop === 0) {
-            scrollbarEl.scrollTop = scrollbarEl.scrollHeight;
-          } else {
-            scrollbarEl.scrollTo({
-              top: scrollbarEl.scrollHeight,
-              behavior: 'smooth'
-            });
-          }
+          scrollbarEl.scrollTop = scrollbarEl.scrollHeight;
           break;
       }
     }
@@ -132,6 +125,7 @@ export const Scrollbar: React.FC<ScrollbarProps> = ({
       scrollbarSize={size}
       scrollShadows={scrollShadows}
       lockScroll={lockScroll}
+      disabled={disabled}
     >
       <ScrollbarStyled
         $overflow={overflow}

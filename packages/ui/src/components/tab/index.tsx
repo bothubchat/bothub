@@ -42,7 +42,9 @@ export const Tab: React.FC<TabProps> = ({
     >
       {typeof children !== 'string' && children}
       {typeof children === 'string' && (
-        <TabText>
+        <TabText
+          $active={active}
+        >
           {children}
         </TabText>
       )}

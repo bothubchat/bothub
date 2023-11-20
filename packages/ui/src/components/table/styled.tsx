@@ -39,7 +39,7 @@ export const TableHead = styled.thead`
     ${TableCellStyled} {
       background: ${({ theme }) => theme.colors.grayScale.gray4};
       ${TableCellText} {
-        color: ${({ theme }) => theme.colors.grayScale.gray6};
+        color: ${({ theme }) => theme.default.colors.grayScale.gray6};
       }
     }
     ${TableRow}:last-child > ${TableCellStyled} {

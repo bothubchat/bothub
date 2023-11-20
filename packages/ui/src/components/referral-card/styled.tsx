@@ -7,7 +7,7 @@ import { adaptive } from '@/ui/adaptive';
 export const ReferralCardStyled = styled.div`
   display: flex;
   width: 100%;
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4)};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 14px;
   overflow: hidden;
@@ -200,7 +200,7 @@ export const ReferralCardBottom = styled.div`
   }
 `;
 
-export const ReferralCardWithdrawButton = styled(Button).attrs({ children: 'Вывести средства' })`
+export const ReferralCardWithdrawButton = styled(Button)`
   @media (max-width: 600px) {
     width: 100%;
   }

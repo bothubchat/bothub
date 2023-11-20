@@ -65,7 +65,9 @@ import {
   UpdateIcon, 
   UserProfileIcon, 
   WarningBigIcon, 
-  YoucassaIcon 
+  YoucassaIcon,
+  LightIcon,
+  DarkIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -142,6 +144,8 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="FiltersIcon">{FiltersIcon}</IconItem>
         <IconItem name="InfoIcon">{InfoIcon}</IconItem>
         <IconItem name="SearchCircleIcon">{SearchCircleIcon}</IconItem>
+        <IconItem name="LightIcon">{LightIcon}</IconItem>
+        <IconItem name="DarkIcon">{DarkIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

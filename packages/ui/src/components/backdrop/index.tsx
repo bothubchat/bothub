@@ -40,10 +40,12 @@ export const Backdrop: React.FC<BackdropProps> = ({
       {...props}
       variants={{
         visible: {
-          background: 'rgba(0, 0, 0, 0.55)'
+          background: 'rgba(0, 0, 0, 0.55)',
+          backdropFilter: 'blur(5px)'
         },
         hidden: {
-          background: 'rgba(0, 0, 0, 0)'
+          background: 'rgba(0, 0, 0, 0)',
+          backdropFilter: 'blur(0px)'
         }
       }}
       initial="hidden"

@@ -21,13 +21,13 @@ export const MessageUnlineCode = styled(Typography).attrs({ variant: 'body-m-reg
         `;
       case 'assistant':
         return css`
-          background: ${theme.colors.grayScale.gray3};
+          background: ${theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray3};
         `;
     }
   }}
   &::selection {
-    background: ${({ theme }) => theme.colors.base.white};
-    color: ${({ theme }) => theme.colors.accent.primary};
+    background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+    color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
   }
 `;
 
@@ -67,7 +67,7 @@ export const MessageCodeLanguage = styled(Typography).attrs({ variant: 'body-s-m
       case 'user':
         return theme.colors.accent.primary;
       case 'assistant':
-        return theme.colors.base.white;
+        return theme.default.colors.base.white;
     }
   }};  
 `;

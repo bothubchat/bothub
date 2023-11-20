@@ -55,8 +55,11 @@ export const Message: React.FC<MessageProps> = ({
 
   const messageRef = useRef<HTMLDivElement>(null);
 
+  const isMarkdownDisabled = variant === 'user';
+
   return (
     <MessageProvider
+      variant={variant}
       message={children ?? ''}
       typing={typing}
       onCopy={onCopy}
@@ -70,7 +73,15 @@ export const Message: React.FC<MessageProps> = ({
         <MessageContent $variant={variant}>
           {avatar}
           <MessageBlock $variant={variant}>
-            {typeof children === 'string' && (
+            {(isMarkdownDisabled && typeof children === 'string') && (
+              <MessageParagraph
+                wrap
+                disableMargin
+              >
+                {children}
+              </MessageParagraph>
+            )}
+            {(!isMarkdownDisabled && typeof children === 'string') && (
               <MessageMarkdown
                 $typing={typing}
                 components={{
