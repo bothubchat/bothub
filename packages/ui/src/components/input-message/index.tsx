@@ -45,7 +45,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       && !(event.target instanceof SVGElement)
       && !(event.target instanceof SVGPathElement)
     ) {
-      setIsFocus(true);
+      const contentEditableEl: HTMLElement | null = contentEditableRef.current;
+
+      if (contentEditableEl !== null) {
+        contentEditableEl.focus();
+      }
     }
   }, [disabled]);
   const handleChange = useCallback((
@@ -69,13 +73,16 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     const messageText: string = contentEditableEl.innerText;
     onSend?.(messageText);
     setMessage?.('');
-    setIsFocus(false);
   }, [onSend, contentEditableRef, setMessage]);
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+  const handleKeyDown = useCallback<React.KeyboardEventHandler>((event) => {
     event.stopPropagation();
+
+    const contentEditableEl: HTMLElement | null = contentEditableRef.current;
+    if (contentEditableEl !== null) {
+      contentEditableEl.focus();
+    }
     
     if (isFocus && event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
       handleSend();
     }
   }, [isFocus, handleSend]);
@@ -98,26 +105,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const handleBlur = useCallback(() => {
     setIsFocus(false);
   }, []);
-
-  useEffect(() => {
-    const contentEditableEl: HTMLElement | null = contentEditableRef.current;
-
-    if (contentEditableEl !== null) {
-      if (isFocus) {
-        contentEditableEl.focus();
-      } else {
-        contentEditableEl.blur();
-      }
-    }
-  }, [isFocus]);
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-    
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [handleKeyDown]);
 
   const [isInited, setIsInited] = useState(false);
 
@@ -145,6 +132,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             html={(isPlaceholderMode ? placeholder : message) ?? ''}
             disabled={disabled}
             onChange={handleChange}
+            onKeyDown={handleKeyDown}
           />
         )}
         {!isInited && (

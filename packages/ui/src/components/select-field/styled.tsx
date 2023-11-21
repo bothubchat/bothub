@@ -72,7 +72,7 @@ export const SelectFieldHead = styled.div<SelectFieldHeadProps>`
       return theme.colors.grayScale.gray3;
     }
 
-    return theme.colors.grayScale.gray4;
+    return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
   }};
   cursor: ${({ $disabled, $skeleton }) => {
     if ($skeleton) {
@@ -111,7 +111,7 @@ export const SelectFieldBodyBackgroundWrapper = styled.div`
   padding-right: 4px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 10px;
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4)};
 `;
 
 export const SelectFieldScrollbarWrapper = styled.div`
@@ -120,6 +120,7 @@ export const SelectFieldScrollbarWrapper = styled.div`
   max-height: 185px;
   overflow: auto;
   padding-right: 4px;
+  scrollbar-width: none;
   &::-webkit-scrollbar {
     width: 4px;
   }

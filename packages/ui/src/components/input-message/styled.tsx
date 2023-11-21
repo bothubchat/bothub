@@ -17,7 +17,13 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
     } 
     return $active ? theme.colors.accent.primary : theme.colors.grayScale.gray2;
   }};
-  background: ${({ theme, $disabled }) => ($disabled ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4)};
+  background: ${({ theme, $disabled }) => {
+    if ($disabled) {
+      return theme.colors.grayScale.gray3;
+    }
+
+    return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
+  }};
   width: 100%;
   max-width: ${({ theme }) => theme.dashboard.chat.containerWidth};
   padding: 14px 20px;
@@ -55,6 +61,7 @@ export const InputMessageContentEditable = styled.div<InputMessageContentEditabl
   font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
   font-size: 14px;
   overflow: auto;
+  scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
   }

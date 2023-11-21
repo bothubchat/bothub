@@ -61,7 +61,7 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
       return theme.colors.grayScale.gray3;
     }
 
-    return theme.colors.grayScale.gray4;
+    return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
   }};
   cursor: ${({ $disabled, $skeleton }) => {
     if ($skeleton) {

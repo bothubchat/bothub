@@ -23,7 +23,19 @@ export const MessageParagraphStyled = styled(Typography).attrs({ variant: 'body-
     white-space: pre-wrap;
   `}
   &::selection {
-    background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-    color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+    ${({ $variant }) => {
+    switch ($variant) {
+      case 'user':
+        return css`
+          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.base.white)};
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.accent.primary)};
+        `;
+      case 'assistant':
+        return css`
+          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+        `;
+    }
+  }}
   }
 `;

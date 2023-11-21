@@ -81,7 +81,7 @@ export const TextFieldBlock = styled.span<TextFieldBlockProps>`
     }
     if ($focus) {
       return css`
-        background: ${theme.colors.grayScale.gray4};
+        background: ${theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4};
         > svg path {
           fill: ${theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white};
         }
@@ -89,7 +89,7 @@ export const TextFieldBlock = styled.span<TextFieldBlockProps>`
     }
 
     return css`
-      background: ${theme.colors.grayScale.gray4};
+      background: ${theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4};
       > svg path {
         fill: ${theme.colors.grayScale.gray1};
       }
