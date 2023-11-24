@@ -9,7 +9,8 @@ import {
   MessageEditAction, 
   MessageTokens 
 } from '@/ui/components/message';
-import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton'; 
+import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
+import { MessageAction } from '@/ui/components/message-action';
 import { Messages } from '.';
 
 export type MessagesMeta = Meta<typeof Messages>;
@@ -92,6 +93,9 @@ console.log("Hello, world!");
         >
           Спасибо бот! то что нужно
         </Message>
+        <MessageAction>
+          Контекст сброшен
+        </MessageAction>
       </>
     )
   }

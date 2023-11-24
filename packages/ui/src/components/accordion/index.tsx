@@ -52,3 +52,5 @@ export const Accordion: React.FC<AccordionProps> = ({ label, children, ...props 
     </AccordionStyled>
   );
 };
+
+export * from './styled';

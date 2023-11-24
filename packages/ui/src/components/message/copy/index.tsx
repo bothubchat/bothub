@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { MessageAction } from '../styled';
+import { MessageActionButton } from '../styled';
 import { useMessage } from '../context';
 import { CheckSmallIcon, CopyIcon } from '@/ui/icons';
 import { MessageCopyActionStyled } from './styled';
 
-export type MessageCopyActionProps = React.ComponentProps<typeof MessageAction>;
+export type MessageCopyActionProps = React.ComponentProps<typeof MessageActionButton>;
 
 export const MessageCopyAction: React.FC<MessageCopyActionProps> = ({
   ...props

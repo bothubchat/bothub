@@ -194,7 +194,7 @@ export const MessageActions = styled.div`
   align-self: flex-end;
 `;
 
-export const MessageAction = styled(Button).attrs(() => {
+export const MessageActionButton = styled(Button).attrs(() => {
   const { typing } = useMessage();
 
   return { 
@@ -204,4 +204,4 @@ export const MessageAction = styled(Button).attrs(() => {
   };
 })``;
 
-export const MessageEditAction = styled(MessageAction).attrs({ children: <EditIcon /> })``;
+export const MessageEditAction = styled(MessageActionButton).attrs({ children: <EditIcon /> })``;

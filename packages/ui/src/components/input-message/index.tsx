@@ -52,6 +52,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       }
     }
   }, [disabled]);
+
   const handleChange = useCallback((
     event: React.FormEvent<HTMLDivElement> | React.FocusEvent<HTMLDivElement>
   ) => {
@@ -63,29 +64,57 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
     setMessage?.(message);
   }, [setMessage, isFocus]);
+
   const handleSend = useCallback(() => {
+    if (sendDisabled) {
+      return;
+    }
+
     const contentEditableEl: HTMLElement | null = contentEditableRef.current;
     
     if (contentEditableEl === null) {
       return;
     }
 
-    const messageText: string = contentEditableEl.innerText;
+    const messageText: string = contentEditableEl.innerText.trim();
     onSend?.(messageText);
     setMessage?.('');
-  }, [onSend, contentEditableRef, setMessage]);
-  const handleKeyDown = useCallback<React.KeyboardEventHandler>((event) => {
+  }, [sendDisabled]);
+
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
     event.stopPropagation();
 
     const contentEditableEl: HTMLElement | null = contentEditableRef.current;
-    if (contentEditableEl !== null) {
-      contentEditableEl.focus();
+    if (contentEditableEl === null) {
+      return;
     }
+    contentEditableEl.focus();
     
-    if (isFocus && event.key === 'Enter' && !event.shiftKey) {
-      handleSend();
+    if (isFocus && event.key === 'Enter') {
+      if (event.shiftKey) {
+        if (contentEditableEl.innerText.trim() === '') {
+          event.preventDefault();
+        }
+      } else {
+        event.preventDefault();
+        handleSend();
+      }
     }
   }, [isFocus, handleSend]);
+
+  useEffect(() => {
+    const contentEditableEl: HTMLElement | null = contentEditableRef.current;
+    if (contentEditableEl === null) {
+      return;
+    }
+
+    contentEditableEl.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      contentEditableEl.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
   const handleFocus = useCallback((event: React.FocusEvent<HTMLDivElement>) => {
     const sendButton: ButtonRef | null = sendButtonRef.current;
 
@@ -102,6 +131,34 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
     setIsFocus(true);
   }, [disabled, sendButtonRef]);
+
+  const handlePaste = useCallback<React.ClipboardEventHandler>((event) => {
+    event.preventDefault();
+
+    const text = event.clipboardData.getData('text');
+    let selection: Selection | null = document.getSelection();
+    if (selection === null) {
+      return;
+    }
+
+    const range: Range = selection.getRangeAt(0);
+    
+    range.deleteContents();
+
+    const textNode = document.createTextNode(text);
+    range.insertNode(textNode);
+    range.selectNodeContents(textNode);
+    range.collapse(false);
+
+    selection = window.getSelection();
+    if (selection === null) {
+      return;
+    }
+
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }, []);
+
   const handleBlur = useCallback(() => {
     setIsFocus(false);
   }, []);
@@ -122,6 +179,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       onFocus={handleFocus}
       onBlur={handleBlur}
       onClick={handleClick}
+      onPaste={handlePaste}
     >
       <InputMessageContent>
         {isInited && (
@@ -132,7 +190,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             html={(isPlaceholderMode ? placeholder : message) ?? ''}
             disabled={disabled}
             onChange={handleChange}
-            onKeyDown={handleKeyDown}
           />
         )}
         {!isInited && (

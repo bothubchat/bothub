@@ -95,10 +95,12 @@ export const Button = forwardRef<ButtonRef, ButtonProps>(({
       case 'secondary':
         animationProps = {
           initial: {
-            background: theme.colors.grayScale.gray4
+            background: theme.colors.grayScale.gray4,
+            boxShadow: `0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset`
           },
           animate: {
-            background: theme.colors.grayScale.gray4
+            background: theme.colors.grayScale.gray4,
+            boxShadow: `0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset`
           }
         };
         break;

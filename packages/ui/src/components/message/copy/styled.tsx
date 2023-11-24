@@ -1,11 +1,11 @@
 import { styled, css } from 'styled-components';
-import { MessageAction } from '../styled';
+import { MessageActionButton } from '../styled';
 
 export interface MessageCopyActionStyledProps {
   $focus: boolean;
 }
 
-export const MessageCopyActionStyled = styled(MessageAction)<MessageCopyActionStyledProps>`
+export const MessageCopyActionStyled = styled(MessageActionButton)<MessageCopyActionStyledProps>`
   ${({ theme, $focus }) => $focus && css`
     cursor: default;
     svg path {

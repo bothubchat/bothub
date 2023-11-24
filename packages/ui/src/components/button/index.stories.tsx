@@ -64,6 +64,10 @@ export default {
     }
   },
   argTypes: {
+    disabled: {
+      type: 'boolean',
+      defaultValue: false
+    },
     startIcon: {
       table: {
         disable: true

@@ -26,6 +26,7 @@ export * from './select-field';
 export * from './text-area-field';
 export * from './range-field';
 export * from './message';
+export * from './message-action';
 export * from './messages';
 export * from './scrollbar';
 export * from './bookmark';
