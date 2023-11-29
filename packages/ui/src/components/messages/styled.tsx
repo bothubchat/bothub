@@ -13,10 +13,7 @@ export const MessagesScrollbarWrapper = styled(Scrollbar).attrs(({ theme }) => (
     size: 140,
     top: <ScrollbarShadow side="top" />
   },
-  disableShadows: theme.mode === 'light',
-  scrollLocked: {
-    side: 'bottom'
-  }
+  disableShadows: theme.mode === 'light'
 }))`
   overflow: auto;
   height: 100%;
@@ -48,6 +45,13 @@ export const MessagesContainer = styled.div`
   flex-direction: column;
   width: inherit;
   max-width: ${({ theme }) => theme.dashboard.chat.containerWidth};
+`;
+
+export const MessagesStart = styled.div`
+  display: flex;
+  width: 100%;
+  height: 1px;
+  pointer-events: none;
 `;
 
 export const MessageList = styled.div`

@@ -4,13 +4,13 @@ import { ScrollbarShadowsProps } from './types';
 export interface ScrollbarContextValue {
   scrollbarSize: number;
   scrollShadows?: ScrollbarShadowsProps;
-  lockScroll: () => void;
+  setScroll: () => void;
   disabled: boolean;
 }
 
 export const ScrollbarContext = React.createContext<ScrollbarContextValue>({
   scrollbarSize: 6,
-  lockScroll: () => {},
+  setScroll: () => {},
   disabled: false
 });
 

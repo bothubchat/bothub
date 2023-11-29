@@ -50,6 +50,9 @@ export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-mediu
 
 export const SidebarChatNameSkeleton = styled(Skeleton)`
   width: 200px;
+  @media (max-width: 1700px) {
+    width: 140px;
+  }
 `;
 
 export const SidebarChatActions = styled.div`

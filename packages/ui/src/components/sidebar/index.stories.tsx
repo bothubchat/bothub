@@ -245,7 +245,9 @@ export const Skeleton: SidebarStory = {
       <SidebarToggleButton disabled />
     ),
     createChat: (
-      <SidebarCreateChatButton disabled />
+      <SidebarCreateChatButton disabled>
+        Создать чат
+      </SidebarCreateChatButton>
     ),
     user: (
       <SidebarUserInfo 

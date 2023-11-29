@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { 
   MessageBlock,
   MessageContent,
@@ -13,7 +13,6 @@ import {
   MessagePre, 
   MessageStrong 
 } from './components';
-import { useScrollbar } from '@/ui/components/scrollbar';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
 import { MessageProvider } from './context';
@@ -46,13 +45,6 @@ export const Message: React.FC<MessageProps> = ({
   onCodeCopy
 }) => {
   const theme = useTheme();
-
-  const { lockScroll } = useScrollbar();
-
-  useEffect(() => {
-    lockScroll();
-  }, [children]);
-
   const messageRef = useRef<HTMLDivElement>(null);
 
   const isMarkdownDisabled = variant === 'user';

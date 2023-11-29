@@ -1,10 +1,15 @@
 import React, {
-  useCallback, useRef, useState, useEffect
+  useCallback, useRef, useState, useEffect, forwardRef, useImperativeHandle
 } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { ScrollbarContent, ScrollbarShadows, ScrollbarStyled } from './styled';
 import {
-  ScrollbarLockedProps, ScrollbarOverflow, ScrollbarShadowsProps, ScrollbarVariant 
+  SetScrollFunction,
+  SetScrollOptions, 
+  ScrollbarOverflow, 
+  ScrollbarRef, 
+  ScrollbarShadowsProps, 
+  ScrollbarVariant 
 } from './types';
 import { ScrollbarProvider } from './context';
 
@@ -14,20 +19,21 @@ export interface ScrollbarProps extends React.PropsWithChildren {
   variant?: ScrollbarVariant;
   size?: number;
   scrollShadows?: ScrollbarShadowsProps;
-  scrollLocked?: ScrollbarLockedProps;
+  scrollLocked?: SetScrollOptions;
   overflow?: ScrollbarOverflow;
   disabled?: boolean;
   disableShadows?: boolean;
 }
 
-export const Scrollbar: React.FC<ScrollbarProps> = ({ 
+export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({ 
   className, scrollbarClassName, variant = 'primary', size = 6, scrollShadows, scrollLocked, overflow = 'auto', disabled = false, disableShadows = false, children 
-}) => {
+}, ref) => {
   const scrollbarRef = useRef<HTMLDivElement>(null);
   const [isLeft, setIsLeft] = useState<boolean>(false);
   const [isRight, setIsRight] = useState<boolean>(false);
   const [isTop, setIsTop] = useState<boolean>(false);
   const [isBottom, setIsBottom] = useState<boolean>(false);
+  const [heightBeforeUpdate, setHeightBeforeUpdate] = useState(0);
   const advancedMode = !!scrollShadows;
   const lockedMode = !!scrollLocked;
 
@@ -53,26 +59,40 @@ export const Scrollbar: React.FC<ScrollbarProps> = ({
     }
   }, [scrollbarRef, disabled]);
 
-  const lockScroll = useCallback(() => {
+  const setScroll = useCallback<SetScrollFunction>((options) => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
     if (scrollbarEl === null) {
       return;
     }
 
-    if (lockedMode && scrollbarEl !== null) {
-      const { side } = scrollLocked;
+    if ((lockedMode || typeof options !== 'undefined') && scrollbarEl !== null) {
+      const { side } = options ?? scrollLocked ?? { side: 'bottom' };
 
       switch (side) {
         case 'bottom':
           scrollbarEl.scrollTop = scrollbarEl.scrollHeight;
           break;
       }
+    } else {
+      if (heightBeforeUpdate !== 0) {
+        const { scrollTop, scrollHeight } = scrollbarEl;
+        const heightDifference = scrollHeight - heightBeforeUpdate;
+
+        scrollbarEl.scrollTop = scrollTop + heightDifference;
+      }
+
+      setHeightBeforeUpdate(scrollbarEl.scrollHeight);
     }
-  }, [lockedMode, scrollLocked]);
+  }, [lockedMode, scrollLocked, heightBeforeUpdate]);
+
+  useImperativeHandle(ref, () => ({
+    element: scrollbarRef.current,
+    setScroll
+  }), [scrollbarRef.current, setScroll]);
   
   useEffect(() => {
-    lockScroll();
-  }, [children, lockScroll]);
+    setScroll();
+  }, [children, setScroll]);
 
   useEffect(() => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
@@ -124,7 +144,7 @@ export const Scrollbar: React.FC<ScrollbarProps> = ({
     <ScrollbarProvider
       scrollbarSize={size}
       scrollShadows={scrollShadows}
-      lockScroll={lockScroll}
+      setScroll={setScroll}
       disabled={disabled}
     >
       <ScrollbarStyled
@@ -151,7 +171,7 @@ export const Scrollbar: React.FC<ScrollbarProps> = ({
       </ScrollbarStyled>
     </ScrollbarProvider>
   );
-};
+});
 
 export * from './types';
 export * from './context';

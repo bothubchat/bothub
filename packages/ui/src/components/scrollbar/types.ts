@@ -13,8 +13,15 @@ export interface ScrollbarShadowsProps {
 
 export type ScrollbarLockedSide = 'bottom';
 
-export interface ScrollbarLockedProps {
+export interface SetScrollOptions {
   side: ScrollbarLockedSide;
+}
+
+export type SetScrollFunction = (options?: SetScrollOptions) => void;
+
+export interface ScrollbarRef {
+  element: Element | null;
+  setScroll: SetScrollFunction;
 }
 
 export type ScrollbarOverflow = 'auto' | 'visible';
