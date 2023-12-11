@@ -1,16 +1,15 @@
 import React from 'react';
 import {
-  TableBody, TableContent, TableScrollbarWrapper, TableStyled 
+  TableContent, TableScrollbarWrapper, TableStyled 
 } from './styled';
 import { ScrollbarShadowsProps } from '@/ui/components/scrollbar';
 
 export interface TableProps extends Omit<React.ComponentProps<'table'>, 'ref'> {
-  head?: React.ReactNode;
   scrollShadows?: ScrollbarShadowsProps;
 }
 
 export const Table: React.FC<TableProps> = ({
-  head, scrollShadows, children, ...props
+  scrollShadows, children, ...props
 }) => {
   if (React.Children.toArray(children).length === 0) {
     return null;
@@ -24,10 +23,7 @@ export const Table: React.FC<TableProps> = ({
         scrollShadows={scrollShadows}
       >
         <TableContent>
-          {head}
-          <TableBody>
-            {children}
-          </TableBody>
+          {children}
         </TableContent>
       </TableScrollbarWrapper>
     </TableStyled>

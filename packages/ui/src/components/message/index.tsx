@@ -1,4 +1,7 @@
-import React, { useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
+import remarkGfm from 'remark-gfm';
+import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
 import { 
   MessageBlock,
   MessageContent,
@@ -11,11 +14,16 @@ import {
   MessageComponentsProps, 
   MessageParagraph,
   MessagePre, 
-  MessageStrong 
+  MessageStrong, 
 } from './components';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
-import { MessageProvider } from './context';
+import { MessageProvider, useMessage } from './context';
+import 'katex/dist/katex.min.css';
+import {
+  Table,
+  TableBody, TableCell, TableHead, TableRow 
+} from '../table';
 
 export interface MessageProps {
   className?: string;
@@ -23,13 +31,132 @@ export interface MessageProps {
   avatar?: React.ReactNode;
   tokens?: React.ReactNode;
   actions?: React.ReactNode;
-  components?: MessageComponentsProps;
   typing?: boolean;
   skeleton?: boolean;
-  children?: string;
+  children?: ReactNode;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCopyEventHandler;
 }
+
+export interface MessageTextProps {
+  children: string;
+  components?: MessageComponentsProps
+}
+
+export const MessageText: React.FC<MessageTextProps> = ({
+  children, 
+  components = {} 
+}) => {
+  const { typing, variant } = useMessage();
+  const markdown = variant === 'user';
+
+  return (
+    <>
+      {(markdown && typeof children === 'string') && (
+        <MessageParagraph
+          wrap
+          disableMargin
+        >
+          {children}
+        </MessageParagraph>
+      )}
+      {(!markdown && typeof children === 'string') && (
+        <MessageMarkdown
+          remarkPlugins={[remarkGfm, remarkMath]}
+          rehypePlugins={[rehypeKatex]}
+          $typing={typing}
+          components={{
+            p: ({ className, children }) => (
+              <MessageParagraph 
+                {...components.paragraph}
+                className={className}
+              >
+                {children}
+              </MessageParagraph>
+            ),
+            strong: ({ className, children }) => (
+              <MessageStrong
+                {...components.strong} 
+                className={className}
+              >
+                {children}
+              </MessageStrong>
+            ),
+            pre: ({ className, children }) => (
+              <MessagePre 
+                {...components.pre}
+                className={className}
+              >
+                {children}
+              </MessagePre>
+            ),
+            tr: ({ className, children }) => (
+              <TableRow className={className}>
+                {children}
+              </TableRow>
+            ),
+            td: ({ className, children }) => (
+              <TableCell className={className}>
+                {children}
+              </TableCell>
+            ),
+            th: ({ className, children }) => (
+              <TableCell className={className}>
+                {children}
+              </TableCell>
+            ),
+            thead: ({ className, children }) => (
+              <TableHead className={className}>
+                {children}
+              </TableHead>
+            ),
+            tbody: ({ className, children }) => (
+              <TableBody className={className}>
+                {children}
+              </TableBody>
+            ),
+            table: ({ children }) => (
+              <Table>
+                {children}
+              </Table>
+            ),
+            code: ({ className, children }) => {
+              const code = String(children);
+              if (!code) {
+                return null;
+              }
+  
+              const match = /language-(\w+)/.exec(className || '');
+          
+              return (
+                match ? (
+                  <MessageCode
+                    {...components.code}
+                    className={className}
+                    messageVariant={variant}
+                  >
+                    {code}
+                  </MessageCode>
+                ) : (
+                  <MessageCode
+                    {...components.code}
+                    className={className}
+                    variant="inline"
+                    messageVariant={variant}
+                  >
+                    {code}
+                  </MessageCode> 
+                )
+              );
+            }
+          }}
+        >
+          {children}
+        </MessageMarkdown>
+      )}
+    </>
+  );
+};
 
 export const Message: React.FC<MessageProps> = ({ 
   className,
@@ -37,7 +164,6 @@ export const Message: React.FC<MessageProps> = ({
   avatar,
   tokens,
   actions,
-  components = {},
   typing = false,
   skeleton = false,
   children,
@@ -47,12 +173,10 @@ export const Message: React.FC<MessageProps> = ({
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement>(null);
 
-  const isMarkdownDisabled = variant === 'user';
-
   return (
     <MessageProvider
       variant={variant}
-      message={children ?? ''}
+      message=""
       typing={typing}
       onCopy={onCopy}
       onCodeCopy={onCodeCopy}
@@ -65,64 +189,7 @@ export const Message: React.FC<MessageProps> = ({
         <MessageContent $variant={variant}>
           {avatar}
           <MessageBlock $variant={variant}>
-            {(isMarkdownDisabled && typeof children === 'string') && (
-              <MessageParagraph
-                wrap
-                disableMargin
-              >
-                {children}
-              </MessageParagraph>
-            )}
-            {(!isMarkdownDisabled && typeof children === 'string') && (
-              <MessageMarkdown
-                $typing={typing}
-                components={{
-                  p: ({ className, children }) => (
-                    <MessageParagraph 
-                      {...components.paragraph}
-                      className={className}
-                    >
-                      {children}
-                    </MessageParagraph>
-                  ),
-                  strong: ({ className, children }) => (
-                    <MessageStrong
-                      {...components.strong} 
-                      className={className}
-                    >
-                      {children}
-                    </MessageStrong>
-                  ),
-                  pre: ({ className, children }) => (
-                    <MessagePre 
-                      {...components.pre}
-                      className={className}
-                    >
-                      {children}
-                    </MessagePre>
-                  ),
-                  code: ({ className, inline = false, children }) => {
-                    const code = String(children);
-                    if (!code) {
-                      return null;
-                    }
-        
-                    return (
-                      <MessageCode
-                        {...components.code}
-                        className={className}
-                        variant={inline ? 'inline' : 'multiline'}
-                        messageVariant={variant}
-                      >
-                        {code}
-                      </MessageCode>
-                    );
-                  }
-                }}
-              >
-                {children}
-              </MessageMarkdown>
-            )}
+            {children}
             {skeleton && (
               <MessageParagraph
                 disableMargin

@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import {
-  Message, MessageActions, MessageAvatar, MessageCopyAction, MessageEditAction, MessageTokens 
+  Message, MessageActions, MessageAvatar, 
+  MessageCopyAction, MessageEditAction, MessageText, MessageTokens 
 } from '.';
 import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
 
@@ -25,7 +26,11 @@ export const Assistant: MessageStory = {
         <MessageCopyAction />
       </MessageActions>
     ),
-    children: 'Привет! Чем я могу помочь?'
+    children: (
+      <MessageText>
+        Привет! Чем я могу помочь?
+      </MessageText>
+    )
   }
 };
 
@@ -44,18 +49,26 @@ export const AssistantSkeleton: MessageStory = {
 export const AssistantCode: MessageStory = {
   args: {
     ...Assistant.args,
-    children: `Конечно! Вот пример кода на JavaScript для вывода фразы "Hello, World!":
+    children: (
+      <MessageText>
+        {`Конечно! Вот пример кода на JavaScript для вывода фразы "Hello, World!":
 \`\`\`javascript
 console.log("Hello, World!");
-\`\`\``
+\`\`\``}
+      </MessageText>
+    )
   }
 };
 
 export const AssistantInlineCode: MessageStory = {
   args: {
     ...AssistantCode.args,
-    children: `Конечно! Вот пример кода на JavaScript для вывода фразы "Hello, World!" 
-\`console.log("Hello, World!");\``
+    children: (
+      <MessageText>
+        {`Конечно! Вот пример кода на JavaScript для вывода фразы "Hello, World!" 
+\`console.log("Hello, World!");\``}
+      </MessageText>
+    )
   }
 };
 
@@ -71,7 +84,11 @@ export const User: MessageStory = {
         <MessageEditAction />
       </MessageActions>
     ),
-    children: 'Привет бот'
+    children: (
+      <MessageText>
+        Привет бот
+      </MessageText>
+    )
   }
 };
 
@@ -90,18 +107,28 @@ export const UserSkeleton: MessageStory = {
 export const UserCode: MessageStory = {
   args: {
     ...User.args,
-    children: `Исправь ошибки:
+    children: (
+      <MessageText>
+        {`Исправь ошибки:
 \`\`\`javascript
 console.log("Hello, World!");
-\`\`\``
+\`\`\``}
+      </MessageText>
+    )
   }
 };
 
 export const UserInlineCode: MessageStory = {
   args: {
     ...UserCode.args,
-    children: `Исправь ошибки:
-\`console.log("Hello, World!");\``
+    children: (
+      <MessageText>
+        {`Исправь ошибки:
+\`\`\`javascript
+console.log("Hello, World!");
+\`\`\``}
+      </MessageText>
+    )
   }
 };
 
