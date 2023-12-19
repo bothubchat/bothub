@@ -9,6 +9,7 @@ export interface MessageParagraphStyledProps {
 }
 
 export const MessageParagraphStyled = styled(Typography).attrs({ variant: 'body-m-regular', component: 'p' })<MessageParagraphStyledProps>`
+  word-wrap: break-word;
   color: ${({ theme, $variant }) => {
     if ($variant === 'user') {
       return theme.default.colors.base.white;

@@ -54,7 +54,8 @@ export const AssistantCode: MessageStory = {
         {`Конечно! Вот пример кода на JavaScript для вывода фразы "Hello, World!":
 \`\`\`javascript
 console.log("Hello, World!");
-\`\`\``}
+\`\`\`
+`}
       </MessageText>
     )
   }

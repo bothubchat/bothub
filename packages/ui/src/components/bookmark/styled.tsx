@@ -25,6 +25,7 @@ export const BookmarkStyled: React.FC<BookmarkStyledProps> = styled(motion.span)
   align-items: center;
   padding: 12px 20px;
   border-radius: 8px;
+  height: 42px;
   margin: 1px;
   ${BookmarkName} {
     color: ${({ theme }) => theme.colors.grayScale.gray1};

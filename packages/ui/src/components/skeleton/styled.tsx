@@ -5,7 +5,7 @@ import { SkeletonVariant } from './types';
 export interface SkeletonStyledProps {
   $variant?: SkeletonVariant;
   $width?: number;
-  $height?: number;
+  $height?: number | string;
   $fullWidth: boolean;
 }
 

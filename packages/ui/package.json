@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "rehype-katex": "^7.0.0",
-    "remark-gfm": "^4.0.0",
+    "remark-gfm": "^3.0.1",
     "remark-math": "^6.0.0"
   }
 }

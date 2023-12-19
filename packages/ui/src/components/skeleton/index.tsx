@@ -7,7 +7,7 @@ export interface SkeletonProps {
   className?: string;
   variant?: SkeletonVariant;
   width?: number;
-  height?: number;
+  height?: number | string;
   fullWidth?: boolean;
   colors?: [string, string?];
   opacity?: [number, number?];

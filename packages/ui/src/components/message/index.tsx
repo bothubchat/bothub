@@ -63,6 +63,7 @@ export const MessageText: React.FC<MessageTextProps> = ({
       {(!markdown && typeof children === 'string') && (
         <MessageMarkdown
           remarkPlugins={[remarkGfm, remarkMath]}
+          // @ts-ignore
           rehypePlugins={[rehypeKatex]}
           $typing={typing}
           components={{
