@@ -15,12 +15,15 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
         top: 0
       });
       document.body.style.overflow = 'hidden';
+      document.body.style.maxHeight = '100vh';
     } else {
       document.body.style.removeProperty('overflow');
+      document.body.style.removeProperty('maxHeight');
     }
 
     return () => {
       document.body.style.removeProperty('overflow');
+      document.body.style.removeProperty('maxHeight');
     };
   }, [isMenuOpen]);
 

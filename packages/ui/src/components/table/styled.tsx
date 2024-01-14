@@ -20,6 +20,7 @@ export const TableScrollbarWrapper = styled(Scrollbar).attrs(({ theme, scrollSha
 export const TableContent = styled.table`
   border-collapse: separate;
   border-spacing: 0;
+  width: 100%;
   ${() => css`
     ${TableRow} {
       &:not(:first-child) > ${TableCellStyled} {

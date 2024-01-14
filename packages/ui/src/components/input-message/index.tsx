@@ -1,7 +1,7 @@
 import React, {
   useState, useCallback, useRef, useEffect 
 } from 'react';
-import ContentEditable from 'react-contenteditable';
+import CE from 'react-contenteditable';
 import {
   InputMessageContent, 
   InputMessageSendButton,
@@ -9,6 +9,9 @@ import {
   InputMessageContentEditable
 } from './styled';
 import { ButtonRef } from '@/ui/components/button';
+import { interopDefaultCJSImport } from '@/ui/utils';
+
+const ContentEditable = interopDefaultCJSImport<typeof CE>(CE);
 
 export interface InputMessageProps {
   className?: string;

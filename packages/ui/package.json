@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "1.0.9",
+  "version": "1.1.7",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -32,29 +32,36 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
     },
+    "./components/*": "./dist/components/*",
     "./fonts/*": "./fonts/*"
   },
   "sideEffects": false,
   "peerDependencies": {
-    "framer-motion": ">=10.16.3",
-    "highlight.js": ">=11.9.0",
-    "normalize.css": ">=8.0.1",
     "react": ">=18.2.0",
-    "react-contenteditable": ">=3.3.7",
     "react-dom": ">=18.2.0",
     "react-helmet": ">=6.1.0",
-    "react-highlight": ">=0.15.0",
-    "react-markdown": ">=8.0.5",
-    "react-slider": ">=2.0.6",
-    "styled-components": ">=6.0.7",
-    "swiper": ">=10.2.0"
+    "styled-components": "^6.0.7"
   },
   "dependencies": {
+    "framer-motion": "^10.16.3",
+    "highlight.js": "^11.9.0",
+    "normalize.css": "^8.0.1",
+    "prismjs": "^1.29.0",
+    "react-highlight": "^0.15.0",
+    "react-markdown": "^8.0.7",
+    "react-slider": "^2.0.6",
     "rehype-katex": "^7.0.0",
     "remark-gfm": "^3.0.1",
-    "remark-math": "^6.0.0"
+    "remark-math": "^6.0.0",
+    "swiper": "^10.2.0",
+    "react-contenteditable": "^3.3.7"
+  },
+  "devDependencies": {
+    "@types/prismjs": "^1.26.3"
   }
 }

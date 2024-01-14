@@ -1,4 +1,4 @@
-import { join } from 'path';
+import path, { join } from 'path';
 import {
   defineConfig, ExternalOption, Plugin, RollupOptions 
 } from 'rollup';
@@ -6,7 +6,6 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import esbuild from 'rollup-plugin-esbuild';
 import postcss from 'rollup-plugin-postcss';
 import image from '@rollup/plugin-image';
-import commonjs from '@rollup/plugin-commonjs';
 import alias from '@rollup/plugin-alias';
 import dts from 'rollup-plugin-dts';
 import { readFileSync } from 'fs';
@@ -14,6 +13,8 @@ import del from 'rollup-plugin-delete';
 import terser from '@rollup/plugin-terser';
 import nodeExternals from 'rollup-plugin-node-externals';
 import babel from '@rollup/plugin-babel';
+import { visualizer } from 'rollup-plugin-visualizer';
+import commonjs from '@rollup/plugin-commonjs';
 
 export interface CreateConfigOptions {
   packageName: string;
@@ -26,9 +27,15 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
   const packageConfigPath: string = join(packagePath, './package.json');
   const packageConfig = JSON.parse(readFileSync(packageConfigPath).toString());
   const srcPath: string = join(packagePath, './src');
-  const distPath: string = join(packagePath, './dist');
+  const distPath: string = path.resolve(packagePath, './dist');
   const external: ExternalOption = [
-    ...Object.keys(packageConfig.peerDependencies)
+    ...Object.keys({
+      ...packageConfig.peerDependencies,
+      ...packageConfig.devDependencies,
+      ...packageConfig.dependencies,
+    }),
+    'swiper/css',
+    'swiper/react'
   ];
   const aliasPlugin: Plugin = alias({
     entries: [
@@ -38,16 +45,20 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
 
   return [
     {
-      input: join(srcPath, './index.ts'),
+      input: path.resolve(srcPath, './index.ts'),
       output: [
         {
           dir: distPath,
           format: 'es',
-          sourcemap: true,
-          externalLiveBindings: false
+          externalLiveBindings: false,
+          preserveModules: true,
+          preserveModulesRoot: path.resolve(rootPath, `packages/${packageName}/src`)
         }
       ],
       plugins: [
+        commonjs({
+          include: 'node_modules/**',
+        }),
         del({
           targets: [
             join(distPath, './*')
@@ -59,14 +70,14 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
         nodeResolve({
           extensions: ['.css', '.ts', '.tsx', '.js', '.jsx']
         }),
-        commonjs(),
         esbuild({
           tsconfig: join(rootPath, './tsconfig.json'),
           exclude: [
-            'node_modules/**',
             '**/*.stories.ts'
-          ]
+          ],
+          sourceMap: false
         }),
+        visualizer(),
         babel({ 
           babelHelpers: 'bundled',
           exclude: 'node_modules/**',
@@ -76,7 +87,7 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
             ['babel-plugin-styled-components', {
               ssr: true,
               displayName: true
-            }]
+            }],
           ]
         }),
         image({

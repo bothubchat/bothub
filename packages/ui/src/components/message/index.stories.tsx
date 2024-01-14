@@ -52,8 +52,14 @@ export const AssistantCode: MessageStory = {
     children: (
       <MessageText>
         {`Конечно! Вот пример кода на JavaScript для вывода фразы "Hello, World!":
-\`\`\`javascript
-console.log("Hello, World!");
+| Tables   |      Are      |  Cool |
+|----------|:-------------:|------:|
+| col 1 is |  left-aligned | $1600 |
+| col 2 is |    centered   |   $12 |
+| col 3 is | right-aligned |    $1 |
+
+\`\`\`python
+print("hello")
 \`\`\`
 `}
       </MessageText>

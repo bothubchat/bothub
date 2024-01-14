@@ -1,9 +1,12 @@
 import { css, styled } from 'styled-components';
-import Highlight from 'react-highlight';
+import HL from 'react-highlight';
 import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '../../types';
 import { ScrollbarStyle } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
+import { interopDefaultCJSImport } from '@/ui/utils';
+
+const Highlight = interopDefaultCJSImport<typeof HL>(HL);
 
 export interface MessageUnlineCodeProps {
   $messageVariant: MessageVariant;
