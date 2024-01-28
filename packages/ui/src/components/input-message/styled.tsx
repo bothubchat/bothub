@@ -51,6 +51,7 @@ export interface InputMessageContentEditableProps {
 
 export const InputMessageContentEditable = styled.div<InputMessageContentEditableProps>`
   width: 100%;
+  white-space: break-spaces;
   max-height: 270px;
   background: none;
   outline: none;
