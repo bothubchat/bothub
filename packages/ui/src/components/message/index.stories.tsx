@@ -5,6 +5,7 @@ import {
   MessageCopyAction, MessageEditAction, MessageText, MessageTokens 
 } from '.';
 import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import 'katex/dist/katex.min.css';
 
 export type MessageMeta = Meta<typeof Message>;
 
