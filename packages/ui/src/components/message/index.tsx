@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode, useMemo, useRef } from 'react';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
@@ -19,7 +19,6 @@ import {
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
 import { MessageProvider, useMessage } from './context';
-import 'katex/dist/katex.min.css';
 import {
   Table,
   TableBody, TableCell, TableHead, TableRow 
@@ -49,6 +48,14 @@ export const MessageText: React.FC<MessageTextProps> = ({
 }) => {
   const { typing, variant } = useMessage();
   const markdown = variant === 'user';
+  
+  const formattedChildren = useMemo(() => {
+    if (typeof children === 'string' && !markdown) {
+      return children.replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
+        .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$${content}$`);
+    }
+    return children;
+  }, [children, markdown]);
 
   return (
     <>
@@ -57,7 +64,7 @@ export const MessageText: React.FC<MessageTextProps> = ({
           wrap
           disableMargin
         >
-          {children}
+          {formattedChildren}
         </MessageParagraph>
       )}
       {(!markdown && typeof children === 'string') && (
@@ -152,7 +159,7 @@ export const MessageText: React.FC<MessageTextProps> = ({
             }
           }}
         >
-          {children}
+          {formattedChildren}
         </MessageMarkdown>
       )}
     </>
