@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable react/no-unknown-property */
+import React, { LinkHTMLAttributes } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTheme } from '../../theme';
 import { ImageImg, ImagePicture, ImageSource } from './styled';
@@ -20,10 +21,12 @@ export interface ImageProps extends Omit<React.ComponentProps<'img'>, 'src' | 'a
   width?: string | number;
   height?: string | number;
   alt: string;
+  preload?: boolean
+  fetchPriority?: LinkHTMLAttributes<HTMLLinkElement>['fetchPriority']
 }
 
 export const Image: React.FC<ImageProps> = ({
-  src, alt, width, height, ...props 
+  src, alt, width, height, preload = false, fetchPriority, ...props 
 }) => {
   const theme = useTheme();
 
@@ -60,35 +63,41 @@ export const Image: React.FC<ImageProps> = ({
           )}
         </ImagePicture>
       )}
-      <Helmet>
-        {typeof src === 'string' && (
-          <link rel="preload" href={src} as="image" />
-        )}
-        {(typeof src !== 'string' && src.mobile) && (
-          <link 
-            rel="preload" 
-            href={typeof src.mobile === 'string' ? src.mobile : src.mobile.src}
-            as="image"
-            media={`(max-width: ${theme.mobile.maxWidth})`} 
-          />
-        )}
-        {(typeof src !== 'string' && src.tablet) && (
-          <link 
-            rel="preload" 
-            href={typeof src.tablet === 'string' ? src.tablet : src.tablet.src}
-            as="image" 
-            media={`(min-width: ${parseInt(theme.mobile.maxWidth) + 0.1}px) and (max-width: ${theme.tablet.maxWidth})`}
-          />
-        )}
-        {(typeof src !== 'string' && src.desktop) && (
-          <link 
-            rel="preload"
-            href={typeof src.desktop === 'string' ? src.desktop : src.desktop.src}
-            as="image"
-            media={`(min-width: ${parseInt(theme.tablet.maxWidth) + 0.1}px)`}
-          />
-        )}
-      </Helmet>
+      {preload 
+      && (
+        <Helmet>
+          {typeof src === 'string' && (
+            <link rel="preload" href={src} as="image" fetchPriority={fetchPriority} />
+          )}
+          {(typeof src !== 'string' && src.mobile) && (
+            <link 
+              rel="preload" 
+              href={typeof src.mobile === 'string' ? src.mobile : src.mobile.src}
+              as="image"
+              media={`(max-width: ${theme.mobile.maxWidth})`} 
+              fetchPriority={fetchPriority}
+            />
+          )}
+          {(typeof src !== 'string' && src.tablet) && (
+            <link 
+              rel="preload" 
+              fetchPriority={fetchPriority}
+              href={typeof src.tablet === 'string' ? src.tablet : src.tablet.src}
+              as="image" 
+              media={`(min-width: ${parseInt(theme.mobile.maxWidth) + 0.1}px) and (max-width: ${theme.tablet.maxWidth})`}
+            />
+          )}
+          {(typeof src !== 'string' && src.desktop) && (
+            <link 
+              rel="preload"
+              fetchPriority={fetchPriority}
+              href={typeof src.desktop === 'string' ? src.desktop : src.desktop.src}
+              as="image"
+              media={`(min-width: ${parseInt(theme.tablet.maxWidth) + 0.1}px)`}
+            />
+          )}
+        </Helmet>
+      )}
     </>
   );
 };
