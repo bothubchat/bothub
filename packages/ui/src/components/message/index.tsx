@@ -1,8 +1,10 @@
-import React, { ReactNode, useMemo, useRef } from 'react';
+import React, {
+  ReactNode, useCallback, useMemo, useRef, useState 
+} from 'react';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
-import { 
+import {
   MessageBlock,
   MessageContent,
   MessageMarkdown,
@@ -10,18 +12,18 @@ import {
 } from './styled';
 import { MessageCopyEventHandler, MessageVariant } from './types';
 import {
-  MessageCode, 
-  MessageComponentsProps, 
+  MessageCode,
+  MessageComponentsProps,
   MessageParagraph,
-  MessagePre, 
-  MessageStrong, 
+  MessagePre,
+  MessageStrong,
 } from './components';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
 import { MessageProvider, useMessage } from './context';
 import {
   Table,
-  TableBody, TableCell, TableHead, TableRow 
+  TableBody, TableCell, TableHead, TableRow
 } from '../table';
 
 export interface MessageProps {
@@ -43,11 +45,13 @@ export interface MessageTextProps {
 }
 
 export const MessageText: React.FC<MessageTextProps> = ({
-  children, 
-  components = {} 
+  children,
+  components = {}
 }) => {
   const { typing, variant } = useMessage();
   const markdown = variant === 'user';
+  
+  const [rehypeError, setRehypeError] = useState<string | null>(null);
   
   const formattedChildren = useMemo(() => {
     if (typeof children === 'string' && !markdown) {
@@ -56,6 +60,12 @@ export const MessageText: React.FC<MessageTextProps> = ({
     }
     return children;
   }, [children, markdown]);
+  
+  const handleKatexStrict = useCallback((errorCode: string) => {
+    if (errorCode !== 'htmlExtension') {
+      queueMicrotask(() => setRehypeError(errorCode));
+    }
+  }, []);
 
   return (
     <>
@@ -71,7 +81,11 @@ export const MessageText: React.FC<MessageTextProps> = ({
         <MessageMarkdown
           remarkPlugins={[remarkGfm, remarkMath]}
           // @ts-ignore
-          rehypePlugins={[rehypeKatex]}
+          rehypePlugins={[
+            ...(!rehypeError ? [
+              () => rehypeKatex({ strict: handleKatexStrict })
+            ] : []),
+          ]}
           $typing={typing}
           components={{
             p: ({ className, children }) => (
