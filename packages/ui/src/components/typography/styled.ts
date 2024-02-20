@@ -147,6 +147,18 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
             --skeleton-height: 16px;
           }
         `;
+      case 'body-s-regular':
+        return css`
+          font-family: ${theme.fonts.ibmPlexSans.regular};
+          font-size: 14px;
+          line-height: 18px;
+          --skeleton-height: 18px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+              font-size: 12px;
+              line-height: 16px;
+              --skeleton-height: 16px;
+          }
+        `;
       case 'body-xs-regular':
         return css`
           font-family: ${theme.fonts.ibmPlexSans.regular};
@@ -157,6 +169,18 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
             font-size: 10px;
             line-height: 16px;
             --skeleton-height: 16px;
+          }
+        `;
+      case 'body-l-semibold':
+        return css`
+          font-family: ${theme.fonts.ibmPlexSans.semiBold};
+          font-size: 18px;
+          line-height: 24px;
+          --skeleton-height: 24px;
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 16px;
+            line-height: 22px;
+            --skeleton-height: 22px;
           }
         `;
       case 'button-sm':
