@@ -21,7 +21,13 @@
   },
   "include": [
     "./packages/*/src", 
-    "./rollup.config.ts"
+    "./rollup.config.ts",
+    "./scripts/publish.ts"
   ],
-  "exclude": ["./packages/*/dist"]
+  "exclude": ["./packages/*/dist"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
 }
