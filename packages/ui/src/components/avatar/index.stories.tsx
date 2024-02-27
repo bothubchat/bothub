@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import { Avatar } from '.';
 
@@ -36,5 +36,5 @@ export const Skeleton: AvatarStory = {
 export default {
   title: 'UI Components/Avatar',
   component: Avatar,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as AvatarMeta;

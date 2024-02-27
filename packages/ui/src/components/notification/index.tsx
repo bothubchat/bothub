@@ -16,7 +16,7 @@ import {
 } from '@/ui/icons';
 import { Loader } from '@/ui/components/loader';
 import { NotificationVariant } from './types';
-import { useNotifications } from '@/ui/components/notifications';
+import { useNotifications } from './list';
 
 export type NotificationCloseEventHandler = (notificationId: string) => unknown;
 
@@ -141,3 +141,4 @@ export const Notification: React.FC<NotificationProps> = ({
 };
 
 export * from './types';
+export * from './list';

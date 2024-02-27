@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { SelectField } from '.';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 
 export type SelectFieldMeta = Meta<typeof SelectField>;
 
@@ -75,5 +75,5 @@ export const Skeleton: SelectFieldStory = {
 export default {
   title: 'UI Components/Fields/Select',
   component: SelectField,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as SelectFieldMeta;

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Logo } from '.';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 
 export type LogoMeta = Meta<typeof Logo>;
 
@@ -11,5 +11,5 @@ export const Basic: LogoStory = {};
 export default {
   title: 'UI Components/Logo',
   component: Logo,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as LogoMeta;

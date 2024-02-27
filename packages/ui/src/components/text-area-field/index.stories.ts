@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { TextAreaField } from '.';
-import { ThemeStoryDecorator } from '../../theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 
 export type TextAreaFieldMeta = Meta<typeof TextAreaField>;
 
@@ -37,5 +37,5 @@ export const Skeleton: TextAreaFieldStory = {
 export default {
   title: 'UI Components/Fields/TextArea',
   component: TextAreaField,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as TextAreaFieldMeta;

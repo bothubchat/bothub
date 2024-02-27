@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { Bookmark } from '.';
 
 export type BookmarkMeta = Meta<typeof Bookmark>;
@@ -27,5 +27,5 @@ export const Skeleton: BookmarkStory = {
 export default {
   title: 'UI Components/Bookmark/Item',
   component: Bookmark,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as BookmarkMeta;

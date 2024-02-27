@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import {
   Sidebar, 
   SidebarChat, 
@@ -300,7 +300,7 @@ export const SkeletonClosed: SidebarStory = {
 export default {
   title: 'UI Components/Sidebar',
   component: Sidebar,
-  decorators: [ThemeStoryDecorator()],
+  decorators: [StoryDecorator()],
   argTypes: {
     children: {
       table: {

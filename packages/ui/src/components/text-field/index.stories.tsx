@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { TextField } from '.';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { EmailCircleIcon } from '@/ui/icons';
 
 export type TextFieldMeta = Meta<typeof TextField>;
@@ -67,7 +67,7 @@ export const Skeleton: TextFieldStory = {
 export default {
   title: 'UI Components/Fields/Text',
   component: TextField,
-  decorators: [ThemeStoryDecorator()],
+  decorators: [StoryDecorator()],
   argTypes: {
     startIcon: {
       table: {

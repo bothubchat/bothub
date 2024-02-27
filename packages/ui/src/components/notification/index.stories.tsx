@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { Notification } from '.';
 
 export type NotificationMeta = Meta<typeof Notification>;
@@ -29,5 +29,5 @@ export const Clipboard: NotificationStory = {
 export default {
   title: 'UI Components/Notification/Item',
   component: Notification,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as NotificationMeta;

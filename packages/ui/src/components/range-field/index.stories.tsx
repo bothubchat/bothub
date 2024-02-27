@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { RangeField } from '.';
-import { ThemeStoryDecorator } from '../../theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 
 export type RangeFieldMeta = Meta<typeof RangeField>;
 
@@ -40,5 +40,5 @@ export const Skeleton: RangeFieldStory = {
 export default {
   title: 'UI Components/Fields/Range',
   component: RangeField,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as RangeFieldMeta;

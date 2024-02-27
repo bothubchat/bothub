@@ -4,7 +4,7 @@ import {
   Message, MessageActions, MessageAvatar, 
   MessageCopyAction, MessageEditAction, MessageText, MessageTokens 
 } from '.';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import 'katex/dist/katex.min.css';
 
 export type MessageMeta = Meta<typeof Message>;
@@ -143,7 +143,7 @@ console.log("Hello, World!");
 export default {
   title: 'UI Components/Message/Item',
   component: Message,
-  decorators: [ThemeStoryDecorator()],
+  decorators: [StoryDecorator()],
   argTypes: {
     avatar: {
       table: {

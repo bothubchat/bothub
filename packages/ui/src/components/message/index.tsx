@@ -240,4 +240,6 @@ export const Message: React.FC<MessageProps> = ({
 export * from './types';
 export * from './styled';
 export * from './context';
+export * from './action';
+export * from './list';
 export * from './copy';

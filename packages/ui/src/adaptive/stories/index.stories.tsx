@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { AdaptiveBlock } from '.';
 
 export type AdaptiveMeta = Meta<typeof AdaptiveBlock>;
@@ -23,5 +23,5 @@ export const Merge: AdaptiveStory = {
 export default {
   title: 'Adaptive',
   component: AdaptiveBlock,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as AdaptiveMeta;

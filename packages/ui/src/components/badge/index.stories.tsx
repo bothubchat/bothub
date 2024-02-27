@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { AIIcon } from '@/ui/icons';
 import { Badge } from '.';
 
@@ -23,7 +23,7 @@ export const Icon: BadgeStory = {
 export default {
   title: 'UI Components/Badge',
   component: Badge,
-  decorators: [ThemeStoryDecorator()],
+  decorators: [StoryDecorator()],
   argTypes: {
     icon: {
       table: {

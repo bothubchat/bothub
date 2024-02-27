@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Modal } from '.';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { Form, FormButtons, FormText } from '@/ui/components/form';
 import { TextField } from '@/ui/components/text-field';
 import {
@@ -19,7 +19,7 @@ import {
   ReferralRadioTableHeadCell, 
   ReferralRadioTableRow, 
   ReferralRadioTableSelectedCell 
-} from '@/ui/components/referral-radio';
+} from '@/ui/components/referral';
 
 export type ModalMeta = Meta<typeof Modal>;
 
@@ -240,7 +240,7 @@ export const CreateReferral: ModalStory = {
 export default {
   title: 'UI Components/Modal',
   component: Modal,
-  decorators: [ThemeStoryDecorator()],
+  decorators: [StoryDecorator()],
   args: {
     open: true
   },

@@ -1,4 +1,3 @@
-import '../styles';
 import './styled.d.ts';
 import React, { useContext, useMemo } from 'react';
 import { ThemeProvider as StyledThemeProvider, ThemeContext, createGlobalStyle } from 'styled-components';

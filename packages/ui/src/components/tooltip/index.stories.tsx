@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { Tooltip } from '.';
 import { Button } from '@/ui/components/button';
 
@@ -21,5 +21,5 @@ export const Basic: TooltipStory = {
 export default {
   title: 'UI Components/Tooltip',
   component: Tooltip,
-  decorators: [ThemeStoryDecorator({ margin: '50px 0px' })]
+  decorators: [StoryDecorator({ margin: '50px 0px' })]
 } as TooltipMeta;
