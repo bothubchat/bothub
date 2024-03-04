@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.0.0-feature-mj-574bb20f-38b7-4ea2-97ae-114cd6e03bee",
+  "version": "2.0.0-feature-mj-11f55581-a386-4b7c-9f57-b31a8fbe30a2",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -24,7 +24,6 @@
   "homepage": "https://bothub.chat",
   "files": [
     "./dist",
-    "./dist/node_modules/tslib/tslib.es6.js",
     "./fonts"
   ],
   "type": "module",
@@ -58,6 +57,7 @@
     "rehype-katex": "^7.0.0",
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",
-    "swiper": "^10.2.0"
+    "swiper": "^10.2.0",
+    "tslib": "^2.6.2"
   }
 }
