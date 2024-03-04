@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.0.0-feature-mj-32d14034-3940-40a1-b0ab-110052ec3929",
+  "version": "2.0.0-feature-mj-8703ecda-dba9-412e-8cda-f1956f2b4cb4",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -24,6 +24,7 @@
   "homepage": "https://bothub.chat",
   "files": [
     "./dist",
+    "./dist/node_modules",
     "./fonts"
   ],
   "type": "module",
