@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.0.0-feature-mj-3ad1896e-2c1c-4e9d-af3f-7c912e0a1831",
+  "version": "2.0.0-feature-mj-a8880dfe-4eed-4a1e-9530-2b825c096144",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -23,7 +23,6 @@
   "license": "MIT",
   "homepage": "https://bothub.chat",
   "files": [
-    "./tsconfig.json",
     "./dist",
     "./fonts"
   ],
