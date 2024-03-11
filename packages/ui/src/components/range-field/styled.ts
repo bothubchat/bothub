@@ -28,8 +28,12 @@ export const RangeFieldStyled = styled.div<RangeFieldStyledProps>`
 `;
 
 export const RangeFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 10px;
   cursor: inherit;
+  width: 100%;
 `;
 
 export const RangeFieldRange: React.FC<ReactSliderProps<RangeFieldValue>> = styled(ReactSlider)`

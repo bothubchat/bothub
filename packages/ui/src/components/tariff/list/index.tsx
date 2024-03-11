@@ -13,7 +13,8 @@ import {
   TariffSliderRightShadow
 } from './styled';
 import { Button } from '@/ui/components/button';
-import { ArrowNarrowLeftIcon, ArrowNarrowRightIcon } from '@/ui/icons';
+import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
+import { ArrowNarrowRightIcon } from '@/ui/icons/arrow-narrow-right';
 import { TariffsVariant } from './types';
 
 export interface TariffsProps extends React.PropsWithChildren {

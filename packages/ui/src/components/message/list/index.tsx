@@ -9,7 +9,7 @@ import {
   MessagesStart, 
   MessagesStyled 
 } from './styled';
-import { SetScrollFunction, ScrollbarRef } from '@/ui/components/scrollbar';
+import { SetScrollFunction, ScrollbarRef, ScrollbarShadowsProps } from '@/ui/components/scrollbar';
 import { MessagesProvider } from './context';
 
 export interface MessagesRef {
@@ -19,10 +19,11 @@ export interface MessagesRef {
 export interface MessagesProps extends React.PropsWithChildren {
   className?: string;
   startRef?: (node?: Element | null | undefined) => void;
+  scrollShadows?: ScrollbarShadowsProps;
 }
 
 export const Messages = forwardRef<MessagesRef, MessagesProps>(({ 
-  className, startRef, children 
+  className, startRef, scrollShadows, children 
 }, ref) => {
   const scrollbarRef = useRef<ScrollbarRef>(null);
 
@@ -41,6 +42,7 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(({
       <MessagesStyled className={className}>
         <MessagesScrollbarWrapper
           ref={scrollbarRef}
+          scrollShadows={scrollShadows}
         >
           <MessagesContent>
             <MessagesContainer>

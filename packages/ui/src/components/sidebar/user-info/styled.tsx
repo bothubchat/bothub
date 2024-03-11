@@ -116,7 +116,7 @@ export const SidebarUserInfoName = styled(Typography).attrs({ variant: 'body-m-s
   white-space: nowrap;
 `;
 
-export const SidebarUserInfoTokens = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })`
+export const SidebarUserInfoCaps = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
   white-space: nowrap;
 `;

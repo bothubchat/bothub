@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { motion } from 'framer-motion';
-import { CloseIcon, InfoBigIcon } from '@/ui/icons';
+import { CloseIcon } from '@/ui/icons/close';
+import { InfoBigIcon } from '@/ui/icons/info-big';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { NotificationVariant } from './types';

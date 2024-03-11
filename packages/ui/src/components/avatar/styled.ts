@@ -1,8 +1,9 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { Skeleton } from '@/ui/components/skeleton';
 
 export interface AvatarStyledProps {
   $size: number;
+  $children: boolean;
 }
 
 export const AvatarStyled = styled.span<AvatarStyledProps>`
@@ -10,8 +11,10 @@ export const AvatarStyled = styled.span<AvatarStyledProps>`
   flex-shrink: 0;
   width: ${({ $size }) => $size}px;
   height: ${({ $size }) => $size}px;
-  border-radius: 50%;
-  overflow: hidden; 
+  overflow: hidden;
+  ${({ $children }) => !$children && css`
+    border-radius: 50%;
+  `}
 `;
 
 export const AvatarObject = styled.object.attrs({ type: 'image/jpeg' })`

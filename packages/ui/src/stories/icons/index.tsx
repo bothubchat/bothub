@@ -67,7 +67,48 @@ import {
   WarningBigIcon, 
   YoucassaIcon,
   LightIcon,
-  DarkIcon
+  DarkIcon,
+  ActionChatIcon,
+  AttachIcon,
+  AvatarAddIcon,
+  BrushIcon,
+  CalendarIcon,
+  ClaudeIcon,
+  CookieIcon,
+  DallEIcon,
+  DownloadImgIcon,
+  ErrorIcon,
+  ExpandIcon,
+  EyeIcon,
+  FaceIcon,
+  GearIcon,
+  GearMinIcon,
+  GenerationIcon,
+  Gpt35Icon,
+  Gpt4Icon,
+  ImagineIcon,
+  LoaderIcon,
+  LoaderCircularIcon,
+  LoaderCircularGradientIcon,
+  MinusIcon,
+  MjWhiteIcon,
+  PromptIcon,
+  RabbitIcon,
+  Ratio1x1Icon,
+  Ratio2x3Icon,
+  Ratio3x2Icon,
+  Ratio4x5Icon,
+  Ratio4x7Icon,
+  Ratio5x4Icon,
+  Ratio7x4Icon,
+  RefferalMinIcon,
+  SearchDataIcon,
+  SquareIcon,
+  TurtleIcon,
+  UpscaleIcon,
+  WithdrawIcon,
+  SearchPlusIcon,
+  LightningIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -146,6 +187,47 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="SearchCircleIcon">{SearchCircleIcon}</IconItem>
         <IconItem name="LightIcon">{LightIcon}</IconItem>
         <IconItem name="DarkIcon">{DarkIcon}</IconItem>
+        <IconItem name="ActionChatIcon">{ActionChatIcon}</IconItem>
+        <IconItem name="AttachIcon">{AttachIcon}</IconItem>
+        <IconItem name="AvatarAddIcon">{AvatarAddIcon}</IconItem>
+        <IconItem name="BrushIcon">{BrushIcon}</IconItem>
+        <IconItem name="CalendarIcon">{CalendarIcon}</IconItem>
+        <IconItem name="ClaudeIcon">{ClaudeIcon}</IconItem>
+        <IconItem name="CookieIcon">{CookieIcon}</IconItem>
+        <IconItem name="DallEIcon">{DallEIcon}</IconItem>
+        <IconItem name="DownloadImgIcon">{DownloadImgIcon}</IconItem>
+        <IconItem name="ErrorIcon">{ErrorIcon}</IconItem>
+        <IconItem name="ExpandIcon">{ExpandIcon}</IconItem>
+        <IconItem name="EyeIcon">{EyeIcon}</IconItem>
+        <IconItem name="FaceIcon">{FaceIcon}</IconItem>
+        <IconItem name="GearIcon">{GearIcon}</IconItem>
+        <IconItem name="GearMinIcon">{GearMinIcon}</IconItem>
+        <IconItem name="GenerationIcon">{GenerationIcon}</IconItem>
+        <IconItem name="Gpt35Icon">{Gpt35Icon}</IconItem>
+        <IconItem name="Gpt4Icon">{Gpt4Icon}</IconItem>
+        <IconItem name="ImagineIcon">{ImagineIcon}</IconItem>
+        <IconItem name="LoaderIcon">{LoaderIcon}</IconItem>
+        <IconItem name="LoaderCircularIcon">{LoaderCircularIcon}</IconItem>
+        <IconItem name="LoaderCircularGradientIcon">{LoaderCircularGradientIcon}</IconItem>
+        <IconItem name="MinusIcon">{MinusIcon}</IconItem>
+        <IconItem name="MjWhiteIcon">{MjWhiteIcon}</IconItem>
+        <IconItem name="PromptIcon">{PromptIcon}</IconItem>
+        <IconItem name="RabbitIcon">{RabbitIcon}</IconItem>
+        <IconItem name="Ratio1x1Icon">{Ratio1x1Icon}</IconItem>
+        <IconItem name="Ratio2x3Icon">{Ratio2x3Icon}</IconItem>
+        <IconItem name="Ratio3x2Icon">{Ratio3x2Icon}</IconItem>
+        <IconItem name="Ratio4x5Icon">{Ratio4x5Icon}</IconItem>
+        <IconItem name="Ratio4x7Icon">{Ratio4x7Icon}</IconItem>
+        <IconItem name="Ratio5x4Icon">{Ratio5x4Icon}</IconItem>
+        <IconItem name="Ratio7x4Icon">{Ratio7x4Icon}</IconItem>
+        <IconItem name="RefferalMinIcon">{RefferalMinIcon}</IconItem>
+        <IconItem name="SearchDataIcon">{SearchDataIcon}</IconItem>
+        <IconItem name="SquareIcon">{SquareIcon}</IconItem>
+        <IconItem name="TurtleIcon">{TurtleIcon}</IconItem>
+        <IconItem name="UpscaleIcon">{UpscaleIcon}</IconItem>
+        <IconItem name="WithdrawIcon">{WithdrawIcon}</IconItem>
+        <IconItem name="SearchPlusIcon">{SearchPlusIcon}</IconItem>
+        <IconItem name="LightningIcon">{LightningIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

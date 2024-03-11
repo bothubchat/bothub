@@ -115,7 +115,7 @@ export const Skeleton: ReferralRadioStory = {
 };
 
 export default {
-  title: 'UI Components/Referral/Radio',
+  title: 'Components/Referral/Radio',
   component: ReferralRadio,
   decorators: [StoryDecorator()]
 } as ReferralRadioMeta;

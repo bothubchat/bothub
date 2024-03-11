@@ -9,14 +9,14 @@ import {
 } from './styled';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
-import { SearchCircleIcon } from '@/ui/icons';
+import { SearchCircleIcon } from '@/ui/icons/search-circle';
 import { TextFieldType } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 
 export type TextFieldValueChangeEventHandler = (value: string) => unknown;
 
 export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFieldStyled>, 'onChange' | 'onFocus' | 'onBlur' | 'onMouseEnter' | 'onMouseLeave' | '$fullWidth' | '$disabled'> {
-  label?: string | boolean;
+  label?: string | boolean | React.ReactNode;
   placeholder?: string;
   value?: string;
   defaultValue?: string;
@@ -80,14 +80,17 @@ export const TextField: React.FC<TextFieldProps> = ({
       $fullWidth={fullWidth}
       $disabled={disabled}
     >
-      {label && (
+      {(label && skeleton) && (
         <TextFieldLabel>
-          {!skeleton && label}
-          {skeleton && (
-            <Skeleton width={100} />
-          )}
+          <Skeleton width={100} />
         </TextFieldLabel>
       )}
+      {(typeof label === 'string' && !skeleton) && (
+        <TextFieldLabel>
+          {label}
+        </TextFieldLabel>
+      )}
+      {(typeof label !== 'string' && !skeleton) && label}
       {!skeleton && (
         <TextFieldBlock 
           $error={!!error} 
@@ -141,3 +144,4 @@ export const TextField: React.FC<TextFieldProps> = ({
 };
 
 export * from './types';
+export * from './styled';

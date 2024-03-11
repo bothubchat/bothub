@@ -114,7 +114,7 @@ export const Skeleton: ReferralCardStory = {
 };
 
 export default {
-  title: 'UI Components/Referral/Card',
+  title: 'Components/Referral/Card',
   component: ReferralCard,
   decorators: [StoryDecorator()]
 } as ReferralCardMeta;

@@ -1,23 +1,25 @@
 import React, {
   forwardRef, useCallback, useImperativeHandle, useRef 
 } from 'react';
-import { AnimationProps, HoverHandlers, TapHandlers } from 'framer-motion';
-import { ButtonStyled } from './styled';
+import {
+  AnimationProps, HoverHandlers, TapHandlers, motion 
+} from 'framer-motion';
+import { ButtonStyled, ButtonText } from './styled';
 import { useTheme } from '@/ui/theme';
 import { IconProvider, IconProviderProps, isIconComponent } from '@/ui/components/icon';
-import { ButtonCorner, ButtonSize, ButtonVariant } from './types';
+import {
+  ButtonComponent, ButtonCorner, ButtonSize, ButtonVariant 
+} from './types';
 import { useTooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
-
-export interface ButtonRef {
-  element: HTMLButtonElement | null;
-}
+import { InfoIcon } from '@/ui/icons/info';
 
 export type ButtonProps = 
   Omit<React.ComponentProps<'button'>, 'ref' | 'onAnimationStart' | 'onDrag' | 'onDragStart' | 'onDragEnd'> & {
     disabled?: boolean;
     fullWidth?: boolean;
     variant?: ButtonVariant;
+    component?: ButtonComponent;
     size?: ButtonSize;
     corner?: ButtonCorner;
     startIcon?: React.ReactNode | null;
@@ -28,10 +30,11 @@ export type ButtonProps =
     children?: React.ReactNode;
   };
 
-export const Button = forwardRef<ButtonRef, ButtonProps>(({
+export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
   children, 
   fullWidth = false, 
   variant = 'primary',
+  component = 'button',
   type = 'button',
   size = 'small', 
   corner = 'brick', 
@@ -45,7 +48,7 @@ export const Button = forwardRef<ButtonRef, ButtonProps>(({
 }, ref) => {
   const theme = useTheme();
 
-  const elementRef = useRef<HTMLButtonElement>(null);
+  const elementRef = useRef<HTMLButtonElement | null>(null);
 
   const childrenArray: React.ReactNode[] = React.Children.toArray(children);
   const isIconButton: boolean = React.isValidElement(childrenArray[0]) 
@@ -60,7 +63,7 @@ export const Button = forwardRef<ButtonRef, ButtonProps>(({
         break;
     }
   }
-  if (typeof iconFill !== 'string' && variant !== 'text') {
+  if (typeof iconFill !== 'string' && variant !== 'text' && variant !== 'help') {
     if (disabled) {
       iconFill = theme.colors.grayScale.gray1;
     } else {
@@ -83,12 +86,15 @@ export const Button = forwardRef<ButtonRef, ButtonProps>(({
   if (disabled || skeleton) {
     switch (variant) {
       case 'primary':
+      case 'primary-transparent':
         animationProps = {
           initial: {
-            background: theme.colors.grayScale.gray2
+            background: theme.colors.grayScale.gray2,
+            opacity: 1
           },
           animate: {
-            background: theme.colors.grayScale.gray2
+            background: theme.colors.grayScale.gray2,
+            opacity: 1
           }
         };
         break;
@@ -105,6 +111,7 @@ export const Button = forwardRef<ButtonRef, ButtonProps>(({
         };
         break;
       case 'text':
+      case 'help':
         animationProps = {
           initial: {
             background: 'rgba(255, 255, 255, 0)'
@@ -134,6 +141,26 @@ export const Button = forwardRef<ButtonRef, ButtonProps>(({
           }
         };
         break;
+      case 'primary-transparent':
+        animationProps = {
+          variants: {
+            default: {
+              background: theme.colors.accent.primary,
+              opacity: 0.5
+            },
+            hover: {
+              opacity: 1
+            },
+            tap: {
+              transform: 'translateY(1px)'
+            }
+          },
+          initial: 'default',
+          animate: 'default',
+          whileHover: 'hover',
+          whileTap: 'tap'
+        };
+        break;
       case 'secondary':
         animationProps = {
           initial: {
@@ -155,6 +182,7 @@ export const Button = forwardRef<ButtonRef, ButtonProps>(({
         };
         break;
       case 'text':
+      case 'help':
         animationProps = {
           initial: {
             background: 'rgba(255, 255, 255, 0)',
@@ -186,11 +214,13 @@ export const Button = forwardRef<ButtonRef, ButtonProps>(({
     handleTooltipMouseLeave(event);
   }, [props.onMouseLeave, handleTooltipMouseLeave]);
 
-  useImperativeHandle(ref, () => {
-    const element: HTMLButtonElement | null = elementRef.current;
-
-    return { element };
-  }, [elementRef]);
+  useImperativeHandle(
+    ref, 
+    () => (
+      elementRef.current as HTMLButtonElement
+    ), 
+    [elementRef.current]
+  );
 
   return (
     <ButtonStyled 
@@ -202,8 +232,12 @@ export const Button = forwardRef<ButtonRef, ButtonProps>(({
       $fullWidth={fullWidth}
       $iconFill={iconFill}
       $skeleton={skeleton}
-      type={type}
-      disabled={disabled}
+      $disabled={disabled}
+      as={motion[component]}
+      {...(component === 'button' && {
+        type,
+        disabled
+      })}
       {...animationProps}
       ref={elementRef}
       onMouseEnter={handleMouseEnter}
@@ -216,7 +250,23 @@ export const Button = forwardRef<ButtonRef, ButtonProps>(({
       ) : null}
       {!skeleton && (
         <IconProvider {...iconProps}>
-          {children}
+          {variant === 'help' && (
+            <InfoIcon />
+          )}
+          {variant !== 'help' && (
+            <>
+              {typeof children === 'string' && (
+                <ButtonText
+                  $variant={variant}
+                  $size={size}
+                  $disabled={disabled}
+                >
+                  {children}
+                </ButtonText>
+              )}
+              {typeof children !== 'string' && children}
+            </>
+          )}
         </IconProvider>
       )}
       {skeleton && (
@@ -242,3 +292,4 @@ export const Button = forwardRef<ButtonRef, ButtonProps>(({
 });
 
 export * from './types';
+export * from './styled';

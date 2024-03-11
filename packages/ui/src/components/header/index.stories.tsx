@@ -143,7 +143,7 @@ export const Dashboard: HeaderStory = {
 };
 
 export default {
-  title: 'UI Components/Header',
+  title: 'Components/Header',
   component: Header,
   decorators: [StoryDecorator()],
   argTypes: {

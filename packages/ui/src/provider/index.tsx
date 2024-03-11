@@ -4,20 +4,23 @@ import { ThemeProvider, ThemeProviderProps } from '@/ui/theme';
 
 export interface BothubUIProviderProps extends React.PropsWithChildren {
   theme?: ThemeProviderProps;
+  disableGlobalStyle?: boolean;
   globalStyle?: BothubGlobalStyleProps;
 }
 
 export const BothubUIProvider: React.FC<BothubUIProviderProps> = ({
-  theme, globalStyle, children
+  theme, disableGlobalStyle = false, globalStyle, children
 }) => (
   <BothubStyleSheetManager>
     <ThemeProvider
       {...theme}
     >
       {children}
-      <BothubGlobalStyle 
-        {...globalStyle}
-      />
+      {!disableGlobalStyle && (
+        <BothubGlobalStyle 
+          {...globalStyle}
+        />
+      )}
     </ThemeProvider>
   </BothubStyleSheetManager>
 );

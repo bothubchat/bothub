@@ -7,7 +7,7 @@ export interface TextFieldStyledProps {
   $disabled: boolean;
 }
 
-export const TextFieldStyled = styled.label<TextFieldStyledProps>`
+export const TextFieldStyled = styled.div<TextFieldStyledProps>`
   display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
@@ -23,6 +23,8 @@ export const TextFieldStyled = styled.label<TextFieldStyledProps>`
 
 export const TextFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
   display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
   width: 100%;
   cursor: inherit;
@@ -135,6 +137,11 @@ export const TextFieldInput = styled.input`
   &::-webkit-search-results-button,
   &::-webkit-search-results-decoration {
     -webkit-appearance: none;
+  }
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 `;
 

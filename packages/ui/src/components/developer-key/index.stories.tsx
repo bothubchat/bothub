@@ -19,7 +19,7 @@ export const Skeleton: DeveloperKeyStory = {
 };
 
 export default {
-  title: 'UI Components/DeveloperKey/Item',
+  title: 'Components/DeveloperKey/Item',
   component: DeveloperKey,
   decorators: [StoryDecorator()]
 } as DeveloperKeyMeta;

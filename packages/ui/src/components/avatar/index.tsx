@@ -5,6 +5,7 @@ import {
   AvatarImage, AvatarObject, AvatarSkeleton, AvatarStyled 
 } from './styled';
 import { AvatarVariant } from './types';
+import { IconProvider } from '../icon';
 
 export interface AvatarProps extends React.ComponentProps<'img'> {
   variant?: AvatarVariant;
@@ -12,12 +13,13 @@ export interface AvatarProps extends React.ComponentProps<'img'> {
 }
 
 export const Avatar: React.FC<AvatarProps> = ({
-  className, style, variant = 'my', size = 40, src, alt, children, ...props
+  className, style, variant = 'user', size = 40, src, alt, children, ...props
 }) => {
-  const isSkeleton = React.isValidElement(children) && (children.type as React.FC).displayName === 'Skeleton';
+  const isChildren = React.isValidElement(children);
+  const isSkeleton = isChildren && (children.type as React.FC).displayName === 'Skeleton';
 
   switch (variant) {
-    case 'my':
+    case 'user':
       if (!src) {
         src = defaultAvatar;
       }
@@ -34,22 +36,30 @@ export const Avatar: React.FC<AvatarProps> = ({
     <AvatarStyled
       {...props}
       $size={size}
+      $children={isChildren}
       className={className}
       style={style}
     >
-      {!isSkeleton && (
+      {(!isSkeleton && !isChildren) && (
         <AvatarObject
           data={src}
-          width={40}
-          height={40}
+          width={size}
+          height={size}
         >
           <AvatarImage
             src={defaultAvatar}
-            width={40}
-            height={40}
+            width={size}
+            height={size}
             alt={alt}
           />
         </AvatarObject>
+      )}
+      {(isChildren && !isSkeleton) && (
+        <IconProvider
+          size={size}
+        >
+          {children}
+        </IconProvider>
       )}
       {isSkeleton && (
         <AvatarSkeleton />

@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { ArrowUpIcon } from '@/ui/icons';
+import { ArrowUpIcon } from '@/ui/icons/arrow-up';
 import { Typography } from '@/ui/components/typography';
 import { Skeleton } from '@/ui/components/skeleton';
 

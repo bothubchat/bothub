@@ -14,7 +14,7 @@ import { Skeleton } from '@/ui/components/skeleton';
 
 export interface RangeFieldProps {
   className?: string;
-  label?: string | boolean;
+  label?: string | boolean | React.ReactNode;
   error?: string;
   min?: number;
   max?: number;
@@ -57,17 +57,20 @@ export const RangeField: React.FC<RangeFieldProps> = ({
       $fullWidth={fullWidth}
       $disabled={disabled}  
     >
-      {label && (
+      {(label && skeleton) && (
+        <RangeFieldLabel>
+          <Skeleton width={100} />
+        </RangeFieldLabel>
+      )}
+      {(typeof label === 'string' && !skeleton) && (
         <RangeFieldLabel
           onMouseEnter={handleTooltipMouseEnter}
           onMouseLeave={handleTooltipMouseLeave}
         >
-          {!skeleton && label}
-          {skeleton && (
-            <Skeleton width={100} />
-          )}
+          {label}
         </RangeFieldLabel>
       )}
+      {(typeof label !== 'string' && !skeleton) && label}
       {!skeleton && (
         <Tooltip 
           label={String(value)}
@@ -123,3 +126,4 @@ export const RangeField: React.FC<RangeFieldProps> = ({
 };
 
 export * from './types';
+export * from './styled';

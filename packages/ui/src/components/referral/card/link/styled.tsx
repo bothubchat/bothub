@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { CopyIcon } from '@/ui/icons';
+import { CopyIcon } from '@/ui/icons/copy';
 
 export const ReferralCardLinkStyled = styled.div`
   display: inline-flex;

@@ -54,6 +54,8 @@ export interface ThemeColors {
   purple: string;
   aqua: string;
   green: string;
+  gpt3: string;
+  gpt4: string;
 }
 
 export interface ThemeIbmPlexSansFonts {

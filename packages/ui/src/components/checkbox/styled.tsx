@@ -1,10 +1,11 @@
 import { css, styled } from 'styled-components';
-import { CheckSmallIcon } from '@/ui/icons';
+import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { Typography } from '@/ui/components/typography';
 import { Skeleton } from '@/ui/components/skeleton';
 
 export interface CheckboxStyledProps {
   $disabled: boolean;
+  $fullWidth: boolean;
 }
 
 export const CheckboxStyled = styled.label<CheckboxStyledProps>`
@@ -24,6 +25,9 @@ export const CheckboxStyled = styled.label<CheckboxStyledProps>`
       cursor: pointer;
     `;
   }}
+  ${({ $fullWidth }) => $fullWidth && css`
+    width: 100%;
+  `}
 `;
 
 export const CheckboxBlock = styled.span`
@@ -48,7 +52,13 @@ export const CheckboxBlockSkeleton = styled(Skeleton)`
   border-radius: 2px;
 `;
 
-export const CheckboxLabel = styled(Typography).attrs({ variant: 'body-m-medium' })``;
+export const CheckboxLabel = styled(Typography).attrs({ variant: 'body-m-medium' })`
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  gap: 8px;
+  cursor: inherit;
+`;
 
 export const CheckboxCheckedIcon = styled(CheckSmallIcon).attrs({ size: 20 })`
   visibility: hidden;

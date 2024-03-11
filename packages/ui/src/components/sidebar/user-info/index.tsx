@@ -5,7 +5,7 @@ import {
   SidebarUserInfoName,
   SidebarUserInfoStyled, 
   SidebarUserInfoText, 
-  SidebarUserInfoTokens, 
+  SidebarUserInfoCaps, 
   SidebarUserInfoTop, 
   SidebarUserInfoTopLeft, 
   SidebarUserInfoTopRight
@@ -16,7 +16,7 @@ import { useTheme } from '@/ui/theme';
 export interface SidebarUserInfoProps {
   avatar?: React.ReactNode;
   name?: string;
-  tokens?: string;
+  caps?: string;
   tariff?: React.ReactNode;
   updateTariff?: React.ReactNode;
   linkAs?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -27,7 +27,7 @@ export interface SidebarUserInfoProps {
 export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   avatar, 
   name, 
-  tokens = '',
+  caps,
   tariff,
   updateTariff,
   linkAs,
@@ -57,7 +57,7 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
     >
       <SidebarUserInfoContent>
         <SidebarUserInfoTop
-          $length={tokens.length}
+          $length={caps ? caps.length : 0}
           as={linkAs} 
           to={to}
           onClick={onClick}  
@@ -70,10 +70,10 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
                   {name}
                 </SidebarUserInfoName>
               )}
-              {tokens && (
-                <SidebarUserInfoTokens>
-                  {tokens}
-                </SidebarUserInfoTokens>
+              {caps && (
+                <SidebarUserInfoCaps>
+                  {caps}
+                </SidebarUserInfoCaps>
               )}
             </SidebarUserInfoText>
           </SidebarUserInfoTopLeft>
@@ -85,7 +85,7 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
         </SidebarUserInfoTop>
         <SidebarUserInfoBottom
           $open={isOpen}
-          $length={tokens.length}
+          $length={caps ? caps.length : 0}
         >
           {updateTariff}
         </SidebarUserInfoBottom>

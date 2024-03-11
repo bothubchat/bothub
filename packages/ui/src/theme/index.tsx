@@ -1,6 +1,6 @@
 import './styled.d.ts';
-import React, { useContext, useMemo } from 'react';
-import { ThemeProvider as StyledThemeProvider, ThemeContext, createGlobalStyle } from 'styled-components';
+import React, { useMemo } from 'react';
+import { ThemeProvider as StyledThemeProvider, createGlobalStyle } from 'styled-components';
 import { DefaultTheme, Theme, ThemeMode } from './types';
 
 export const StorybookGlobalStyle = createGlobalStyle`
@@ -44,7 +44,9 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         orange: '#F29C1C',
         purple: '#941CF2',
         aqua: '#1CB2F2',
-        green: '#1ABB34'
+        green: '#1ABB34',
+        gpt3: '#28A08C',
+        gpt4: '#735FFA'
       },
       fonts: {
         ibmPlexSans: {
@@ -94,10 +96,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
           maxWidth: '1060px'
         },
         miniTablet: {
-          maxWidth: '800px'
+          maxWidth: '900px'
         },
         mobile: {
-          maxWidth: '550px',
+          maxWidth: '600px',
           minWidth: '400px'
         }
       }
@@ -154,14 +156,5 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   );
 };
 
-export function useTheme(): Theme {
-  const value = useContext(ThemeContext);
-
-  if (!value) {
-    throw new Error('useTheme must be used within a ThemeProvider.');
-  }
-
-  return value;
-}
-
 export * from './types';
+export * from './hook';

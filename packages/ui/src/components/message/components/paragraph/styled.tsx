@@ -1,21 +1,25 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { MessageVariant } from '../../types';
+import { MessageVariant, MessageColor } from '@/ui/components/message';
 
 export interface MessageParagraphStyledProps {
   $variant: MessageVariant;
+  $color: MessageColor;
   $wrap: boolean;
   $disableMargin: boolean;
 }
 
 export const MessageParagraphStyled = styled(Typography).attrs({ variant: 'body-m-regular', component: 'p' })<MessageParagraphStyledProps>`
-  word-wrap: break-word;
-  color: ${({ theme, $variant }) => {
+  color: ${({ theme, $variant, $color }) => {
     if ($variant === 'user') {
       return theme.default.colors.base.white;
     }
 
-    return theme.colors.base.white;
+    if ($color === 'default') {
+      return theme.colors.base.white;
+    }
+       
+    return theme.default.colors.base.white;
   }};
   ${({ $disableMargin }) => !$disableMargin && css`
     margin: 10px 0px;
@@ -24,7 +28,7 @@ export const MessageParagraphStyled = styled(Typography).attrs({ variant: 'body-
     white-space: pre-wrap;
   `}
   &::selection {
-    ${({ $variant }) => {
+    ${({ $variant, $color }) => {
     switch ($variant) {
       case 'user':
         return css`
@@ -32,10 +36,23 @@ export const MessageParagraphStyled = styled(Typography).attrs({ variant: 'body-
           color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.accent.primary)};
         `;
       case 'assistant':
-        return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
-        `;
+        switch ($color) {
+          case 'green':
+            return css`
+              background: ${({ theme }) => theme.default.colors.base.white};
+              color: ${({ theme }) => theme.colors.gpt3};
+            `;
+          case 'purple':
+            return css`
+              background: ${({ theme }) => theme.default.colors.base.white};
+              color: ${({ theme }) => theme.colors.gpt4};
+            `;
+          default:
+            return css`
+              background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+              color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+            `;
+        }
     }
   }}
   }

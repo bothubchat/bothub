@@ -2,22 +2,29 @@ import React, {
   useCallback, useEffect, useRef, useState 
 } from 'react';
 import { Portal } from '@/ui/components/portal';
-import { TooltipBlock, TooltipLabel, TooltipStyled } from './styled';
+import {
+  TooltipBlock, TooltipLabel, TooltipLabelBold, TooltipMarkdown, TooltipStyled 
+} from './styled';
 import { TooltipArrow } from './arrow';
 import { TooltipProvider } from './context';
-import { TooltipPlacement, TooltipVariant } from './types';
+import { TooltipAlign, TooltipPlacement, TooltipVariant } from './types';
 
 export interface TooltipProps extends React.PropsWithChildren {
   className?: string;
   variant?: TooltipVariant;
   placement?: TooltipPlacement;
-  label?: string;
+  placementX?: number;
+  placementY?: number;
+  align?: TooltipAlign;
+  label?: React.ReactNode;
   disabled?: boolean;
   disableHiddenAnimation?: boolean;
+  markdown?: boolean;
 }
 
 export const Tooltip: React.FC<TooltipProps> = ({ 
-  className, variant = 'primary', placement = 'top', label, disabled = false, disableHiddenAnimation = false, children 
+  className, variant = 'primary', placement = 'top', placementX = 0, placementY = -5, align = 'auto', label, 
+  disabled = false, disableHiddenAnimation = false, markdown = false, children 
 }) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [element, setElement] = useState<Element | null>(null);
@@ -37,23 +44,60 @@ export const Tooltip: React.FC<TooltipProps> = ({
     const { 
       width: tooltipWidth, height: tooltipHeight
     } = tooltipEl.getBoundingClientRect();
-    const {
-      x: elX, y: elY, width: elWidth
-    } = el.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
+    const { width: elWidth } = rect;
+    const elX = rect.left + window.scrollX;
+    const elY = rect.top + window.scrollY;
 
     let x: number;
     switch (placement) {
       case 'top-left':
-        x = elX + (elWidth / 2) - 15;
+        switch (align) {
+          case 'left':
+          case 'auto':
+            x = elX;
+            break;
+          case 'center':
+            x = elX - (tooltipWidth / 2);
+            break;
+          case 'right':
+            x = elX - tooltipWidth;
+            break;
+        }
         break;
       case 'top':
-        x = elX + (elWidth / 2) - (tooltipWidth / 2);
+        switch (align) {
+          case 'left':
+            x = elX + (elWidth / 2);
+            break;
+          case 'center':
+          case 'auto':
+            x = elX + (elWidth / 2) - (tooltipWidth / 2);
+            break;
+          case 'right':
+            x = elX + (elWidth / 2) - tooltipWidth;
+            break;
+        }
+        break;
+      case 'top-right':
+        switch (align) {
+          case 'left':
+            x = elX + elWidth;
+            break;
+          case 'center':
+            x = elX + elWidth - (tooltipWidth / 2);
+            break;
+          case 'right':
+          case 'auto':
+            x = elX + elWidth - tooltipWidth;
+            break;
+        }
         break;
     }
-    const y: number = elY - tooltipHeight - 5;
+    const y: number = elY - tooltipHeight;
 
     return [x, y];
-  }, [placement]);
+  }, [placement, align]);
 
   const handleMouseEnter = useCallback<React.MouseEventHandler<Element>>((event) => {
     if (isDisabled) {
@@ -73,7 +117,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     setX(x);
     setY(y);
     setIsVisible(true);
-  }, [isDisabled, tooltipRef.current, getTooltipPosition]);
+  }, [isDisabled, placement, align]);
 
   const handleMouseLeave = useCallback(() => {
     setIsHover(false);
@@ -126,14 +170,61 @@ export const Tooltip: React.FC<TooltipProps> = ({
     return () => observer.disconnect();
   }, [element]);
 
+  const top: string[] = [
+    `${y}px`
+  ];
+  if (placementY !== 0) {
+    top.push(`calc(var(--bothub-scale, 1) * ${placementY}px)`);
+  }
+
+  const left: string[] = [
+    `${x}px`
+  ];
+  switch (placement) {
+    case 'top-left':
+      switch (align) {
+        case 'center':
+          left.push('14.5px');
+          break;
+        case 'right':
+          left.push('29px');
+          break;
+      }
+      break;
+    case 'top':
+      switch (align) {
+        case 'left':
+          left.push('-14.5px');
+          break;
+        case 'right':
+          left.push('14.5px');
+          break;
+      }
+      break;
+    case 'top-right':
+      switch (align) {
+        case 'left':
+          left.push('-29px');
+          break;
+        case 'center':
+          left.push('-14.5px');
+          break;
+      }
+      break;
+  }
+  if (placementX !== 0) {
+    left.push(`calc(var(--bothub-scale, 1) * ${placementX}px)`);
+  }
+
   const tooltipNode: React.ReactNode = (
     <TooltipStyled
       $placement={placement}
+      $align={align}
       ref={tooltipRef}
       className={className}
       style={{
-        top: y,
-        left: x
+        top: top.length <= 1 ? top[0] : `calc(${top.join(' + ')})`,
+        left: left.length <= 1 ? left[0] : `calc(${left.join(' + ')})`
       }}
       variants={{
         hidden: {
@@ -154,12 +245,39 @@ export const Tooltip: React.FC<TooltipProps> = ({
       <TooltipBlock
         $variant={variant}
       >
-        <TooltipLabel>
-          {label}
-        </TooltipLabel>
+        {(typeof label === 'string' && !markdown) && (
+          <TooltipLabel>
+            {label}
+          </TooltipLabel>
+        )}
+        {(typeof label === 'string' && markdown) && (
+          <TooltipMarkdown
+            components={{
+              p: ({ children }) => (
+                <TooltipLabel>
+                  {children}
+                </TooltipLabel>
+              ),
+              b: ({ children }) => (
+                <TooltipLabelBold>
+                  {children}
+                </TooltipLabelBold>
+              ),
+              strong: ({ children }) => (
+                <TooltipLabelBold
+                  component="strong"
+                >
+                  {children}
+                </TooltipLabelBold>
+              )
+            }}
+          >
+            {label}
+          </TooltipMarkdown>
+        )}
+        {typeof label !== 'string' && label}
       </TooltipBlock>
-      <TooltipArrow 
-        placement={placement}
+      <TooltipArrow
         variant={variant}
       />
     </TooltipStyled>
@@ -180,5 +298,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
   );
 };
 
+export * from './styled';
 export * from './context';
 export * from './types';

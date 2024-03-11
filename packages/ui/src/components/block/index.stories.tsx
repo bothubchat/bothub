@@ -3,7 +3,7 @@ import { StoryDecorator } from '@/ui/story-decorator';
 import { Block, BlockToolbar, BlockToolbarButtons } from '.';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
-import { Plus2Icon } from '@/ui/icons';
+import { Plus2Icon } from '@/ui/icons/plus-2';
 
 export type BlockMeta = Meta<typeof Block>;
 

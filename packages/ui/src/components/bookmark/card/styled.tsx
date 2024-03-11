@@ -1,7 +1,8 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
-import { CloseIcon, EditIcon } from '@/ui/icons';
+import { CloseIcon } from '@/ui/icons/close';
+import { EditIcon } from '@/ui/icons/edit';
 import { adaptive } from '@/ui/adaptive';
 
 export interface BookmarkCardStyledProps {

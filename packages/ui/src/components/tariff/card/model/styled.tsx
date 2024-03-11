@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { CheckCircleIcon } from '@/ui/icons';
+import { CheckCircleIcon } from '@/ui/icons/check-circle';
 import { Typography } from '@/ui/components/typography';
 
 export const TariffCardModelStyled = styled.div`

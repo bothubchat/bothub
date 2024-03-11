@@ -1,1 +1,1 @@
-export type BadgeVariant = 'blue' | 'success' | 'critic' | 'info';
+export type BadgeVariant = 'blue' | 'success' | 'critic' | 'info' | 'error';

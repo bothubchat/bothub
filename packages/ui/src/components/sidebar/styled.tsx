@@ -18,26 +18,15 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   overflow: hidden;
   box-sizing: border-box;
   transition: all 0.3s;
-  padding: 24px 20px;
+  padding: 18px;
   ${({ $open }) => $open && css`
-    min-width: 445px;
-    max-width: 445px;
+    min-width: 352px;
+    max-width: 352px;
   `}
   ${({ $open }) => !$open && css`
     min-width: 74px;
     max-width: 74px;
   `}
-  @media (max-width: 1700px) {
-    padding: 18px;
-    ${({ $open }) => $open && css`
-      min-width: 302px;
-      max-width: 302px;
-    `}
-    ${({ $open }) => !$open && css`
-      min-width: 74px;
-      max-width: 74px;
-    `}
-  }
   @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
     padding: 14px;
     ${({ $open }) => $open && css`

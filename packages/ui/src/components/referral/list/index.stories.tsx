@@ -77,7 +77,7 @@ export const Basic: ReferralsStory = {
 };
 
 export default {
-  title: 'UI Components/Referral/List',
+  title: 'Components/Referral/List',
   component: Referrals,
   decorators: [StoryDecorator()]
 } as ReferralsMeta;

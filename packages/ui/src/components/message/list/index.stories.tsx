@@ -2,16 +2,16 @@ import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
-  Message, 
-  MessageAction,
+  Message,
   MessageActions, 
   MessageAvatar,
   MessageCopyAction, 
   MessageEditAction, 
-  MessageTokens
+  MessageTransaction
 } from '@/ui/components/message';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import { Messages } from '.';
+import { ActionMessage } from '@/ui/components/action-message';
 
 export type MessagesMeta = Meta<typeof Messages>;
 
@@ -37,10 +37,10 @@ export const Basic: MessagesStory = {
           avatar={(
             <MessageAvatar variant="bot" />
           )}
-          tokens={(
-            <MessageTokens>
+          transaction={(
+            <MessageTransaction>
               -223 CAPS
-            </MessageTokens>
+            </MessageTransaction>
           )}
           actions={(
             <MessageActions>
@@ -66,10 +66,10 @@ export const Basic: MessagesStory = {
           avatar={(
             <MessageAvatar variant="bot" />
           )}
-          tokens={(
-            <MessageTokens>
+          transaction={(
+            <MessageTransaction>
               -1571 CAPS
-            </MessageTokens>
+            </MessageTransaction>
           )}
           actions={(
             <MessageActions>
@@ -93,9 +93,9 @@ console.log("Hello, world!");
         >
           Спасибо бот! то что нужно
         </Message>
-        <MessageAction>
+        <ActionMessage>
           Контекст сброшен
-        </MessageAction>
+        </ActionMessage>
       </>
     )
   }
@@ -128,7 +128,7 @@ export const Skeleton: MessagesStory = {
 };
 
 export default {
-  title: 'UI Components/Message/List',
+  title: 'Components/Message/List',
   component: Messages,
   decorators: [StoryDecorator()],
   argTypes: {

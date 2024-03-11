@@ -1,21 +1,19 @@
 import React from 'react';
 import { TooltipArrowStyled } from './styled';
-import { TooltipPlacement, TooltipVariant } from '../types';
+import { TooltipVariant } from '../types';
 import { useTheme } from '@/ui/theme';
 
 export interface TooltipArrowProps {
   variant: TooltipVariant;
-  placement: TooltipPlacement;
 }
 
 export const TooltipArrow: React.FC<TooltipArrowProps> = ({ 
-  variant, placement
+  variant
 }) => {
   const theme = useTheme();
 
   return (
     <TooltipArrowStyled
-      $placement={placement}
       width="9" 
       height="7" 
       viewBox="0 0 9 7" 

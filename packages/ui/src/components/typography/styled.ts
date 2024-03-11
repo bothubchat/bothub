@@ -147,6 +147,18 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
             --skeleton-height: 16px;
           }
         `;
+      case 'body-s-semibold':
+        return css`
+          font-family: ${theme.fonts.ibmPlexSans.semiBold};
+          font-size: 14px;
+          line-height: 18px;
+          --skeleton-height: 18px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 12px;
+            line-height: 16px;
+            --skeleton-height: 16px;
+          }
+        `;
       case 'body-s-regular':
         return css`
           font-family: ${theme.fonts.ibmPlexSans.regular};

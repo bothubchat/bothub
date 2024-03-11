@@ -1,7 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
-import { Plus1Icon } from '@/ui/icons';
+import { Plus1Icon } from '@/ui/icons/plus-1';
 import { adaptive } from '@/ui/adaptive';
 
 export const DeveloperKeysStyled = styled.div`

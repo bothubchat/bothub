@@ -1,16 +1,53 @@
 import React from 'react';
 import { AnimationProps } from 'framer-motion';
-import { useIconOrNull } from './context';
+import { IconProvider, useIconOrNull } from './context';
 import { IconStyled } from './styled';
+import { useTooltip } from '@/ui/components/tooltip';
 
 export interface IconProps extends Omit<React.ComponentProps<'svg'>, 'ref' | 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'>, AnimationProps {
   size?: number;
+  fill?: string;
+  enableTooltip?: boolean;
 }
 
-export const Icon: React.FC<IconProps> = ({ size: defaultSize = 18, ...props }) => {
+export const Icon: React.FC<IconProps> = ({ 
+  size: defaultSize = 18, fill: defaultFill, enableTooltip = false,
+  ...props 
+}) => {
+  const {
+    handleTooltipMouseEnter,
+    handleTooltipMouseLeave
+  } = useTooltip();
+
   const { size = defaultSize } = useIconOrNull() ?? { size: defaultSize };
 
-  return <IconStyled {...props} width={size} height={size} />;
+  const iconNode: React.ReactNode = (
+    <IconStyled 
+      {...props} 
+      width={size} 
+      height={size}
+      {...(defaultFill === 'none' && {
+        fill: 'none'
+      })}
+      {...(enableTooltip && {
+        onMouseEnter: handleTooltipMouseEnter,
+        onMouseLeave: handleTooltipMouseLeave
+      })}
+    />
+  );
+
+  if (typeof defaultFill === 'string' && defaultFill !== 'none') {
+    return (
+      <IconProvider
+        size={size}
+        fill={defaultFill}
+      >
+        {iconNode}
+      </IconProvider>
+    );
+  }
+
+  return iconNode;
 };
 
 export * from './context';

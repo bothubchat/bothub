@@ -78,7 +78,7 @@ export const Basic: FooterStory = {
 };
 
 export default {
-  title: 'UI Components/Footer',
+  title: 'Components/Footer',
   component: Footer,
   decorators: [StoryDecorator()],
   argTypes: {

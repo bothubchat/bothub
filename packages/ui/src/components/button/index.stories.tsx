@@ -54,6 +54,12 @@ export const Skeleton: ButtonStory = {
   }
 };
 
+export const Help: ButtonStory = {
+  args: {
+    variant: 'help'
+  }
+};
+
 export default {
   title: 'UI Components/Button',
   component: Button,

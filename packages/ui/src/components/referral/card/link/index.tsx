@@ -2,7 +2,8 @@ import React, { useCallback, useState } from 'react';
 import { ReferralCardLinkCopyIcon, ReferralCardLinkStyled, ReferralCardLinkText } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
-import { CheckSmallIcon, CopyIcon } from '@/ui/icons';
+import { CheckSmallIcon } from '@/ui/icons/check-small';
+import { CopyIcon } from '@/ui/icons/copy';
 
 export type ReferralCardLinkCopyEventHandler = (link: string) => unknown;
 

@@ -16,7 +16,8 @@ export const preview: Preview = {
       ]
     },
     actions: { 
-      argTypesRegex: '^on[A-Z].*' 
+      argTypesRegex: '^on[A-Z].*'
+
     },
     controls: {
       matchers: {

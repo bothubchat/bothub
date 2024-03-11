@@ -20,6 +20,48 @@ export const Icon: BadgeStory = {
   }
 };
 
+export const Blue: BadgeStory = {
+  args: {
+    ...Icon.args,
+    variant: 'blue'
+  }
+};
+
+export const Success: BadgeStory = {
+  args: {
+    ...Icon.args,
+    variant: 'success'
+  }
+};
+
+export const Critic: BadgeStory = {
+  args: {
+    ...Icon.args,
+    variant: 'critic'
+  }
+};
+
+export const Info: BadgeStory = {
+  args: {
+    ...Icon.args,
+    variant: 'info'
+  }
+};
+
+export const Brick: BadgeStory = {
+  args: {
+    ...Icon.args,
+    brick: true
+  }
+};
+
+export const Error: BadgeStory = {
+  args: {
+    variant: 'error',
+    children: 'Ошибка генерации'
+  }
+};
+
 export default {
   title: 'UI Components/Badge',
   component: Badge,

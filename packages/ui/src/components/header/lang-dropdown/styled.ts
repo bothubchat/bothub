@@ -1,7 +1,8 @@
 import { css, styled } from 'styled-components';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import React from 'react';
-import { ArrowDownIcon, LanguageIcon } from '@/ui/icons';
+import { ArrowDownIcon } from '@/ui/icons/arrow-down';
+import { LanguageIcon } from '@/ui/icons/language';
 import { Typography } from '../../typography';
 
 export const HeaderLangDropdownStyled = styled.div``;

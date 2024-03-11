@@ -32,7 +32,7 @@ export const Basic: PresetCardStory = {
 };
 
 export default {
-  title: 'UI Components/Preset/Card',
+  title: 'Components/Preset/Card',
   component: PresetCard,
   decorators: [StoryDecorator()],
   argTypes: {

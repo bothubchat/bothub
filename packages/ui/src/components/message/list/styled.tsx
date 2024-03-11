@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
+import { Scrollbar } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 
 export const MessagesStyled = styled.div`
@@ -7,14 +7,7 @@ export const MessagesStyled = styled.div`
   width: 100%;
 `;
 
-export const MessagesScrollbarWrapper = styled(Scrollbar).attrs(({ theme }) => ({ 
-  variant: 'secondary',
-  scrollShadows: {
-    size: 140,
-    top: <ScrollbarShadow side="top" />
-  },
-  disableShadows: theme.mode === 'light'
-}))`
+export const MessagesScrollbarWrapper = styled(Scrollbar).attrs({ variant: 'secondary' })`
   overflow: auto;
   height: 100%;
   ${adaptive({

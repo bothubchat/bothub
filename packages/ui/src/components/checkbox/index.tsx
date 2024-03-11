@@ -14,13 +14,14 @@ export type CheckboxValueChangeEventHandler = (checked: boolean) => unknown;
 
 export interface CheckboxProps extends React.ComponentProps<'input'> {
   className?: string;
-  label?: string | boolean;
+  label?: string | boolean | React.ReactNode;
   skeleton?: boolean;
+  fullWidth?: boolean;
   onValueChange?: CheckboxValueChangeEventHandler;
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({ 
-  className, label, skeleton = false, onValueChange, ...props 
+  className, label, skeleton = false, fullWidth = false, onValueChange, ...props 
 }) => {
   const {
     handleTooltipMouseEnter,
@@ -35,6 +36,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   return (
     <CheckboxStyled
       $disabled={props.disabled ?? false}
+      $fullWidth={fullWidth}
       className={className}
       onMouseEnter={handleTooltipMouseEnter}
       onMouseLeave={handleTooltipMouseLeave}
@@ -54,14 +56,19 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       {skeleton && (
         <CheckboxBlockSkeleton />
       )}
-      {label && (
+      {(label && skeleton) && (
         <CheckboxLabel>
-          {!skeleton && label}
-          {skeleton && (
-            <Skeleton width={200} />
-          )}
+          <Skeleton width={200} />
         </CheckboxLabel>
       )}
+      {(typeof label === 'string' && !skeleton) && (
+        <CheckboxLabel>
+          {label}
+        </CheckboxLabel>
+      )}
+      {(typeof label !== 'string' && !skeleton) && label}
     </CheckboxStyled>
   );
 };
+
+export * from './styled';

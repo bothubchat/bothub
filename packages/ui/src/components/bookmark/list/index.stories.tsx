@@ -42,7 +42,7 @@ export const Skeleton: BookmarksStory = {
 };
 
 export default {
-  title: 'UI Components/Bookmark/List',
+  title: 'Components/Bookmark/List',
   component: Bookmarks,
   decorators: [StoryDecorator()],
   argTypes: {

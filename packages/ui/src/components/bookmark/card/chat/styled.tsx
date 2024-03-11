@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { ChatIcon } from '@/ui/icons';
+import { ChatIcon } from '@/ui/icons/chat';
 import { Typography } from '@/ui/components/typography';
 
 export const BookmarkCardChatStyled = styled.div`

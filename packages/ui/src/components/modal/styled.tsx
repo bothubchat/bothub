@@ -1,7 +1,7 @@
 import { AnimationProps, motion } from 'framer-motion';
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { CloseIcon } from '@/ui/icons';
+import { CloseIcon } from '@/ui/icons/close';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 
 export const ModalStyled = styled.div`
@@ -116,7 +116,7 @@ export const ModalCloseButton = styled.button`
     fill: ${({ theme }) => theme.colors.grayScale.gray1};
   }
   &:hover path {
-    fill: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.grayScale.gray6)};
+    fill: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
   }
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     > svg {

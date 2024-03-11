@@ -1,17 +1,19 @@
 import React, { useContext } from 'react';
-import { MessageCopyEventHandler, MessageVariant } from './types';
+import {
+  MessageCodeCopyEventHandler, MessageColor, MessageCopyEventHandler, MessageVariant 
+} from './types';
 
 export interface MessageContextValue {
   variant: MessageVariant;
-  message: string;
+  color: MessageColor;
   typing: boolean;
   onCopy?: MessageCopyEventHandler;
-  onCodeCopy?: MessageCopyEventHandler;
+  onCodeCopy?: MessageCodeCopyEventHandler;
 }
 
 export const MessageContext = React.createContext<MessageContextValue>({
   variant: 'user',
-  message: '',
+  color: 'default',
   typing: false
 });
 

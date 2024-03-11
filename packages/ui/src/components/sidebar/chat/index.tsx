@@ -4,7 +4,7 @@ import {
   SidebarChatLeft, 
   SidebarChatName, 
   SidebarChatNameSkeleton, 
-  SidebarChatNumbers, 
+  SidebarChatCaps, 
   SidebarChatRight, 
   SidebarChatStyled 
 } from './styled';
@@ -15,7 +15,7 @@ import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 export interface SidebarChatDefaultProps {
   color: string;
   name: string;
-  numbers?: string;
+  caps?: string;
   active?: boolean;
   actions?: React.ReactNode;
   skeleton?: false;
@@ -76,12 +76,12 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
         {!props.skeleton && props.actions}
       </SidebarChatLeft>
       <SidebarChatRight>
-        {(!props.skeleton && props.numbers) && (
-          <SidebarChatNumbers
+        {(!props.skeleton && props.caps) && (
+          <SidebarChatCaps
             $open={isOpen}
           >
-            {props.numbers}
-          </SidebarChatNumbers>
+            {props.caps}
+          </SidebarChatCaps>
         )}
       </SidebarChatRight>
     </SidebarChatStyled>

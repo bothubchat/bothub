@@ -1,5 +1,4 @@
 import React from 'react';
-import { ProgressProps } from '@/ui/components/progress';
 import {
   ReferralCardAI, 
   ReferralCardAIName, 
@@ -18,7 +17,13 @@ import {
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 
-export interface ReferralCardPriceProps extends ProgressProps {
+export interface ReferralCardPriceProps {
+  className?: string;
+  value?: number;
+  min?: number;
+  max?: number;
+  fullWidth?: boolean;
+  skeleton?: boolean;
   minText: string;
   maxText: string;
 }

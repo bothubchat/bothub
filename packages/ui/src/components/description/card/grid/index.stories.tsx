@@ -87,7 +87,7 @@ export const Basic: DescriptionCardGridStory = {
 };
 
 export default {
-  title: 'UI Components/Description/Grid',
+  title: 'Components/Description/Grid',
   component: DescriptionCardGrid,
   decorators: [StoryDecorator()],
   argTypes: {

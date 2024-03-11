@@ -15,7 +15,7 @@ export const Basic: DescriptionCardStory = {
 };
 
 export default {
-  title: 'UI Components/Description/Card',
+  title: 'Components/Description/Card',
   component: DescriptionCard,
   decorators: [StoryDecorator()],
   parameters: {

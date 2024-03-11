@@ -13,7 +13,7 @@ export const Basic: PromptCardStory = {
 };
 
 export default {
-  title: 'UI Components/Prompt/Card',
+  title: 'Components/Prompt/Card',
   component: PromptCard,
   decorators: [StoryDecorator()]
 } as PromptCardMeta;

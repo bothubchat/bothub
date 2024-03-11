@@ -12,44 +12,36 @@ export interface ButtonStyledProps extends HTMLMotionProps<'button'> {
   $fullWidth: boolean;
   $iconFill?: string;
   $skeleton: boolean;
+  $disabled: boolean;
 }
 
-export const ButtonStyled: React.FC<ButtonStyledProps> = styled(motion.button)`
+export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
   display: inline-flex;
   justify-content: center;
   align-items: center;
   border: none;
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
-  color: ${({ theme, $variant, disabled }) => {
-    if (disabled) {
-      return theme.colors.grayScale.gray1;
-    }
-
-    switch ($variant) {
-      case 'primary':
-        return theme.default.colors.base.white;
-      default:
-        return theme.colors.base.white;
-    }
-  }};
-  cursor: ${({ disabled, $skeleton }) => {
-    if (disabled) {
+  cursor: ${({ $disabled, $skeleton, $variant }) => {
+    if ($disabled) {
       return 'not-allowed';
     }
     if ($skeleton) {
       return 'progress';
     }
+    if ($variant === 'help') {
+      return 'help';
+    } 
 
     return 'pointer';
   }};
   gap: 10px;
   ${({
-    theme, disabled, $variant, $skeleton 
+    theme, $disabled, $variant, $skeleton 
   }) => {
     switch ($variant) {
       case 'primary':
+      case 'primary-transparent':
         return css`
-          background: ${disabled || $skeleton ? theme.default.colors.grayScale.gray2 : theme.colors.accent.primary};
+          background: ${$disabled || $skeleton ? theme.default.colors.grayScale.gray2 : theme.colors.accent.primary};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
         `;
       case 'secondary':
@@ -58,6 +50,7 @@ export const ButtonStyled: React.FC<ButtonStyledProps> = styled(motion.button)`
           box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset;
         `;
       case 'text':
+      case 'help':
         return css`
           background: none;
         `;
@@ -66,6 +59,7 @@ export const ButtonStyled: React.FC<ButtonStyledProps> = styled(motion.button)`
   ${({ $variant, $icon, $size }) => {
     switch ($variant) {
       case 'primary':
+      case 'primary-transparent':
       case 'secondary':
         switch ($size) {
           case 'md':
@@ -88,6 +82,7 @@ export const ButtonStyled: React.FC<ButtonStyledProps> = styled(motion.button)`
             `;
         }
       case 'text':
+      case 'help':
         return css`
           padding: 0px;
         `;
@@ -96,6 +91,7 @@ export const ButtonStyled: React.FC<ButtonStyledProps> = styled(motion.button)`
   ${({ $variant, $icon, $corner }) => {
     switch ($variant) {
       case 'primary':
+      case 'primary-transparent':
       case 'secondary':
         if ($icon) {
           switch ($corner) {
@@ -114,28 +110,17 @@ export const ButtonStyled: React.FC<ButtonStyledProps> = styled(motion.button)`
           `;
         }
       case 'text':
+      case 'help':
         return css``;
-    }
-  }}
-  ${({ $size }) => {
-    switch ($size) {
-      case 'md':
-        return css`
-          font-size: 18px;
-        `;
-      default:
-        return css`
-          font-size: 15px;
-        `;
     }
   }}
   ${({ $fullWidth }) => $fullWidth && css`
     width: 100%;
   `}
   ${({
-    theme, $variant, $icon, $iconFill, disabled 
+    theme, $variant, $icon, $iconFill, $disabled 
   }) => {
-    if ($variant !== 'text' || disabled) {
+    if ($variant !== 'text' || $disabled) {
       return css``;
     }
     if ($icon) {
@@ -153,11 +138,57 @@ export const ButtonStyled: React.FC<ButtonStyledProps> = styled(motion.button)`
 
     return css`
       &:hover {
-        color: ${theme.colors.accent.primary};
+        ${ButtonText} {
+          color: ${theme.colors.accent.primary};
+        }
         svg path {
           fill: ${theme.colors.accent.primary} !important;
         }
       }
     `;
+  }}
+  ${({ theme, $variant }) => $variant === 'help' && css`
+    &:hover {
+      svg path {
+        fill: ${theme.colors.base.white} !important;
+      }
+    }
+  `}
+`;
+
+export interface ButtonTextProps {
+  $variant: ButtonVariant;
+  $size: ButtonSize;
+  $disabled: boolean;
+}
+
+export const ButtonText = styled.span<ButtonTextProps>`
+  display: inline-flex;
+  width: auto;
+  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
+  color: ${({ theme, $variant, $disabled }) => {
+    if ($disabled) {
+      return theme.colors.grayScale.gray1;
+    }
+
+    switch ($variant) {
+      case 'primary':
+      case 'primary-transparent':
+        return theme.default.colors.base.white;
+      default:
+        return theme.colors.base.white;
+    }
+  }};
+  ${({ $size }) => {
+    switch ($size) {
+      case 'md':
+        return css`
+          font-size: 18px;
+        `;
+      default:
+        return css`
+          font-size: 15px;
+        `;
+    }
   }}
 `;

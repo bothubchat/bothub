@@ -72,6 +72,8 @@
     "@typescript-eslint/no-use-before-define": "off",
     "react/jsx-no-useless-fragment": "off",
     "react/destructuring-assignment": "off",
-    "no-restricted-syntax": "off"
+    "no-restricted-syntax": "off",
+    "no-nested-ternary": "off",
+    "global-require": "off"
   }
 }

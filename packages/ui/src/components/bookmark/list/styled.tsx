@@ -1,11 +1,18 @@
 import { css, styled } from 'styled-components';
 import { Button } from '@/ui/components/button';
-import { Plus2Icon } from '@/ui/icons';
+import { Plus2Icon } from '@/ui/icons/plus-2';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 
 export const BookmarksStyled = styled.div`
   display: flex;
+`;
+
+export const BookmarksContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
   ${adaptive({
     variant: 'dashboard',
     merge: true,
@@ -22,13 +29,6 @@ export const BookmarksStyled = styled.div`
       padding-bottom: 5px;
     `
   })}
-`;
-
-export const BookmarksContent = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  width: 100%;
 `;
 
 export const BookmarkList = styled.div`

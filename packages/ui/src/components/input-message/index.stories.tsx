@@ -15,7 +15,7 @@ export const Disabled: InputMessageStory = {
 };
 
 export default {
-  title: 'UI Components/Message/Input',
+  title: 'Components/Message/Input',
   component: InputMessage,
   decorators: [StoryDecorator()],
   args: {

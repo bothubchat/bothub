@@ -1,209 +1,234 @@
 import React, {
-  useState, useCallback, useRef, useEffect 
+  useState, useCallback, useEffect, useRef 
 } from 'react';
-import CE from 'react-contenteditable';
 import {
   InputMessageContent, 
+  InputMessageFile, 
+  InputMessageFiles, 
+  InputMessageMain, 
   InputMessageSendButton,
   InputMessageStyled, 
-  InputMessageContentEditable
+  InputMessageTextArea,
+  InputMessageUploadFile,
+  InputMessageUploadFileButton,
+  InputMessageUploadFileInput
 } from './styled';
-import { ButtonRef } from '@/ui/components/button';
-import { interopDefaultCJSImport } from '@/ui/utils';
+import { ChipImage } from '@/ui/components/chip';
+import { IInputMessageFile } from './types';
 
-const ContentEditable = interopDefaultCJSImport<typeof CE>(CE);
+export type InputMessageChangeEventHandler = (message: string) => unknown;
 
-export interface InputMessageProps {
+export type InputMessageFilesChangeEventHandler = (files: IInputMessageFile[]) => unknown;
+
+export type InputMessageSendEventHandler = (message: string, files: IInputMessageFile[]) => unknown;
+
+export interface InputMessageProps extends Omit<React.ComponentProps<'textarea'>, 'value' | 'onChange'> {
   className?: string;
   placeholder?: string;
   message?: string;
-  disabled?: boolean;
-  tabIndex?: number;
+  files?: IInputMessageFile[];
+  hideUploadFile?: boolean;
+  uploadFileLimit?: number;
+  uploadFileDisabled?: boolean;
   sendDisabled?: boolean;
-  onChange?: (message: string) => unknown;
-  onSend?: (messageText: string) => unknown;
+  textAreaDisabled?: boolean;
+  onChange?: InputMessageChangeEventHandler;
+  onFilesChange?: InputMessageFilesChangeEventHandler;
+  onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
+  onSend?: InputMessageSendEventHandler;
 }
 
 export const InputMessage: React.FC<InputMessageProps> = ({
-  className, 
-  placeholder, 
-  message: 
-  initialMessage, 
-  disabled = false, 
-  tabIndex = 0, 
-  sendDisabled = false, 
-  onChange, 
-  onSend
+  className, placeholder, message: initialMessage, files: initialFiles,
+  disabled = false, sendDisabled = false, textAreaDisabled = false, 
+  uploadFileLimit = 5, hideUploadFile = false, uploadFileDisabled = false,
+  onChange, onFilesChange, onTextAreaChange, onSend, onFocus, onBlur,
+  ...props
 }) => {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   const [message, setMessage] = typeof initialMessage === 'string' ? [initialMessage, onChange] : useState('');
+  const [files, setFiles] = typeof initialFiles === 'string' ? [initialFiles, onFilesChange] : useState<IInputMessageFile[]>([]);
   const [isFocus, setIsFocus] = useState(false);
-  const elementRef = useRef<HTMLDivElement>(null);
-  const contentEditableRef = useRef<HTMLElement | null>(null);
-  const sendButtonRef = useRef<ButtonRef>(null);
-  const isPlaceholderMode = message === '' && !isFocus;
+ 
+  const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>((event) => {
+    setIsFocus(true);
+    onFocus?.(event);
+  }, [onFocus]);
 
-  const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    if (!disabled
-      && !(event.target instanceof HTMLButtonElement)
-      && !(event.target instanceof SVGElement)
-      && !(event.target instanceof SVGPathElement)
-    ) {
-      const contentEditableEl: HTMLElement | null = contentEditableRef.current;
+  const handleBlur = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>((event) => {
+    setIsFocus(false);
+    onBlur?.(event);
+  }, [onBlur]);
 
-      if (contentEditableEl !== null) {
-        contentEditableEl.focus();
+  const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>((event) => {
+    setMessage?.(event.target.value);
+    onTextAreaChange?.(event);
+  }, [setMessage, onTextAreaChange]);
+
+  const handleUploadFileChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
+    async (event) => {
+      if (!setFiles || !event.target.files) {
+        return;
       }
-    }
-  }, [disabled]);
 
-  const handleChange = useCallback((
-    event: React.FormEvent<HTMLDivElement> | React.FocusEvent<HTMLDivElement>
-  ) => {
-    if (!isFocus) {
-      return;
-    }
+      const nativeFiles: File[] = [...event.target.files];
+      const previewsUrls: string[] = await Promise.all(
+        nativeFiles.map((nativeFile) => (
+          new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
 
-    const message: string = event.currentTarget.innerHTML;
+            reader.addEventListener('load', () => {
+              const previewUrl: string | null = reader.result?.toString() ?? null;
 
-    setMessage?.(message);
-  }, [setMessage, isFocus]);
+              if (previewUrl === null) {
+                return reject(new Error('result not found'));
+              }
 
-  const handleSend = useCallback(() => {
-    if (sendDisabled) {
-      return;
-    }
+              resolve(previewUrl);
+            });
+            reader.readAsDataURL(nativeFile);
+          })
+        ))
+      );
+      const newFiles: IInputMessageFile[] = nativeFiles.map((nativeFile, index) => ({
+        name: nativeFile.name,
+        previewUrl: previewsUrls[index],
+        native: nativeFile
+      }));
 
-    const contentEditableEl: HTMLElement | null = contentEditableRef.current;
-    
-    if (contentEditableEl === null) {
-      return;
-    }
+      const fileMap = new Map([
+        ...files,
+        ...newFiles
+      ].map((file) => [file.name, file]));
 
-    const messageText: string = contentEditableEl.innerText.trim();
-    onSend?.(messageText);
+      setFiles([...fileMap.values()].slice(0, uploadFileLimit));
+    }, 
+    [files, setFiles, uploadFileLimit]
+  );
+
+  const handleDeleteFile = useCallback((file: IInputMessageFile) => {
+    setFiles?.(
+      files.filter(({ name }) => name !== file.name)
+    );
+  }, [setFiles, files]);
+
+  const handleSend = useCallback<React.MouseEventHandler<HTMLButtonElement>>((event) => {
+    event.stopPropagation();
+
+    onSend?.(message, files);
     setMessage?.('');
-  }, [sendDisabled]);
+    setFiles?.([]);
+  }, [message, files, onSend, setMessage, setFiles]);
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     event.stopPropagation();
 
-    const contentEditableEl: HTMLElement | null = contentEditableRef.current;
-    if (contentEditableEl === null) {
-      return;
-    }
-    contentEditableEl.focus();
-    
     if (isFocus && event.key === 'Enter') {
       if (event.shiftKey) {
-        if (contentEditableEl.innerText.trim() === '') {
+        if (message.trim() === '') {
           event.preventDefault();
         }
       } else {
         event.preventDefault();
-        handleSend();
+
+        onSend?.(message, files);
+        setMessage?.('');
+        setFiles?.([]);
       }
     }
-  }, [isFocus, handleSend]);
+  }, [isFocus, message, files, onSend, setMessage, setFiles]);
+
+  const handleClick = useCallback(() => {
+    textareaRef.current?.focus();
+  }, []);
+
+  const handleUploadFileClick = useCallback<React.MouseEventHandler<HTMLLabelElement>>((event) => {
+    event.stopPropagation();
+  }, []);
 
   useEffect(() => {
-    const contentEditableEl: HTMLElement | null = contentEditableRef.current;
-    if (contentEditableEl === null) {
+    const textareaEl: HTMLElement | null = textareaRef.current;
+
+    if (textareaEl === null) {
       return;
     }
 
-    contentEditableEl.addEventListener('keydown', handleKeyDown);
+    textareaEl.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      contentEditableEl.removeEventListener('keydown', handleKeyDown);
+      textareaEl.removeEventListener('keydown', handleKeyDown);
     };
   }, [handleKeyDown]);
-
-  const handleFocus = useCallback((event: React.FocusEvent<HTMLDivElement>) => {
-    const sendButton: ButtonRef | null = sendButtonRef.current;
-
-    if (
-      sendButton !== null 
-      && sendButton.element !== null 
-      && sendButton.element.contains(event.target)
-    ) {
-      return;
-    }
-    if (disabled) {
-      return;
-    }
-
-    setIsFocus(true);
-  }, [disabled, sendButtonRef]);
-
-  const handlePaste = useCallback<React.ClipboardEventHandler>((event) => {
-    event.preventDefault();
-
-    const text = event.clipboardData.getData('text');
-    let selection: Selection | null = document.getSelection();
-    if (selection === null) {
-      return;
-    }
-
-    const range: Range = selection.getRangeAt(0);
-    
-    range.deleteContents();
-
-    const textNode = document.createTextNode(text);
-    range.insertNode(textNode);
-    range.selectNodeContents(textNode);
-    range.collapse(false);
-
-    selection = window.getSelection();
-    if (selection === null) {
-      return;
-    }
-
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }, []);
-
-  const handleBlur = useCallback(() => {
-    setIsFocus(false);
-  }, []);
-
-  const [isInited, setIsInited] = useState(false);
-
-  useEffect(() => {
-    setIsInited(true);
-  }, []);
 
   return (
     <InputMessageStyled
       $active={isFocus}
       $disabled={disabled}
-      ref={elementRef}
+      $textAreaDisabled={textAreaDisabled}
       className={className}
-      tabIndex={tabIndex}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
       onClick={handleClick}
-      onPaste={handlePaste}
     >
       <InputMessageContent>
-        {isInited && (
-          <InputMessageContentEditable
-            $placeholder={isPlaceholderMode}
-            as={ContentEditable}
-            innerRef={contentEditableRef}
-            html={(isPlaceholderMode ? placeholder : message) ?? ''}
-            disabled={disabled}
-            onChange={handleChange}
-          />
-        )}
-        {!isInited && (
-          <InputMessageContentEditable
-            $placeholder={isPlaceholderMode}
+        {!hideUploadFile && (
+          <InputMessageUploadFile
+            onClick={handleUploadFileClick}
           >
-            {(isPlaceholderMode ? placeholder : message) ?? ''}
-          </InputMessageContentEditable>
+            <InputMessageUploadFileInput
+              key={files.length}
+              type="file"
+              accept="image/png, image/jpeg"
+              multiple
+              disabled={files.length >= uploadFileLimit || disabled || uploadFileDisabled}
+              onChange={handleUploadFileChange}
+            />
+            <InputMessageUploadFileButton 
+              disabled={files.length >= uploadFileLimit || disabled || uploadFileDisabled}
+            />
+          </InputMessageUploadFile>
         )}
+        <InputMessageMain>
+          {files.length > 0 && (
+            <InputMessageFiles>
+              {files.map((file) => (
+                <InputMessageFile
+                  key={file.name}
+                  image={(
+                    <ChipImage
+                      src={file.previewUrl}
+                    />
+                  )}
+                  onDelete={handleDeleteFile.bind(null, file)}
+                >
+                  {file.name.length > 20 ? `...${file.name.slice(-20)}` : file.name}
+                </InputMessageFile>
+              ))}
+            </InputMessageFiles>
+          )}
+          {(
+            !textAreaDisabled 
+            || (textAreaDisabled && placeholder && files.length !== uploadFileLimit)
+            || (textAreaDisabled && message)
+          ) && (
+            <InputMessageTextArea
+              $disabled={disabled}
+              {...props}
+              ref={textareaRef}
+              value={message}
+              placeholder={placeholder}
+              disabled={disabled || textAreaDisabled}
+              style={{
+                ...props.style,
+                height: `calc(var(--bothub-scale, 1) * ${message.split('\n').length * 18}px)`
+              }}
+              autoFocus
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            />
+          )}
+        </InputMessageMain>
         <InputMessageSendButton
-          ref={sendButtonRef} 
           disabled={disabled || sendDisabled}
           onClick={handleSend} 
         />
@@ -211,3 +236,5 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     </InputMessageStyled>
   );
 };
+
+export * from './types';

@@ -8,7 +8,8 @@ import {
   HeaderThemeSwitcherStyled 
 } from './styled';
 import { HeaderThemeSwitcherMode, IHeaderThemeSwitcherItem } from './types';
-import { DarkIcon, LightIcon } from '@/ui/icons';
+import { DarkIcon } from '@/ui/icons/dark';
+import { LightIcon } from '@/ui/icons/light';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { useHeaderMenu } from '../menu';

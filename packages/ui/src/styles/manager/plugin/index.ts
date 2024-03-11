@@ -11,12 +11,6 @@ export const BothubStyleSheetPlugin: Middleware = (element) => {
       if (Math.abs(pxValue) <= 1) {
         return `${pxValue}px`;
       } 
-      if (element.props === 'font-size') {
-        return `max(calc(var(--bothub-scale, 1) * ${pxValue}px), 12px)`;
-      }
-      if (element.props === 'line-height') {
-        return `max(calc(var(--bothub-scale, 1) * ${pxValue}px), 16px)`;
-      }
       return `calc(var(--bothub-scale, 1) * ${pxValue}px)`;
     });
 

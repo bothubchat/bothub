@@ -1,9 +1,10 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
-import {
-  CloseIcon, EditIcon, Plus2Icon, StarIcon 
-} from '@/ui/icons';
+import { CloseIcon } from '@/ui/icons/close';
+import { EditIcon } from '@/ui/icons/edit';
+import { Plus2Icon } from '@/ui/icons/plus-2';
+import { StarIcon } from '@/ui/icons/star';
 
 export const PresetCardStyled = styled.div`
   display: flex;

@@ -1,6 +1,6 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { CopyIcon } from '@/ui/icons';
+import { CopyIcon } from '@/ui/icons/copy';
 
 export interface DeveloperKeyStyledProps {
   $skeleton: boolean;

@@ -11,7 +11,7 @@ import { Skeleton } from '@/ui/components/skeleton';
 
 export interface TextAreaFieldProps extends React.ComponentProps<'textarea'> {
   className?: string;
-  label?: string | boolean;
+  label?: string | boolean | React.ReactNode;
   fullWidth?: boolean;
   error?: string | boolean;
   disabled?: boolean;
@@ -39,14 +39,17 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
       $disabled={disabled}
       className={className}
     >
-      {label && (
+      {(label && skeleton) && (
         <TextAreaFieldLabel>
-          {!skeleton && label}
-          {skeleton && (
-            <Skeleton width={100} />
-          )}
+          <Skeleton width={100} />
         </TextAreaFieldLabel>
       )}
+      {(typeof label === 'string' && !skeleton) && (
+        <TextAreaFieldLabel>
+          {label}
+        </TextAreaFieldLabel>
+      )}
+      {(typeof label !== 'string' && !skeleton) && label}
       {!skeleton && (
         <TextAreaFieldBlock 
           $focus={isFocus}
@@ -78,3 +81,5 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
     </TextAreaFieldStyled>
   );
 };
+
+export * from './styled';

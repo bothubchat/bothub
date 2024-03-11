@@ -11,9 +11,10 @@ import {
   NotificationText, 
   NotificationTitle 
 } from './styled';
-import {
-  ErrorBigIcon, InfoBigIcon, SuccessBigIcon, WarningBigIcon 
-} from '@/ui/icons';
+import { ErrorBigIcon } from '@/ui/icons/error-big';
+import { InfoBigIcon } from '@/ui/icons/info-big';
+import { SuccessBigIcon } from '@/ui/icons/success-big';
+import { WarningBigIcon } from '@/ui/icons/warning-big';
 import { Loader } from '@/ui/components/loader';
 import { NotificationVariant } from './types';
 import { useNotifications } from './list';

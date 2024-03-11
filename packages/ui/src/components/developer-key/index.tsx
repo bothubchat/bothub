@@ -2,7 +2,8 @@ import React, { useCallback, useState } from 'react';
 import { DeveloperKeyCopyIcon, DeveloperKeyStyled, DeveloperKeyValue } from './styled';
 import { useTheme } from '@/ui/theme';
 import { IconProvider } from '@/ui/components/icon';
-import { CheckSmallIcon, CopyIcon } from '@/ui/icons';
+import { CheckSmallIcon } from '@/ui/icons/check-small';
+import { CopyIcon } from '@/ui/icons/copy';
 import { Skeleton } from '@/ui/components/skeleton';
 
 export type DeveloperKeyCopyEventHandler = (key: string) => unknown;

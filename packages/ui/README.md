@@ -15,7 +15,7 @@
     <li><a href="https://yarnpkg.com/">yarn</a> >= <code>1.22.19</code></li>
 </ul>
 <p>Installing peer dependencies:</p>
-<pre>yarn add framer-motion@10.16.3 react@18.2.0 react-dom@18.2.0 styled-components@6.0.7 react-helmet@6.1.0 swiper@10.2.0 normalize.css@8.0.1 react-slider@2.0.6 react-markdown@8.0.5 highlight.js@11.9.0 react-highlight@0.15.0 react-contenteditable@3.3.7</pre>
+<pre>yarn add framer-motion@10.16.3 react@18.2.0 react-dom@18.2.0 styled-components@6.0.7 react-helmet@6.1.0 swiper@10.2.0 normalize.css@8.0.1 react-slider@2.0.6 react-markdown@8.0.5 highlight.js@11.9.0 react-highlight@0.15.0</pre>
 <p>Installing package:</p>
 <pre>yarn add @bothub-chat/ui</pre>
 

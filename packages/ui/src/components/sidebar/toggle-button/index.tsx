@@ -3,7 +3,8 @@ import { SidebarToggleButtonStyled } from './styled';
 import { useSidebar } from '../context';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
-import { MinimizeIcon, UnminimizeIcon } from '@/ui/icons';
+import { MinimizeIcon } from '@/ui/icons/minimize';
+import { UnminimizeIcon } from '@/ui/icons/unminimize';
 import { ButtonProps } from '@/ui/components/button';
 
 export type SidebarToggleButtonProps = ButtonProps;

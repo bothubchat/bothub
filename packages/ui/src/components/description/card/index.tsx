@@ -12,7 +12,7 @@ import {
   DescriptionCardTertiaryText
 } from './styled';
 import { DescriptionCardVariant } from './types';
-import { LinksIcon } from '@/ui/icons';
+import { LinksIcon } from '@/ui/icons/links';
 import { useTheme } from '@/ui/theme';
 
 export interface DescriptionCardProps extends Omit<React.ComponentProps<typeof DescriptionCardStyled>, 'title' | '$variant'> {

@@ -2,7 +2,7 @@ import { AnimationProps, HoverHandlers, motion } from 'framer-motion';
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
-import { CloseIcon } from '@/ui/icons';
+import { CloseIcon } from '@/ui/icons/close';
 
 export const BookmarkName = styled(Typography).attrs({ variant: 'body-m-semibold', component: 'span' })`
   max-width: 260px;

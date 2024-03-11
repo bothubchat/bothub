@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import { AnimationProps, HoverHandlers, motion } from 'framer-motion';
 import React from 'react';
 import { Typography } from '../typography';
-import { Arrow2DownIcon } from '@/ui/icons';
+import { Arrow2DownIcon } from '@/ui/icons/arrow-2-down';
 
 export const AccordionStyled: React.FC<React.ComponentProps<'div'> & AnimationProps & HoverHandlers> = styled(motion.div)`
   display: flex;

@@ -17,12 +17,12 @@ export interface ImageSrc {
 }
 
 export interface ImageProps extends Omit<React.ComponentProps<'img'>, 'src' | 'alt' | 'width' | 'height'> {
-  src: string | ImageSrc;
+  src?: string | ImageSrc;
   width?: string | number;
   height?: string | number;
-  alt: string;
-  preload?: boolean
-  fetchPriority?: LinkHTMLAttributes<HTMLLinkElement>['fetchPriority']
+  alt?: string;
+  preload?: boolean;
+  fetchPriority?: LinkHTMLAttributes<HTMLLinkElement>['fetchPriority'];
 }
 
 export const Image: React.FC<ImageProps> = ({
@@ -35,7 +35,7 @@ export const Image: React.FC<ImageProps> = ({
       {typeof src === 'string' && (
         <ImageImg {...props} src={src} width={width} height={height} alt={alt} />
       )}
-      {typeof src !== 'string' && (
+      {typeof src === 'object' && (
         <ImagePicture {...props}>
           {src.mobile && (
             <ImageSource 
@@ -69,7 +69,7 @@ export const Image: React.FC<ImageProps> = ({
           {typeof src === 'string' && (
             <link rel="preload" href={src} as="image" fetchPriority={fetchPriority} />
           )}
-          {(typeof src !== 'string' && src.mobile) && (
+          {(typeof src === 'object' && src.mobile) && (
             <link 
               rel="preload" 
               href={typeof src.mobile === 'string' ? src.mobile : src.mobile.src}
@@ -78,7 +78,7 @@ export const Image: React.FC<ImageProps> = ({
               fetchPriority={fetchPriority}
             />
           )}
-          {(typeof src !== 'string' && src.tablet) && (
+          {(typeof src === 'object' && src.tablet) && (
             <link 
               rel="preload" 
               fetchPriority={fetchPriority}
@@ -87,7 +87,7 @@ export const Image: React.FC<ImageProps> = ({
               media={`(min-width: ${parseInt(theme.mobile.maxWidth) + 0.1}px) and (max-width: ${theme.tablet.maxWidth})`}
             />
           )}
-          {(typeof src !== 'string' && src.desktop) && (
+          {(typeof src === 'object' && src.desktop) && (
             <link 
               rel="preload"
               fetchPriority={fetchPriority}
