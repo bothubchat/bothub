@@ -52,6 +52,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
           bold: '"IBMPlexSans Bold"',
           semiBold: '"IBMPlexSans SemiBold"',
           medium: '"IBMPlexSans Medium"',
+          mediumItalic: '"IBMPlexSans Medium Italic"',
           regular: '"IBMPlexSans Regular"'
         }
       },

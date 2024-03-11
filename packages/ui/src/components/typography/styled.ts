@@ -183,6 +183,30 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
             --skeleton-height: 22px;
           }
         `;
+      case 'body-l-medium':
+        return css`
+          font-family: ${theme.fonts.ibmPlexSans.medium};
+          font-size: 18px;
+          line-height: 24px;
+          --skeleton-height: 24px;
+          @media (max-width: ${theme.mobile.maxWidth}) {
+              font-size: 16px;
+              line-height: 22px;
+              --skeleton-height: 22px;
+          }
+        `;
+      case 'body-l-medium-italic':
+        return css`
+                font-family: ${theme.fonts.ibmPlexSans.mediumItalic};
+                font-size: 18px;
+                line-height: 24px;
+                --skeleton-height: 24px;
+                @media (max-width: ${theme.mobile.maxWidth}) {
+                    font-size: 16px;
+                    line-height: 22px;
+                    --skeleton-height: 22px;
+                }
+            `;
       case 'button-sm':
         return css`
           font-family: ${theme.fonts.ibmPlexSans.medium};

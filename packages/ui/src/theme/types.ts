@@ -60,6 +60,7 @@ export interface ThemeIbmPlexSansFonts {
   bold: string;
   semiBold: string;
   medium: string;
+  mediumItalic: string;
   regular: string;
 }
 

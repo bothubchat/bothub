@@ -14,6 +14,11 @@
 }
 
 @font-face {
+  font-family: "IBMPlexSans Medium Italic";
+  src: url("../../../fonts/IBMPlexSans-MediumItalic.ttf");
+}
+
+@font-face {
   font-family: "IBMPlexSans Regular";
   src: url("../../../fonts/IBMPlexSans-Regular.ttf");
 }
