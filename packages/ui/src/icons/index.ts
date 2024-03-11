@@ -69,3 +69,5 @@ export * from './save';
 export * from './light';
 export * from './dark';
 export * from './email-colored';
+export * from './calendar';
+export * from './eye';
