@@ -54,3 +54,4 @@ export * from './prompt-card';
 export * from './prompts';
 export * from './tab';
 export * from './tabs';
+export * from './pagination';
