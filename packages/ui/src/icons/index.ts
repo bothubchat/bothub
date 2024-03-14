@@ -71,3 +71,4 @@ export * from './dark';
 export * from './email-colored';
 export * from './calendar';
 export * from './eye';
+export * from './blog-circle';
