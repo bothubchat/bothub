@@ -139,7 +139,18 @@ export const MessageBlock = styled.div<MessageBlockProps>`
   overflow: hidden;
   width: 100%;
   overflow: auto;
-  border-bottom-left-radius: 0px;
+  ${({ $variant }) => {
+    switch ($variant) {
+      case 'user':
+        return css`
+          border-bottom-right-radius: 0px;
+        `;
+      case 'assistant':
+        return css`
+          border-bottom-left-radius: 0px;
+        `;
+    }
+  }}
   background: ${({ $hexColor }) => $hexColor};
   ${adaptive({
     variant: 'dashboard',

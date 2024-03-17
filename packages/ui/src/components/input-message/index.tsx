@@ -32,6 +32,7 @@ export interface InputMessageProps extends Omit<React.ComponentProps<'textarea'>
   uploadFileDisabled?: boolean;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
+  autoFocus?: boolean;
   onChange?: InputMessageChangeEventHandler;
   onFilesChange?: InputMessageFilesChangeEventHandler;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
@@ -42,6 +43,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   className, placeholder, message: initialMessage, files: initialFiles,
   disabled = false, sendDisabled = false, textAreaDisabled = false, 
   uploadFileLimit = 5, hideUploadFile = false, uploadFileDisabled = false,
+  autoFocus = true,
   onChange, onFilesChange, onTextAreaChange, onSend, onFocus, onBlur,
   ...props
 }) => {
@@ -49,7 +51,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
   const [message, setMessage] = typeof initialMessage === 'string' ? [initialMessage, onChange] : useState('');
   const [files, setFiles] = typeof initialFiles === 'string' ? [initialFiles, onFilesChange] : useState<IInputMessageFile[]>([]);
-  const [isFocus, setIsFocus] = useState(false);
+  const [isFocus, setIsFocus] = useState(!disabled && autoFocus);
  
   const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>((event) => {
     setIsFocus(true);
@@ -221,7 +223,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                 ...props.style,
                 height: `calc(var(--bothub-scale, 1) * ${message.split('\n').length * 18}px)`
               }}
-              autoFocus
+              autoFocus={!disabled && autoFocus}
               onFocus={handleFocus}
               onBlur={handleBlur}
               onChange={handleChange}

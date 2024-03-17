@@ -106,7 +106,7 @@ export const BlockBody = styled.div<BlockBodyProps>`
 export const BlockBodyScrollbarWrapper = styled(Scrollbar).attrs({
   variant: 'secondary',
   scrollShadows: {
-    size: 140,
+    size: 90,
     top: <ScrollbarShadow side="top" />,
     bottom: <ScrollbarShadow side="bottom" />
   }

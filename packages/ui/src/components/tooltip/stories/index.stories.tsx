@@ -84,8 +84,15 @@ export const Markdown: TooltipStory = {
   }
 };
 
+export const Code: TooltipStory = {
+  args: {
+    ...Markdown.args,
+    label: 'Параметр настроек \'Стиль\' со значением \'raw\' использует альтернативную модель, которая может подойти опытным пользователям, желающим получить больший контроль над своими изображениями. Изображения, созданные с параметром \'Стиль raw\', имеют меньше автоматического улучшения, что может обеспечить более точное соответствие при запросе с определенным стилем.  Соответствует текстовому параметру ``--style`` в промпте к Midjourney'
+  }
+};
+
 export default {
   title: 'UI Components/Tooltip',
   component: Tooltip,
-  decorators: [StoryDecorator({ margin: '100px 100px' })]
+  decorators: [StoryDecorator({ margin: '340px 100px' })]
 } as TooltipMeta;

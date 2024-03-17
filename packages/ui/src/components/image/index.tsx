@@ -1,8 +1,11 @@
 /* eslint-disable react/no-unknown-property */
-import React, { LinkHTMLAttributes } from 'react';
+import React, { LinkHTMLAttributes, useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTheme } from '../../theme';
-import { ImageImg, ImagePicture, ImageSource } from './styled';
+import {
+  ImageImg, ImagePicture, ImageSkeleton, ImageSource 
+} from './styled';
+import { ImageLoadingVariant } from './types';
 
 export interface ImageAdaptive {
   src: string;
@@ -16,33 +19,63 @@ export interface ImageSrc {
   desktop?: string | ImageAdaptive;
 }
 
-export interface ImageProps extends Omit<React.ComponentProps<'img'>, 'src' | 'alt' | 'width' | 'height'> {
+export interface ImageProps extends Omit<React.ComponentProps<'img'>, 'src' | 'alt' | 'width' | 'height' | 'loading'> {
   src?: string | ImageSrc;
   width?: string | number;
   height?: string | number;
   alt?: string;
   preload?: boolean;
+  loading?: ImageLoadingVariant;
   fetchPriority?: LinkHTMLAttributes<HTMLLinkElement>['fetchPriority'];
 }
 
 export const Image: React.FC<ImageProps> = ({
-  src, alt, width, height, preload = false, fetchPriority, ...props 
+  src, alt, width, height, preload = false, loading = 'default', fetchPriority, ...props 
 }) => {
   const theme = useTheme();
 
+  const [isLoading, setIsLoading] = useState(true);
+  const isHidden = loading === 'skeleton' && isLoading;
+
+  const handleLoad = useCallback<React.ReactEventHandler<HTMLImageElement>>((event) => {
+    setIsLoading(false);
+    props.onLoad?.(event);
+  }, [props.onLoad]);
+
   return (
     <>
+      {isHidden && (
+        <ImageSkeleton
+          $width={width}
+          $height={height}
+          className={props.className}
+          width={width}
+          height={height}
+        />
+      )}
       {typeof src === 'string' && (
-        <ImageImg {...props} src={src} width={width} height={height} alt={alt} />
+        <ImageImg 
+          $hidden={isHidden}
+          {...props}
+          src={src} 
+          width={width} 
+          height={height}
+          alt={alt} 
+          onLoad={handleLoad}  
+        />
       )}
       {typeof src === 'object' && (
-        <ImagePicture {...props}>
+        <ImagePicture 
+          $hidden={isHidden}
+          {...props}
+        >
           {src.mobile && (
             <ImageSource 
               srcSet={typeof src.mobile === 'string' ? src.mobile : src.mobile.src}
               width={typeof src.mobile === 'object' ? src.mobile.width : undefined}
               height={typeof src.mobile === 'object' ? src.mobile.height : undefined}
-              media={`(max-width: ${theme.mobile.maxWidth})`} 
+              media={`(max-width: ${theme.mobile.maxWidth})`}
+              onLoad={handleLoad as unknown as React.ReactEventHandler<HTMLSourceElement>}  
             />
           )}
           {src.tablet && (
@@ -50,15 +83,18 @@ export const Image: React.FC<ImageProps> = ({
               srcSet={typeof src.tablet === 'string' ? src.tablet : src.tablet.src}
               width={typeof src.tablet === 'object' ? src.tablet.width : undefined}
               height={typeof src.tablet === 'object' ? src.tablet.height : undefined}
-              media={`(max-width: ${theme.tablet.maxWidth})`} 
+              media={`(max-width: ${theme.tablet.maxWidth})`}
+              onLoad={handleLoad as unknown as React.ReactEventHandler<HTMLSourceElement>}  
             />
           )}
           {src.desktop && (
-            <ImageImg 
+            <ImageImg
+              $hidden={isHidden}
               src={typeof src.desktop === 'string' ? src.desktop : src.desktop.src}
               width={typeof src.desktop === 'object' ? src.desktop.width : undefined}
               height={typeof src.desktop === 'object' ? src.desktop.height : undefined}
-              alt={alt}  
+              alt={alt} 
+              onLoad={handleLoad}
             />
           )}
         </ImagePicture>
@@ -102,4 +138,5 @@ export const Image: React.FC<ImageProps> = ({
   );
 };
 
+export * from './types';
 export * from './styled';

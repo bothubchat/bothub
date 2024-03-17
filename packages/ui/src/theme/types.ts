@@ -70,6 +70,7 @@ export interface ThemeFonts {
 }
 
 export interface ThemeZIndex {
+  scrollbarShadow: number;
   header: number;
   backdrop: number;
   modal: number;

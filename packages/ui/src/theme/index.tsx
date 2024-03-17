@@ -64,14 +64,15 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         minWidth: '400px'
       },
       zIndex: {
-        headerMenu: 2,
-        header: 3,
-        backdrop: 4,
-        menu: 5,
-        modal: 6,
-        select: 7,
-        notifications: 8,
-        tooltip: 9
+        scrollbarShadow: 2,
+        headerMenu: 3,
+        header: 4,
+        backdrop: 5,
+        menu: 6,
+        modal: 7,
+        select: 8,
+        notifications: 9,
+        tooltip: 10
       },
       header: {
         height: '89px',
