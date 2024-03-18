@@ -108,7 +108,7 @@ export const TextFieldInput = styled.input`
   padding: 14px 0px;
   color: ${({ theme }) => theme.colors.base.white};
   font-size: 14px;
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
+  font-weight: 400;
   line-height: 18px;
   cursor: inherit;
   &:hover ~ ${TextFieldBlock} {

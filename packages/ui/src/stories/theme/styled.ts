@@ -12,7 +12,7 @@ export const ThemeGroup = styled.div``;
 
 export const ThemeTitle = styled(Typography)`
   font-size: 22px;
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.semiBold};
+  font-weight: 600;
 `;
 
 export const ThemeList = styled.div`
@@ -47,7 +47,7 @@ export const ThemeItemPreview = styled.span`
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray6};
   color: ${({ theme }) => theme.colors.base.white};
   border-radius: 8px;
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
+  font-weight: 500;
   font-size: 14px;
 `;
 
@@ -67,7 +67,7 @@ export const ThemeItemText = styled.span`
 `;
 
 export const ThemeItemName = styled(Typography)`
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.semiBold};
+  font-weight: 600;
   font-size: 14px;
   line-height: 1;
 `;
@@ -75,7 +75,7 @@ export const ThemeItemName = styled(Typography)`
 export const ThemeItemValue = styled(Typography)`
   display: inline-flex;
   flex-basis: auto;
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
+  font-weight: 500;
   font-size: 14px;
   color: #bec2be;
   line-height: 1;

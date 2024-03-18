@@ -1,7 +1,6 @@
 export interface Theme {
   mode: ThemeMode;
   colors: ThemeColors;
-  fonts: ThemeFonts;
   tablet: ThemeTablet;
   mobile: ThemeMobile;
   zIndex: ThemeZIndex;
@@ -56,17 +55,6 @@ export interface ThemeColors {
   green: string;
   gpt3: string;
   gpt4: string;
-}
-
-export interface ThemeIbmPlexSansFonts {
-  bold: string;
-  semiBold: string;
-  medium: string;
-  regular: string;
-}
-
-export interface ThemeFonts {
-  ibmPlexSans: ThemeIbmPlexSansFonts;
 }
 
 export interface ThemeZIndex {

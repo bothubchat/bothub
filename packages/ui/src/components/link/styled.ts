@@ -7,7 +7,7 @@ export interface LinkStyledProps {
 }
 
 export const LinkStyled = styled.a<LinkStyledProps>`
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
+  font-weight: 500;
   font-size: 16px;
   line-height: 22px;
   text-decoration: none;

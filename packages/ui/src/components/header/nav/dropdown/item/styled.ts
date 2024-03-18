@@ -27,13 +27,13 @@ export const HeaderNavDropdownInfo = styled.div`
 `;
 
 export const HeaderNavDropdownTitle = styled(Typography)`
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.bold};
+  font-weight: 700;
   font-size: 16px;
   line-height: 22px; 
 `;
 
 export const HeaderNavDropdownText = styled(Typography)`
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
+  font-weight: 400;
   font-size: 12px;
   line-height: 16px;
   margin-top: 4px;

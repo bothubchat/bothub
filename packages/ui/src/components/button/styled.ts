@@ -165,7 +165,7 @@ export interface ButtonTextProps {
 export const ButtonText = styled.span<ButtonTextProps>`
   display: inline-flex;
   width: auto;
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
+  font-weight: 500;
   color: ${({ theme, $variant, $disabled }) => {
     if ($disabled) {
       return theme.colors.grayScale.gray1;

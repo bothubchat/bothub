@@ -6,7 +6,7 @@ export const IconsStyled = styled.div`
 `;
 
 export const IconsTitle = styled(Typography)`
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.semiBold};
+  font-weight: 600;
   font-size: 22px;
 `;
 

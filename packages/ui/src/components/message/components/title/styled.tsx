@@ -23,7 +23,7 @@ export const MessageTitleStyled = styled.span<MessageTitleStyledProps>`
     switch ($variant) {
       case 'h1':
         return css`
-          font-family: ${({ theme }) => theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-style: normal;
           font-size: 32px;
           line-height: 42px;
@@ -31,7 +31,7 @@ export const MessageTitleStyled = styled.span<MessageTitleStyledProps>`
         `;
       case 'h2':
         return css`
-          font-family: ${({ theme }) => theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-style: normal;
           font-size: 28px;
           line-height: 36px;
@@ -39,7 +39,7 @@ export const MessageTitleStyled = styled.span<MessageTitleStyledProps>`
         `;
       case 'h3':
         return css`
-          font-family: ${({ theme }) => theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-size: 24px;
           font-style: normal;
           line-height: 32px;
@@ -47,7 +47,7 @@ export const MessageTitleStyled = styled.span<MessageTitleStyledProps>`
         `;
       case 'h4':
         return css`
-          font-family: ${({ theme }) => theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-size: 20px;
           font-style: normal;
           line-height: 26px;
@@ -55,7 +55,7 @@ export const MessageTitleStyled = styled.span<MessageTitleStyledProps>`
         `;
       case 'h5':
         return css`
-          font-family: ${({ theme }) => theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-size: 18px;
           font-style: normal;
           line-height: 24px;
@@ -63,7 +63,7 @@ export const MessageTitleStyled = styled.span<MessageTitleStyledProps>`
         `;
       case 'h6':
         return css`
-          font-family: ${({ theme }) => theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-size: 16px;
           font-style: normal;
           line-height: 22px;
