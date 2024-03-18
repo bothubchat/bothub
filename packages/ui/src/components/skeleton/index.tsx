@@ -6,7 +6,7 @@ import { useTheme } from '@/ui/theme';
 export interface SkeletonProps {
   className?: string;
   variant?: SkeletonVariant;
-  width?: number;
+  width?: number | string;
   height?: number | string;
   fullWidth?: boolean;
   colors?: [string, string?];

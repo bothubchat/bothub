@@ -99,6 +99,7 @@ export const ImageFullScreenSwiper = styled.div`
   position: relative;
   width: 100vw;
   .swiper-wrapper {
+    width: 100vw;
     align-items: center;
   }
 `;
@@ -127,7 +128,7 @@ export const ImageFullScreenSwiperButtons = styled.div<ImageFullScreenSwiperButt
       gap: calc(min(256px, ${$imageWidth}px) + 48px);
     `
   }))}
-  @media (max-height: 800px) {
+  @media (max-height: 600px) {
     gap: calc(min(256px, ${({ $imageWidth }) => $imageWidth}px) + 48px);
   }
 `;
@@ -140,14 +141,14 @@ export const ImageFullScreenSwiperNextButton = styled(Button).attrs({ children: 
   pointer-events: auto;
 `;
 
-export const ImageFullScreenImage = styled(Image)`
+export const ImageFullScreenImage = styled(Image).attrs({ loading: 'skeleton' })`
   display: flex;
   margin: auto;
   border-radius: 10px;
   object-fit: cover;
   width: auto;
   height: auto;
-  max-height: 60vh;
+  max-height: min(60vh, 512px);
   pointer-events: auto;
   ${adaptive({
     merge: true,
@@ -158,7 +159,7 @@ export const ImageFullScreenImage = styled(Image)`
       max-width: 256px;
     `
   })}
-  @media (max-height: 800px) {
+  @media (max-height: 600px) {
     max-width: 256px;
     max-height: 256px;
   }
@@ -192,7 +193,7 @@ export interface ImageFullScreenPreviewImageProps {
   $active: boolean;
 }
 
-export const ImageFullScreenPreviewImage = styled(Image).attrs({ width: 64, height: 64 })<ImageFullScreenPreviewImageProps>`
+export const ImageFullScreenPreviewImage = styled(Image).attrs({ width: 64, height: 64, loading: 'skeleton' })<ImageFullScreenPreviewImageProps>`
   display: inline-flex;
   width: auto;
   border-radius: 10px;

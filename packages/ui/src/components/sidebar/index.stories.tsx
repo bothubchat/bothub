@@ -18,7 +18,8 @@ import {
   SidebarUserInfoPremiumTariff,
   SidebarUserInfoEliteTariff,
   SidebarConsumer,
-  SidebarChatEditAction
+  SidebarChatEditAction,
+  SidebarEmpty
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 
@@ -243,6 +244,19 @@ export const EliteTariff: SidebarStory = {
           </SidebarUserInfoUpdateTariffButton>
         )}
       />
+    )
+  }
+};
+
+export const Empty: SidebarStory = {
+  args: {
+    ...EliteTariff.args,
+    children: (
+      <SidebarCollapse label="Список чатов">
+        <SidebarEmpty>
+          На данный момент у вас нет чатов
+        </SidebarEmpty>
+      </SidebarCollapse>
     )
   }
 };

@@ -58,6 +58,7 @@ export interface ThemeColors {
 }
 
 export interface ThemeZIndex {
+  scrollbarShadow: number;
   header: number;
   backdrop: number;
   modal: number;

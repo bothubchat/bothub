@@ -48,4 +48,5 @@ export const SidebarCollapseHead = styled.div`
 
 export const SidebarCollapseBody = styled.div`
   width: 100%;
+  padding-top: 18px;
 `;

@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import { Portal } from '@/ui/components/portal';
 import {
-  TooltipBlock, TooltipLabel, TooltipLabelBold, TooltipMarkdown, TooltipStyled 
+  TooltipBlock, TooltipCode, TooltipLabel, TooltipLabelBold, TooltipMarkdown, TooltipStyled 
 } from './styled';
 import { TooltipArrow } from './arrow';
 import { TooltipProvider } from './context';
@@ -254,7 +254,9 @@ export const Tooltip: React.FC<TooltipProps> = ({
           <TooltipMarkdown
             components={{
               p: ({ children }) => (
-                <TooltipLabel>
+                <TooltipLabel
+                  component="p"
+                >
                   {children}
                 </TooltipLabel>
               ),
@@ -269,6 +271,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
                 >
                   {children}
                 </TooltipLabelBold>
+              ),
+              code: ({ children }) => (
+                <TooltipCode>
+                  {children}
+                </TooltipCode>
               )
             }}
           >

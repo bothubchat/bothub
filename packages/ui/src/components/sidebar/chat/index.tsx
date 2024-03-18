@@ -67,12 +67,34 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
             as={Skeleton}
           />
         )}
-        <SidebarChatName
-          $open={isOpen}
+        <Tooltip
+          {...(!props.skeleton && {
+            label: props.name
+          })}
+          placement="top-left"
+          disabled={props.skeleton || props.name.length <= 16 || !isOpen}
         >
-          {!props.skeleton && props.name}
-          {props.skeleton && <SidebarChatNameSkeleton />}
-        </SidebarChatName>
+          <TooltipConsumer>
+            {({
+              handleTooltipMouseEnter,
+              handleTooltipMouseLeave
+            }) => (
+              <SidebarChatName
+                $open={isOpen}
+                onMouseEnter={handleTooltipMouseEnter}
+                onMouseLeave={handleTooltipMouseLeave}
+              >
+                {!props.skeleton && (
+                  <>
+                    {props.name.slice(0, 16)}
+                    {props.name.length > 16 && '...'}
+                  </>
+                )}
+                {props.skeleton && <SidebarChatNameSkeleton />}
+              </SidebarChatName>
+            )}
+          </TooltipConsumer>
+        </Tooltip>
         {!props.skeleton && props.actions}
       </SidebarChatLeft>
       <SidebarChatRight>

@@ -52,7 +52,7 @@ export const CheckboxBlockSkeleton = styled(Skeleton)`
   border-radius: 2px;
 `;
 
-export const CheckboxLabel = styled(Typography).attrs({ variant: 'body-m-medium' })`
+export const CheckboxLabel = styled(Typography).attrs({ variant: 'input-sm' })`
   display: inline-flex;
   width: 100%;
   align-items: center;

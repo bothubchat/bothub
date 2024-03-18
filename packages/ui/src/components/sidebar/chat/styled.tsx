@@ -38,8 +38,6 @@ export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-mediu
   margin-left: 8px;
   white-space: nowrap;
   transition: opacity 0.3s;
-  overflow: hidden;
-  text-overflow: ellipsis;
   ${adaptive({
     desktop: css`
       max-width: 160px;

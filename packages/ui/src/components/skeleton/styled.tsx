@@ -4,7 +4,7 @@ import { SkeletonVariant } from './types';
 
 export interface SkeletonStyledProps {
   $variant?: SkeletonVariant;
-  $width?: number;
+  $width?: number | string;
   $height?: number | string;
   $fullWidth: boolean;
 }
@@ -17,14 +17,14 @@ export const SkeletonStyled = styled(motion.span)<SkeletonStyledProps>`
     if ($fullWidth) {
       return '100%';
     }
-    if (typeof $width === 'number') {
+    if (typeof $width === 'number' || typeof $width === 'string') {
       return `${$width}px`;
     }
 
     return 'var(--skeleton-width, 40px)';
   }};
   height: ${({ $height }) => {
-    if (typeof $height === 'number') {
+    if (typeof $height === 'number' || typeof $height === 'string') {
       return `${$height}px`;
     }
 

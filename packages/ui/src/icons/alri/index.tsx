@@ -2,7 +2,7 @@ import React from 'react';
 import alri from './assets/alri.webp';
 import { ImageProps } from '@/ui/components/image';
 
-export type AlriIconProps = Omit<ImageProps, 'src' | 'alt'> & {
+export type AlriIconProps = Omit<ImageProps, 'src' | 'alt' | 'loading'> & {
   alt: string;
 };
 
