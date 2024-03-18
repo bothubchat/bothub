@@ -1,5 +1,8 @@
 import { Middleware } from 'stylis';
 
+const MIN_FONT_SIZE = 12;
+const MIN_LINE_HEIGHT = 16;
+
 export const BothubStyleSheetPlugin: Middleware = (element) => {
   if (
     element.type === 'decl'
@@ -10,10 +13,15 @@ export const BothubStyleSheetPlugin: Middleware = (element) => {
       const pxValue = +value;
       if (Math.abs(pxValue) <= 1) {
         return `${pxValue}px`;
-      } 
+      }
+      if (element.props === 'font-size') {
+        return `max(calc(var(--bothub-scale, 1) * ${pxValue}px), ${MIN_FONT_SIZE}px)`;
+      }
+      if (element.props === 'line-height') {
+        return `max(calc(var(--bothub-scale, 1) * ${pxValue}px), ${MIN_LINE_HEIGHT}px)`;
+      }
       return `calc(var(--bothub-scale, 1) * ${pxValue}px)`;
     });
-
     element.value = element.value.replace(/([-0-9.]+)vh/g, (_, value) => {
       const vhValue = +value;
 

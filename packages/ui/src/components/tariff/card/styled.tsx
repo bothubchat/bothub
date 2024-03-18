@@ -104,13 +104,13 @@ export const TariffCardPrice = styled.div`
 `;
 
 export const TariffCardPriceValue = styled(Typography)`
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.bold};
+  font-weight: 700;
   font-size: 26px;
   line-height: 34px;
 `;
 
 export const TariffCardCurrency = styled(Typography)`
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
+  font-weight: 400;
   font-size: 14px;
   line-height: 22px;
   margin-top: 8px;
@@ -120,7 +120,7 @@ export const TariffCardDetailsLink = styled.a`
   display: flex;
   justify-content: center;
   width: 100%;
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
+  font-weight: 500;
   font-size: 14px;
   line-height: 18px;
   color: ${({ theme }) => theme.colors.accent.primaryLight};
@@ -136,7 +136,7 @@ export const TariffCardPurchaseButton = styled(Button).attrs({ fullWidth: true }
 
 export const TariffCardValidityPeriod = styled(Typography)`
   margin-top: 20px;
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
+  font-weight: 400;
   font-size: 12px;
   line-height: 16px;
   color: ${({ theme }) => theme.colors.grayScale.gray1};

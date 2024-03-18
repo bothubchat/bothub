@@ -27,7 +27,7 @@ export const MessageMarkdownStyled = styled(ReactMarkdown)<MessageMarkdownStyled
   display: block;
   width: 100%;
   color: ${({ theme }) => theme.colors.base.white};
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
+  font-weight: 400;
   font-size: 16px;
   line-height: 22px;
   > *:first-child {

@@ -98,7 +98,7 @@ export const TextAreaFieldTextArea = styled.textarea`
   border: none;
   padding: 14px 16px;
   color: ${({ theme }) => theme.colors.base.white};
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
+  font-weight: 400;
   font-size: 14px;
   line-height: 18px;
   cursor: inherit;

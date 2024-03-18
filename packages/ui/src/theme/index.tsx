@@ -48,14 +48,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         gpt3: '#28A08C',
         gpt4: '#735FFA'
       },
-      fonts: {
-        ibmPlexSans: {
-          bold: '"IBMPlexSans Bold"',
-          semiBold: '"IBMPlexSans SemiBold"',
-          medium: '"IBMPlexSans Medium"',
-          regular: '"IBMPlexSans Regular"'
-        }
-      },
       tablet: {
         maxWidth: '1060px'
       },

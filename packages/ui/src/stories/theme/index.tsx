@@ -3,8 +3,7 @@ import { flatten } from 'flat';
 import {
   ThemeGroup,
   ThemeItem, 
-  ThemeItemColor, 
-  ThemeItemFont, 
+  ThemeItemColor,
   ThemeItemName, 
   ThemeItemPreview, 
   ThemeItemText, 
@@ -41,13 +40,6 @@ export const Theme: React.FC = () => {
                     switch (category) {
                       case 'colors':
                         previewNode = <ThemeItemColor $color={value.toString()} />;
-                        break;
-                      case 'fonts':
-                        previewNode = (
-                          <ThemeItemFont $font={value.toString()}>
-                            Font
-                          </ThemeItemFont>
-                        );
                         break;
                       default:
                         previewNode = (

@@ -84,7 +84,7 @@ export const AddPresetMyButton = styled(Button).attrs({
   endIcon: <Plus2Icon size={18} /> 
 })`
   gap: 4px;
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
+  font-weight: 400;
   font-size: 16px;
   line-height: 22px;
   color: ${({ theme }) => theme.colors.accent.primaryLight};
