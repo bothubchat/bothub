@@ -1,4 +1,6 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, {
+  useCallback, useRef, useState, useEffect 
+} from 'react';
 import { Swiper as ReactSwiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import Swiper from 'swiper';
 import { Portal } from '@/ui/components/portal';
@@ -78,6 +80,31 @@ export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
 
     sliderRef.current.swiper.slideTo(slideIndex);
   }, []);
+
+  useEffect(() => {
+    if (open) {
+      const keyDownListener = (event: KeyboardEvent) => {
+        if (!sliderRef.current) {
+          return;
+        }
+
+        switch (event.code) {
+          case 'ArrowLeft':
+            sliderRef.current.swiper.slidePrev();
+            break;
+          case 'ArrowRight':
+            sliderRef.current.swiper.slideNext();
+            break;
+        }
+      };
+
+      document.addEventListener('keydown', keyDownListener);
+
+      return () => {
+        document.removeEventListener('keydown', keyDownListener);
+      };
+    }
+  }, [open]);
 
   return (
     <ImageFullScreenProvider
