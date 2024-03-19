@@ -13,7 +13,7 @@ export const HeaderNavLinkStyled = styled.a<HeaderNavLinkStyledProps>`
   }) => {
     if ($variant === 'main' && $inMenu) {
       return css`
-        font-family: ${theme.fonts.ibmPlexSans.semiBold};
+        font-weight: 600;
         font-size: 16px;
         line-height: 22px;
         color: ${theme.colors.base.white};
@@ -34,7 +34,7 @@ export const HeaderNavLinkStyled = styled.a<HeaderNavLinkStyledProps>`
     switch ($variant) {
       case 'main':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           &:hover {
             color: ${theme.colors.accent.primaryLight};
           }
@@ -43,7 +43,7 @@ export const HeaderNavLinkStyled = styled.a<HeaderNavLinkStyledProps>`
         return css`
           align-items: center;
           gap: 10px;
-          font-family: ${theme.fonts.ibmPlexSans.medium};
+          font-weight: 500;
           opacity: ${$active ? 1 : 0.5};
           ${!$active && css`
             &:hover {

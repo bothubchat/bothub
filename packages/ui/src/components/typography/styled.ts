@@ -21,7 +21,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
     switch ($variant) {
       case 'h1':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.bold};
+          font-weight: 700;
           font-size: 46px;
           line-height: 60px;
           --skeleton-height: 60px;
@@ -38,7 +38,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
       case 'h2':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-size: 34px;
           line-height: 44px;
           --skeleton-height: 44px;
@@ -55,7 +55,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
       case 'h3':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-size: 30px;
           line-height: 40px;
           --skeleton-height: 40px;
@@ -67,7 +67,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
       case 'body-xxl-semibold':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-size: 26px;
           line-height: 34px;
           --skeleton-height: 34px;
@@ -84,7 +84,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
       case 'body-xl-semibold':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-size: 22px;
           line-height: 29px;
           --skeleton-height: 29px;
@@ -101,7 +101,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
       case 'body-m-semibold':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-size: 16px;
           line-height: 22px;
           --skeleton-height: 22px;
@@ -113,7 +113,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
       case 'body-m-medium':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.medium};
+          font-weight: 500;
           font-size: 16px;
           line-height: 22px;
           --skeleton-height: 22px;
@@ -125,7 +125,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
       case 'body-m-regular':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.regular};
+          font-weight: 400;
           font-size: 16px;
           line-height: 22px;
           --skeleton-height: 22px;
@@ -137,7 +137,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
       case 'body-s-medium':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.medium};
+          font-weight: 500;
           font-size: 14px;
           line-height: 18px;
           --skeleton-height: 18px;
@@ -149,7 +149,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
       case 'body-s-semibold':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-size: 14px;
           line-height: 18px;
           --skeleton-height: 18px;
@@ -161,7 +161,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
       case 'body-s-regular':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.regular};
+          font-weight: 400;
           font-size: 14px;
           line-height: 18px;
           --skeleton-height: 18px;
@@ -173,7 +173,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
       case 'body-xs-regular':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.regular};
+          font-weight: 400;
           font-size: 12px;
           line-height: 16px;
           --skeleton-height: 16px;
@@ -185,7 +185,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         `;
       case 'body-l-semibold':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.semiBold};
+          font-weight: 600;
           font-size: 18px;
           line-height: 24px;
           --skeleton-height: 24px;
@@ -195,30 +195,55 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
             --skeleton-height: 22px;
           }
         `;
+      case 'body-l-medium':
+        return css`
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 24px;
+          --skeleton-height: 24px;
+          @media (max-width: ${theme.mobile.maxWidth}) {
+              font-size: 16px;
+              line-height: 22px;
+              --skeleton-height: 22px;
+          }
+        `;
+      case 'body-l-medium-italic':
+        return css`
+          font-weight: 500;
+          font-style: italic;
+          font-size: 18px;
+          line-height: 24px;
+          --skeleton-height: 24px;
+          @media (max-width: ${theme.mobile.maxWidth}) {
+              font-size: 16px;
+              line-height: 22px;
+              --skeleton-height: 22px;
+          }
+      `;
       case 'button-sm':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.medium};
+          font-weight: 500;
           font-size: 15px;
           line-height: 20px;
           --skeleton-height: 20px;
         `;
       case 'button-md':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.medium};
+          font-weight: 500;
           font-size: 18px;
           line-height: 24px;
           --skeleton-height: 24px;
         `;
       case 'input-md':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.regular};
+          font-weight: 400;
           font-size: 16px;
           line-height: 22px;
           --skeleton-height: 22px;
         `;
       case 'input-sm':
         return css`
-          font-family: ${theme.fonts.ibmPlexSans.regular};
+          font-weight: 400;
           font-size: 14px;
           line-height: 18px;
           --skeleton-height: 18px;

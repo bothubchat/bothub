@@ -14,7 +14,7 @@ export const MessageBoldStyled = styled(Typography).attrs({ component: 'b', vari
 
     return theme.colors.base.white;
   }};
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.bold};
+  font-weight: 700;
   &::selection {
     ${({ $messageColor }) => {
     switch ($messageColor) {

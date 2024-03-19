@@ -85,7 +85,7 @@ export const ModalContent = styled.div`
 `;
 
 export const ModalTitle = styled(Typography)`
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.bold};
+  font-weight: 700;
   font-size: 22px;
   line-height: 29px;
   margin-bottom: 20px;

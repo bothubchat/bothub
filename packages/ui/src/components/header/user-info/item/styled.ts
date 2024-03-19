@@ -11,7 +11,7 @@ export const HeaderUserInfoItemContent: React.FC<React.ComponentProps<'span'> & 
   display: inline-flex;
   width: 100%;
   padding: 8px 16px;
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
+  font-weight: 500;
   font-size: 14px;
   color: ${({ theme }) => theme.colors.base.white};
   line-height: 18px;

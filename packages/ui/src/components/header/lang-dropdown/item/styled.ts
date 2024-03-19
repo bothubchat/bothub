@@ -7,7 +7,7 @@ export const HeaderLangDropdownItemStyled = styled.li`
   line-height: 22px;
   padding: 6px 0px;
   color: ${({ theme }) => theme.colors.base.white};
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.bold};
+  font-weight: 700;
   font-size: 16px;
   text-transform: uppercase;
   cursor: pointer;

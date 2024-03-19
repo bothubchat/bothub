@@ -37,7 +37,7 @@ export const MessageListItemStyled = styled(Typography).attrs({ component: 'li',
             display: inline-block;
             position: absolute;
             left: 0px;
-            font-family: ${theme.fonts.ibmPlexSans.bold};
+            font-weight: 700;
             color: ${dotColor};
             padding-right: 8px;
             content: "•";

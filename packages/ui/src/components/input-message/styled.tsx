@@ -108,7 +108,7 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
 
     return theme.colors.base.white;
   }};
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
+  font-weight: 500;
   font-size: 14px;
   overflow: auto;
   scrollbar-width: none;

@@ -14,7 +14,7 @@ export const HeaderLangDropdownTogglerIcon = styled(LanguageIcon).attrs({ size: 
 export const HeaderLangDropdownTogglerText = styled(Typography)`
   text-transform: uppercase;
   font-size: 16px;
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.bold};
+  font-weight: 700;
   line-height: 22px;
   pointer-events: none;
 `;
