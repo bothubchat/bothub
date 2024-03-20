@@ -95,7 +95,6 @@ export interface InputMessageTextAreaProps {
 
 export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   display: flex;
-  white-space: nowrap;
   height: 18px;
   width: 100%;
   max-height: 270px;
