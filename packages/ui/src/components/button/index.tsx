@@ -27,6 +27,7 @@ export type ButtonProps =
     iconSize?: number;
     iconFill?: string;
     skeleton?: boolean;
+    for?: string;
     children?: React.ReactNode;
   };
 
@@ -238,6 +239,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
         type,
         disabled
       })}
+      {...(component === 'label' && { for: props.for })}
       {...animationProps}
       ref={elementRef}
       onMouseEnter={handleMouseEnter}

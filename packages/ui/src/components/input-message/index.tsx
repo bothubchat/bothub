@@ -145,7 +145,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     textareaRef.current?.focus();
   }, []);
 
-  const handleUploadFileClick = useCallback<React.MouseEventHandler<HTMLLabelElement>>((event) => {
+  const handleUploadFileClick = useCallback<React.MouseEventHandler<HTMLDivElement>>((event) => {
     event.stopPropagation();
   }, []);
 
