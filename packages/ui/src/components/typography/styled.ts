@@ -7,17 +7,8 @@ export interface TypographyStyledProps {
   $fullWidth: boolean;
 }
 
-export const TypographyStyled = styled.span<TypographyStyledProps>`
-  margin: 0px;
-  color: ${({ theme }) => theme.colors.base.white};
-  font-weight: normal;
-  text-decoration: none;
-  text-align: ${({ $align }) => $align};
-  --skeleton-width: 200px;
-  ${({ $fullWidth }) => $fullWidth && css`
-    width: 100%;
-  `}
-  ${({ theme, $variant }) => {
+export const getTypographyStyles = ($variant: TypographyVariant) => css`
+  ${({ theme }) => {
     switch ($variant) {
       case 'h1':
         return css`
@@ -252,4 +243,17 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
         return css``;
     }
   }}
+`;
+
+export const TypographyStyled = styled.span<TypographyStyledProps>`
+  margin: 0px;
+  color: ${({ theme }) => theme.colors.base.white};
+  font-weight: normal;
+  text-decoration: none;
+  text-align: ${({ $align }) => $align};
+  --skeleton-width: 200px;
+  ${({ $fullWidth }) => $fullWidth && css`
+    width: 100%;
+  `}
+  ${({ $variant }) => getTypographyStyles($variant)}
 `;
