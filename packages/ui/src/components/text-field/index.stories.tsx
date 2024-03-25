@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { TextField } from '.';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { TextField, TextFieldLabel } from '.';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { EmailCircleIcon } from '@/ui/icons';
+import { Tooltip } from '@/ui/components/tooltip';
+import { Button } from '@/ui/components/button';
 
 export type TextFieldMeta = Meta<typeof TextField>;
 
@@ -11,6 +13,30 @@ export const Basic: TextFieldStory = {
   args: {
     label: 'Label',
     placeholder: 'Placeholder'
+  }
+};
+
+export const Number: TextFieldStory = {
+  args: {
+    ...Basic.args,
+    type: 'number'
+  }
+};
+
+export const Help: TextFieldStory = {
+  args: {
+    label: (
+      <TextFieldLabel>
+        Label
+        <Tooltip
+          label="Help"
+        >
+          <Button
+            variant="help"
+          />
+        </Tooltip>
+      </TextFieldLabel>
+    )
   }
 };
 
@@ -67,7 +93,7 @@ export const Skeleton: TextFieldStory = {
 export default {
   title: 'UI Components/Fields/Text',
   component: TextField,
-  decorators: [ThemeStoryDecorator()],
+  decorators: [StoryDecorator({ margin: '50px 0px' })],
   argTypes: {
     startIcon: {
       table: {

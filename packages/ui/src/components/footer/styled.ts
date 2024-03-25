@@ -50,7 +50,7 @@ export const FooterColumn = styled.div`
 
 export const FooterColumnLabel = styled(Typography)`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.semiBold};
+  font-weight: 600;
   font-size: 16px;
   line-height: 22px;
   margin-bottom: 20px;
@@ -64,7 +64,7 @@ export const FooterNav = styled.nav`
 `;
 
 export const FooterText = styled(Typography)`
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.medium};
+  font-weight: 500;
   font-size: 14px;
   line-height: 18px;
 `;
@@ -74,7 +74,7 @@ export const FooterNavLink = styled.a`
   white-space: nowrap;
   align-items: center;
   gap: 8px;
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
+  font-weight: 400;
   font-size: 16px;
   line-height: 22px;
   color: ${({ theme }) => theme.colors.base.white};

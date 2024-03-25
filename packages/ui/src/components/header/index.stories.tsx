@@ -15,7 +15,7 @@ import {
   HeaderUserButton,
   HeaderThemeSwitcher
 } from '.';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { Logo } from '@/ui/components/logo';
 import { HeaderLangDropdown, HeaderLangDropdownItem, HeaderLangDropdownList } from './lang-dropdown';
 import {
@@ -143,9 +143,9 @@ export const Dashboard: HeaderStory = {
 };
 
 export default {
-  title: 'UI Components/Header',
+  title: 'Components/Header',
   component: Header,
-  decorators: [ThemeStoryDecorator()],
+  decorators: [StoryDecorator()],
   argTypes: {
     variant: {
       table: {

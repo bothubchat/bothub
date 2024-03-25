@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { Progress } from '.';
 
 export type ProgressMeta = Meta<typeof Progress>;
@@ -19,5 +19,5 @@ export const Skeleton: ProgressStory = {
 export default {
   title: 'UI Components/Progress',
   component: Progress,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as ProgressMeta;

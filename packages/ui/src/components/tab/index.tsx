@@ -53,3 +53,4 @@ export const Tab: React.FC<TabProps> = ({
 };
 
 export * from './styled';
+export * from './list';

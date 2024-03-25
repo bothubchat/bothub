@@ -1,15 +1,16 @@
 import React, { useCallback, useState } from 'react';
-import { MessageActionButton } from '../styled';
+import { MessageAction } from '../styled';
 import { useMessage } from '../context';
-import { CheckSmallIcon, CopyIcon } from '@/ui/icons';
+import { CheckSmallIcon } from '@/ui/icons/check-small';
+import { CopyIcon } from '@/ui/icons/copy';
 import { MessageCopyActionStyled } from './styled';
 
-export type MessageCopyActionProps = React.ComponentProps<typeof MessageActionButton>;
+export type MessageCopyActionProps = React.ComponentProps<typeof MessageAction>;
 
 export const MessageCopyAction: React.FC<MessageCopyActionProps> = ({
   ...props
 }) => {
-  const { message, onCopy } = useMessage();
+  const { onCopy } = useMessage();
 
   const [isFocus, setIsFocus] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
@@ -19,13 +20,11 @@ export const MessageCopyAction: React.FC<MessageCopyActionProps> = ({
       return;
     }
 
-    if (typeof message === 'string') {
-      onCopy?.(message);
-    }
+    onCopy?.();
 
     setIsFocus(true);
     setIsCopied(true);
-  }, [isCopied, message, onCopy]);
+  }, [isCopied, onCopy]);
 
   const handleBlur = useCallback(() => {
     setIsFocus(false);

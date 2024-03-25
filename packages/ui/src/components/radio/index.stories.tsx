@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { Radio } from '.';
 
 export type RadioMeta = Meta<typeof Radio>;
@@ -36,5 +36,5 @@ export const Skeleton: RadioStory = {
 export default {
   title: 'UI Components/Radio',
   component: Radio,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as RadioMeta;

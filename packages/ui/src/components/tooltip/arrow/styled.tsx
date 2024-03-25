@@ -1,22 +1,8 @@
-import { styled, css } from 'styled-components';
-import { TooltipPlacement } from '../types';
+import { styled } from 'styled-components';
 
-export interface TooltipArrowStyledProps {
-  $placement: TooltipPlacement;
-}
-
-export const TooltipArrowStyled = styled.svg<TooltipArrowStyledProps>`
+export const TooltipArrowStyled = styled.svg`
   display: inline-flex;
   position: relative;
   top: -1.5px;
-  ${({ $placement }) => {
-    switch ($placement) {
-      case 'top-left':
-        return css`
-          margin-left: 10px;
-        `;
-      case 'top':
-        return css``;
-    }
-  }}
+  margin: 0px 10px;
 `;

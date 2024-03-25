@@ -7,6 +7,8 @@ export interface TypographyProps extends Omit<React.ComponentProps<typeof Typogr
   component?: TypographyComponent;
   align?: TypographyAlign;
   fullWidth?: boolean;
+  href?: React.ComponentProps<'a'>['href'];
+  target?: React.ComponentProps<'a'>['target'];
 }
 
 export const Typography: React.FC<TypographyProps> = ({

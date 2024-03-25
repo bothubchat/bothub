@@ -2,7 +2,7 @@ import React from 'react';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { ArrowDownIcon } from '@/ui/icons';
+import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { Avatar } from '@/ui/components/avatar';
 
 export interface HeaderUserInfoHeadProps {

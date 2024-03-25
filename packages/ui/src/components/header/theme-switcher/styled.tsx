@@ -1,7 +1,7 @@
 import { styled, css } from 'styled-components';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import React from 'react';
-import { DarkIcon } from '@/ui/icons';
+import { DarkIcon } from '@/ui/icons/dark';
 import { adaptive } from '@/ui/adaptive';
 
 export interface HeaderThemeSwitcherStyledProps {

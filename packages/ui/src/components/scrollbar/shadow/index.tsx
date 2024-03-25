@@ -14,7 +14,7 @@ export const ScrollbarShadow: React.FC<ScrollbarShadowProps> = ({ side, ...props
   const theme = useTheme();
   const { scrollbarSize, scrollShadows, disabled } = useScrollbar();
 
-  const size: number = props.size ?? scrollShadows?.size ?? 80;
+  const size: number = props.size ?? scrollShadows?.size ?? 60;
   const color: string = props.color ?? scrollShadows?.color ?? theme.colors.grayScale.gray4;
   const isLeft: boolean = side === 'left';
   const isRight: boolean = side === 'right';

@@ -1,0 +1,36 @@
+body {
+  font-family: 'IBMPlexSans', -apple-system, system-ui, 'sans-serif';
+}
+
+@font-face {
+  font-family: 'IBMPlexSans';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../../fonts/IBMPlexSans-MediumItalic.ttf");
+}
+@font-face {
+  font-family: 'IBMPlexSans';
+  font-weight: 700;
+  font-display: swap;
+  src: url("../../fonts/IBMPlexSans-Bold.ttf");
+}
+
+@font-face {
+  font-family: 'IBMPlexSans';
+  font-weight: 600;
+  font-display: swap;
+  src: url("../../fonts/IBMPlexSans-SemiBold.ttf");
+}
+@font-face {
+  font-family: 'IBMPlexSans';
+  font-weight: 500;
+  font-display: swap;
+  src: url("../../fonts/IBMPlexSans-Medium.ttf");
+}
+@font-face {
+  font-family: 'IBMPlexSans';
+  font-weight: 400;
+  font-display: swap;
+  src: url("../../fonts/IBMPlexSans-Regular.ttf");
+}

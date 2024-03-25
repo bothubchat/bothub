@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
-import { Checkbox } from '.';
+import { StoryDecorator } from '@/ui/story-decorator';
+import { Checkbox, CheckboxLabel } from '.';
+import { Tooltip } from '@/ui/components/tooltip';
+import { Button } from '@/ui/components/button';
 
 export type CheckboxMeta = Meta<typeof Checkbox>;
 
@@ -9,6 +11,23 @@ export type CheckboxStory = StoryObj<typeof Checkbox>;
 export const Basic: CheckboxStory = {
   args: {
     label: 'Отправлять автоматически'
+  }
+};
+
+export const Help: CheckboxStory = {
+  args: {
+    label: (
+      <CheckboxLabel>
+        Отправлять автоматически
+        <Tooltip
+          label="Help"
+        >
+          <Button
+            variant="help"
+          />
+        </Tooltip>
+      </CheckboxLabel>
+    )
   }
 };
 
@@ -36,5 +55,5 @@ export const Skeleton: CheckboxStory = {
 export default {
   title: 'UI Components/Checkbox',
   component: Checkbox,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator({ margin: '50px 0px' })]
 } as CheckboxMeta;

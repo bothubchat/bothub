@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import {
   Table, TableBody, TableCell, TableCellText, TableHead, TableRow 
 } from '.';
@@ -103,7 +103,7 @@ export const Basic: TableStory = {
 export default {
   title: 'UI Components/Table',
   component: Table,
-  decorators: [ThemeStoryDecorator({ margin: '100px 0px' })],
+  decorators: [StoryDecorator({ margin: '100px 0px' })],
   argTypes: {
     head: {
       table: {

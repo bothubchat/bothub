@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import { Avatar } from '.';
+import {
+  ClaudeIcon,
+  DallEIcon, Gpt35Icon, Gpt4Icon, MjWhiteIcon 
+} from '@/ui/icons';
 
 export type AvatarMeta = Meta<typeof Avatar>;
 
@@ -27,6 +31,46 @@ export const Bot: AvatarStory = {
   }
 };
 
+export const GPT3: AvatarStory = {
+  args: {
+    children: (
+      <Gpt35Icon />
+    )
+  }
+};
+
+export const GPT4: AvatarStory = {
+  args: {
+    children: (
+      <Gpt4Icon />
+    )
+  }
+};
+
+export const Midjourney: AvatarStory = {
+  args: {
+    children: (
+      <MjWhiteIcon />
+    )
+  }
+};
+
+export const DallE: AvatarStory = {
+  args: {
+    children: (
+      <DallEIcon />
+    )
+  }
+};
+
+export const Claude: AvatarStory = {
+  args: {
+    children: (
+      <ClaudeIcon />
+    )
+  }
+};
+
 export const Skeleton: AvatarStory = {
   args: {
     children: <BothubSkeleton />
@@ -36,5 +80,5 @@ export const Skeleton: AvatarStory = {
 export default {
   title: 'UI Components/Avatar',
   component: Avatar,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as AvatarMeta;

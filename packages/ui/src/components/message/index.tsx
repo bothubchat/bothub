@@ -1,193 +1,57 @@
-import React, {
-  ReactNode, useCallback, useMemo, useRef, useState 
-} from 'react';
-import remarkGfm from 'remark-gfm';
-import rehypeKatex from 'rehype-katex';
-import remarkMath from 'remark-math';
+import React, { ReactNode, useRef } from 'react';
 import {
   MessageBlock,
+  MessageBlockContent,
+  MessageBlockScrollbarWrapper,
   MessageContent,
-  MessageMarkdown,
-  MessageStyled
+  MessageName,
+  MessageSender,
+  MessageStyled,
+  MessageTop
 } from './styled';
-import { MessageCopyEventHandler, MessageVariant } from './types';
 import {
-  MessageCode,
-  MessageComponentsProps,
-  MessageParagraph,
-  MessagePre,
-  MessageStrong,
-} from './components';
+  MessageCodeCopyEventHandler, MessageColor, MessageCopyEventHandler, MessageVariant 
+} from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
-import { MessageProvider, useMessage } from './context';
-import {
-  Table,
-  TableBody, TableCell, TableHead, TableRow
-} from '../table';
+import { MessageProvider } from './context';
+import { MessageComponentsProps, MessageParagraph } from './components';
+import { MessageMarkdown } from './markdown';
+import { ScrollbarShadow } from '@/ui/components/scrollbar';
 
 export interface MessageProps {
   className?: string;
   variant?: MessageVariant;
+  color?: MessageColor;
+  name?: string;
+  tags?: React.ReactNode;
   avatar?: React.ReactNode;
-  tokens?: React.ReactNode;
+  transaction?: React.ReactNode;
   actions?: React.ReactNode;
   typing?: boolean;
   skeleton?: boolean;
+  buttons?: ReactNode;
+  after?: ReactNode;
+  components?: MessageComponentsProps;
   children?: ReactNode;
   onCopy?: MessageCopyEventHandler;
-  onCodeCopy?: MessageCopyEventHandler;
+  onCodeCopy?: MessageCodeCopyEventHandler;
 }
-
-export interface MessageTextProps {
-  children: string;
-  components?: MessageComponentsProps
-}
-
-export const MessageText: React.FC<MessageTextProps> = ({
-  children,
-  components = {}
-}) => {
-  const { typing, variant } = useMessage();
-  const markdown = variant === 'user';
-  
-  const [rehypeError, setRehypeError] = useState<string | null>(null);
-  
-  const formattedChildren = useMemo(() => {
-    if (typeof children === 'string' && !markdown) {
-      return children.replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
-        .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$${content}$`);
-    }
-    return children;
-  }, [children, markdown]);
-  
-  const handleKatexStrict = useCallback((errorCode: string) => {
-    if (errorCode !== 'htmlExtension') {
-      queueMicrotask(() => setRehypeError(errorCode));
-    }
-  }, []);
-
-  return (
-    <>
-      {(markdown && typeof children === 'string') && (
-        <MessageParagraph
-          wrap
-          disableMargin
-        >
-          {formattedChildren}
-        </MessageParagraph>
-      )}
-      {(!markdown && typeof children === 'string') && (
-        <MessageMarkdown
-          remarkPlugins={[remarkGfm, remarkMath]}
-          // @ts-ignore
-          rehypePlugins={[
-            ...(!rehypeError ? [
-              () => rehypeKatex({ strict: handleKatexStrict })
-            ] : []),
-          ]}
-          $typing={typing}
-          components={{
-            p: ({ className, children }) => (
-              <MessageParagraph 
-                {...components.paragraph}
-                className={className}
-              >
-                {children}
-              </MessageParagraph>
-            ),
-            strong: ({ className, children }) => (
-              <MessageStrong
-                {...components.strong} 
-                className={className}
-              >
-                {children}
-              </MessageStrong>
-            ),
-            pre: ({ className, children }) => (
-              <MessagePre 
-                {...components.pre}
-                className={className}
-              >
-                {children}
-              </MessagePre>
-            ),
-            tr: ({ className, children }) => (
-              <TableRow className={className}>
-                {children}
-              </TableRow>
-            ),
-            td: ({ className, children }) => (
-              <TableCell className={className}>
-                {children}
-              </TableCell>
-            ),
-            th: ({ className, children }) => (
-              <TableCell className={className}>
-                {children}
-              </TableCell>
-            ),
-            thead: ({ className, children }) => (
-              <TableHead className={className}>
-                {children}
-              </TableHead>
-            ),
-            tbody: ({ className, children }) => (
-              <TableBody className={className}>
-                {children}
-              </TableBody>
-            ),
-            table: ({ children }) => (
-              <Table>
-                {children}
-              </Table>
-            ),
-            code: ({ className, children }) => {
-              const code = String(children);
-              if (!code) {
-                return null;
-              }
-  
-              const match = /language-(\w+)/.exec(className || '');
-          
-              return (
-                match ? (
-                  <MessageCode
-                    {...components.code}
-                    className={className}
-                    messageVariant={variant}
-                  >
-                    {code}
-                  </MessageCode>
-                ) : (
-                  <MessageCode
-                    {...components.code}
-                    className={className}
-                    variant="inline"
-                    messageVariant={variant}
-                  >
-                    {code}
-                  </MessageCode> 
-                )
-              );
-            }
-          }}
-        >
-          {formattedChildren}
-        </MessageMarkdown>
-      )}
-    </>
-  );
-};
 
 export const Message: React.FC<MessageProps> = ({ 
   className,
   variant = 'user',
+  color = 'default',
+  name,
+  tags,
   avatar,
-  tokens,
+  transaction,
   actions,
   typing = false,
   skeleton = false,
+  buttons,
+  after,
+  components,
   children,
   onCopy,
   onCodeCopy
@@ -195,10 +59,40 @@ export const Message: React.FC<MessageProps> = ({
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement>(null);
 
+  let hexColor: string;
+  switch (variant) {
+    case 'user':
+      switch (color) {
+        case 'green':
+          hexColor = theme.colors.gpt3;
+          break;
+        case 'purple':
+          hexColor = theme.colors.gpt4;
+          break;
+        default:
+          hexColor = theme.colors.accent.primary;
+          break;
+      }
+      break;
+    case 'assistant':
+      switch (color) {
+        case 'green':
+          hexColor = theme.colors.gpt3;
+          break;
+        case 'purple':
+          hexColor = theme.colors.gpt4;
+          break;
+        default:
+          hexColor = theme.colors.grayScale.gray2;
+          break;
+      }
+      break;
+  }
+
   return (
     <MessageProvider
       variant={variant}
-      message=""
+      color={color}
       typing={typing}
       onCopy={onCopy}
       onCodeCopy={onCodeCopy}
@@ -209,28 +103,75 @@ export const Message: React.FC<MessageProps> = ({
         className={className}
       >
         <MessageContent $variant={variant}>
+          {(name || transaction) && (
+            <MessageTop>
+              {typeof name === 'string' && (
+                <MessageSender>
+                  <MessageName
+                    $color={color}
+                  >
+                    {name}
+                  </MessageName>
+                  {tags}
+                </MessageSender>
+              )}
+              {typeof name !== 'string' && <div />}
+              {transaction}
+            </MessageTop>
+          )}
+          {typeof name !== 'string' && name}
           {avatar}
-          <MessageBlock $variant={variant}>
-            {children}
-            {skeleton && (
-              <MessageParagraph
-                disableMargin
-              >
-                <Skeleton
-                  width={260}
-                  opacity={[
-                    0.15,
-                    0.45
-                  ]}
-                  colors={[
-                    theme.colors.base.white
-                  ]}
-                />
-              </MessageParagraph>
-            )}
+          <MessageBlock 
+            $variant={variant}
+            $color={color}
+            $hexColor={hexColor}
+            $skeleton={skeleton}
+          >
+            <MessageBlockScrollbarWrapper
+              scrollShadows={{
+                color: hexColor,
+                size: 60,
+                left: <ScrollbarShadow side="left" />,
+                right: <ScrollbarShadow side="right" />
+              }}
+            >
+              <MessageBlockContent>
+                {!skeleton && (
+                  <>
+                    {typeof children === 'string' && (
+                      <MessageMarkdown
+                        components={components}
+                      >
+                        {children}
+                      </MessageMarkdown>
+                    )}
+                    {typeof children !== 'string' && children}
+                  </>
+                )}
+                {skeleton && (
+                  <MessageParagraph
+                    disableMargin
+                  >
+                    <Skeleton
+                      width={260}
+                      opacity={[
+                        theme.mode === 'light' ? 0.1 : 0.15,
+                        theme.mode === 'light' ? 0.225 : 0.45
+                      ]}
+                      colors={[
+                        variant === 'user' ? theme.colors.base.white : (
+                          theme.mode === 'light' ? theme.default.colors.base.black : theme.colors.grayScale.gray6
+                        )
+                      ]}
+                    />
+                  </MessageParagraph>
+                )}
+                {after}
+              </MessageBlockContent>
+            </MessageBlockScrollbarWrapper>
           </MessageBlock>
-          {tokens}
           {actions}
+          {buttons}
         </MessageContent>
       </MessageStyled>
     </MessageProvider>
@@ -240,4 +181,9 @@ export const Message: React.FC<MessageProps> = ({
 export * from './types';
 export * from './styled';
 export * from './context';
+export * from './list';
 export * from './copy';
+export * from './markdown';
+export * from './components';
+export * from './badge-progress';
+export * from './button';

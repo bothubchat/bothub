@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { Skeleton } from '.';
 
 export type SkeletonMeta = Meta<typeof Skeleton>;
@@ -11,5 +11,5 @@ export const Basic: SkeletonStory = {};
 export default {
   title: 'UI Components/Skeleton',
   component: Skeleton,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as SkeletonMeta;

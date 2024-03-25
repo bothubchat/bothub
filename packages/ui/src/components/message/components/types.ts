@@ -1,11 +1,5 @@
-import { MessageCodeProps } from './code';
-import { MessageParagraphProps } from './paragraph';
-import { MessagePreProps } from './pre';
-import { MessageStrongProps } from './strong';
+import { MessageMultilineCodeProps } from './code/multiline';
 
 export interface MessageComponentsProps {
-  code?: Partial<MessageCodeProps>;
-  paragraph?: Partial<MessageParagraphProps>;
-  pre?: Partial<MessagePreProps>;
-  strong?: Partial<MessageStrongProps>;
+  code?: Partial<MessageMultilineCodeProps>;
 }

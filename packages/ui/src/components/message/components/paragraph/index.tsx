@@ -11,11 +11,12 @@ React.ComponentProps<typeof MessageParagraphStyled>, keyof MessageParagraphStyle
 export const MessageParagraph: React.FC<MessageParagraphProps> = ({
   wrap = false, disableMargin = false, ...props
 }) => {
-  const { variant } = useMessage();
+  const { variant, color } = useMessage();
 
   return (
     <MessageParagraphStyled
       $variant={variant}
+      $color={color}
       $wrap={wrap}
       $disableMargin={disableMargin}
       {...props}

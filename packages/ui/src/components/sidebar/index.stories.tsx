@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import {
   Sidebar, 
   SidebarChat, 
@@ -17,7 +17,9 @@ import {
   SidebarUserInfoBasicTariff,
   SidebarUserInfoPremiumTariff,
   SidebarUserInfoEliteTariff,
-  SidebarConsumer
+  SidebarConsumer,
+  SidebarChatEditAction,
+  SidebarEmpty
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 
@@ -61,7 +63,7 @@ export const Basic: SidebarStory = {
                 />
               )}
               name="Артём"
-              tokens="9 012 CAPS"
+              caps="9 012 CAPS"
               tariff={(
                 <SidebarUserInfoFreeTariff />
               )}
@@ -82,10 +84,11 @@ export const Basic: SidebarStory = {
             <SidebarChat
               color="#1C64F2"
               name="Your first chat"
-              numbers="36.7K"
+              caps="36.7K"
               active
               actions={(
                 <SidebarChatActions>
+                  <SidebarChatEditAction />
                   <SidebarChatDeleteAction />
                 </SidebarChatActions>
               )}
@@ -93,9 +96,10 @@ export const Basic: SidebarStory = {
             <SidebarChat
               color="#941CF2"
               name="Придумать логотип"
-              numbers="1.7K"
+              caps="1.7K"
               actions={(
                 <SidebarChatActions>
+                  <SidebarChatEditAction />
                   <SidebarChatDeleteAction />
                 </SidebarChatActions>
               )}
@@ -105,9 +109,10 @@ export const Basic: SidebarStory = {
             <SidebarChat
               color="#1CB2F2"
               name="Дипломная работа"
-              numbers="12.7K"
+              caps="12.7K"
               actions={(
                 <SidebarChatActions>
+                  <SidebarChatEditAction />
                   <SidebarChatDeleteAction />
                 </SidebarChatActions>
               )}
@@ -115,9 +120,10 @@ export const Basic: SidebarStory = {
             <SidebarChat
               color="#F29C1C"
               name="Реферат"
-              numbers="6.9K"
+              caps="6.9K"
               actions={(
                 <SidebarChatActions>
+                  <SidebarChatEditAction />
                   <SidebarChatDeleteAction />
                 </SidebarChatActions>
               )}
@@ -127,9 +133,10 @@ export const Basic: SidebarStory = {
             <SidebarChat
               color="#1ABB34"
               name="Для клиентов"
-              numbers="12.7K"
+              caps="12.7K"
               actions={(
                 <SidebarChatActions>
+                  <SidebarChatEditAction />
                   <SidebarChatDeleteAction />
                 </SidebarChatActions>
               )}
@@ -137,9 +144,10 @@ export const Basic: SidebarStory = {
             <SidebarChat
               color="#F2DD1C"
               name="Придумай мне резюме"
-              numbers="6.9K"
+              caps="6.9K"
               actions={(
                 <SidebarChatActions>
+                  <SidebarChatEditAction />
                   <SidebarChatDeleteAction />
                 </SidebarChatActions>
               )}
@@ -147,9 +155,10 @@ export const Basic: SidebarStory = {
             <SidebarChat
               color="#941CF2"
               name="Длинное название чата Длинное название чата Длинное название чата Длинное название чата Длинное название чата"
-              numbers="1.7K"
+              caps="1.7K"
               actions={(
                 <SidebarChatActions>
+                  <SidebarChatEditAction />
                   <SidebarChatDeleteAction />
                 </SidebarChatActions>
               )}
@@ -173,7 +182,7 @@ export const BasicTariff: SidebarStory = {
           />
         )}
         name="Артём"
-        tokens="9 000 000 CAPS"
+        caps="9 000 000 CAPS"
         tariff={(
           <SidebarUserInfoBasicTariff />
         )}
@@ -199,7 +208,7 @@ export const PremiumTariff: SidebarStory = {
           />
         )}
         name="Артём"
-        tokens="2 000 000 000 000 000 CAPS"
+        caps="2 000 000 000 000 000 CAPS"
         tariff={(
           <SidebarUserInfoPremiumTariff />
         )}
@@ -225,7 +234,7 @@ export const EliteTariff: SidebarStory = {
           />
         )}
         name="Артём"
-        tokens="9 012 CAPS"
+        caps="9 012 CAPS"
         tariff={(
           <SidebarUserInfoEliteTariff />
         )}
@@ -235,6 +244,19 @@ export const EliteTariff: SidebarStory = {
           </SidebarUserInfoUpdateTariffButton>
         )}
       />
+    )
+  }
+};
+
+export const Empty: SidebarStory = {
+  args: {
+    ...EliteTariff.args,
+    children: (
+      <SidebarCollapse label="Список чатов">
+        <SidebarEmpty>
+          На данный момент у вас нет чатов
+        </SidebarEmpty>
+      </SidebarCollapse>
     )
   }
 };
@@ -258,7 +280,7 @@ export const Skeleton: SidebarStory = {
           />
         )}
         name="Артём"
-        tokens="9 012 CAPS"
+        caps="9 012 CAPS"
         tariff={(
           <SidebarUserInfoFreeTariff />
         )}
@@ -298,9 +320,9 @@ export const SkeletonClosed: SidebarStory = {
 };
 
 export default {
-  title: 'UI Components/Sidebar',
+  title: 'Components/Sidebar',
   component: Sidebar,
-  decorators: [ThemeStoryDecorator()],
+  decorators: [StoryDecorator()],
   argTypes: {
     children: {
       table: {

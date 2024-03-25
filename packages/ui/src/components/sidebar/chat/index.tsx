@@ -4,7 +4,7 @@ import {
   SidebarChatLeft, 
   SidebarChatName, 
   SidebarChatNameSkeleton, 
-  SidebarChatNumbers, 
+  SidebarChatCaps, 
   SidebarChatRight, 
   SidebarChatStyled 
 } from './styled';
@@ -15,7 +15,7 @@ import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 export interface SidebarChatDefaultProps {
   color: string;
   name: string;
-  numbers?: string;
+  caps?: string;
   active?: boolean;
   actions?: React.ReactNode;
   skeleton?: false;
@@ -67,21 +67,43 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
             as={Skeleton}
           />
         )}
-        <SidebarChatName
-          $open={isOpen}
+        <Tooltip
+          {...(!props.skeleton && {
+            label: props.name
+          })}
+          placement="top-left"
+          disabled={props.skeleton || props.name.length <= 16 || !isOpen}
         >
-          {!props.skeleton && props.name}
-          {props.skeleton && <SidebarChatNameSkeleton />}
-        </SidebarChatName>
+          <TooltipConsumer>
+            {({
+              handleTooltipMouseEnter,
+              handleTooltipMouseLeave
+            }) => (
+              <SidebarChatName
+                $open={isOpen}
+                onMouseEnter={handleTooltipMouseEnter}
+                onMouseLeave={handleTooltipMouseLeave}
+              >
+                {!props.skeleton && (
+                  <>
+                    {props.name.slice(0, 16)}
+                    {props.name.length > 16 && '...'}
+                  </>
+                )}
+                {props.skeleton && <SidebarChatNameSkeleton />}
+              </SidebarChatName>
+            )}
+          </TooltipConsumer>
+        </Tooltip>
         {!props.skeleton && props.actions}
       </SidebarChatLeft>
       <SidebarChatRight>
-        {(!props.skeleton && props.numbers) && (
-          <SidebarChatNumbers
+        {(!props.skeleton && props.caps) && (
+          <SidebarChatCaps
             $open={isOpen}
           >
-            {props.numbers}
-          </SidebarChatNumbers>
+            {props.caps}
+          </SidebarChatCaps>
         )}
       </SidebarChatRight>
     </SidebarChatStyled>

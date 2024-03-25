@@ -7,8 +7,8 @@ export interface TextAreaFieldStyledProps {
   $disabled: boolean;
 }
 
-export const TextAreaFieldStyled = styled.label<TextAreaFieldStyledProps>`
-  display: flex;
+export const TextAreaFieldStyled = styled.div<TextAreaFieldStyledProps>`
+  display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
@@ -25,8 +25,12 @@ export const TextAreaFieldStyled = styled.label<TextAreaFieldStyledProps>`
 `;
 
 export const TextAreaFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
   cursor: inherit;
+  width: 100%;
 `;
 
 export interface TextAreaFieldBlockProps {
@@ -94,7 +98,7 @@ export const TextAreaFieldTextArea = styled.textarea`
   border: none;
   padding: 14px 16px;
   color: ${({ theme }) => theme.colors.base.white};
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
+  font-weight: 400;
   font-size: 14px;
   line-height: 18px;
   cursor: inherit;

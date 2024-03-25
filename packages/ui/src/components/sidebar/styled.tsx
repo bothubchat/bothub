@@ -18,28 +18,19 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   overflow: hidden;
   box-sizing: border-box;
   transition: all 0.3s;
-  padding: 24px 20px;
+  padding: 18px;
+  padding-right: 9px;
   ${({ $open }) => $open && css`
-    min-width: 445px;
-    max-width: 445px;
+    min-width: 352px;
+    max-width: 352px;
   `}
   ${({ $open }) => !$open && css`
     min-width: 74px;
     max-width: 74px;
   `}
-  @media (max-width: 1700px) {
-    padding: 18px;
-    ${({ $open }) => $open && css`
-      min-width: 302px;
-      max-width: 302px;
-    `}
-    ${({ $open }) => !$open && css`
-      min-width: 74px;
-      max-width: 74px;
-    `}
-  }
   @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
     padding: 14px;
+    padding-right: 7px;
     ${({ $open }) => $open && css`
       min-width: 302px;
       max-width: 302px;
@@ -49,6 +40,7 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
       max-width: 62px;
     `}
   }
+  max-height: 100vh;
 `;
 
 export const SidebarContent = styled.div`
@@ -58,6 +50,7 @@ export const SidebarContent = styled.div`
   justify-content: space-between;
   width: 100%;
   height: 100%;
+  overflow: hidden;
 `;
 
 export const SidebarHead = styled.div`
@@ -65,6 +58,16 @@ export const SidebarHead = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
+  ${adaptive({
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
+      padding-right: 9px;
+    `,
+    tablet: css`
+      padding-right: 7px;
+    `
+  })}
 `;
 
 export const SidebarTop = styled.div`
@@ -79,6 +82,16 @@ export const SidebarTop = styled.div`
 export const SidebarBottom = styled.div`
   display: flex;
   width: 100%;
+  ${adaptive({
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
+      padding-right: 9px;
+    `,
+    tablet: css`
+      padding-right: 7px;
+    `
+  })}
 `;
 
 export const SidebarBody = styled.div`
@@ -102,7 +115,7 @@ export const SidebarBody = styled.div`
 export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs({ 
   variant: 'secondary',
   scrollShadows: {
-    size: 140,
+    size: 90,
     top: <ScrollbarShadow side="top" />,
     bottom: <ScrollbarShadow side="bottom" />
   }
@@ -117,4 +130,14 @@ export const SidebarBodyContent = styled.div`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
+  ${adaptive({
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
+      padding-right: 9px;
+    `,
+    tablet: css`
+      padding-right: 7px;
+    `
+  })}
 `;

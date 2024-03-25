@@ -1,7 +1,8 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
-import { EditIcon, TrashIcon } from '@/ui/icons';
+import { EditIcon } from '@/ui/icons/edit';
+import { TrashIcon } from '@/ui/icons/trash';
 import { Skeleton } from '@/ui/components/skeleton';
 import { adaptive } from '@/ui/adaptive';
 
@@ -37,22 +38,34 @@ export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-mediu
   margin-left: 8px;
   white-space: nowrap;
   transition: opacity 0.3s;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 260px;
-  @media (max-width: 1700px) {
-    max-width: 140px;
-  }
+  ${adaptive({
+    desktop: css`
+      max-width: 160px;
+    `,
+    tablet: css`
+      max-width: 130px;
+    `,
+    mobile: css`
+      max-width: 130px;
+    `
+  })}
   ${({ $open }) => !$open && css`
     opacity: 0 !important;
   `}
 `;
 
 export const SidebarChatNameSkeleton = styled(Skeleton)`
-  width: 200px;
-  @media (max-width: 1700px) {
-    width: 140px;
-  }
+  ${adaptive({
+    desktop: css`
+      width: 160px;
+    `,
+    tablet: css`
+      width: 130px;
+    `,
+    mobile: css`
+      width: 130px;
+    `
+  })}
 `;
 
 export const SidebarChatActions = styled.div`
@@ -65,11 +78,11 @@ export const SidebarChatEditAction = styled(Button).attrs({ variant: 'text', chi
 
 export const SidebarChatDeleteAction = styled(Button).attrs({ variant: 'text', children: <TrashIcon /> })``;
 
-export interface SidebarChatNumbersProps {
+export interface SidebarChatCapsProps {
   $open: boolean;
 }
 
-export const SidebarChatNumbers = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })<SidebarChatNumbersProps>`
+export const SidebarChatCaps = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })<SidebarChatCapsProps>`
   display: inline-flex;
   padding: 4px 8px;
   background: ${({ theme }) => theme.colors.grayScale.gray2};
@@ -99,14 +112,14 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
     return css`
       ${SidebarChatColor},
       ${SidebarChatName},
-      ${SidebarChatNumbers},
+      ${SidebarChatCaps},
       ${SidebarChatActions} {
         opacity: 0.4;
       }
       &:hover {
         ${SidebarChatColor},
         ${SidebarChatName},
-        ${SidebarChatNumbers},
+        ${SidebarChatCaps},
         ${SidebarChatActions} {
           opacity: 1;
         }

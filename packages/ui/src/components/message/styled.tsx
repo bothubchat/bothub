@@ -1,14 +1,18 @@
-import { styled, css, keyframes } from 'styled-components';
-import Markdown from 'react-markdown';
-import { AnimationProps, motion } from 'framer-motion';
-import React from 'react';
+import { styled, css } from 'styled-components';
 import { Avatar } from '@/ui/components/avatar';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
-import { EditIcon } from '@/ui/icons';
-import { MessageVariant } from './types';
+import { ArrowNarrowDownIcon } from '@/ui/icons/arrow-narrow-down';
+import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
+import { ArrowNarrowRightIcon } from '@/ui/icons/arrow-narrow-right';
+import { ArrowNarrowUpIcon } from '@/ui/icons/arrow-narrow-up';
+import { EditIcon } from '@/ui/icons/edit';
+import { MessageColor, MessageVariant } from './types';
 import { adaptive } from '@/ui/adaptive';
 import { useMessage } from './context';
+import { Badge } from '@/ui/components/badge';
+import { Scrollbar } from '@/ui/components/scrollbar';
+import { MessageImageButton, MessageImageButtonZoneWrapper } from './components/image/button';
 
 export interface MessageStyledProps {
   $variant: MessageVariant;
@@ -53,16 +57,17 @@ export interface MessageContentProps {
 
 export const MessageContent = styled.div<MessageContentProps>`
   display: grid;
-  grid-template-areas: "avatar block actions" ". tokens .";
   column-gap: 10px;
   ${({ $variant }) => {
     switch ($variant) {
       case 'user':
         return css`
-          grid-template-areas: "actions block avatar" ". tokens .";
+          grid-template-areas: ". top ." "actions block avatar" ". buttons .";
         `;
       case 'assistant':
-        return css``;
+        return css`
+          grid-template-areas: ". top ." "avatar block actions" ". buttons .";
+        `;
     }
   }}
   ${adaptive({
@@ -78,6 +83,43 @@ export const MessageContent = styled.div<MessageContentProps>`
   })}
 `;
 
+export const MessageTop = styled.div`
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  grid-area: top;
+  margin-bottom: 8px;
+`;
+
+export const MessageSender = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+export interface MessageNameProps {
+  $color: MessageColor;
+}
+
+export const MessageName = styled(Typography).attrs({ variant: 'body-m-regular' })<MessageNameProps>`
+  color: ${({ theme, $color }) => {
+    switch ($color) {
+      case 'green':
+        return theme.mode === 'dark' ? theme.default.colors.base.white : theme.colors.gpt3;
+      case 'purple':
+        return theme.mode === 'dark' ? theme.default.colors.base.white : theme.colors.gpt4;
+      default:
+        return theme.colors.base.white;
+    }
+  }};
+`;
+
+export const MessageTags = styled.div``;
+
+export const MessageTag = styled(Badge)``;
+
 export const MessageAvatar = styled(Avatar)`
   grid-area: avatar;
   align-self: flex-end;
@@ -85,6 +127,9 @@ export const MessageAvatar = styled(Avatar)`
 
 export interface MessageBlockProps {
   $variant: MessageVariant;
+  $color: MessageColor;
+  $hexColor: string;
+  $skeleton: boolean;
 }
 
 export const MessageBlock = styled.div<MessageBlockProps>`
@@ -92,20 +137,21 @@ export const MessageBlock = styled.div<MessageBlockProps>`
   grid-area: block;
   border-radius: 10px;
   overflow: hidden;
-  ${({ theme, $variant }) => {
+  width: 100%;
+  overflow: auto;
+  ${({ $variant }) => {
     switch ($variant) {
       case 'user':
         return css`
-          background: ${theme.colors.accent.primary};
           border-bottom-right-radius: 0px;
         `;
       case 'assistant':
         return css`
-          background: ${theme.colors.grayScale.gray2};
           border-bottom-left-radius: 0px;
         `;
     }
   }}
+  background: ${({ $hexColor }) => $hexColor};
   ${adaptive({
     variant: 'dashboard',
     merge: true,
@@ -118,73 +164,26 @@ export const MessageBlock = styled.div<MessageBlockProps>`
   })}
 `;
 
-export const messageTextCursorOpacity = keyframes`
-  from {
-    opacity: 0.75;
-  }
-  50% {
-    opacity: 0;
-  }
-  to {
-    opacity: 0.75;
-  }
+export const MessageBlockScrollbarWrapper = styled(Scrollbar).attrs({ variant: 'secondary' })``;
+
+export const MessageBlockContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  grid-area: block;
+  border-radius: 10px;
 `;
 
-export interface MessageMarkdownProps {
-  $typing: boolean;
-}
-
-export const MessageMarkdown = styled(Markdown)<MessageMarkdownProps>`
-  display: block;
-  width: 100%;
-  color: ${({ theme }) => theme.colors.base.white};
-  font-family: ${({ theme }) => theme.fonts.ibmPlexSans.regular};
-  font-size: 16px;
-  line-height: 22px;
-  > *:first-child {
-    margin-top: 0px;
-  }
-  > *:last-child {
-    margin-bottom: 0px;
-  }
-  ${({ $typing }) => $typing && css`
-    > *:last-child {
-      &:after {
-        display: inline-block;
-        width: 6px;
-        height: 21px;
-        border-radius: 3px;
-        flex-shrink: 0;
-        background: ${({ theme }) => theme.colors.base.white};
-        vertical-align: text-top;
-        animation: ${messageTextCursorOpacity} 0.9s infinite;
-        content: '';
-        @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-          height: 17px;
-        }
-      }
-    }
-  `}
-`;
-
-export const MessageTextCursor: React.FC<AnimationProps> = styled(motion.span)`
-  display: inline-flex;
-  width: 6px;
-  height: 22px;
-  border-radius: 3px;
-  flex-shrink: 0;
-  background: ${({ theme }) => theme.colors.base.white};
-  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    height: 18px;
-  }
-`;
-
-export const MessageTokens = styled(Typography).attrs({ variant: 'body-m-regular' })`
-  grid-area: tokens;
-  justify-self: flex-end;
+export const MessageTransaction = styled(Typography).attrs({ variant: 'body-m-regular' })`
   text-transform: uppercase;
-  color: ${({ theme }) => theme.colors.accent.primary};
-  margin-top: 8px;
+  color: ${({ theme }) => {
+    if (theme.mode === 'light') {
+      return theme.colors.accent.primary;
+    }
+
+    return theme.colors.grayScale.gray6;
+  }};
 `;
 
 export const MessageActions = styled.div`
@@ -194,7 +193,7 @@ export const MessageActions = styled.div`
   align-self: flex-end;
 `;
 
-export const MessageActionButton = styled(Button).attrs(() => {
+export const MessageAction = styled(Button).attrs(() => {
   const { typing } = useMessage();
 
   return { 
@@ -204,4 +203,28 @@ export const MessageActionButton = styled(Button).attrs(() => {
   };
 })``;
 
-export const MessageEditAction = styled(MessageActionButton).attrs({ children: <EditIcon /> })``;
+export const MessageEditAction = styled(MessageAction).attrs({ children: <EditIcon /> })``;
+
+export const MessageImageLeftArrowButton = styled(MessageImageButton).attrs({ variant: 'primary-transparent', zone: true, children: <ArrowNarrowLeftIcon /> })`
+  ${MessageImageButtonZoneWrapper} {
+    justify-content: flex-start;
+  }
+`;
+
+export const MessageImageRightArrowButton = styled(MessageImageButton).attrs({ variant: 'primary-transparent', zone: true, children: <ArrowNarrowRightIcon /> })`
+  ${MessageImageButtonZoneWrapper} {
+    justify-content: flex-end;
+  }
+`;
+
+export const MessageImageTopArrowButton = styled(MessageImageButton).attrs({ variant: 'primary-transparent', zone: true, children: <ArrowNarrowUpIcon /> })`
+  ${MessageImageButtonZoneWrapper} {
+    align-items: flex-start;
+  }
+`;
+
+export const MessageImageBottomArrowButton = styled(MessageImageButton).attrs({ variant: 'primary-transparent', zone: true, children: <ArrowNarrowDownIcon /> })`
+  ${MessageImageButtonZoneWrapper} {
+    align-items: flex-end;
+  }
+`;

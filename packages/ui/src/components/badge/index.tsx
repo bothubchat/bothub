@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { BadgeStyled, BadgeText } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { BadgeVariant } from './types';
+import { ErrorIcon } from '@/ui/icons/error';
+import { useTooltip } from '@/ui/components/tooltip';
 
-export interface BadgeProps extends React.ComponentProps<'span'> {
+export interface BadgeProps extends React.ComponentProps<'div'> {
   variant?: BadgeVariant;
   icon?: React.ReactNode;
+  brick?: boolean;
+  rounded?: boolean;
 }
 
 export const Badge: React.FC<BadgeProps> = ({
-  variant = 'info', icon, children, ...props
+  variant = 'info', icon, brick = false, rounded = true, children, ...props
 }) => {
   const theme = useTheme();
 
@@ -24,16 +28,36 @@ export const Badge: React.FC<BadgeProps> = ({
       break;
   }
 
+  const {
+    handleTooltipMouseEnter,
+    handleTooltipMouseLeave
+  } = useTooltip();
+
+  const handleMouseEnter = useCallback<React.MouseEventHandler<HTMLDivElement>>((event) => {
+    props.onMouseEnter?.(event);
+    handleTooltipMouseEnter(event);
+  }, [props.onMouseEnter, handleTooltipMouseEnter]);
+  const handleMouseLeave = useCallback<React.MouseEventHandler<HTMLDivElement>>((event) => {
+    props.onMouseLeave?.(event);
+    handleTooltipMouseLeave(event);
+  }, [props.onMouseLeave, handleTooltipMouseLeave]);
+
   return (
     <BadgeStyled
-      $variant={variant} 
+      $variant={variant}
+      $brick={brick}
+      $rounded={rounded}
       {...props}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <IconProvider
-        size={12}
+        size={variant === 'error' ? 16 : 12}
         fill={iconFill}
       >
-        {icon}
+        {variant === 'error' && (icon ?? (
+          <ErrorIcon />
+        ))}
       </IconProvider>
       {typeof children !== 'string' && children}
       {typeof children === 'string' && (
@@ -49,3 +73,4 @@ export const Badge: React.FC<BadgeProps> = ({
 
 export * from './types';
 export * from './styled';
+export * from './progress';

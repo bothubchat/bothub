@@ -1,7 +1,8 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { ArrowDownIcon } from '@/ui/icons';
+import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { Skeleton } from '@/ui/components/skeleton';
+import { SelectFieldPlacement, SelectFieldSize } from './types';
 
 export interface SelectFieldStyledProps {
   $fullWidth: boolean;
@@ -26,24 +27,23 @@ export const SelectFieldStyled = styled.div<SelectFieldStyledProps>`
 `;
 
 export const SelectFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
   cursor: inherit;
-`;
-
-export const SelectFieldSelect = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 100%;
 `;
 
-export interface SelectFieldHeadProps {
+export interface SelectFieldInputProps {
   $open: boolean;
   $error: boolean;
   $disabled: boolean;
   $skeleton: boolean;
+  $blur: boolean;
 }
 
-export const SelectFieldHead = styled.div<SelectFieldHeadProps>`
+export const SelectFieldInput = styled.div<SelectFieldInputProps>`
   display: flex;
   align-items: center;
   width: 100%;
@@ -67,13 +67,19 @@ export const SelectFieldHead = styled.div<SelectFieldHeadProps>`
   border-radius: 10px;
   padding: 14px 16px;
   box-sizing: border-box;
-  background: ${({ theme, $disabled, $skeleton }) => {
+  background: ${({
+    theme, $disabled, $skeleton, $blur 
+  }) => {
     if ($disabled || $skeleton) {
       return theme.colors.grayScale.gray3;
+    }
+    if ($blur) {
+      return theme.mode === 'light' ? 'rgba(255, 255, 255, 0.65)' : 'rgba(18, 24, 37, 0.75)';
     }
 
     return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
   }};
+  backdrop-filter: blur(16px);
   cursor: ${({ $disabled, $skeleton }) => {
     if ($skeleton) {
       return 'progress';
@@ -91,48 +97,6 @@ export const SelectFieldHead = styled.div<SelectFieldHeadProps>`
       border-color: ${theme.colors.accent.primary};
     }
   `}
-`;
-
-export const SelectFieldBody = styled.div`
-  display: flex;
-  position: relative;
-  width: 100%;
-  box-sizing: border-box;
-`;
-
-export const SelectFieldBodyBackgroundWrapper = styled.div`
-  display: flex;
-  position: absolute;
-  z-index: ${({ theme }) => theme.zIndex.select};
-  top: 10px;
-  width: inherit;
-  box-sizing: border-box;
-  padding: 6px 8px;
-  padding-right: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  border-radius: 10px;
-  background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4)};
-`;
-
-export const SelectFieldScrollbarWrapper = styled.div`
-  display: flex;
-  width: inherit;
-  max-height: 185px;
-  overflow: auto;
-  padding-right: 4px;
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.accent.primary};
-    border-radius: 2px;
-  }
-`;
-
-export const SelectFieldBodyContent = styled.div`
-  display: flex;
-  width: inherit;
 `;
 
 export const SelectFieldValue = styled.span`
@@ -176,69 +140,62 @@ export const SelectFieldPlaceholder = styled(Typography).attrs({ variant: 'input
 
 export const SelectFieldArrow = styled(ArrowDownIcon).attrs({ size: 16 })``;
 
-export const SelectFieldOptionList = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-export interface SelectFieldOptionProps {
-  $selected: boolean;
+export interface SelectFieldBlockProps {
+  $contentWidth?: number;
 }
 
-export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
+export const SelectFieldBlock = styled.div<SelectFieldBlockProps>`
   display: flex;
-  align-items: center;
-  padding: 8px;
-  border-radius: 6px;
-  gap: 8px;
-  ${({ theme, $selected }) => {
-    if ($selected) {
-      return css`
-        cursor: default;
-        background: ${({ theme }) => theme.colors.accent.primary};
-      `;
+  position: absolute;
+  z-index: ${({ theme }) => theme.zIndex.select};
+  width: ${({ $contentWidth }) => $contentWidth}px;
+  min-width: 200px;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+export interface SelectFieldBlockPositionWrapperProps {
+  $blur: boolean;
+  $placement: SelectFieldPlacement;
+}
+
+export const SelectFieldBlockPositionWrapper = styled.div<SelectFieldBlockPositionWrapperProps>`
+  display: flex;
+  position: absolute;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 8px;
+  padding-right: 4px;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border-radius: 10px;
+  background: ${({ theme, $blur }) => {
+    if ($blur) {
+      return theme.mode === 'light' ? 'rgba(255, 255, 255, 0.65)' : 'rgba(18, 24, 37, 0.75)';
     }
 
-    return css`
-      cursor: pointer;
-      &:hover {
-        background: ${theme.mode === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'};
-      }
-    `;
+    return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
+  }};
+  backdrop-filter: blur(16px);
+  ${({ $placement }) => {
+    switch ($placement) {
+      case 'bottom-left':
+        return css`
+          top: 0px;
+          margin-top: 10px;
+        `;
+      case 'top-left':
+      case 'top-right':
+        return css`
+          bottom: 0px;
+          margin-bottom: 10px;
+        `;
+    }
   }}
 `;
 
-export interface SelectFieldOptionColorProps {
-  $color: string;
-}
-
-export const SelectFieldOptionColor = styled.span<SelectFieldOptionColorProps>`
-  display: inline-flex;
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-  border-radius: 4px;
-  ${({ $color }) => css`
-    background: ${$color};
-  `}
-`;
-
-export interface SelectFieldOptionTextProps {
-  $selected: boolean;
-}
-
-export const SelectFieldOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldOptionTextProps>`
-  color: ${({ theme, $selected }) => ($selected ? theme.default.colors.base.white : theme.colors.base.white)};
-`;
-
-export interface SelectFieldColorOptionTextProps {
-  $selected: boolean;
-}
-
-export const SelectFieldColorOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldColorOptionTextProps>`
-  color: ${({ theme, $selected }) => ($selected ? theme.default.colors.base.white : theme.colors.base.white)};
+export const SelectFieldBlockContent = styled.div`
+  display: flex;
+  width: 100%;
 `;
 
 export const SelectFieldErrorText = styled(Typography).attrs({ variant: 'input-sm' })`
@@ -250,4 +207,57 @@ export const SelectFieldErrorText = styled(Typography).attrs({ variant: 'input-s
 export const SelectFieldSkeleton = styled(Skeleton)`
   width: 100%;
   height: 18px;
+`;
+
+export interface SelectFieldGroupsProps {
+  $size: SelectFieldSize;
+}
+
+export const SelectFieldGroups = styled.div<SelectFieldGroupsProps>`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  gap: ${({ $size }) => {
+    switch ($size) {
+      case 'small':
+        return 4;
+      case 'md':
+        return 6;
+    }
+  }}px;
+`;
+
+export interface SelectFieldGroupProps {
+  $size: SelectFieldSize;
+  $disableScrollbar: boolean;
+}
+
+export const SelectFieldGroup = styled.div<SelectFieldGroupProps>`
+  display: flex;
+  width: inherit;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding-right: 4px;
+  width: 100%;
+  ${({ $disableScrollbar, $size }) => !$disableScrollbar && css`
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: ${({ theme }) => theme.colors.accent.primary};
+      border-radius: 2px;
+    }
+    &::-webkit-scrollbar-corner {
+      display: none;
+    }
+    max-height: ${() => {
+    switch ($size) {
+      case 'small':
+        return 186;
+      case 'md':
+        return 186;
+    }
+  }}px;
+  `}
 `;

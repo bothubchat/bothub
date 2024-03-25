@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { AIIcon } from '@/ui/icons';
 import { Badge } from '.';
 
@@ -20,10 +20,52 @@ export const Icon: BadgeStory = {
   }
 };
 
+export const Blue: BadgeStory = {
+  args: {
+    ...Icon.args,
+    variant: 'blue'
+  }
+};
+
+export const Success: BadgeStory = {
+  args: {
+    ...Icon.args,
+    variant: 'success'
+  }
+};
+
+export const Critic: BadgeStory = {
+  args: {
+    ...Icon.args,
+    variant: 'critic'
+  }
+};
+
+export const Info: BadgeStory = {
+  args: {
+    ...Icon.args,
+    variant: 'info'
+  }
+};
+
+export const Brick: BadgeStory = {
+  args: {
+    ...Icon.args,
+    brick: true
+  }
+};
+
+export const Error: BadgeStory = {
+  args: {
+    variant: 'error',
+    children: 'Ошибка генерации'
+  }
+};
+
 export default {
   title: 'UI Components/Badge',
   component: Badge,
-  decorators: [ThemeStoryDecorator()],
+  decorators: [StoryDecorator()],
   argTypes: {
     icon: {
       table: {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Accordion } from '.';
-import { ThemeStoryDecorator } from '../../theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 
 export type AccordionMeta = Meta<typeof Accordion>;
 
@@ -16,5 +16,5 @@ export const Basic: AccordionStory = {
 export default {
   title: 'UI Components/Accordion',
   component: Accordion,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as AccordionMeta;

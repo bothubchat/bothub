@@ -7,7 +7,7 @@ import esbuild from 'rollup-plugin-esbuild';
 import postcss from 'rollup-plugin-postcss';
 import image from '@rollup/plugin-image';
 import alias from '@rollup/plugin-alias';
-import dts from 'rollup-plugin-dts';
+import typescript from '@rollup/plugin-typescript';
 import { readFileSync } from 'fs';
 import del from 'rollup-plugin-delete';
 import terser from '@rollup/plugin-terser';
@@ -39,7 +39,7 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
   ];
   const aliasPlugin: Plugin = alias({
     entries: [
-      { find: '@/ui', replacement: srcPath }
+      { find: `@/${packageName}`, replacement: srcPath }
     ]
   });
 
@@ -94,24 +94,16 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
           include: ['**/*.png', '**/*.svg', '**/*.webp']
         }),
         postcss(),
-        terser()
-      ],
-      external
-    },
-    {
-      input: join(srcPath, './index.ts'),
-      output: [
-        {
-          file: join(distPath, './index.d.ts'),
-          format: 'es'
-        }
-      ],
-      plugins: [
-        dts(),
-        aliasPlugin,
-        postcss({
-          inject: false,
-          extract: false
+        terser(),
+        typescript({
+          tsconfig: join(packagePath, './tsconfig.json'),
+          rootDir: srcPath,
+          declaration: true,
+          declarationDir: distPath,
+          exclude: [
+            './**/*.stories.ts',
+            './**/*.stories.tsx'
+          ]
         })
       ],
       external

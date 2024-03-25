@@ -1,1 +1,1 @@
-export type AvatarVariant = 'my' | 'default' | 'bot';
+export type AvatarVariant = 'user' | 'default' | 'bot';

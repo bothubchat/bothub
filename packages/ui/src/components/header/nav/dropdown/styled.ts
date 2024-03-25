@@ -1,7 +1,7 @@
 import { styled, css } from 'styled-components';
 import { motion } from 'framer-motion';
 import { HeaderNavLinkStyled } from '../link/styled';
-import { ArrowDownIcon } from '@/ui/icons';
+import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 
 export const HeaderNavDropdownStyled = styled.div<{ $inMenu: boolean }>`
   display: flex;

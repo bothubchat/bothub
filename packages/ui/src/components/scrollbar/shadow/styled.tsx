@@ -13,6 +13,7 @@ export interface ScrollbarShadowStyledProps {
 export const ScrollbarShadowStyled = styled.span<ScrollbarShadowStyledProps>`
   display: inline-flex;
   position: absolute;
+  z-index: ${({ theme }) => theme.zIndex.scrollbarShadow};
   pointer-events: none;
   overflow: hidden;
   ${({ $side }) => {

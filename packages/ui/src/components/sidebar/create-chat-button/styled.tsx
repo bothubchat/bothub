@@ -1,6 +1,6 @@
 import { css, styled } from 'styled-components';
 import { Button } from '@/ui/components/button';
-import { Plus1Icon } from '@/ui/icons';
+import { Plus1Icon } from '@/ui/icons/plus-1';
 
 export interface SidebarCreateChatButtonContainerProps {
   $open: boolean;

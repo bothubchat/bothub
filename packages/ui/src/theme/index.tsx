@@ -1,7 +1,6 @@
-import '../styles';
 import './styled.d.ts';
-import React, { useContext, useMemo } from 'react';
-import { ThemeProvider as StyledThemeProvider, ThemeContext, createGlobalStyle } from 'styled-components';
+import React, { useMemo } from 'react';
+import { ThemeProvider as StyledThemeProvider, createGlobalStyle } from 'styled-components';
 import { DefaultTheme, Theme, ThemeMode } from './types';
 
 export const StorybookGlobalStyle = createGlobalStyle`
@@ -45,15 +44,9 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         orange: '#F29C1C',
         purple: '#941CF2',
         aqua: '#1CB2F2',
-        green: '#1ABB34'
-      },
-      fonts: {
-        ibmPlexSans: {
-          bold: '"IBMPlexSans Bold"',
-          semiBold: '"IBMPlexSans SemiBold"',
-          medium: '"IBMPlexSans Medium"',
-          regular: '"IBMPlexSans Regular"'
-        }
+        green: '#1ABB34',
+        gpt3: '#28A08C',
+        gpt4: '#735FFA'
       },
       tablet: {
         maxWidth: '1060px'
@@ -63,14 +56,15 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
         minWidth: '400px'
       },
       zIndex: {
-        headerMenu: 2,
-        header: 3,
-        backdrop: 4,
-        menu: 5,
-        modal: 6,
-        select: 7,
-        notifications: 8,
-        tooltip: 9
+        scrollbarShadow: 2,
+        headerMenu: 3,
+        header: 4,
+        backdrop: 5,
+        menu: 6,
+        modal: 7,
+        select: 8,
+        notifications: 9,
+        tooltip: 10
       },
       header: {
         height: '89px',
@@ -95,10 +89,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
           maxWidth: '1060px'
         },
         miniTablet: {
-          maxWidth: '800px'
+          maxWidth: '900px'
         },
         mobile: {
-          maxWidth: '550px',
+          maxWidth: '600px',
           minWidth: '400px'
         }
       }
@@ -155,14 +149,5 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   );
 };
 
-export function useTheme(): Theme {
-  const value = useContext(ThemeContext);
-
-  if (!value) {
-    throw new Error('useTheme must be used within a ThemeProvider.');
-  }
-
-  return value;
-}
-
 export * from './types';
+export * from './hook';

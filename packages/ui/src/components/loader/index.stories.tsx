@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { ThemeStoryDecorator } from '@/ui/theme/story-decorator';
+import { StoryDecorator } from '@/ui/story-decorator';
 import { Loader } from '.';
 
 export type LoaderMeta = Meta<typeof Loader>;
@@ -11,5 +11,5 @@ export const Basic: LoaderStory = {};
 export default {
   title: 'UI Components/Loader',
   component: Loader,
-  decorators: [ThemeStoryDecorator()]
+  decorators: [StoryDecorator()]
 } as LoaderMeta;
