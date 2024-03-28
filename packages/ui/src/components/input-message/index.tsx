@@ -76,8 +76,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       return;
     }
 
-    textareaEl.style.height = '18px';
-    textareaEl.style.height = `${textareaEl.scrollHeight}px`;
+    textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 18px)';
+    textareaEl.style.height = `calc(var(--bothub-scale, 1) * ${event.currentTarget.scrollHeight}px)`;
 
     setTextareaHeight(`calc(var(--bothub-scale, 1) * ${event.currentTarget.scrollHeight}px)`);
   }, []);
@@ -135,6 +135,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     onSend?.(message, files);
     setMessage?.('');
     setFiles?.([]);
+    setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
   }, [message, files, onSend, setMessage, setFiles]);
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
@@ -154,6 +155,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         onSend?.(message, files);
         setMessage?.('');
         setFiles?.([]);
+        setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
       }
     }
   }, [isFocus, message, files, onSend, setMessage, setFiles]);
@@ -169,11 +171,16 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   useEffect(() => {
     const textareaEl: HTMLElement | null = textareaRef.current;
 
+    if (textareaEl && autoFocus) {
+      textareaEl.focus();
+    }
+  }, [disabled]);
+
+  useEffect(() => {
+    const textareaEl: HTMLElement | null = textareaRef.current;
+
     if (textareaEl === null) {
       return;
-    }
-    if (autoFocus) {
-      textareaEl.focus();
     }
 
     textareaEl.addEventListener('keydown', handleKeyDown);
