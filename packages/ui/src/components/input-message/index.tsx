@@ -48,6 +48,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   ...props
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [textareaHeight, setTextareaHeight] = useState('calc(var(--bothub-scale, 1) * 18px)');
 
   const [message, setMessage] = typeof initialMessage === 'string' ? [initialMessage, onChange] : useState('');
   const [files, setFiles] = typeof initialFiles === 'string' ? [initialFiles, onFilesChange] : useState<IInputMessageFile[]>([]);
@@ -67,6 +68,19 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     setMessage?.(event.target.value);
     onTextAreaChange?.(event);
   }, [setMessage, onTextAreaChange]);
+
+  const handleInput = useCallback<React.FormEventHandler<HTMLTextAreaElement>>((event) => {
+    const textareaEl: HTMLElement | null = textareaRef.current;
+
+    if (textareaEl === null) {
+      return;
+    }
+
+    textareaEl.style.height = '18px';
+    textareaEl.style.height = `${textareaEl.scrollHeight}px`;
+
+    setTextareaHeight(`calc(var(--bothub-scale, 1) * ${event.currentTarget.scrollHeight}px)`);
+  }, []);
 
   const handleUploadFileChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     async (event) => {
@@ -127,9 +141,12 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     event.stopPropagation();
 
     if (isFocus && event.key === 'Enter') {
-      if (event.shiftKey) {
+      if (event.shiftKey || event.ctrlKey) {
         if (message.trim() === '') {
           event.preventDefault();
+        }
+        if (event.ctrlKey) {
+          setMessage?.(`${message}\n`);
         }
       } else {
         event.preventDefault();
@@ -154,6 +171,9 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
     if (textareaEl === null) {
       return;
+    }
+    if (autoFocus) {
+      textareaEl.focus();
     }
 
     textareaEl.addEventListener('keydown', handleKeyDown);
@@ -221,12 +241,13 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               disabled={disabled || textAreaDisabled}
               style={{
                 ...props.style,
-                height: `calc(var(--bothub-scale, 1) * ${message.split('\n').length * 18}px)`
+                height: textareaHeight
               }}
               autoFocus={!disabled && autoFocus}
               onFocus={handleFocus}
               onBlur={handleBlur}
               onChange={handleChange}
+              onInput={handleInput}
             />
           )}
         </InputMessageMain>

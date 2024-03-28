@@ -76,6 +76,7 @@ export const InputMessageMain = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   gap: 14px;
   width: 100%;
 `;
@@ -95,7 +96,7 @@ export interface InputMessageTextAreaProps {
 
 export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   display: flex;
-  height: 18px;
+  height: auto;
   width: 100%;
   max-height: 270px;
   background: none;
