@@ -26,17 +26,20 @@ import { ImageFullScreenProvider } from './context';
 
 export type ImageFullScreenCloseEventHandler = () => unknown;
 
-export interface ImageFullScreenProps extends React.ComponentProps<'div'> {
+export type ImageFullScreenChangeEventHandler = (item: ImageFullScreenDataItem) => unknown;
+
+export interface ImageFullScreenProps extends Omit<React.ComponentProps<'div'>, 'onChange'> {
   open: boolean;
   data: ImageFullScreenData;
   item?: string | ImageFullScreenDataItem;
   author?: React.ReactNode;
   toolbar?: React.ReactNode;
+  onChange?: ImageFullScreenChangeEventHandler;
   onClose?: ImageFullScreenCloseEventHandler;
 }
 
 export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
-  open, data, item, author, toolbar, onClose
+  open, data, item, author, toolbar, onChange, onClose
 }) => {
   const sliderRef = useRef<SwiperRef>(null);
 
@@ -56,7 +59,15 @@ export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
 
   const handleSlideChange = useCallback((swiper: Swiper) => {
     setActiveSlideIndex(swiper.activeIndex);
-  }, []);
+
+    const item: ImageFullScreenDataItem | null = data.find((_, index) => (
+      index === swiper.activeIndex
+    )) ?? null;
+
+    if (item) {
+      onChange?.(item);
+    }
+  }, [data, onChange]);
 
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) {

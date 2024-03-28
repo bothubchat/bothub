@@ -57,22 +57,26 @@ export const InputMessageContent = styled.div`
   width: 100%;
 `;
 
-export const InputMessageUploadFile = styled.label`
+export const InputMessageUploadFile = styled.div`
   display: inline-flex;
 `;
 
-export const InputMessageUploadFileInput = styled.input`
+export const InputMessageUploadFileInput = styled.input.attrs({ id: 'inputMessageUploadFileInput' })`
   display: none;
 `;
 
-export const InputMessageUploadFileButton = styled(Button).attrs({ variant: 'secondary', component: 'span', children: <AttachIcon /> })`
+export const InputMessageUploadFileButton = styled(Button).attrs({
+  variant: 'secondary', component: 'label', for: 'inputMessageUploadFileInput', children: <AttachIcon /> 
+})`
   flex-shrink: 0;
+  user-select: none;
 `;
 
 export const InputMessageMain = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   gap: 14px;
   width: 100%;
 `;
@@ -92,8 +96,7 @@ export interface InputMessageTextAreaProps {
 
 export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   display: flex;
-  white-space: nowrap;
-  height: 18px;
+  height: auto;
   width: 100%;
   max-height: 270px;
   background: none;
