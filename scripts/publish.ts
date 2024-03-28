@@ -14,6 +14,11 @@ async function publish(): Promise<void> {
   }
 
   for (const packageFolderName of await readdir(path.resolve('./packages'))) {
+    if (packageFolderName.startsWith('.')) {
+      // eslint-disable-next-line no-continue
+      continue;
+    }
+
     const packageJsonPath = path.resolve('./packages/', packageFolderName, './package.json');
     // eslint-disable-next-line
     const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf-8'));
