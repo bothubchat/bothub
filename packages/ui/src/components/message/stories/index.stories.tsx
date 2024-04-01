@@ -50,6 +50,35 @@ export type MessageMeta = Meta<typeof Message>;
 
 export type MessageStory = StoryObj<typeof Message>;
 
+export const Basic: MessageStory = {
+  args: {
+    variant: 'assistant',
+    name: 'ChatGPT',
+    color: 'purple',
+    tags: (
+      <MessageTag>
+        gpt-4
+      </MessageTag>
+    ),
+    avatar: (
+      <MessageAvatar>
+        <Gpt4Icon />
+      </MessageAvatar>
+    ),
+    transaction: (
+      <MessageTransaction>
+        -1571 CAPS
+      </MessageTransaction>
+    ),
+    actions: (
+      <MessageActions>
+        <MessageCopyAction />
+      </MessageActions>
+    ),
+    children: "Certainly! To enhance the to-do list, let's add the ability to mark tasks as completed and style the components. We'll also refactor the code a bit for better organization.\n\n### Step 1: Update the `TodoList` Component\n\nWe will modify the `tasks` state to hold objects instead of strings, allowing us to track both the task name and its completion status.\n\n```jsx\nimport React, { useState } from 'react';\n\nfunction TodoList() {\n  const [tasks, setTasks] = useState([]);\n  const [newTask, setNewTask] = useState('');\n\n  const addTask = () => {\n    if (newTask.trim()) {\n      const updatedTasks = [\n        ...tasks,\n        { id: Date.now(), text: newTask.trim(), isCompleted: false },\n      ];\n      setTasks(updatedTasks);\n      setNewTask('');\n    }\n  };\n\n  const toggleTaskCompletion = (taskId) => {\n    const updatedTasks = tasks.map((task) =>\n      task.id === taskId ? { ...task, isCompleted: !task.isCompleted } : task\n    );\n    setTasks(updatedTasks);\n  };\n\n  const removeTask = (taskId) => {\n    setTasks(tasks.filter((task) => task.id !== taskId));\n  };\n\n  return (\n    <div>\n      <input\n        type=\"text\"\n        value={newTask}\n        onChange={(e) => setNewTask(e.target.value)}\n        placeholder=\"Add a new task\"\n      />\n      <button onClick={addTask}>Add Task</button>\n      <ul>\n        {tasks.map((task) => (\n          <li key={task.id} style={{ textDecoration: task.isCompleted ? 'line-through' : 'none' }}>\n            {task.text}\n            <button onClick={() => toggleTaskCompletion(task.id)}>Complete</button>\n            <button onClick={() => removeTask(task.id)}>Remove</button>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n}\n\nexport default TodoList;\n```\n\n### Step 2: Add Basic Styling\n\nNow let's add some basic styling. Update the `App.css` file with the following styles:\n\n```css\n.App {\n  text-align: center;\n}\n\n.App-header {\n  background-color: #282c34;\n  min-height: 100vh;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  font-size: calc(10px + 2vmin);\n  color: white;\n}\n\ninput {\n  padding: 10px;\n  margin: 10px;\n  font-size: 16px;\n}\n\nbutton {\n  padding: 10px;\n  margin: 10px;\n  font-size: 16px;\n}\n\nul {\n  list-style: none;\n  padding: 0;\n}\n\nli {\n  margin: 5px 0;\n}\n\nli button {\n  margin-left: 10px;\n}\n```\n\n### Step 3: Refactor to Smaller Components (optional)\n\nFor better code organization and readability, you might want to refactor the `TodoList` component into smaller components such as `TodoItem`.\n\nHere is an example of how you could refactor `TodoItem`:\n\n```jsx\nfunction TodoItem({ task, toggleTaskCompletion, removeTask }) {\n  return (\n    <li style={{ textDecoration: task.isCompleted ? 'line-through' : 'none' }}>\n      {task.text}\n      <button onClick={() => toggleTaskCompletion(task.id)}>Complete</button>\n      <button onClick={() => removeTask(task.id)}>Remove</button>\n    </li>\n  );\n}\n```\n\nThen, in your `TodoList` component, you would render `TodoItem` inside the map function:\n\n```jsx\n<ul>\n  {tasks.map((task) => (\n    <TodoItem\n      key={task.id}\n      task={task}\n      toggleTaskCompletion={toggleTaskCompletion}\n      removeTask={removeTask}\n    />\n  ))}\n</ul>\n```\n\nDon't forget to import `TodoItem` at the top of `TodoList.js`:\n\n```jsx\nimport TodoItem from './TodoItem';\n```\n\n### Conclusion:\n\nNow you have a styled to-do list with the functionality to add tasks, mark them as completed, and remove them. You can continue to enhance the application by adding features such as task editing, persistence (saving to local storage or a database), and user authentication."
+  }
+};
+
 export const Assistant: MessageStory = {
   args: {
     variant: 'assistant',
