@@ -9,7 +9,6 @@ import { ArrowNarrowUpIcon } from '@/ui/icons/arrow-narrow-up';
 import { EditIcon } from '@/ui/icons/edit';
 import { MessageColor, MessageVariant } from './types';
 import { adaptive } from '@/ui/adaptive';
-import { useMessage } from './context';
 import { Badge } from '@/ui/components/badge';
 import { Scrollbar } from '@/ui/components/scrollbar';
 import { MessageImageButton, MessageImageButtonZoneWrapper } from './components/image/button';
@@ -193,14 +192,9 @@ export const MessageActions = styled.div`
   align-self: flex-end;
 `;
 
-export const MessageAction = styled(Button).attrs(() => {
-  const { typing } = useMessage();
-
-  return { 
-    variant: 'text', 
-    iconSize: 18,
-    disabled: typing
-  };
+export const MessageAction = styled(Button).attrs({ 
+  variant: 'text', 
+  iconSize: 18
 })``;
 
 export const MessageEditAction = styled(MessageAction).attrs({ children: <EditIcon /> })``;
