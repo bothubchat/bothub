@@ -577,6 +577,7 @@ export const UserSkeleton: MessageStory = {
 export const UpdatedContent: MessageStory = {
   args: {
     ...Assistant.args,
+    typing: true,
     children: (
       React.createElement(() => {
         const [content, setContent] = useState('Updated content...');
@@ -585,7 +586,7 @@ export const UpdatedContent: MessageStory = {
           let number: number = 0;
 
           const interval = window.setInterval(() => {
-            setContent((content) => `${content} ${number++}`);
+            setContent((content) => `${content} \n\n**${number++}**`);
           }, 1000);
 
           return () => {

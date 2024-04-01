@@ -1,5 +1,5 @@
 import {
-  useCallback, useEffect, useMemo, useRef, useState 
+  useCallback, useMemo, useState 
 } from 'react';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
@@ -24,7 +24,7 @@ import {
   MessageTableRow,
   MessageTitle 
 } from '@/ui/components/message/components';
-import { MessageMarkdownStyled } from './styled';
+import { MessageMarkdownLine, MessageMarkdownStyled } from './styled';
 
 export interface MessageMarkdownProps {
   children: string;
@@ -54,36 +54,6 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
     }
   }, []);
 
-  const rangeRef = useRef<Range | null>(null);
-
-  const saveSelection = useCallback(() => {
-    if (window.getSelection) {
-      const selection = window.getSelection();
-
-      if (selection && selection.rangeCount > 0) {
-        const range = selection.getRangeAt(0);
-
-        console.log(range.startOffset, range.endOffset);
-
-        rangeRef.current = range;
-      }
-    }
-  }, []);
-  
-  const restoreSelection = useCallback(() => {
-    const selection = window.getSelection();
-    const range = rangeRef.current;
-
-    if (selection && range) {
-      selection.removeAllRanges();
-      selection.addRange(range);
-    }
-  }, []);
-  
-  useEffect(() => {
-    restoreSelection();
-  }, [children, saveSelection, restoreSelection]);
-
   return (
     <>
       {(isDisabled && typeof children === 'string') && (
@@ -95,194 +65,198 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
         </MessageParagraph>
       )}
       {(!isDisabled && typeof children === 'string') && (
-        <MessageMarkdownStyled
-          $typing={typing}
-          $color={color}
-          remarkPlugins={[remarkGfm, remarkMath]}
-          // @ts-ignore
-          rehypePlugins={[
-            ...(!rehypeError ? [
-              () => rehypeKatex({ strict: handleKatexStrict })
-            ] : []),
-          ]}
-          components={{
-            p: ({ children }) => (
-              <MessageParagraph>
-                {children}
-              </MessageParagraph>
-            ),
-            b: ({ children }) => (
-              <MessageBold>
-                {children}
-              </MessageBold>
-            ),
-            strong: ({ children }) => (
-              <MessageBold
-                component="strong"
-              >
-                {children}
-              </MessageBold>
-            ),
-            i: ({ children }) => (
-              <MessageItalic>
-                {children}
-              </MessageItalic>
-            ),
-            em: ({ children }) => (
-              <MessageItalic
-                component="em"
-              >
-                {children}
-              </MessageItalic>
-            ),
-            pre: ({ children }) => (
-              <MessagePre>
-                {children}
-              </MessagePre>
-            ),
-            code: ({ className, inline = false, children }) => {
-              const code = String(children);
-              if (!code) {
-                return null;
-              }
+        <MessageMarkdownStyled>
+          {children.split('\n\n').map((chunk, index) => (
+            <MessageMarkdownLine
+              $typing={typing}
+              $color={color}
+              key={index}
+              remarkPlugins={[remarkGfm, remarkMath]}
+              // @ts-ignore
+              rehypePlugins={[
+                ...(!rehypeError ? [
+                  () => rehypeKatex({ strict: handleKatexStrict })
+                ] : []),
+              ]}
+              components={{
+                p: ({ children }) => (
+                  <MessageParagraph>
+                    {children}
+                  </MessageParagraph>
+                ),
+                b: ({ children }) => (
+                  <MessageBold>
+                    {children}
+                  </MessageBold>
+                ),
+                strong: ({ children }) => (
+                  <MessageBold
+                    component="strong"
+                  >
+                    {children}
+                  </MessageBold>
+                ),
+                i: ({ children }) => (
+                  <MessageItalic>
+                    {children}
+                  </MessageItalic>
+                ),
+                em: ({ children }) => (
+                  <MessageItalic
+                    component="em"
+                  >
+                    {children}
+                  </MessageItalic>
+                ),
+                pre: ({ children }) => (
+                  <MessagePre>
+                    {children}
+                  </MessagePre>
+                ),
+                code: ({ className, inline = false, children }) => {
+                  const code = String(children);
+                  if (!code) {
+                    return null;
+                  }
 
-              if (inline) {
-                return (
-                  <MessageInlineCode>
-                    {code}
-                  </MessageInlineCode>
-                );
-              }
+                  if (inline) {
+                    return (
+                      <MessageInlineCode>
+                        {code}
+                      </MessageInlineCode>
+                    );
+                  }
   
-              return (
-                <MessageMultilineCode
-                  {...components.code}
-                  className={className}
-                >
-                  {code}
-                </MessageMultilineCode>
-              );
-            },
-            table: ({ children }) => (
-              <MessageTable>
-                {children}
-              </MessageTable>
-            ),
-            thead: ({ children }) => (
-              <MessageTableHead>
-                {children}
-              </MessageTableHead>
-            ),
-            tbody: ({ children }) => (
-              <MessageTableBody>
-                {children}
-              </MessageTableBody>
-            ),
-            tr: ({ children }) => (
-              <MessageTableRow>
-                {children}
-              </MessageTableRow>
-            ),
-            td: ({ children }) => (
-              <MessageTableCell>
-                {children}
-              </MessageTableCell>
-            ),
-            th: ({ children }) => (
-              <MessageTableCell
-                head
-              >
-                {children}
-              </MessageTableCell>
-            ),
-            ul: ({ children }) => (
-              <MessageList>
-                {children}
-              </MessageList>
-            ),
-            ol: ({ start, children }) => (
-              <MessageList
-                variant="number"
-                start={start}
-              >
-                {children}
-              </MessageList>
-            ),
-            li: ({ children }) => (
-              <MessageListItem>
-                {children}
-              </MessageListItem>
-            ),
-            h1: ({ children }) => (
-              <MessageTitle
-                variant="h1"
-              >
-                {children}
-              </MessageTitle>
-            ),
-            h2: ({ children }) => (
-              <MessageTitle
-                variant="h2"
-              >
-                {children}
-              </MessageTitle>
-            ),
-            h3: ({ children }) => (
-              <MessageTitle
-                variant="h3"
-              >
-                {children}
-              </MessageTitle>
-            ),
-            h4: ({ children }) => (
-              <MessageTitle
-                variant="h4"
-              >
-                {children}
-              </MessageTitle>
-            ),
-            h5: ({ children }) => (
-              <MessageTitle
-                variant="h5"
-              >
-                {children}
-              </MessageTitle>
-            ),
-            h6: ({ children }) => (
-              <MessageTitle
-                variant="h6"
-              >
-                {children}
-              </MessageTitle>
-            ),
-            a: ({ href, children }) => (
-              <MessageLink
-                href={href}
-                target="_blank"
-              >
-                {children}
-              </MessageLink>
-            ),
-            img: ({
-              src, width, height, alt 
-            }) => {
-              if (!src || !width || !height) {
-                return null;
-              }
+                  return (
+                    <MessageMultilineCode
+                      {...components.code}
+                      className={className}
+                    >
+                      {code}
+                    </MessageMultilineCode>
+                  );
+                },
+                table: ({ children }) => (
+                  <MessageTable>
+                    {children}
+                  </MessageTable>
+                ),
+                thead: ({ children }) => (
+                  <MessageTableHead>
+                    {children}
+                  </MessageTableHead>
+                ),
+                tbody: ({ children }) => (
+                  <MessageTableBody>
+                    {children}
+                  </MessageTableBody>
+                ),
+                tr: ({ children }) => (
+                  <MessageTableRow>
+                    {children}
+                  </MessageTableRow>
+                ),
+                td: ({ children }) => (
+                  <MessageTableCell>
+                    {children}
+                  </MessageTableCell>
+                ),
+                th: ({ children }) => (
+                  <MessageTableCell
+                    head
+                  >
+                    {children}
+                  </MessageTableCell>
+                ),
+                ul: ({ children }) => (
+                  <MessageList>
+                    {children}
+                  </MessageList>
+                ),
+                ol: ({ start, children }) => (
+                  <MessageList
+                    variant="number"
+                    start={start}
+                  >
+                    {children}
+                  </MessageList>
+                ),
+                li: ({ children }) => (
+                  <MessageListItem>
+                    {children}
+                  </MessageListItem>
+                ),
+                h1: ({ children }) => (
+                  <MessageTitle
+                    variant="h1"
+                  >
+                    {children}
+                  </MessageTitle>
+                ),
+                h2: ({ children }) => (
+                  <MessageTitle
+                    variant="h2"
+                  >
+                    {children}
+                  </MessageTitle>
+                ),
+                h3: ({ children }) => (
+                  <MessageTitle
+                    variant="h3"
+                  >
+                    {children}
+                  </MessageTitle>
+                ),
+                h4: ({ children }) => (
+                  <MessageTitle
+                    variant="h4"
+                  >
+                    {children}
+                  </MessageTitle>
+                ),
+                h5: ({ children }) => (
+                  <MessageTitle
+                    variant="h5"
+                  >
+                    {children}
+                  </MessageTitle>
+                ),
+                h6: ({ children }) => (
+                  <MessageTitle
+                    variant="h6"
+                  >
+                    {children}
+                  </MessageTitle>
+                ),
+                a: ({ href, children }) => (
+                  <MessageLink
+                    href={href}
+                    target="_blank"
+                  >
+                    {children}
+                  </MessageLink>
+                ),
+                img: ({
+                  src, width, height, alt 
+                }) => {
+                  if (!src || !width || !height) {
+                    return null;
+                  }
 
-              return (
-                <MessageImage
-                  src={src}
-                  width={Number.parseInt(width.toString())}
-                  height={Number.parseInt(height.toString())}
-                  alt={alt}
-                />
-              );
-            }
-          }}
-          onMouseUp={saveSelection}
-        >
-          {formattedChildren}
+                  return (
+                    <MessageImage
+                      src={src}
+                      width={Number.parseInt(width.toString())}
+                      height={Number.parseInt(height.toString())}
+                      alt={alt}
+                    />
+                  );
+                }
+              }}
+            >
+              {chunk}
+            </MessageMarkdownLine>
+          ))}
         </MessageMarkdownStyled>
       )}
     </>
