@@ -56,18 +56,20 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
 
   const markdownNode = useMemo(() => {
     const lines = children.split('\n\n');
-    const parsedLines: string[] = [];
+    const parsedLines = [];
     let inCodeBlock = false;
 
     for (const line of lines) {
-      if (inCodeBlock) {
-        parsedLines[parsedLines.length - 1] += `${line}\n\n`;
-      } else if (line.match(/\n([ ]*)```/g)) {
+      if (line.includes('```')) {
         inCodeBlock = !inCodeBlock;
 
         if (inCodeBlock) {
-          parsedLines.push(`${line}\n\n`);
+          parsedLines.push(`\n${line}\n\n`);
+        } else {
+          parsedLines[parsedLines.length - 1] += `${line}\n\n`;
         }
+      } else if (inCodeBlock) {
+        parsedLines[parsedLines.length - 1] += `${line}\n\n`;
       } else {
         parsedLines.push(line);
       }
