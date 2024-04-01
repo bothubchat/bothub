@@ -14,7 +14,7 @@ export interface MessageMultilineCodeCopyButtonProps {
 export const MessageMultilineCodeCopyButton: React.FC<MessageMultilineCodeCopyButtonProps> = ({
   code, messageVariant, messageColor
 }) => {
-  const { typing, onCodeCopy } = useMessage();
+  const { onCodeCopy } = useMessage();
 
   const [isFocus, setIsFocus] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
@@ -42,7 +42,6 @@ export const MessageMultilineCodeCopyButton: React.FC<MessageMultilineCodeCopyBu
       $focus={isFocus}
       $messageVariant={messageVariant}
       $messageColor={messageColor}
-      disabled={typing}
       onBlur={handleBlur}
       onClick={handleClick}
     >

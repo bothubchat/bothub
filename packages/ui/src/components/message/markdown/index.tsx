@@ -62,7 +62,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
     for (const line of lines) {
       if (inCodeBlock) {
         parsedLines[parsedLines.length - 1] += `${line}\n\n`;
-      } else if (line.match(/\n```/g)) {
+      } else if (line.match(/\n([ ]*)```/g)) {
         inCodeBlock = !inCodeBlock;
 
         if (inCodeBlock) {
