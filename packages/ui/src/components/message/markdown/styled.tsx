@@ -32,7 +32,7 @@ export interface MessageMarkdownStyledProps {
   $color: MessageColor;
 }
 
-export const MessageMarkdownLine = styled(React.memo(ReactMarkdown, (prevProps, nextProps) => prevProps.children === nextProps.children))<MessageMarkdownStyledProps>`
+export const MessageMarkdownLine = React.memo(styled(ReactMarkdown)<MessageMarkdownStyledProps>`
   display: block;
   width: 100%;
   color: ${({ theme }) => theme.colors.base.white};
@@ -87,7 +87,11 @@ export const MessageMarkdownLine = styled(React.memo(ReactMarkdown, (prevProps, 
       }
     }
   `}
-`;
+`, (prevProps, nextProps) => (
+  prevProps.children === nextProps.children
+  && prevProps.$typing === nextProps.$typing
+  && prevProps.$color === nextProps.$color
+));
 
 export const messageTextCursorOpacity = keyframes`
   from {

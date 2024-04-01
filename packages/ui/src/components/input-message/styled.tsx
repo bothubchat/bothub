@@ -66,7 +66,7 @@ export const InputMessageUploadFileInput = styled.input.attrs({ id: 'inputMessag
 `;
 
 export const InputMessageUploadFileButton = styled(Button).attrs({
-  variant: 'secondary', component: 'label', for: 'inputMessageUploadFileInput', children: <AttachIcon /> 
+  variant: 'secondary', component: 'label', htmlFor: 'inputMessageUploadFileInput', children: <AttachIcon /> 
 })`
   flex-shrink: 0;
   user-select: none;

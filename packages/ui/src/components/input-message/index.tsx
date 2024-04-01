@@ -1,5 +1,5 @@
 import React, {
-  useState, useCallback, useEffect, useRef 
+  useState, useCallback, useEffect, useRef, useLayoutEffect 
 } from 'react';
 import {
   InputMessageContent, 
@@ -69,7 +69,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     onTextAreaChange?.(event);
   }, [setMessage, onTextAreaChange]);
 
-  const handleInput = useCallback<React.FormEventHandler<HTMLTextAreaElement>>((event) => {
+  const handleInput = useCallback<React.ReactEventHandler<HTMLTextAreaElement>>((event) => {
     const textareaEl: HTMLElement | null = textareaRef.current;
 
     if (textareaEl === null) {
@@ -77,10 +77,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     }
 
     textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 18px)';
-    textareaEl.style.height = `calc(var(--bothub-scale, 1) * ${event.currentTarget.scrollHeight}px)`;
+    textareaEl.style.height = `${event.currentTarget.scrollHeight}px`;
     textareaEl.focus();
 
-    setTextareaHeight(`calc(var(--bothub-scale, 1) * ${event.currentTarget.scrollHeight}px)`);
+    setTextareaHeight(`${event.currentTarget.scrollHeight}px`);
   }, []);
 
   const handleUploadFileChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
@@ -190,6 +190,20 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       textareaEl.removeEventListener('keydown', handleKeyDown);
     };
   }, [handleKeyDown]);
+
+  if (typeof window !== 'undefined') {
+    useLayoutEffect(() => {
+      const textareaEl: HTMLElement | null = textareaRef.current;
+
+      if (textareaEl === null) {
+        return;
+      }
+
+      textareaEl.style.height = `${textareaEl.scrollHeight}px`;
+      textareaEl.focus();
+      textareaEl.scrollTop = textareaEl.scrollHeight;
+    }, [message]);
+  }
 
   return (
     <InputMessageStyled
