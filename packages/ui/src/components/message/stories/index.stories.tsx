@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import React, { useEffect, useState } from 'react';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import {
   Message, 
@@ -17,6 +18,7 @@ import {
   MessageImageLeftArrowButton, 
   MessageImageRightArrowButton, 
   MessageImageTopArrowButton, 
+  MessageMarkdown, 
   MessageTag,
   MessageTransaction
 } from '@/ui/components/message';
@@ -569,6 +571,35 @@ export const UserSkeleton: MessageStory = {
       </MessageAvatar>
     ),
     skeleton: true
+  }
+};
+
+export const UpdatedContent: MessageStory = {
+  args: {
+    ...Assistant.args,
+    children: (
+      React.createElement(() => {
+        const [content, setContent] = useState('Updated content...');
+
+        useEffect(() => {
+          let number: number = 0;
+
+          const interval = window.setInterval(() => {
+            setContent((content) => `${content} ${number++}`);
+          }, 1000);
+
+          return () => {
+            window.clearInterval(interval);
+          };
+        }, []);
+
+        return (
+          <MessageMarkdown>
+            {content}
+          </MessageMarkdown>
+        );
+      })
+    )
   }
 };
 

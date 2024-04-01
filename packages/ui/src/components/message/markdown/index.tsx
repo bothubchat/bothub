@@ -1,4 +1,6 @@
-import { useCallback, useMemo, useState } from 'react';
+import {
+  useCallback, useEffect, useMemo, useRef, useState 
+} from 'react';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
@@ -51,6 +53,36 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
       queueMicrotask(() => setRehypeError(errorCode));
     }
   }, []);
+
+  const rangeRef = useRef<Range | null>(null);
+
+  const saveSelection = useCallback(() => {
+    if (window.getSelection) {
+      const selection = window.getSelection();
+
+      if (selection && selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+
+        console.log(range.startOffset, range.endOffset);
+
+        rangeRef.current = range;
+      }
+    }
+  }, []);
+  
+  const restoreSelection = useCallback(() => {
+    const selection = window.getSelection();
+    const range = rangeRef.current;
+
+    if (selection && range) {
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+  }, []);
+  
+  useEffect(() => {
+    restoreSelection();
+  }, [children, saveSelection, restoreSelection]);
 
   return (
     <>
@@ -248,6 +280,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
               );
             }
           }}
+          onMouseUp={saveSelection}
         >
           {formattedChildren}
         </MessageMarkdownStyled>

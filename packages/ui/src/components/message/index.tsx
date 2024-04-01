@@ -1,6 +1,4 @@
-import React, {
-  ReactNode, useCallback, useEffect, useRef 
-} from 'react';
+import React, { ReactNode, useRef } from 'react';
 import {
   MessageBlock,
   MessageBlockContent,
@@ -60,34 +58,6 @@ export const Message: React.FC<MessageProps> = ({
 }) => {
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement>(null);
-  const selectionRef = useRef<Range | null>(null);
-
-  const saveSelection = useCallback(() => {
-    if (window.getSelection) {
-      const selection = window.getSelection();
-
-      if (selection && selection.rangeCount > 0) {
-        selectionRef.current = selection.getRangeAt(0);
-      }
-    }
-  }, []);
-
-  const restoreSelection = useCallback(() => {
-    const selection = window.getSelection();
-
-    if (selection && selectionRef.current) {
-      selection.removeAllRanges();
-      selection.addRange(selectionRef.current);
-    }
-  }, []);
-
-  useEffect(() => {
-    saveSelection();
-  }, [children]);
-
-  useEffect(() => {
-    restoreSelection();
-  });
 
   let hexColor: string;
   switch (variant) {

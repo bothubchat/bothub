@@ -78,6 +78,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
     textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 18px)';
     textareaEl.style.height = `calc(var(--bothub-scale, 1) * ${event.currentTarget.scrollHeight}px)`;
+    textareaEl.focus();
 
     setTextareaHeight(`calc(var(--bothub-scale, 1) * ${event.currentTarget.scrollHeight}px)`);
   }, []);
