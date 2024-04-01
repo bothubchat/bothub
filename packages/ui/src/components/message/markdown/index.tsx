@@ -55,29 +55,27 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
   }, []);
 
   const markdownNode = useMemo(() => {
-    const lines = children.split('\n\n');
-    const parsedLines = [];
+    const blocks = children.split('\n\n');
+    const parsedBlocks: string[] = [];
     let inCodeBlock = false;
 
-    for (const line of lines) {
-      if (line.includes('```')) {
+    for (const block of blocks) {
+      if (inCodeBlock) {
+        parsedBlocks[parsedBlocks.length - 1] += `${block}\n\n`;
+      } else if (block.match(/\n*\s*```/g)) {
         inCodeBlock = !inCodeBlock;
 
         if (inCodeBlock) {
-          parsedLines.push(`\n${line}\n\n`);
-        } else {
-          parsedLines[parsedLines.length - 1] += `${line}\n\n`;
+          parsedBlocks.push(`${block}\n\n`);
         }
-      } else if (inCodeBlock) {
-        parsedLines[parsedLines.length - 1] += `${line}\n\n`;
       } else {
-        parsedLines.push(line);
+        parsedBlocks.push(block);
       }
     }
 
     return (
       <MessageMarkdownStyled>
-        {parsedLines.map((chunk, index) => (
+        {parsedBlocks.map((block, index) => (
           <MessageMarkdownLine
             $typing={typing}
             $color={color}
@@ -265,7 +263,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
               }
             }}
           >
-            {chunk}
+            {block}
           </MessageMarkdownLine>
         ))}
       </MessageMarkdownStyled>
