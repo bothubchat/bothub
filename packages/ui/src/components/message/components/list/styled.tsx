@@ -7,7 +7,7 @@ export interface MessageListStyledProps {
 export const MessageListStyled = styled.ul<MessageListStyledProps>`
   counter-reset: item;
   ${({ $start }) => $start && css`
-    counter-set: item ${$start};
+    counter-set: item ${$start - 1};
   `};
   list-style: none;
   padding: 0px;

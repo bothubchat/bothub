@@ -60,16 +60,14 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
     let inCodeBlock = false;
 
     for (const line of lines) {
-      if (line !== '```' && line.startsWith('```') && line.endsWith('```')) {
-        parsedLines.push(line);
-      } else if (line.startsWith('```') || line.endsWith('```')) {
+      if (inCodeBlock) {
+        parsedLines[parsedLines.length - 1] += `${line}\n\n`;
+      } else if (line.match(/\n```/g)) {
         inCodeBlock = !inCodeBlock;
 
         if (inCodeBlock) {
           parsedLines.push(`${line}\n\n`);
         }
-      } else if (inCodeBlock) {
-        parsedLines[parsedLines.length - 1] += `${line}\n\n`;
       } else {
         parsedLines.push(line);
       }
