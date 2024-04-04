@@ -11,8 +11,9 @@ export const BackdropStyled: React.FC<React.ComponentProps<'div'> & AnimationPro
   left: 0px;
   right: 0px;
   background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(5px);
   z-index: ${({ theme, }) => theme.zIndex.backdrop};
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   cursor: pointer;
   overflow: auto;
 `;

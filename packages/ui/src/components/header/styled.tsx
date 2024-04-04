@@ -89,6 +89,7 @@ export const HeaderContent = styled.div<HeaderContentProps>`
         return css`
           border-bottom: 1px solid ${theme.colors.grayScale.gray3};
           backdrop-filter: blur(9px);
+          -webkit-backdrop-filter: blur(9px);
           background: rgba(18, 24, 37, 0.40);
         `;
       case 'dashboard': {
