@@ -1,6 +1,4 @@
-import {
-  useCallback, useMemo, useState 
-} from 'react';
+import { useMemo } from 'react';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
@@ -25,6 +23,8 @@ import {
   MessageTitle 
 } from '@/ui/components/message/components';
 import { MessageMarkdownLine, MessageMarkdownStyled } from './styled';
+import 'katex/dist/katex.min.css';
+import { useTheme } from '@/ui/theme';
 
 export interface MessageMarkdownProps {
   children: string;
@@ -37,22 +37,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
 }) => {
   const { typing, variant, color } = useMessage();
   const isDisabled = variant === 'user';
-  
-  const [rehypeError, setRehypeError] = useState<string | null>(null);
-  
-  const formattedChildren = useMemo(() => {
-    if (typeof children === 'string' && !isDisabled) {
-      return children.replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
-        .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$${content}$`);
-    }
-    return children;
-  }, [children, isDisabled]);
-  
-  const handleKatexStrict = useCallback((errorCode: string) => {
-    if (errorCode !== 'htmlExtension') {
-      queueMicrotask(() => setRehypeError(errorCode));
-    }
-  }, []);
+  const theme = useTheme();
 
   const markdownNode = useMemo(() => {
     const blocks = children.split('\n\n');
@@ -80,13 +65,14 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
             $typing={typing}
             $color={color}
             key={index}
-            remarkPlugins={[remarkGfm, remarkMath]}
+            remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath: false }]]}
             // @ts-ignore
-            rehypePlugins={[
-              ...(!rehypeError ? [
-                () => rehypeKatex({ strict: handleKatexStrict })
-              ] : []),
-            ]}
+            rehypePlugins={[[rehypeKatex, {
+              displayMode: true,
+              output: 'html',
+              errorColor: theme.colors.base.white,
+              strict: 'warn',
+            }]]}
             components={{
               p: ({ children }) => (
                 <MessageParagraph>
@@ -277,7 +263,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
           wrap
           disableMargin
         >
-          {formattedChildren}
+          {children}
         </MessageParagraph>
       )}
       {(!isDisabled && typeof children === 'string') && markdownNode}

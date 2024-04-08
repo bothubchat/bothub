@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.1.0-stage-a154e167-8b41-4e3f-81ed-4d239ba58e1d",
+  "version": "2.1.1-stage-a154e167-8b41-4e3f-81ed-4d239ba58e1d",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -58,6 +58,7 @@
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",
     "swiper": "^10.2.0",
-    "tslib": "^2.6.2"
+    "tslib": "^2.6.2",
+    "unist-util-visit": "^5.0.0"
   }
 }
