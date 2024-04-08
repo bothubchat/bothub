@@ -23,7 +23,6 @@ import {
   MessageTitle 
 } from '@/ui/components/message/components';
 import { MessageMarkdownLine, MessageMarkdownStyled } from './styled';
-import 'katex/dist/katex.min.css';
 import { useTheme } from '@/ui/theme';
 
 export interface MessageMarkdownProps {
