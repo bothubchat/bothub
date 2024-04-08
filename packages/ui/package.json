@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.1.1-stage-024a32f2-f980-4f78-bf2f-8811e60717ea",
+  "version": "2.1.2-stage-024a32f2-f980-4f78-bf2f-8811e60717ea",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -50,6 +50,7 @@
   "dependencies": {
     "framer-motion": "^10.16.3",
     "highlight.js": "^11.9.0",
+    "katex": "^0.16.10",
     "normalize.css": "^8.0.1",
     "react-highlight": "^0.15.0",
     "react-markdown": "^8.0.7",
