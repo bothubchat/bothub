@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
@@ -37,9 +37,22 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
   const { typing, variant, color } = useMessage();
   const isDisabled = variant === 'user';
   const theme = useTheme();
+  const [singleDollarTextMath, setSingleDollarTextMath] = useState(true);
+
+  const formattedChildren = useMemo(() => {
+    if (typeof children === 'string' && !isDisabled) {
+      return children.replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
+        .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$$${content}$$`);
+    }
+    return children;
+  }, [children, isDisabled]);
+
+  const handleKatexStrict = useCallback((...args: unknown[]) => {
+    if (singleDollarTextMath) queueMicrotask(() => setSingleDollarTextMath(false));
+  }, [singleDollarTextMath]);
 
   const markdownNode = useMemo(() => {
-    const blocks = children.split('\n\n');
+    const blocks = formattedChildren.split('\n\n');
     const parsedBlocks: string[] = [];
     let inCodeBlock = false;
 
@@ -63,14 +76,15 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
           <MessageMarkdownLine
             $typing={typing}
             $color={color}
+            $singleDollarTextMath={singleDollarTextMath}
             key={index}
-            remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath: false }]]}
+            remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath }]]}
             // @ts-ignore
             rehypePlugins={[[rehypeKatex, {
               displayMode: true,
               output: 'html',
-              errorColor: theme.colors.base.white,
-              strict: 'warn',
+              errorColor: theme.colors.orange,
+              strict: handleKatexStrict,
             }]]}
             components={{
               p: ({ children }) => (
@@ -253,16 +267,20 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
         ))}
       </MessageMarkdownStyled>
     );
-  }, [typing, children]);
+  }, [typing, formattedChildren, handleKatexStrict, singleDollarTextMath]);
 
   return (
     <>
+      <span>
+        test 444 -
+        {String(singleDollarTextMath)}
+      </span>
       {(isDisabled && typeof children === 'string') && (
         <MessageParagraph
           wrap
           disableMargin
         >
-          {children}
+          {formattedChildren}
         </MessageParagraph>
       )}
       {(!isDisabled && typeof children === 'string') && markdownNode}
