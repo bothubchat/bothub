@@ -271,10 +271,6 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
 
   return (
     <>
-      <span>
-        test 444 -
-        {String(singleDollarTextMath)}
-      </span>
       {(isDisabled && typeof children === 'string') && (
         <MessageParagraph
           wrap
