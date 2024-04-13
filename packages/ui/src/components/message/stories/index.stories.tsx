@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import React, { useEffect, useState } from 'react';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import {
   Message, 
@@ -17,6 +18,7 @@ import {
   MessageImageLeftArrowButton, 
   MessageImageRightArrowButton, 
   MessageImageTopArrowButton, 
+  MessageMarkdown, 
   MessageTag,
   MessageTransaction
 } from '@/ui/components/message';
@@ -47,6 +49,35 @@ import {
 export type MessageMeta = Meta<typeof Message>;
 
 export type MessageStory = StoryObj<typeof Message>;
+
+export const Basic: MessageStory = {
+  args: {
+    variant: 'assistant',
+    name: 'ChatGPT',
+    color: 'purple',
+    tags: (
+      <MessageTag>
+        gpt-4
+      </MessageTag>
+    ),
+    avatar: (
+      <MessageAvatar>
+        <Gpt4Icon />
+      </MessageAvatar>
+    ),
+    transaction: (
+      <MessageTransaction>
+        -1571 CAPS
+      </MessageTransaction>
+    ),
+    actions: (
+      <MessageActions>
+        <MessageCopyAction />
+      </MessageActions>
+    ),
+    children: "Certainly! Below is a step-by-step guide on how to create a simple to-do list application using React:\n\n1. **Set up a new React project:**\n   If you haven't already created a new React project, you can do so by running the following command:\n\n   ```bash\n   npx create-react-app todo-list\n   ```\n\n   Then, navigate into your new project directory:\n\n   ```bash\n   cd todo-list\n   ```\n\n2. **Create the ToDoList component:**\n   Inside your `src` directory, create a new file named `TodoList.js`. This will be your main to-do list component.\n\n   Add the following code to `TodoList.js`:\n\n   ```jsx\n   import React, { useState } from 'react';\n\n   function TodoList() {\n     const [tasks, setTasks] = useState([]);\n     const [taskInput, setTaskInput] = useState('');\n\n     const handleAddTask = () => {\n       if (taskInput.trim() !== '') {\n         setTasks([...tasks, taskInput]);\n         setTaskInput('');\n       }\n     };\n\n     const handleDeleteTask = (taskIndex) => {\n       const newTasks = tasks.filter((_, index) => index !== taskIndex);\n       setTasks(newTasks);\n     };\n\n     return (\n       <div>\n         <h1>Todo List</h1>\n         <input\n           type=\"text\"\n           value={taskInput}\n           onChange={(e) => setTaskInput(e.target.value)}\n           placeholder=\"Enter a new task\"\n         />\n         <button onClick={handleAddTask}>Add Task</button>\n         <ul>\n           {tasks.map((task, index) => (\n             <li key={index}>\n               {task}\n               <button onClick={() => handleDeleteTask(index)}>Delete</button>\n             </li>\n           ))}\n         </ul>\n       </div>\n     );\n   }\n\n   export default TodoList;\n   ```\n\n3. **Use the TodoList component in your application:**\n   In the `src` directory, open the `App.js` file and import the `TodoList` component:\n\n   ```jsx\n   import React from 'react';\n   import TodoList from './TodoList';\n\n   function App() {\n     return (\n       <div className=\"App\">\n         <TodoList />\n       </div>\n     );\n   }\n\n   export default App;\n   ```\n\n4. **Add styling (optional):**\n   If you want to add some basic styling, you can create a `TodoList.css` file in the `src` directory and import it into your `TodoList.js` file.\n\n5. **Run your application:**\n   In your terminal, start your React application by running:\n\n   ```bash\n   npm start\n   ```\n\n   This will open your to-do list application in the browser, where you can add and delete tasks.\n\nThat's it! You now have a basic to-do list application built with React."
+  }
+};
 
 export const Assistant: MessageStory = {
   args: {
@@ -569,6 +600,36 @@ export const UserSkeleton: MessageStory = {
       </MessageAvatar>
     ),
     skeleton: true
+  }
+};
+
+export const UpdatedContent: MessageStory = {
+  args: {
+    ...Assistant.args,
+    typing: true,
+    children: (
+      React.createElement(() => {
+        const [content, setContent] = useState('Updated content...');
+
+        useEffect(() => {
+          let number: number = 0;
+
+          const interval = window.setInterval(() => {
+            setContent((content) => `${content} \n\n**${number++}**`);
+          }, 1000);
+
+          return () => {
+            window.clearInterval(interval);
+          };
+        }, []);
+
+        return (
+          <MessageMarkdown>
+            {content}
+          </MessageMarkdown>
+        );
+      })
+    )
   }
 };
 

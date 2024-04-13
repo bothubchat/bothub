@@ -74,6 +74,7 @@
     "react/destructuring-assignment": "off",
     "no-restricted-syntax": "off",
     "no-nested-ternary": "off",
-    "global-require": "off"
+    "global-require": "off",
+    "no-plusplus": "off"
   }
 }

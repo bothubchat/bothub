@@ -109,7 +109,13 @@ import {
   WithdrawIcon,
   SearchPlusIcon,
   LightningIcon,
-  BlogCircleIcon, StripeIcon, PublicIcon, PrivateIcon, CorporateIcon,
+  BlogCircleIcon,
+  StripeIcon,
+  PublicIcon, 
+  PrivateIcon, 
+  CorporateIcon,
+  MistralIcon,
+  GeminiIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -230,10 +236,12 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="SearchPlusIcon">{SearchPlusIcon}</IconItem>
         <IconItem name="LightningIcon">{LightningIcon}</IconItem>
         <IconItem name="BlogCircleIcon">{BlogCircleIcon}</IconItem>
-        <IconItem name="StripeIcon">{StripeIcon}</IconItem>
         <IconItem name="PublicIcon">{PublicIcon}</IconItem>
         <IconItem name="PrivateIcon">{PrivateIcon}</IconItem>
         <IconItem name="CorporateIcon">{CorporateIcon}</IconItem>
+        <IconItem name="MistralIcon">{MistralIcon}</IconItem>
+        <IconItem name="GeminiIcon">{GeminiIcon}</IconItem>
+        <IconItem name="StripeIcon">{StripeIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

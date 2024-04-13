@@ -145,11 +145,13 @@ export const TextFieldInput = styled.input`
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
   &:-webkit-autofill:active {
+    caret-color: ${({ theme }) => theme.colors.base.white};
     -webkit-background-clip: text;
     -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
     box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray4} inset !important;
   }
   &:-webkit-autofill:focus {
+    caret-color: ${({ theme }) => theme.colors.base.white};
     -webkit-background-clip: text;
     -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
     box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray4} inset !important;

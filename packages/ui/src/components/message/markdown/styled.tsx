@@ -1,5 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import { css, keyframes, styled } from 'styled-components';
+import React from 'react';
 import { MessageColor } from '@/ui/components/message/types';
 import {
   MessageBoldStyled, 
@@ -18,12 +19,21 @@ import {
   MessageTitleStyled
 } from '@/ui/components/message/components';
 
+export const MessageMarkdownStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+`;
+
 export interface MessageMarkdownStyledProps {
   $typing: boolean;
   $color: MessageColor;
+  $singleDollarTextMath: boolean;
 }
 
-export const MessageMarkdownStyled = styled(ReactMarkdown)<MessageMarkdownStyledProps>`
+export const MessageMarkdownLine = React.memo(styled(ReactMarkdown)<MessageMarkdownStyledProps>`
   display: block;
   width: 100%;
   color: ${({ theme }) => theme.colors.base.white};
@@ -47,15 +57,15 @@ export const MessageMarkdownStyled = styled(ReactMarkdown)<MessageMarkdownStyled
     }
   }
   ${({ $typing, $color }) => $typing && css`
-    > ${MessageParagraphStyled}:last-child,
-    > ${MessageBoldStyled}:last-child,
-    > ${MessageItalicStyled}:last-child,
-    > ${MessageInlineCodeStyled}:last-child,
-    > ${MessagePre}:last-child > ${MessageMultilineCodeStyled}:last-child ${MessageMultilineCodeContent},
-    > ${MessageTableStyled} *:last-child > ${MessageTableRow}:last-child > ${MessageTableCellStyled}:last-child,
-    > ${MessageListStyled}:last-child > ${MessageListItemStyled}:last-child,
-    > ${MessageTitleStyled}:last-child,
-    > ${MessageLinkStyled}:last-child {
+    &:last-child > ${MessageParagraphStyled}:last-child,
+    &:last-child > ${MessageBoldStyled}:last-child,
+    &:last-child > ${MessageItalicStyled}:last-child,
+    &:last-child > ${MessageInlineCodeStyled}:last-child,
+    &:last-child > ${MessagePre}:last-child > ${MessageMultilineCodeStyled}:last-child ${MessageMultilineCodeContent},
+    &:last-child > ${MessageTableStyled} *:last-child > ${MessageTableRow}:last-child > ${MessageTableCellStyled}:last-child,
+    &:last-child > ${MessageListStyled}:last-child > ${MessageListItemStyled}:last-child,
+    &:last-child > ${MessageTitleStyled}:last-child,
+    &:last-child > ${MessageLinkStyled}:last-child {
       &:after {
         display: inline-flex;
         width: calc(var(--bothub-typing-cursor-size, 21px) / 3.5);
@@ -78,7 +88,12 @@ export const MessageMarkdownStyled = styled(ReactMarkdown)<MessageMarkdownStyled
       }
     }
   `}
-`;
+`, (prevProps, nextProps) => (
+  prevProps.children === nextProps.children
+  && prevProps.$typing === nextProps.$typing
+  && prevProps.$color === nextProps.$color
+  && prevProps.$singleDollarTextMath === nextProps.$singleDollarTextMath
+));
 
 export const messageTextCursorOpacity = keyframes`
   from {

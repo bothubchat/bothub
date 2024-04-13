@@ -33,12 +33,14 @@ export const Auth: ModalStory = {
       <Form>
         <TextField 
           label="E-Mail"
+          name="email"
           placeholder="Ваш E-Mail"
           startIcon={<EmailCircleIcon />}
           fullWidth
         />
         <TextField 
           label="Пароль"
+          name="password"
           placeholder="Ваш пароль"
           startIcon={<LockCircleIcon />}
           fullWidth

@@ -87,6 +87,7 @@
     "react-markdown": "^8.0.7",
     "react-slider": "^2.0.6",
     "rehype-katex": "^7.0.0",
+    "katex": "^0.16.10",
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",
     "styled-components": "^6.0.7",

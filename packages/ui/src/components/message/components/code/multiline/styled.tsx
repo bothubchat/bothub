@@ -104,18 +104,18 @@ export const MessageMultilineCodeContent = styled(Highlight)<MessageMultilineCod
     switch ($messageColor) {
       case 'green':
         return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${({ theme }) => theme.colors.gpt3};
+          background: ${({ theme }) => theme.default.colors.base.white} !important;
+          color: ${({ theme }) => theme.colors.gpt3} !important;
         `;
       case 'purple':
         return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${({ theme }) => theme.colors.gpt4};
+          background: ${({ theme }) => theme.default.colors.base.white} !important;
+          color: ${({ theme }) => theme.colors.gpt4} !important;
         `;
       default:
         return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)} !important;
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)} !important;
         `;
     }
   }}

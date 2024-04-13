@@ -1,5 +1,5 @@
 import React, {
-  useState, useCallback, useEffect, useRef 
+  useState, useCallback, useEffect, useRef, useLayoutEffect 
 } from 'react';
 import {
   InputMessageContent, 
@@ -48,6 +48,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   ...props
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [textareaHeight, setTextareaHeight] = useState('calc(var(--bothub-scale, 1) * 18px)');
 
   const [message, setMessage] = typeof initialMessage === 'string' ? [initialMessage, onChange] : useState('');
   const [files, setFiles] = typeof initialFiles === 'string' ? [initialFiles, onFilesChange] : useState<IInputMessageFile[]>([]);
@@ -67,6 +68,20 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     setMessage?.(event.target.value);
     onTextAreaChange?.(event);
   }, [setMessage, onTextAreaChange]);
+
+  const handleInput = useCallback<React.ReactEventHandler<HTMLTextAreaElement>>((event) => {
+    const textareaEl: HTMLElement | null = textareaRef.current;
+
+    if (textareaEl === null) {
+      return;
+    }
+
+    textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 18px)';
+    textareaEl.style.height = `${event.currentTarget.scrollHeight}px`;
+    textareaEl.focus();
+
+    setTextareaHeight(`${event.currentTarget.scrollHeight}px`);
+  }, []);
 
   const handleUploadFileChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     async (event) => {
@@ -121,15 +136,19 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     onSend?.(message, files);
     setMessage?.('');
     setFiles?.([]);
+    setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
   }, [message, files, onSend, setMessage, setFiles]);
 
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
     event.stopPropagation();
 
     if (isFocus && event.key === 'Enter') {
-      if (event.shiftKey) {
+      if (event.shiftKey || event.ctrlKey) {
         if (message.trim() === '') {
           event.preventDefault();
+        }
+        if (event.ctrlKey) {
+          setMessage?.(`${message}\n`);
         }
       } else {
         event.preventDefault();
@@ -137,6 +156,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         onSend?.(message, files);
         setMessage?.('');
         setFiles?.([]);
+        setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
       }
     }
   }, [isFocus, message, files, onSend, setMessage, setFiles]);
@@ -152,6 +172,14 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   useEffect(() => {
     const textareaEl: HTMLElement | null = textareaRef.current;
 
+    if (textareaEl && autoFocus) {
+      textareaEl.focus();
+    }
+  }, [disabled]);
+
+  useEffect(() => {
+    const textareaEl: HTMLElement | null = textareaRef.current;
+
     if (textareaEl === null) {
       return;
     }
@@ -162,6 +190,20 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       textareaEl.removeEventListener('keydown', handleKeyDown);
     };
   }, [handleKeyDown]);
+
+  if (typeof window !== 'undefined') {
+    useLayoutEffect(() => {
+      const textareaEl: HTMLElement | null = textareaRef.current;
+
+      if (textareaEl === null) {
+        return;
+      }
+
+      textareaEl.style.height = `${textareaEl.scrollHeight}px`;
+      textareaEl.focus();
+      textareaEl.scrollTop = textareaEl.scrollHeight;
+    }, [message]);
+  }
 
   return (
     <InputMessageStyled
@@ -221,12 +263,13 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               disabled={disabled || textAreaDisabled}
               style={{
                 ...props.style,
-                height: `calc(var(--bothub-scale, 1) * ${message.split('\n').length * 18}px)`
+                height: textareaHeight
               }}
               autoFocus={!disabled && autoFocus}
               onFocus={handleFocus}
               onBlur={handleBlur}
               onChange={handleChange}
+              onInput={handleInput}
             />
           )}
         </InputMessageMain>
