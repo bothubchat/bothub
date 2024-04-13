@@ -1,6 +1,8 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Skeleton } from '@/ui/components/skeleton';
+import { Button } from '@/ui/components/button';
+import { CloseIcon } from '@/ui/icons/close';
 
 export interface TextFieldStyledProps {
   $fullWidth: boolean;
@@ -38,7 +40,7 @@ export interface TextFieldBlockProps {
   $skeleton: boolean;
 }
 
-export const TextFieldBlock = styled.span<TextFieldBlockProps>`
+export const TextFieldBlock = styled.label<TextFieldBlockProps>`
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -97,6 +99,26 @@ export const TextFieldBlock = styled.span<TextFieldBlockProps>`
       }
     `;
   }}
+  ${({ $focus, $disabled }) => {
+    if ($disabled) {
+      return css`
+        ${TextFieldClearButton} {
+          visibility: hidden;
+        }
+      `;
+    }
+
+    return css`
+      ${TextFieldClearButton} {
+        visibility: ${$focus ? 'visible' : 'hidden'};
+      }
+      &:hover {
+        ${TextFieldClearButton} {
+          visibility: visible;
+        }
+      }
+    `;
+  }}
 `;
 
 export const TextFieldInput = styled.input`
@@ -144,6 +166,8 @@ export const TextFieldInput = styled.input`
     margin: 0;
   }
 `;
+
+export const TextFieldClearButton = styled(Button).attrs({ variant: 'text', iconSize: 12, children: <CloseIcon /> })``;
 
 export const TextFieldErrorText = styled(Typography).attrs({ variant: 'input-sm' })`
   display: inline-flex;

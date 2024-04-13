@@ -14,9 +14,16 @@ export const Basic: ChipStory = {
   }
 };
 
-export const Image: ChipStory = {
+export const Input: ChipStory = {
   args: {
     ...Basic.args,
+    variant: 'input'
+  }
+};
+
+export const Image: ChipStory = {
+  args: {
+    ...Input.args,
     image: (
       <ChipImage
         src={image}
@@ -42,5 +49,5 @@ export const Badge: ChipStory = {
 export default {
   title: 'UI Components/Chip',
   component: Chip,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator({ margin: '100px 0px' })]
 } as ChipMeta;

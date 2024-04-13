@@ -3,6 +3,11 @@ import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { Skeleton } from '@/ui/components/skeleton';
 import { SelectFieldPlacement, SelectFieldSize } from './types';
+import { Chip } from '@/ui/components/chip';
+import { LoaderCircularGradientIcon } from '@/ui/icons/loader-circular-gradient';
+import { SearchCircleIcon } from '@/ui/icons/search-circle';
+import { Button } from '@/ui/components/button';
+import { CloseIcon } from '@/ui/icons/close';
 
 export interface SelectFieldStyledProps {
   $fullWidth: boolean;
@@ -41,6 +46,7 @@ export interface SelectFieldInputProps {
   $disabled: boolean;
   $skeleton: boolean;
   $blur: boolean;
+  $loading: boolean;
 }
 
 export const SelectFieldInput = styled.div<SelectFieldInputProps>`
@@ -48,6 +54,7 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
   align-items: center;
   width: 100%;
   justify-content: space-between;
+  gap: 12px;
   user-select: none;
   border: 1px solid ${({
     theme, $disabled, $error, $open, $skeleton 
@@ -65,7 +72,8 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
     return theme.colors.grayScale.gray2;
   }};
   border-radius: 10px;
-  padding: 14px 16px;
+  padding: 10px;
+  padding-right: 16px;
   box-sizing: border-box;
   background: ${({
     theme, $disabled, $skeleton, $blur 
@@ -80,8 +88,8 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
     return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
   }};
   backdrop-filter: blur(16px);
-  cursor: ${({ $disabled, $skeleton }) => {
-    if ($skeleton) {
+  cursor: ${({ $disabled, $skeleton, $loading }) => {
+    if ($skeleton || $loading) {
       return 'progress';
     }
     if ($disabled) {
@@ -97,12 +105,106 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
       border-color: ${theme.colors.accent.primary};
     }
   `}
+  ${({ $disabled, $open }) => {
+    if ($disabled) {
+      return css`
+        ${SelectFieldClearButton} {
+          visibility: hidden;
+        }
+      `;
+    }
+
+    return css`
+      ${SelectFieldClearButton} {
+        visibility: ${$open ? 'visible' : 'hidden'};
+      }
+    `;
+  }}
 `;
+
+export const SelectFieldInputSide = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+export const SelectFieldInputLeftSide = styled(SelectFieldInputSide)`
+  width: 100%;
+`;
+
+export interface SelectFieldSearchIconProps {
+  $focus: boolean;
+}
+
+export const SelectFieldSearchIcon = styled(SearchCircleIcon).attrs({ size: 16 })<SelectFieldSearchIconProps>`
+  margin-left: 6px;
+  path {
+    fill: ${({ theme, $focus }) => {
+    if ($focus) {
+      return theme.colors.base.white;
+    }
+
+    return theme.colors.grayScale.gray1;
+  }};
+  }
+`;
+
+export const SelectFieldInputNative = styled.input`
+  display: inline-flex;
+  width: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 4px 0px;
+  color: ${({ theme }) => theme.colors.base.white};
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  &:first-child {
+    padding-left: 6px;
+  }
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.grayScale.gray1};
+  }
+  &:focus::placeholder {
+    color: ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray1 : theme.colors.grayScale.gray6)};
+  }
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
+    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray4} inset !important;
+  }
+  &:-webkit-autofill:focus {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
+    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray4} inset !important;
+  }
+  &::-webkit-search-decoration,
+  &::-webkit-search-cancel-button,
+  &::-webkit-search-results-button,
+  &::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+  }
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  ${({ disabled }) => disabled && css`
+    cursor: not-allowed;
+  `}
+`;
+
+export const SelectFieldClearButton = styled(Button).attrs({ variant: 'text', iconSize: 12, children: <CloseIcon /> })``;
 
 export const SelectFieldValue = styled.span`
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  padding: 4px 0px;
+  padding-left: 6px;
 `;
 
 export const SelectFieldValueText = styled(Typography).attrs({ variant: 'input-sm' })``;
@@ -124,6 +226,20 @@ export const SelectFieldColorValueText = styled(Typography).attrs({ variant: 'in
   color: ${({ theme }) => theme.colors.base.white};
 `;
 
+export const SelectFieldValues = styled.div`
+  display: flex;
+  width: 100%;
+`;
+
+export const SelectFieldValueList = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  width: 100%;
+`;
+
+export const SelectFieldValueListItem = styled(Chip)``;
+
 export interface SelectFieldPlaceholderProps {
   $open: boolean;
 }
@@ -136,7 +252,11 @@ export const SelectFieldPlaceholder = styled(Typography).attrs({ variant: 'input
 
     return theme.colors.grayScale.gray1;
   }};
+  padding: 4px 0px;
+  padding-left: 6px;
 `;
+
+export const SelectFieldLoader = styled(LoaderCircularGradientIcon)``;
 
 export const SelectFieldArrow = styled(ArrowDownIcon).attrs({ size: 16 })``;
 

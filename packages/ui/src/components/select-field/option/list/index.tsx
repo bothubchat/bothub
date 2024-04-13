@@ -3,6 +3,8 @@ import { SelectFieldData, SelectFieldDataItem, SelectFieldSize } from '@/ui/comp
 import {
   SelectFieldColorOptionText, 
   SelectFieldDivider, 
+  SelectFieldEmpty, 
+  SelectFieldEmptyText, 
   SelectFieldOption, 
   SelectFieldOptionColor, 
   SelectFieldOptionSide, 
@@ -12,11 +14,13 @@ import {
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
+import { SelectFieldCollapseOption } from '../collapse';
+import { SearchDataIcon } from '@/ui/icons/search-data';
 
 export type SelectFieldOptionClickEventHandler = (item: SelectFieldDataItem) => unknown;
 
 export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
-  value: SelectFieldDataItem;
+  value: SelectFieldDataItem | SelectFieldDataItem[] | null;
   data: SelectFieldData;
   size: SelectFieldSize;
   disableSelect?: boolean;
@@ -39,7 +43,13 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
     >
       {data.map((item, index) => {
         if (typeof item === 'string') {
-          const selected: boolean = typeof value === 'string' ? item === value : item === value.value;
+          let selected: boolean;
+          
+          if (!value || Array.isArray(value)) {
+            selected = false;
+          } else {
+            selected = typeof value === 'string' ? item === value : item === value.value;
+          }
   
           return (
             <SelectFieldOption
@@ -69,20 +79,68 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
         if (item.type === 'divider') {
           return (
             <SelectFieldDivider
-              key={`divider-${index}`}
+              key={item.id ?? item.value ?? `divider-${index}`}
             />
           );
         }
-  
-        const selected: boolean = (typeof value === 'string' ? item.value === value : item.value === value.value) && !disableSelect;
+
+        if (item.type === 'empty' && item.label) {
+          return (
+            <SelectFieldEmpty
+              $size={size}
+              key={item.id ?? item.value ?? `empty-${index}`}
+            >
+              <IconProvider
+                size={34}
+                fill={theme.colors.grayScale.gray1}
+              >
+                {item.icon ?? <SearchDataIcon />}
+              </IconProvider>
+              <SelectFieldEmptyText>
+                {item.label}
+              </SelectFieldEmptyText>
+            </SelectFieldEmpty>
+          );
+        }
+
+        if (item.type === 'collapse' && item.data) {
+          return (
+            <SelectFieldCollapseOption
+              key={item.id ?? item.value ?? `collapse-${index}`}
+              size={size}
+              item={item}
+            >
+              <SelectFieldOptions
+                value={value}
+                data={item.data}
+                size={size}
+                disableSelect={disableSelect}
+                onOptionClick={onOptionClick}
+              />
+            </SelectFieldCollapseOption>
+          );
+        }
+
         const disabled: boolean = !!item.disabled;
-  
+        let selected: boolean;
+        
+        if (!value || Array.isArray(value)) {
+          selected = false;
+        } else {
+          selected = (typeof value === 'string' ? item.value === value : item.value === value.value) && !disableSelect;
+        }
+
         return (
           <Tooltip
-            key={item.id ?? index}
+            key={item.id ?? item.value ?? index}
             {...(typeof item.tooltip === 'object' && item.tooltip)}
             {...(typeof item.tooltip !== 'object' && {
               disabled: true
+            })}
+            {...((item.label && item.label.length > 64) && {
+              placement: 'top-left',
+              label: item.label,
+              disabled: false
             })}
           >
             <TooltipConsumer>
@@ -117,7 +175,13 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                           variant: 'button-sm'
                         })}
                       >
-                        {item.label ?? item.value}
+                        {item.label && (
+                          <>
+                            {item.label.slice(0, 64)}
+                            {item.label.length > 64 && '...'}
+                          </>
+                        )}
+                        {!item.label && item.value}
                       </SelectFieldOptionText>
                     )}
                     {item.color && (
@@ -133,7 +197,13 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                       <SelectFieldColorOptionText
                         $selected={selected}
                       >
-                        {item.label ?? item.value}
+                        {item.label && (
+                          <>
+                            {item.label.slice(0, 64)}
+                            {item.label.length > 64 && '...'}
+                          </>
+                        )}
+                        {!item.label && item.value}
                       </SelectFieldColorOptionText>
                     )}
                   </SelectFieldOptionSide>

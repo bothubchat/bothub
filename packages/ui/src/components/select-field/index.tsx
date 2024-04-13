@@ -17,12 +17,25 @@ import {
   SelectFieldValueColor,
   SelectFieldValueText,
   SelectFieldGroup,
-  SelectFieldGroups
+  SelectFieldGroups,
+  SelectFieldValues,
+  SelectFieldValueList,
+  SelectFieldValueListItem,
+  SelectFieldInputNative,
+  SelectFieldInputLeftSide,
+  SelectFieldInputSide,
+  SelectFieldLoader,
+  SelectFieldSearchIcon,
+  SelectFieldClearButton
 } from './styled';
 import {
   SelectFieldChangeEventHandler, 
   SelectFieldData, 
   SelectFieldDataItem, 
+  SelectFieldInputChangeEventHandler, 
+  SelectFieldInputType, 
+  SelectFieldMultiChangeEventHandler, 
+  SelectFieldMultiValueChangeEventHandler, 
   SelectFieldOptionClickEventHandler, 
   SelectFieldPlacement, 
   SelectFieldSize, 
@@ -34,11 +47,25 @@ import { Portal } from '@/ui/components/portal';
 import { IconProvider } from '../icon';
 import { SelectFieldProvider } from './context';
 import { SelectFieldOptions } from './option';
+import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 
-export interface SelectFieldProps extends React.PropsWithChildren {
+export interface SelectFieldDefaultProps {
+  multiple?: false;
+  value?: SelectFieldDataItem;
+  onChange?: SelectFieldChangeEventHandler;
+  onValueChange?: SelectFieldValueChangeEventHandler;
+}
+
+export interface SelectFieldMultiProps {
+  multiple: true;
+  value?: SelectFieldDataItem[];
+  onChange?: SelectFieldMultiChangeEventHandler;
+  onValueChange?: SelectFieldMultiValueChangeEventHandler;
+}
+
+export type SelectFieldProps = (SelectFieldDefaultProps | SelectFieldMultiProps) & {
   className?: string;
   label?: string | boolean | React.ReactNode;
-  value?: SelectFieldDataItem;
   placeholder?: string;
   data?: SelectFieldData;
   fullWidth?: boolean;
@@ -53,10 +80,13 @@ export interface SelectFieldProps extends React.PropsWithChildren {
   disableScrollbar?: boolean;
   before?: SelectFieldData;
   after?: SelectFieldData;
-  onChange?: SelectFieldChangeEventHandler;
-  onValueChange?: SelectFieldValueChangeEventHandler;
+  enableInput?: boolean;
+  inputType?: SelectFieldInputType;
+  inputValue?: string;
+  loading?: boolean;
   onOptionClick?: SelectFieldOptionClickEventHandler;
-}
+  onInputChange?: SelectFieldInputChangeEventHandler;
+} & React.PropsWithChildren;
 
 export const SelectField: React.FC<SelectFieldProps> = ({
   className,
@@ -76,23 +106,55 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   disableScrollbar = false,
   before,
   after,
-  onChange,
-  onValueChange,
+  loading = false,
+  enableInput = false,
+  inputType = 'text',
+  inputValue: initialInputValue,
   onOptionClick,
-  children
+  onInputChange,
+  children,
+  ...props
 }) => {
   const theme = useTheme();
 
-  const setInitialValue = useCallback<SelectFieldChangeEventHandler>((item) => {
-    onChange?.(item);
-    if (typeof item === 'string') {
-      onValueChange?.(item);
-    } else if (typeof item.value === 'string') {
-      onValueChange?.(item.value);
-    }
-  }, [onChange, onValueChange]);
+  const { multiple = false } = props;
 
-  const [value, setValue] = typeof initialValue !== 'undefined' ? [initialValue, setInitialValue] : useState(data[0]);
+  const setInitialValue = useCallback((item: SelectFieldDataItem | SelectFieldDataItem[]) => {
+    if (props.multiple && Array.isArray(item)) {
+      const items = item;
+
+      props.onChange?.(items);
+      props.onValueChange?.(
+        items
+          .map((item) => {
+            if (typeof item === 'string') {
+              return item;
+            } if (typeof item.value === 'string') {
+              return item.value;
+            } 
+
+            return '';
+          })
+          .filter((item) => !!item)
+      );
+    } else if (!props.multiple && !Array.isArray(item)) {
+      props.onChange?.(item);
+
+      if (typeof item === 'string') {
+        props.onValueChange?.(item);
+      } else if (typeof item.value === 'string') {
+        props.onValueChange?.(item.value);
+      }
+    }
+  }, [props.multiple, props.onChange, props.onValueChange]);
+
+  const setInitialInputValue = useCallback((value: string) => {
+    onInputChange?.(value);
+  }, [onInputChange]);
+
+  const [value, setValue] = typeof initialValue !== 'undefined' ? [initialValue, setInitialValue] : useState<SelectFieldDataItem | SelectFieldDataItem[] | null>(multiple ? [] : null);
+  const [inputValue, setInputValue] = typeof initialInputValue !== 'undefined' ? [initialInputValue, setInitialInputValue] : useState('');
+  const [isInputNativeFocus, setIsInputNativeFocus] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
@@ -108,17 +170,56 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     onOptionClick?.(item);
 
     if (!disableSelect) {
-      setValue?.(item);
+      if (multiple && Array.isArray(value)) {
+        setValue([...new Set([...value, item])]);
+      } else {
+        setValue(item);
+      }
     }
     setIsOpen(false);
-  }, [setValue, onOptionClick, disableSelect]);
+  }, [value, setValue, multiple, onOptionClick, disableSelect]);
 
-  const handleInputClick = useCallback<React.MouseEventHandler<HTMLDivElement>>((event) => {
-    if (disabled || !(event.currentTarget instanceof HTMLElement)) {
+  const handleValueDelete = useCallback((item: SelectFieldDataItem, event: React.MouseEvent) => {
+    event.stopPropagation();
+    
+    if (Array.isArray(value)) {
+      if (typeof item === 'string') {
+        setValue(
+          value.filter((value) => {
+            if (typeof value === 'string') {
+              return value !== item;
+            }
+
+            return value.value !== item;
+          })
+        );
+      } else {
+        setValue(
+          value.filter((value) => {
+            if (typeof value === 'string') {
+              return value !== item.value;
+            }
+
+            return value.value !== item.value;
+          })
+        );
+      }
+    }
+    
+    setIsOpen(false);
+  }, [value]);
+
+  const handleInputClick = useCallback((native: boolean, event: React.MouseEvent<HTMLElement>) => {
+    const inputEl: HTMLDivElement | null = inputRef.current;
+    
+    if (!inputEl || disabled) {
       return;
     }
+    if (native) {
+      event.stopPropagation();
+    }
 
-    const rect = event.currentTarget.getBoundingClientRect();
+    const rect = inputEl.getBoundingClientRect();
     const { width, height } = rect;
 
     let x: number = 0;
@@ -146,9 +247,17 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     setRight(right);
     setBottom(bottom);
     setWidth(width);
-      
-    setIsOpen(!isOpen);
+    
+    if (native) {
+      setIsOpen(true);
+    } else {
+      setIsOpen(!isOpen);
+    }
   }, [disabled, isOpen, placement]);
+
+  const handleInputChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => {
+    setInputValue(event.currentTarget.value);
+  }, [setInputValue]);
 
   const inputRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -197,7 +306,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   return (
     <SelectFieldProvider
       selectRef={inputRef}
-      handleSelectClick={handleInputClick}
+      handleSelectClick={handleInputClick.bind(null, false)}
     >
       <SelectFieldStyled 
         $fullWidth={fullWidth}
@@ -225,56 +334,130 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                 $disabled={disabled}
                 $skeleton={false}
                 $blur={blur}
+                $loading={loading}
                 ref={inputRef}
-                onClick={handleInputClick}
+                onClick={handleInputClick.bind(null, false)}
               >
-                {!value && (
-                  <SelectFieldPlaceholder
-                    $open={isOpen}
-                  >
-                    {placeholder}
-                  </SelectFieldPlaceholder>
-                )}
-                {(typeof value === 'string' && value !== '') && (
-                  <SelectFieldValue>
-                    <SelectFieldValueText>
-                      {value}
-                    </SelectFieldValueText>
-                  </SelectFieldValue>
-                )}
-                {typeof value === 'object' && (
-                  <SelectFieldValue>
-                    {value.icon && (
-                      <IconProvider
-                        fill={theme.colors.base.white}
-                        size={18}
-                      >
-                        {value.icon}
-                      </IconProvider>
-                    )}
-                    {value.color && (
-                      <SelectFieldValueColor $color={value.color} />
-                    )}
-                    {value.label && (
-                      <SelectFieldColorValueText>
-                        {value.label}
-                      </SelectFieldColorValueText>
-                    )}
-                    {(!value.label && value.value) && (
-                      <SelectFieldColorValueText>
-                        {value.value}
-                      </SelectFieldColorValueText>
-                    )}
-                  </SelectFieldValue>
-                )}
-                <SelectFieldArrow 
-                  initial={{
-                    transform: `rotateZ(${isOpen ? 180 : 0}deg)`
-                  }}
-                  animate={{
-                    transform: `rotateZ(${isOpen ? 180 : 0}deg)`
-                  }}
-                />
+                <SelectFieldInputLeftSide>
+                  {(!value || (Array.isArray(value) && value.length === 0)) && (
+                    <>
+                      {(enableInput && inputType === 'search') && (
+                        <SelectFieldSearchIcon 
+                          $focus={isInputNativeFocus}
+                        />
+                      )}
+                      {enableInput && (
+                        <SelectFieldInputNative
+                          type={inputType}
+                          value={inputValue}
+                          placeholder={placeholder}
+                          disabled={disabled}
+                          onClick={handleInputClick.bind(null, true)}
+                          onChange={handleInputChange}
+                          onFocus={setIsInputNativeFocus.bind(null, true)}
+                          onBlur={setIsInputNativeFocus.bind(null, false)}
+                        />
+                      )}
+                      {!enableInput && (
+                        <SelectFieldPlaceholder
+                          $open={isOpen}
+                        >
+                          {placeholder}
+                        </SelectFieldPlaceholder>
+                      )}
+                    </>
+                  )}
+                  {(typeof value === 'string' && value !== '') && (
+                    <SelectFieldValue>
+                      <SelectFieldValueText>
+                        {value}
+                      </SelectFieldValueText>
+                    </SelectFieldValue>
+                  )}
+                  {(value && typeof value === 'object' && !Array.isArray(value)) && (
+                    <SelectFieldValue>
+                      {value.icon && (
+                        <IconProvider
+                          fill={theme.colors.base.white}
+                          size={18}
+                        >
+                          {value.icon}
+                        </IconProvider>
+                      )}
+                      {value.color && (
+                        <SelectFieldValueColor $color={value.color} />
+                      )}
+                      {value.label && (
+                        <Tooltip
+                          label={value.label}
+                          placement="top-left"
+                          disabled={value.label.length <= 128}
+                        >
+                          <TooltipConsumer>
+                            {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                              <SelectFieldColorValueText
+                                onMouseEnter={handleTooltipMouseEnter}
+                                onMouseLeave={handleTooltipMouseLeave}
+                              >
+                                {value.label && value.label.slice(0, 64)}
+                                {value.label && value.label.length > 64 && '...'}
+                              </SelectFieldColorValueText>
+                            )}
+                          </TooltipConsumer>
+                        </Tooltip>
+                      )}
+                      {(!value.label && value.value) && (
+                        <SelectFieldColorValueText>
+                          {value.value}
+                        </SelectFieldColorValueText>
+                      )}
+                    </SelectFieldValue>
+                  )}
+                  {(Array.isArray(value) && value.length > 0) && (
+                    <SelectFieldValues>
+                      <SelectFieldValueList>
+                        {value.map((item, index) => {
+                          if (typeof item === 'string') {
+                            return (
+                              <SelectFieldValueListItem
+                                key={item}
+                                onDelete={handleValueDelete.bind(null, item)}
+                              >
+                                {item}
+                              </SelectFieldValueListItem>
+                            );
+                          }
+
+                          return (
+                            <SelectFieldValueListItem
+                              key={item.id ?? item.value ?? index}
+                            >
+                              {item.label ?? item.value}
+                            </SelectFieldValueListItem>
+                          );
+                        })}
+                      </SelectFieldValueList>
+                    </SelectFieldValues>
+                  )}
+                </SelectFieldInputLeftSide>
+                <SelectFieldInputSide>
+                  {(enableInput && inputType === 'search' && !loading && inputValue) && (
+                    <SelectFieldClearButton 
+                      onClick={setInputValue.bind(null, '')}
+                    />
+                  )}
+                  {loading && (
+                    <SelectFieldLoader />
+                  )}
+                  <SelectFieldArrow 
+                    initial={{
+                      transform: `rotateZ(${isOpen ? 180 : 0}deg)`
+                    }}
+                    animate={{
+                      transform: `rotateZ(${isOpen ? 180 : 0}deg)`
+                    }}
+                  />
+                </SelectFieldInputSide>
               </SelectFieldInput>
             )}
             {skeleton && (
@@ -283,6 +466,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                 $error={false}
                 $disabled={false}
                 $skeleton
+                $loading={false}
                 $blur={blur}
                 ref={inputRef}
               >

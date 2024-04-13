@@ -5,7 +5,15 @@ import { StoryDecorator } from '@/ui/story-decorator';
 import { Tooltip } from '@/ui/components/tooltip';
 import { Button } from '@/ui/components/button';
 import {
-  ClaudeIcon, DallEIcon, Gpt35Icon, LightningIcon, LockCircleIcon, MjWhiteIcon, Plus2Icon 
+  ClaudeIcon, 
+  DallEIcon, 
+  Gpt35Icon, 
+  LightningIcon, 
+  LockCircleIcon, 
+  MjWhiteIcon, 
+  Plus2Icon, 
+  PublicIcon, 
+  StarIcon 
 } from '@/ui/icons';
 
 export type SelectFieldMeta = Meta<typeof SelectField>;
@@ -30,6 +38,61 @@ export const Basic: SelectFieldStory = {
       'ChatGPT',
       'Midjourney'
     ]
+  }
+};
+
+export const Empty: SelectFieldStory = {
+  args: {
+    ...Basic.args,
+    data: [
+      {
+        type: 'empty',
+        label: 'По вашему запросу ничего не найдено'
+      }
+    ]
+  }
+};
+
+export const Multiple: SelectFieldStory = {
+  args: {
+    label: 'Label',
+    placeholder: 'Placeholder',
+    data: [
+      'React',
+      'Vue',
+      'Svelte',
+      'Node.js',
+      'Yarn',
+      'Storybook',
+      'styled-components',
+      'framer motion',
+      'Vite',
+      'Bothub',
+      'ChatGPT',
+      'Midjourney'
+    ],
+    multiple: true
+  }
+};
+
+export const Loading: SelectFieldStory = {
+  args: {
+    ...Basic.args,
+    loading: true
+  }
+};
+
+export const Input: SelectFieldStory = {
+  args: {
+    ...Basic.args,
+    enableInput: true
+  }
+};
+
+export const InputLoading: SelectFieldStory = {
+  args: {
+    ...Input.args,
+    loading: true
   }
 };
 
@@ -176,6 +239,57 @@ export const Shortcut: SelectFieldStory = {
         )}
       </SelectFieldConsumer>
     ))
+  }
+};
+
+export const Preset: SelectFieldStory = {
+  args: {
+    label: 'Пресет',
+    placeholder: 'Поиск пресета',
+    enableInput: true,
+    inputType: 'search',
+    data: [
+      {
+        type: 'collapse',
+        icon: <StarIcon fill="#F29C1C" />,
+        label: 'Избранные пресеты',
+        data: [
+          {
+            value: '1',
+            label: 'Пресет #1'
+          },
+          {
+            value: '2',
+            label: 'Пресет #2'
+          },
+          {
+            value: '3',
+            label: 'Пресет #3'
+          },
+          {
+            value: '4',
+            label: 'Пресет #4'
+          },
+          {
+            value: '5',
+            label: 'Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет'
+          }
+        ]
+      },
+      {
+        type: 'collapse',
+        icon: <PublicIcon fill="#4785FF" />,
+        label: 'Общедоступные пресеты',
+        open: true,
+        disabled: true,
+        data: [
+          {
+            type: 'empty',
+            label: 'По вашему запросу пресеты не найдены'
+          }
+        ]
+      }
+    ]
   }
 };
 

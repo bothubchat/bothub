@@ -28,6 +28,31 @@ export const SelectFieldDivider = styled.div`
   background: ${({ theme }) => theme.colors.grayScale.gray3};
 `;
 
+export interface SelectFieldEmptyProps {
+  $size: SelectFieldSize;
+}
+
+export const SelectFieldEmpty = styled.div<SelectFieldEmptyProps>`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  padding: ${({ $size }) => {
+    switch ($size) {
+      case 'small':
+        return 8;
+      case 'md':
+        return 12;
+    }
+  }}px;
+`;
+
+export const SelectFieldEmptyText = styled(Typography).attrs({ variant: 'input-sm' })`
+  text-align: center;
+  color: ${({ theme }) => theme.colors.grayScale.gray1};
+`;
+
 export interface SelectFieldOptionProps {
   $selected: boolean;
   $disabled: boolean;

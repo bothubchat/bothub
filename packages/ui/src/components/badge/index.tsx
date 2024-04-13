@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { BadgeStyled, BadgeText } from './styled';
+import { BadgeSkeleton, BadgeStyled, BadgeText } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { BadgeVariant } from './types';
@@ -11,10 +11,11 @@ export interface BadgeProps extends React.ComponentProps<'div'> {
   icon?: React.ReactNode;
   brick?: boolean;
   rounded?: boolean;
+  skeleton?: boolean;
 }
 
 export const Badge: React.FC<BadgeProps> = ({
-  variant = 'info', icon, brick = false, rounded = true, children, ...props
+  variant = 'info', icon, brick = false, rounded = true, skeleton = false, children, ...props
 }) => {
   const theme = useTheme();
 
@@ -47,6 +48,7 @@ export const Badge: React.FC<BadgeProps> = ({
       $variant={variant}
       $brick={brick}
       $rounded={rounded}
+      $skeleton={skeleton}
       {...props}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -59,13 +61,20 @@ export const Badge: React.FC<BadgeProps> = ({
           <ErrorIcon />
         ))}
       </IconProvider>
-      {typeof children !== 'string' && children}
-      {typeof children === 'string' && (
-        <BadgeText
-          $variant={variant}
-        >
-          {children}
-        </BadgeText>
+      {skeleton && (
+        <BadgeSkeleton />
+      )}
+      {!skeleton && (
+        <>
+          {typeof children !== 'string' && children}
+          {typeof children === 'string' && (
+            <BadgeText
+              $variant={variant}
+            >
+              {children}
+            </BadgeText>
+          )}
+        </>
       )}
     </BadgeStyled>
   );

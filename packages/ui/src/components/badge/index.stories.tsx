@@ -62,6 +62,14 @@ export const Error: BadgeStory = {
   }
 };
 
+export const Skeleton: BadgeStory = {
+  args: {
+    ...Basic.args,
+    variant: 'blue',
+    skeleton: true
+  }
+};
+
 export default {
   title: 'UI Components/Badge',
   component: Badge,

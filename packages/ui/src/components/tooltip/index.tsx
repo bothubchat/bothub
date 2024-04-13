@@ -247,7 +247,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
       >
         {(typeof label === 'string' && !markdown) && (
           <TooltipLabel>
-            {label}
+            {label.slice(0, 272)}
+            {label.length > 272 && '...'}
           </TooltipLabel>
         )}
         {(typeof label === 'string' && markdown) && (

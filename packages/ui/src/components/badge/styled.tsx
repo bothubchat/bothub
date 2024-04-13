@@ -1,11 +1,13 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { BadgeVariant } from './types';
+import { Skeleton } from '@/ui/components/skeleton';
 
 export interface BadgeStyledProps {
   $variant: BadgeVariant;
   $rounded: boolean;
   $brick: boolean;
+  $skeleton: boolean;
 }
 
 export const BadgeStyled = styled.div<BadgeStyledProps>`
@@ -21,7 +23,10 @@ export const BadgeStyled = styled.div<BadgeStyledProps>`
 
     return 13;
   }}px;
-  background: ${({ theme, $variant }) => {
+  background: ${({ theme, $variant, $skeleton }) => {
+    if ($skeleton) {
+      return theme.colors.grayScale.gray2;
+    }
     switch ($variant) {
       case 'info':
         return theme.colors.grayScale.gray2;
@@ -34,6 +39,9 @@ export const BadgeStyled = styled.div<BadgeStyledProps>`
         return theme.colors.green;
     }
   }};
+  ${({ $skeleton }) => $skeleton && css`
+    cursor: progress;
+  `}
 `;
 
 export interface BadgeTextProps {
@@ -49,5 +57,9 @@ export const BadgeText = styled(Typography).attrs({ variant: 'body-s-medium' })<
         return theme.default.colors.base.white;
     }
   }};
-  cursor: default;
+  cursor: inherit;
+`;
+
+export const BadgeSkeleton = styled(Skeleton).attrs({ width: 60, height: 12 })`
+  border-radius: 8px;
 `;

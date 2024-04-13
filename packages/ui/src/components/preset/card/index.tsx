@@ -1,32 +1,27 @@
 import React from 'react';
 import { 
-  PresetCardAddStars,
+  PresetCardCategories,
+  PresetCardCategory,
   PresetCardContent, 
   PresetCardDescription,
   PresetCardLine, 
+  PresetCardLoader, 
   PresetCardMain,
   PresetCardName,
   PresetCardNameActions,
-  PresetCardStar,
-  PresetCardStarList,
-  PresetCardStars,
-  PresetCardStyled,
-  PresetCardCategoryPrice,
-  PresetCardCategory,
-  PresetCardPrice
+  PresetCardStyled
 } from './styled';
-import { useTheme } from '@/ui/theme';
-import { IconProvider } from '@/ui/components/icon';
+import { Skeleton } from '@/ui/components/skeleton';
+import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 
 export interface PresetCardProps {
   className?: string;
-  name: string;
+  name?: React.ReactNode;
   actions?: React.ReactNode;
-  description: string;
-  add?: React.ReactNode;
-  stars?: number;
-  category?: string;
-  price: string;
+  description?: React.ReactNode;
+  categories?: React.ReactNode;
+  skeleton?: boolean;
+  loading?: boolean;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
@@ -34,67 +29,101 @@ export const PresetCard: React.FC<PresetCardProps> = ({
   className, 
   name, 
   actions, 
-  description, 
-  add, 
-  stars, 
-  category, 
-  price,
+  description,
+  categories,
+  skeleton = false,
+  loading = false,
   onClick
-}) => {
-  const theme = useTheme();
-
-  return (
-    <PresetCardStyled 
-      className={className}
-      onClick={onClick} 
-    >
-      <PresetCardContent>
-        <PresetCardLine />
-        <PresetCardMain>
-          <PresetCardNameActions>
+}) => (
+  <PresetCardStyled
+    $skeleton={skeleton}
+    $loading={loading}
+    className={className}
+    onClick={onClick} 
+  >
+    <PresetCardContent>
+      <PresetCardLine 
+        $skeleton={skeleton}
+      />
+      <PresetCardMain>
+        <PresetCardNameActions>
+          {skeleton && (
             <PresetCardName>
-              {name}
+              <Skeleton width={220} />
             </PresetCardName>
-            {actions}
-          </PresetCardNameActions>
-          <PresetCardDescription>
-            {description}
-          </PresetCardDescription>
-          {typeof stars === 'number' && (
-            <PresetCardAddStars>
-              {add}
-              <PresetCardStars>
-                <PresetCardStarList>
-                  {[...Array(5)].map((_, index) => (
-                    <IconProvider
-                      fill={index < stars ? theme.colors.orange : theme.colors.grayScale.gray5}
-                      size={20}
-                    >
-                      <PresetCardStar
-                        key={index}
-                        fill={index < stars ? theme.colors.orange : theme.colors.grayScale.gray5}
-                        size={20}
-                      />
-                    </IconProvider>
-                  ))}
-                </PresetCardStarList>
-              </PresetCardStars>
-            </PresetCardAddStars>
           )}
-          <PresetCardCategoryPrice>
-            {typeof category === 'string' && (
-              <PresetCardCategory>
-                {category}
-              </PresetCardCategory>
+          {!skeleton && (
+            <>
+              {typeof name === 'string' && (
+                <Tooltip
+                  label={name}
+                  placement="top-left"
+                  disabled={name.length <= 84}
+                >
+                  <TooltipConsumer>
+                    {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                      <PresetCardName
+                        onMouseEnter={handleTooltipMouseEnter}
+                        onMouseLeave={handleTooltipMouseLeave}
+                      >
+                        {name.slice(0, 84)}
+                        {name.length > 84 && '...'}
+                      </PresetCardName>
+                    )}
+                  </TooltipConsumer>
+                </Tooltip>
+              )}
+              {typeof name !== 'string' && name}
+            </>
+          )}
+          {loading && (
+            <PresetCardLoader />
+          )}
+          {!loading && actions}
+        </PresetCardNameActions>
+        {skeleton && (
+          <PresetCardDescription
+            $skeleton
+          >
+            <Skeleton width={260} />
+            <Skeleton width={180} />
+          </PresetCardDescription>
+        )}
+        {!skeleton && (
+          <>
+            {typeof description === 'string' && (
+              <Tooltip
+                label={description}
+                placement="top-left"
+                disabled={description.length <= 128}
+              >
+                <TooltipConsumer>
+                  {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                    <PresetCardDescription
+                      onMouseEnter={handleTooltipMouseEnter}
+                      onMouseLeave={handleTooltipMouseLeave}
+                    >
+                      {description.slice(0, 128)}
+                      {description.length > 128 && '...'}
+                    </PresetCardDescription>
+                  )}
+                </TooltipConsumer>
+              </Tooltip>
             )}
-            <PresetCardPrice>
-              {price}
-            </PresetCardPrice>
-          </PresetCardCategoryPrice>
-        </PresetCardMain>
-      </PresetCardContent>
-    </PresetCardStyled>
-  );
-};
+            {typeof description !== 'string' && description}
+          </>
+        )}
+        {(skeleton && categories) && (
+          <PresetCardCategories>
+            <PresetCardCategory skeleton />
+            <PresetCardCategory skeleton />
+            <PresetCardCategory skeleton />
+          </PresetCardCategories>
+        )}
+        {!skeleton && categories}
+      </PresetCardMain>
+    </PresetCardContent>
+  </PresetCardStyled>
+);
 
 export * from './styled';

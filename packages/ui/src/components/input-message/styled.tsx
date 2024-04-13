@@ -87,7 +87,7 @@ export const InputMessageFiles = styled.div`
   cursor: default;
 `;
 
-export const InputMessageFile = styled(Chip)``;
+export const InputMessageFile = styled(Chip).attrs({ variant: 'input' })``;
 
 export interface InputMessageTextAreaProps {
   $disabled: boolean;

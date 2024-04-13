@@ -3,10 +3,17 @@ import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
 import { EditIcon } from '@/ui/icons/edit';
-import { Plus2Icon } from '@/ui/icons/plus-2';
 import { StarIcon } from '@/ui/icons/star';
+import { Badge } from '@/ui/components/badge';
+import { adaptive } from '@/ui/adaptive';
+import { LoaderCircularGradientIcon } from '@/ui/icons/loader-circular-gradient';
 
-export const PresetCardStyled = styled.div`
+export interface PresetCardStyledProps {
+  $skeleton: boolean;
+  $loading: boolean;
+}
+
+export const PresetCardStyled = styled.div<PresetCardStyledProps>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -15,16 +22,31 @@ export const PresetCardStyled = styled.div`
   overflow: hidden;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
   box-sizing: border-box;
-  cursor: pointer;
-  ${() => css`
+  cursor: ${({ $skeleton, $loading }) => {
+    if ($skeleton || $loading) {
+      return 'progress';
+    }
+
+    return 'pointer';
+  }};
+  ${({ $skeleton }) => css`
     ${PresetCardActions} {
       visibility: hidden;
     }
-    &:hover {
+    ${!$skeleton && css`
+      &:hover {
+        ${PresetCardActions} {
+          visibility: visible;
+        }
+      }
+      ${adaptive({
+    touch: css`
       ${PresetCardActions} {
         visibility: visible;
       }
-    }
+    `
+  })}
+    `}
   `}
 `;
 
@@ -33,11 +55,21 @@ export const PresetCardContent = styled.div`
   flex-direction: column;
 `;
 
-export const PresetCardLine = styled.div`
+export interface PresetCardLineProps {
+  $skeleton: boolean;
+}
+
+export const PresetCardLine = styled.div<PresetCardLineProps>`
   display: flex;
   width: 100%;
   height: 37px;
-  background: ${({ theme }) => theme.colors.accent.primary};
+  background: ${({ theme, $skeleton }) => {
+    if ($skeleton) {
+      return theme.colors.grayScale.gray1;
+    } 
+
+    return theme.colors.accent.primary;
+  }};
 `;
 
 export const PresetCardMain = styled.div`
@@ -63,70 +95,37 @@ export const PresetCardActions = styled.div`
 
 export const PresetCardAction = styled(Button).attrs({ variant: 'text', iconSize: 18 })``;
 
+export const PresetCardFavoriteAction = styled(PresetCardAction).attrs({ children: <StarIcon /> })``;
+
 export const PresetCardEditAction = styled(PresetCardAction).attrs({ children: <EditIcon /> })``;
 
 export const PresetCardDeleteAction = styled(PresetCardAction).attrs({ children: <CloseIcon /> })``;
 
-export const PresetCardDescription = styled(Typography).attrs({ variant: 'body-m-regular' })`
-  margin-top: 14px;
-`;
-
-export const PresetCardAddStars = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  margin-top: 12px;
-`;
-
-export const AddPresetMyButton = styled(Button).attrs({
-  variant: 'text',
-  children: 'Добавить к себе', 
-  endIcon: <Plus2Icon size={18} /> 
-})`
-  gap: 4px;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 22px;
-  color: ${({ theme }) => theme.colors.accent.primaryLight};
-  svg path {
-    fill: ${({ theme }) => theme.colors.accent.primaryLight};
-  }
-`;
-
-export const PresetCardStars = styled.div`
-  display: flex;
-`;
-
-export const PresetCardStarList = styled.div`
-  display: flex;
-  gap: 4px;
-`;
-
-export interface PresetCardStarProps {
-  $filled: boolean;
+export interface PresetCardDescriptionProps {
+  $skeleton?: boolean;
 }
 
-export const PresetCardStar = styled(StarIcon)``;
+export const PresetCardDescription = styled(Typography).attrs({ variant: 'body-m-regular' })<PresetCardDescriptionProps>`
+  margin-top: 14px;
+  ${({ $skeleton }) => $skeleton && css`
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  `}
+`;
 
-export const PresetCardCategoryPrice = styled.div`
+export const PresetCardCategories = styled.div`
   display: flex;
   width: 100%;
-  justify-content: space-between;
-  border-top: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  gap: 10px;
+  flex-wrap: wrap;
   margin-top: 12px;
+  border-top: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   padding-top: 12px;
 `;
 
-export const PresetCardCategory = styled(Typography).attrs({ variant: 'body-s-medium' })`
-  display: inline-flex;
-  padding: 2px 12px;
-  border-radius: 14px;
-  background: ${({ theme }) => theme.colors.accent.primary};
+export const PresetCardCategory = styled(Badge).attrs({ variant: 'blue' })`
+  cursor: inherit;
 `;
 
-export const PresetCardPrice = styled(Typography).attrs({ variant: 'body-s-medium' })`
-  display: inline-flex;
-  padding: 2px 12px;
-  border-radius: 14px;
-  background: ${({ theme }) => theme.colors.accent.primary};
-`;
+export const PresetCardLoader = styled(LoaderCircularGradientIcon).attrs({ size: 18 })``;

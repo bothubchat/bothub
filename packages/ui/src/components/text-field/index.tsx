@@ -1,11 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   TextFieldErrorText,
   TextFieldInput, 
   TextFieldBlock, 
   TextFieldLabel, 
   TextFieldStyled, 
-  TextFieldSkeleton
+  TextFieldSkeleton,
+  TextFieldClearButton
 } from './styled';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
@@ -44,6 +45,8 @@ export const TextField: React.FC<TextFieldProps> = ({
 }) => {
   const theme = useTheme();
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const [isFocus, setIsFocus] = useState(false);
   const [isHover, setIsHover] = useState(false);
 
@@ -69,9 +72,23 @@ export const TextField: React.FC<TextFieldProps> = ({
     onValueChange?.(event.target.value);
   }, [onChange, onValueChange]);
 
+  const handleClear = useCallback(() => {
+    const inputEl: HTMLInputElement | null = inputRef.current;
+
+    if (inputEl !== null) {
+      inputEl.value = '';
+      onValueChange?.('');
+    }
+  }, [onChange]);
+
   const iconProps: IconProviderProps = {
     size: 16,
-    fill: theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white
+    ...(disabled && {
+      fill: theme.colors.grayScale.gray1
+    }),
+    ...(!disabled && {
+      fill: theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white
+    })
   };
 
   return (
@@ -105,7 +122,8 @@ export const TextField: React.FC<TextFieldProps> = ({
               {type === 'search' && <SearchCircleIcon />}
             </IconProvider>
           )}
-          <TextFieldInput 
+          <TextFieldInput
+            ref={inputRef}
             value={value}
             type={type}
             name={name}
@@ -118,7 +136,12 @@ export const TextField: React.FC<TextFieldProps> = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           />
-          {endIcon && (
+          {(type === 'search' && value) && (
+            <TextFieldClearButton
+              onClick={handleClear}
+            />
+          )}
+          {(type !== 'search' && endIcon) && (
             <IconProvider {...iconProps}>
               {endIcon}
             </IconProvider>
