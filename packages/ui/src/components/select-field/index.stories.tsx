@@ -58,7 +58,9 @@ export const Multiple: SelectFieldStory = {
     label: 'Label',
     placeholder: 'Placeholder',
     data: [
-      'React',
+      {
+        value: 'React',
+      },
       'Vue',
       'Svelte',
       'Node.js',

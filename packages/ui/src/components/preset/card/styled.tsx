@@ -53,31 +53,43 @@ export const PresetCardStyled = styled.div<PresetCardStyledProps>`
 export const PresetCardContent = styled.div`
   display: flex;
   flex-direction: column;
+  flex-grow: 3;
 `;
 
 export interface PresetCardLineProps {
   $skeleton: boolean;
+  $color?: string;
 }
 
 export const PresetCardLine = styled.div<PresetCardLineProps>`
   display: flex;
+  flex-shrink: 0;
   width: 100%;
   height: 37px;
-  background: ${({ theme, $skeleton }) => {
+  background: ${({ theme, $skeleton, $color }) => {
     if ($skeleton) {
       return theme.colors.grayScale.gray1;
     } 
 
-    return theme.colors.accent.primary;
+    return $color ?? theme.colors.accent.primary;
   }};
 `;
 
 export const PresetCardMain = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 3;
   width: 100%;
   padding: 14px;
   box-sizing: border-box;
+`;
+
+export const PresetCardTop = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-grow: 3;
 `;
 
 export const PresetCardNameActions = styled.div`

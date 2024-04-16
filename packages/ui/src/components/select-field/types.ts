@@ -1,9 +1,9 @@
 import React from 'react';
 import { TooltipProps } from '@/ui/components/tooltip';
 
-export type SelectFieldChangeEventHandler = (item: SelectFieldDataItem) => unknown;
+export type SelectFieldChangeEventHandler = (item: SelectFieldDataItem | null) => unknown;
 
-export type SelectFieldValueChangeEventHandler = (value: string) => unknown;
+export type SelectFieldValueChangeEventHandler = (value: string | null) => unknown;
 
 export type SelectFieldMultiChangeEventHandler = (items: SelectFieldDataItem[]) => unknown;
 

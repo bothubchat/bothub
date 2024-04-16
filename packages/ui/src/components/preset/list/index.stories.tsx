@@ -22,6 +22,9 @@ export const Basic: PresetsStory = {
         <PresetCard
           key={index}
           name="Режим разработчика"
+          {...(index % 3 === 0 && {
+            color: '#F29C1C'
+          })}
           actions={(
             <PresetCardActions>
               <PresetCardFavoriteAction />
@@ -29,8 +32,8 @@ export const Basic: PresetsStory = {
               <PresetCardDeleteAction />
             </PresetCardActions>
           )}
-          description="Режим разработчика снимает все ограничения модели GPT-3.5"
-          categories={(
+          description={index % 3 === 0 && 'Режим разработчика снимает все ограничения модели GPT-3.5'}
+          categories={index % 2 === 0 && (
             <PresetCardCategories>
               <PresetCardCategory>
                 Бизнес

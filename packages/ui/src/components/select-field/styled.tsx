@@ -47,6 +47,7 @@ export interface SelectFieldInputProps {
   $skeleton: boolean;
   $blur: boolean;
   $loading: boolean;
+  $multiple: boolean;
 }
 
 export const SelectFieldInput = styled.div<SelectFieldInputProps>`
@@ -72,8 +73,18 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
     return theme.colors.grayScale.gray2;
   }};
   border-radius: 10px;
-  padding: 10px;
-  padding-right: 16px;
+  ${({ $multiple }) => {
+    if ($multiple) {
+      return css`
+        padding: 10px;
+        padding-right: 16px;
+      `;
+    }
+
+    return css`
+      padding: 14px 16px;
+    `;
+  }}
   box-sizing: border-box;
   background: ${({
     theme, $disabled, $skeleton, $blur 
@@ -118,6 +129,11 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
       ${SelectFieldClearButton} {
         visibility: ${$open ? 'visible' : 'hidden'};
       }
+      &:hover {
+        ${SelectFieldClearButton} {
+          visibility: visible;
+        }
+      }
     `;
   }}
 `;
@@ -137,7 +153,6 @@ export interface SelectFieldSearchIconProps {
 }
 
 export const SelectFieldSearchIcon = styled(SearchCircleIcon).attrs({ size: 16 })<SelectFieldSearchIconProps>`
-  margin-left: 6px;
   path {
     fill: ${({ theme, $focus }) => {
     if ($focus) {
@@ -155,14 +170,11 @@ export const SelectFieldInputNative = styled.input`
   background: none;
   border: none;
   outline: none;
-  padding: 4px 0px;
   color: ${({ theme }) => theme.colors.base.white};
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
-  &:first-child {
-    padding-left: 6px;
-  }
+  padding: 0px;
   &::placeholder {
     color: ${({ theme }) => theme.colors.grayScale.gray1};
   }
@@ -203,8 +215,6 @@ export const SelectFieldValue = styled.span`
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 4px 0px;
-  padding-left: 6px;
 `;
 
 export const SelectFieldValueText = styled(Typography).attrs({ variant: 'input-sm' })``;
@@ -252,8 +262,6 @@ export const SelectFieldPlaceholder = styled(Typography).attrs({ variant: 'input
 
     return theme.colors.grayScale.gray1;
   }};
-  padding: 4px 0px;
-  padding-left: 6px;
 `;
 
 export const SelectFieldLoader = styled(LoaderCircularGradientIcon)``;

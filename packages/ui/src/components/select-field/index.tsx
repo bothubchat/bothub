@@ -51,7 +51,7 @@ import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 
 export interface SelectFieldDefaultProps {
   multiple?: false;
-  value?: SelectFieldDataItem;
+  value?: SelectFieldDataItem | null;
   onChange?: SelectFieldChangeEventHandler;
   onValueChange?: SelectFieldValueChangeEventHandler;
 }
@@ -84,6 +84,7 @@ export type SelectFieldProps = (SelectFieldDefaultProps | SelectFieldMultiProps)
   inputType?: SelectFieldInputType;
   inputValue?: string;
   loading?: boolean;
+  padding?: [number, number];
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
 } & React.PropsWithChildren;
@@ -119,7 +120,9 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
   const { multiple = false } = props;
 
-  const setInitialValue = useCallback((item: SelectFieldDataItem | SelectFieldDataItem[]) => {
+  const setInitialValue = useCallback((
+    item: SelectFieldDataItem | SelectFieldDataItem[] | null
+  ) => {
     if (props.multiple && Array.isArray(item)) {
       const items = item;
 
@@ -140,10 +143,14 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     } else if (!props.multiple && !Array.isArray(item)) {
       props.onChange?.(item);
 
-      if (typeof item === 'string') {
-        props.onValueChange?.(item);
-      } else if (typeof item.value === 'string') {
-        props.onValueChange?.(item.value);
+      if (item) {
+        if (typeof item === 'string') {
+          props.onValueChange?.(item);
+        } else if (typeof item.value === 'string') {
+          props.onValueChange?.(item.value);
+        }
+      } else {
+        props.onValueChange?.(null);
       }
     }
   }, [props.multiple, props.onChange, props.onValueChange]);
@@ -259,6 +266,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     setInputValue(event.currentTarget.value);
   }, [setInputValue]);
 
+  const handleClear = useCallback(() => {
+    setValue(null);
+    setInputValue('');
+  }, [setValue, setInputValue]);
+
   const inputRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -335,6 +347,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                 $skeleton={false}
                 $blur={blur}
                 $loading={loading}
+                $multiple={multiple && Array.isArray(value) && value.length > 0}
                 ref={inputRef}
                 onClick={handleInputClick.bind(null, false)}
               >
@@ -431,6 +444,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                           return (
                             <SelectFieldValueListItem
                               key={item.id ?? item.value ?? index}
+                              onDelete={handleValueDelete.bind(null, item)}
                             >
                               {item.label ?? item.value}
                             </SelectFieldValueListItem>
@@ -441,9 +455,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                   )}
                 </SelectFieldInputLeftSide>
                 <SelectFieldInputSide>
-                  {(enableInput && inputType === 'search' && !loading && inputValue) && (
+                  {(
+                    (enableInput && inputType === 'search' && !loading && inputValue)
+                    || (enableInput && value)) && (
                     <SelectFieldClearButton 
-                      onClick={setInputValue.bind(null, '')}
+                      onClick={handleClear}
                     />
                   )}
                   {loading && (
@@ -468,6 +484,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                 $skeleton
                 $loading={false}
                 $blur={blur}
+                $multiple={false}
                 ref={inputRef}
               >
                 <SelectFieldSkeleton />

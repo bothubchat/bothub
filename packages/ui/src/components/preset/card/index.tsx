@@ -9,7 +9,8 @@ import {
   PresetCardMain,
   PresetCardName,
   PresetCardNameActions,
-  PresetCardStyled
+  PresetCardStyled,
+  PresetCardTop
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
@@ -17,6 +18,7 @@ import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 export interface PresetCardProps {
   className?: string;
   name?: React.ReactNode;
+  color?: string;
   actions?: React.ReactNode;
   description?: React.ReactNode;
   categories?: React.ReactNode;
@@ -27,7 +29,8 @@ export interface PresetCardProps {
 
 export const PresetCard: React.FC<PresetCardProps> = ({
   className, 
-  name, 
+  name,
+  color,
   actions, 
   description,
   categories,
@@ -42,77 +45,89 @@ export const PresetCard: React.FC<PresetCardProps> = ({
     onClick={onClick} 
   >
     <PresetCardContent>
-      <PresetCardLine 
-        $skeleton={skeleton}
-      />
+      {!skeleton && (
+        <PresetCardLine
+          $skeleton={false}
+          $color={color}
+        />
+      )}
+      {skeleton && (
+        <PresetCardLine 
+          $skeleton
+          as={Skeleton}
+          variant="rectangular"
+        />
+      )}
       <PresetCardMain>
-        <PresetCardNameActions>
+        <PresetCardTop>
+          <PresetCardNameActions>
+            {skeleton && (
+              <PresetCardName>
+                <Skeleton width={220} />
+              </PresetCardName>
+            )}
+            {!skeleton && (
+              <>
+                {typeof name === 'string' && (
+                  <Tooltip
+                    label={name}
+                    placement="top-left"
+                    disabled={name.length <= 84}
+                  >
+                    <TooltipConsumer>
+                      {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                        <PresetCardName
+                          onMouseEnter={handleTooltipMouseEnter}
+                          onMouseLeave={handleTooltipMouseLeave}
+                        >
+                          {name.slice(0, 84)}
+                          {name.length > 84 && '...'}
+                        </PresetCardName>
+                      )}
+                    </TooltipConsumer>
+                  </Tooltip>
+                )}
+                {typeof name !== 'string' && name}
+              </>
+            )}
+            {loading && (
+              <PresetCardLoader />
+            )}
+            {!loading && actions}
+          </PresetCardNameActions>
           {skeleton && (
-            <PresetCardName>
-              <Skeleton width={220} />
-            </PresetCardName>
+            <PresetCardDescription
+              $skeleton
+            >
+              <Skeleton width={260} />
+              <Skeleton width={180} />
+            </PresetCardDescription>
           )}
           {!skeleton && (
             <>
-              {typeof name === 'string' && (
+              {typeof description === 'string' && (
                 <Tooltip
-                  label={name}
+                  label={description}
                   placement="top-left"
-                  disabled={name.length <= 84}
+                  disabled={description.length <= 128}
                 >
                   <TooltipConsumer>
                     {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                      <PresetCardName
+                      <PresetCardDescription
                         onMouseEnter={handleTooltipMouseEnter}
                         onMouseLeave={handleTooltipMouseLeave}
                       >
-                        {name.slice(0, 84)}
-                        {name.length > 84 && '...'}
-                      </PresetCardName>
+                        {description.slice(0, 128)}
+                        {description.length > 128 && '...'}
+                      </PresetCardDescription>
                     )}
                   </TooltipConsumer>
                 </Tooltip>
               )}
-              {typeof name !== 'string' && name}
+              {typeof description !== 'string' && description}
             </>
           )}
-          {loading && (
-            <PresetCardLoader />
-          )}
-          {!loading && actions}
-        </PresetCardNameActions>
-        {skeleton && (
-          <PresetCardDescription
-            $skeleton
-          >
-            <Skeleton width={260} />
-            <Skeleton width={180} />
-          </PresetCardDescription>
-        )}
-        {!skeleton && (
-          <>
-            {typeof description === 'string' && (
-              <Tooltip
-                label={description}
-                placement="top-left"
-                disabled={description.length <= 128}
-              >
-                <TooltipConsumer>
-                  {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                    <PresetCardDescription
-                      onMouseEnter={handleTooltipMouseEnter}
-                      onMouseLeave={handleTooltipMouseLeave}
-                    >
-                      {description.slice(0, 128)}
-                      {description.length > 128 && '...'}
-                    </PresetCardDescription>
-                  )}
-                </TooltipConsumer>
-              </Tooltip>
-            )}
-            {typeof description !== 'string' && description}
-          </>
-        )}
+        </PresetCardTop>
         {(skeleton && categories) && (
           <PresetCardCategories>
             <PresetCardCategory skeleton />

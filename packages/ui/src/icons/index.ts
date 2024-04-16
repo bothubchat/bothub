@@ -117,3 +117,5 @@ export * from './public';
 export * from './private';
 export * from './mistral';
 export * from './gemini';
+export * from './search-simple';
+export * from './sad-robot';
