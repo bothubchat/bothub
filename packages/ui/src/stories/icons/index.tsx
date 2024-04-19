@@ -113,6 +113,7 @@ import {
   MistralIcon,
   GeminiIcon,
   StripeIcon,
+  SadRobotIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -236,6 +237,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="MistralIcon">{MistralIcon}</IconItem>
         <IconItem name="GeminiIcon">{GeminiIcon}</IconItem>
         <IconItem name="StripeIcon">{StripeIcon}</IconItem>
+        <IconItem name="SadRobotIcon">{SadRobotIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

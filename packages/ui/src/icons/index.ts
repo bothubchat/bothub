@@ -114,3 +114,4 @@ export * from './blog-circle';
 export * from './mistral';
 export * from './gemini';
 export * from './stripe';
+export * from './sad-robot';
