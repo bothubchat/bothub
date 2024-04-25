@@ -83,6 +83,7 @@ export type SelectFieldProps = (SelectFieldDefaultProps | SelectFieldMultiProps)
   enableInput?: boolean;
   inputType?: SelectFieldInputType;
   inputValue?: string;
+  clearable?: boolean;
   loading?: boolean;
   padding?: [number, number];
   onOptionClick?: SelectFieldOptionClickEventHandler;
@@ -103,7 +104,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   blur = false,
   size = 'small',
   disableSelect = false,
-  placement = 'bottom-left',
+  placement: initialPlacement = 'bottom-left',
   disableScrollbar = false,
   before,
   after,
@@ -111,6 +112,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   enableInput = false,
   inputType = 'text',
   inputValue: initialInputValue,
+  clearable = false,
   onOptionClick,
   onInputChange,
   children,
@@ -165,9 +167,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
-  const [bottom, setBottom] = useState(0);
-  const [right, setRight] = useState(0);
   const [width, setWidth] = useState(0);
+  const [placement, setPlacement] = useState(initialPlacement);
 
   const handleOptionClick = useCallback((item: SelectFieldDataItem) => {
     if (typeof item === 'object' && item.disabled) {
@@ -226,15 +227,25 @@ export const SelectField: React.FC<SelectFieldProps> = ({
       event.stopPropagation();
     }
 
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+
     const rect = inputEl.getBoundingClientRect();
     const { width, height } = rect;
 
+    let newPlacement = placement;
+
+    if (rect.top - 186 < 0) {
+      newPlacement = 'bottom-left';
+    } else if (rect.bottom + 186 > windowHeight) {
+      newPlacement = 'top-left';
+    } else {
+      newPlacement = initialPlacement;
+    }
+
     let x: number = 0;
     let y: number = 0;
-    const right: number = 0;
-    const bottom: number = 0;
 
-    switch (placement) {
+    switch (newPlacement) {
       case 'bottom-left':
         x = rect.left + window.scrollX;
         y = rect.top + window.scrollY + height;
@@ -251,16 +262,15 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
     setX(x);
     setY(y);
-    setRight(right);
-    setBottom(bottom);
     setWidth(width);
+    setPlacement(newPlacement);
     
     if (native) {
       setIsOpen(true);
     } else {
       setIsOpen(!isOpen);
     }
-  }, [disabled, isOpen, placement]);
+  }, [disabled, isOpen, placement, initialPlacement]);
 
   const handleInputChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => {
     setInputValue(event.currentTarget.value);
@@ -456,7 +466,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                 </SelectFieldInputLeftSide>
                 <SelectFieldInputSide>
                   {(
-                    (enableInput && inputType === 'search' && !loading && inputValue)
+                    (clearable && value)
+                    || (enableInput && inputType === 'search' && !loading && inputValue)
                     || (enableInput && value)) && (
                     <SelectFieldClearButton 
                       onClick={handleClear}
@@ -513,12 +524,6 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                 }),
                 ...(y !== 0 && {
                   top: `${y}px`
-                }),
-                ...(right !== 0 && {
-                  right: `${right}px`
-                }),
-                ...(bottom !== 0 && {
-                  bottom: `${bottom}px`
                 }),
                 ...(typeof contentWidth === 'undefined' && {
                   width: `${width}px`

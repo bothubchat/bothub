@@ -41,6 +41,13 @@ export const Basic: SelectFieldStory = {
   }
 };
 
+export const Clearable: SelectFieldStory = {
+  args: {
+    ...Basic.args,
+    clearable: true
+  }
+};
+
 export const Empty: SelectFieldStory = {
   args: {
     ...Basic.args,
