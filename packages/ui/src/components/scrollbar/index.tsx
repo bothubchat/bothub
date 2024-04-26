@@ -33,7 +33,6 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
   const [isRight, setIsRight] = useState<boolean>(false);
   const [isTop, setIsTop] = useState<boolean>(false);
   const [isBottom, setIsBottom] = useState<boolean>(false);
-  const [heightBeforeUpdate, setHeightBeforeUpdate] = useState(0);
   const advancedMode = !!scrollShadows;
   const lockedMode = !!scrollLocked;
 
@@ -61,6 +60,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
 
   const setScroll = useCallback<SetScrollFunction>((options) => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
+
     if (scrollbarEl === null) {
       return;
     }
@@ -73,17 +73,8 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
           scrollbarEl.scrollTop = scrollbarEl.scrollHeight;
           break;
       }
-    } else {
-      if (heightBeforeUpdate !== 0) {
-        const { scrollTop, scrollHeight } = scrollbarEl;
-        const heightDifference = scrollHeight - heightBeforeUpdate;
-
-        scrollbarEl.scrollTop = scrollTop + heightDifference;
-      }
-
-      setHeightBeforeUpdate(scrollbarEl.scrollHeight);
     }
-  }, [lockedMode, scrollLocked, heightBeforeUpdate]);
+  }, [lockedMode, scrollLocked]);
 
   useImperativeHandle(ref, () => ({
     element: scrollbarRef.current,
