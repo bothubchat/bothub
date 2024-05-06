@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useRef, useState, useEffect, forwardRef, useImperativeHandle
+  useCallback, useRef, useState, useEffect, forwardRef, useImperativeHandle, useMemo
 } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { ScrollbarContent, ScrollbarShadows, ScrollbarStyled } from './styled';
@@ -23,10 +23,11 @@ export interface ScrollbarProps extends React.PropsWithChildren {
   overflow?: ScrollbarOverflow;
   disabled?: boolean;
   disableShadows?: boolean;
+  defaultSticky?: boolean;
 }
 
 export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({ 
-  className, scrollbarClassName, variant = 'primary', size = 6, scrollShadows, scrollLocked, overflow = 'auto', disabled = false, disableShadows = false, children 
+  className, scrollbarClassName, variant = 'primary', size = 6, scrollShadows, scrollLocked, overflow = 'auto', disabled = false, disableShadows = false, children, defaultSticky = true,
 }, ref) => {
   const scrollbarRef = useRef<HTMLDivElement>(null);
   const [isLeft, setIsLeft] = useState<boolean>(false);
@@ -35,10 +36,11 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
   const [isBottom, setIsBottom] = useState<boolean>(false);
   const advancedMode = !!scrollShadows;
   const lockedMode = !!scrollLocked;
+  const [sticky, setSticky] = useState<boolean>(defaultSticky);
+  const [previousScrollTop, setPreviousScrollTop] = useState<number>(0);
 
   const handleScroll = useCallback(() => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
-    
     if (scrollbarEl === null) {
       return;
     }
@@ -53,10 +55,21 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
     setIsTop(scrollTop !== 0);
     setIsBottom(Math.round(scrollTop) + 1 < scrollHeight - clientHeight);
 
+    const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
+    setPreviousScrollTop(scrollbarEl.scrollTop);
+    
+    const scrollBottom = scrollbarEl.clientHeight
+      - Math.ceil(scrollbarEl.scrollHeight - scrollbarEl.scrollTop);
+    if (Math.abs(scrollBottom) < 20 && !isUpScroll) {
+      setSticky(true);
+    } else if (isUpScroll) {
+      setSticky(false);
+    }
+
     if (disabled) {
       scrollbarEl.scrollTo(0, 0);
     }
-  }, [scrollbarRef, disabled]);
+  }, [scrollbarRef, disabled, previousScrollTop]);
 
   const setScroll = useCallback<SetScrollFunction>((options) => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
@@ -64,7 +77,6 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
     if (scrollbarEl === null) {
       return;
     }
-
     if ((lockedMode || typeof options !== 'undefined') && scrollbarEl !== null) {
       const { side } = options ?? scrollLocked ?? { side: 'bottom' };
 
@@ -84,6 +96,18 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
   useEffect(() => {
     setScroll();
   }, [children, setScroll]);
+  
+  const observer = useMemo(() => {
+    if (typeof window !== 'undefined') {
+      return new MutationObserver(() => {
+        const el = scrollbarRef.current;
+        if (sticky && el && !lockedMode) {
+          el.scrollTop = el.scrollHeight;
+        }
+      });
+    }
+    return null;
+  }, [sticky, lockedMode]);
 
   useEffect(() => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
@@ -96,10 +120,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
       handleScroll();
     }, 300);
 
-    const observer = new MutationObserver(() => {
-      handleScroll();
-    });
-    observer.observe(scrollbarEl, {
+    observer?.observe(scrollbarEl, {
       childList: true,
       subtree: true
     });
@@ -109,10 +130,10 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
 
     return () => {
       clearTimeout(scrollTimeout);
-      observer.disconnect();
+      observer?.disconnect();
       window.removeEventListener('resize', resizeListener);
     };
-  }, [scrollbarRef.current]);
+  }, [scrollbarRef.current, observer]);
 
   const contentNode: React.ReactNode = (
     <ScrollbarContent
