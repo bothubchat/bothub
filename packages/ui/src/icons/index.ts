@@ -121,3 +121,4 @@ export * from './search-simple';
 export * from './sad-robot';
 export * from './model';
 export * from './phone-colored';
+export * from './questions';
