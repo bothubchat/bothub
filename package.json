@@ -10,7 +10,7 @@
     "./packages/*"
   ],
   "scripts": {
-    "start": "cross-env NODE_ENV=development rollup --watch --config ./rollup.config.ts --configPlugin @rollup/plugin-typescript",
+    "dev": "cross-env NODE_ENV=development rollup --watch --config ./rollup.config.ts --configPlugin @rollup/plugin-typescript",
     "build": "cross-env NODE_ENV=production rollup --config ./rollup.config.ts --configPlugin @rollup/plugin-typescript",
     "sb": "storybook dev -p 6006",
     "build:sb": "storybook build",
