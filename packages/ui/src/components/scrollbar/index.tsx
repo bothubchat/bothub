@@ -23,11 +23,12 @@ export interface ScrollbarProps extends React.PropsWithChildren {
   overflow?: ScrollbarOverflow;
   disabled?: boolean;
   disableShadows?: boolean;
-  defaultSticky?: boolean;
+  withStickyBottom?: boolean;
+  defaultStickyBottom?: boolean;
 }
 
 export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({ 
-  className, scrollbarClassName, variant = 'primary', size = 6, scrollShadows, scrollLocked, overflow = 'auto', disabled = false, disableShadows = false, children, defaultSticky = true,
+  className, scrollbarClassName, variant = 'primary', size = 6, scrollShadows, scrollLocked, overflow = 'auto', disabled = false, disableShadows = false, children, defaultStickyBottom = false, withStickyBottom = false,
 }, ref) => {
   const scrollbarRef = useRef<HTMLDivElement>(null);
   const [isLeft, setIsLeft] = useState<boolean>(false);
@@ -36,7 +37,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
   const [isBottom, setIsBottom] = useState<boolean>(false);
   const advancedMode = !!scrollShadows;
   const lockedMode = !!scrollLocked;
-  const [sticky, setSticky] = useState<boolean>(defaultSticky);
+  const [sticky, setSticky] = useState<boolean>(defaultStickyBottom);
   const [previousScrollTop, setPreviousScrollTop] = useState<number>(0);
 
   const handleScroll = useCallback(() => {
@@ -57,19 +58,21 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
 
     const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
     setPreviousScrollTop(scrollbarEl.scrollTop);
-    
-    const scrollBottom = scrollbarEl.clientHeight
-      - Math.ceil(scrollbarEl.scrollHeight - scrollbarEl.scrollTop);
-    if (Math.abs(scrollBottom) < 20 && !isUpScroll) {
-      setSticky(true);
-    } else if (isUpScroll) {
-      setSticky(false);
+
+    if (withStickyBottom) {
+      const scrollBottom = scrollbarEl.clientHeight
+        - Math.ceil(scrollbarEl.scrollHeight - scrollbarEl.scrollTop);
+      if (Math.abs(scrollBottom) < 20 && !isUpScroll) {
+        setSticky(true);
+      } else if (isUpScroll) {
+        setSticky(false);
+      }
     }
 
     if (disabled) {
       scrollbarEl.scrollTo(0, 0);
     }
-  }, [scrollbarRef, disabled, previousScrollTop]);
+  }, [scrollbarRef, disabled, previousScrollTop, withStickyBottom]);
 
   const setScroll = useCallback<SetScrollFunction>((options) => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
@@ -98,7 +101,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
   }, [children, setScroll]);
   
   const observer = useMemo(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && withStickyBottom) {
       return new MutationObserver(() => {
         const el = scrollbarRef.current;
         if (sticky && el && !lockedMode) {
@@ -107,7 +110,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
       });
     }
     return null;
-  }, [sticky, lockedMode]);
+  }, [sticky, lockedMode, withStickyBottom]);
 
   useEffect(() => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
