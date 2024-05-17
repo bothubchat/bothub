@@ -99,6 +99,7 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
     return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
   }};
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   cursor: ${({ $disabled, $skeleton, $loading }) => {
     if ($skeleton || $loading) {
       return 'progress';
@@ -304,6 +305,7 @@ export const SelectFieldBlockPositionWrapper = styled.div<SelectFieldBlockPositi
     return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
   }};
   backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   ${({ $placement }) => {
     switch ($placement) {
       case 'bottom-left':

@@ -47,7 +47,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
     return children;
   }, [children, isDisabled]);
 
-  const handleKatexStrict = useCallback((...args: unknown[]) => {
+  const handleKatexStrict = useCallback(() => {
     if (singleDollarTextMath) queueMicrotask(() => setSingleDollarTextMath(false));
   }, [singleDollarTextMath]);
 
