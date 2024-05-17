@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { motion } from 'framer-motion';
 import {
   BadgeProgressBackground, 
   BadgeProgressContent, 
@@ -77,6 +78,7 @@ export const BadgeProgress: React.FC<BadgeProgressProps> = ({
         >
           {percent !== null && (
             <BadgeProgressLineFilled
+              as={motion.div}
               variants={{
                 filled: {
                   width: `${percent}%`
