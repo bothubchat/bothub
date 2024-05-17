@@ -43,6 +43,8 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(({
         <MessagesScrollbarWrapper
           ref={scrollbarRef}
           scrollShadows={scrollShadows}
+          withStickyBottom
+          defaultStickyBottom
         >
           <MessagesContent>
             <MessagesContainer>
