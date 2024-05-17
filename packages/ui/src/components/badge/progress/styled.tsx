@@ -1,5 +1,4 @@
 import { css, styled } from 'styled-components';
-import { motion } from 'framer-motion';
 import { Typography } from '@/ui/components/typography';
 import { LoaderCircularIcon } from '@/ui/icons/loader-circular';
 import { BadgeProgressColor } from './types';
@@ -54,7 +53,7 @@ export const BadgeProgressLine = styled.div<BadgeProgressLineProps>`
   }};
 `;
 
-export const BadgeProgressLineFilled = styled(motion.div)`
+export const BadgeProgressLineFilled = styled.div`
   display: flex;
   width: inherit;
   height: inherit;
