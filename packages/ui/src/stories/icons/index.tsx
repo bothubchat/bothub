@@ -120,7 +120,15 @@ import {
   SadRobotIcon,
   ModelIcon,
   PhoneColoredIcon,
-  QuestionsIcon
+  QuestionsIcon,
+  PdfBigIcon,
+  XlsBigIcon,
+  WordBigIcon,
+  TxtBigIcon,
+  PdfIcon,
+  XlsIcon,
+  WordIcon,
+  TxtIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -252,6 +260,14 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="ModelIcon">{ModelIcon}</IconItem>
         <IconItem name="PhoneColoredIcon">{PhoneColoredIcon}</IconItem>
         <IconItem name="QuestionsIcon">{QuestionsIcon}</IconItem>
+        <IconItem name="PdfBigIcon">{PdfBigIcon}</IconItem>
+        <IconItem name="XlsBigIcon">{XlsBigIcon}</IconItem>
+        <IconItem name="WordBigIcon">{WordBigIcon}</IconItem>
+        <IconItem name="TxtBigIcon">{TxtBigIcon}</IconItem>
+        <IconItem name="PdfIcon">{PdfIcon}</IconItem>
+        <IconItem name="XlsIcon">{XlsIcon}</IconItem>
+        <IconItem name="WordIcon">{WordIcon}</IconItem>
+        <IconItem name="TxtIcon">{TxtIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

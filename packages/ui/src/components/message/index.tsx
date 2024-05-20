@@ -187,3 +187,4 @@ export * from './markdown';
 export * from './components';
 export * from './badge-progress';
 export * from './button';
+export * from './file';

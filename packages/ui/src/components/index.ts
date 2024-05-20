@@ -48,3 +48,4 @@ export * from './chip';
 export * from './action-message';
 export * from './image-fullscreen';
 export * from './pagination';
+export * from './file-field';

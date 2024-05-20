@@ -45,7 +45,7 @@ export const BadgeStyled = styled.div<BadgeStyledProps>`
 `;
 
 export interface BadgeTextProps {
-  $variant: BadgeVariant;
+  $variant?: BadgeVariant;
 }
 
 export const BadgeText = styled(Typography).attrs({ variant: 'body-s-medium' })<BadgeTextProps>`
