@@ -84,7 +84,6 @@ export const FileFieldIcon = styled(AttachIcon).attrs(
 
 export const FileFieldInput = styled.input.attrs({ 
   type: 'file',
-  accept: 'text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf',
   multiple: true
 })`
   display: none;

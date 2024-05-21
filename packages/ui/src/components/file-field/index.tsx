@@ -25,13 +25,14 @@ export interface FileFieldProps extends Omit<React.ComponentProps<'label'>, 'onC
   placeholder?: string;
   error?: string;
   files?: File[];
+  accept?: string;
   disabled?: boolean;
   fullWidth?: boolean;
   onChange?: FileFieldChangeEventHandler;
 }
 
 export const FileField: React.FC<FileFieldProps> = ({
-  label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false, 
+  label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false, accept,
   onChange,
   ...props
 }) => {
@@ -84,6 +85,7 @@ export const FileField: React.FC<FileFieldProps> = ({
         <FileFieldIcon />
         <FileFieldInput
           disabled={disabled}
+          accept={accept}
           onChange={handleInputChange}
         />
         {(placeholder && files.length === 0) && (
@@ -116,8 +118,8 @@ export const FileField: React.FC<FileFieldProps> = ({
                     {iconNode}
                   </IconProvider>
                   <BadgeText>
-                    {file.name.length > 26 && '...'}
-                    {file.name.slice(-26)}
+                    {file.name.length > 18 && '...'}
+                    {file.name.slice(-18)}
                   </BadgeText>
                   <FileFieldFileDeleteButton 
                     disabled={disabled}

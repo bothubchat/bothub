@@ -58,6 +58,7 @@ export const BadgeText = styled(Typography).attrs({ variant: 'body-s-medium' })<
     }
   }};
   cursor: inherit;
+  white-space: nowrap;
 `;
 
 export const BadgeSkeleton = styled(Skeleton).attrs({ width: 60, height: 12 })`
