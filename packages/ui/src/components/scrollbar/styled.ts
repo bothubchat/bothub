@@ -55,6 +55,9 @@ export const ScrollbarContent = styled.div<ScrollbarContentProps>`
         width: ${`${$size}px`};
         height: ${`${$size}px`};
         background: ${theme.colors.grayScale.gray4};
+        ${$variant === 'secondary' && css`
+          border-radius: ${`${$size / 2}px`};
+        `}
       }
       &::-webkit-scrollbar-thumb {
         background: ${theme.colors.accent.primaryLight};

@@ -10,6 +10,8 @@ import {
   MessageButtons, 
   MessageCopyAction,
   MessageEditAction, 
+  MessageFile, 
+  MessageFiles, 
   MessageImage, 
   MessageImageBottomArrowButton, 
   MessageImageButton, 
@@ -43,7 +45,8 @@ import {
   SquareIcon, 
   StopIcon, 
   UpdateIcon, 
-  UpscaleIcon 
+  UpscaleIcon, 
+  XlsBigIcon
 } from '@/ui/icons';
 
 export type MessageMeta = Meta<typeof Message>;
@@ -629,6 +632,39 @@ export const UpdatedContent: MessageStory = {
           </MessageMarkdown>
         );
       })
+    )
+  }
+};
+
+export const Files: MessageStory = {
+  args: {
+    ...User.args,
+    children: (
+      <>
+        <MessageMarkdown>
+          Привет! Вот держи файлы:
+        </MessageMarkdown>
+        <MessageFiles>
+          <MessageFile
+            icon={<XlsBigIcon />}
+            name="bothubfile_archive.xls"
+            size="367 KB"
+          />
+          <MessageFile
+            name="bothubfile_archive.xls"
+            size="367 KB"
+          />
+          <MessageFile
+            icon={<XlsBigIcon />}
+            name="bothubfile_bothubfile_bothubfile_bothubfile_bothubfile_archive.xls"
+            size="367 KB"
+          />
+          <MessageFile
+            name="bothubfile_archive.docx"
+            size="367 KB"
+          />
+        </MessageFiles>
+      </>
     )
   }
 };

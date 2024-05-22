@@ -14,7 +14,12 @@ import {
   InputMessageUploadFileInput
 } from './styled';
 import { ChipImage } from '@/ui/components/chip';
+import { PdfIcon } from '@/ui/icons/pdf';
+import { TxtIcon } from '@/ui/icons/txt';
+import { WordIcon } from '@/ui/icons/word';
+import { XlsIcon } from '@/ui/icons/xls';
 import { IInputMessageFile } from './types';
+import { IconProvider } from '@/ui/components/icon';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
@@ -30,6 +35,7 @@ export interface InputMessageProps extends Omit<React.ComponentProps<'textarea'>
   hideUploadFile?: boolean;
   uploadFileLimit?: number;
   uploadFileDisabled?: boolean;
+  uploadFileAccept?: string;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
   autoFocus?: boolean;
@@ -43,6 +49,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   className, placeholder, message: initialMessage, files: initialFiles,
   disabled = false, sendDisabled = false, textAreaDisabled = false, 
   uploadFileLimit = 5, hideUploadFile = false, uploadFileDisabled = false,
+  uploadFileAccept = 'text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf, image/png, image/jpeg',
   autoFocus = true,
   onChange, onFilesChange, onTextAreaChange, onSend, onFocus, onBlur,
   ...props
@@ -90,23 +97,27 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       }
 
       const nativeFiles: File[] = [...event.target.files];
-      const previewsUrls: string[] = await Promise.all(
-        nativeFiles.map((nativeFile) => (
-          new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-
-            reader.addEventListener('load', () => {
-              const previewUrl: string | null = reader.result?.toString() ?? null;
-
-              if (previewUrl === null) {
-                return reject(new Error('result not found'));
-              }
-
-              resolve(previewUrl);
+      const previewsUrls: (string | null)[] = await Promise.all(
+        nativeFiles.map((nativeFile) => {
+          if (nativeFile.name.match(/.png$/) || nativeFile.name.match(/.jpg$/) || nativeFile.name.match(/.jpeg$/)) {
+            return new Promise<string>((resolve, reject) => {
+              const reader = new FileReader();
+  
+              reader.addEventListener('load', () => {
+                const previewUrl: string | null = reader.result?.toString() ?? null;
+  
+                if (previewUrl === null) {
+                  return reject(new Error('result not found'));
+                }
+  
+                resolve(previewUrl);
+              });
+              reader.readAsDataURL(nativeFile);
             });
-            reader.readAsDataURL(nativeFile);
-          })
-        ))
+          }
+
+          return Promise.resolve(null);
+        })
       );
       const newFiles: IInputMessageFile[] = nativeFiles.map((nativeFile, index) => ({
         name: nativeFile.name,
@@ -117,7 +128,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       const fileMap = new Map([
         ...files,
         ...newFiles
-      ].map((file) => [file.name, file]));
+      ]
+        .filter((file) => (
+          file.name.match(/.(png|jpg|jpeg|txt|text|docx|xlsx|pdf)$/)
+        ))
+        .map((file) => [file.name, file]));
 
       setFiles([...fileMap.values()].slice(0, uploadFileLimit));
     }, 
@@ -221,7 +236,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             <InputMessageUploadFileInput
               key={files.length}
               type="file"
-              accept="image/png, image/jpeg"
+              accept={uploadFileAccept}
               multiple
               disabled={files.length >= uploadFileLimit || disabled || uploadFileDisabled}
               onChange={handleUploadFileChange}
@@ -234,19 +249,43 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         <InputMessageMain>
           {files.length > 0 && (
             <InputMessageFiles>
-              {files.map((file) => (
-                <InputMessageFile
-                  key={file.name}
-                  image={(
+              {files.map((file) => {
+                let iconNode: React.ReactNode;
+
+                if (file.previewUrl && (file.name.match(/.png$/) || file.name.match(/.jpg$/) || file.name.match(/.jpeg$/))) {
+                  iconNode = (
                     <ChipImage
                       src={file.previewUrl}
                     />
-                  )}
-                  onDelete={handleDeleteFile.bind(null, file)}
-                >
-                  {file.name.length > 20 ? `...${file.name.slice(-20)}` : file.name}
-                </InputMessageFile>
-              ))}
+                  );
+                } else if (file.name.match(/.docx$/)) {
+                  iconNode = <WordIcon />;
+                } else if (file.name.match(/.xlsx$/)) {
+                  iconNode = <XlsIcon />;
+                } else if (file.name.match(/.pdf$/)) {
+                  iconNode = <PdfIcon />;
+                } else {
+                  iconNode = <TxtIcon />;
+                }
+
+                iconNode = (
+                  <IconProvider
+                    size={18}
+                  >
+                    {iconNode}
+                  </IconProvider>
+                );
+
+                return (
+                  <InputMessageFile
+                    key={file.name}
+                    start={iconNode}
+                    onDelete={handleDeleteFile.bind(null, file)}
+                  >
+                    {file.name.length > 20 ? `...${file.name.slice(-20)}` : file.name}
+                  </InputMessageFile>
+                );
+              })}
             </InputMessageFiles>
           )}
           {(

@@ -237,7 +237,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     if (rect.top - 186 < 0) {
       newPlacement = 'bottom-left';
     } else if (rect.bottom + 186 > windowHeight) {
-      newPlacement = 'top-left';
+      if (initialPlacement === 'top-right') {
+        newPlacement = 'top-right';
+      } else {
+        newPlacement = 'top-left';
+      }
     } else {
       newPlacement = initialPlacement;
     }
