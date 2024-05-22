@@ -32,7 +32,8 @@ export interface FileFieldProps extends Omit<React.ComponentProps<'label'>, 'onC
 }
 
 export const FileField: React.FC<FileFieldProps> = ({
-  label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false, accept,
+  label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false, 
+  accept = ['text/plain', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/pdf'].join(', '),
   onChange,
   ...props
 }) => {
@@ -52,7 +53,9 @@ export const FileField: React.FC<FileFieldProps> = ({
           ...(event.currentTarget.files ?? [])
         ].map((file) => [file.name, file]))
       ).values()
-    ]);
+    ].filter((file) => (
+      file.name.match(/.(txt|text|docx|xlsx|pdf)$/)
+    )));
   }, [files, setFiles]);
 
   const handleFileDelete = useCallback((file: File, event: React.MouseEvent) => {
@@ -98,9 +101,9 @@ export const FileField: React.FC<FileFieldProps> = ({
             {files.map((file) => {
               let iconNode: React.ReactNode;
 
-              if (file.name.match(/.doc$/) || file.name.match(/.docx$/)) {
+              if (file.name.match(/.docx$/)) {
                 iconNode = <WordIcon />;
-              } else if (file.name.match(/.xls$/) || file.name.match(/.xlsx$/)) {
+              } else if (file.name.match(/.xlsx$/)) {
                 iconNode = <XlsIcon />;
               } else if (file.name.match(/.pdf$/)) {
                 iconNode = <PdfIcon />;

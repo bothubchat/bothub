@@ -128,7 +128,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       const fileMap = new Map([
         ...files,
         ...newFiles
-      ].map((file) => [file.name, file]));
+      ]
+        .filter((file) => (
+          file.name.match(/.(png|jpg|jpeg|txt|text|docx|xlsx|pdf)$/)
+        ))
+        .map((file) => [file.name, file]));
 
       setFiles([...fileMap.values()].slice(0, uploadFileLimit));
     }, 
@@ -254,9 +258,9 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                       src={file.previewUrl}
                     />
                   );
-                } else if (file.name.match(/.doc$/) || file.name.match(/.docx$/)) {
+                } else if (file.name.match(/.docx$/)) {
                   iconNode = <WordIcon />;
-                } else if (file.name.match(/.xls$/) || file.name.match(/.xlsx$/)) {
+                } else if (file.name.match(/.xlsx$/)) {
                   iconNode = <XlsIcon />;
                 } else if (file.name.match(/.pdf$/)) {
                   iconNode = <PdfIcon />;
