@@ -8,6 +8,7 @@ export interface InputMessageStyledProps {
   $active: boolean;
   $disabled: boolean;
   $textAreaDisabled: boolean;
+  $dragActive?: boolean;
 }
 
 export const InputMessageStyled = styled.div<InputMessageStyledProps>`
@@ -47,6 +48,9 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
     &:hover {
       border-color: ${({ theme }) => theme.colors.accent.primary};
     }
+  `}
+  ${({ $dragActive }) => $dragActive && `
+    opacity: 0.85;
   `}
 `;
 

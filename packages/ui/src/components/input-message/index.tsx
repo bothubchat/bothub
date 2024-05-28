@@ -20,12 +20,18 @@ import { WordIcon } from '@/ui/icons/word';
 import { XlsIcon } from '@/ui/icons/xls';
 import { IInputMessageFile } from './types';
 import { IconProvider } from '@/ui/components/icon';
+import { formatUploadFiles, getPreviewUrlForFile } from './utils';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
 export type InputMessageFilesChangeEventHandler = (files: IInputMessageFile[]) => unknown;
 
 export type InputMessageSendEventHandler = (message: string, files: IInputMessageFile[]) => unknown;
+
+export type InputMessageErrorEvent = {
+  name: 'WRONG_FILES';
+  payload: File[];
+};
 
 export interface InputMessageProps extends Omit<React.ComponentProps<'textarea'>, 'value' | 'onChange'> {
   className?: string;
@@ -43,6 +49,7 @@ export interface InputMessageProps extends Omit<React.ComponentProps<'textarea'>
   onFilesChange?: InputMessageFilesChangeEventHandler;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
   onSend?: InputMessageSendEventHandler;
+  emitError?(event: InputMessageErrorEvent): void;
 }
 
 export const InputMessage: React.FC<InputMessageProps> = ({
@@ -52,6 +59,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   uploadFileAccept = 'text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf, image/png, image/jpeg',
   autoFocus = true,
   onChange, onFilesChange, onTextAreaChange, onSend, onFocus, onBlur,
+  emitError,
   ...props
 }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -60,6 +68,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const [message, setMessage] = typeof initialMessage === 'string' ? [initialMessage, onChange] : useState('');
   const [files, setFiles] = typeof initialFiles === 'string' ? [initialFiles, onFilesChange] : useState<IInputMessageFile[]>([]);
   const [isFocus, setIsFocus] = useState(!disabled && autoFocus);
+
+  const [dragActive, setDragActive] = useState(false);
  
   const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>((event) => {
     setIsFocus(true);
@@ -89,52 +99,48 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
     setTextareaHeight(`${event.currentTarget.scrollHeight}px`);
   }, []);
+  
+  const handleSideUploadFiles = useCallback(async (uploadFiles: File[]) => {
+    if (!uploadFiles.length) return;
+    const newFiles: IInputMessageFile[] = [];
+    const rejectedFiles: File[] = [];
+    const previewsUrls: (string | null)[] = await Promise.all(
+      uploadFiles?.map(getPreviewUrlForFile)
+    );
+    for (const [idx, file] of uploadFiles.entries()) {
+      const isValidFile = uploadFileAccept.includes(file.type);
+      if (isValidFile) {
+        newFiles.push({
+          previewUrl: previewsUrls[idx],
+          name: file.name,
+          native: file
+        });
+      } else {
+        rejectedFiles.push(file);
+      }
+    }
+    if (rejectedFiles.length > 0) {
+      emitError?.({ name: 'WRONG_FILES', payload: rejectedFiles });
+    }
+    if (newFiles?.length > 0) {
+      setFiles?.([...files, ...newFiles].slice(0, uploadFileLimit));
+    }
+  }, [uploadFileAccept, emitError, uploadFileLimit, files]);
+
+  const handlePaste = useCallback<React.ClipboardEventHandler>(async (event) => {
+    if (!uploadFileDisabled && event.clipboardData.files.length > 0) {
+      event.preventDefault();
+      await handleSideUploadFiles([...event.clipboardData.files]);
+    }
+  }, [handleSideUploadFiles, uploadFileDisabled]);
 
   const handleUploadFileChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     async (event) => {
       if (!setFiles || !event.target.files) {
         return;
       }
-
-      const nativeFiles: File[] = [...event.target.files];
-      const previewsUrls: (string | null)[] = await Promise.all(
-        nativeFiles.map((nativeFile) => {
-          if (nativeFile.name.match(/.png$/) || nativeFile.name.match(/.jpg$/) || nativeFile.name.match(/.jpeg$/)) {
-            return new Promise<string>((resolve, reject) => {
-              const reader = new FileReader();
-  
-              reader.addEventListener('load', () => {
-                const previewUrl: string | null = reader.result?.toString() ?? null;
-  
-                if (previewUrl === null) {
-                  return reject(new Error('result not found'));
-                }
-  
-                resolve(previewUrl);
-              });
-              reader.readAsDataURL(nativeFile);
-            });
-          }
-
-          return Promise.resolve(null);
-        })
-      );
-      const newFiles: IInputMessageFile[] = nativeFiles.map((nativeFile, index) => ({
-        name: nativeFile.name,
-        previewUrl: previewsUrls[index],
-        native: nativeFile
-      }));
-
-      const fileMap = new Map([
-        ...files,
-        ...newFiles
-      ]
-        .filter((file) => (
-          file.name.match(/.(png|jpg|jpeg|txt|text|docx|xlsx|pdf)$/)
-        ))
-        .map((file) => [file.name, file]));
-
-      setFiles([...fileMap.values()].slice(0, uploadFileLimit));
+      const formattedFiles = await formatUploadFiles([...event.target.files]);
+      setFiles(formattedFiles.slice(0, uploadFileLimit));
     }, 
     [files, setFiles, uploadFileLimit]
   );
@@ -223,10 +229,27 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   return (
     <InputMessageStyled
       $active={isFocus}
+      $dragActive={dragActive}
       $disabled={disabled}
       $textAreaDisabled={textAreaDisabled}
       className={className}
       onClick={handleClick}
+      onDragEnter={() => setDragActive(true)}
+      onDragLeave={() => setDragActive(false)}
+      onDragOver={(event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        return false;
+      }}
+      onDrop={async (event) => {
+        if (event.dataTransfer.files.length > 0) {
+          event.stopPropagation();
+          event.preventDefault();
+          await handleSideUploadFiles([...event.dataTransfer.files]);
+          setDragActive(false);
+          return false;
+        }
+      }}
     >
       <InputMessageContent>
         {!hideUploadFile && (
@@ -309,6 +332,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               onBlur={handleBlur}
               onChange={handleChange}
               onInput={handleInput}
+              onPaste={handlePaste}
             />
           )}
         </InputMessageMain>
