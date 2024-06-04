@@ -299,7 +299,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       handleTooltipMouseDown={handleMouseDown}
     >
       <Portal>
-        {tooltipNode}
+        {isVisible && tooltipNode}
       </Portal>
       {children}
     </TooltipProvider>

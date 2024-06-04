@@ -11,7 +11,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
   ${({ theme }) => {
     switch ($variant) {
       case 'h1':
-        return css`
+        return `
           font-weight: 700;
           font-size: 46px;
           line-height: 60px;
@@ -28,7 +28,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'h2':
-        return css`
+        return `
           font-weight: 600;
           font-size: 34px;
           line-height: 44px;
@@ -45,7 +45,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'h3':
-        return css`
+        return `
           font-weight: 600;
           font-size: 30px;
           line-height: 40px;
@@ -57,7 +57,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'body-xxl-semibold':
-        return css`
+        return `
           font-weight: 600;
           font-size: 26px;
           line-height: 34px;
@@ -74,7 +74,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'body-xl-semibold':
-        return css`
+        return `
           font-weight: 600;
           font-size: 22px;
           line-height: 29px;
@@ -91,7 +91,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'body-m-semibold':
-        return css`
+        return `
           font-weight: 600;
           font-size: 16px;
           line-height: 22px;
@@ -103,7 +103,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'body-m-medium':
-        return css`
+        return `
           font-weight: 500;
           font-size: 16px;
           line-height: 22px;
@@ -115,7 +115,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'body-m-regular':
-        return css`
+        return `
           font-weight: 400;
           font-size: 16px;
           line-height: 22px;
@@ -127,7 +127,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'body-s-medium':
-        return css`
+        return `
           font-weight: 500;
           font-size: 14px;
           line-height: 18px;
@@ -139,7 +139,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'body-s-semibold':
-        return css`
+        return `
           font-weight: 600;
           font-size: 14px;
           line-height: 18px;
@@ -151,7 +151,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'body-s-regular':
-        return css`
+        return `
           font-weight: 400;
           font-size: 14px;
           line-height: 18px;
@@ -163,7 +163,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'body-xs-regular':
-        return css`
+        return `
           font-weight: 400;
           font-size: 12px;
           line-height: 16px;
@@ -175,7 +175,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'body-l-semibold':
-        return css`
+        return `
           font-weight: 600;
           font-size: 18px;
           line-height: 24px;
@@ -187,7 +187,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'body-l-medium':
-        return css`
+        return `
           font-weight: 500;
           font-size: 18px;
           line-height: 24px;
@@ -199,7 +199,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'body-l-medium-italic':
-        return css`
+        return `
           font-weight: 500;
           font-style: italic;
           font-size: 18px;
@@ -212,35 +212,35 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
       `;
       case 'button-sm':
-        return css`
+        return `
           font-weight: 500;
           font-size: 15px;
           line-height: 20px;
           --skeleton-height: 20px;
         `;
       case 'button-md':
-        return css`
+        return `
           font-weight: 500;
           font-size: 18px;
           line-height: 24px;
           --skeleton-height: 24px;
         `;
       case 'input-md':
-        return css`
+        return `
           font-weight: 400;
           font-size: 16px;
           line-height: 22px;
           --skeleton-height: 22px;
         `;
       case 'input-sm':
-        return css`
+        return `
           font-weight: 400;
           font-size: 14px;
           line-height: 18px;
           --skeleton-height: 18px;
         `;
       default:
-        return css``;
+        return '';
     }
   }}
 `;
@@ -252,7 +252,7 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
   text-decoration: none;
   text-align: ${({ $align }) => $align};
   --skeleton-width: 200px;
-  ${({ $fullWidth }) => $fullWidth && css`
+  ${({ $fullWidth }) => $fullWidth && `
     width: 100%;
   `}
   ${({ $variant }) => getTypographyStyles($variant)}

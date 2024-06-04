@@ -29,6 +29,7 @@ export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFie
   type?: TextFieldType;
   disabled?: boolean;
   skeleton?: boolean;
+  readonly?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -41,6 +42,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   label, placeholder, value, defaultValue, error, name, 
   type, fullWidth = false, disabled = false, startIcon, endIcon, skeleton = false,
   onChange, onFocus, onBlur, onMouseEnter, onMouseLeave, onValueChange,
+  readonly = false,
   ...props 
 }) => {
   const theme = useTheme();
@@ -127,6 +129,7 @@ export const TextField: React.FC<TextFieldProps> = ({
             value={value}
             type={type}
             name={name}
+            readOnly={readonly}
             defaultValue={defaultValue}
             placeholder={placeholder}
             disabled={disabled}
