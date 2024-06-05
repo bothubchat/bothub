@@ -1,9 +1,10 @@
 import {
   PropsWithChildren, useEffect, useRef, useState 
 } from 'react';
-import { CloseIcon } from '@/ui/icons';
+
 import * as S from './styled';
-import { Portal } from '@/ui/components';
+import { Portal } from '../portal';
+import { CloseIcon } from '../../icons';
 
 export type DrawerProps = {
   title?: string | null;

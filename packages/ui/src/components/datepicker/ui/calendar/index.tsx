@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { useInfoDate } from '../../hooks';
 import { DatepickerProps, RangeDatepickerProps, SingleDatepickerProps } from '../../types';
 import * as S from './styled';
-import { useTheme } from '@/ui/theme';
+
 import {
   addMont,
   getMonthName, isEqualDaysOfDate, resetTimeInDate,
   subMonth
 } from '../../utils';
+import { useTheme } from '../../../../theme';
 
 export type CalendarProps = {
   closeFn?: () => void;

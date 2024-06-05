@@ -111,8 +111,8 @@ import {
   LightningIcon,
   BlogCircleIcon,
   StripeIcon,
-  PublicIcon, 
-  PrivateIcon, 
+  PublicIcon,
+  PrivateIcon,
   CorporateIcon,
   MistralIcon,
   GeminiIcon,
@@ -128,7 +128,10 @@ import {
   PdfIcon,
   XlsIcon,
   WordIcon,
-  TxtIcon
+  TxtIcon,
+  BothubLogoGradient,
+  TelegramLogoGradient,
+  DeclineCircleIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -268,6 +271,9 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="XlsIcon">{XlsIcon}</IconItem>
         <IconItem name="WordIcon">{WordIcon}</IconItem>
         <IconItem name="TxtIcon">{TxtIcon}</IconItem>
+        <IconItem name="BothubLogoGradient" size={32}>{BothubLogoGradient}</IconItem>
+        <IconItem name="TelegramLogoGradient" size={32}>{TelegramLogoGradient}</IconItem>
+        <IconItem name="DeclineCircleIcon" size={32}>{DeclineCircleIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

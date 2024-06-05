@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
-import { Button, Typography } from '@/ui/components';
-import { ArrowNarrowLeftIcon } from '@/ui/icons';
+import { Button } from '../../../button';
+import { Typography } from '../../../typography';
+import { ArrowNarrowLeftIcon } from '../../../../icons';
 
 export const Wrapper = styled.div`
   padding: 16px;
