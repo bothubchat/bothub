@@ -49,3 +49,6 @@ export * from './action-message';
 export * from './image-fullscreen';
 export * from './pagination';
 export * from './file-field';
+export * from './drawer';
+export * from './switch';
+export * from './datepicker';
