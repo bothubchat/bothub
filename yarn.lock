@@ -1145,7 +1145,7 @@
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
 "@bothub-chat/ui@file:/Users/iobi/job/bothub/packages/ui":
-  version "2.3.0"
+  version "2.3.0-feat-ui-update-3991dbe9-d27c-48a0-977b-90e795c626aa"
   resolved "file:packages/ui"
   dependencies:
     "@floating-ui/react" "^0.26.16"
