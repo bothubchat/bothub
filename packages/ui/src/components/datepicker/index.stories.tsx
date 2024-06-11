@@ -11,12 +11,12 @@ const dateText = (str: string | number) => new Intl.DateTimeFormat('en-US', {
 }).format(new Date(str));
 
 export const RangeDatepicker = () => {
-  const [value, setValue] = useState<[number, number | null] | null>(null);
+  const [value, setValue] = useState<[Date, Date | null] | null>(null);
 
   let textValue = '';
   if (Array.isArray(value)) {
-    if (value[0]) textValue += dateText(value[0]);
-    if (value[1]) textValue += ` - ${dateText(value[1])}`;
+    if (value[0]) textValue += dateText(value[0].getTime());
+    if (value[1]) textValue += ` - ${dateText(value[1]?.getTime())}`;
   }
 
   return (
@@ -42,7 +42,7 @@ export const RangeDatepicker = () => {
 };
 
 export const SingleDatepicker = () => {
-  const [value, setValue] = useState<number | null>(null);
+  const [value, setValue] = useState<Date | null>(null);
 
   return (
     <Datepicker
@@ -57,7 +57,7 @@ export const SingleDatepicker = () => {
             readonly
             type="text"
             placeholder="choose date"
-            value={value ? dateText(value) : ''}
+            value={value ? dateText(value.getTime()) : ''}
             onClick={() => setOpen((prev) => !prev)}
           />
         </div>
