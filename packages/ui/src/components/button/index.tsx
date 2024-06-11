@@ -88,6 +88,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
     switch (variant) {
       case 'primary':
       case 'primary-transparent':
+      case 'success':
         animationProps = {
           initial: {
             background: theme.colors.grayScale.gray2,
@@ -194,6 +195,23 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
             boxShadow: 'none'
           },
           whileTap: {
+            transform: 'translateY(1px)'
+          }
+        };
+        break;
+      case 'success':
+        animationProps = {
+          initial: {
+            background: theme.colors.green
+          },
+          animate: {
+            background: theme.colors.green
+          },
+          whileHover: {
+            background: theme.colors.accent.strong
+          },
+          whileTap: {
+            background: theme.colors.accent.strongDown,
             transform: 'translateY(1px)'
           }
         };

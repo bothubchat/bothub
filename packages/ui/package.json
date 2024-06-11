@@ -48,9 +48,13 @@
     "styled-components": "^6.0.7"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.26.16",
+    "@floating-ui/react-dom": "^2.1.0",
+    "date-fns": "^3.6.0",
     "framer-motion": "^10.16.3",
     "highlight.js": "^11.9.0",
     "katex": "^0.16.10",
+    "nanoid": "^5.0.7",
     "normalize.css": "^8.0.1",
     "react-highlight": "^0.15.0",
     "react-markdown": "^8.0.7",

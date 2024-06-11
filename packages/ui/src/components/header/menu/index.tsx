@@ -18,12 +18,12 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
       document.body.style.maxHeight = '100vh';
     } else {
       document.body.style.removeProperty('overflow');
-      document.body.style.removeProperty('maxHeight');
+      document.body.style.removeProperty('max-height');
     }
 
     return () => {
       document.body.style.removeProperty('overflow');
-      document.body.style.removeProperty('maxHeight');
+      document.body.style.removeProperty('max-height');
     };
   }, [isMenuOpen]);
 
