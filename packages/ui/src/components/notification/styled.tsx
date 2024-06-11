@@ -30,7 +30,7 @@ export const NotificationStyled = styled(motion.div)<NotificationStyledProps>`
   overflow: hidden;
   box-sizing: border-box;
   width: 100%;
-  max-width: 412px;
+  max-width: 335px;
   padding: 20px;
   flex-shrink: 0;
   pointer-events: auto;
