@@ -108,11 +108,11 @@ export const DatepickerCalendar = ({
   const handleSave = () => {
     if (range && Array.isArray(localValue)) {
       (onChange as RangeDatepickerProps['onChange'])([
-        localValue[0].getTime(),
-        localValue[1]?.getTime() || null,
+        localValue[0],
+        localValue[1] || null,
       ]);
     } else if (!range && !Array.isArray(localValue) && localValue) {
-      (onChange as SingleDatepickerProps['onChange'])(localValue.getTime());
+      (onChange as SingleDatepickerProps['onChange'])(localValue);
     } else {
       onChange(null);
     }
