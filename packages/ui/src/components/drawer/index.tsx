@@ -2,8 +2,8 @@ import {
   PropsWithChildren, useEffect, useRef, useState 
 } from 'react';
 
+import { createPortal } from 'react-dom';
 import * as S from './styled';
-import { Portal } from '../portal';
 import { CloseIcon } from '../../icons';
 
 export type DrawerProps = {
@@ -68,13 +68,13 @@ export const Drawer = ({
     return null;
   }
 
-  return (
-    <Portal>
+  return createPortal(
+    <>
       <S.Overlay ref={overlayRef} onClick={handleClose} />
       <S.Component ref={componentRef}>
         <S.Header>
           {title && <S.Title variant="body-xl-semibold">{title}</S.Title>}
-          <S.CloseButton onClick={handleClose} type="button">
+          <S.CloseButton onClick={handleClose}>
             <CloseIcon />
           </S.CloseButton>
         </S.Header>
@@ -82,6 +82,7 @@ export const Drawer = ({
           {children}
         </S.Content>
       </S.Component>
-    </Portal>
+    </>,
+    document.body
   );
 };

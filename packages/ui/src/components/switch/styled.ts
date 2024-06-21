@@ -12,9 +12,10 @@ export const Wrapper = styled.div`
   --switch-width: ${defaultSize}px;
 `;
 
-export const Checkbox = styled.input.attrs({
+export const Checkbox = styled.input.attrs((props) => ({
   type: 'checkbox',
-})`
+  ...props
+}))`
   height: 0;
   width: 0;
   visibility: hidden;
