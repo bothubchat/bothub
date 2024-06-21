@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { nanoid } from 'nanoid';
 import * as S from './styled';
 
-export type SwitchProps = {
+type BaseSwitchProps = {
   id?: string;
   name?: string;
   onChange?: (value: boolean) => void;
@@ -11,6 +11,9 @@ export type SwitchProps = {
   className?: string;
 };
 
+export type SwitchProps = BaseSwitchProps
+& Omit<React.InputHTMLAttributes<HTMLInputElement>, keyof BaseSwitchProps>;
+
 export const Switch = ({
   id,
   name,
@@ -18,6 +21,7 @@ export const Switch = ({
   value,
   label,
   className,
+  ...inputProps
 }: SwitchProps) => {
   const elId = useMemo(() => id || nanoid(), [id]);
 
@@ -28,6 +32,7 @@ export const Switch = ({
         name={name}
         checked={value}
         onChange={(event) => onChange?.(event.target.checked)}
+        {...inputProps}
       />
       <S.HiddenLabel htmlFor={elId} />
       {label && <S.TextLabel htmlFor={elId}>{label}</S.TextLabel>}
