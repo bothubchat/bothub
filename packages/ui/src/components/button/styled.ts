@@ -49,6 +49,11 @@ export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
           background: ${theme.colors.grayScale.gray4};
           box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset;
         `;
+      case 'success':
+        return css`
+          background: ${theme.colors.green};
+          box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+        `;
       case 'text':
       case 'help':
         return css`
@@ -61,6 +66,7 @@ export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
       case 'primary':
       case 'primary-transparent':
       case 'secondary':
+      case 'success':
         switch ($size) {
           case 'md':
             if ($icon) {
@@ -93,6 +99,7 @@ export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
       case 'primary':
       case 'primary-transparent':
       case 'secondary':
+      case 'success':
         if ($icon) {
           switch ($corner) {
             case 'rounded':

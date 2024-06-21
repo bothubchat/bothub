@@ -1,6 +1,6 @@
 import React from 'react';
 import { TypographyAlign, TypographyComponent, TypographyVariant } from './types';
-import { TypographyStyled } from './styled';
+import { TypographyStyled, getTypographyStyles } from './styled';
 
 export interface TypographyProps extends Omit<React.ComponentProps<typeof TypographyStyled>, 'ref' | '$variant' | '$align' | '$fullWidth'> {
   variant?: TypographyVariant;
@@ -23,4 +23,5 @@ export const Typography: React.FC<TypographyProps> = ({
   />
 );
 
+export { getTypographyStyles };
 export * from './types';

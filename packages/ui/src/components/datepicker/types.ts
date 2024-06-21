@@ -1,5 +1,5 @@
-import React from 'react';
 import { UseFloatingReturn } from '@floating-ui/react-dom';
+import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { locales } from './utils';
 
 export type SingleDatepickerProps = {
@@ -7,7 +7,7 @@ export type SingleDatepickerProps = {
   value?: Date | null;
   onChange(value: Date | null): void;
   locale?: Locale;
-  children: (setRef: UseFloatingReturn['refs']['setReference'], setOpen: React.Dispatch<React.SetStateAction<boolean>>) => React.ReactNode;
+  children: (setRef: UseFloatingReturn['refs']['setReference'], setOpen: Dispatch<SetStateAction<boolean>>) => ReactNode;
   defaultOpen?: boolean;
   buttonSaveText?: string;
   buttonCloseText?: string;
