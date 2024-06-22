@@ -48,10 +48,6 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
     }
   }, []);
 
-  if (variant === 'dashboard') {
-    return null;
-  }
-
   return (
     <HeaderNavDropdownProvider setIsOpen={setIsOpen}>
       <HeaderNavDropdownStyled $inMenu={isInMenu} ref={dropdownRef}>
