@@ -37,7 +37,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
           gray3: '#222B44',
           gray4: '#121825',
           gray5: '#374151',
-          gray6: '#9CA3AF'
+          gray6: '#9CA3AF',
+          gray7: '#171E2F'
         },
         premiumGradient: 'linear-gradient(90deg, #1C64F2 -0.39%, #D41CF2 99.61%)',
         critic: '#FE4242',
@@ -131,7 +132,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
               gray3: '#DBE0E4',
               gray4: '#F5F6F7',
               gray5: '#ADB5BD',
-              gray6: '#DDE8F3'
+              gray6: '#DDE8F3',
+              gray7: '#E6E9EC'
             },
           }
         };

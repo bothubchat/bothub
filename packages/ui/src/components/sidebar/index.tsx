@@ -6,6 +6,8 @@ import {
   SidebarBottom,
   SidebarContent,
   SidebarHead, 
+  SidebarHeader, 
+  SidebarHeaderMain, 
   SidebarStyled,
   SidebarTop 
 } from './styled';
@@ -17,14 +19,18 @@ export interface SidebarProps extends React.PropsWithChildren {
   open?: boolean;
   className?: string;
   id?: string;
-  createChat?: React.ReactNode;
+  logo?: React.ReactNode;
+  menu?: React.ReactNode;
+  buttons?: React.ReactNode;
   toggle?: React.ReactNode;
+  themeSwitcher?: React.ReactNode;
+  lang?: React.ReactNode;
   user?: React.ReactNode;
   onOpen?: SidebarOpenEventHandler;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ 
-  open, className, id, user, createChat, toggle, children, onOpen
+  open, className, id, user, logo, menu, buttons, toggle, themeSwitcher, lang, children, onOpen
 }) => {
   const initialIsOpen = open;
   const setInitialIsOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
@@ -46,9 +52,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
       >
         <SidebarContent>
           <SidebarTop>
-            <SidebarHead>
-              {createChat}
-              {toggle}
+            <SidebarHead
+              $open={isOpen}
+            >
+              <SidebarHeader
+                $open={isOpen}
+              >
+                <SidebarHeaderMain
+                  $open={isOpen}
+                >
+                  {logo}
+                  {menu}
+                  {lang}
+                </SidebarHeaderMain>
+                {toggle}
+              </SidebarHeader>
+              {buttons}
             </SidebarHead>
             <SidebarBody>
               <SidebarBodyScrollbarWrapper
@@ -61,6 +80,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </SidebarBody>
           </SidebarTop>
           <SidebarBottom>
+            {themeSwitcher}
             {user}
           </SidebarBottom>
         </SidebarContent>
@@ -72,9 +92,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
 export * from './styled';
 export * from './context';
 export * from './toggle-button';
-export * from './create-chat-button';
+export * from './buttons';
 export * from './user-info';
 export * from './collapse';
 export * from './chat';
 export * from './group';
 export * from './empty';
+export * from './theme-switcher';
+export * from './menu';
+export * from './lang-dropdown';

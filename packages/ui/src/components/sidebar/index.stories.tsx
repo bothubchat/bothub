@@ -19,9 +19,25 @@ import {
   SidebarUserInfoEliteTariff,
   SidebarConsumer,
   SidebarChatEditAction,
-  SidebarEmpty
+  SidebarEmpty,
+  SidebarButtons,
+  SidebarDeleteChatsButton,
+  SidebarLogo,
+  SidebarThemeSwitcher,
+  SidebarLogoLink,
+  SidebarMenu,
+  SidebarMenuNav,
+  SidebarMenuNavLink,
+  SidebarLangDropdown,
+  SidebarLangDropdownList,
+  SidebarLangDropdownItem
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
+import {
+  ChatsIcon, BookmarksBigIcon, PresetsBigIcon, ReferalIcon, 
+  TariffIcon,
+  GearIcon
+} from '@/ui/icons';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
 
@@ -29,6 +45,64 @@ export type SidebarStory = StoryObj<typeof Sidebar>;
 
 export const Basic: SidebarStory = {
   args: {
+    logo: (
+      <SidebarLogoLink href="#home">
+        <SidebarLogo />
+      </SidebarLogoLink>
+    ),
+    menu: (
+      <SidebarMenu>
+        <SidebarMenuNav>
+          <SidebarMenuNavLink
+            href="#"
+            icon={<ChatsIcon />}
+            active
+          >
+            Чаты
+          </SidebarMenuNavLink>
+          <SidebarMenuNavLink
+            href="#"
+            icon={<BookmarksBigIcon />}
+          >
+            Закладки
+          </SidebarMenuNavLink>
+          <SidebarMenuNavLink
+            href="#"
+            icon={<PresetsBigIcon />}
+          >
+            Пресеты
+          </SidebarMenuNavLink>
+          <SidebarMenuNavLink
+            href="#"
+            icon={<ReferalIcon />}
+          >
+            Партнерская программа
+          </SidebarMenuNavLink>
+          <SidebarMenuNavLink
+            href="#"
+            icon={<TariffIcon />}
+          >
+            Пакеты
+          </SidebarMenuNavLink>
+          <SidebarMenuNavLink
+            href="#"
+            icon={<GearIcon />}
+          >
+            Для разработчиков
+          </SidebarMenuNavLink>
+        </SidebarMenuNav>
+      </SidebarMenu>
+    ),
+    lang: (
+      <SidebarLangDropdown lang="ru">
+        <SidebarLangDropdownList>
+          <SidebarLangDropdownItem>ru</SidebarLangDropdownItem>
+          <SidebarLangDropdownItem>en</SidebarLangDropdownItem>
+          <SidebarLangDropdownItem>es</SidebarLangDropdownItem>
+          <SidebarLangDropdownItem>de</SidebarLangDropdownItem>
+        </SidebarLangDropdownList>
+      </SidebarLangDropdown>
+    ),
     toggle: (
       <SidebarConsumer>
         {({ isOpen }) => (
@@ -42,11 +116,15 @@ export const Basic: SidebarStory = {
         )}
       </SidebarConsumer>
     ),
-    createChat: (
-      <SidebarCreateChatButton>
-        Создать чат
-      </SidebarCreateChatButton>
+    buttons: (
+      <SidebarButtons>
+        <SidebarCreateChatButton>
+          Создать чат
+        </SidebarCreateChatButton>
+        <SidebarDeleteChatsButton />
+      </SidebarButtons>
     ),
+    themeSwitcher: <SidebarThemeSwitcher />,
     user: (
       <SidebarConsumer>
         {({ isOpen }) => (
@@ -63,13 +141,13 @@ export const Basic: SidebarStory = {
                 />
               )}
               name="Артём"
-              caps="9 012 CAPS"
+              caps="9 012 000 000 CAPS"
               tariff={(
                 <SidebarUserInfoFreeTariff />
               )}
               updateTariff={(
                 <SidebarUserInfoUpdateTariffButton>
-                  Обновить тариф
+                  Купить пакет
                 </SidebarUserInfoUpdateTariffButton>
               )}
             />
@@ -78,94 +156,92 @@ export const Basic: SidebarStory = {
       </SidebarConsumer>
     ),
     children: (
-      <SidebarCollapse label="Список чатов">
-        <SidebarGroups>
-          <SidebarGroup name="Вчера">
-            <SidebarChat
-              color="#1C64F2"
-              name="Your first chat"
-              caps="36.7K"
-              active
-              actions={(
-                <SidebarChatActions>
-                  <SidebarChatEditAction />
-                  <SidebarChatDeleteAction />
-                </SidebarChatActions>
-              )}
-            />
-            <SidebarChat
-              color="#941CF2"
-              name="Придумать логотип"
-              caps="1.7K"
-              actions={(
-                <SidebarChatActions>
-                  <SidebarChatEditAction />
-                  <SidebarChatDeleteAction />
-                </SidebarChatActions>
-              )}
-            />
-          </SidebarGroup>
-          <SidebarGroup name="Предыдущие 7 дней">
-            <SidebarChat
-              color="#1CB2F2"
-              name="Дипломная работа"
-              caps="12.7K"
-              actions={(
-                <SidebarChatActions>
-                  <SidebarChatEditAction />
-                  <SidebarChatDeleteAction />
-                </SidebarChatActions>
-              )}
-            />
-            <SidebarChat
-              color="#F29C1C"
-              name="Реферат"
-              caps="6.9K"
-              actions={(
-                <SidebarChatActions>
-                  <SidebarChatEditAction />
-                  <SidebarChatDeleteAction />
-                </SidebarChatActions>
-              )}
-            />
-          </SidebarGroup>
-          <SidebarGroup name="Предыдущие 7 дней">
-            <SidebarChat
-              color="#1ABB34"
-              name="Для клиентов"
-              caps="12.7K"
-              actions={(
-                <SidebarChatActions>
-                  <SidebarChatEditAction />
-                  <SidebarChatDeleteAction />
-                </SidebarChatActions>
-              )}
-            />
-            <SidebarChat
-              color="#F2DD1C"
-              name="Придумай мне резюме"
-              caps="6.9K"
-              actions={(
-                <SidebarChatActions>
-                  <SidebarChatEditAction />
-                  <SidebarChatDeleteAction />
-                </SidebarChatActions>
-              )}
-            />
-            <SidebarChat
-              color="#941CF2"
-              name="Длинное название чата Длинное название чата Длинное название чата Длинное название чата Длинное название чата"
-              caps="1.7K"
-              actions={(
-                <SidebarChatActions>
-                  <SidebarChatEditAction />
-                  <SidebarChatDeleteAction />
-                </SidebarChatActions>
-              )}
-            />
-          </SidebarGroup>
-        </SidebarGroups>
-      </SidebarCollapse>
+      <SidebarGroups>
+        <SidebarGroup name="Вчера">
+          <SidebarChat
+            color="#1C64F2"
+            name="Your first chat"
+            caps="36.7K"
+            active
+            actions={(
+              <SidebarChatActions>
+                <SidebarChatEditAction />
+                <SidebarChatDeleteAction />
+              </SidebarChatActions>
+            )}
+          />
+          <SidebarChat
+            color="#941CF2"
+            name="Придумать логотип"
+            caps="1.7K"
+            actions={(
+              <SidebarChatActions>
+                <SidebarChatEditAction />
+                <SidebarChatDeleteAction />
+              </SidebarChatActions>
+            )}
+          />
+        </SidebarGroup>
+        <SidebarGroup name="Предыдущие 7 дней">
+          <SidebarChat
+            color="#1CB2F2"
+            name="Дипломная работа"
+            caps="12.7K"
+            actions={(
+              <SidebarChatActions>
+                <SidebarChatEditAction />
+                <SidebarChatDeleteAction />
+              </SidebarChatActions>
+            )}
+          />
+          <SidebarChat
+            color="#F29C1C"
+            name="Реферат"
+            caps="6.9K"
+            actions={(
+              <SidebarChatActions>
+                <SidebarChatEditAction />
+                <SidebarChatDeleteAction />
+              </SidebarChatActions>
+            )}
+          />
+        </SidebarGroup>
+        <SidebarGroup name="Предыдущие 7 дней">
+          <SidebarChat
+            color="#1ABB34"
+            name="Для клиентов"
+            caps="12.7K"
+            actions={(
+              <SidebarChatActions>
+                <SidebarChatEditAction />
+                <SidebarChatDeleteAction />
+              </SidebarChatActions>
+            )}
+          />
+          <SidebarChat
+            color="#F2DD1C"
+            name="Придумай мне резюме"
+            caps="6.9K"
+            actions={(
+              <SidebarChatActions>
+                <SidebarChatEditAction />
+                <SidebarChatDeleteAction />
+              </SidebarChatActions>
+            )}
+          />
+          <SidebarChat
+            color="#941CF2"
+            name="Длинное название чата Длинное название чата Длинное название чата Длинное название чата Длинное название чата"
+            caps="1.7K"
+            actions={(
+              <SidebarChatActions>
+                <SidebarChatEditAction />
+                <SidebarChatDeleteAction />
+              </SidebarChatActions>
+            )}
+          />
+        </SidebarGroup>
+      </SidebarGroups>
     )
   }
 };
@@ -188,7 +264,7 @@ export const BasicTariff: SidebarStory = {
         )}
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton>
-            Обновить тариф
+            Купить пакет
           </SidebarUserInfoUpdateTariffButton>
         )}
       />
@@ -214,7 +290,7 @@ export const PremiumTariff: SidebarStory = {
         )}
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton>
-            Обновить тариф
+            Купить пакет
           </SidebarUserInfoUpdateTariffButton>
         )}
       />
@@ -240,7 +316,7 @@ export const EliteTariff: SidebarStory = {
         )}
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton>
-            Обновить тариф
+            Купить пакет
           </SidebarUserInfoUpdateTariffButton>
         )}
       />
@@ -263,13 +339,22 @@ export const Empty: SidebarStory = {
 
 export const Skeleton: SidebarStory = {
   args: {
+    logo: <SidebarLogo />,
+    menu: <SidebarMenu disabled />,
     toggle: (
       <SidebarToggleButton disabled />
     ),
-    createChat: (
-      <SidebarCreateChatButton disabled>
-        Создать чат
-      </SidebarCreateChatButton>
+    buttons: (
+      <SidebarButtons>
+        <SidebarCreateChatButton
+          disabled
+        >
+          Создать чат
+        </SidebarCreateChatButton>
+        <SidebarDeleteChatsButton 
+          disabled
+        />
+      </SidebarButtons>
     ),
     user: (
       <SidebarUserInfo 
@@ -286,7 +371,7 @@ export const Skeleton: SidebarStory = {
         )}
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton disabled>
-            Обновить тариф
+            Купить пакет
           </SidebarUserInfoUpdateTariffButton>
         )}
       />
@@ -330,11 +415,6 @@ export default {
       }
     },
     user: {
-      table: {
-        disable: true
-      }
-    },
-    createChat: {
       table: {
         disable: true
       }

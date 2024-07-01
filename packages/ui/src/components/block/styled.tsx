@@ -2,8 +2,13 @@ import { css, styled } from 'styled-components';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
+import { BlockVariant } from './types';
 
-export const BlockStyled = styled.div`
+export interface BlockStyledProps {
+  $variant: BlockVariant;
+}
+
+export const BlockStyled = styled.div<BlockStyledProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -14,15 +19,27 @@ export const BlockStyled = styled.div`
   background: ${({ theme }) => theme.colors.grayScale.gray4};
   overflow: hidden;
   max-height: 100vh;
-  ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
-      border-radius: 18px;
-    `,
-    tablet: css`
-      border-radius: 18px;
-    `
-  })}
+  ${({ $variant }) => {
+    switch ($variant) {
+      case 'rounded':
+        return adaptive({
+          variant: 'dashboard',
+          desktop: css`
+            border-radius: 18px;
+          `,
+          tablet: css`
+            border-radius: 18px;
+          `
+        });
+      case 'rectangular':
+        return adaptive({
+          variant: 'dashboard',
+          tablet: css`
+            border-radius: 18px;
+          `
+        });
+    }
+  }}
 `;
 
 export interface BlockHeadProps {

@@ -4,6 +4,7 @@ import React from 'react';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
+import { SidebarUserInfoTariff } from './tariff';
 
 export interface SidebarUserInfoStyledProps {
   $open: boolean;
@@ -54,11 +55,6 @@ export const SidebarUserInfoTop = styled.div<SidebarUserInfoTopProps>`
 
     return css`
       flex-direction: column;
-      ${SidebarUserInfoTariff} {
-        margin-top: 14px;
-        justify-content: center;
-        width: 100%;
-      }
     `;
   }}
 `;
@@ -119,14 +115,6 @@ export const SidebarUserInfoName = styled(Typography).attrs({ variant: 'body-m-s
 export const SidebarUserInfoCaps = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
   white-space: nowrap;
-`;
-
-export const SidebarUserInfoTariff = styled(Typography).attrs({ variant: 'body-m-medium', component: 'span' })`
-  display: inline-flex;
-  color: ${({ theme }) => theme.default.colors.base.white};
-  background: ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray1)};
-  padding: 4px 8px;
-  border-radius: 10px;
 `;
 
 export const SidebarUserInfoFreeTariff = styled(SidebarUserInfoTariff).attrs({ children: 'Free' })`

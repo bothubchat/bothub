@@ -41,6 +41,7 @@ export interface ThemeGrayScaleColors {
   gray4: string;
   gray5: string;
   gray6: string;
+  gray7: string;
 }
 
 export interface ThemeColors {

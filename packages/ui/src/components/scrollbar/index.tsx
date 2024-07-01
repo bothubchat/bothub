@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useRef, useState, useEffect, forwardRef, useImperativeHandle, useMemo
+  useCallback, useRef, useState, useEffect, forwardRef, useImperativeHandle
 } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { ScrollbarContent, ScrollbarShadows, ScrollbarStyled } from './styled';
@@ -42,6 +42,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
 
   const handleScroll = useCallback(() => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
+
     if (scrollbarEl === null) {
       return;
     }
@@ -99,18 +100,6 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
   useEffect(() => {
     setScroll();
   }, [children, setScroll]);
-  
-  const observer = useMemo(() => {
-    if (typeof window !== 'undefined' && withStickyBottom) {
-      return new MutationObserver(() => {
-        const el = scrollbarRef.current;
-        if (sticky && el && !lockedMode) {
-          el.scrollTop = el.scrollHeight;
-        }
-      });
-    }
-    return null;
-  }, [sticky, lockedMode, withStickyBottom]);
 
   useEffect(() => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
@@ -123,7 +112,15 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
       handleScroll();
     }, 300);
 
-    observer?.observe(scrollbarEl, {
+    const observer = new MutationObserver(() => {
+      handleScroll();
+
+      if (sticky && !lockedMode) {
+        scrollbarEl.scrollTop = scrollbarEl.scrollHeight;
+      }
+    });
+
+    observer.observe(scrollbarEl, {
       childList: true,
       subtree: true
     });
@@ -136,7 +133,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
       observer?.disconnect();
       window.removeEventListener('resize', resizeListener);
     };
-  }, [scrollbarRef.current, observer]);
+  }, [scrollbarRef.current]);
 
   const contentNode: React.ReactNode = (
     <ScrollbarContent

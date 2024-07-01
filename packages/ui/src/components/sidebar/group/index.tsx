@@ -26,7 +26,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
       <Tooltip
         label={props.skeleton ? '' : props.name}
         placement="top-left"
-        disabled={isOpen}
+        disabled={(!props.skeleton && props.name.length <= 5) || isOpen}
       >
         <TooltipConsumer>
           {({

@@ -2,6 +2,7 @@ import React from 'react';
 import {
   BlockBody, BlockBodyContent, BlockBodyScrollbarWrapper, BlockHead, BlockStyled, BlockTitle 
 } from './styled';
+import { BlockVariant } from './types';
 
 export interface BlockProps extends React.PropsWithChildren {
   className?: string;
@@ -9,16 +10,18 @@ export interface BlockProps extends React.PropsWithChildren {
   toolbar?: React.ReactNode;
   background?: React.ReactNode;
   fullHeight?: boolean;
+  variant?: BlockVariant;
 }
 
 export const Block: React.FC<BlockProps> = ({ 
-  className, title, toolbar, background, fullHeight = false, children 
+  className, title, toolbar, background, variant = 'rounded', fullHeight = false, children 
 }) => {
   const isHead = !!title;
   const isToolbar = !!toolbar;
 
   return (
-    <BlockStyled 
+    <BlockStyled
+      $variant={variant}
       className={className}
     >
       {isHead && (
@@ -50,4 +53,5 @@ export const Block: React.FC<BlockProps> = ({
   );
 };
 
+export * from './types';
 export * from './styled';

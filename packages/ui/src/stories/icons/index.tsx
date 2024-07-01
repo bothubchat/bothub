@@ -132,6 +132,7 @@ import {
   BothubLogoGradient,
   TelegramLogoGradient,
   DeclineCircleIcon,
+  SimpleGearBgIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -274,6 +275,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="BothubLogoGradient" size={32}>{BothubLogoGradient}</IconItem>
         <IconItem name="TelegramLogoGradient" size={32}>{TelegramLogoGradient}</IconItem>
         <IconItem name="DeclineCircleIcon" size={32}>{DeclineCircleIcon}</IconItem>
+        <IconItem name="SimpleGearBgIcon">{SimpleGearBgIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

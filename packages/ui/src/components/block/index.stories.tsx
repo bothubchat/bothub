@@ -49,6 +49,13 @@ export const Toolbar: BlockStory = {
   }
 };
 
+export const Rectangular: BlockStory = {
+  args: {
+    ...Toolbar.args,
+    variant: 'rectangular'
+  }
+};
+
 export default {
   title: 'UI Components/Block',
   component: Block,

@@ -16,6 +16,7 @@ export const BadgeStyled = styled.div<BadgeStyledProps>`
   gap: 6px;
   padding: 0px 12px;
   height: 26px;
+  cursor: default;
   border-radius: ${({ $brick }) => {
     if ($brick) {
       return 6;
