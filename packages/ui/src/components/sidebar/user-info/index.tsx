@@ -1,14 +1,15 @@
 import React from 'react';
 import {
-  SidebarUserInfoBottom, 
+  SidebarUserInfoTariffContainer, 
   SidebarUserInfoContent,
   SidebarUserInfoName,
   SidebarUserInfoStyled, 
   SidebarUserInfoText, 
-  SidebarUserInfoCaps, 
-  SidebarUserInfoTop, 
-  SidebarUserInfoTopLeft, 
-  SidebarUserInfoTopRight
+  SidebarUserInfoCaps,  
+  SidebarUserInfoLeft, 
+  SidebarUserInfoUpdateTariffContainer,
+  SidebarUserInfoMain,
+  SidebarUserInfoLogoutButtonContainer
 } from './styled';
 import { useSidebar } from '../context';
 import { useTheme } from '@/ui/theme';
@@ -20,6 +21,7 @@ export interface SidebarUserInfoProps {
   caps?: string;
   tariff?: React.ReactNode;
   updateTariff?: React.ReactNode;
+  logout?: React.ReactNode;
   linkAs?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   to?: string;
   onClick?: React.MouseEventHandler;
@@ -31,6 +33,7 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   caps,
   tariff,
   updateTariff,
+  logout,
   linkAs,
   to,
   onClick
@@ -60,13 +63,12 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
         animate={isOpen ? 'open' : 'close'}
       >
         <SidebarUserInfoContent>
-          <SidebarUserInfoTop
-            $length={caps ? caps.length : 0}
+          <SidebarUserInfoMain
             as={linkAs} 
             to={to}
             onClick={onClick}  
           >
-            <SidebarUserInfoTopLeft>
+            <SidebarUserInfoLeft>
               {avatar}
               <SidebarUserInfoText>
                 {name && (
@@ -80,19 +82,23 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
                   </SidebarUserInfoCaps>
                 )}
               </SidebarUserInfoText>
-            </SidebarUserInfoTopLeft>
-            <SidebarUserInfoTopRight
+            </SidebarUserInfoLeft>
+            <SidebarUserInfoLogoutButtonContainer
               $open={isOpen}
             >
-              {tariff}
-            </SidebarUserInfoTopRight>
-          </SidebarUserInfoTop>
-          <SidebarUserInfoBottom
+              {logout}
+            </SidebarUserInfoLogoutButtonContainer>
+          </SidebarUserInfoMain>
+          <SidebarUserInfoTariffContainer
             $open={isOpen}
-            $length={caps ? caps.length : 0}
+          >
+            {tariff}
+          </SidebarUserInfoTariffContainer>
+          <SidebarUserInfoUpdateTariffContainer
+            $open={isOpen}
           >
             {updateTariff}
-          </SidebarUserInfoBottom>
+          </SidebarUserInfoUpdateTariffContainer>
         </SidebarUserInfoContent>
       </SidebarUserInfoStyled>
     </SidebarUserInfoProvider>
@@ -102,4 +108,3 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
 export * from './styled';
 export * from './context';
 export * from './avatar';
-export * from './tariff';

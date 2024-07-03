@@ -29,7 +29,8 @@ import {
   SidebarMenuNavLink,
   SidebarLangDropdown,
   SidebarLangDropdownList,
-  SidebarLangDropdownItem
+  SidebarLangDropdownItem,
+  SidebarUserInfoLogoutButton
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -152,6 +153,7 @@ export const Basic: SidebarStory = {
                   Купить пакет
                 </SidebarUserInfoUpdateTariffButton>
               )}
+              logout={<SidebarUserInfoLogoutButton />}
             />
           </Tooltip>
         )}
@@ -269,6 +271,7 @@ export const BasicTariff: SidebarStory = {
             Купить пакет
           </SidebarUserInfoUpdateTariffButton>
         )}
+        logout={<SidebarUserInfoLogoutButton />}
       />
     )
   }
@@ -321,6 +324,7 @@ export const EliteTariff: SidebarStory = {
             Купить пакет
           </SidebarUserInfoUpdateTariffButton>
         )}
+        logout={<SidebarUserInfoLogoutButton />}
       />
     )
   }
@@ -374,6 +378,7 @@ export const Skeleton: SidebarStory = {
             Купить пакет
           </SidebarUserInfoUpdateTariffButton>
         )}
+        logout={<SidebarUserInfoLogoutButton />}
       />
     ),
     children: (

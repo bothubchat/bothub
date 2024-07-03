@@ -4,7 +4,7 @@ import React from 'react';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
-import { SidebarUserInfoTariff } from './tariff';
+import { LogoutIcon } from '@/ui/icons/logout';
 
 export interface SidebarUserInfoStyledProps {
   $open: boolean;
@@ -39,53 +39,38 @@ export const SidebarUserInfoContent = styled.div`
   width: 100%;
 `;
 
-export interface SidebarUserInfoTopProps {
-  $length: number;
-}
-
-export const SidebarUserInfoTop = styled.div<SidebarUserInfoTopProps>`
+export const SidebarUserInfoMain = styled.div`
   display: flex;
-  ${({ $length }) => {
-    if ($length <= 10) {
-      return css`
-        align-items: center;
-        justify-content: space-between;
-      `;
-    }
-
-    return css`
-      flex-direction: column;
-    `;
-  }}
+  justify-content: space-between;
+  align-items: center;
 `;
 
-export const SidebarUserInfoTopLeft = styled.div`
+export const SidebarUserInfoLeft = styled.div`
   display: flex;
   align-items: center;
 `;
 
-export interface SidebarUserInfoTopRightProps {
+export interface SidebarUserInfoTariffContainerProps {
   $open: boolean;
 }
 
-export const SidebarUserInfoTopRight = styled.div<SidebarUserInfoTopRightProps>`
+export const SidebarUserInfoTariffContainer = styled.div<SidebarUserInfoTariffContainerProps>`
   ${({ $open }) => !$open && css`
     display: none;
   `}
 `;
 
-export interface SidebarUserInfoBottomProps {
+export interface SidebarUserInfoUpdateTariffContainerProps {
   $open: boolean;
-  $length: number;
 }
 
-export const SidebarUserInfoBottom = styled.div<SidebarUserInfoBottomProps>`
+export const SidebarUserInfoUpdateTariffContainer = styled.div<SidebarUserInfoUpdateTariffContainerProps>`
   display: flex;
   transition: all 0.3s;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
-  ${({ $open, $length }) => {
+  ${({ $open }) => {
     if (!$open) {
       return css`
         opacity: 0;
@@ -97,7 +82,7 @@ export const SidebarUserInfoBottom = styled.div<SidebarUserInfoBottomProps>`
     return css`
       opacity: 1;
       height: auto;
-      margin-top: ${$length <= 10 ? 26 : 14}px;
+      margin-top: 14px;
     `;
   }}
 `;
@@ -117,6 +102,18 @@ export const SidebarUserInfoCaps = styled(Typography).attrs({ variant: 'body-s-m
   white-space: nowrap;
 `;
 
+export const SidebarUserInfoTariff = styled(Typography).attrs({ variant: 'body-m-medium', component: 'span' })`
+  display: inline-flex;
+  color: ${({ theme }) => theme.default.colors.base.white};
+  background: ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray1)};
+  padding: 4px 8px;
+  border-radius: 10px;
+  margin-top: 14px;
+  justify-content: center;
+  width: 100%;
+  cursor: default;
+`;
+
 export const SidebarUserInfoFreeTariff = styled(SidebarUserInfoTariff).attrs({ children: 'Free' })`
   color: ${({ theme }) => theme.colors.base.white};
 `;
@@ -134,3 +131,34 @@ export const SidebarUserInfoEliteTariff = styled(SidebarUserInfoPremiumTariff).a
 export const SidebarUserInfoUpdateTariffButton = styled(Button).attrs({ 
   fullWidth: true
 })``;
+
+export interface SidebarUserInfoLogoutButtonContainerProps {
+  $open: boolean;
+}
+
+export const SidebarUserInfoLogoutButtonContainer = styled.div<SidebarUserInfoLogoutButtonContainerProps>`
+  ${({ $open }) => !$open && css`
+    display: none;
+  `}
+`;
+
+export interface SidebarUserInfoUpdateTariffContainerProps {
+  $open: boolean;
+}
+
+export const SidebarUserInfoLogoutButton = styled(Button).attrs(
+  () => ({ 
+    variant: 'text',
+    iconSize: 18,
+    children: <LogoutIcon /> 
+  })
+)`
+  svg path {
+    fill: ${({ theme }) => theme.colors.critic} !important;
+  }
+  &:hover {
+    svg path {
+      fill: ${({ theme }) => theme.colors.critic} !important;
+    }
+  }
+`;
