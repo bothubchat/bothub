@@ -26,7 +26,7 @@ export const SidebarThemeSwitcher: React.FC<SidebarThemeSwitcherProps> = ({
   mode: initialMode, defaultMode = 'dark', onChange
 }) => {
   const theme = useTheme();
-  const { isOpen } = useSidebar();
+  const { isOpen } = useSidebar(); 
 
   const setInitialMode = useCallback<
   React.Dispatch<React.SetStateAction<SidebarThemeSwitcherMode>>
@@ -110,3 +110,4 @@ export const SidebarThemeSwitcher: React.FC<SidebarThemeSwitcherProps> = ({
 };
 
 export * from './types';
+export * from './styled';

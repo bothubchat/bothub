@@ -1,5 +1,7 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
+import { Tooltip } from '@/ui/components/tooltip';
+import { Skeleton } from '@/ui/components/skeleton';
 
 export const SidebarGroups = styled.div`
   display: flex;
@@ -31,3 +33,7 @@ export const SidebarChatList = styled.div`
   width: 100%;
   gap: 6px;
 `;
+
+export const SidebarGroupTooltip = styled(Tooltip)``;
+
+export const SidebarGroupSkeleton = styled(Skeleton)``;

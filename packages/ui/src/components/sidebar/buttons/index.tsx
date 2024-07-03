@@ -3,7 +3,7 @@ import { SidebarButtonsStyled, SidebarButtonsStyledProps } from './styled';
 import { useSidebar } from '../context';
 
 export type SidebarCreateChatButtonProps = Omit<
-React.ComponentProps<typeof SidebarButtonsStyled>, 
+React.ComponentProps<typeof SidebarButtonsStyled>,
 keyof SidebarButtonsStyledProps
 >;
 

@@ -5,6 +5,7 @@ import {
   SidebarBodyScrollbarWrapper,
   SidebarBottom,
   SidebarContent,
+  SidebarGlobalStyle,
   SidebarHead, 
   SidebarHeader, 
   SidebarHeaderMain, 
@@ -17,6 +18,7 @@ export type SidebarOpenEventHandler = (open: boolean) => unknown;
 
 export interface SidebarProps extends React.PropsWithChildren {
   open?: boolean;
+  defaultOpen?: boolean;
   className?: string;
   id?: string;
   logo?: React.ReactNode;
@@ -30,7 +32,9 @@ export interface SidebarProps extends React.PropsWithChildren {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ 
-  open, className, id, user, logo, menu, buttons, toggle, themeSwitcher, lang, children, onOpen
+  open, defaultOpen = true, 
+  className, id, user, logo, menu, buttons, toggle, themeSwitcher, lang, 
+  children, onOpen
 }) => {
   const initialIsOpen = open;
   const setInitialIsOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
@@ -38,12 +42,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
       onOpen?.(open);
     }
   }, [onOpen]);
-  const [isOpen, setIsOpen] = typeof initialIsOpen === 'boolean' ? [initialIsOpen, setInitialIsOpen] : useState(true);
+  const [isOpen, setIsOpen] = typeof initialIsOpen === 'boolean' ? [initialIsOpen, setInitialIsOpen] : useState(defaultOpen);
+
+  const handleOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
+    setIsOpen(open);
+
+    if (typeof open === 'boolean' && !initialIsOpen && onOpen) {
+      onOpen(open);
+    }
+  }, [setIsOpen, initialIsOpen, onOpen]);
 
   return (
     <SidebarProvider
       isOpen={isOpen}
-      setIsOpen={setIsOpen}
+      setIsOpen={handleOpen}
     >
       <SidebarStyled
         $open={isOpen}
@@ -85,6 +97,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </SidebarBottom>
         </SidebarContent>
       </SidebarStyled>
+      <SidebarGlobalStyle 
+        $open={isOpen}
+      />
     </SidebarProvider>
   );  
 };
@@ -94,7 +109,6 @@ export * from './context';
 export * from './toggle-button';
 export * from './buttons';
 export * from './user-info';
-export * from './collapse';
 export * from './chat';
 export * from './group';
 export * from './empty';

@@ -9,6 +9,9 @@ export interface SidebarThemeSwitcherStyledProps {
 }
 
 export const SidebarThemeSwitcherStyled = styled.button<SidebarThemeSwitcherStyledProps>`
+  display: ${({ $open }) => (
+    $open ? 'inline-flex' : 'none'
+  )};
   width: 100%;
   overflow: hidden;
   align-items: center;
@@ -24,9 +27,6 @@ export const SidebarThemeSwitcherStyled = styled.button<SidebarThemeSwitcherStyl
       display: none;
     `
   })}
-  ${({ $open }) => !$open && css`
-    display: none;
-  `}
 `;
 
 export const SidebarThemeSwitcherList = styled.span`

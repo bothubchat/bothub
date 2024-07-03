@@ -5,6 +5,7 @@ import { EditIcon } from '@/ui/icons/edit';
 import { TrashIcon } from '@/ui/icons/trash';
 import { Skeleton } from '@/ui/components/skeleton';
 import { adaptive } from '@/ui/adaptive';
+import { Tooltip } from '@/ui/components/tooltip';
 
 export const SidebarChatLeft = styled.div`
   display: flex;
@@ -30,11 +31,7 @@ export const SidebarChatColor = styled.span<SidebarChatColorProps>`
   `}
 `;
 
-export interface SidebarChatNameProps {
-  $open: boolean;
-}
-
-export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-medium', component: 'span' })<SidebarChatNameProps>`
+export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-medium', component: 'span' })`
   margin-left: 8px;
   white-space: nowrap;
   transition: opacity 0.3s;
@@ -49,9 +46,6 @@ export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-mediu
       max-width: 130px;
     `
   })}
-  ${({ $open }) => !$open && css`
-    opacity: 0 !important;
-  `}
 `;
 
 export const SidebarChatNameSkeleton = styled(Skeleton)`
@@ -78,20 +72,13 @@ export const SidebarChatEditAction = styled(Button).attrs({ variant: 'text', chi
 
 export const SidebarChatDeleteAction = styled(Button).attrs({ variant: 'text', children: <TrashIcon /> })``;
 
-export interface SidebarChatCapsProps {
-  $open: boolean;
-}
-
-export const SidebarChatCaps = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })<SidebarChatCapsProps>`
+export const SidebarChatCaps = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })`
   display: inline-flex;
   padding: 4px 8px;
   background: ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 10px;
   cursor: default;
   transition: opacity 0.3s;
-  ${({ $open }) => !$open && css`
-    opacity: 0 !important;
-  `}
 `;
 
 export interface SidebarChatStyledProps {
@@ -143,3 +130,7 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
     `
   })}
 `;
+
+export const SidebarChatTooltip = styled(Tooltip)``;
+
+export const SidebarChatNameTooltip = styled(Tooltip)``;

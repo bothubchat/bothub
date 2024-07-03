@@ -6,8 +6,7 @@ import {
   SidebarChatActions, 
   SidebarChatDeleteAction, 
   SidebarGroup,
-  SidebarGroups,
-  SidebarCollapse, 
+  SidebarGroups, 
   SidebarCreateChatButton, 
   SidebarToggleButton, 
   SidebarUserInfo, 
@@ -34,7 +33,10 @@ import {
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
-  ChatsIcon, BookmarksBigIcon, PresetsBigIcon, ReferalIcon, 
+  ChatsIcon, 
+  BookmarksBigIcon, 
+  PresetsBigIcon, 
+  ReferalIcon, 
   TariffIcon,
   GearIcon
 } from '@/ui/icons';
@@ -328,11 +330,9 @@ export const Empty: SidebarStory = {
   args: {
     ...EliteTariff.args,
     children: (
-      <SidebarCollapse label="Список чатов">
-        <SidebarEmpty>
-          На данный момент у вас нет чатов
-        </SidebarEmpty>
-      </SidebarCollapse>
+      <SidebarEmpty>
+        На данный момент у вас нет чатов
+      </SidebarEmpty>
     )
   }
 };
@@ -377,22 +377,20 @@ export const Skeleton: SidebarStory = {
       />
     ),
     children: (
-      <SidebarCollapse skeleton>
-        <SidebarGroups>
-          <SidebarGroup skeleton>
-            <SidebarChat skeleton />
-            <SidebarChat skeleton />
-          </SidebarGroup>
-          <SidebarGroup skeleton>
-            <SidebarChat skeleton />
-            <SidebarChat skeleton />
-          </SidebarGroup>
-          <SidebarGroup skeleton>
-            <SidebarChat skeleton />
-            <SidebarChat skeleton />
-          </SidebarGroup>
-        </SidebarGroups>
-      </SidebarCollapse>
+      <SidebarGroups>
+        <SidebarGroup skeleton>
+          <SidebarChat skeleton />
+          <SidebarChat skeleton />
+        </SidebarGroup>
+        <SidebarGroup skeleton>
+          <SidebarChat skeleton />
+          <SidebarChat skeleton />
+        </SidebarGroup>
+        <SidebarGroup skeleton>
+          <SidebarChat skeleton />
+          <SidebarChat skeleton />
+        </SidebarGroup>
+      </SidebarGroups>
     )
   }
 };

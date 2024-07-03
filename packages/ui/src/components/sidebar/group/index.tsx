@@ -1,8 +1,9 @@
 import React from 'react';
-import { SidebarChatList, SidebarGroupStyled, SidebarGroupName } from './styled';
-import { Skeleton } from '@/ui/components/skeleton';
-import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
-import { useSidebar } from '../context';
+import {
+  SidebarChatList, SidebarGroupStyled, SidebarGroupName, SidebarGroupTooltip, 
+  SidebarGroupSkeleton
+} from './styled';
+import { TooltipConsumer } from '@/ui/components/tooltip';
 
 export interface SidebarGroupDefaultProps {
   name: string;
@@ -18,38 +19,34 @@ export type SidebarGroupProps
 
 export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   children, ...props
-}) => {
-  const { isOpen } = useSidebar();
-
-  return (
-    <SidebarGroupStyled>
-      <Tooltip
-        label={props.skeleton ? '' : props.name}
-        placement="top-left"
-        disabled={(!props.skeleton && props.name.length <= 5) || isOpen}
-      >
-        <TooltipConsumer>
-          {({
-            handleTooltipMouseEnter,
-            handleTooltipMouseLeave
-          }) => (
-            <SidebarGroupName
-              onMouseEnter={handleTooltipMouseEnter}
-              onMouseLeave={handleTooltipMouseLeave}
-            >
-              {!props.skeleton && props.name}
-              {props.skeleton && (
-                <Skeleton width={isOpen ? 120 : 30} />
-              )}
-            </SidebarGroupName>
-          )}
-        </TooltipConsumer>
-      </Tooltip>
-      <SidebarChatList>
-        {children}
-      </SidebarChatList>
-    </SidebarGroupStyled>
-  );
-};
+}) => (
+  <SidebarGroupStyled>
+    <SidebarGroupTooltip
+      label={props.skeleton ? '' : props.name}
+      placement="top-left"
+      disabled={!props.skeleton && props.name.length <= 5}
+    >
+      <TooltipConsumer>
+        {({
+          handleTooltipMouseEnter,
+          handleTooltipMouseLeave
+        }) => (
+          <SidebarGroupName
+            onMouseEnter={handleTooltipMouseEnter}
+            onMouseLeave={handleTooltipMouseLeave}
+          >
+            {!props.skeleton && props.name}
+            {props.skeleton && (
+              <SidebarGroupSkeleton />
+            )}
+          </SidebarGroupName>
+        )}
+      </TooltipConsumer>
+    </SidebarGroupTooltip>
+    <SidebarChatList>
+      {children}
+    </SidebarChatList>
+  </SidebarGroupStyled>
+);
 
 export * from './styled';
