@@ -57,9 +57,22 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
       border-radius: 18px;
     `
   })}
+`;
+
+export interface SidebarGlobalStyleProps {
+  $open: boolean;
+}
+
+export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
   ${({ $open }) => $open && css`
     ${SidebarGroupSkeleton} {
       width: 120px;
+    }
+    ${SidebarChatTooltip} {
+      visibility: hidden !important;
+    }
+    ${SidebarGroupTooltip} {
+      visibility: hidden !important;
     }
   `}
   ${({ $open }) => !$open && css`
@@ -72,23 +85,6 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
     ${SidebarGroupSkeleton} {
       width: 30px;
     }
-  `}
-`;
-
-export interface SidebarGlobalStyleProps {
-  $open: boolean;
-}
-
-export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
-  ${({ $open }) => $open && css`
-    ${SidebarChatTooltip} {
-      visibility: hidden !important;
-    }
-    ${SidebarGroupTooltip} {
-      visibility: hidden !important;
-    }
-  `}
-  ${({ $open }) => !$open && css`
     ${SidebarChatNameTooltip} {
       visibility: hidden !important;
     }
