@@ -205,3 +205,5 @@ export const ImageFullScreenPreviewImage = styled(Image).attrs({ width: 64, heig
     opacity: 1;
   }
 `;
+
+export const ImageFullScreenSlideWrapper = styled.div``;

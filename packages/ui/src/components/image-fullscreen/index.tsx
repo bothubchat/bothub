@@ -3,22 +3,24 @@ import React, {
 } from 'react';
 import { Swiper as ReactSwiper, SwiperRef, SwiperSlide } from 'swiper/react';
 import Swiper from 'swiper';
+import { Zoom } from 'swiper/modules';
 import { Portal } from '@/ui/components/portal';
-import { 
-  ImageFullScreenBackdrop, 
-  ImageFullScreenContainer, 
-  ImageFullScreenContent, 
-  ImageFullScreenImage, 
-  ImageFullScreenMain, 
-  ImageFullScreenPreview, 
-  ImageFullScreenPreviewImage, 
+import {
+  ImageFullScreenBackdrop,
+  ImageFullScreenContainer,
+  ImageFullScreenContent,
+  ImageFullScreenImage,
+  ImageFullScreenMain,
+  ImageFullScreenPreview,
+  ImageFullScreenPreviewImage,
   ImageFullScreenPreviewImages,
-  ImageFullScreenStyled, 
-  ImageFullScreenSwiper, 
-  ImageFullScreenSwiperButtons, 
-  ImageFullScreenSwiperNextButton, 
-  ImageFullScreenSwiperPrevButton, 
-  ImageFullScreenTopBlock, 
+  ImageFullScreenSlideWrapper,
+  ImageFullScreenStyled,
+  ImageFullScreenSwiper,
+  ImageFullScreenSwiperButtons,
+  ImageFullScreenSwiperNextButton,
+  ImageFullScreenSwiperPrevButton,
+  ImageFullScreenTopBlock,
   ImageFullScreenTopBlockContent
 } from './styled';
 import { ImageFullScreenData, ImageFullScreenDataItem } from './types';
@@ -140,49 +142,45 @@ export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
                   </ImageFullScreenTopBlock>
                 )}
                 <ImageFullScreenMain>
-                  {data.length === 1 && (
-                    <ImageFullScreenImage
-                      src={data[0].url}
-                      width={data[0].width}
-                      height={data[0].height}
-                      alt={data[0].name}
-                    />
-                  )}
-                  {data.length > 1 && (
-                    <ImageFullScreenSwiper>
-                      <ReactSwiper
-                        ref={sliderRef}
-                        initialSlide={activeSlideIndex}
-                        spaceBetween={0}
-                        onSlideChange={handleSlideChange}
-                      >
-                        {data.map((item) => (
-                          <SwiperSlide
-                            key={item.id ?? item.url}
-                          >
+                  <ImageFullScreenSwiper>
+                    <ReactSwiper
+                      ref={sliderRef}
+                      initialSlide={activeSlideIndex}
+                      spaceBetween={0}
+                      onSlideChange={handleSlideChange}
+                      zoom
+                      modules={[Zoom]}
+                    >
+                      {data.map((item) => (
+                        <SwiperSlide
+                          key={item.id ?? item.url}
+                        >
+                          <ImageFullScreenSlideWrapper className="swiper-zoom-container">
                             <ImageFullScreenImage
                               src={item.url}
                               width={item.width}
                               height={item.height}
                               alt={item.name}
                             />
-                          </SwiperSlide>
-                        ))}
-                      </ReactSwiper>
+                          </ImageFullScreenSlideWrapper>
+                        </SwiperSlide>
+                      ))}
+                    </ReactSwiper>
+                    {data.length > 1 && (
                       <ImageFullScreenSwiperButtons
                         $imageWidth={activeItem.width}
                       >
-                        <ImageFullScreenSwiperPrevButton 
+                        <ImageFullScreenSwiperPrevButton
                           disabled={!isPrevAllowed}
                           onClick={handlePrev}
                         />
-                        <ImageFullScreenSwiperNextButton 
+                        <ImageFullScreenSwiperNextButton
                           disabled={!isNextAllowed}
                           onClick={handleNext}
                         />
                       </ImageFullScreenSwiperButtons>
-                    </ImageFullScreenSwiper>
-                  )}
+                    )}
+                  </ImageFullScreenSwiper>
                   {data.length > 1 && (
                     <ImageFullScreenPreview>
                       <ImageFullScreenPreviewImages>
