@@ -132,7 +132,19 @@ import {
   BothubLogoGradient,
   TelegramLogoGradient,
   DeclineCircleIcon,
-  SimpleGearBgIcon
+  SimpleGearBgIcon,
+  AdvancedFilterIcon,
+  BigCorporateIcon,
+  BigMjIcon,
+  BigStatsIcon,
+  BigModelsIcon,
+  BigSuccessIcon,
+  BigUsersIcon,
+  OptionalPresetsIcon,
+  WalletWithdrawIcon,
+  BigFavoriteIcon,
+  BigPresetsIcon,
+  BigReferalIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -276,6 +288,18 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TelegramLogoGradient" size={32}>{TelegramLogoGradient}</IconItem>
         <IconItem name="DeclineCircleIcon" size={32}>{DeclineCircleIcon}</IconItem>
         <IconItem name="SimpleGearBgIcon">{SimpleGearBgIcon}</IconItem>
+        <IconItem name="AdvancedFilterIcon">{AdvancedFilterIcon}</IconItem>
+        <IconItem name="BigCorporateIcon">{BigCorporateIcon}</IconItem>
+        <IconItem name="BigMjIcon">{BigMjIcon}</IconItem>
+        <IconItem name="BigStatsIcon">{BigStatsIcon}</IconItem>
+        <IconItem name="BigModelsIcon">{BigModelsIcon}</IconItem>
+        <IconItem name="BigSuccessIcon">{BigSuccessIcon}</IconItem>
+        <IconItem name="BigUsersIcon">{BigUsersIcon}</IconItem>
+        <IconItem name="OptionalPresetsIcon">{OptionalPresetsIcon}</IconItem>
+        <IconItem name="WalletWithdrawIcon">{WalletWithdrawIcon}</IconItem>
+        <IconItem name="BigPresetsIcon">{BigPresetsIcon}</IconItem>
+        <IconItem name="BigFavoriteIcon">{BigFavoriteIcon}</IconItem>
+        <IconItem name="BigReferalIcon">{BigReferalIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
