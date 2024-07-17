@@ -57,7 +57,7 @@ export const HeaderLangDropdownToggler = styled.button<{ $open: boolean }>`
 
 export const HeaderLangDropdownContent: React.FC<React.ComponentProps<'div'> & HTMLMotionProps<'div'>> = styled(motion.div)`
   display: flex;
-  position: fixed;
+  position: absolute;
   transform-origin: top center;
 `;
 
@@ -68,9 +68,9 @@ export const HeaderLangDropdownList = styled.ul`
   border-radius: 8px;
   overflow: hidden;
   list-style: none;
-  padding: 0px;
   background: ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray4 : theme.colors.grayScale.gray3)};
   width: 80px;
   padding: 10px 16px;
   box-sizing: border-box;
+  margin-block-start: 16px;
 `;
