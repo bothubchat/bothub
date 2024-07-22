@@ -112,18 +112,22 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
       handleScroll();
     }, 300);
 
-    const observer = new MutationObserver(() => {
-      handleScroll();
+    let observer: MutationObserver | null = null;
 
-      if (sticky && !lockedMode) {
-        scrollbarEl.scrollTop = scrollbarEl.scrollHeight;
-      }
-    });
+    if (sticky) {
+      observer = new MutationObserver(() => {
+        handleScroll();
 
-    observer.observe(scrollbarEl, {
-      childList: true,
-      subtree: true
-    });
+        if (sticky && !lockedMode) {
+          scrollbarEl.scrollTop = scrollbarEl.scrollHeight;
+        }
+      });
+
+      observer.observe(scrollbarEl, {
+        childList: true,
+        subtree: true
+      });
+    }
 
     const resizeListener = () => handleScroll();
     window.addEventListener('resize', resizeListener);
@@ -133,7 +137,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
       observer?.disconnect();
       window.removeEventListener('resize', resizeListener);
     };
-  }, [scrollbarRef.current]);
+  }, [scrollbarRef.current, handleScroll, sticky]);
 
   const contentNode: React.ReactNode = (
     <ScrollbarContent
