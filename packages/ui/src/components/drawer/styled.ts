@@ -52,6 +52,11 @@ export const CloseButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  &:hover { 
+    path {
+      fill: ${({ theme }) => theme.colors.base.white};
+    }
+  }
 `;
 
 export const Content = styled.div`

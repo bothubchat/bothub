@@ -74,7 +74,7 @@ export const Drawer = ({
       <S.Component ref={componentRef}>
         <S.Header>
           {title && <S.Title variant="body-xl-semibold">{title}</S.Title>}
-          <S.CloseButton onClick={handleClose}>
+          <S.CloseButton onClick={handleClose} type="button">
             <CloseIcon />
           </S.CloseButton>
         </S.Header>
