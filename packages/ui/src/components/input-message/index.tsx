@@ -21,6 +21,7 @@ import { XlsIcon } from '@/ui/icons/xls';
 import { IInputMessageFile } from './types';
 import { IconProvider } from '@/ui/components/icon';
 import { formatUploadFiles, getPreviewUrlForFile } from './utils';
+import { AttachFileIcon } from '@/ui/icons/attach-file';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
@@ -56,7 +57,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   className, placeholder, message: initialMessage, files: initialFiles,
   disabled = false, sendDisabled = false, textAreaDisabled = false, 
   uploadFileLimit = 5, hideUploadFile = false, uploadFileDisabled = false,
-  uploadFileAccept = 'text/plain, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf, image/png, image/jpeg',
+  uploadFileAccept,
   autoFocus = true,
   onChange, onFilesChange, onTextAreaChange, onSend, onFocus, onBlur,
   emitError,
@@ -108,7 +109,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       uploadFiles?.map(getPreviewUrlForFile)
     );
     for (const [idx, file] of uploadFiles.entries()) {
-      const isValidFile = uploadFileAccept.includes(file.type);
+      const isValidFile = uploadFileAccept?.includes(file.type) ?? true;
+
       if (isValidFile) {
         newFiles.push({
           previewUrl: previewsUrls[idx],
@@ -139,7 +141,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       if (!setFiles || !event.target.files) {
         return;
       }
-      const formattedFiles = await formatUploadFiles([...event.target.files]);
+      const formattedFiles = await formatUploadFiles([
+        ...files.map(({ native }) => native), 
+        ...event.target.files
+      ]);
       setFiles(formattedFiles.slice(0, uploadFileLimit));
     }, 
     [files, setFiles, uploadFileLimit]
@@ -281,6 +286,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                       src={file.previewUrl}
                     />
                   );
+                } else if (file.name.match(/.txt$/)) {
+                  iconNode = <TxtIcon />;
                 } else if (file.name.match(/.docx$/)) {
                   iconNode = <WordIcon />;
                 } else if (file.name.match(/.xlsx$/)) {
@@ -288,7 +295,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                 } else if (file.name.match(/.pdf$/)) {
                   iconNode = <PdfIcon />;
                 } else {
-                  iconNode = <TxtIcon />;
+                  iconNode = <AttachFileIcon />;
                 }
 
                 iconNode = (

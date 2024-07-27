@@ -663,6 +663,10 @@ export const Files: MessageStory = {
             name="bothubfile_archive.docx"
             size="367 KB"
           />
+          <MessageFile
+            name="attach-file-big.svg"
+            size="3 KB"
+          />
         </MessageFiles>
       </>
     )

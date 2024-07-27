@@ -134,3 +134,5 @@ export * from './bothub-logo-gradient';
 export * from './telegram-logo-gradient';
 export * from './decline-circle';
 export * from './simple-gear-bg';
+export * from './attach-file';
+export * from './attach-file-big';
