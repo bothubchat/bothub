@@ -31,9 +31,7 @@ export const formatUploadFiles = async (files: File[]): Promise<IInputMessageFil
 
   const fileMap = new Map([
     ...newFiles
-  ].filter((file) => (
-    file.name.match(/.(png|jpg|jpeg|txt|text|docx|xlsx|pdf)$/)
-  ))
-    .map((file) => [file.name, file]));
+  ].map((file) => [file.name, file]));
+  
   return [...fileMap.values()];
 };

@@ -146,3 +146,5 @@ export * from './wallet-withdraw';
 export * from './big-presets';
 export * from './big-favorite';
 export * from './big-referal';
+export * from './attach-file';
+export * from './attach-file-big';

@@ -9,6 +9,7 @@ import { WordBigIcon } from '@/ui/icons/word-big';
 import { XlsBigIcon } from '@/ui/icons/xls-big';
 import { useMessage } from '../context';
 import { useTheme } from '@/ui/theme';
+import { AttachFileBigIcon } from '@/ui/icons/attach-file-big';
 
 export interface MessageFileProps extends React.ComponentProps<'a'> {
   icon?: React.ReactNode;
@@ -25,14 +26,16 @@ export const MessageFile: React.FC<MessageFileProps> = ({
   let iconNode: React.ReactNode;
 
   if (typeof name === 'string' && !icon) {
-    if (name.match(/.doc$/) || name.match(/.docx$/)) {
+    if (name.match(/.txt$/)) {
+      iconNode = <TxtBigIcon />;    
+    } else if (name.match(/.doc$/) || name.match(/.docx$/)) {
       iconNode = <WordBigIcon />;
     } else if (name.match(/.xls$/) || name.match(/.xlsx$/)) {
       iconNode = <XlsBigIcon />;
     } else if (name.match(/.pdf$/)) {
       iconNode = <PdfBigIcon />;
     } else {
-      iconNode = <TxtBigIcon />;
+      iconNode = <AttachFileBigIcon />;
     } 
   } else {
     iconNode = icon;
