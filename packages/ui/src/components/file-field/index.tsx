@@ -97,13 +97,13 @@ export const FileField: React.FC<FileFieldProps> = ({
             {files.map((file) => {
               let iconNode: React.ReactNode;
 
-              if (file.name.match(/.txt$/)) {
+              if (file.name.match(/.txt$/i)) {
                 iconNode = <TxtIcon />;
-              } else if (file.name.match(/.docx$/)) {
+              } else if (file.name.match(/.docx$/i)) {
                 iconNode = <WordIcon />;
-              } else if (file.name.match(/.xlsx$/)) {
+              } else if (file.name.match(/.xlsx$/i)) {
                 iconNode = <XlsIcon />;
-              } else if (file.name.match(/.pdf$/)) {
+              } else if (file.name.match(/.pdf$/i)) {
                 iconNode = <PdfIcon />;
               } else {
                 iconNode = <AttachFileIcon />;

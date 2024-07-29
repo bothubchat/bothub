@@ -280,19 +280,19 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               {files.map((file) => {
                 let iconNode: React.ReactNode;
 
-                if (file.previewUrl && (file.name.match(/.png$/) || file.name.match(/.jpg$/) || file.name.match(/.jpeg$/))) {
+                if (file.previewUrl && (file.name.match(/.png$/i) || file.name.match(/.jpg$/i) || file.name.match(/.jpeg$/i))) {
                   iconNode = (
                     <ChipImage
                       src={file.previewUrl}
                     />
                   );
-                } else if (file.name.match(/.txt$/)) {
+                } else if (file.name.match(/.txt$/i)) {
                   iconNode = <TxtIcon />;
-                } else if (file.name.match(/.docx$/)) {
+                } else if (file.name.match(/.docx$/i)) {
                   iconNode = <WordIcon />;
-                } else if (file.name.match(/.xlsx$/)) {
+                } else if (file.name.match(/.xlsx$/i)) {
                   iconNode = <XlsIcon />;
-                } else if (file.name.match(/.pdf$/)) {
+                } else if (file.name.match(/.pdf$/i)) {
                   iconNode = <PdfIcon />;
                 } else {
                   iconNode = <AttachFileIcon />;

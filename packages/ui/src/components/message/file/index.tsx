@@ -26,13 +26,13 @@ export const MessageFile: React.FC<MessageFileProps> = ({
   let iconNode: React.ReactNode;
 
   if (typeof name === 'string' && !icon) {
-    if (name.match(/.txt$/)) {
+    if (name.match(/.txt$/i)) {
       iconNode = <TxtBigIcon />;    
-    } else if (name.match(/.doc$/) || name.match(/.docx$/)) {
+    } else if (name.match(/.doc$/i) || name.match(/.docx$/i)) {
       iconNode = <WordBigIcon />;
-    } else if (name.match(/.xls$/) || name.match(/.xlsx$/)) {
+    } else if (name.match(/.xls$/i) || name.match(/.xlsx$/i)) {
       iconNode = <XlsBigIcon />;
-    } else if (name.match(/.pdf$/)) {
+    } else if (name.match(/.pdf$/i)) {
       iconNode = <PdfBigIcon />;
     } else {
       iconNode = <AttachFileBigIcon />;
