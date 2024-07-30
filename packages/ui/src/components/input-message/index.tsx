@@ -213,6 +213,12 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     };
   }, [handleKeyDown]);
 
+  useEffect(() => {
+    if (setFiles && initialFiles) {
+      setFiles(initialFiles);
+    }
+  }, [initialFiles]);
+
   if (typeof window !== 'undefined') {
     useLayoutEffect(() => {
       const textareaEl: HTMLElement | null = textareaRef.current;

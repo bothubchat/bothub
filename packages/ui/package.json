@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -11,7 +11,7 @@
     "react"
   ],
   "repository": {
-    "url": "https://github.com/matbea-dev/bothub.git",
+    "url": "https://github.com/bothubchat/bothub.git",
     "type": "git",
     "directory": "./packages/ui"
   },
