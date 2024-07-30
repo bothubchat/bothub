@@ -23,4 +23,6 @@ export const ReferralCardLinkText = styled(Typography).attrs({ variant: 'body-m-
   }
 `;
 
-export const ReferralCardLinkCopyIcon = styled(CopyIcon)``;
+export const ReferralCardLinkCopyIcon = styled(CopyIcon)`
+  pointer-events: none;
+`;
