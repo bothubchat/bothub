@@ -155,8 +155,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     event.stopPropagation();
 
     onSend?.(message, files);
-    setMessage?.('');
-    setFiles?.([]);
     setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
   }, [message, files, onSend, setMessage, setFiles]);
 
@@ -175,8 +173,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         event.preventDefault();
 
         onSend?.(message, files);
-        setMessage?.('');
-        setFiles?.([]);
         setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
       }
     }
