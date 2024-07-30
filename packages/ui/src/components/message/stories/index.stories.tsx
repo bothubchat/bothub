@@ -651,7 +651,7 @@ export const Files: MessageStory = {
             size="367 KB"
           />
           <MessageFile
-            name="bothubfile_archive.xls"
+            name="bothubfile_archive.XLS"
             size="367 KB"
           />
           <MessageFile
@@ -662,6 +662,10 @@ export const Files: MessageStory = {
           <MessageFile
             name="bothubfile_archive.docx"
             size="367 KB"
+          />
+          <MessageFile
+            name="attach-file-big.svg"
+            size="3 KB"
           />
         </MessageFiles>
       </>

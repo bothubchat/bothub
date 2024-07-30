@@ -1,7 +1,7 @@
 import { IInputMessageFile } from '@/ui/components';
 
 export const getPreviewUrlForFile = async (file: File) => {
-  if (file.name.match(/.png$/) || file.name.match(/.jpg$/) || file.name.match(/.jpeg$/)) {
+  if (file.name.match(/.png$/i) || file.name.match(/.jpg$/i) || file.name.match(/.jpeg$/i)) {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
 
@@ -31,9 +31,7 @@ export const formatUploadFiles = async (files: File[]): Promise<IInputMessageFil
 
   const fileMap = new Map([
     ...newFiles
-  ].filter((file) => (
-    file.name.match(/.(png|jpg|jpeg|txt|text|docx|xlsx|pdf)$/)
-  ))
-    .map((file) => [file.name, file]));
+  ].map((file) => [file.name, file]));
+  
   return [...fileMap.values()];
 };
