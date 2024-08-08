@@ -1,14 +1,17 @@
-import { css, styled } from 'styled-components';
+import { css, keyframes, styled } from 'styled-components';
 import { Button } from '@/ui/components/button';
 import { AttachIcon } from '@/ui/icons/attach';
 import { SendIcon } from '@/ui/icons/send';
 import { Chip } from '@/ui/components/chip';
+import { VoiceIcon } from '@/ui/icons/voice';
+import { Typography } from '@/ui/components/typography';
 
 export interface InputMessageStyledProps {
   $active: boolean;
   $disabled: boolean;
   $textAreaDisabled: boolean;
   $dragActive?: boolean;
+  $voiceRecording: boolean;
 }
 
 export const InputMessageStyled = styled.div<InputMessageStyledProps>`
@@ -33,11 +36,11 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
   padding: 14px 20px;
   box-sizing: border-box;
   overflow: hidden;
-  cursor: ${({ $disabled, $textAreaDisabled }) => {
+  cursor: ${({ $disabled, $textAreaDisabled, $voiceRecording }) => {
     if ($disabled) {
       return 'not-allowed';
     }
-    if ($textAreaDisabled) {
+    if ($textAreaDisabled || $voiceRecording) {
       return 'default';
     }
 
@@ -131,6 +134,41 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   `}
 `;
 
-export const InputMessageSendButton = styled(Button).attrs({ children: <SendIcon /> })`
+export const InputMessageSendButton = styled(Button)`
   flex-shrink: 0;
+`;
+
+export const InputMessageSendIcon = SendIcon;
+
+export const InputMessageVoiceIcon = VoiceIcon;
+
+export const InputMessageVoiceRecord = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const InputMessageVoiceRecordDot = styled.span`
+  display: inline-flex;
+  width: 8px;
+  height: 8px;
+  background: ${({ theme }) => theme.colors.critic};
+  border-radius: 50%;
+  animation: ${() => (
+    keyframes`
+      from {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+      to {
+        opacity: 1;
+      }
+    `
+  )} 1s ease-in-out infinite;
+`;
+
+export const InputMessageVoiceRecordTimeText = styled(Typography).attrs({ variant: 'body-s-medium' })`
+  cursor: default;
 `;

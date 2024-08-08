@@ -7,11 +7,16 @@ import {
   InputMessageFiles, 
   InputMessageMain, 
   InputMessageSendButton,
+  InputMessageSendIcon,
   InputMessageStyled, 
   InputMessageTextArea,
   InputMessageUploadFile,
   InputMessageUploadFileButton,
-  InputMessageUploadFileInput
+  InputMessageUploadFileInput,
+  InputMessageVoiceIcon,
+  InputMessageVoiceRecord,
+  InputMessageVoiceRecordDot,
+  InputMessageVoiceRecordTimeText
 } from './styled';
 import { ChipImage } from '@/ui/components/chip';
 import { PdfIcon } from '@/ui/icons/pdf';
@@ -20,14 +25,17 @@ import { WordIcon } from '@/ui/icons/word';
 import { XlsIcon } from '@/ui/icons/xls';
 import { IInputMessageFile } from './types';
 import { IconProvider } from '@/ui/components/icon';
-import { formatUploadFiles, getPreviewUrlForFile } from './utils';
+import { formatUploadFiles, getPreviewUrlForFile, formatSeconds } from './utils';
 import { AttachFileIcon } from '@/ui/icons/attach-file';
+import { useTheme } from '@/ui/theme';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
 export type InputMessageFilesChangeEventHandler = (files: IInputMessageFile[]) => unknown;
 
 export type InputMessageSendEventHandler = (message: string, files: IInputMessageFile[]) => unknown;
+
+export type InputMessageVoiceEventHandler = (blob: Blob) => unknown;
 
 export type InputMessageErrorEvent = {
   name: 'WRONG_FILES';
@@ -46,31 +54,39 @@ export interface InputMessageProps extends Omit<React.ComponentProps<'textarea'>
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
   autoFocus?: boolean;
+  voice?: boolean;
   onChange?: InputMessageChangeEventHandler;
   onFilesChange?: InputMessageFilesChangeEventHandler;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
   onSend?: InputMessageSendEventHandler;
   emitError?(event: InputMessageErrorEvent): void;
+  onVoice?: InputMessageVoiceEventHandler;
 }
 
 export const InputMessage: React.FC<InputMessageProps> = ({
   className, placeholder, message: initialMessage, files: initialFiles,
   disabled = false, sendDisabled = false, textAreaDisabled = false, 
-  uploadFileLimit = 5, hideUploadFile = false, uploadFileDisabled = false,
-  uploadFileAccept,
-  autoFocus = true,
-  onChange, onFilesChange, onTextAreaChange, onSend, onFocus, onBlur,
+  uploadFileLimit = 5, hideUploadFile = false, uploadFileDisabled = false, uploadFileAccept,
+  autoFocus = true, voice = false,
+  onChange, onFilesChange, onTextAreaChange, onSend, onFocus, onBlur, onVoice,
   emitError,
   ...props
 }) => {
+  const theme = useTheme();
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [textareaHeight, setTextareaHeight] = useState('calc(var(--bothub-scale, 1) * 18px)');
 
   const [message, setMessage] = typeof initialMessage === 'string' ? [initialMessage, onChange] : useState('');
   const [files, setFiles] = typeof initialFiles === 'string' ? [initialFiles, onFilesChange] : useState<IInputMessageFile[]>([]);
   const [isFocus, setIsFocus] = useState(!disabled && autoFocus);
-
   const [dragActive, setDragActive] = useState(false);
+  const [isVoiceRecording, setIsVoiceRecording] = useState(false);
+  const [voiceRecordingTime, setVoiceRecordingTime] = useState<number | null>(null);
+  const voiceMediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const voiceMediaStreamRef = useRef<MediaStream | null>(null);
+  const voiceChunksRef = useRef<Blob[]>([]);
+  const voiceTimerRef = useRef<number | null>(null);
  
   const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>((event) => {
     setIsFocus(true);
@@ -191,6 +207,54 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     event.stopPropagation();
   }, []);
 
+  const handleVoiceRecordStart = useCallback(async () => {
+    const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'audio/webm' });
+
+    mediaRecorder.start();
+
+    voiceMediaRecorderRef.current = mediaRecorder;
+    voiceMediaStreamRef.current = mediaStream;
+    voiceTimerRef.current = window.setInterval(() => {
+      setVoiceRecordingTime((recordingTime) => (
+        (recordingTime ?? 0) + 0.1
+      ));
+    }, 100);
+
+    setIsVoiceRecording(true);
+    setVoiceRecordingTime(0);
+  }, [voiceChunksRef.current]);
+
+  const stopVoiceRecording = useCallback(() => {
+    const mediaRecorder = voiceMediaRecorderRef.current;
+    const mediaStream = voiceMediaStreamRef.current;
+    const timer = voiceTimerRef.current;
+
+    if (!isVoiceRecording || !mediaRecorder || !mediaStream || !timer) {
+      return;
+    }
+
+    mediaRecorder.stop();
+    for (const track of mediaStream.getTracks()) {
+      track.stop();
+    }
+
+    window.clearInterval(timer);
+  }, [
+    isVoiceRecording, 
+    voiceMediaRecorderRef.current, 
+    voiceMediaStreamRef.current, 
+    voiceTimerRef.current
+  ]); 
+
+  const handleVoiceRecordEnd = useCallback(async () => {
+    if (!isVoiceRecording) {
+      return;
+    }
+
+    stopVoiceRecording();
+  }, [isVoiceRecording, stopVoiceRecording]);
+
   useEffect(() => {
     const textareaEl: HTMLElement | null = textareaRef.current;
 
@@ -233,12 +297,50 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     }, [message]);
   }
 
+  useEffect(() => {
+    const mediaRecorder = voiceMediaRecorderRef.current;
+
+    const dataAvailableListener = (event: BlobEvent) => {
+      if (event.data.size > 0) {
+        voiceChunksRef.current.push(event.data);
+      }
+    };
+    const stopListener = async () => {
+      const blob = new Blob(voiceChunksRef.current, { type: 'audio/webm' });
+
+      await onVoice?.(blob);
+  
+      voiceMediaRecorderRef.current = null;
+      voiceMediaStreamRef.current = null;
+      voiceChunksRef.current = [];
+      voiceTimerRef.current = null;
+  
+      setIsVoiceRecording(false);
+      setVoiceRecordingTime(null);
+    };
+
+    if (mediaRecorder) {
+      mediaRecorder.addEventListener('dataavailable', dataAvailableListener);
+      mediaRecorder.addEventListener('stop', stopListener);
+    }
+
+    return () => {
+      if (mediaRecorder) {
+        mediaRecorder.removeEventListener('dataavailable', dataAvailableListener);
+        mediaRecorder.removeEventListener('stop', stopListener);
+      }
+
+      stopVoiceRecording();
+    };
+  }, [voiceMediaRecorderRef.current]);
+
   return (
     <InputMessageStyled
       $active={isFocus}
       $dragActive={dragActive}
       $disabled={disabled}
       $textAreaDisabled={textAreaDisabled}
+      $voiceRecording={isVoiceRecording}
       className={className}
       onClick={handleClick}
       onDragEnter={() => setDragActive(true)}
@@ -259,7 +361,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       }}
     >
       <InputMessageContent>
-        {!hideUploadFile && (
+        {(!hideUploadFile && !isVoiceRecording) && (
           <InputMessageUploadFile
             onClick={handleUploadFileClick}
           >
@@ -277,78 +379,112 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           </InputMessageUploadFile>
         )}
         <InputMessageMain>
-          {files.length > 0 && (
-            <InputMessageFiles>
-              {files.map((file) => {
-                let iconNode: React.ReactNode;
-
-                if (file.previewUrl && (file.name.match(/.png$/i) || file.name.match(/.jpg$/i) || file.name.match(/.jpeg$/i))) {
-                  iconNode = (
-                    <ChipImage
-                      src={file.previewUrl}
-                    />
-                  );
-                } else if (file.name.match(/.txt$/i)) {
-                  iconNode = <TxtIcon />;
-                } else if (file.name.match(/.docx$/i)) {
-                  iconNode = <WordIcon />;
-                } else if (file.name.match(/.xlsx$/i)) {
-                  iconNode = <XlsIcon />;
-                } else if (file.name.match(/.pdf$/i)) {
-                  iconNode = <PdfIcon />;
-                } else {
-                  iconNode = <AttachFileIcon />;
-                }
-
-                iconNode = (
-                  <IconProvider
-                    size={18}
-                  >
-                    {iconNode}
-                  </IconProvider>
-                );
-
-                return (
-                  <InputMessageFile
-                    key={file.name}
-                    start={iconNode}
-                    onDelete={handleDeleteFile.bind(null, file)}
-                  >
-                    {file.name.length > 20 ? `...${file.name.slice(-20)}` : file.name}
-                  </InputMessageFile>
-                );
-              })}
-            </InputMessageFiles>
+          {(isVoiceRecording && voiceRecordingTime !== null) && (
+            <InputMessageVoiceRecord>
+              <InputMessageVoiceRecordDot />
+              <InputMessageVoiceRecordTimeText>
+                {formatSeconds(voiceRecordingTime)}
+              </InputMessageVoiceRecordTimeText>
+            </InputMessageVoiceRecord>
           )}
-          {(
-            !textAreaDisabled 
+          {!isVoiceRecording && (
+            <>
+              {files.length > 0 && (
+                <InputMessageFiles>
+                  {files.map((file) => {
+                    let iconNode: React.ReactNode;
+
+                    if (file.previewUrl && (file.name.match(/.png$/i) || file.name.match(/.jpg$/i) || file.name.match(/.jpeg$/i))) {
+                      iconNode = (
+                        <ChipImage
+                          src={file.previewUrl}
+                        />
+                      );
+                    } else if (file.name.match(/.txt$/i)) {
+                      iconNode = <TxtIcon />;
+                    } else if (file.name.match(/.docx$/i)) {
+                      iconNode = <WordIcon />;
+                    } else if (file.name.match(/.xlsx$/i)) {
+                      iconNode = <XlsIcon />;
+                    } else if (file.name.match(/.pdf$/i)) {
+                      iconNode = <PdfIcon />;
+                    } else {
+                      iconNode = <AttachFileIcon />;
+                    }
+
+                    iconNode = (
+                      <IconProvider
+                        size={18}
+                      >
+                        {iconNode}
+                      </IconProvider>
+                    );
+
+                    return (
+                      <InputMessageFile
+                        key={file.name}
+                        start={iconNode}
+                        onDelete={handleDeleteFile.bind(null, file)}
+                      >
+                        {file.name.length > 20 ? `...${file.name.slice(-20)}` : file.name}
+                      </InputMessageFile>
+                    );
+                  })}
+                </InputMessageFiles>
+              )}
+              {(
+                !textAreaDisabled 
             || (textAreaDisabled && placeholder && files.length !== uploadFileLimit)
             || (textAreaDisabled && message)
-          ) && (
-            <InputMessageTextArea
-              $disabled={disabled}
-              {...props}
-              ref={textareaRef}
-              value={message}
-              placeholder={placeholder}
-              disabled={disabled || textAreaDisabled}
-              style={{
-                ...props.style,
-                height: textareaHeight
-              }}
-              autoFocus={!disabled && autoFocus}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              onInput={handleInput}
-              onPaste={handlePaste}
-            />
+              ) && (
+                <InputMessageTextArea
+                  $disabled={disabled}
+                  {...props}
+                  ref={textareaRef}
+                  value={message}
+                  placeholder={placeholder}
+                  disabled={disabled || textAreaDisabled}
+                  style={{
+                    ...props.style,
+                    height: textareaHeight
+                  }}
+                  autoFocus={!disabled && autoFocus}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  onInput={handleInput}
+                  onPaste={handlePaste}
+                />
+              )}
+            </>
           )}
         </InputMessageMain>
-        <InputMessageSendButton
-          disabled={disabled || sendDisabled}
-          onClick={handleSend} 
-        />
+        {(!voice || message) ? (
+          <InputMessageSendButton
+            disabled={disabled || sendDisabled}
+            onClick={handleSend}
+          >
+            <InputMessageSendIcon />
+          </InputMessageSendButton>
+        ) : (
+          <InputMessageSendButton
+            {...(isVoiceRecording && {
+              color: theme.colors.critic
+            })}
+            disabled={disabled || sendDisabled}
+            onMouseLeave={handleVoiceRecordEnd}
+            onMouseDown={handleVoiceRecordStart}
+            onMouseUp={handleVoiceRecordEnd}
+            onTouchStart={handleVoiceRecordStart}
+            onTouchEnd={handleVoiceRecordEnd}
+          >
+            {isVoiceRecording ? (
+              <InputMessageSendIcon />
+            ) : (
+              <InputMessageVoiceIcon />
+            )}
+          </InputMessageSendButton>
+        )}
       </InputMessageContent>
     </InputMessageStyled>
   );

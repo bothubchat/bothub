@@ -8,6 +8,18 @@ export type InputMessageStory = StoryObj<typeof InputMessage>;
 
 export const Basic: InputMessageStory = {};
 
+export const Voice: InputMessageStory = {
+  args: {
+    voice: true
+  }
+};
+
+export const UploadFileDisabled: InputMessageStory = {
+  args: {
+    uploadFileDisabled: true
+  }
+};
+
 export const Disabled: InputMessageStory = {
   args: {
     disabled: true

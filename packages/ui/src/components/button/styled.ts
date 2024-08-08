@@ -13,6 +13,7 @@ export interface ButtonStyledProps extends HTMLMotionProps<'button'> {
   $iconFill?: string;
   $skeleton: boolean;
   $disabled: boolean;
+  $disableHoverColor: boolean;
 }
 
 export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
@@ -35,7 +36,7 @@ export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
   }};
   gap: 10px;
   ${({
-    theme, $disabled, $variant, $skeleton 
+    theme, $disabled, $variant, $skeleton
   }) => {
     switch ($variant) {
       case 'primary':
@@ -125,9 +126,9 @@ export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
     width: 100%;
   `}
   ${({
-    theme, $variant, $icon, $iconFill, $disabled 
+    theme, $variant, $icon, $iconFill, $disabled, $disableHoverColor
   }) => {
-    if ($variant !== 'text' || $disabled) {
+    if ($variant !== 'text' || $disabled || $disableHoverColor) {
       return css``;
     }
     if ($icon) {

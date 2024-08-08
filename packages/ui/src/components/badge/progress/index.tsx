@@ -48,6 +48,9 @@ export const BadgeProgress: React.FC<BadgeProgressProps> = ({
     case 'white-purple':
       loaderColor = theme.colors.gpt4;
       break;
+    case 'white-blue':
+      loaderColor = theme.colors.accent.primary;
+      break;
   }
 
   const {

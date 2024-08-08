@@ -122,6 +122,7 @@ export const MessageTag = styled(Badge)``;
 export const MessageAvatar = styled(Avatar)`
   grid-area: avatar;
   align-self: flex-end;
+  user-select: none;
 `;
 
 export interface MessageBlockProps {

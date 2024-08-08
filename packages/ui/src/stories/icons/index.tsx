@@ -146,7 +146,12 @@ import {
   BigPresetsIcon,
   BigReferalIcon,
   AttachFileIcon,
-  AttachFileBigIcon
+  AttachFileBigIcon,
+  VoiceIcon,
+  PlayButtonIcon,
+  PauseButtonIcon,
+  TextReadIcon,
+  TextHideIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -304,6 +309,11 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="BigReferalIcon">{BigReferalIcon}</IconItem>
         <IconItem name="AttachFileIcon">{AttachFileIcon}</IconItem>
         <IconItem name="AttachFileBigIcon">{AttachFileBigIcon}</IconItem>
+        <IconItem name="VoiceIcon">{VoiceIcon}</IconItem>
+        <IconItem name="PlayButtonIcon">{PlayButtonIcon}</IconItem>
+        <IconItem name="PauseButtonIcon">{PauseButtonIcon}</IconItem>
+        <IconItem name="TextReadIcon">{TextReadIcon}</IconItem>
+        <IconItem name="TextHideIcon">{TextHideIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

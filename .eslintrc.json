@@ -75,6 +75,7 @@
     "no-restricted-syntax": "off",
     "no-nested-ternary": "off",
     "global-require": "off",
-    "no-plusplus": "off"
+    "no-plusplus": "off",
+    "no-mixed-operators": "off"
   }
 }

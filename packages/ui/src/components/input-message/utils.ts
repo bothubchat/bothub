@@ -35,3 +35,13 @@ export const formatUploadFiles = async (files: File[]): Promise<IInputMessageFil
   
   return [...fileMap.values()];
 };
+
+export const formatSeconds = (seconds: number) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  const formattedMinutes = String(minutes).padStart(2, '0');
+  const formattedSeconds = remainingSeconds.toFixed(1).padStart(2, '0').replace('.', ',');
+  
+  return `${formattedMinutes}:${formattedSeconds}`;
+};

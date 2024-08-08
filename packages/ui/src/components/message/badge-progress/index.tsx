@@ -9,12 +9,19 @@ React.ComponentProps<typeof MessageBadgeProgressStyled>, keyof MessageBadgeProgr
 export const MessageBadgeProgress: React.FC<MessageBadgeProgressProps> = ({
   ...props
 }) => {
-  const { color } = useMessage();
+  const { variant, color } = useMessage();
 
   let badgeColor: BadgeProgressColor;
   switch (color) {
     case 'default':
-      badgeColor = 'primary';
+      switch (variant) {
+        case 'user':
+          badgeColor = 'white-blue';
+          break;
+        case 'assistant':
+          badgeColor = 'primary';
+          break;
+      }
       break;
     case 'green':
       badgeColor = 'white-green';

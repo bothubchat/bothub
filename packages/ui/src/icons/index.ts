@@ -148,3 +148,8 @@ export * from './big-favorite';
 export * from './big-referal';
 export * from './attach-file';
 export * from './attach-file-big';
+export * from './voice';
+export * from './play-button';
+export * from './pause-button';
+export * from './text-read';
+export * from './text-hide';

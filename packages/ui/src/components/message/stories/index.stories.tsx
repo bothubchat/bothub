@@ -22,7 +22,8 @@ import {
   MessageImageTopArrowButton, 
   MessageMarkdown, 
   MessageTag,
-  MessageTransaction
+  MessageTransaction,
+  MessageVoice
 } from '@/ui/components/message';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Gpt35Icon } from '@/ui/icons/gpt-3_5';
@@ -35,6 +36,7 @@ import image2 from './assets/image-2.png';
 import image3 from './assets/image-3.png';
 import image4 from './assets/image-4.png';
 import imageProgress from './assets/image-progress.png';
+import sound from './assets/sound.wav';
 import {
   AIIcon, 
   DownloadImgIcon, 
@@ -669,6 +671,70 @@ export const Files: MessageStory = {
           />
         </MessageFiles>
       </>
+    )
+  }
+};
+
+export const Voice: MessageStory = {
+  args: {
+    ...User.args,
+    children: (
+      <MessageVoice
+        src={sound}
+        waveData={[
+          89.41,
+          91.74,
+          53.74,
+          42.63,
+          15.19,
+          4.97,
+          2.1,
+          83.02,
+          89.86,
+          53.54,
+          42.58,
+          15.21,
+          8.74,
+          2.17,
+          83.48,
+          80.1,
+          87.77,
+          53.81,
+          29.96,
+          15.04,
+          3.37,
+          2.15,
+          84.77,
+          87.62,
+          54.25,
+          40.74,
+          15.21,
+          8.87,
+          2.11,
+          2.15
+        ]}
+        duration={6}
+      >
+        Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, 
+        Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, Beep, 
+        Beep, Beep, Beep, Beep
+      </MessageVoice>
+    )
+  }
+};
+
+export const VoiceProcessing: MessageStory = {
+  args: {
+    ...User.args,
+    children: null,
+    after: (
+      <MessageBadgeProgress>
+        <BadgeProgressText>
+          <BadgeProgressTextBold>Голосовое сообщение</BadgeProgressTextBold>
+          {' '}
+          обрабатывается...
+        </BadgeProgressText>
+      </MessageBadgeProgress>
     )
   }
 };

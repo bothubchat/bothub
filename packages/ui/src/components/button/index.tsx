@@ -28,6 +28,8 @@ export type ButtonProps =
     iconFill?: string;
     skeleton?: boolean;
     htmlFor?: string;
+    color?: string;
+    disableHoverColor?: boolean;
     children?: React.ReactNode;
   };
 
@@ -45,6 +47,8 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
   iconFill,
   disabled = false, 
   skeleton = false,
+  color,
+  disableHoverColor = false,
   ...props 
 }, ref) => {
   const theme = useTheme();
@@ -91,11 +95,11 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
       case 'success':
         animationProps = {
           initial: {
-            background: theme.colors.grayScale.gray2,
+            background: color ?? theme.colors.grayScale.gray2,
             opacity: 1
           },
           animate: {
-            background: theme.colors.grayScale.gray2,
+            background: color ?? theme.colors.grayScale.gray2,
             opacity: 1
           }
         };
@@ -103,11 +107,11 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
       case 'secondary':
         animationProps = {
           initial: {
-            background: theme.colors.grayScale.gray4,
+            background: color ?? theme.colors.grayScale.gray4,
             boxShadow: `0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset`
           },
           animate: {
-            background: theme.colors.grayScale.gray4,
+            background: color ?? theme.colors.grayScale.gray4,
             boxShadow: `0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset`
           }
         };
@@ -129,16 +133,16 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
       case 'primary':
         animationProps = {
           initial: {
-            background: theme.colors.accent.primary
+            background: color ?? theme.colors.accent.primary
           },
           animate: {
-            background: theme.colors.accent.primary
+            background: color ?? theme.colors.accent.primary
           },
           whileHover: {
-            background: theme.colors.accent.strong
+            background: color ?? theme.colors.accent.strong
           },
           whileTap: {
-            background: theme.colors.accent.strongDown,
+            background: color ?? theme.colors.accent.strongDown,
             transform: 'translateY(1px)'
           }
         };
@@ -147,7 +151,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
         animationProps = {
           variants: {
             default: {
-              background: theme.colors.accent.primary,
+              background: color ?? theme.colors.accent.primary,
               opacity: 0.5
             },
             hover: {
@@ -166,19 +170,19 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
       case 'secondary':
         animationProps = {
           initial: {
-            background: theme.colors.grayScale.gray4,
+            background: color ?? theme.colors.grayScale.gray4,
             boxShadow: `0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset`
           },
           animate: {
-            background: theme.colors.grayScale.gray4,
+            background: color ?? theme.colors.grayScale.gray4,
             boxShadow: `0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset`
           },
           whileHover: {
-            background: theme.colors.grayScale.gray2,
+            background: color ?? theme.colors.grayScale.gray2,
             boxShadow: '0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset'
           },
           whileTap: {
-            background: theme.colors.grayScale.gray3,
+            background: color ?? theme.colors.grayScale.gray3,
             transform: 'translateY(1px)'
           }
         };
@@ -252,6 +256,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
       $iconFill={iconFill}
       $skeleton={skeleton}
       $disabled={disabled}
+      $disableHoverColor={disableHoverColor}
       as={motion[component]}
       {...(component === 'button' && {
         type,

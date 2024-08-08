@@ -188,3 +188,4 @@ export * from './components';
 export * from './badge-progress';
 export * from './button';
 export * from './file';
+export * from './voice';
