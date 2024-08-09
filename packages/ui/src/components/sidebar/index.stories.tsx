@@ -6,8 +6,7 @@ import {
   SidebarChatActions, 
   SidebarChatDeleteAction, 
   SidebarGroup,
-  SidebarGroups, 
-  SidebarCreateChatButton, 
+  SidebarGroups,
   SidebarToggleButton, 
   SidebarUserInfo, 
   SidebarUserInfoAvatar,
@@ -30,7 +29,8 @@ import {
   SidebarLangDropdown,
   SidebarLangDropdownList,
   SidebarLangDropdownItem,
-  SidebarUserInfoLogoutButton
+  SidebarUserInfoLogoutButton,
+  SidebarGroupAddTabButton
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -121,9 +121,9 @@ export const Basic: SidebarStory = {
     ),
     buttons: (
       <SidebarButtons>
-        <SidebarCreateChatButton>
-          Создать чат
-        </SidebarCreateChatButton>
+        <SidebarGroupAddTabButton>
+          Создать группу
+        </SidebarGroupAddTabButton>
         <SidebarDeleteChatsButton />
       </SidebarButtons>
     ),
@@ -350,11 +350,11 @@ export const Skeleton: SidebarStory = {
     ),
     buttons: (
       <SidebarButtons>
-        <SidebarCreateChatButton
+        <SidebarGroupAddTabButton
           disabled
         >
-          Создать чат
-        </SidebarCreateChatButton>
+          Создать группу
+        </SidebarGroupAddTabButton>
         <SidebarDeleteChatsButton 
           disabled
         />
