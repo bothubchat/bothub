@@ -78,7 +78,9 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const [textareaHeight, setTextareaHeight] = useState('calc(var(--bothub-scale, 1) * 18px)');
 
   const [message, setMessage] = typeof initialMessage === 'string' ? [initialMessage, onChange] : useState('');
-  const [files, setFiles] = typeof initialFiles === 'string' ? [initialFiles, onFilesChange] : useState<IInputMessageFile[]>([]);
+  const [files, setFiles] = Array.isArray(initialFiles) 
+    ? [initialFiles, onFilesChange]
+    : useState<IInputMessageFile[]>([]);
   const [isFocus, setIsFocus] = useState(!disabled && autoFocus);
   const [dragActive, setDragActive] = useState(false);
   const [isVoiceRecording, setIsVoiceRecording] = useState(false);
