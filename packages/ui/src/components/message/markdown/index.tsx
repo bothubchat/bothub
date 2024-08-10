@@ -25,6 +25,13 @@ import {
 import { MessageMarkdownLine, MessageMarkdownStyled } from './styled';
 import { useTheme } from '@/ui/theme';
 
+function formatString(string: string) {
+  return string
+    // math formulas
+    .replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
+    .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$$${content}$$`);
+}
+
 export interface MessageMarkdownProps {
   children: string;
   components?: MessageComponentsProps;
@@ -41,8 +48,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
 
   const formattedChildren = useMemo(() => {
     if (typeof children === 'string' && !isDisabled) {
-      return children.replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
-        .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$$${content}$$`);
+      return formatString(children);
     }
     return children;
   }, [children, isDisabled]);
@@ -88,7 +94,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
             }]]}
             components={{
               p: ({ children }) => (
-                <MessageParagraph>
+                <MessageParagraph wrap>
                   {children}
                 </MessageParagraph>
               ),
