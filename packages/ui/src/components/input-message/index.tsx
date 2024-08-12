@@ -207,7 +207,20 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     event.stopPropagation();
   }, []);
 
-  const handleVoiceRecordStart = useCallback(async () => {
+  const handleVoiceRecordStart = useCallback<React.ReactEventHandler>(async (event) => {
+    event.stopPropagation();
+
+    const microphonePermission = await navigator.permissions.query({
+      // @ts-ignore
+      name: 'microphone' 
+    });
+
+    if (microphonePermission.state !== 'granted') {
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      return;
+    }
+
     const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'audio/webm' });
 

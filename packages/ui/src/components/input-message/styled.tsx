@@ -136,6 +136,9 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
 
 export const InputMessageSendButton = styled(Button)`
   flex-shrink: 0;
+  svg {
+    pointer-events: none;
+  }
 `;
 
 export const InputMessageSendIcon = SendIcon;
