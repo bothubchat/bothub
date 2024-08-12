@@ -472,7 +472,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             </>
           )}
         </InputMessageMain>
-        {(!voice || message) ? (
+        {(!voice || message || files.length > 0) ? (
           <InputMessageSendButton
             disabled={disabled || sendDisabled}
             onClick={handleSend}
