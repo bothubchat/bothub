@@ -108,9 +108,10 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
     }
 
     handleScroll();
-    const scrollTimeout = window.setTimeout(() => {
+    const slowScrollTimeout: number = 300;
+    let slowScrollListener = window.setTimeout(() => {
       handleScroll();
-    }, 300);
+    }, slowScrollTimeout);
 
     let observer: MutationObserver | null = null;
 
@@ -129,11 +130,21 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
       });
     }
 
-    const resizeListener = () => handleScroll();
+    const resizeListener = () => {
+      window.clearTimeout(slowScrollListener);
+      
+      handleScroll();
+
+      // height of the scrollbar is updating very slow, so we need to wait for it and check again
+      slowScrollListener = window.setTimeout(() => {
+        handleScroll();
+      }, slowScrollTimeout);
+    };
+
     window.addEventListener('resize', resizeListener);
 
     return () => {
-      clearTimeout(scrollTimeout);
+      clearTimeout(slowScrollListener);
       observer?.disconnect();
       window.removeEventListener('resize', resizeListener);
     };
