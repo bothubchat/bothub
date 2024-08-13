@@ -84,6 +84,13 @@ export const Basic: MessageStory = {
   }
 };
 
+export const OneLineFeedText: MessageStory = {
+  args: {
+    ...Basic.args,
+    children: 'Так близко, неважно, насколько далеко\nНе могло быть ближе от сердца\nВечно доверяя тем, кто мы есть\nИ больше ничего не имеет значения\n\nВ сердце тихо падает звезда,\nМечта, что сбыться так и не смогла.\nНо верю я - придет светлая пора,\nИ снова зажигаться будет надежда.',
+  }
+};
+
 export const Assistant: MessageStory = {
   args: {
     variant: 'assistant',
