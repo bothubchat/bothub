@@ -25,7 +25,9 @@ import { WordIcon } from '@/ui/icons/word';
 import { XlsIcon } from '@/ui/icons/xls';
 import { IInputMessageFile } from './types';
 import { IconProvider } from '@/ui/components/icon';
-import { formatUploadFiles, getPreviewUrlForFile, formatSeconds } from './utils';
+import {
+  formatUploadFiles, getPreviewUrlForFile, formatSeconds 
+} from './utils';
 import { AttachFileIcon } from '@/ui/icons/attach-file';
 import { useTheme } from '@/ui/theme';
 
@@ -89,6 +91,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const voiceMediaStreamRef = useRef<MediaStream | null>(null);
   const voiceChunksRef = useRef<Blob[]>([]);
   const voiceTimerRef = useRef<number | null>(null);
+  const voicePressedRef = useRef(false);
  
   const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>((event) => {
     setIsFocus(true);
@@ -209,22 +212,21 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     event.stopPropagation();
   }, []);
 
-  const handleVoiceRecordStart = useCallback<React.ReactEventHandler>(async (event) => {
+  const handleVoiceRecordClick = useCallback<React.MouseEventHandler>((event) => {
+    event.preventDefault();
     event.stopPropagation();
+  }, []);
 
-    const microphonePermission = await navigator.permissions.query({
-      // @ts-ignore
-      name: 'microphone' 
-    });
-
-    if (microphonePermission.state !== 'granted') {
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-
-      return;
-    }
+  const handleVoiceRecordStart = useCallback<React.ReactEventHandler>(async (event) => {
+    voicePressedRef.current = true;
+    event.stopPropagation();
 
     const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'audio/webm' });
+
+    if (!voicePressedRef.current) {
+      return;
+    }
 
     mediaRecorder.start();
 
@@ -238,7 +240,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
     setIsVoiceRecording(true);
     setVoiceRecordingTime(0);
-  }, [voiceChunksRef.current]);
+  }, [voicePressedRef.current, voiceChunksRef.current]);
 
   const stopVoiceRecording = useCallback(() => {
     const mediaRecorder = voiceMediaRecorderRef.current;
@@ -263,6 +265,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   ]); 
 
   const handleVoiceRecordEnd = useCallback(async () => {
+    voicePressedRef.current = false;
+
     if (!isVoiceRecording) {
       return;
     }
@@ -492,6 +496,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             onMouseUp={handleVoiceRecordEnd}
             onTouchStart={handleVoiceRecordStart}
             onTouchEnd={handleVoiceRecordEnd}
+            onTouchCancel={handleVoiceRecordEnd}
+            onClick={handleVoiceRecordClick}
           >
             {isVoiceRecording ? (
               <InputMessageSendIcon />
