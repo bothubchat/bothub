@@ -16,6 +16,14 @@ export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
   gap: 12px;
 `;
 
+// deprecated
+export const SidebarCreateChatButton = styled(Button).attrs({
+  startIcon: <Plus1Icon />,
+  fullWidth: true
+})`
+  white-space: nowrap;
+`;
+
 export const SidebarGroupAddTabButton = styled(Button).attrs({
   startIcon: <Plus1Icon />,
   fullWidth: true
