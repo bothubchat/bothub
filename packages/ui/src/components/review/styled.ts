@@ -1,13 +1,8 @@
 import { styled } from 'styled-components';
 
-import {
-  ArrowNarrowRightIcon,
-  StarIcon,
-  Container,
-  Typography,
-  Avatar,
-  Button,
-} from '@bothub-chat/ui';
+import { ArrowNarrowRightIcon, StarIcon } from '@/ui/icons';
+
+import { Container, Typography, Avatar, Button } from '@/ui/components';
 
 export const ReviewsSectionTitle = styled(Typography).attrs({
   variant: 'h2',
