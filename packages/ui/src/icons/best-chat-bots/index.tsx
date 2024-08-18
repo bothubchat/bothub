@@ -1,7 +1,7 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const BestChatBots = icon(({ ...props }) => (
-  <Icon size={18} viewBox="0 0 18 18" fill="none" {...props}>
+  <Icon size={19} viewBox="0 0 19 18" fill="none" {...props}>
     <IconConsumer>
       {() => (
         <>
