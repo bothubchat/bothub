@@ -5,7 +5,7 @@ import {
   ReviewsSectionWrapper,
 } from './styled';
 
-import Review from '../review';
+import { Review } from '../review';
 
 export type ReviewType = {
   src: string;
@@ -24,7 +24,7 @@ export type ReviewsProps = {
   };
 };
 
-const Reviews: React.FC<ReviewsProps> = ({
+export const Reviews: React.FC<ReviewsProps> = ({
   sectionTitle,
   reviews,
   buttonProps,
@@ -51,4 +51,4 @@ const Reviews: React.FC<ReviewsProps> = ({
   </ReviewsSectionWrapper>
 );
 
-export default Reviews;
+export * from './styled';

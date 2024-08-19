@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 
-import Review from '.';
+import { Review } from '.';
 
 import avatar1 from './assets/avatar1.png';
 
@@ -20,7 +20,7 @@ export const Basic: ReviewStory = {
 };
 
 export default {
-  title: 'Components/Review',
+  title: 'Components/Reviews/Review',
   component: Review,
   decorators: [StoryDecorator()],
 } as ReviewMeta;

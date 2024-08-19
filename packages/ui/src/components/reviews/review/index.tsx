@@ -10,7 +10,7 @@ import {
   ReviewsSectionTextWrapper,
 } from './styled';
 
-const Review = ({
+export const Review = ({
   src,
   alt,
   reviewer,
@@ -41,4 +41,4 @@ const Review = ({
   </ReviewsSectionReview>
 );
 
-export default Review;
+export * from './styled';
