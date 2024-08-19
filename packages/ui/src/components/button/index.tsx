@@ -87,10 +87,11 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
     size: iconSize,
     fill: iconFill
   };
-  let animationProps: AnimationProps & HoverHandlers & TapHandlers;
+  let animationProps: AnimationProps & HoverHandlers & TapHandlers = {};
   if (disabled || skeleton) {
     switch (variant) {
       case 'primary':
+      case 'primary-outline':
       case 'primary-transparent':
       case 'success':
         animationProps = {
@@ -144,6 +145,25 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
           whileTap: {
             background: color ?? theme.colors.accent.strongDown,
             transform: 'translateY(1px)'
+          }
+        };
+        break;
+      case 'primary-outline':  
+        animationProps = {
+          initial: {
+            background: color ?? '#00000000',
+          },
+          animate: {
+            background: color ?? '#00000000',
+          },
+          whileHover: {
+            background: color ?? theme.colors.accent.strong,
+            boxShadow: `0px 0px 0px 1px ${theme.colors.accent.strong} inset`,
+          },
+          whileTap: {
+            background: color ?? theme.colors.accent.strongDown,
+            transform: 'translateY(1px)',
+            boxShadow: `0px 0px 0px 1px ${theme.colors.accent.strongDown} inset`,
           }
         };
         break;

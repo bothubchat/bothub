@@ -45,6 +45,11 @@ export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
           background: ${$disabled || $skeleton ? theme.default.colors.grayScale.gray2 : theme.colors.accent.primary};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
         `;
+      case 'primary-outline':
+        return css`
+          background: ${$disabled || $skeleton ? theme.default.colors.grayScale.gray2 : '#00000000'};
+          box-shadow: 0px 0px 0px 1px ${theme.colors.accent.primary} inset;
+        `;
       case 'secondary':
         return css`
           background: ${theme.colors.grayScale.gray4};
@@ -66,6 +71,7 @@ export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
     switch ($variant) {
       case 'primary':
       case 'primary-transparent':
+      case 'primary-outline':
       case 'secondary':
       case 'success':
         switch ($size) {
@@ -99,6 +105,7 @@ export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
     switch ($variant) {
       case 'primary':
       case 'primary-transparent':
+      case 'primary-outline':
       case 'secondary':
       case 'success':
         if ($icon) {
@@ -162,6 +169,17 @@ export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
       }
     }
   `}
+  ${({ theme, $variant }) => $variant === 'primary-outline' && theme.mode === 'light' && css`
+    &:hover,
+    &:active {
+      ${ButtonText} {
+        color: ${theme.colors.base.black};
+      }
+      svg path {
+        fill: ${theme.colors.base.black};
+      }
+    }
+  `}
 `;
 
 export interface ButtonTextProps {
@@ -183,6 +201,10 @@ export const ButtonText = styled.span<ButtonTextProps>`
       case 'primary':
       case 'primary-transparent':
         return theme.default.colors.base.white;
+      case 'primary-outline':
+        return theme.mode === 'light' 
+          ? theme.default.colors.base.black 
+          : theme.colors.base.white;
       default:
         return theme.colors.base.white;
     }
