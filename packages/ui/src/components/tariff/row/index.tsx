@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
-import { 
-  TariffCardStyled, 
-  TariffCardStyledContent, 
-  TariffCardStyledCurrency, 
-  TariffCardStyledName, 
-  TariffCardStyledPrice, 
-  TarrifCardStyledLeft, 
-  TariffCardStyledMiddle, 
+import {
+  TariffCardStyled,
+  TariffCardStyledContent,
+  TariffCardStyledCurrency,
+  TariffCardStyledName,
+  TariffCardStyledPrice,
+  TarrifCardStyledLeft,
+  TariffCardStyledMiddle,
   TarrifCardStyledRadio,
   TarrifCardStyledRight,
   TariffCardStyledDescription,
@@ -14,8 +14,8 @@ import {
   TariffCardGiveCapsText,
   TariffCardGiveCapsBadge,
   TariffCardGiveCapsBadgeText,
-  TariffCardStyledGiveCaps
-} from "./styled";
+  TariffCardStyledGiveCaps,
+} from './styled';
 import { TariffCardVariant, TariffCardColor } from './types';
 
 export interface TariffCardRowProps extends React.ComponentProps<'div'> {
@@ -30,31 +30,46 @@ export interface TariffCardRowProps extends React.ComponentProps<'div'> {
   color?: TariffCardColor;
 }
 
-
-export const TariffCardRow: React.FC<TariffCardRowProps> = ({ 
-    name, giveCaps, price, currency, onChange, giveCapsText,selected, color = 'white', children, description, ...props
-  }) => {
+export const TariffCardRow: React.FC<TariffCardRowProps> = ({
+  name,
+  giveCaps,
+  price,
+  currency,
+  onChange,
+  giveCapsText,
+  selected,
+  color = 'white',
+  children,
+  description,
+  ...props
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const handleClick = () => {
     const radio = ref.current?.querySelector('input');
-    if(radio) {
+    if (radio) {
       radio.click();
     }
-  }
-  
-  return(
-    <TariffCardStyled onClick={handleClick} ref={ref} selected={selected} {...props}>
+  };
+
+  return (
+    <TariffCardStyled
+      onClick={handleClick}
+      ref={ref}
+      selected={selected}
+      {...props}
+    >
       <TariffCardStyledContent>
         <TarrifCardStyledLeft>
-          <TarrifCardStyledRadio onClick={onChange} checked={selected} name='tariff' value={name}/>
+          <TarrifCardStyledRadio
+            onClick={onChange}
+            checked={selected}
+            name="tariff"
+            value={name}
+          />
           <div>
-            <TariffCardStyledName $color={color}>
-              {name}
-            </TariffCardStyledName>
+            <TariffCardStyledName $color={color}>{name}</TariffCardStyledName>
             <TariffCardStyledGiveCaps>
-              <TariffCardGiveCapsText>
-                {giveCapsText}
-              </TariffCardGiveCapsText>
+              <TariffCardGiveCapsText>{giveCapsText}</TariffCardGiveCapsText>
               <TariffCardGiveCapsBadge>
                 <TariffCardGiveCapsBadgeText>
                   {giveCaps}
@@ -64,17 +79,16 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
           </div>
         </TarrifCardStyledLeft>
         <TariffCardStyledMiddle>
-          <TariffCardStyledDescriptionIcon/>
+          <TariffCardStyledDescriptionIcon />
           <TariffCardStyledDescription>
             {description}
           </TariffCardStyledDescription>
         </TariffCardStyledMiddle>
         <TarrifCardStyledRight>
           <TariffCardStyledPrice>{price}</TariffCardStyledPrice>
-          {' '}
           <TariffCardStyledCurrency>{currency}</TariffCardStyledCurrency>
         </TarrifCardStyledRight>
       </TariffCardStyledContent>
     </TariffCardStyled>
-  )
-}
+  );
+};

@@ -52,3 +52,5 @@ export * from './file-field';
 export * from './drawer';
 export * from './switch';
 export * from './datepicker';
+export * from './reviews/review';
+export * from './reviews/reviews-section';
