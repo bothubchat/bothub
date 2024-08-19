@@ -1,38 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
-import { TariffCard } from '.';
-import { TariffCardStyledGiveCaps, TariffCardGiveCapsBadge, TariffCardGiveCapsText, TariffCardStyledDescription, TariffCardStyledDescriptionIcon } from './styled';
+import { TariffCardRow } from '.';
+import { TariffCardStyledGiveCaps, TariffCardGiveCapsBadge, TariffCardGiveCapsText, TariffCardStyledDescription, TariffCardStyledDescriptionIcon, TariffCardGiveCapsBadgeText } from './styled';
 
-export type TariffCardMeta = Meta<typeof TariffCard>;
+export type TariffCardMeta = Meta<typeof TariffCardRow>;
 
-export type TariffCardStory = StoryObj<typeof TariffCard>;
+export type TariffCardStory = StoryObj<typeof TariffCardRow>;
 
 export const Basic: TariffCardStory = {
   args: {
     name: 'Basic',
     price: '200',
     currency: '₽',
-    giveCaps: 
-    <TariffCardStyledGiveCaps>
-      <TariffCardGiveCapsText>
-        Вы получаете
-      </TariffCardGiveCapsText>
-      <TariffCardGiveCapsBadge>
-        3 000 000 Caps
-      </TariffCardGiveCapsBadge>
-    </TariffCardStyledGiveCaps>,
-    children: 
-    <>
-      <TariffCardStyledDescriptionIcon/>
-      <TariffCardStyledDescription>
-        Хватит, чтобы написать роман «Евгений Онегин» А.С. Пушкина и повесть «Старик и море» Э. Хемингуэя
-      </TariffCardStyledDescription>
-    </>,
+    color: 'white',
+    giveCaps: '3 000 000 caps',
+    giveCapsText: 'Вы получаете',
+    description: 'Хватит, чтобы написать роман «Евгений Онегин» А.С. Пушкина и повесть «Старик и море» Э. Хемингуэя',
   }
 };
 
 export default {
   title: 'Components/Tariff/Row',
-  component: TariffCard,
+  component: TariffCardRow,
   decorators: [StoryDecorator()]
 } as TariffCardMeta;

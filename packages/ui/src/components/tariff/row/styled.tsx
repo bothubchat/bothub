@@ -5,7 +5,9 @@ import { Radio } from "@/ui/components/radio";
 import { CheckCircleIcon } from "@/ui/icons/check-circle";
 import { TariffCardVariant, TariffCardColor } from './types';
 export interface TariffCardProps {
+  $color?: TariffCardColor;
   selected?: boolean;
+  $variant?: TariffCardVariant;
 }
 
 export const TariffCardStyled = styled.div<TariffCardProps>`
@@ -16,26 +18,42 @@ export const TariffCardStyled = styled.div<TariffCardProps>`
   padding: 16px 34px;
   box-sizing: border-box;
   opacity: 0.9;
-  background: ${({ theme }) => theme.default.colors.grayScale.gray7};
-  background: #171E2F;
+  background: ${({ theme }) => theme.colors.grayScale.gray7};
   border-radius: 14px;
-  ${({ selected, theme }) => (selected && css`border: 1px solid ${theme.default.colors.accent.primary};`)}
-  &:after {
-    display: block;
-    content: '';
-    position: absolute;
-    width: 1070px;
-    height: 216.23px;
-    gap: 0px;
-    left: -246px;
-    top: -220px;
-    filter: blur(50px);
-    transform: rotate(-4.41deg);
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-    background: linear-gradient(90.98deg, #2244F4 7.53%, rgba(252, 94, 255, 0.4) 72.48%);
-    border-radius: 50%;
-    z-index: -1;
+  & > input:[type="radio"]:checked ~ & {
+    outline: 1px solid ${({ theme }) => theme.default.colors.accent.primary};
   }
+  ${({ selected, theme }) => (
+    selected && theme.mode === 'light' && css`
+    outline: 1px solid ${theme.default.colors.accent.primary};
+    background-color: ${theme.colors.grayScale.gray3};
+    `
+  )}
+  ${({ selected, theme }) => (
+    selected && theme.mode === 'dark' && css`
+    outline: 1px solid ${theme.default.colors.accent.primary};
+    background-color: ${theme.colors.grayScale.gray3};
+    `
+  )}
+  ${({theme}) => (
+    theme.mode === 'dark' && css`
+      &:after {
+      display: block;
+      content: '';
+      position: absolute;
+      width: 1070px;
+      height: 216.23px;
+      gap: 0px;
+      left: -240px;
+      top: -200px;
+      filter: blur(50px);
+      transform: rotate(-4.41deg);
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+      background: linear-gradient(90.98deg, #2244F4 7.53%, rgba(252, 94, 255, 0.4) 72.48%);
+      border-radius: 50%;
+      z-index: -1;
+    }`
+  )};
 
   @media (max-width: 550px) {
     padding: 14px;
@@ -59,17 +77,41 @@ export const TariffCardStyledContent = styled.div`
 `
 
 export const TarrifCardStyledLeft = styled.div`
-  width: 100%;
-  max-width: 241px;
+  position: relative;
+  min-width: 241px;
   display: flex;
   align-items: center;
   gap: 14px;
+  @media (max-width: 1060px) {
+    min-width: 200px;
+  }
 `
 
-export const TariffCardStyledName = styled(Typography).attrs({ variant: 'body-xl-semibold'})<TariffCardColor>`
- -webkit-background-clip: text;
+export const TariffCardStyledName: React.FC<{$color: TariffCardColor, children?: React.ReactNode}> = styled(Typography).attrs({ variant: 'body-xl-semibold', component: 'h3' })<{$color: TariffCardColor}>`
+  background-clip: text;
+  -webkit-background-clip: text;
+  width: fit-content;
   -webkit-text-fill-color: transparent;
-  color: ${({ color, theme }) => theme.default.colors[color]};
+  background-image: ${({ theme, $color }) => {
+    switch ($color) {
+      case 'blue':
+        return theme.colors.accent.primary;
+      case 'blue-lilac':
+        return theme.colors.premiumGradient;
+      default:
+        return theme.colors.base.white;
+    }
+  }};
+  background-color: ${({ theme, $color }) => {
+    switch ($color) {
+      case 'blue':
+        return theme.colors.accent.primary;
+      case 'blue-lilac':
+        return theme.colors.premiumGradient;
+      default:
+        return theme.colors.base.white;
+    }
+  }};
 `;
 
 export const TariffCardStyledMiddle = styled.div`
@@ -111,7 +153,19 @@ export const TariffCardStyledGiveCaps = styled.div`
   gap: 8px;
 `;
 
-export const TariffCardGiveCapsBadge = styled(Badge)``;
+export const TariffCardGiveCapsBadge = styled(Badge).attrs({ variant: 'info' })`
+  ${({ theme }) => `
+    background-color: ${theme.default.colors.grayScale.gray2};
+    color: ${theme.default.colors.base.white};
+  `}
+`;
+
+export const TariffCardGiveCapsBadgeText = styled(Typography).attrs({ variant: 'body-s-regular' })`
+  white-space: nowrap;
+  ${({ theme }) => `
+    color: ${theme.default.colors.base.white};
+  `}
+`;
 
 export const TariffCardStyledDescriptionIcon = styled(CheckCircleIcon).attrs({ size: 18 })`
   @media (max-width: 550px) {
