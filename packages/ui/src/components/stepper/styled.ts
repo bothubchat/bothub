@@ -2,12 +2,15 @@ import styled from 'styled-components';
 import { StepStatus } from './types';
 
 export const StepperStyled = styled.div`
+  width: 100%;
+  max-width: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   --transition-duration: 0.5s;
   --transition-delay: 0.25s;
   --transition-function: cubic-bezier(0.25, 0.46, 0.45, 1);
+  position: relative;
 `;
 
 export type StepperStepProps = {
@@ -26,6 +29,8 @@ export const StepperStep = styled.div<StepperStepProps>`
     transition: color var(--transition-duration) var(--transition-function);
     transition-delay: ${({ $status }) => ($status === 'complete' || $status === 'incomplete' ? '0s' : 'var(--transition-delay)')};
   }
+  position: relative;
+  z-index: 1;
 `;
 
 export type StepperStepPointProps = {
@@ -79,14 +84,15 @@ export const StepperLine = styled.div<StepperLineProps>`
       case 'complete':
         return '0%';
       case 'active':
-        return '50%';
+        return '25%';
       case 'incomplete':
         return '100%';
     }
   }};
   background-position-y: 50%;
   transition: background-position-x var(--transition-duration) var(--transition-function);
-  margin-left: -6px;
-  margin-right: -6px;  
+  margin-left: -1em;
+  margin-right: -1em;
   margin-bottom: 10px;  
+  z-index: 0;
 `;
