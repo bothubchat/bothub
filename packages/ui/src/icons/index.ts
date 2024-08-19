@@ -88,6 +88,7 @@ export * from './generation';
 export * from './gpt-3_5';
 export * from './gpt-4';
 export * from './imagine';
+export * from './imagine-2';
 export * from './loader';
 export * from './loader-circular';
 export * from './loader-circular-gradient';
