@@ -13,6 +13,7 @@ export interface TariffCardProps {
 export const TariffCardStyled = styled.div<TariffCardProps>`
   position: relative;
   display: flex;
+  cursor: pointer;
   width: 100%;
   overflow: hidden;
   padding: 16px 34px;
