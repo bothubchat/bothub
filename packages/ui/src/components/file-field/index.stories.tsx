@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FileField } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
+import { UploadIcon } from '@/ui/icons';
 
 export type FileFieldMeta = Meta<typeof FileField>;
 
@@ -24,6 +25,13 @@ export const Disabled: FileFieldStory = {
   args: {
     ...Basic.args,
     disabled: true
+  }
+};
+
+export const CustomIcon: FileFieldStory = {
+  args: {
+    ...Basic.args,
+    icon: <UploadIcon />
   }
 };
 
