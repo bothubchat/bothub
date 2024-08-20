@@ -1,7 +1,7 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const Imagine2Icon = icon(({ ...props }) => (
-  <Icon size={16} viewBox="0 0 16 16" fill="none" {...props}>
+  <Icon size={16} viewBox="0 0 18 18" fill="none" {...props}>
     <IconConsumer>
       {({ fill = '#F29C1C' } = { fill: '#F29C1C' }) => (
         <>
