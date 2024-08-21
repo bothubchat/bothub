@@ -53,3 +53,4 @@ export * from './drawer';
 export * from './switch';
 export * from './datepicker';
 export * from './stepper';
+export * from './user-tariff-badge';
