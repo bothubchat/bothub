@@ -138,7 +138,7 @@ export const TariffCardStyledMiddle = styled.div`
 `;
 
 export const TariffCardStyledDescription = styled(Typography).attrs({
-  variant: 'body-s-medium',
+  variant: 'body-s-semibold',
 })`
   width: 100%;
   max-width: 518px;
@@ -182,7 +182,7 @@ export const TariffCardGiveCapsBadge = styled(Badge).attrs({ variant: 'info' })`
 `;
 
 export const TariffCardGiveCapsBadgeText = styled(Typography).attrs({
-  variant: 'body-s-regular',
+  variant: 'body-s-medium',
 })`
   white-space: nowrap;
   ${({ theme }) => `
