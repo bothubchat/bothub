@@ -52,3 +52,4 @@ export * from './file-field';
 export * from './drawer';
 export * from './switch';
 export * from './datepicker';
+export * from './menu-dropdown';

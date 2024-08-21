@@ -1,10 +1,12 @@
 import { css, styled } from 'styled-components';
 import { HeaderVariant } from '../types';
 import { adaptive } from '@/ui/adaptive';
+import { MenuDropdown } from '../../menu-dropdown';
 
 export interface HeaderNavStyledProps {
   $variant: HeaderVariant;
   $inMenu: boolean;
+  isAdmin?: boolean;
 }
 
 export const HeaderNavStyled = styled.nav<HeaderNavStyledProps>`
@@ -58,4 +60,21 @@ export const HeaderNavStyled = styled.nav<HeaderNavStyledProps>`
       ${variantStyle}
     `;
   }}
+  ${({ isAdmin }) => {
+    if (isAdmin) {
+      return css`
+        @media (min-width: 1060px) and (max-width: 1360px) {
+          display: none;
+        }
+      `;
+    }
+  }}
+`;
+
+export const HeaderMenuDropdownStyled = styled(MenuDropdown)<{ $isAdmin?: boolean }>`
+  display: none;
+  @media (min-width: 1061px) and (max-width: 1360px) {
+    margin-left: 24px;
+    display: ${({ $isAdmin }) => $isAdmin ? 'block' : 'none'}
+  }
 `;
