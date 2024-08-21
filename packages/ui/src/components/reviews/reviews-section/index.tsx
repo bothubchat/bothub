@@ -32,8 +32,9 @@ export const Reviews: React.FC<ReviewsProps> = ({
   <ReviewsSectionWrapper>
     <ReviewsSectionTitle>{sectionTitle}</ReviewsSectionTitle>
     <ReviewsSection>
-      {reviews.map((review) => (
+      {reviews.map((review, idx) => (
         <Review
+          key={`review-${idx}`}
           src={review.src}
           alt={review.alt}
           reviewer={review.reviewer}
