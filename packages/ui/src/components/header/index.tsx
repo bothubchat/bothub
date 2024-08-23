@@ -54,7 +54,6 @@ export const Header: React.FC<HeaderProps> = ({
     <HeaderProvider 
       variant={variant}
       isMenuOpen={isMenuOpen}
-      $isAdmin={$isAdmin}
       setIsMenuOpen={setIsMenuOpen} 
     >
       <HeaderStyled 
