@@ -146,7 +146,6 @@ export const AdminDashboard: HeaderStory = {
   args: {
     ...Authorized.args,
     variant: 'dashboard',
-    $isAdmin: true,
     nav: (
       <HeaderNav>
         <HeaderNavLink icon={<ChatsIcon />} href="#">Чаты</HeaderNavLink>
