@@ -17,7 +17,6 @@ export type HeaderOpenEventHandler = (open: boolean) => unknown;
 export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang' | '$variant'> {
   id?: string;
   variant?: HeaderVariant;
-  $isAdmin?: boolean;
   logo?: React.ReactNode;
   nav?: React.ReactNode;
   lang?: React.ReactNode;
@@ -28,7 +27,7 @@ export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyl
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  id, variant = 'main', $isAdmin = false, logo, nav, lang, user, themeSwitcher, open, onOpen, ...props 
+  id, variant = 'main', logo, nav, lang, user, themeSwitcher, open, onOpen, ...props 
 }) => {
   const initialIsMenuOpen = open;
   const setInitialIsMenuOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>(
