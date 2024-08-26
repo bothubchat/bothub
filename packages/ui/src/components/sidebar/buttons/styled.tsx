@@ -24,7 +24,7 @@ export const SidebarCreateChatButton = styled(Button).attrs({
   white-space: nowrap;
 `;
 
-export const SidebarGroupAddTabButton = styled(Button).attrs({
+export const SidebarGroupCreateButton = styled(Button).attrs({
   startIcon: <Plus1Icon />,
   fullWidth: true
 })`
