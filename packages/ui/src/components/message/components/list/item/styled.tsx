@@ -32,7 +32,7 @@ export const MessageListItemStyled = styled(Typography).attrs({ component: 'li',
         }
 
         return css`
-          padding-left: 14px;
+          padding-left: 22px;
           &:before {
             display: inline-block;
             position: absolute;
@@ -42,6 +42,7 @@ export const MessageListItemStyled = styled(Typography).attrs({ component: 'li',
             padding-right: 8px;
             content: "•";
           }
+
         `;
       }
       case 'number': {
@@ -53,15 +54,17 @@ export const MessageListItemStyled = styled(Typography).attrs({ component: 'li',
         }
 
         return css`
-          padding-left: 22px;
           &:before {
             display: inline-block;
-            position: absolute;
+            position: relative;
             left: 0px;
             padding-right: 8px;
             color: ${numberColor};
             counter-increment: item;
             content: counter(item) ".";
+          }
+          & > ol {
+            padding-left: 22px;
           }
         `;
       }
