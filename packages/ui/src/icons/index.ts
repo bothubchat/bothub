@@ -155,3 +155,4 @@ export * from './pause-button';
 export * from './text-read';
 export * from './text-hide';
 export * from './upload';
+export * from './enter';

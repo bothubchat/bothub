@@ -154,6 +154,7 @@ import {
   TextReadIcon,
   TextHideIcon,
   UploadIcon,
+  EnterIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -318,6 +319,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TextReadIcon">{TextReadIcon}</IconItem>
         <IconItem name="TextHideIcon">{TextHideIcon}</IconItem>
         <IconItem name="UploadIcon">{UploadIcon}</IconItem>
+        <IconItem name="EnterIcon">{EnterIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
