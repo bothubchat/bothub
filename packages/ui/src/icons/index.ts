@@ -153,3 +153,5 @@ export * from './play-button';
 export * from './pause-button';
 export * from './text-read';
 export * from './text-hide';
+export * from './discord';
+export * from './discord-circle';
