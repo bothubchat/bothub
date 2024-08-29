@@ -155,6 +155,7 @@ import {
   TextHideIcon,
   UploadIcon,
   EnterIcon,
+  DiscordCircleIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -191,6 +192,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="MediumCircleIcon">{MediumCircleIcon}</IconItem>
         <IconItem name="BotCircleIcon">{BotCircleIcon}</IconItem>
         <IconItem name="HabrIcon">{HabrIcon}</IconItem>
+        <IconItem name="DiscordCircleIcon">{DiscordCircleIcon}</IconItem>
         <IconItem name="Habr2Icon">{Habr2Icon}</IconItem>
         <IconItem name="BothubAggIcon">{BothubAggIcon}</IconItem>
         <IconItem name="TgColoredIcon">{TgColoredIcon}</IconItem>

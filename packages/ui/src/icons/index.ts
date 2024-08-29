@@ -156,3 +156,5 @@ export * from './text-read';
 export * from './text-hide';
 export * from './upload';
 export * from './enter';
+export * from './discord';
+export * from './discord-circle';
