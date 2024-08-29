@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { StepStatus } from './types';
 
 export const StepperStyled = styled.div`
