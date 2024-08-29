@@ -3,6 +3,7 @@ import { Tooltip, TooltipConsumer, useTooltip } from '@/ui/components/tooltip';
 import {
   RangeFieldErrorText, 
   RangeFieldLabel, 
+  RangeFieldFormattedValue, 
   RangeFieldRange, 
   RangeFieldRangeThumb, 
   RangeFieldRangeTrack, 
@@ -23,6 +24,7 @@ export interface RangeFieldProps {
   fullWidth?: boolean;
   disabled?: boolean;
   skeleton?: boolean;
+  formatValue?: (value: RangeFieldValue) => React.ReactNode;
   onChange?: (value: RangeFieldValue) => unknown;
 }
 
@@ -37,6 +39,7 @@ export const RangeField: React.FC<RangeFieldProps> = ({
   disabled = false,
   skeleton = false,
   onChange, 
+  formatValue: preview,
   ...props 
 }) => {
   const {
@@ -69,6 +72,11 @@ export const RangeField: React.FC<RangeFieldProps> = ({
         >
           {label}
         </RangeFieldLabel>
+      )}
+      {preview && (
+        <RangeFieldFormattedValue>
+          {preview(value)}
+        </RangeFieldFormattedValue>
       )}
       {(typeof label !== 'string' && !skeleton) && label}
       {!skeleton && (

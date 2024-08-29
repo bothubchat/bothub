@@ -36,6 +36,22 @@ export const RangeFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })
   width: 100%;
 `;
 
+export const RangeFieldFormattedValue = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 400;
+  width: 100%;
+  color: ${({ theme }) => theme.colors.base.white};
+  margin-bottom: 4px;
+`;
+
 export const RangeFieldRange: React.FC<ReactSliderProps<RangeFieldValue>> = styled(ReactSlider)`
   display: flex;
   align-items: center;
