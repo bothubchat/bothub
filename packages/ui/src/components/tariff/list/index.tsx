@@ -16,7 +16,7 @@ import { Button } from '@/ui/components/button';
 import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
 import { ArrowNarrowRightIcon } from '@/ui/icons/arrow-narrow-right';
 import { TariffsVariant } from './types';
-
+import './style.css';
 export interface TariffsProps extends React.PropsWithChildren {
   variant?: TariffsVariant;
 }
@@ -50,11 +50,6 @@ export const Tariffs: React.FC<TariffsProps> = ({
 
   return (
     <TariffsStyled>
-      <TariffDesktopList
-        $variant={variant}
-      >
-        {children}
-      </TariffDesktopList>
       <TariffSlider>
         <TariffSliderContent>
           <TariffSlideList
@@ -98,6 +93,11 @@ export const Tariffs: React.FC<TariffsProps> = ({
           </Button>
         </TariffSliderActions>
       </TariffSlider>
+      <TariffDesktopList
+        $variant={variant}
+      >
+        {children}
+      </TariffDesktopList>
     </TariffsStyled>
   );
 };
