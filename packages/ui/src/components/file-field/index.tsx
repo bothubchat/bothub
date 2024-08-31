@@ -31,11 +31,12 @@ export interface FileFieldProps extends Omit<React.ComponentProps<'label'>, 'onC
   onChange?: FileFieldChangeEventHandler;
   icon?: React.ReactNode;
   multiple?: boolean;
+  accept?: string;
 }
 
 export const FileField: React.FC<FileFieldProps> = ({
   label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false, 
-  multiple = true, onChange,
+  multiple = true, accept, onChange,
   icon = <FileFieldIcon />,
   ...props
 }) => {
@@ -93,6 +94,7 @@ export const FileField: React.FC<FileFieldProps> = ({
         <FileFieldInput
           disabled={disabled}
           multiple={multiple}
+          accept={accept}
           onChange={handleInputChange}
         />
         {(placeholder && files.length === 0) && (
