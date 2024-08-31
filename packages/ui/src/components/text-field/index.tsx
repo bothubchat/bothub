@@ -127,7 +127,7 @@ export const TextField: React.FC<TextFieldProps> = ({
               {type === 'search' && <SearchCircleIcon />}
             </IconProvider>
           )}
-          {type === 'color' && (
+          {(type === 'color' && /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value ?? '#000')) && (
             <TextFieldColor>
               <TextFieldColorInput 
                 value={value ?? '#000'}
