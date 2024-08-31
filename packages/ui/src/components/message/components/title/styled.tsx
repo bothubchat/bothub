@@ -1,11 +1,11 @@
 import { styled, css } from 'styled-components';
 import { MessageTitleVariant } from './types';
-import { MessageColor, MessageVariant } from '../../types';
+import { MessageVariant } from '../../types';
 
 export interface MessageTitleStyledProps {
   $variant: MessageTitleVariant;
   $messageVariant: MessageVariant;
-  $messageColor: MessageColor;
+  $messageColor: string;
 }
 
 export const MessageTitleStyled = styled.span<MessageTitleStyledProps>`
@@ -74,6 +74,11 @@ export const MessageTitleStyled = styled.span<MessageTitleStyledProps>`
   &::selection {
     ${({ $messageColor }) => {
     switch ($messageColor) {
+      case 'default':
+        return css`
+          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+        `;
       case 'green':
         return css`
           background: ${({ theme }) => theme.default.colors.base.white};
@@ -86,8 +91,8 @@ export const MessageTitleStyled = styled.span<MessageTitleStyledProps>`
         `;
       default:
         return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+          background: ${({ theme }) => theme.default.colors.base.white};
+          color: ${$messageColor};
         `;
     }
   }}

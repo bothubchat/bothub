@@ -14,6 +14,13 @@ export const Basic: FileFieldStory = {
   }
 };
 
+export const DisableMultiple: FileFieldStory = {
+  args: {
+    ...Basic.args,
+    multiple: false
+  }
+};
+
 export const Error: FileFieldStory = {
   args: {
     ...Basic.args,

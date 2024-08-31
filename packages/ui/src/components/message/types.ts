@@ -1,6 +1,6 @@
 export type MessageVariant = 'user' | 'assistant';
 
-export type MessageColor = 'default' | 'green' | 'purple';
+export type MessageColor = string | 'default' | 'green' | 'purple';
 
 export type MessageCopyEventHandler = () => unknown;
 

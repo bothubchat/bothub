@@ -30,11 +30,12 @@ export interface FileFieldProps extends Omit<React.ComponentProps<'label'>, 'onC
   fullWidth?: boolean;
   onChange?: FileFieldChangeEventHandler;
   icon?: React.ReactNode;
+  multiple?: boolean;
 }
 
 export const FileField: React.FC<FileFieldProps> = ({
-  label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false,
-  onChange,
+  label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false, 
+  multiple = true, onChange,
   icon = <FileFieldIcon />,
   ...props
 }) => {
@@ -47,15 +48,19 @@ export const FileField: React.FC<FileFieldProps> = ({
   ) : useState<File[]>([]);
 
   const handleInputChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => {
-    setFiles([
-      ...(
-        new Map([
-          ...files, 
-          ...(event.currentTarget.files ?? [])
-        ].map((file) => [file.name, file]))
-      ).values()
-    ]);
-  }, [files, setFiles]);
+    if (multiple) {
+      setFiles([
+        ...(
+          new Map([
+            ...files, 
+            ...(event.currentTarget.files ?? [])
+          ].map((file) => [file.name, file]))
+        ).values()
+      ]);
+    } else {
+      setFiles([...(event.currentTarget.files ?? [])].slice(0, 1));
+    }
+  }, [files, setFiles, multiple]);
 
   const handleFileDelete = useCallback((file: File, event: React.MouseEvent) => {
     event.preventDefault();
@@ -87,6 +92,7 @@ export const FileField: React.FC<FileFieldProps> = ({
         {icon}
         <FileFieldInput
           disabled={disabled}
+          multiple={multiple}
           onChange={handleInputChange}
         />
         {(placeholder && files.length === 0) && (

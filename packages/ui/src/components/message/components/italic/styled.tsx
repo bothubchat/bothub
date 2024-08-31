@@ -20,6 +20,11 @@ export const MessageItalicStyled = styled(Typography).attrs({
   &::selection {
     ${({ $messageColor }) => {
     switch ($messageColor) {
+      case 'default':
+        return css`
+          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+        `;
       case 'green':
         return css`
           background: ${({ theme }) => theme.default.colors.base.white};
@@ -32,8 +37,8 @@ export const MessageItalicStyled = styled(Typography).attrs({
         `;
       default:
         return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+          background: ${({ theme }) => theme.default.colors.base.white};
+          color: ${$messageColor};
         `;
     }
   }}

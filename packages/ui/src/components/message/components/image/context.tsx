@@ -1,14 +1,11 @@
 import React, { useContext } from 'react';
 
 export interface MessageImageContextValue {
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
 }
 
-export const MessageImageContext = React.createContext<MessageImageContextValue>({
-  width: 0,
-  height: 0
-});
+export const MessageImageContext = React.createContext<MessageImageContextValue>({});
 
 export const MessageImageProvider: React.FC<MessageImageContextValue & React.PropsWithChildren> = ({
   children,

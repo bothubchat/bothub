@@ -18,6 +18,11 @@ export const MessageLinkStyled = styled(Typography).attrs({ component: 'a', vari
   &::selection {
     ${({ $messageColor }) => {
     switch ($messageColor) {
+      case 'default':
+        return css`
+          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+        `;
       case 'green':
         return css`
           background: ${({ theme }) => theme.default.colors.base.white};
@@ -30,8 +35,8 @@ export const MessageLinkStyled = styled(Typography).attrs({ component: 'a', vari
         `;
       default:
         return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+          background: ${({ theme }) => theme.default.colors.base.white};
+          color: ${$messageColor};
         `;
     }
   }}

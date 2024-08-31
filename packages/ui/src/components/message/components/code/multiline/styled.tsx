@@ -1,7 +1,7 @@
 import { css, styled } from 'styled-components';
 import HL from 'react-highlight';
 import { Typography } from '@/ui/components/typography';
-import { MessageColor, MessageVariant } from '@/ui/components/message';
+import { MessageVariant } from '@/ui/components/message';
 import { ScrollbarStyle } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 import { interopDefaultCJSImport } from '@/ui/utils';
@@ -18,7 +18,7 @@ export const MessageMultilineCodeStyled = styled.div`
 
 export interface MessageMultilineCodeHeadProps {
   $messageVariant: MessageVariant;
-  $messageColor: MessageColor;
+  $messageColor: string;
 }
 
 export const MessageMultilineCodeHead = styled.div<MessageMultilineCodeHeadProps>`
@@ -42,7 +42,7 @@ export const MessageMultilineCodeHead = styled.div<MessageMultilineCodeHeadProps
 
 export interface MessageMultilineCodeLanguageProps {
   $messageVariant: MessageVariant;
-  $messageColor: MessageColor;
+  $messageColor: string;
 }
 
 export const MessageMultilineCodeLanguage = styled(Typography).attrs({ variant: 'body-s-medium' })<MessageMultilineCodeLanguageProps>`
@@ -52,24 +52,28 @@ export const MessageMultilineCodeLanguage = styled(Typography).attrs({ variant: 
         return theme.colors.accent.primary;
       case 'assistant':
         switch ($messageColor) {
+          case 'default':
+            return theme.default.colors.base.white;
           case 'green':
             return theme.colors.gpt3;
           case 'purple':
             return theme.colors.gpt4;
           default:
-            return theme.default.colors.base.white;
+            return $messageColor;
         }
     }
   }};
   &::selection {
     background: ${({ theme, $messageColor }) => {
     switch ($messageColor) {
+      case 'default':
+        return theme.default.colors.base.white;
       case 'green':
         return theme.colors.gpt3;
       case 'purple':
         return theme.colors.gpt4;
       default:
-        return theme.default.colors.base.white;
+        return $messageColor;
     }
   }};
     color: ${({ theme, $messageColor }) => {
@@ -89,7 +93,7 @@ export const MessageMultilineCodeBody = styled.div`
 `;
 
 export interface MessageMultilineCodeContentProps {
-  $messageColor: MessageColor;
+  $messageColor: string;
 }
 
 export const MessageMultilineCodeContent = styled(Highlight)<MessageMultilineCodeContentProps>`
@@ -102,6 +106,11 @@ export const MessageMultilineCodeContent = styled(Highlight)<MessageMultilineCod
   *::selection {
     ${({ $messageColor }) => {
     switch ($messageColor) {
+      case 'default':
+        return css`
+          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)} !important;
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)} !important;
+        `;
       case 'green':
         return css`
           background: ${({ theme }) => theme.default.colors.base.white} !important;
@@ -114,8 +123,8 @@ export const MessageMultilineCodeContent = styled(Highlight)<MessageMultilineCod
         `;
       default:
         return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)} !important;
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)} !important;
+          background: ${({ theme }) => theme.default.colors.base.white} !important;
+          color: ${$messageColor} !important;
         `;
     }
   }}

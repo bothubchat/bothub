@@ -746,6 +746,13 @@ export const VoiceProcessing: MessageStory = {
   }
 };
 
+export const MarkdownImage: MessageStory = {
+  args: {
+    ...Assistant.args,
+    children: `![Image](${image1})`
+  }
+};
+
 export default {
   title: 'Components/Message/Item',
   component: Message,

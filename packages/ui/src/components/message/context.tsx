@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import {
-  MessageCodeCopyEventHandler, MessageColor, MessageCopyEventHandler, MessageVariant 
+  MessageCodeCopyEventHandler, MessageCopyEventHandler, MessageVariant 
 } from './types';
 
 export interface MessageContextValue {
   variant: MessageVariant;
-  color: MessageColor;
+  color: string;
   typing: boolean;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;

@@ -51,6 +51,9 @@ export const BadgeProgress: React.FC<BadgeProgressProps> = ({
     case 'white-blue':
       loaderColor = theme.colors.accent.primary;
       break;
+    default:
+      loaderColor = color;
+      break;
   }
 
   const {

@@ -1,10 +1,10 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { MessageVariant, MessageColor } from '@/ui/components/message';
+import { MessageVariant } from '@/ui/components/message';
 
 export interface MessageParagraphStyledProps {
   $variant: MessageVariant;
-  $color: MessageColor;
+  $color: string;
   $wrap: boolean;
   $disableMargin: boolean;
 }
@@ -37,6 +37,11 @@ export const MessageParagraphStyled = styled(Typography).attrs({ variant: 'body-
         `;
       case 'assistant':
         switch ($color) {
+          case 'default':
+            return css`
+              background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+              color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+            `;
           case 'green':
             return css`
               background: ${({ theme }) => theme.default.colors.base.white};
@@ -49,8 +54,8 @@ export const MessageParagraphStyled = styled(Typography).attrs({ variant: 'body-
             `;
           default:
             return css`
-              background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-              color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+              background: ${({ theme }) => theme.default.colors.base.white};
+              color: ${$color};
             `;
         }
     }

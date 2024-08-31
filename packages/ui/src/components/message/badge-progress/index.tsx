@@ -29,6 +29,9 @@ export const MessageBadgeProgress: React.FC<MessageBadgeProgressProps> = ({
     case 'purple':
       badgeColor = 'white-purple';
       break;
+    default:
+      badgeColor = color;
+      break;
   }
 
   return (

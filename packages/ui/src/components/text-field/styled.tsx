@@ -122,7 +122,7 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
 `;
 
 export const TextFieldInput = styled.input`
-  display: inline-flex;
+  display: ${({ type }) => (type === 'color' ? 'none' : 'inline-flex')};
   width: 100%;
   background: none;
   border: none;
@@ -167,6 +167,28 @@ export const TextFieldInput = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
+`;
+
+export const TextFieldColor = styled.label`
+  display: inline-flex;
+  cursor: pointer;
+`;
+
+export const TextFieldColorInput = styled.input.attrs({ type: 'color' })`
+  display: none;
+`;
+
+export interface TextFieldColorPreviewProps {
+  $color: string;
+}
+
+export const TextFieldColorPreview = styled.span<TextFieldColorPreviewProps>`
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  background: ${({ $color }) => $color};
+  border-radius: 4px;
 `;
 
 export const TextFieldClearButton = styled(Button).attrs({ variant: 'text', iconSize: 12, children: <CloseIcon /> })``;

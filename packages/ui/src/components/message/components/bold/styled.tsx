@@ -1,9 +1,8 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { MessageColor } from '../../types';
 
 export interface MessageBoldStyledProps {
-  $messageColor: MessageColor;
+  $messageColor: string;
 }
 
 export const MessageBoldStyled = styled(Typography).attrs({ component: 'b', variant: 'body-m-regular' })<MessageBoldStyledProps>`
@@ -18,6 +17,11 @@ export const MessageBoldStyled = styled(Typography).attrs({ component: 'b', vari
   &::selection {
     ${({ $messageColor }) => {
     switch ($messageColor) {
+      case 'default':
+        return css`
+          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+        `;
       case 'green':
         return css`
           background: ${({ theme }) => theme.default.colors.base.white};
@@ -30,8 +34,8 @@ export const MessageBoldStyled = styled(Typography).attrs({ component: 'b', vari
         `;
       default:
         return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+          background: ${({ theme }) => theme.default.colors.base.white};
+          color: ${$messageColor};
         `;
     }
   }}

@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { PlayButtonIcon } from '@/ui/icons/play-button';
 import { PauseButtonIcon } from '@/ui/icons/pause-button';
 import { Button } from '@/ui/components/button';
@@ -57,11 +57,37 @@ export const MessageVoiceShowTextIcon = styled(TextReadIcon)``;
 
 export const MessageVoiceHideTextIcon = styled(TextHideIcon)``;
 
-export const MessageVoiceText = styled(Typography).attrs({ variant: 'body-m-regular' })`
+export interface MessageVoiceTextProps {
+  $messageColor: string;
+}
+
+export const MessageVoiceText = styled(Typography).attrs({ variant: 'body-m-regular' })<MessageVoiceTextProps>`
   width: 100%;
   color: ${({ theme }) => theme.default.colors.base.white};
   &::selection {
-    background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-    color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+    ${({ $messageColor }) => {
+    switch ($messageColor) {
+      case 'default':
+        return css`
+          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+        `;
+      case 'green':
+        return css`
+          background: ${({ theme }) => theme.default.colors.base.white};
+          color: ${({ theme }) => theme.colors.gpt3};
+        `;
+      case 'purple':
+        return css`
+          background: ${({ theme }) => theme.default.colors.base.white};
+          color: ${({ theme }) => theme.colors.gpt4};
+        `;
+      default:
+        return css`
+          background: ${({ theme }) => theme.default.colors.base.white};
+          color: ${$messageColor};
+        `;
+    }
+  }}
   }
 `;

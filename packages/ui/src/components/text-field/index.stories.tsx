@@ -90,6 +90,13 @@ export const Skeleton: TextFieldStory = {
   }
 };
 
+export const Color: TextFieldStory = {
+  args: {
+    ...Basic.args,
+    type: 'color'
+  }
+};
+
 export default {
   title: 'UI Components/Fields/Text',
   component: TextField,
