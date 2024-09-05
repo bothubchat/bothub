@@ -159,7 +159,11 @@ import {
   TextHideIcon,
   UploadIcon,
   EnterIcon,
-  DiscordCircleIcon
+  DiscordCircleIcon,
+  BlackForestLabsIcon,
+  FluxIcon,
+  StableDiffusionIcon,
+  StabilityAIIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -330,6 +334,10 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TextHideIcon">{TextHideIcon}</IconItem>
         <IconItem name="UploadIcon">{UploadIcon}</IconItem>
         <IconItem name="EnterIcon">{EnterIcon}</IconItem>
+        <IconItem name="BlackForestLabsIcon">{BlackForestLabsIcon}</IconItem>
+        <IconItem name="FluxIcon">{FluxIcon}</IconItem>
+        <IconItem name="StableDiffusionIcon">{StableDiffusionIcon}</IconItem>
+        <IconItem name="StabilityAIIcon">{StabilityAIIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
