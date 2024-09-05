@@ -102,6 +102,10 @@ import {
   Ratio4x7Icon,
   Ratio5x4Icon,
   Ratio7x4Icon,
+  Ratio16x9Icon,
+  Ratio9x16Icon,
+  Ratio21x9Icon,
+  Ratio9x21Icon,
   RefferalMinIcon,
   SearchDataIcon,
   SquareIcon,
@@ -269,6 +273,10 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="Ratio4x7Icon">{Ratio4x7Icon}</IconItem>
         <IconItem name="Ratio5x4Icon">{Ratio5x4Icon}</IconItem>
         <IconItem name="Ratio7x4Icon">{Ratio7x4Icon}</IconItem>
+        <IconItem name="Ratio16x9Icon">{Ratio16x9Icon}</IconItem>
+        <IconItem name="Ratio9x16Icon">{Ratio9x16Icon}</IconItem>
+        <IconItem name="Ratio21x9Icon">{Ratio21x9Icon}</IconItem>
+        <IconItem name="Ratio9x21Icon">{Ratio9x21Icon}</IconItem>
         <IconItem name="RefferalMinIcon">{RefferalMinIcon}</IconItem>
         <IconItem name="SearchDataIcon">{SearchDataIcon}</IconItem>
         <IconItem name="SquareIcon">{SquareIcon}</IconItem>
