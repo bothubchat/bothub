@@ -1,11 +1,10 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageListVariant } from '../types';
-import { MessageColor } from '../../../types';
 
 export interface MessageListItemStyledProps {
   $variant: MessageListVariant;
-  $messageColor: MessageColor;
+  $messageColor: string;
 }
 
 export const MessageListItemStyled = styled(Typography).attrs({ component: 'li', variant: 'body-m-regular' })<MessageListItemStyledProps>`
@@ -73,6 +72,11 @@ export const MessageListItemStyled = styled(Typography).attrs({ component: 'li',
   &::selection {
     ${({ $messageColor }) => {
     switch ($messageColor) {
+      case 'default':
+        return css`
+          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+        `;
       case 'green':
         return css`
           background: ${({ theme }) => theme.default.colors.base.white};
@@ -85,8 +89,8 @@ export const MessageListItemStyled = styled(Typography).attrs({ component: 'li',
         `;
       default:
         return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+          background: ${({ theme }) => theme.default.colors.base.white};
+          color: ${$messageColor};
         `;
     }
   }}

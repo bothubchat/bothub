@@ -2,6 +2,7 @@ import {
   MessageBold,
   MessageComponentsProps, 
   MessageImage, 
+  MessageImageProps, 
   MessageInlineCode, 
   MessageItalic, 
   MessageLink, 
@@ -181,18 +182,26 @@ export function markdownComponents(
       </MessageLink>
     ),
     img: ({
-      src, width, height, alt 
+      src, alt 
     }) => {
-      if (!src || !width || !height) {
+      if (!src) {
         return null;
       }
+
+      const imageProps: MessageImageProps = {
+        ...components.image,
+        src,
+        alt,
+        disableSkeleton: true,
+        buttons: null
+      };
   
       return (
         <MessageImage
-          src={src}
-          width={Number.parseInt(width.toString())}
-          height={Number.parseInt(height.toString())}
-          alt={alt}
+          {...imageProps}
+          {...((components.image && components.image.buttons) && {
+            buttons: components.image.buttons(imageProps)
+          })}
         />
       );
     }

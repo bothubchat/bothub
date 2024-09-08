@@ -4,7 +4,7 @@ import { getTypographyStyles } from '@/ui/components/typography/styled';
 const defaultSize = 56;
 
 export const Wrapper = styled.div`
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   align-items: center;
   gap: 10px;
@@ -16,10 +16,10 @@ export const Checkbox = styled.input.attrs((props) => ({
   type: 'checkbox',
   ...props
 }))`
+  display: none;
   height: 0;
   width: 0;
   visibility: hidden;
-  
   &:checked + label {
     background-color: ${(props) => props.theme.colors.accent.primary};
     &:after {

@@ -13,6 +13,13 @@ export const Basic: ButtonStory = {
   }
 };
 
+export const PrimaryOutline: ButtonStory = {
+  args: {
+    variant: 'primary-outline',
+    children: 'Click Me'
+  }
+};
+
 export const StartIcon: ButtonStory = {
   args: {
     startIcon: <LanguageIcon />,

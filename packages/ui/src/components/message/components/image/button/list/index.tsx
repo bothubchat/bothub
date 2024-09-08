@@ -14,7 +14,7 @@ export const MessageImageButtons: React.FC<MessageImageButtonsProps> = ({
       {...props}
     >
       <MessageImageButtonsContent
-        $column={width < 200}  
+        $column={width ? width < 200 : true}  
       >
         {children}
       </MessageImageButtonsContent>

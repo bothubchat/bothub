@@ -6,7 +6,10 @@ import {
   TextFieldLabel, 
   TextFieldStyled, 
   TextFieldSkeleton,
-  TextFieldClearButton
+  TextFieldClearButton,
+  TextFieldColorPreview,
+  TextFieldColor,
+  TextFieldColorInput
 } from './styled';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
@@ -124,10 +127,24 @@ export const TextField: React.FC<TextFieldProps> = ({
               {type === 'search' && <SearchCircleIcon />}
             </IconProvider>
           )}
+          {(type === 'color' && /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value ?? '#000')) && (
+            <TextFieldColor>
+              <TextFieldColorInput 
+                value={value ?? '#000'}
+                onChange={handleChange}
+              />
+              <TextFieldColorPreview
+                $color={value ?? '#000'}
+              />
+            </TextFieldColor>
+          )}
           <TextFieldInput
             ref={inputRef}
             value={value}
-            type={type}
+            {...(type === 'color' && {
+              type: 'text'
+            })}
+            {...(type !== 'color' && { type })}
             name={name}
             readOnly={readonly}
             defaultValue={defaultValue}

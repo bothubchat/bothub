@@ -10,7 +10,7 @@ import {
   MessageTop
 } from './styled';
 import {
-  MessageCodeCopyEventHandler, MessageColor, MessageCopyEventHandler, MessageVariant 
+  MessageCodeCopyEventHandler, MessageCopyEventHandler, MessageVariant 
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
@@ -22,7 +22,7 @@ import { ScrollbarShadow } from '@/ui/components/scrollbar';
 export interface MessageProps {
   className?: string;
   variant?: MessageVariant;
-  color?: MessageColor;
+  color?: string;
   name?: string;
   tags?: React.ReactNode;
   avatar?: React.ReactNode;
@@ -63,6 +63,9 @@ export const Message: React.FC<MessageProps> = ({
   switch (variant) {
     case 'user':
       switch (color) {
+        case 'default':
+          hexColor = theme.colors.accent.primary;
+          break;
         case 'green':
           hexColor = theme.colors.gpt3;
           break;
@@ -70,12 +73,15 @@ export const Message: React.FC<MessageProps> = ({
           hexColor = theme.colors.gpt4;
           break;
         default:
-          hexColor = theme.colors.accent.primary;
+          hexColor = color;
           break;
       }
       break;
     case 'assistant':
       switch (color) {
+        case 'default':
+          hexColor = theme.colors.grayScale.gray2;
+          break;
         case 'green':
           hexColor = theme.colors.gpt3;
           break;
@@ -83,7 +89,7 @@ export const Message: React.FC<MessageProps> = ({
           hexColor = theme.colors.gpt4;
           break;
         default:
-          hexColor = theme.colors.grayScale.gray2;
+          hexColor = color;
           break;
       }
       break;
@@ -123,7 +129,6 @@ export const Message: React.FC<MessageProps> = ({
           {avatar}
           <MessageBlock 
             $variant={variant}
-            $color={color}
             $hexColor={hexColor}
             $skeleton={skeleton}
           >

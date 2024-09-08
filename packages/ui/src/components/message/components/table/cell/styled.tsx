@@ -1,6 +1,5 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { MessageColor } from '@/ui/components/message/types';
 
 export const MessageTableCellStyled = styled.td`
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
@@ -14,7 +13,7 @@ export const MessageTableHeadCell = styled(MessageTableCellStyled).attrs({ as: '
 
 export interface MessageTableCellTextProps {
   $head: boolean;
-  $messageColor: MessageColor;
+  $messageColor: string;
 }
 
 export const MessageTableCellText = styled(Typography).attrs({ variant: 'body-s-medium' })<MessageTableCellTextProps>`
@@ -24,6 +23,11 @@ export const MessageTableCellText = styled(Typography).attrs({ variant: 'body-s-
   &::selection {
     ${({ $messageColor }) => {
     switch ($messageColor) {
+      case 'default':
+        return css`
+          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+        `;
       case 'green':
         return css`
           background: ${({ theme }) => (theme.mode === 'light' ? theme.colors.gpt3 : theme.default.colors.base.white)};
@@ -36,8 +40,8 @@ export const MessageTableCellText = styled(Typography).attrs({ variant: 'body-s-
         `;
       default:
         return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+          background: ${({ theme }) => (theme.mode === 'light' ? $messageColor : theme.default.colors.base.white)};
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : $messageColor)};
         `;
     }
   }}

@@ -87,6 +87,7 @@ import {
   Gpt35Icon,
   Gpt4Icon,
   ImagineIcon,
+  Imagine2Icon,
   LoaderIcon,
   LoaderCircularIcon,
   LoaderCircularGradientIcon,
@@ -153,6 +154,9 @@ import {
   TextReadIcon,
   TextHideIcon,
   BestChatBots,
+  UploadIcon,
+  EnterIcon,
+  DiscordCircleIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -189,6 +193,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="MediumCircleIcon">{MediumCircleIcon}</IconItem>
         <IconItem name="BotCircleIcon">{BotCircleIcon}</IconItem>
         <IconItem name="HabrIcon">{HabrIcon}</IconItem>
+        <IconItem name="DiscordCircleIcon">{DiscordCircleIcon}</IconItem>
         <IconItem name="Habr2Icon">{Habr2Icon}</IconItem>
         <IconItem name="BothubAggIcon">{BothubAggIcon}</IconItem>
         <IconItem name="TgColoredIcon">{TgColoredIcon}</IconItem>
@@ -250,6 +255,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="Gpt35Icon">{Gpt35Icon}</IconItem>
         <IconItem name="Gpt4Icon">{Gpt4Icon}</IconItem>
         <IconItem name="ImagineIcon">{ImagineIcon}</IconItem>
+        <IconItem name="Imagine2Icon">{Imagine2Icon}</IconItem>
         <IconItem name="LoaderIcon">{LoaderIcon}</IconItem>
         <IconItem name="LoaderCircularIcon">{LoaderCircularIcon}</IconItem>
         <IconItem name="LoaderCircularGradientIcon">
@@ -324,6 +330,8 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TextReadIcon">{TextReadIcon}</IconItem>
         <IconItem name="TextHideIcon">{TextHideIcon}</IconItem>
         <IconItem name="BestChatBots">{BestChatBots}</IconItem>
+        <IconItem name="UploadIcon">{UploadIcon}</IconItem>
+        <IconItem name="EnterIcon">{EnterIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

@@ -7,8 +7,12 @@ export type SwitchFieldMeta = Meta<typeof Switch>;
 export type SwitchFieldStory = StoryObj<typeof Switch>;
 
 export const Basic: SwitchFieldStory = {
+  args: {}
+};
+
+export const Label: SwitchFieldStory = {
   args: {
-    label: 'toggle on/off',
+    label: 'Label',
   }
 };
 

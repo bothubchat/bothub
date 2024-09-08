@@ -142,6 +142,23 @@ export const Dashboard: HeaderStory = {
   }
 };
 
+export const AdminDashboard: HeaderStory = {
+  args: {
+    ...Authorized.args,
+    variant: 'dashboard',
+    nav: (
+      <HeaderNav>
+        <HeaderNavLink icon={<ChatsIcon />} href="#">Чаты</HeaderNavLink>
+        <HeaderNavLink icon={<BookmarksBigIcon />} href="#">Закладки</HeaderNavLink>
+        <HeaderNavLink icon={<PresetsBigIcon />} href="#">Пресеты</HeaderNavLink>
+        <HeaderNavLink icon={<ReferalIcon />} href="#">Партнерская программа</HeaderNavLink>
+        <HeaderNavLink icon={<TariffIcon />} href="#">Пакеты</HeaderNavLink>
+        <HeaderNavLink icon={<CoderIcon />} href="#">Для разработчиков</HeaderNavLink>
+      </HeaderNav>
+    ),
+  }
+};
+
 export default {
   title: 'Components/Header',
   component: Header,

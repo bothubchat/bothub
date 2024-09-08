@@ -7,17 +7,18 @@ import { useMessage } from '@/ui/components/message/context';
 
 export interface MessageImageProps extends Omit<ImageProps, 'ref'> {
   src: string;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   clickable?: boolean;
   progress?: boolean;
   fetchImage?: boolean;
+  disableSkeleton?: boolean;
   buttons?: React.ReactNode;
 }
 
 export const MessageImage: React.FC<MessageImageProps> = ({
   className, src, width, height, buttons, 
-  clickable = false, progress = false, fetchImage = false, 
+  clickable = false, progress = false, fetchImage = false, disableSkeleton = false,
   ...props
 }) => {
   const theme = useTheme();
@@ -44,10 +45,10 @@ export const MessageImage: React.FC<MessageImageProps> = ({
       <MessageImageStyled
         className={className}
       >
-        {isLoading && (
+        {(isLoading && !disableSkeleton) && (
           <MessageImageSkeleton
-            $width={width}
-            $height={height}
+            $width={width ?? 300}
+            $height={height ?? 300}
             opacity={[
               theme.mode === 'light' ? 0.1 : 0.15,
               theme.mode === 'light' ? 0.225 : 0.35
@@ -62,7 +63,7 @@ export const MessageImage: React.FC<MessageImageProps> = ({
         <MessageImageNative
           $clickable={clickable}
           $progress={progress}
-          $loading={isLoading}
+          $loading={isLoading && !disableSkeleton}
           {...props}
           {...((fetchImage && imageUrl) && {
             src: imageUrl

@@ -7,7 +7,7 @@ import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
 import { ArrowNarrowRightIcon } from '@/ui/icons/arrow-narrow-right';
 import { ArrowNarrowUpIcon } from '@/ui/icons/arrow-narrow-up';
 import { EditIcon } from '@/ui/icons/edit';
-import { MessageColor, MessageVariant } from './types';
+import { MessageVariant } from './types';
 import { adaptive } from '@/ui/adaptive';
 import { Badge } from '@/ui/components/badge';
 import { Scrollbar } from '@/ui/components/scrollbar';
@@ -99,7 +99,7 @@ export const MessageSender = styled.div`
 `;
 
 export interface MessageNameProps {
-  $color: MessageColor;
+  $color: string;
 }
 
 export const MessageName = styled(Typography).attrs({ variant: 'body-m-regular' })<MessageNameProps>`
@@ -127,7 +127,6 @@ export const MessageAvatar = styled(Avatar)`
 
 export interface MessageBlockProps {
   $variant: MessageVariant;
-  $color: MessageColor;
   $hexColor: string;
   $skeleton: boolean;
 }

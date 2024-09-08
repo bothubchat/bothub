@@ -32,3 +32,5 @@ export const Loader: React.FC<LoaderProps> = ({
     </LoaderStyled>
   );
 };
+
+export * from './three-dots-loader';

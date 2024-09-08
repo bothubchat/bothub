@@ -1,10 +1,10 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { MessageColor, MessageVariant } from '@/ui/components/message';
+import { MessageVariant } from '@/ui/components/message';
 
 export interface MessageInlineCodeStyledProps {
   $messageVariant: MessageVariant;
-  $messageColor: MessageColor;
+  $messageColor: string;
 }
 
 export const MessageInlineCodeStyled = styled(Typography).attrs({ variant: 'body-m-regular', component: 'code' })<MessageInlineCodeStyledProps>`
@@ -32,6 +32,11 @@ export const MessageInlineCodeStyled = styled(Typography).attrs({ variant: 'body
   &::selection {
     ${({ $messageColor }) => {
     switch ($messageColor) {
+      case 'default':
+        return css`
+          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+        `;
       case 'green':
         return css`
           background: ${({ theme }) => theme.default.colors.base.white};
@@ -44,8 +49,8 @@ export const MessageInlineCodeStyled = styled(Typography).attrs({ variant: 'body
         `;
       default:
         return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
+          background: ${({ theme }) => theme.default.colors.base.white};
+          color: ${$messageColor};
         `;
     }
   }}

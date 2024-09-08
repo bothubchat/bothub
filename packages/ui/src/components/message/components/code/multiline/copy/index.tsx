@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { MessageMultilineCodeCopyButtonStyled } from './styled';
 import { useMessage } from '@/ui/components/message/context';
-import { MessageColor, MessageVariant } from '@/ui/components/message/types';
+import { MessageVariant } from '@/ui/components/message/types';
 import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { CopyIcon } from '@/ui/icons/copy';
 
 export interface MessageMultilineCodeCopyButtonProps {
   code: string;
   messageVariant: MessageVariant;
-  messageColor: MessageColor;
+  messageColor: string;
 }
 
 export const MessageMultilineCodeCopyButton: React.FC<MessageMultilineCodeCopyButtonProps> = ({
