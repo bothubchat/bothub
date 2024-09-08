@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Badge } from '@/ui/components/badge';
 import { Radio } from '@/ui/components/radio';
@@ -25,23 +25,20 @@ export const TariffCardStyled = styled.div<TariffCardProps>`
   & > input:[type="radio"]:checked ~ & {
     outline: 1px solid ${({ theme }) => theme.default.colors.accent.primary};
   }
-  ${({ selected, theme }) =>
-    selected &&
-    theme.mode === 'light' &&
-    css`
+  ${({ selected, theme }) => selected
+    && theme.mode === 'light'
+    && css`
       outline: 1px solid ${theme.default.colors.accent.primary};
       background-color: ${theme.colors.grayScale.gray3};
     `}
-  ${({ selected, theme }) =>
-    selected &&
-    theme.mode === 'dark' &&
-    css`
+  ${({ selected, theme }) => selected
+    && theme.mode === 'dark'
+    && css`
       outline: 1px solid ${theme.default.colors.accent.primary};
       background-color: ${theme.colors.grayScale.gray3};
     `}
-  ${({ theme }) =>
-    theme.mode === 'dark' &&
-    css`
+  ${({ theme }) => theme.mode === 'dark'
+    && css`
       &:after {
         display: block;
         content: '';
