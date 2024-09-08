@@ -21,7 +21,7 @@ import { AttachFileIcon } from '@/ui/icons/attach-file';
 
 export type FileFieldChangeEventHandler = (files: File[]) => unknown;
 
-export interface FileFieldProps extends Omit<React.ComponentProps<'label'>, 'onChange'> {
+export interface FileFieldProps extends Omit<React.ComponentProps<'div'>, 'onChange'> {
   label?: React.ReactNode;
   placeholder?: string;
   error?: string;

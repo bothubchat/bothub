@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { FileField } from '.';
+import { FileField, FileFieldLabel } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { UploadIcon } from '@/ui/icons';
+import { Tooltip } from '@/ui/components/tooltip';
+import { Button } from '@/ui/components/button';
 
 export type FileFieldMeta = Meta<typeof FileField>;
 
@@ -19,6 +21,20 @@ export const DisableMultiple: FileFieldStory = {
     ...Basic.args,
     multiple: false
   }
+};
+
+export const Help: FileFieldStory = {
+  args: {
+    ...Basic.args,
+    label: (
+      <FileFieldLabel>
+        Label
+        <Tooltip label="Help">
+          <Button variant="help" />
+        </Tooltip>
+      </FileFieldLabel>
+    ),
+  },
 };
 
 export const Error: FileFieldStory = {

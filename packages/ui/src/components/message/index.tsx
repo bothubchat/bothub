@@ -59,6 +59,13 @@ export const Message: React.FC<MessageProps> = ({
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement>(null);
 
+  if (!(color
+    && typeof CSS === 'object' 
+    && typeof CSS.supports === 'function'
+    && CSS.supports('background', color ?? '#000'))) {
+    color = 'default';
+  }
+
   let hexColor: string;
   switch (variant) {
     case 'user':

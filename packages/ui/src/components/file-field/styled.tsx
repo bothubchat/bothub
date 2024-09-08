@@ -11,7 +11,7 @@ export interface FileFieldStyledProps {
   $disabled: boolean;
 }
 
-export const FileFieldStyled = styled.label<FileFieldStyledProps>`
+export const FileFieldStyled = styled.div<FileFieldStyledProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -41,7 +41,7 @@ export interface FileFieldBlockProps {
   $disabled: boolean;
 }
 
-export const FileFieldBlock = styled.div<FileFieldBlockProps>`
+export const FileFieldBlock = styled.label<FileFieldBlockProps>`
   display: flex;
   align-items: center;
   border: 1px solid ${({ theme, $error, $disabled }) => {
