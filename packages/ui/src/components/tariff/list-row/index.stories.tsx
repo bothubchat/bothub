@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
-import { ListRow } from '.';
+import { TariffListRow } from '.';
 
-export type ListRowMeta = Meta<typeof ListRow>;
+export type TariffListRowMeta = Meta<typeof TariffListRow>;
 
-export type ListRowStory = StoryObj<typeof ListRow>;
+export type TariffListRowStory = StoryObj<typeof TariffListRow>;
 
-export const Basic: ListRowStory = {
+export const Basic: TariffListRowStory = {
   args: {
     cardList: [
       {
@@ -63,6 +63,6 @@ export const Basic: ListRowStory = {
 
 export default {
   title: 'Components/Tariff/ListRow',
-  component: ListRow,
+  component: TariffListRow,
   decorators: [StoryDecorator()],
-} as ListRowMeta;
+} as TariffListRowMeta;

@@ -5,21 +5,19 @@ import { TariffListStyledRow } from './styled';
 import { TariffCardColor } from '../row/types';
 
 interface ListRowProps {
-  cardList: Card[];
+  cardList: {
+    name: string;
+    giveCapsText: string;
+    giveCaps: string;
+    price: string;
+    currency: string;
+    color: TariffCardColor;
+    description: string;
+  }[];
   onChange?: (value: string) => void;
 }
 
-export interface Card {
-  name: string;
-  giveCapsText: string;
-  giveCaps: string;
-  price: string;
-  currency: string;
-  color: TariffCardColor;
-  description: string;
-}
-
-export const ListRow: React.FC<ListRowProps> = ({ cardList, onChange }) => {
+export const TariffListRow: React.FC<ListRowProps> = ({ cardList, onChange }) => {
   const ref = React.useRef<HTMLFormElement>(null);
   const [selected, setSelected] = React.useState<string>('Basic');
   const handleChange = () => {
@@ -35,7 +33,7 @@ export const ListRow: React.FC<ListRowProps> = ({ cardList, onChange }) => {
       ref={ref}
       onChange={handleChange}
     >
-      {cardList.map((card: Card, index) => (
+      {cardList.map((card, index) => (
         <TariffCardRow
           selected={selected === card.name}
           key={index}
