@@ -84,13 +84,10 @@ export const TariffCardStyledContent = styled.div`
 
 export const TarrifCardStyledLeft = styled.div`
   position: relative;
-  min-width: 241px;
+  min-width: 244px;
   display: flex;
   align-items: center;
   gap: 14px;
-  @media (max-width: 1060px) {
-    min-width: 200px;
-  }
 `;
 
 export const TariffCardStyledName: React.FC<{
@@ -99,31 +96,31 @@ export const TariffCardStyledName: React.FC<{
 }> = styled(Typography).attrs({
   variant: 'body-xl-semibold',
   component: 'h3',
-})<{ $color: TariffCardColor }>`
+}) <{ $color: TariffCardColor }>`
   background-clip: text;
   -webkit-background-clip: text;
   width: fit-content;
   -webkit-text-fill-color: transparent;
   background-image: ${({ theme, $color }) => {
-    switch ($color) {
-      case 'blue':
-        return theme.colors.accent.primary;
-      case 'blue-lilac':
-        return theme.colors.premiumGradient;
-      default:
-        return theme.colors.base.white;
-    }
-  }};
+      switch ($color) {
+        case 'blue':
+          return theme.colors.accent.primary;
+        case 'blue-lilac':
+          return theme.colors.premiumGradient;
+        default:
+          return theme.colors.base.white;
+      }
+    }};
   background-color: ${({ theme, $color }) => {
-    switch ($color) {
-      case 'blue':
-        return theme.colors.accent.primary;
-      case 'blue-lilac':
-        return theme.colors.premiumGradient;
-      default:
-        return theme.colors.base.white;
-    }
-  }};
+      switch ($color) {
+        case 'blue':
+          return theme.colors.accent.primary;
+        case 'blue-lilac':
+          return theme.colors.premiumGradient;
+        default:
+          return theme.colors.base.white;
+      }
+    }};
 `;
 
 export const TariffCardStyledMiddle = styled.div`
