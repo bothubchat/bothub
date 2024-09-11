@@ -33,6 +33,13 @@ export const Elite: BadgeStory = {
   }
 };
 
+export const Deluxe: BadgeStory = {
+  args: {
+    ...Free.args,
+    tariff: 'DELUXE'
+  }
+};
+
 export const Skeleton: BadgeStory = {
   args: {
     ...Free.args,

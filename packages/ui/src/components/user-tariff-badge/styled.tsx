@@ -35,6 +35,7 @@ export const UserTariffBadgeStyled = styled.div<UserTariffBadgeStyledProps>`
         return '#00000000';
       case 'BASIC':
         return theme.colors.accent.primary;
+      case 'DELUXE':
       case 'ELITE':
       case 'PREMIUM':
         return theme.colors.premiumGradient;
