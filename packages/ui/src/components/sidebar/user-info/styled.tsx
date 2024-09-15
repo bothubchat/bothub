@@ -126,6 +126,10 @@ export const SidebarUserInfoPremiumTariff = styled(SidebarUserInfoTariff).attrs(
   background: ${({ theme }) => theme.colors.premiumGradient};
 `;
 
+export const SidebarUserInfoDeluxeTariff = styled(SidebarUserInfoTariff).attrs({ children: 'Deluxe' })`
+  background: ${({ theme }) => theme.colors.premiumGradient};
+`;
+
 export const SidebarUserInfoEliteTariff = styled(SidebarUserInfoPremiumTariff).attrs({ children: 'Elite' })``;
 
 export const SidebarUserInfoUpdateTariffButton = styled(Button).attrs({ 
