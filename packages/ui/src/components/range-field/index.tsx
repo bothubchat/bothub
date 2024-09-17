@@ -98,16 +98,18 @@ export const RangeField: React.FC<RangeFieldProps> = ({
                 step={step}
                 value={value}
                 disabled={disabled}
-                renderTrack={(props, state) => (
+                renderTrack={({ key, ...props }, state) => (
                   <RangeFieldRangeTrack 
                     {...props} 
+                    key={key}
                     $index={state.index}
                     $disabled={disabled}
                   />
                 )}
-                renderThumb={(props) => (
+                renderThumb={({ key, ...props }) => (
                   <RangeFieldRangeThumb 
                     {...props}
+                    key={key}
                     $disabled={disabled}
                     onMouseEnter={handleTooltipMouseEnter}
                     onMouseLeave={handleTooltipMouseLeave}

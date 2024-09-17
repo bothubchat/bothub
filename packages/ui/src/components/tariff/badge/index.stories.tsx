@@ -48,7 +48,7 @@ export const Skeleton: BadgeStory = {
 };
 
 export default {
-  title: 'Components/UserTariffBadge',
+  title: 'Components/Tariff/Badge',
   component: UserTariffBadge,
   decorators: [StoryDecorator()],
   argTypes: {

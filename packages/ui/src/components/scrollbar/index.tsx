@@ -40,6 +40,8 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
   const [sticky, setSticky] = useState<boolean>(defaultStickyBottom);
   const [previousScrollTop, setPreviousScrollTop] = useState<number>(0);
 
+  const scrollShadowsSize = scrollShadows?.size ?? 60;
+
   const handleScroll = useCallback(() => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
 
@@ -52,10 +54,19 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
       scrollLeft, scrollWidth, clientWidth
     } = scrollbarEl;
 
-    setIsLeft(scrollLeft !== 0);
-    setIsRight(Math.round(scrollLeft) + 1 < scrollWidth - clientWidth);
-    setIsTop(scrollTop !== 0);
-    setIsBottom(Math.round(scrollTop) + 1 < scrollHeight - clientHeight);
+    const isBiggerThanContentHeight = scrollShadowsSize > clientHeight;
+    const isBiggerThanContentWidth = scrollShadowsSize > clientWidth;
+
+    setIsLeft(!isBiggerThanContentWidth && scrollLeft !== 0);
+    setIsRight(
+      !isBiggerThanContentWidth
+      && (Math.round(scrollLeft) + 1 < scrollWidth - clientWidth)
+    );
+    setIsTop(!isBiggerThanContentHeight && scrollTop !== 0);
+    setIsBottom(
+      !isBiggerThanContentHeight
+      && (Math.round(scrollTop) + 1 < scrollHeight - clientHeight)
+    );
 
     const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
     setPreviousScrollTop(scrollbarEl.scrollTop);
@@ -73,7 +84,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
     if (disabled) {
       scrollbarEl.scrollTo(0, 0);
     }
-  }, [scrollbarRef, disabled, previousScrollTop, withStickyBottom]);
+  }, [scrollbarRef.current, disabled, previousScrollTop, withStickyBottom, scrollShadowsSize]);
 
   const setScroll = useCallback<SetScrollFunction>((options) => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
@@ -108,7 +119,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
     }
 
     handleScroll();
-    const slowScrollTimeout: number = 300;
+    const slowScrollTimeout: number = 500;
     let slowScrollListener = window.setTimeout(() => {
       handleScroll();
     }, slowScrollTimeout);
