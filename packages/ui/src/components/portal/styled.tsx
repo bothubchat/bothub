@@ -1,3 +1,5 @@
 import { styled } from 'styled-components';
 
-export const PortalElement = styled.div.attrs({ id: 'bothub_portal' })``;
+export const portalId = 'bothub_portal';
+
+export const PortalElement = styled.div.attrs({ id: portalId })``;

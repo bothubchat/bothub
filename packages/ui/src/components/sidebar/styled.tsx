@@ -6,6 +6,7 @@ import {
   SidebarChatCaps, SidebarChatName, SidebarChatNameTooltip, SidebarChatTooltip 
 } from './chat';
 import { SidebarGroupSkeleton, SidebarGroupTooltip } from './group';
+import { portalId } from '@/ui/components/portal';
 
 export interface SidebarStyledProps {
   $open: boolean;
@@ -65,27 +66,31 @@ export interface SidebarGlobalStyleProps {
 
 export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
   ${({ $open }) => $open && css`
-    ${SidebarGroupSkeleton} {
+    ${SidebarStyled} ${SidebarGroupSkeleton} {
       width: 120px;
     }
-    ${SidebarChatTooltip} {
-      visibility: hidden !important;
-    }
-    ${SidebarGroupTooltip} {
-      visibility: hidden !important;
+    #${portalId} {
+      ${SidebarChatTooltip} {
+        visibility: hidden !important;
+      }
+      ${SidebarGroupTooltip} {
+        visibility: hidden !important;
+      }
     }
   `}
   ${({ $open }) => !$open && css`
-    ${SidebarChatName} {
-      opacity: 0 !important;
+    ${SidebarStyled} {
+      ${SidebarChatName} {
+        opacity: 0 !important;
+      }
+      ${SidebarChatCaps} {
+        opacity: 0 !important;
+      }
+      ${SidebarGroupSkeleton} {
+        width: 30px;
+      }
     }
-    ${SidebarChatCaps} {
-      opacity: 0 !important;
-    }
-    ${SidebarGroupSkeleton} {
-      width: 30px;
-    }
-    ${SidebarChatNameTooltip} {
+    #${portalId} ${SidebarChatNameTooltip} {
       visibility: hidden !important;
     }
   `}

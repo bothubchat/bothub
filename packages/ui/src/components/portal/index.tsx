@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { PortalElement } from './styled';
+import { PortalElement, portalId } from './styled';
 
 export interface PortalProps extends React.PropsWithChildren {
   element?: Element | null;
@@ -17,7 +17,7 @@ export const Portal: React.FC<PortalProps> = ({
     } else {
       setElement(
         document.querySelector(String(PortalElement))
-        ?? document.getElementById('bothub_portal')  
+        ?? document.getElementById(portalId)  
       );
     }
   }, [props.element]);
