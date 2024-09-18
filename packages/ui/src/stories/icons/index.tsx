@@ -165,7 +165,8 @@ import {
   FluxIcon,
   StableDiffusionIcon,
   StabilityAIIcon,
-  ArticleGeneratorIcon
+  ArticleGeneratorIcon,
+  SuccessIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -350,6 +351,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="StableDiffusionIcon">{StableDiffusionIcon}</IconItem>
         <IconItem name="StabilityAIIcon">{StabilityAIIcon}</IconItem>
         <IconItem name="ArticleGeneratorIcon">{ArticleGeneratorIcon}</IconItem>
+        <IconItem name="SuccessIcon">{SuccessIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
