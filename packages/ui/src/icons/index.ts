@@ -170,3 +170,4 @@ export * from './stability-ai';
 export * from './google';
 export * from './yandex';
 export * from './vk';
+export * from './article-generator';
