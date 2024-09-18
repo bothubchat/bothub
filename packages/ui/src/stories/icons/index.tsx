@@ -169,6 +169,7 @@ import {
   YandexIcon,
   VKIcon,
   ArticleGeneratorIcon,
+  SuccessIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -356,6 +357,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="YandexIcon">{YandexIcon}</IconItem>
         <IconItem name="VKIcon">{VKIcon}</IconItem>
         <IconItem name="ArticleGeneratorIcon">{ArticleGeneratorIcon}</IconItem>
+        <IconItem name="SuccessIcon">{SuccessIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
