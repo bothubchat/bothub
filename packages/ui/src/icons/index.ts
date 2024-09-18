@@ -167,3 +167,4 @@ export * from './black-forest-labs';
 export * from './flux';
 export * from './stable-diffusion';
 export * from './stability-ai';
+export * from './article-generator';
