@@ -172,3 +172,4 @@ export * from './success';
 export * from './google';
 export * from './yandex';
 export * from './vk';
+export * from './resend';

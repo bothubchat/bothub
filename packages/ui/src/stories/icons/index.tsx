@@ -170,6 +170,7 @@ import {
   GoogleIcon,
   YandexIcon,
   VKIcon,
+  ResendIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -358,6 +359,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="GoogleIcon">{GoogleIcon}</IconItem>
         <IconItem name="YandexIcon">{YandexIcon}</IconItem>
         <IconItem name="VKIcon">{VKIcon}</IconItem>
+        <IconItem name="ResendIcon">{ResendIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
