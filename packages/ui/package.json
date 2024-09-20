@@ -1,7 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.7.1-feature-9681-oauth-new-5caa8295-d184-4a51-a83d-0f35ff93c95f",
-  "version": "2.8.0-fix-scrollbar-shadow-2-a96c1f8f-0be1-4aae-b663-abf9e5cb535e",
+  "version": "2.8.4-stage-7e03a2ac-3990-4b0d-8d56-9e87852874b2",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
