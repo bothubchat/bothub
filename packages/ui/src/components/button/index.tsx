@@ -158,12 +158,12 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
           },
           whileHover: {
             background: color ?? theme.colors.accent.strong,
-            boxShadow: `0px 0px 0px 1px ${theme.colors.accent.strong} inset`,
+            boxShadow: '0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset',
           },
           whileTap: {
             background: color ?? theme.colors.accent.strongDown,
             transform: 'translateY(1px)',
-            boxShadow: `0px 0px 0px 1px ${theme.colors.accent.strongDown} inset`,
+            boxShadow: '0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset',
           }
         };
         break;
