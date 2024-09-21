@@ -171,6 +171,7 @@ import {
   YandexIcon,
   VKIcon,
   ResendIcon,
+  BigArticleIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -340,6 +341,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="BigPresetsIcon">{BigPresetsIcon}</IconItem>
         <IconItem name="BigFavoriteIcon">{BigFavoriteIcon}</IconItem>
         <IconItem name="BigReferalIcon">{BigReferalIcon}</IconItem>
+        <IconItem name="BigArticleIcon">{BigArticleIcon}</IconItem>
         <IconItem name="AttachFileIcon">{AttachFileIcon}</IconItem>
         <IconItem name="AttachFileBigIcon">{AttachFileBigIcon}</IconItem>
         <IconItem name="VoiceIcon">{VoiceIcon}</IconItem>
