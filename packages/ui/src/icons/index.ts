@@ -173,3 +173,4 @@ export * from './vk';
 export * from './article-generator';
 export * from './success';
 export * from './resend';
+export * from './big-article';
