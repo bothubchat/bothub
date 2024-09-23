@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
-  Sidebar, 
-  SidebarChat, 
-  SidebarChatActions, 
-  SidebarChatDeleteAction, 
+  Sidebar,
+  SidebarChat,
+  SidebarChatActions,
+  SidebarChatDeleteAction,
   SidebarGroup,
-  SidebarGroups, 
-  SidebarCreateChatButton, 
-  SidebarToggleButton, 
-  SidebarUserInfo, 
+  SidebarGroups,
+  SidebarCreateChatButton,
+  SidebarToggleButton,
+  SidebarUserInfo,
   SidebarUserInfoAvatar,
   SidebarUserInfoUpdateTariffButton,
   SidebarUserInfoFreeTariff,
@@ -34,10 +34,10 @@ import {
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
-  ChatsIcon, 
-  BookmarksBigIcon, 
-  PresetsBigIcon, 
-  ReferalIcon, 
+  ChatsIcon,
+  BookmarksBigIcon,
+  PresetsBigIcon,
+  ReferalIcon,
   TariffIcon,
   GearIcon
 } from '@/ui/icons';
@@ -96,16 +96,6 @@ export const Basic: SidebarStory = {
         </SidebarMenuNav>
       </SidebarMenu>
     ),
-    lang: (
-      <SidebarLangDropdown lang="ru">
-        <SidebarLangDropdownList>
-          <SidebarLangDropdownItem>ru</SidebarLangDropdownItem>
-          <SidebarLangDropdownItem>en</SidebarLangDropdownItem>
-          <SidebarLangDropdownItem>es</SidebarLangDropdownItem>
-          <SidebarLangDropdownItem>de</SidebarLangDropdownItem>
-        </SidebarLangDropdownList>
-      </SidebarLangDropdown>
-    ),
     toggle: (
       <SidebarConsumer>
         {({ isOpen }) => (
@@ -121,13 +111,9 @@ export const Basic: SidebarStory = {
     ),
     buttons: (
       <SidebarButtons>
-        <SidebarCreateChatButton>
-          Создать чат
-        </SidebarCreateChatButton>
         <SidebarDeleteChatsButton />
       </SidebarButtons>
     ),
-    themeSwitcher: <SidebarThemeSwitcher />,
     user: (
       <SidebarConsumer>
         {({ isOpen }) => (
@@ -136,7 +122,7 @@ export const Basic: SidebarStory = {
             placement="top-left"
             disabled={isOpen}
           >
-            <SidebarUserInfo 
+            <SidebarUserInfo
               avatar={(
                 <SidebarUserInfoAvatar
                   src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
@@ -161,8 +147,9 @@ export const Basic: SidebarStory = {
     ),
     children: (
       <SidebarGroups>
-        <SidebarGroup name="Вчера">
+        <SidebarGroup id='chat-group-1' name="Вчера">
           <SidebarChat
+            id='chat-1'
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
@@ -175,6 +162,7 @@ export const Basic: SidebarStory = {
             )}
           />
           <SidebarChat
+            id='chat-2'
             color="#941CF2"
             name="Придумать логотип"
             caps="1.7K"
@@ -186,8 +174,9 @@ export const Basic: SidebarStory = {
             )}
           />
         </SidebarGroup>
-        <SidebarGroup name="Предыдущие 7 дней">
+        <SidebarGroup id='chat-group-2' name="Предыдущие 7 дней">
           <SidebarChat
+            id='chat-3'
             color="#1CB2F2"
             name="Дипломная работа"
             caps="12.7K"
@@ -199,6 +188,8 @@ export const Basic: SidebarStory = {
             )}
           />
           <SidebarChat
+            id='chat-4'
+
             color="#F29C1C"
             name="Реферат"
             caps="6.9K"
@@ -210,8 +201,9 @@ export const Basic: SidebarStory = {
             )}
           />
         </SidebarGroup>
-        <SidebarGroup name="Предыдущие 7 дней">
+        <SidebarGroup id='chat-group-3' name="Предыдущие 7 дней">
           <SidebarChat
+            id='chat-5'
             color="#1ABB34"
             name="Для клиентов"
             caps="12.7K"
@@ -223,6 +215,7 @@ export const Basic: SidebarStory = {
             )}
           />
           <SidebarChat
+            id='chat-6'
             color="#F2DD1C"
             name="Придумай мне резюме"
             caps="6.9K"
@@ -234,6 +227,7 @@ export const Basic: SidebarStory = {
             )}
           />
           <SidebarChat
+            id='chat-7'
             color="#941CF2"
             name="Длинное название чата Длинное название чата Длинное название чата Длинное название чата Длинное название чата"
             caps="1.7K"
@@ -254,7 +248,7 @@ export const BasicTariff: SidebarStory = {
   args: {
     ...Basic.args,
     user: (
-      <SidebarUserInfo 
+      <SidebarUserInfo
         avatar={(
           <SidebarUserInfoAvatar
             src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
@@ -281,7 +275,7 @@ export const PremiumTariff: SidebarStory = {
   args: {
     ...Basic.args,
     user: (
-      <SidebarUserInfo 
+      <SidebarUserInfo
         avatar={(
           <SidebarUserInfoAvatar
             src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
@@ -307,7 +301,7 @@ export const EliteTariff: SidebarStory = {
   args: {
     ...Basic.args,
     user: (
-      <SidebarUserInfo 
+      <SidebarUserInfo
         avatar={(
           <SidebarUserInfoAvatar
             src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
@@ -355,13 +349,13 @@ export const Skeleton: SidebarStory = {
         >
           Создать чат
         </SidebarCreateChatButton>
-        <SidebarDeleteChatsButton 
+        <SidebarDeleteChatsButton
           disabled
         />
       </SidebarButtons>
     ),
     user: (
-      <SidebarUserInfo 
+      <SidebarUserInfo
         avatar={(
           <SidebarUserInfoAvatar
             src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"

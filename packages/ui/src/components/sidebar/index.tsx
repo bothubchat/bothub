@@ -6,11 +6,12 @@ import {
   SidebarBottom,
   SidebarContent,
   SidebarGlobalStyle,
-  SidebarHead, 
-  SidebarHeader, 
-  SidebarHeaderMain, 
+  SidebarHead,
+  SidebarHeader,
+  SidebarHeaderMain,
   SidebarStyled,
-  SidebarTop 
+  SidebarToolbar,
+  SidebarTop
 } from './styled';
 import { SidebarProvider } from './context';
 
@@ -25,15 +26,13 @@ export interface SidebarProps extends React.PropsWithChildren {
   menu?: React.ReactNode;
   buttons?: React.ReactNode;
   toggle?: React.ReactNode;
-  themeSwitcher?: React.ReactNode;
-  lang?: React.ReactNode;
   user?: React.ReactNode;
   onOpen?: SidebarOpenEventHandler;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ 
-  open, defaultOpen = true, 
-  className, id, user, logo, menu, buttons, toggle, themeSwitcher, lang, 
+export const Sidebar: React.FC<SidebarProps> = ({
+  open, defaultOpen = true,
+  className, id, user, logo, menu, buttons, toggle,
   children, onOpen
 }) => {
   const initialIsOpen = open;
@@ -75,11 +74,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 >
                   {logo}
                   {menu}
-                  {lang}
                 </SidebarHeaderMain>
-                {toggle}
               </SidebarHeader>
-              {buttons}
+              <SidebarToolbar>
+                {buttons}
+                {toggle}
+              </SidebarToolbar>
             </SidebarHead>
             <SidebarBody>
               <SidebarBodyScrollbarWrapper
@@ -92,16 +92,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </SidebarBody>
           </SidebarTop>
           <SidebarBottom>
-            {themeSwitcher}
             {user}
           </SidebarBottom>
         </SidebarContent>
       </SidebarStyled>
-      <SidebarGlobalStyle 
+      <SidebarGlobalStyle
         $open={isOpen}
       />
     </SidebarProvider>
-  );  
+  );
 };
 
 export * from './styled';

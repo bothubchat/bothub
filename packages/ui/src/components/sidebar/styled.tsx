@@ -3,7 +3,7 @@ import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 import { Logo } from '@/ui/components/logo';
 import {
-  SidebarChatCaps, SidebarChatName, SidebarChatNameTooltip, SidebarChatTooltip 
+  SidebarChatCaps, SidebarChatName, SidebarChatNameTooltip, SidebarChatTooltip
 } from './chat';
 import { SidebarGroupSkeleton, SidebarGroupTooltip } from './group';
 
@@ -25,8 +25,8 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   padding: 18px;
   padding-right: 9px;
   ${({ $open }) => $open && css`
-    min-width: 352px;
-    max-width: 352px;
+    min-width: 412px;
+    max-width: 412px;
   `}
   ${({ $open }) => !$open && css`
     min-width: 74px;
@@ -46,17 +46,17 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   }
   max-height: 100vh;
   ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
+  variant: 'dashboard',
+  desktop: css`
       border-right: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
     `,
-    tablet: css`
+  tablet: css`
       border-radius: 18px;
     `,
-    mobile: css`
+  mobile: css`
       border-radius: 18px;
     `
-  })}
+})}
 `;
 
 export interface SidebarGlobalStyleProps {
@@ -114,17 +114,17 @@ export const SidebarHead = styled.div<SidebarHeadProps>`
   flex-shrink: 0;
   position: relative;
   ${adaptive(({ $open }) => ({
-    variant: 'dashboard',
-    merge: true,
-    desktop: css`
+  variant: 'dashboard',
+  merge: true,
+  desktop: css`
       padding-right: 9px;
     `,
-    tablet: css`
+  tablet: css`
       flex-direction: row-reverse;
       justify-content: ${$open ? 'space-between' : 'center'};
       padding-right: 7px;
     `
-  }))}
+}))}
 `;
 
 export interface SidebarHeaderProps {
@@ -156,6 +156,8 @@ export const SidebarHeaderMain = styled.div<SidebarHeaderMainProps>`
   display: ${({ $open }) => (
     $open ? 'flex' : 'none'
   )};
+  justify-content: space-between;
+  width: 100%;
   align-items: center;
   ${adaptive({
     variant: 'dashboard',
@@ -166,6 +168,13 @@ export const SidebarHeaderMain = styled.div<SidebarHeaderMainProps>`
   })}
 `;
 
+export const SidebarToolbar = styled.div`
+  display: flex;
+  width: inherit;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+`;
 export const SidebarLogo = styled(Logo).attrs({ size: 39 })``;
 
 export const SidebarLogoLink = styled.a`
@@ -191,15 +200,15 @@ export const SidebarBottom = styled.div`
   gap: 14px;
   width: 100%;
   ${adaptive({
-    variant: 'dashboard',
-    merge: true,
-    desktop: css`
+  variant: 'dashboard',
+  merge: true,
+  desktop: css`
       padding-right: 9px;
     `,
-    tablet: css`
+  tablet: css`
       padding-right: 7px;
     `
-  })}
+})}
 `;
 
 export const SidebarBody = styled.div`
@@ -207,21 +216,21 @@ export const SidebarBody = styled.div`
   width: 100%;
   overflow: hidden;
   ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
+  variant: 'dashboard',
+  desktop: css`
       margin: 18px 0px;
     `,
-    tablet: css`
+  tablet: css`
       margin: 14px 0px;
     `,
-    mobile: css`
+  mobile: css`
       margin: 14px 0px;
     `
-  })}
+})}
 `;
 
 export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
-  ({ theme }) => ({ 
+  ({ theme }) => ({
     variant: 'secondary',
     scrollShadows: {
       size: 90,
@@ -242,13 +251,13 @@ export const SidebarBodyContent = styled.div`
   align-items: flex-start;
   width: 100%;
   ${adaptive({
-    variant: 'dashboard',
-    merge: true,
-    desktop: css`
+  variant: 'dashboard',
+  merge: true,
+  desktop: css`
       padding-right: 9px;
     `,
-    tablet: css`
+  tablet: css`
       padding-right: 7px;
     `
-  })}
+})}
 `;

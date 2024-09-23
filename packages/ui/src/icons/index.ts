@@ -167,3 +167,6 @@ export * from './black-forest-labs';
 export * from './flux';
 export * from './stable-diffusion';
 export * from './stability-ai';
+export * from './add-chat';
+export * from './add-group';
+export * from './drag-dot'

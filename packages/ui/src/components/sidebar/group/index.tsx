@@ -1,52 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  SidebarChatList, SidebarGroupStyled, SidebarGroupName, SidebarGroupTooltip, 
-  SidebarGroupSkeleton
+  SidebarChatList, SidebarGroupStyled, SidebarGroupName, SidebarGroupTooltip,
+  SidebarGroupSkeleton,
+  SidebarGroupArrowDown
 } from './styled';
 import { TooltipConsumer } from '@/ui/components/tooltip';
+import { useDroppable } from '@dnd-kit/core';
 
 export interface SidebarGroupDefaultProps {
   name: string;
   skeleton?: false;
+  id: string;
+  edit?: boolean;
 }
 
 export interface SidebarGroupSkeletonProps {
   skeleton: true;
 }
 
-export type SidebarGroupProps 
+export type SidebarGroupProps
   = (SidebarGroupDefaultProps | SidebarGroupSkeletonProps) & React.PropsWithChildren;
 
 export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   children, ...props
-}) => (
-  <SidebarGroupStyled>
-    <SidebarGroupTooltip
-      label={props.skeleton ? '' : props.name}
-      placement="top-left"
-      disabled={!props.skeleton && props.name.length <= 5}
-    >
-      <TooltipConsumer>
-        {({
-          handleTooltipMouseEnter,
-          handleTooltipMouseLeave
-        }) => (
-          <SidebarGroupName
-            onMouseEnter={handleTooltipMouseEnter}
-            onMouseLeave={handleTooltipMouseLeave}
-          >
-            {!props.skeleton && props.name}
-            {props.skeleton && (
-              <SidebarGroupSkeleton />
-            )}
-          </SidebarGroupName>
+}) => {
+  const [open, setOpen] = useState<boolean>(true);
+  const { setNodeRef } = useDroppable({
+    id: !props.skeleton ? props.id : 'draggable-skeleton',
+  });
+  return (
+    <SidebarGroupStyled ref={!props.skeleton && props.edit ? setNodeRef : undefined} onClick={() => setOpen(prev => !prev)}>
+      <SidebarGroupName open={open}>
+        {!props.skeleton && props.name}
+        {props.skeleton && (
+          <SidebarGroupSkeleton />
         )}
-      </TooltipConsumer>
-    </SidebarGroupTooltip>
-    <SidebarChatList>
-      {children}
-    </SidebarChatList>
-  </SidebarGroupStyled>
-);
+        <SidebarGroupArrowDown />
+      </SidebarGroupName>
+      <SidebarChatList open={open}>
+        {children}
+      </SidebarChatList>
+    </SidebarGroupStyled>
+  )
+};
 
 export * from './styled';
