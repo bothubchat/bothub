@@ -1,9 +1,8 @@
-import { motion, HTMLMotionProps } from 'framer-motion';
 import { css, styled } from 'styled-components';
 import React from 'react';
 import { ButtonCorner, ButtonSize, ButtonVariant } from './types';
 
-export interface ButtonStyledProps extends HTMLMotionProps<'button'> {
+export interface ButtonStyledProps {
   ref: React.RefObject<HTMLButtonElement>;
   $icon: boolean;
   $variant: ButtonVariant;
@@ -14,12 +13,14 @@ export interface ButtonStyledProps extends HTMLMotionProps<'button'> {
   $skeleton: boolean;
   $disabled: boolean;
   $disableHoverColor: boolean;
+  $color?: string;
 }
 
-export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
+export const ButtonStyled = styled.button<ButtonStyledProps>`
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  gap: 10px;
   border: none;
   cursor: ${({ $disabled, $skeleton, $variant }) => {
     if ($disabled) {
@@ -34,39 +35,109 @@ export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
 
     return 'pointer';
   }};
-  gap: 10px;
+
   ${({
-    theme, $disabled, $variant, $skeleton
+    theme, $disabled, $variant, $skeleton, $color
   }) => {
     switch ($variant) {
       case 'primary':
+        return css`
+          background: ${$disabled || $skeleton ? ($color ?? theme.default.colors.grayScale.gray2) : ($color ?? theme.colors.accent.primary)};
+          box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+          opacity: 1;
+
+          ${!$disabled && !$skeleton && css`
+            &:hover {
+              background: ${$color ?? theme.colors.accent.strong};
+            }
+            &:active {
+              background: ${$color ?? theme.colors.accent.strongDown};
+              transform: translateY(1px);
+            }
+          `}
+        `;
       case 'primary-transparent':
         return css`
-          background: ${$disabled || $skeleton ? theme.default.colors.grayScale.gray2 : theme.colors.accent.primary};
+          background: ${$disabled || $skeleton ? ($color ?? theme.default.colors.grayScale.gray2) : ($color ?? theme.colors.accent.primary)};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+          opacity: ${$disabled || $skeleton ? 1 : 0.5};
+
+          ${!$disabled && !$skeleton && css`
+            &:hover {
+              background: ${$color ?? theme.colors.accent.strong};
+              opacity: 1;
+            }
+            &:active {
+              background: ${$color ?? theme.colors.accent.strongDown};
+              transform: translateY(1px);
+            }
+          `}
         `;
+
       case 'primary-outline':
         return css`
-          background: ${$disabled || $skeleton ? theme.default.colors.grayScale.gray2 : '#00000000'};
+          background: ${$disabled || $skeleton ? theme.default.colors.grayScale.gray2 : ($color ?? 'rgba(255, 255, 255, 0)')};
           box-shadow: 0px 0px 0px 1px ${theme.colors.accent.primary} inset;
+
+          ${!$disabled && !$skeleton && css`
+            &:hover {
+              background: ${$color ?? theme.colors.accent.strong};
+              box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+            }
+            &:active {
+              background: ${$color ?? theme.colors.accent.strongDown};
+              transform: translateY(1px);
+              box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+            }
+          `}
         `;
       case 'secondary':
         return css`
-          background: ${theme.colors.grayScale.gray4};
+          background: ${$color ?? theme.colors.grayScale.gray4};
           box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset;
+
+          ${!$disabled && !$skeleton && css`
+            &:hover {
+              background: ${$color ?? theme.colors.grayScale.gray2};
+              box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+            }
+            &:active {
+              background: ${$color ?? theme.colors.grayScale.gray3};
+              transform: translateY(1px);
+            }
+          `}
         `;
       case 'success':
         return css`
-          background: ${theme.colors.green};
+          background: ${$disabled || $skeleton ? ($color ?? theme.colors.grayScale.gray2) : theme.colors.green};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+          opacity: 1;
+
+          ${!$disabled && !$skeleton && css`
+            &:hover {
+              background: ${theme.colors.accent.strong};
+            }
+            &:active {
+              background: ${theme.colors.accent.strongDown};
+              transform: translateY(1px);
+            }
+          `}
         `;
       case 'text':
       case 'help':
         return css`
-          background: none;
+          background: rgba(255, 255, 255, 0);
+          box-shadow: none;
+
+          ${!$disabled && !$skeleton && css`
+            &:active {
+              transform: translateY(1px);
+            }
+          `}
         `;
     }
   }}
+
   ${({ $variant, $icon, $size }) => {
     switch ($variant) {
       case 'primary':
@@ -180,6 +251,10 @@ export const ButtonStyled = styled(motion.button)<ButtonStyledProps>`
       }
     }
   `}
+
+  transition: background 0.3s ease-out, 
+              box-shadow 0.3s ease-out, 
+              transform 0.3s ease-out;
 `;
 
 export interface ButtonTextProps {
