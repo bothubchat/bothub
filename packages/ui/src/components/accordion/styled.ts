@@ -1,19 +1,25 @@
 import { styled } from 'styled-components';
-import { AnimationProps, HoverHandlers, motion } from 'framer-motion';
 import React from 'react';
 import { Typography } from '../typography';
 import { Arrow2DownIcon } from '@/ui/icons/arrow-2-down';
 
-export const AccordionStyled: React.FC<React.ComponentProps<'div'> & AnimationProps & HoverHandlers> = styled(motion.div)`
+export const AccordionStyled: React.FC<React.ComponentProps<'div'> & { $isOpen: boolean }> = styled.div`
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  background: ${({ theme }) => theme.colors.grayScale.gray2};
+  background: ${({ theme, $isOpen }) => ($isOpen 
+    ? theme.colors.accent.primary 
+    : theme.colors.grayScale.gray2)};
   width: 100%;
   max-width: 638px;
   box-sizing: border-box;
   border-radius: 8px;
   overflow: hidden;
+  transition: background 0.3s ease-out;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.accent.primary};
+  }
 `;
 
 export const AccordionHead = styled.div`
