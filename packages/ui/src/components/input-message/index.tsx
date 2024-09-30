@@ -252,6 +252,21 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
       if (isFocus && event.key === 'Enter') {
         switch (useAlternateKey) {
+          case true:
+            if (event.shiftKey || event.ctrlKey) {
+              event.preventDefault();
+
+              onSend?.(message, files);
+              setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
+              break;
+            } else {
+              if (message.trim() === '') {
+                event.preventDefault();
+              } else {
+                setMessage?.(message);
+              }
+              break;
+            }
           case false:
             if (event.shiftKey || event.ctrlKey) {
               if (message.trim() === '') {
@@ -260,24 +275,13 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               if (event.ctrlKey) {
                 setMessage?.(`${message}\n`);
               }
+              break;
             } else {
               event.preventDefault();
 
               onSend?.(message, files);
               setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
-            }
-          case true:
-            if (event.shiftKey || event.ctrlKey) {
-              event.preventDefault();
-
-              onSend?.(message, files);
-              setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
-            } else {
-              if (message.trim() === '') {
-                event.preventDefault();
-              } else {
-                setMessage?.(`${message}/n`);
-              }
+              break;
             }
         }
       }
