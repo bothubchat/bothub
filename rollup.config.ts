@@ -53,7 +53,6 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
           externalLiveBindings: false,
           preserveModules: true,
           preserveModulesRoot: path.resolve(rootPath, `packages/${packageName}/src`),
-          interop: 'auto',
         }
       ],
       plugins: [
