@@ -2,6 +2,7 @@ import React, {
   useCallback, useEffect, useRef, useState 
 } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import { useTransition } from '@react-spring/web';
 import {
   HeaderUserInfoArrow,
   HeaderUserInfoBody,
@@ -64,6 +65,25 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
     }
   }, []);
 
+  const userInfoTransition = useTransition(isOpen, !isInMenu ? {
+    from: {
+      opacity: 0,
+      transform: 'scale(0)',
+    },
+    enter: {
+      opacity: isOpen ? 1 : 0.5,
+      transform: `scale(${isOpen ? 1 : 0.999})`,
+      transition: {
+        duration: 0.15
+      }
+    },
+    leave: {
+      opacity: 0,
+      transform: 'scale(0.999)',
+    },
+    config: { duration: 150 }
+  } : {});
+
   return (
     <HeaderUserInfoProvider setIsOpen={setIsOpen}>
       <HeaderUserInfoStyled ref={userRef} $inMenu={isInMenu}>
@@ -83,40 +103,19 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
               </HeaderUserInfoTokens>
             </HeaderUserInfoInfoText>
           </HeaderUserInfoInfo>
-          <HeaderUserInfoArrow 
-            initial={{
-              transform: `rotateZ(${isOpen ? -180 : 0}deg)`
-            }}
-            animate={{
-              transform: `rotateZ(${isOpen ? -180 : 0}deg)`,
-              transition: {
-                duration: 0.15
-              }
-            }}
-          />
+          <HeaderUserInfoArrow $isOpen={isOpen} />
         </HeaderUserInfoHead>
         <AnimatePresence>
-          {isOpen && (
-            <HeaderUserInfoBody
-              $inMenu={isInMenu}
-              style={{ width }}
-              {...(!isInMenu ? {
-                animate: {
-                  opacity: isOpen ? 1 : 0.5,
-                  transform: `scale(${isOpen ? 1 : 0.999})`,
-                  transition: {
-                    duration: 0.15
-                  }
-                },
-                exit: {
-                  opacity: 0,
-                  transform: 'scale(0.999)'
-                }
-              } : {})}
-            >
-              {children}
-            </HeaderUserInfoBody>
-          )}
+          {userInfoTransition((style, item) => (
+            item && (
+              <HeaderUserInfoBody
+                $inMenu={isInMenu}
+                style={{ ...style, width }}
+              >
+                {children}
+              </HeaderUserInfoBody>
+            )
+          ))}
         </AnimatePresence>
       </HeaderUserInfoStyled>
     </HeaderUserInfoProvider>
