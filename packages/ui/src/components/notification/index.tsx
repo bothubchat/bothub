@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { AnimatePresence, AnimationProps, LayoutProps } from 'framer-motion';
+import { useTransition } from '@react-spring/web';
 import {
   NotificationCloseButton,
-  NotificationContent, 
-  NotificationIcon, 
-  NotificationInfo, 
-  NotificationLeft, 
-  NotificationRight, 
-  NotificationStyled, 
-  NotificationText, 
-  NotificationTitle 
+  NotificationContent,
+  NotificationIcon,
+  NotificationInfo,
+  NotificationLeft,
+  NotificationRight,
+  NotificationStyled,
+  NotificationText,
+  NotificationTitle,
 } from './styled';
 import { ErrorBigIcon } from '@/ui/icons/error-big';
 import { InfoBigIcon } from '@/ui/icons/info-big';
@@ -31,14 +31,14 @@ export interface NotificationProps {
   onClose?: NotificationCloseEventHandler;
 }
 
-export const Notification: React.FC<NotificationProps> = ({ 
+export const Notification: React.FC<NotificationProps> = ({
   className,
-  variant = 'info', 
-  autoClose = 5000, 
+  variant = 'info',
+  autoClose = 5000,
   notificationId = 'unknown',
-  title, 
+  title,
   children,
-  onClose
+  onClose,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const { isInNotificationList } = useNotifications();
@@ -62,19 +62,6 @@ export const Notification: React.FC<NotificationProps> = ({
       iconComponent = Loader;
   }
 
-  let animationProps: AnimationProps & LayoutProps;
-  if (isInNotificationList) {
-    animationProps = {
-      layout: 'position',
-      initial: { opacity: 0, x: 412 },
-      animate: { opacity: 1, x: 0 },
-      exit: { opacity: 0, x: 412 },
-      transition: { duration: 0.25 }
-    };
-  } else {
-    animationProps = {};
-  }
-
   const handleExitComplete = useCallback(() => {
     if (!isOpen) {
       onClose?.(notificationId);
@@ -83,7 +70,7 @@ export const Notification: React.FC<NotificationProps> = ({
 
   useEffect(() => {
     let closeTimeout: number | null;
-    
+
     if (isOpen && autoClose) {
       closeTimeout = window.setTimeout(() => {
         setIsOpen(false);
@@ -98,46 +85,47 @@ export const Notification: React.FC<NotificationProps> = ({
       }
     };
   }, [autoClose]);
-  
+
+  const notificationTransition = useTransition(
+    isOpen,
+    isInNotificationList
+      ? {
+        from: { opacity: 0, transform: 'translateX(412px)' },
+        enter: { opacity: 1, transform: 'translateX(0px)' },
+        leave: { opacity: 0, transform: 'translateX(412px)' },
+        config: { duration: 250 },
+        onDestroyed: handleExitComplete,
+      }
+      : {
+        onDestroyed: handleExitComplete,
+      }
+  );
+
   return (
-    <AnimatePresence
-      onExitComplete={handleExitComplete}
-    >
-      {isOpen && (
+    notificationTransition(
+      (style, item) => item && (
         <NotificationStyled
-          {...animationProps}
+          style={style}
           $variant={variant}
           className={className}
         >
-          <NotificationContent
-            $text={isText}
-          >
-            <NotificationLeft
-              $text={isText}
-            >
-              <NotificationIcon 
-                as={iconComponent}
-              />
+          <NotificationContent $text={isText}>
+            <NotificationLeft $text={isText}>
+              <NotificationIcon as={iconComponent} />
               <NotificationInfo>
-                <NotificationTitle>
-                  {title ?? children}
-                </NotificationTitle>
-                {isText && (
-                  <NotificationText>
-                    {children}
-                  </NotificationText>
-                )}
+                <NotificationTitle>{title ?? children}</NotificationTitle>
+                {isText && <NotificationText>{children}</NotificationText>}
               </NotificationInfo>
             </NotificationLeft>
             <NotificationRight>
-              <NotificationCloseButton 
+              <NotificationCloseButton
                 onClick={setIsOpen.bind(null, false)}
               />
             </NotificationRight>
           </NotificationContent>
         </NotificationStyled>
-      )}
-    </AnimatePresence>
+      )
+    )
   );
 };
 

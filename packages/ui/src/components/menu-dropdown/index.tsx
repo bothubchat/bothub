@@ -1,7 +1,6 @@
 import {
   useState, useCallback, useRef, useEffect 
 } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import { useTransition } from '@react-spring/web';
 import { MenuIcon, CloseIcon } from '@/ui/icons';
 import { MenuDropdownProvider } from './context';
@@ -57,7 +56,7 @@ export const MenuDropdown: React.FC<MenuDropdownProps> = ({
     from: { scale: 0.85, opacity: 0 },
     enter: { opacity: 1, scale: 1 },
     leave: { scale: 0.85, opacity: 0 },
-    config: { duration: 135 }
+    config: { duration: 135 },
   });
 
   return (
@@ -66,19 +65,17 @@ export const MenuDropdown: React.FC<MenuDropdownProps> = ({
         <MenuDropdownToggleButton disabled={disabled} onClick={handleToggle}>
           <Icon />
         </MenuDropdownToggleButton>
-        <AnimatePresence>
-          {dropdownTransition(
-            (style, item) => item && (
-              <MenuDropdownBlock style={style}>
-                <MenuDropdownBlockScrollbarWrapper>
-                  <MenuDropdownBlockContent>
-                    {children}
-                  </MenuDropdownBlockContent>
-                </MenuDropdownBlockScrollbarWrapper>
-              </MenuDropdownBlock>
-            )
-          )}
-        </AnimatePresence>
+        {dropdownTransition(
+          (style, item) => item && (
+            <MenuDropdownBlock style={style}>
+              <MenuDropdownBlockScrollbarWrapper>
+                <MenuDropdownBlockContent>
+                  {children}
+                </MenuDropdownBlockContent>
+              </MenuDropdownBlockScrollbarWrapper>
+            </MenuDropdownBlock>
+          )
+        )}
       </MenuDropdownStyled>
     </MenuDropdownProvider>
   );
