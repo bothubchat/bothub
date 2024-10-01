@@ -27,12 +27,7 @@ export const Progress: React.FC<ProgressProps> = ({
           $skeleton={false}
         >
           <ProgressLineFilled 
-            initial={{
-              width: `${percent}%`
-            }}
-            animate={{
-              width: `${percent}%`
-            }}
+            style={{ width: `${percent}%` }}
           />
         </ProgressLine>
       )}
