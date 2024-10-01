@@ -25,7 +25,7 @@ const pulse = (theme: DefaultTheme) => keyframes`
   0% {
     box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray5};
   }
-  70% {
+  85% {
     box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray1};
   }
   100% {
