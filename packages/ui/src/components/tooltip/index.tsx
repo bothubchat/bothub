@@ -1,7 +1,7 @@
 import React, {
   useCallback, useEffect, useRef, useState
 } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { useTransition } from '@react-spring/web';
 import { Portal } from '@/ui/components/portal';
 import {
   TooltipBlock, TooltipCode, TooltipLabel, TooltipLabelBold, TooltipMarkdown, TooltipStyled
@@ -151,31 +151,36 @@ export const Tooltip: React.FC<TooltipProps> = ({
   if (placementX !== 0) {
     left.push(`calc(var(--bothub-scale, 1) * ${placementX}px)`);
   }
+
+  const tooltipTransition = useTransition(!!hoveredElement, {
+    from: {
+      opacity: 0,
+      y: -6
+    },
+    enter: {
+      opacity: 1,
+      y: 0
+    },
+    leave: {
+      opacity: 0,
+      y: -6,
+      transition: {
+        duration: disableHiddenAnimation ? 0 : 0.3
+      }
+    },
+    config: { duration: 150 }
+  });
   
-  const tooltipNode: React.ReactNode = (
+  const tooltipNode: React.ReactNode = tooltipTransition((style, item) => item && (
     <TooltipStyled
       $placement={placement}
       $align={align}
       ref={tooltipRef}
       className={className}
       style={{
+        ...style,
         top: top.length <= 1 ? top[0] : `calc(${top.join(' + ')})`,
         left: left.length <= 1 ? left[0] : `calc(${left.join(' + ')})`
-      }}
-      initial={{
-        opacity: 0,
-        y: -6
-      }}
-      animate={{
-        opacity: 1,
-        y: 0
-      }}
-      exit={{
-        opacity: 0,
-        y: -6,
-        transition: {
-          duration: disableHiddenAnimation ? 0 : 0.3
-        }
       }}
     >
       <TooltipBlock
@@ -225,7 +230,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
         variant={variant}
       />
     </TooltipStyled>
-  );
+  ));
 
   const handleMouseEnter = (e: React.MouseEvent<Element, MouseEvent>): void => {
     if (!isDisabled && e.currentTarget instanceof Element) {
@@ -263,9 +268,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       handleTooltipMouseDown={handleMouseDown}
     >
       <Portal>
-        <AnimatePresence>
-          {!!hoveredElement && tooltipNode}
-        </AnimatePresence>
+        {tooltipNode}
       </Portal>
       {children}
     </TooltipProvider>
