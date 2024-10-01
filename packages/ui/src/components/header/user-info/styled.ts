@@ -1,6 +1,6 @@
 import React from 'react';
-import { HTMLMotionProps, motion } from 'framer-motion';
 import { styled, css } from 'styled-components';
+import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { Avatar } from '@/ui/components/avatar';
@@ -9,7 +9,7 @@ export interface HeaderUserInfoHeadProps {
   $inMenu: boolean;
 }
 
-export const HeaderUserInfoHead: React.FC<React.ComponentProps<'div'> & HTMLMotionProps<'div'> & HeaderUserInfoHeadProps> = styled(motion.div)`
+export const HeaderUserInfoHead: React.FC<React.ComponentProps<'div'> & HeaderUserInfoHeadProps> = styled(animated.div)`
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -55,13 +55,21 @@ export const HeaderUserInfoName = styled(Typography).attrs({ variant: 'body-s-me
 
 export const HeaderUserInfoTokens = styled(Typography).attrs({ variant: 'body-xs-regular' })``;
 
-export const HeaderUserInfoArrow = styled(ArrowDownIcon)``;
+export const HeaderUserInfoArrow = styled(ArrowDownIcon)<{
+  $isOpen?: boolean;
+}>`
+  pointer-events: none;
+  transition: transform 0.15s ease-in-out;
+  ${({ $isOpen }) => css`
+    transform: ${$isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'};
+  `}
+`;
 
 export interface HeaderUserInfoBodyProps {
   $inMenu: boolean;
 }
 
-export const HeaderUserInfoBody = styled(motion.div)<HeaderUserInfoBodyProps>`
+export const HeaderUserInfoBody = styled(animated.div)<HeaderUserInfoBodyProps>`
   display: flex;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 6px;
