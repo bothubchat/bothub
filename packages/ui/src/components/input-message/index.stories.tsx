@@ -10,20 +10,26 @@ export const Basic: InputMessageStory = {};
 
 export const Voice: InputMessageStory = {
   args: {
-    voice: true
-  }
+    voice: true,
+  },
 };
 
 export const UploadFileDisabled: InputMessageStory = {
   args: {
-    uploadFileDisabled: true
-  }
+    uploadFileDisabled: true,
+  },
 };
 
 export const Disabled: InputMessageStory = {
   args: {
-    disabled: true
-  }
+    disabled: true,
+  },
+};
+
+export const AlternativeInput: InputMessageStory = {
+  args: {
+    useAlternateKey: true,
+  },
 };
 
 export default {
@@ -31,6 +37,6 @@ export default {
   component: InputMessage,
   decorators: [StoryDecorator()],
   args: {
-    placeholder: 'Спроси о чем-нибудь...'
-  }
+    placeholder: 'Спроси о чем-нибудь...',
+  },
 } as InputMessageMeta;

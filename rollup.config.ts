@@ -52,7 +52,7 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
           format: 'es',
           externalLiveBindings: false,
           preserveModules: true,
-          preserveModulesRoot: path.resolve(rootPath, `packages/${packageName}/src`)
+          preserveModulesRoot: path.resolve(rootPath, `packages/${packageName}/src`),
         }
       ],
       plugins: [
