@@ -1,6 +1,6 @@
 import { css, styled } from 'styled-components';
-import { HTMLMotionProps, motion } from 'framer-motion';
 import React from 'react';
+import { animated, AnimatedProps } from '@react-spring/web';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { LanguageIcon } from '@/ui/icons/language';
 import { Typography } from '../../typography';
@@ -19,8 +19,14 @@ export const HeaderLangDropdownTogglerText = styled(Typography)`
   pointer-events: none;
 `;
 
-export const HeaderLangDropdownTogglerArrow = styled(ArrowDownIcon).attrs({ size: 16 })`
+export const HeaderLangDropdownTogglerArrow = styled(ArrowDownIcon).attrs({ size: 16 })<{
+  $isOpen?: boolean;
+}>`
   pointer-events: none;
+  transition: transform 0.2s ease-in-out;
+  ${({ $isOpen }) => css`
+    transform: ${$isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'};
+  `}
 `;
 
 export const HeaderLangDropdownToggler = styled.button<{ $open: boolean }>`
@@ -31,6 +37,8 @@ export const HeaderLangDropdownToggler = styled.button<{ $open: boolean }>`
   align-items: center;
   cursor: pointer;
   gap: 6px;
+  transform-origin: top center;
+  transition: opacity 0.15s ease-out, transform 0.15s ease-out;
   &:hover {
     > ${HeaderLangDropdownTogglerIcon} > path {
       fill: ${({ theme }) => theme.colors.accent.primary};
@@ -55,7 +63,7 @@ export const HeaderLangDropdownToggler = styled.button<{ $open: boolean }>`
   `}
 `;
 
-export const HeaderLangDropdownContent: React.FC<React.ComponentProps<'div'> & HTMLMotionProps<'div'>> = styled(motion.div)`
+export const HeaderLangDropdownContent: React.FC<AnimatedProps<React.ComponentProps<'div'>>> = styled(animated.div)`
   display: flex;
   position: absolute;
   transform-origin: top center;

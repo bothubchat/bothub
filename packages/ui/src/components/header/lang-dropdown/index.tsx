@@ -1,26 +1,28 @@
 import React, {
   useCallback, useEffect, useRef, useState 
 } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { useTransition } from '@react-spring/web';
 import {
-  HeaderLangDropdownContent, 
-  HeaderLangDropdownStyled, 
-  HeaderLangDropdownToggler, 
-  HeaderLangDropdownTogglerArrow, 
-  HeaderLangDropdownTogglerIcon, 
-  HeaderLangDropdownTogglerText 
+  HeaderLangDropdownContent,
+  HeaderLangDropdownStyled,
+  HeaderLangDropdownToggler,
+  HeaderLangDropdownTogglerArrow,
+  HeaderLangDropdownTogglerIcon,
+  HeaderLangDropdownTogglerText,
 } from './styled';
 import { HeaderLangDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
-export interface HeaderLangDropdownProps extends 
-  React.ComponentProps<typeof HeaderLangDropdownStyled> {
+export interface HeaderLangDropdownProps
+  extends React.ComponentProps<typeof HeaderLangDropdownStyled> {
   lang: string;
 }
 
 export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
-  lang, children, ...props
+  lang,
+  children,
+  ...props
 }) => {
   const theme = useTheme();
 
@@ -52,49 +54,40 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
     }
   }, []);
 
+  const dropdownTransition = useTransition(isOpen, {
+    from: {
+      opacity: 0,
+      transform: 'scale(0)',
+    },
+    enter: {
+      opacity: isOpen ? 1 : 0.5,
+      transform: `scale(${isOpen ? 1 : 0.999})`,
+    },
+    leave: { opacity: 0, transform: 'scale(0.999)' },
+    config: { duration: 150 },
+  });
+
   return (
     <HeaderLangDropdownProvider setIsOpen={setIsOpen}>
       <HeaderLangDropdownStyled {...props} ref={dropdownRef}>
-        <IconProvider
-          fill={theme.colors.base.white}
-        >
+        <IconProvider fill={theme.colors.base.white}>
           <HeaderLangDropdownToggler $open={isOpen} onClick={handleToggle}>
             <HeaderLangDropdownTogglerIcon />
             <HeaderLangDropdownTogglerText>
               {lang}
             </HeaderLangDropdownTogglerText>
-            <HeaderLangDropdownTogglerArrow 
-              initial={{
-                transform: `rotateZ(${isOpen ? -180 : 0}deg)`
-              }}
-              animate={{
-                transform: `rotateZ(${isOpen ? -180 : 0}deg)`,
-                transition: {
-                  duration: 0.15
-                }
-              }}
+            <HeaderLangDropdownTogglerArrow
+              $isOpen={isOpen}
             />
           </HeaderLangDropdownToggler>
         </IconProvider>
-        <AnimatePresence>
-          {isOpen && (
-            <HeaderLangDropdownContent
-              animate={{
-                opacity: isOpen ? 1 : 0.5,
-                transform: `scale(${isOpen ? 1 : 0.999})`,
-                transition: {
-                  duration: 0.15
-                }
-              }}
-              exit={{
-                opacity: 0,
-                transform: 'scale(0.999)'
-              }}
-            >
+        {dropdownTransition((style, item) => (
+          item && (
+            <HeaderLangDropdownContent style={style}>
               {children}
             </HeaderLangDropdownContent>
-          )}
-        </AnimatePresence>
+          )
+        ))}
       </HeaderLangDropdownStyled>
     </HeaderLangDropdownProvider>
   );
