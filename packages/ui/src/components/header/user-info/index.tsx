@@ -1,7 +1,6 @@
 import React, {
   useCallback, useEffect, useRef, useState 
 } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import { useTransition } from '@react-spring/web';
 import {
   HeaderUserInfoArrow,
@@ -105,18 +104,16 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
           </HeaderUserInfoInfo>
           <HeaderUserInfoArrow $isOpen={isOpen} />
         </HeaderUserInfoHead>
-        <AnimatePresence>
-          {userInfoTransition((style, item) => (
-            item && (
-              <HeaderUserInfoBody
-                $inMenu={isInMenu}
-                style={{ ...style, width }}
-              >
-                {children}
-              </HeaderUserInfoBody>
-            )
-          ))}
-        </AnimatePresence>
+        {userInfoTransition((style, item) => (
+          item && (
+            <HeaderUserInfoBody
+              $inMenu={isInMenu}
+              style={{ ...style, width }}
+            >
+              {children}
+            </HeaderUserInfoBody>
+          )
+        ))}
       </HeaderUserInfoStyled>
     </HeaderUserInfoProvider>
   );
