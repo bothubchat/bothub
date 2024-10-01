@@ -17,11 +17,17 @@ export const HeaderUserInfoHead: React.FC<React.ComponentProps<'div'> & HTMLMoti
   padding: 8px 14px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 6px;
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  background: ${({ theme }) => (theme.mode === 'light' 
+    ? theme.default.colors.base.white 
+    : theme.colors.grayScale.gray4)};
+  transition: background 0.3s ease-out;
   ${({ $inMenu }) => $inMenu && css`
     width: 100%;
     justify-content: space-between;
   `}
+  &:hover {
+    background: ${({ theme }) => theme.colors.grayScale.gray3};
+  }
 `;
 
 export const HeaderUserInfoStyled = styled.div<{ $inMenu: boolean }>`

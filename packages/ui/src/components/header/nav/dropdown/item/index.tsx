@@ -33,18 +33,7 @@ export const HeaderNavDropdownItem: React.FC<HeaderNavDropdownItemProps> = ({
       to={to}
       onClick={handleClick}
     >
-      <HeaderNavDropdownItemContent
-        initial={{
-          transform: 'scale(1)',
-          background: 'rgba(255, 255, 255, 0)'
-        }}
-        whileHover={{
-          background: 'rgba(255, 255, 255, 0.045)'
-        }}
-        whileTap={{
-          transform: 'scale(0.95)'
-        }}
-      >
+      <HeaderNavDropdownItemContent>
         {icon}
         <HeaderNavDropdownInfo>
           <HeaderNavDropdownTitle>{title}</HeaderNavDropdownTitle>

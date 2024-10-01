@@ -2,7 +2,6 @@ import React, {
   useCallback, useEffect, useRef, useState 
 } from 'react';
 import { AnimatePresence } from 'framer-motion';
-import { useTheme } from '@/ui/theme';
 import {
   HeaderUserInfoArrow,
   HeaderUserInfoBody,
@@ -25,7 +24,6 @@ export interface HeaderUserInfoProps extends React.PropsWithChildren {
 export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
   avatar, name, tokens, children 
 }) => {
-  const theme = useTheme();
   const { isInMenu } = useHeaderMenu();
 
   const userRef = useRef<HTMLDivElement>(null);
@@ -72,17 +70,6 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
         <HeaderUserInfoHead
           $inMenu={isInMenu}
           ref={headRef}
-          initial="default"
-          animate="default"
-          whileHover="hover"
-          variants={{
-            default: {
-              background: theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4
-            },
-            hover: {
-              background: theme.colors.grayScale.gray3
-            }
-          }}
           onClick={toggle}
         >
           <HeaderUserInfoInfo>

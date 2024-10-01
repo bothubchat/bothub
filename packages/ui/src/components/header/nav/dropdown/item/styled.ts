@@ -1,5 +1,4 @@
 import { styled } from 'styled-components';
-import { HTMLMotionProps, motion } from 'framer-motion';
 import React from 'react';
 import { Typography } from '@/ui/components/typography';
 
@@ -10,7 +9,7 @@ export const HeaderNavDropdownItemStyled = styled.a`
   }
 `;
 
-export const HeaderNavDropdownItemContent: React.FC<React.ComponentProps<'div'> & HTMLMotionProps<'div'>> = styled(motion.div)`
+export const HeaderNavDropdownItemContent: React.FC<React.ComponentProps<'div'>> = styled.div`
   display: flex;
   gap: 14px;
   align-items: center;
@@ -18,6 +17,16 @@ export const HeaderNavDropdownItemContent: React.FC<React.ComponentProps<'div'> 
   padding: 14px;
   border-radius: 8px;
   width: 100%;
+
+  transform: scale(1);
+  background: rgba(255, 255, 255, 0);
+  transition: transform 0.2s ease-out, background 0.2s ease-out;
+  &:hover {
+    background: rgba(255, 255, 255, 0.045);
+  }
+  &:active {
+    transform: scale(0.95);
+  }
 `;
 
 export const HeaderNavDropdownInfo = styled.div`
