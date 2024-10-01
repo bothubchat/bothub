@@ -1,5 +1,3 @@
-import { AnimationProps, motion } from 'framer-motion';
-import React from 'react';
 import { styled, css } from 'styled-components';
 
 export interface ProgressStyledProps {
@@ -28,9 +26,10 @@ export const ProgressLine = styled.div<ProgressLineProps>`
   `}
 `;
 
-export const ProgressLineFilled: React.FC<AnimationProps> = styled(motion.div)`
+export const ProgressLineFilled = styled.div`
   display: inline-flex;
   width: 50%;
   background: ${({ theme }) => theme.colors.accent.primary};
   border-radius: 10px;
+  transition: width 0.3s ease-out;
 `; 
