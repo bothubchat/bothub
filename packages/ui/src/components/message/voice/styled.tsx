@@ -91,3 +91,7 @@ export const MessageVoiceText = styled(Typography).attrs({ variant: 'body-m-regu
   }}
   }
 `;
+
+export const StyledRect = styled.rect`
+  transition: width 0.25s ease-out;
+`;

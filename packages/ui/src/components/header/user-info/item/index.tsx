@@ -26,14 +26,7 @@ export const HeaderUserInfoItem: React.FC<HeaderUserInfoItemProps> = ({
 
   return (
     <HeaderUserInfoItemStyled {...props} to={to} onClick={handleClick}>
-      <HeaderUserInfoItemContent
-        initial={{
-          background: theme.colors.grayScale.gray4
-        }}
-        whileHover={{
-          background: theme.colors.grayScale.gray2
-        }}
-      >
+      <HeaderUserInfoItemContent>
         <IconProvider 
           size={18}
           fill={theme.colors.base.white}  
