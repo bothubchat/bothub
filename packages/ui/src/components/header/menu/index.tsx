@@ -27,10 +27,13 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
     };
   }, [isMenuOpen]);
 
+  const w = typeof window !== 'undefined' ? window : {
+    innerHeight: 1920,
+  };
   const menuTransition = useTransition(isMenuOpen, {
     from: {
       opacity: 0,
-      transform: `translateY(${-window.innerHeight}px)`,
+      transform: `translateY(${-w.innerHeight}px)`,
     },
     enter: {
       opacity: 1,
@@ -38,7 +41,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
     },
     leave: {
       opacity: 0,
-      transform: `translateY(${-window.innerHeight}px)`,
+      transform: `translateY(${-w.innerHeight}px)`,
     },
     config: { duration: 150 }
   });
