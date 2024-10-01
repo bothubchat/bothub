@@ -1,7 +1,7 @@
 import React, {
   useCallback, useEffect, useRef, useState 
 } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { useTransition } from '@react-spring/web';
 import {
   HeaderNavDropdownArrow, HeaderNavDropdownBody, HeaderNavDropdownHead, HeaderNavDropdownStyled 
 } from './styled';
@@ -48,6 +48,22 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
     }
   }, []);
 
+  const dropdownTransition = useTransition(isOpen, {
+    from: {
+      opacity: 0,
+      transform: 'scale(0)',
+    },
+    enter: {
+      opacity: isOpen ? 1 : 0.5,
+      transform: `scale(${isOpen ? 1 : 0.999})`
+    },
+    leave: {
+      opacity: 0,
+      transform: 'scale(0.999)',
+    },
+    config: { duration: 150 }
+  });
+
   return (
     <HeaderNavDropdownProvider setIsOpen={setIsOpen}>
       <HeaderNavDropdownStyled $inMenu={isInMenu} ref={dropdownRef}>
@@ -59,37 +75,17 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
           onClick={toggleDropdown}
         >
           {label}
-          <HeaderNavDropdownArrow 
-            initial={{
-              transform: `rotateZ(${isOpen ? -180 : 0}deg)`
-            }}
-            animate={{
-              transform: `rotateZ(${isOpen ? -180 : 0}deg)`
-            }}
-          />
+          <HeaderNavDropdownArrow $isOpen={isOpen} />
         </HeaderNavDropdownHead>
-        <AnimatePresence>
-          {isOpen && (
+        {dropdownTransition((style, item) => (
+          item && (
             <HeaderNavDropdownBody 
               $inMenu={isInMenu}
-              {...(!isInMenu ? {
-                animate: {
-                  opacity: isOpen ? 1 : 0.5,
-                  transform: `scale(${isOpen ? 1 : 0.999})`
-                },
-                exit: {
-                  opacity: 0,
-                  transform: 'scale(0.999)'
-                },
-                transition: {
-                  duration: 0.15
-                }
-              } : {})}  
+              style={style}
             >
               {children}
             </HeaderNavDropdownBody>
-          )}
-        </AnimatePresence>
+          )))}
       </HeaderNavDropdownStyled>
     </HeaderNavDropdownProvider>
   );
