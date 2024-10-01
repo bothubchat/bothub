@@ -253,7 +253,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
   `}
 
   transition: background 0.3s ease-out, 
-              box-shadow 0.3s ease-out, 
+              box-shadow 0.2s ease-out, 
               transform 0.3s ease-out;
 `;
 
