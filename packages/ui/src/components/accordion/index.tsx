@@ -22,11 +22,7 @@ export const Accordion: React.FC<AccordionProps> = ({ label, children, ...props 
         <AccordionLabel>
           {label}
         </AccordionLabel>
-        <AccordionArrow
-          animate={{
-            transform: `rotateZ(${isOpen ? 180 : 0}deg)`
-          }}
-        />
+        <AccordionArrow $isOpen={isOpen} />
       </AccordionHead>
       {isOpen && (
         <AccordionBody>

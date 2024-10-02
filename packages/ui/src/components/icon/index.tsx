@@ -1,10 +1,9 @@
 import React from 'react';
-import { AnimationProps } from 'framer-motion';
 import { IconProvider, useIconOrNull } from './context';
 import { IconStyled } from './styled';
 import { useTooltip } from '@/ui/components/tooltip';
 
-export interface IconProps extends Omit<React.ComponentProps<'svg'>, 'ref' | 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'>, AnimationProps {
+export interface IconProps extends Omit<React.ComponentProps<'svg'>, 'ref' | 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'> {
   size?: number;
   fill?: string;
   enableTooltip?: boolean;

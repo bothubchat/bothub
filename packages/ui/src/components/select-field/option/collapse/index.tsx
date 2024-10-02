@@ -71,12 +71,7 @@ export const SelectFieldCollapseOption: React.FC<SelectFieldCollapseOptionProps>
           $size={size}
         >
           <SelectFieldCollapseOptionArrow 
-            initial={{
-              transform: `rotateZ(${isOpen ? 180 : 0}deg)`
-            }}
-            animate={{
-              transform: `rotateZ(${isOpen ? 180 : 0}deg)`
-            }}
+            $isOpen={isOpen}
           />
         </SelectFieldCollapseOptionHeadSide>
       </SelectFieldCollapseOptionHead>
