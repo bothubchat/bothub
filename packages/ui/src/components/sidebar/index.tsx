@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import {
+  SidebarArrowDownButton,
+  SidebarArrowUpButton,
   SidebarBody,
   SidebarBodyContent,
   SidebarBodyScrollbarWrapper,
@@ -14,6 +16,7 @@ import {
   SidebarTop
 } from './styled';
 import { SidebarProvider } from './context';
+import { ScrollbarRef } from '../scrollbar';
 
 export type SidebarOpenEventHandler = (open: boolean) => unknown;
 
@@ -73,21 +76,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   $open={isOpen}
                 >
                   {logo}
-                  {menu}
+                  {isOpen && menu}
                 </SidebarHeaderMain>
               </SidebarHeader>
               <SidebarToolbar>
                 {buttons}
+                {!isOpen && menu}
                 {toggle}
               </SidebarToolbar>
             </SidebarHead>
             <SidebarBody>
-              <SidebarBodyScrollbarWrapper
-                disabled={!isOpen}
-              >
+              <SidebarBodyScrollbarWrapper size={!isOpen ? 0 : 6} >
+                <SidebarArrowUpButton $hidden={isOpen} />
                 <SidebarBodyContent>
                   {children}
                 </SidebarBodyContent>
+                <SidebarArrowDownButton $hidden={isOpen} />
               </SidebarBodyScrollbarWrapper>
             </SidebarBody>
           </SidebarTop>

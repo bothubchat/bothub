@@ -169,4 +169,8 @@ export * from './stable-diffusion';
 export * from './stability-ai';
 export * from './add-chat';
 export * from './add-group';
-export * from './drag-dot'
+export * from './drag-dot';
+export * from './add-folder';
+export * from './temp-chat';
+export * from './delete-chat';
+export * from './sidebar-chat';

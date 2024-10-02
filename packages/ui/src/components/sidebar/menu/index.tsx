@@ -1,13 +1,13 @@
 import React, {
-  useCallback, useEffect, useRef, useState 
+  useCallback, useEffect, useRef, useState
 } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import {
-  SidebarMenuBlock, 
-  SidebarMenuBlockContent, 
-  SidebarMenuBlockScrollbarWrapper, 
-  SidebarMenuStyled, 
-  SidebarMenuToggleButton 
+  SidebarMenuBlock,
+  SidebarMenuBlockContent,
+  SidebarMenuBlockScrollbarWrapper,
+  SidebarMenuStyled,
+  SidebarMenuToggleButton
 } from './styled';
 import { CloseIcon } from '@/ui/icons/close';
 import { MenuIcon } from '@/ui/icons/menu';
@@ -30,7 +30,7 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
   useEffect(() => {
     const clickListener = (event: Event) => {
       const sidebarEl: HTMLDivElement | null = sidebarRef.current;
-      
+
       if (sidebarEl === null) {
         return;
       }

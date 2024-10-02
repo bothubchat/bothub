@@ -1,21 +1,35 @@
-import React, { useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
-  SidebarChatList, SidebarGroupStyled, SidebarGroupName, SidebarGroupTooltip,
+  SidebarChatList,
+  SidebarGroupStyled,
+  SidebarGroupName,
   SidebarGroupSkeleton,
-  SidebarGroupArrowDown
+  SidebarGroupArrowDown,
+  SidebarGroupNameBox,
+  SidebarGroupDragHandle,
+  SidebarGroupDragFolder,
+  SidebarGroupCheckbox,
+  SidebarGroupsStyled
 } from './styled';
-import { TooltipConsumer } from '@/ui/components/tooltip';
 import { useDroppable } from '@dnd-kit/core';
+import { SwiperRef } from 'swiper/react';
+import Swiper from 'swiper';
 
 export interface SidebarGroupDefaultProps {
   name: string;
   skeleton?: false;
   id: string;
   edit?: boolean;
+  checkbox?: React.ReactNode;
+  over?: boolean;
+  open?: boolean;
+  onHandleOpen?: () => void;
 }
 
 export interface SidebarGroupSkeletonProps {
   skeleton: true;
+  open?: boolean;
+  onHandleOpen?: () => void;
 }
 
 export type SidebarGroupProps
@@ -24,23 +38,48 @@ export type SidebarGroupProps
 export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   children, ...props
 }) => {
-  const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = props.open !== undefined ? [props.open, props.onHandleOpen] : useState<boolean>(false);
   const { setNodeRef } = useDroppable({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
   });
+
+  const onHandleOpen = useCallback(() => {
+    setOpen?.(!open);
+  }, [open, setOpen]);
+
+  const over = !props.skeleton && props.edit && props.over;
   return (
-    <SidebarGroupStyled ref={!props.skeleton && props.edit ? setNodeRef : undefined} onClick={() => setOpen(prev => !prev)}>
-      <SidebarGroupName open={open}>
-        {!props.skeleton && props.name}
-        {props.skeleton && (
-          <SidebarGroupSkeleton />
+    <SidebarGroupStyled
+      $over={over}
+      ref={!props.skeleton && props.edit ? setNodeRef : undefined}
+    >
+      <SidebarGroupName
+        open={open}
+        onClick={onHandleOpen}
+      >
+        {!props.skeleton && props.edit && <SidebarGroupDragHandle />}
+        {!props.skeleton && <SidebarGroupDragFolder />}
+        {!props.skeleton && (
+          <SidebarGroupNameBox>
+            {props.name}
+          </SidebarGroupNameBox>
         )}
-        <SidebarGroupArrowDown />
+        {!props.skeleton && <SidebarGroupArrowDown />}
+        {!props.skeleton && props.edit && <SidebarGroupCheckbox />}
+        {props.skeleton && <SidebarGroupSkeleton />}
       </SidebarGroupName>
       <SidebarChatList open={open}>
         {children}
       </SidebarChatList>
     </SidebarGroupStyled>
+  )
+};
+
+export const SidebarGroups: React.FC<{ children: any }> = ({ children }) => {
+  return (
+    <SidebarGroupsStyled>
+      {children}
+    </SidebarGroupsStyled>
   )
 };
 

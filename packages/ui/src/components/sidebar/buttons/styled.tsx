@@ -8,9 +8,8 @@ export interface SidebarButtonsStyledProps {
 }
 
 export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
-  display: ${({ $open }) => (
-    $open ? 'flex' : 'none'
-  )};
+  display: flex;
+  flex-direction: ${({ $open }) => (!$open ? 'column' : 'row')};
   transition: all 0.3s;
   width: 100%;
   gap: 12px;

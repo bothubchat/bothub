@@ -27,9 +27,7 @@ import {
   SidebarMenu,
   SidebarMenuNav,
   SidebarMenuNavLink,
-  SidebarLangDropdown,
-  SidebarLangDropdownList,
-  SidebarLangDropdownItem,
+  SidebarChatCheckbox,
   SidebarUserInfoLogoutButton
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
@@ -41,6 +39,7 @@ import {
   TariffIcon,
   GearIcon
 } from '@/ui/icons';
+import { Checkbox } from '../checkbox';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
 
@@ -112,6 +111,10 @@ export const Basic: SidebarStory = {
     buttons: (
       <SidebarButtons>
         <SidebarDeleteChatsButton />
+        <SidebarDeleteChatsButton />
+        <SidebarDeleteChatsButton />
+        <SidebarDeleteChatsButton />
+        <SidebarDeleteChatsButton />
       </SidebarButtons>
     ),
     user: (
@@ -147,48 +150,53 @@ export const Basic: SidebarStory = {
     ),
     children: (
       <SidebarGroups>
-        <SidebarGroup id='chat-group-1' name="Вчера">
+        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Вчера">
           <SidebarChat
-            id='chat-1'
+            id="chat-1"
+            isDndOverflow
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
             active
+            checkbox={(
+              <SidebarChatCheckbox
+                checked
+                onValueChange={() => { }}
+              />
+            )}
             actions={(
               <SidebarChatActions>
                 <SidebarChatEditAction />
-                <SidebarChatDeleteAction />
               </SidebarChatActions>
             )}
           />
           <SidebarChat
-            id='chat-2'
+            id="chat-2"
             color="#941CF2"
             name="Придумать логотип"
             caps="1.7K"
             actions={(
               <SidebarChatActions>
                 <SidebarChatEditAction />
-                <SidebarChatDeleteAction />
               </SidebarChatActions>
             )}
           />
         </SidebarGroup>
-        <SidebarGroup id='chat-group-2' name="Предыдущие 7 дней">
+        <SidebarGroup id="chat-group-2" name="Предыдущие 7 дней">
           <SidebarChat
-            id='chat-3'
+            active
+            id="chat-3"
             color="#1CB2F2"
             name="Дипломная работа"
             caps="12.7K"
             actions={(
               <SidebarChatActions>
                 <SidebarChatEditAction />
-                <SidebarChatDeleteAction />
               </SidebarChatActions>
             )}
           />
           <SidebarChat
-            id='chat-4'
+            id="chat-4"
 
             color="#F29C1C"
             name="Реферат"
@@ -196,45 +204,41 @@ export const Basic: SidebarStory = {
             actions={(
               <SidebarChatActions>
                 <SidebarChatEditAction />
-                <SidebarChatDeleteAction />
               </SidebarChatActions>
             )}
           />
         </SidebarGroup>
-        <SidebarGroup id='chat-group-3' name="Предыдущие 7 дней">
+        <SidebarGroup id="chat-group-3" name="Предыдущие 7 дней">
           <SidebarChat
-            id='chat-5'
+            id="chat-5"
             color="#1ABB34"
             name="Для клиентов"
             caps="12.7K"
             actions={(
               <SidebarChatActions>
                 <SidebarChatEditAction />
-                <SidebarChatDeleteAction />
               </SidebarChatActions>
             )}
           />
           <SidebarChat
-            id='chat-6'
+            id="chat-6"
             color="#F2DD1C"
             name="Придумай мне резюме"
             caps="6.9K"
             actions={(
               <SidebarChatActions>
                 <SidebarChatEditAction />
-                <SidebarChatDeleteAction />
               </SidebarChatActions>
             )}
           />
           <SidebarChat
-            id='chat-7'
+            id="chat-7"
             color="#941CF2"
             name="Длинное название чата Длинное название чата Длинное название чата Длинное название чата Длинное название чата"
             caps="1.7K"
             actions={(
               <SidebarChatActions>
                 <SidebarChatEditAction />
-                <SidebarChatDeleteAction />
               </SidebarChatActions>
             )}
           />

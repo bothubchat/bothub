@@ -14,21 +14,21 @@ export const BookmarksContent = styled.div`
   gap: 20px;
   width: 100%;
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-  desktop: css`
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
       padding: 16px 20px;
       padding-bottom: 8px;
     `,
-  tablet: css`
+    tablet: css`
       padding: 16px 18px;
       padding-bottom: 8px;
     `,
-  mobile: css`
+    mobile: css`
       padding: 10px 16px;
       padding-bottom: 5px;
     `
-})}
+  })}
 `;
 
 export const BookmarkList = styled.div`
@@ -47,15 +47,15 @@ export const BookmarkListScrollbarWrapper = styled(Scrollbar).attrs({
   display: flex;
   overflow: auto;
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-  desktop: css`
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
       padding-bottom: 8px;
     `,
-  mobile: css`
+    mobile: css`
       padding-bottom: 5px;
     `
-})}
+  })}
 `;
 
 export const BookmarkListContent = styled.div`
@@ -65,7 +65,7 @@ export const BookmarkListContent = styled.div`
 
 export const AddBookmarkButton = styled(Button).attrs({ children: <Plus2Icon /> })`
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-})}
+    variant: 'dashboard',
+    merge: true,
+  })}
 `;

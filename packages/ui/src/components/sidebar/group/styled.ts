@@ -1,21 +1,34 @@
 import { css, styled } from 'styled-components';
+import { Swiper } from 'swiper/react';
 import { Typography } from '@/ui/components/typography';
 import { Tooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
-import { ArrowDownIcon } from '@/ui/icons';
+import { ArrowDownIcon, DragDotIcon } from '@/ui/icons';
+import { FolderIcon } from '@/ui/icons/folder';
+import { Checkbox } from '@/ui/components/checkbox';
 
-export const SidebarGroups = styled.div`
+export const SidebarGroupsStyled = styled.div`
   display: flex;
+  position: relative;
   flex-direction: column;
-  gap: 18px;
   width: 100%;
+  padding-top: 20px;
+  border-top: 1px solid ${({ theme }) => theme.colors.grayScale.gray7};
 `;
 
-export const SidebarGroupStyled = styled.div`
+export const SidebarGroupStyled = styled.div<{ $over?: boolean; }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
+  ${({ $over }) => {
+    if ($over) {
+      return css`
+        background: ${({ theme }) => theme.colors.grayScale.gray7};
+        border-radius: 10px;
+      `;
+    }
+  }}
 `;
 export const SidebarGroupArrowDown = styled(ArrowDownIcon)``;
 
@@ -23,24 +36,28 @@ export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medi
   color: ${({ theme }) => theme.colors.base.white};
   display: flex;
   cursor: pointer;
-  justify-content: space-between;
+  padding: 8px;
+  align-items: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
   transition: transform 0.3s;
   & > ${SidebarGroupArrowDown} {
-    transform: ${({ open }) => open ? 'rotate(180deg)' : 'rotate(0deg)'};
+    transform: ${({ open }) => (open ? 'rotate(180deg)' : 'rotate(0deg)')};
   }
-  
+`;
+
+export const SidebarGroupNameBox = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
 `;
 
 export const SidebarChatList = styled.div<{ open?: boolean; }>`
   display: flex;
   flex-direction: column;
-  margin-top: 8px;
   width: 100%;
-  gap: 6px;
   ${({ open }) => {
     if (!open) {
       return css`
@@ -50,7 +67,18 @@ export const SidebarChatList = styled.div<{ open?: boolean; }>`
     }
   }}
   transition: opacity 0.3s;
-  
+`;
+
+export const SidebarGroupCheckbox = styled(Checkbox)`
+  margin-left:10px;
+`;
+
+export const SidebarGroupDragHandle = styled(DragDotIcon)`
+  margin-right: 8px;
+`;
+
+export const SidebarGroupDragFolder = styled(FolderIcon)`
+  margin-right: 10px;
 `;
 
 export const SidebarGroupTooltip = styled(Tooltip)`

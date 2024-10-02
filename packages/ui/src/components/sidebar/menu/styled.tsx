@@ -7,7 +7,6 @@ import { Scrollbar } from '@/ui/components/scrollbar';
 export const SidebarMenuStyled = styled.div``;
 
 export const SidebarMenuToggleButton = styled(Button)`
-  margin-left: 16px;
   svg {
     pointer-events: none;
   }
@@ -24,18 +23,17 @@ export const SidebarMenuBlock: React.FC<React.ComponentProps<'div'> & AnimationP
   border-radius: 12px;
   overflow: hidden;
   padding: 16px;
-  padding-right: 8px;
   transform-origin: top center;
   ${adaptive({
-    variant: 'dashboard',
-    merge: true,
-    desktop: css`
-      right: 9px;
+  variant: 'dashboard',
+  merge: true,
+  desktop: css`
+      right: 0px;
     `,
-    tablet: css`
-      right: 7px;
+  tablet: css`
+      right: 0px;
     `
-  })}
+})}
 `;
 
 export const SidebarMenuBlockScrollbarWrapper = styled(Scrollbar).attrs({ variant: 'secondary' })`

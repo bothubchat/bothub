@@ -17,6 +17,7 @@ import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
 import { ArrowNarrowRightIcon } from '@/ui/icons/arrow-narrow-right';
 import { TariffsVariant } from './types';
 import './style.css';
+
 export interface TariffsProps extends React.PropsWithChildren {
   variant?: TariffsVariant;
 }

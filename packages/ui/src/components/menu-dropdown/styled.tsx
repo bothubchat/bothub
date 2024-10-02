@@ -1,9 +1,10 @@
-import { css, styled } from "styled-components";
-import { Button } from "@/ui/components/button";
-import { adaptive } from "@/ui/adaptive";
-import { AnimationProps, motion } from "framer-motion";
-import { Scrollbar } from "../scrollbar";
-import { Link } from "@/ui/components/link";
+import { css, styled } from 'styled-components';
+import { AnimationProps, motion } from 'framer-motion';
+import { Button } from '@/ui/components/button';
+import { adaptive } from '@/ui/adaptive';
+import { Scrollbar } from '../scrollbar';
+import { Link } from '@/ui/components/link';
+
 export const MenuDropdownStyled = styled.div``;
 
 export const MenuDropdownToggleButton = styled(Button)`
