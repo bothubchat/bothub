@@ -1,14 +1,18 @@
 import React, {
-  useState, useCallback, useEffect, useRef, useLayoutEffect 
+  useState,
+  useCallback,
+  useEffect,
+  useRef,
+  useLayoutEffect,
 } from 'react';
 import {
-  InputMessageContent, 
-  InputMessageFile, 
-  InputMessageFiles, 
-  InputMessageMain, 
+  InputMessageContent,
+  InputMessageFile,
+  InputMessageFiles,
+  InputMessageMain,
   InputMessageSendButton,
   InputMessageSendIcon,
-  InputMessageStyled, 
+  InputMessageStyled,
   InputMessageTextArea,
   InputMessageUploadFile,
   InputMessageUploadFileButton,
@@ -16,7 +20,7 @@ import {
   InputMessageVoiceIcon,
   InputMessageVoiceRecord,
   InputMessageVoiceRecordDot,
-  InputMessageVoiceRecordTimeText
+  InputMessageVoiceRecordTimeText,
 } from './styled';
 import { ChipImage } from '@/ui/components/chip';
 import { PdfIcon } from '@/ui/icons/pdf';
@@ -26,16 +30,23 @@ import { XlsIcon } from '@/ui/icons/xls';
 import { IInputMessageFile } from './types';
 import { IconProvider } from '@/ui/components/icon';
 import {
-  formatUploadFiles, getPreviewUrlForFile, formatSeconds 
+  formatUploadFiles,
+  getPreviewUrlForFile,
+  formatSeconds,
 } from './utils';
 import { AttachFileIcon } from '@/ui/icons/attach-file';
 import { useTheme } from '@/ui/theme';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
-export type InputMessageFilesChangeEventHandler = (files: IInputMessageFile[]) => unknown;
+export type InputMessageFilesChangeEventHandler = (
+  files: IInputMessageFile[]
+) => unknown;
 
-export type InputMessageSendEventHandler = (message: string, files: IInputMessageFile[]) => unknown;
+export type InputMessageSendEventHandler = (
+  message: string,
+  files: IInputMessageFile[]
+) => unknown;
 
 export type InputMessageVoiceEventHandler = (blob: Blob) => unknown;
 
@@ -44,7 +55,8 @@ export type InputMessageErrorEvent = {
   payload: File[];
 };
 
-export interface InputMessageProps extends Omit<React.ComponentProps<'textarea'>, 'value' | 'onChange'> {
+export interface InputMessageProps
+  extends Omit<React.ComponentProps<'textarea'>, 'value' | 'onChange'> {
   className?: string;
   placeholder?: string;
   message?: string;
@@ -55,6 +67,7 @@ export interface InputMessageProps extends Omit<React.ComponentProps<'textarea'>
   uploadFileAccept?: string;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
+  useAlternateKey?: boolean;
   autoFocus?: boolean;
   voice?: boolean;
   onChange?: InputMessageChangeEventHandler;
@@ -66,181 +79,262 @@ export interface InputMessageProps extends Omit<React.ComponentProps<'textarea'>
 }
 
 export const InputMessage: React.FC<InputMessageProps> = ({
-  className, placeholder, message: initialMessage, files: initialFiles,
-  disabled = false, sendDisabled = false, textAreaDisabled = false, 
-  uploadFileLimit = 5, hideUploadFile = false, uploadFileDisabled = false, uploadFileAccept,
-  autoFocus = true, voice = false,
-  onChange, onFilesChange, onTextAreaChange, onSend, onFocus, onBlur, onVoice,
+  className,
+  placeholder,
+  message: initialMessage,
+  files: initialFiles,
+  disabled = false,
+  sendDisabled = false,
+  textAreaDisabled = false,
+  useAlternateKey = false,
+  uploadFileLimit = 5,
+  hideUploadFile = false,
+  uploadFileDisabled = false,
+  uploadFileAccept,
+  autoFocus = true,
+  voice = false,
+  onChange,
+  onFilesChange,
+  onTextAreaChange,
+  onSend,
+  onFocus,
+  onBlur,
+  onVoice,
   emitError,
   ...props
 }) => {
   const theme = useTheme();
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [textareaHeight, setTextareaHeight] = useState('calc(var(--bothub-scale, 1) * 18px)');
+  const [textareaHeight, setTextareaHeight] = useState(
+    'calc(var(--bothub-scale, 1) * 18px)'
+  );
 
-  const [message, setMessage] = typeof initialMessage === 'string' ? [initialMessage, onChange] : useState('');
-  const [files, setFiles] = Array.isArray(initialFiles) 
+  const [message, setMessage] = typeof initialMessage === 'string'
+    ? [initialMessage, onChange]
+    : useState('');
+  const [files, setFiles] = Array.isArray(initialFiles)
     ? [initialFiles, onFilesChange]
     : useState<IInputMessageFile[]>([]);
   const [isFocus, setIsFocus] = useState(!disabled && autoFocus);
   const [dragActive, setDragActive] = useState(false);
   const [isVoiceRecording, setIsVoiceRecording] = useState(false);
-  const [voiceRecordingTime, setVoiceRecordingTime] = useState<number | null>(null);
+  const [voiceRecordingTime, setVoiceRecordingTime] = useState<number | null>(
+    null
+  );
   const voiceMediaRecorderRef = useRef<MediaRecorder | null>(null);
   const voiceMediaStreamRef = useRef<MediaStream | null>(null);
   const voiceChunksRef = useRef<Blob[]>([]);
   const voiceTimerRef = useRef<number | null>(null);
   const voicePressedRef = useRef(false);
- 
-  const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>((event) => {
-    setIsFocus(true);
-    onFocus?.(event);
-  }, [onFocus]);
 
-  const handleBlur = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>((event) => {
-    setIsFocus(false);
-    onBlur?.(event);
-  }, [onBlur]);
+  const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
+    (event) => {
+      setIsFocus(true);
+      onFocus?.(event);
+    },
+    [onFocus]
+  );
 
-  const handleChange = useCallback<React.ChangeEventHandler<HTMLTextAreaElement>>((event) => {
-    setMessage?.(event.target.value);
-    onTextAreaChange?.(event);
-  }, [setMessage, onTextAreaChange]);
+  const handleBlur = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
+    (event) => {
+      setIsFocus(false);
+      onBlur?.(event);
+    },
+    [onBlur]
+  );
 
-  const handleInput = useCallback<React.ReactEventHandler<HTMLTextAreaElement>>((event) => {
-    const textareaEl: HTMLElement | null = textareaRef.current;
+  const handleChange = useCallback<
+  React.ChangeEventHandler<HTMLTextAreaElement>
+  >(
+    (event) => {
+      setMessage?.(event.target.value);
+      onTextAreaChange?.(event);
+    },
+    [setMessage, onTextAreaChange]
+  );
 
-    if (textareaEl === null) {
-      return;
-    }
+  const handleInput = useCallback<React.ReactEventHandler<HTMLTextAreaElement>>(
+    (event) => {
+      const textareaEl: HTMLElement | null = textareaRef.current;
 
-    textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 18px)';
-    textareaEl.style.height = `${event.currentTarget.scrollHeight}px`;
-    textareaEl.focus();
-
-    setTextareaHeight(`${event.currentTarget.scrollHeight}px`);
-  }, []);
-  
-  const handleSideUploadFiles = useCallback(async (uploadFiles: File[]) => {
-    if (!uploadFiles.length) return;
-    const newFiles: IInputMessageFile[] = [];
-    const rejectedFiles: File[] = [];
-    const previewsUrls: (string | null)[] = await Promise.all(
-      uploadFiles?.map(getPreviewUrlForFile)
-    );
-    for (const [idx, file] of uploadFiles.entries()) {
-      const isValidFile = uploadFileAccept?.includes(file.type) ?? true;
-
-      if (isValidFile) {
-        newFiles.push({
-          previewUrl: previewsUrls[idx],
-          name: file.name,
-          native: file
-        });
-      } else {
-        rejectedFiles.push(file);
+      if (textareaEl === null) {
+        return;
       }
-    }
-    if (rejectedFiles.length > 0) {
-      emitError?.({ name: 'WRONG_FILES', payload: rejectedFiles });
-    }
-    if (newFiles?.length > 0) {
-      setFiles?.([...files, ...newFiles].slice(0, uploadFileLimit));
-    }
-  }, [uploadFileAccept, emitError, uploadFileLimit, files]);
 
-  const handlePaste = useCallback<React.ClipboardEventHandler>(async (event) => {
-    if (!uploadFileDisabled && event.clipboardData.files.length > 0) {
-      event.preventDefault();
-      await handleSideUploadFiles([...event.clipboardData.files]);
-    }
-  }, [handleSideUploadFiles, uploadFileDisabled]);
+      textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 18px)';
+      textareaEl.style.height = `${event.currentTarget.scrollHeight}px`;
+      textareaEl.focus();
 
-  const handleUploadFileChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
+      setTextareaHeight(`${event.currentTarget.scrollHeight}px`);
+    },
+    []
+  );
+
+  const handleSideUploadFiles = useCallback(
+    async (uploadFiles: File[]) => {
+      if (!uploadFiles.length) return;
+      const newFiles: IInputMessageFile[] = [];
+      const rejectedFiles: File[] = [];
+      const previewsUrls: (string | null)[] = await Promise.all(
+        uploadFiles?.map(getPreviewUrlForFile)
+      );
+      for (const [idx, file] of uploadFiles.entries()) {
+        const isValidFile = uploadFileAccept?.includes(file.type) ?? true;
+
+        if (isValidFile) {
+          newFiles.push({
+            previewUrl: previewsUrls[idx],
+            name: file.name,
+            native: file,
+          });
+        } else {
+          rejectedFiles.push(file);
+        }
+      }
+      if (rejectedFiles.length > 0) {
+        emitError?.({ name: 'WRONG_FILES', payload: rejectedFiles });
+      }
+      if (newFiles?.length > 0) {
+        setFiles?.([...files, ...newFiles].slice(0, uploadFileLimit));
+      }
+    },
+    [uploadFileAccept, emitError, uploadFileLimit, files]
+  );
+
+  const handlePaste = useCallback<React.ClipboardEventHandler>(
+    async (event) => {
+      if (!uploadFileDisabled && event.clipboardData.files.length > 0) {
+        event.preventDefault();
+        await handleSideUploadFiles([...event.clipboardData.files]);
+      }
+    },
+    [handleSideUploadFiles, uploadFileDisabled]
+  );
+
+  const handleUploadFileChange = useCallback<
+  React.ChangeEventHandler<HTMLInputElement>
+  >(
     async (event) => {
       if (!setFiles || !event.target.files) {
         return;
       }
       const formattedFiles = await formatUploadFiles([
-        ...files.map(({ native }) => native), 
-        ...event.target.files
+        ...files.map(({ native }) => native),
+        ...event.target.files,
       ]);
       setFiles(formattedFiles.slice(0, uploadFileLimit));
-    }, 
+    },
     [files, setFiles, uploadFileLimit]
   );
 
-  const handleDeleteFile = useCallback((file: IInputMessageFile) => {
-    setFiles?.(
-      files.filter(({ name }) => name !== file.name)
-    );
-  }, [setFiles, files]);
+  const handleDeleteFile = useCallback(
+    (file: IInputMessageFile) => {
+      setFiles?.(files.filter(({ name }) => name !== file.name));
+    },
+    [setFiles, files]
+  );
 
-  const handleSend = useCallback<React.MouseEventHandler<HTMLButtonElement>>((event) => {
-    event.stopPropagation();
+  const handleSend = useCallback<React.MouseEventHandler<HTMLButtonElement>>(
+    (event) => {
+      event.stopPropagation();
 
-    onSend?.(message, files);
-    setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
-  }, [message, files, onSend, setMessage, setFiles]);
+      onSend?.(message, files);
+      setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
+    },
+    [message, files, onSend, setMessage, setFiles]
+  );
 
-  const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    event.stopPropagation();
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      event.stopPropagation();
 
-    if (isFocus && event.key === 'Enter') {
-      if (event.shiftKey || event.ctrlKey) {
-        if (message.trim() === '') {
-          event.preventDefault();
+      if (isFocus && event.key === 'Enter') {
+        switch (useAlternateKey) {
+          case true:
+            if (event.shiftKey || event.ctrlKey) {
+              event.preventDefault();
+
+              onSend?.(message, files);
+              setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
+              break;
+            } else {
+              if (message.trim() === '') {
+                event.preventDefault();
+              } else {
+                setMessage?.(message);
+              }
+              break;
+            }
+          case false:
+            if (event.shiftKey || event.ctrlKey) {
+              if (message.trim() === '') {
+                event.preventDefault();
+              }
+              if (event.ctrlKey) {
+                setMessage?.(`${message}\n`);
+              }
+              break;
+            } else {
+              event.preventDefault();
+
+              onSend?.(message, files);
+              setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
+              break;
+            }
         }
-        if (event.ctrlKey) {
-          setMessage?.(`${message}\n`);
-        }
-      } else {
-        event.preventDefault();
-
-        onSend?.(message, files);
-        setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
       }
-    }
-  }, [isFocus, message, files, onSend, setMessage, setFiles]);
+    },
+    [isFocus, message, files, onSend, setMessage, setFiles]
+  );
 
   const handleClick = useCallback(() => {
     textareaRef.current?.focus();
   }, []);
 
-  const handleUploadFileClick = useCallback<React.MouseEventHandler<HTMLDivElement>>((event) => {
+  const handleUploadFileClick = useCallback<
+  React.MouseEventHandler<HTMLDivElement>
+  >((event) => {
     event.stopPropagation();
   }, []);
 
-  const handleVoiceRecordClick = useCallback<React.MouseEventHandler>((event) => {
-    event.preventDefault();
-    event.stopPropagation();
-  }, []);
+  const handleVoiceRecordClick = useCallback<React.MouseEventHandler>(
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+    },
+    []
+  );
 
-  const handleVoiceRecordStart = useCallback<React.ReactEventHandler>(async (event) => {
-    voicePressedRef.current = true;
-    event.stopPropagation();
+  const handleVoiceRecordStart = useCallback<React.ReactEventHandler>(
+    async (event) => {
+      voicePressedRef.current = true;
+      event.stopPropagation();
 
-    const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    const mediaRecorder = new MediaRecorder(mediaStream, { mimeType: 'audio/webm' });
+      const mediaStream = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
+      const mediaRecorder = new MediaRecorder(mediaStream, {
+        mimeType: 'audio/webm',
+      });
 
-    if (!voicePressedRef.current) {
-      return;
-    }
+      if (!voicePressedRef.current) {
+        return;
+      }
 
-    mediaRecorder.start();
+      mediaRecorder.start();
 
-    voiceMediaRecorderRef.current = mediaRecorder;
-    voiceMediaStreamRef.current = mediaStream;
-    voiceTimerRef.current = window.setInterval(() => {
-      setVoiceRecordingTime((recordingTime) => (
-        (recordingTime ?? 0) + 0.1
-      ));
-    }, 100);
+      voiceMediaRecorderRef.current = mediaRecorder;
+      voiceMediaStreamRef.current = mediaStream;
+      voiceTimerRef.current = window.setInterval(() => {
+        setVoiceRecordingTime((recordingTime) => (recordingTime ?? 0) + 0.1);
+      }, 100);
 
-    setIsVoiceRecording(true);
-    setVoiceRecordingTime(0);
-  }, [voicePressedRef.current, voiceChunksRef.current]);
+      setIsVoiceRecording(true);
+      setVoiceRecordingTime(0);
+    },
+    [voicePressedRef.current, voiceChunksRef.current]
+  );
 
   const stopVoiceRecording = useCallback(() => {
     const mediaRecorder = voiceMediaRecorderRef.current;
@@ -258,11 +352,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
     window.clearInterval(timer);
   }, [
-    isVoiceRecording, 
-    voiceMediaRecorderRef.current, 
-    voiceMediaStreamRef.current, 
-    voiceTimerRef.current
-  ]); 
+    isVoiceRecording,
+    voiceMediaRecorderRef.current,
+    voiceMediaStreamRef.current,
+    voiceTimerRef.current,
+  ]);
 
   const handleVoiceRecordEnd = useCallback(async () => {
     voicePressedRef.current = false;
@@ -328,12 +422,12 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       const blob = new Blob(voiceChunksRef.current, { type: 'audio/webm' });
 
       await onVoice?.(blob);
-  
+
       voiceMediaRecorderRef.current = null;
       voiceMediaStreamRef.current = null;
       voiceChunksRef.current = [];
       voiceTimerRef.current = null;
-  
+
       setIsVoiceRecording(false);
       setVoiceRecordingTime(null);
     };
@@ -345,7 +439,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
     return () => {
       if (mediaRecorder) {
-        mediaRecorder.removeEventListener('dataavailable', dataAvailableListener);
+        mediaRecorder.removeEventListener(
+          'dataavailable',
+          dataAvailableListener
+        );
         mediaRecorder.removeEventListener('stop', stopListener);
       }
 
@@ -380,25 +477,31 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       }}
     >
       <InputMessageContent>
-        {(!hideUploadFile && !isVoiceRecording) && (
-          <InputMessageUploadFile
-            onClick={handleUploadFileClick}
-          >
+        {!hideUploadFile && !isVoiceRecording && (
+          <InputMessageUploadFile onClick={handleUploadFileClick}>
             <InputMessageUploadFileInput
               key={files.length}
               type="file"
               accept={uploadFileAccept}
               multiple
-              disabled={files.length >= uploadFileLimit || disabled || uploadFileDisabled}
+              disabled={
+                files.length >= uploadFileLimit
+                || disabled
+                || uploadFileDisabled
+              }
               onChange={handleUploadFileChange}
             />
-            <InputMessageUploadFileButton 
-              disabled={files.length >= uploadFileLimit || disabled || uploadFileDisabled}
+            <InputMessageUploadFileButton
+              disabled={
+                files.length >= uploadFileLimit
+                || disabled
+                || uploadFileDisabled
+              }
             />
           </InputMessageUploadFile>
         )}
         <InputMessageMain>
-          {(isVoiceRecording && voiceRecordingTime !== null) && (
+          {isVoiceRecording && voiceRecordingTime !== null && (
             <InputMessageVoiceRecord>
               <InputMessageVoiceRecordDot />
               <InputMessageVoiceRecordTimeText>
@@ -413,12 +516,13 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                   {files.map((file) => {
                     let iconNode: React.ReactNode;
 
-                    if (file.previewUrl && (file.name.match(/.png$/i) || file.name.match(/.jpg$/i) || file.name.match(/.jpeg$/i))) {
-                      iconNode = (
-                        <ChipImage
-                          src={file.previewUrl}
-                        />
-                      );
+                    if (
+                      file.previewUrl
+                      && (file.name.match(/.png$/i)
+                        || file.name.match(/.jpg$/i)
+                        || file.name.match(/.jpeg$/i))
+                    ) {
+                      iconNode = <ChipImage src={file.previewUrl} />;
                     } else if (file.name.match(/.txt$/i)) {
                       iconNode = <TxtIcon />;
                     } else if (file.name.match(/.docx$/i)) {
@@ -432,11 +536,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                     }
 
                     iconNode = (
-                      <IconProvider
-                        size={18}
-                      >
-                        {iconNode}
-                      </IconProvider>
+                      <IconProvider size={18}>{iconNode}</IconProvider>
                     );
 
                     return (
@@ -445,17 +545,19 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                         start={iconNode}
                         onDelete={handleDeleteFile.bind(null, file)}
                       >
-                        {file.name.length > 20 ? `...${file.name.slice(-20)}` : file.name}
+                        {file.name.length > 20
+                          ? `...${file.name.slice(-20)}`
+                          : file.name}
                       </InputMessageFile>
                     );
                   })}
                 </InputMessageFiles>
               )}
-              {(
-                !textAreaDisabled 
-            || (textAreaDisabled && placeholder && files.length !== uploadFileLimit)
-            || (textAreaDisabled && message)
-              ) && (
+              {(!textAreaDisabled
+                || (textAreaDisabled
+                  && placeholder
+                  && files.length !== uploadFileLimit)
+                || (textAreaDisabled && message)) && (
                 <InputMessageTextArea
                   $disabled={disabled}
                   {...props}
@@ -465,7 +567,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                   disabled={disabled || textAreaDisabled}
                   style={{
                     ...props.style,
-                    height: textareaHeight
+                    height: textareaHeight,
                   }}
                   autoFocus={!disabled && autoFocus}
                   onFocus={handleFocus}
@@ -478,7 +580,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             </>
           )}
         </InputMessageMain>
-        {(!voice || message || files.length > 0) ? (
+        {!voice || message || files.length > 0 ? (
           <InputMessageSendButton
             disabled={disabled || sendDisabled}
             onClick={handleSend}
@@ -488,7 +590,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         ) : (
           <InputMessageSendButton
             {...(isVoiceRecording && {
-              color: theme.colors.critic
+              color: theme.colors.critic,
             })}
             disabled={disabled || sendDisabled}
             onMouseLeave={handleVoiceRecordEnd}

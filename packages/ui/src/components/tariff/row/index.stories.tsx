@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { TariffCardRow } from '.';
-import { TariffCardStyledGiveCaps, TariffCardGiveCapsBadge, TariffCardGiveCapsText, TariffCardStyledDescription, TariffCardStyledDescriptionIcon, TariffCardGiveCapsBadgeText } from './styled';
 
 export type TariffCardMeta = Meta<typeof TariffCardRow>;
 

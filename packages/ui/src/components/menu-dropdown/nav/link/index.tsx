@@ -43,4 +43,3 @@ export const MenuDropdownNavLink: React.FC<MenuDropdownNavLinkProps> = ({
     </MenuDropdownNavLinkStyled>
   );
 };
-

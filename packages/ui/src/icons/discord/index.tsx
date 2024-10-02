@@ -27,4 +27,4 @@ export const DiscordIcon = icon(({ ...props }) => (
       </clipPath>
     </defs>
   </Icon>
-))
+));
