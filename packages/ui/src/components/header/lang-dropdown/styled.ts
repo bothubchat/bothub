@@ -19,14 +19,9 @@ export const HeaderLangDropdownTogglerText = styled(Typography)`
   pointer-events: none;
 `;
 
-export const HeaderLangDropdownTogglerArrow = styled(ArrowDownIcon).attrs({ size: 16 })<{
-  $isOpen?: boolean;
-}>`
+export const HeaderLangDropdownTogglerArrow = styled(ArrowDownIcon).attrs({ size: 16 })`
   pointer-events: none;
   transition: transform 0.2s ease-in-out;
-  ${({ $isOpen }) => css`
-    transform: ${$isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'};
-  `}
 `;
 
 export const HeaderLangDropdownToggler = styled.button<{ $open: boolean }>`

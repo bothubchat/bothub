@@ -83,7 +83,9 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
               {lang}
             </SidebarLangDropdownTogglerText>
             <SidebarLangDropdownTogglerArrow
-              $isOpen={isOpen}
+              style={{
+                transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'
+              }}
             />
           </SidebarLangDropdownToggler>
         </IconProvider>

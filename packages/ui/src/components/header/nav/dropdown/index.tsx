@@ -75,7 +75,11 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
           onClick={toggleDropdown}
         >
           {label}
-          <HeaderNavDropdownArrow $isOpen={isOpen} />
+          <HeaderNavDropdownArrow 
+            style={{
+              transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'
+            }} 
+          />
         </HeaderNavDropdownHead>
         {dropdownTransition((style, item) => (
           item && (

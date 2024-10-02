@@ -22,7 +22,11 @@ export const Accordion: React.FC<AccordionProps> = ({ label, children, ...props 
         <AccordionLabel>
           {label}
         </AccordionLabel>
-        <AccordionArrow $isOpen={isOpen} />
+        <AccordionArrow 
+          style={{
+            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+          }}
+        />
       </AccordionHead>
       {isOpen && (
         <AccordionBody>

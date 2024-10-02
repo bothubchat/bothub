@@ -92,9 +92,8 @@ export const SelectFieldCollapseOptionArrow = styled(ArrowDownIcon).attrs(
     size: 16,
     fill: theme.colors.base.white
   })
-)<{ $isOpen: boolean }>`
+)`
   transition: transform 0.2s ease-in-out;
-  transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0)')};
 `;
 
 export const SelectFieldCollapseOptionBody = styled.div``;
