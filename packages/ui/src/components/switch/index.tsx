@@ -1,5 +1,4 @@
-import React, { useMemo } from 'react';
-import { nanoid } from 'nanoid';
+import React, { useId, useMemo } from 'react';
 import * as S from './styled';
 
 type BaseSwitchProps = {
@@ -23,7 +22,8 @@ export const Switch = ({
   className,
   ...inputProps
 }: SwitchProps) => {
-  const elId = useMemo(() => id || nanoid(), [id]);
+  const localId = useId();
+  const elId = useMemo(() => id || localId, [id, localId]);
 
   return (
     <S.Wrapper className={className}>
