@@ -1,4 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react';
+import { SidebarThemeSwitcherMode, ISidebarThemeSwitcherItem } from './types';
+import { DarkIcon } from '@/ui/icons/dark';
+import { LightIcon } from '@/ui/icons/light';
+import { IconProvider } from '@/ui/components/icon';
 import {
   SidebarThemeSwitcherIcon, 
   SidebarThemeSwitcherItem, 
@@ -7,10 +11,6 @@ import {
   SidebarThemeSwitcherList, 
   SidebarThemeSwitcherStyled 
 } from './styled';
-import { SidebarThemeSwitcherMode, ISidebarThemeSwitcherItem } from './types';
-import { DarkIcon } from '@/ui/icons/dark';
-import { LightIcon } from '@/ui/icons/light';
-import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { useSidebar } from '../context';
 
@@ -60,6 +60,7 @@ export const SidebarThemeSwitcher: React.FC<SidebarThemeSwitcherProps> = ({
       onClick={toggleMode}
     >
       <SidebarThemeSwitcherList>
+        <SidebarThemeSwitcherItemBackground $isLight={activeMode === 'light'} />
         {items.map(({ mode }) => {
           const isActive = mode === activeMode;
           let fill: string;
@@ -80,17 +81,6 @@ export const SidebarThemeSwitcher: React.FC<SidebarThemeSwitcherProps> = ({
             <SidebarThemeSwitcherItem
               key={mode}
             >
-              {isActive && (
-                <SidebarThemeSwitcherItemBackground 
-                  layoutId="BOTHUB_THEME_SWITCHER_BG"
-                  transition={{
-                    layout: {
-                      duration: 0.2,
-                      ease: 'easeOut',
-                    },
-                  }}
-                />
-              )}
               <SidebarThemeSwitcherItemContent>
                 <IconProvider
                   size={20}

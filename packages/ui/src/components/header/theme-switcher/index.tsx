@@ -61,6 +61,7 @@ export const HeaderThemeSwitcher: React.FC<HeaderThemeSwitcherProps> = ({
       <HeaderThemeSwitcherList
         $inMenu={isInMenu}
       >
+        <HeaderThemeSwitcherItemBackground $isLight={mode === 'light'} />
         {items.map(({ mode }) => {
           const isActive = mode === activeMode;
           let fill: string;
@@ -77,29 +78,11 @@ export const HeaderThemeSwitcher: React.FC<HeaderThemeSwitcherProps> = ({
             fill = theme.colors.grayScale.gray1;
           }
 
-          let layoutId: string;
-          if (isInMenu) {
-            layoutId = 'BOTHUB_THEME_SWITCHER_MENU_BG';
-          } else {
-            layoutId = 'BOTHUB_THEME_SWITCHER_BG';
-          }
-
           return (
             <HeaderThemeSwitcherItem
               $inMenu={isInMenu}
               key={mode}
             >
-              {isActive && (
-                <HeaderThemeSwitcherItemBackground 
-                  layoutId={layoutId}
-                  transition={{
-                    layout: {
-                      duration: 0.2,
-                      ease: 'easeOut',
-                    },
-                  }}
-                />
-              )}
               <HeaderThemeSwitcherItemContent
                 $inMenu={isInMenu}
               >

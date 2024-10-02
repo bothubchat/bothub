@@ -1,6 +1,4 @@
 import { styled, css } from 'styled-components';
-import { HTMLMotionProps, motion } from 'framer-motion';
-import React from 'react';
 import { DarkIcon } from '@/ui/icons/dark';
 import { adaptive } from '@/ui/adaptive';
 
@@ -69,6 +67,7 @@ export const HeaderThemeSwitcherList = styled.span<HeaderThemeSwitcherListProps>
   ${({ $inMenu }) => $inMenu && css`
     width: 100%;
   `}
+  position: relative;
 `;
 
 export interface HeaderThemeSwitcherItemProps {
@@ -88,16 +87,21 @@ export const HeaderThemeSwitcherItem = styled.span<HeaderThemeSwitcherItemProps>
   `}
 `;
 
-export const HeaderThemeSwitcherItemBackground: React.FC<HTMLMotionProps<'span'>> = styled(motion.span)`
+export const HeaderThemeSwitcherItemBackground = styled.span<{
+  $isLight: boolean;
+}>`
   display: inline-flex;
   position: absolute;
   top: 0px;
   bottom: 0px;
-  left: 0px;
+  left: ${({ $isLight }) => ($isLight ? '0%' : 'calc(50% + 3px)')};
   right: 0px;
+  width: calc(50% - 3px);
+  height: 100%;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  border-radius: inherit;
+  border-radius: 12px;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
+  transition: left 0.2s ease-out, background 0.2s ease-out;
 `;
 
 export interface HeaderThemeSwitcherItemContentProps {
