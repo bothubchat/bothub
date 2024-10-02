@@ -11,14 +11,9 @@ export const HeaderNavDropdownStyled = styled.div<{ $inMenu: boolean }>`
   `}
 `;
 
-export const HeaderNavDropdownArrow = styled(ArrowDownIcon)<{
-  $isOpen?: boolean;
-}>`
+export const HeaderNavDropdownArrow = styled(ArrowDownIcon)`
   pointer-events: none;
   transition: transform 0.2s ease-in-out;
-  ${({ $isOpen }) => css`
-    transform: ${$isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'};
-  `}
 `;
 
 export const HeaderNavDropdownHead = styled(HeaderNavLinkStyled)<{ $active: boolean, $inMenu: boolean }>`

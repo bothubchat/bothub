@@ -77,7 +77,9 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
               {lang}
             </HeaderLangDropdownTogglerText>
             <HeaderLangDropdownTogglerArrow
-              $isOpen={isOpen}
+              style={{
+                transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'
+              }}
             />
           </HeaderLangDropdownToggler>
         </IconProvider>

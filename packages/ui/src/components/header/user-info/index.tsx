@@ -102,7 +102,11 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
               </HeaderUserInfoTokens>
             </HeaderUserInfoInfoText>
           </HeaderUserInfoInfo>
-          <HeaderUserInfoArrow $isOpen={isOpen} />
+          <HeaderUserInfoArrow 
+            style={{
+              transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'
+            }}
+          />
         </HeaderUserInfoHead>
         {userInfoTransition((style, item) => (
           item && (

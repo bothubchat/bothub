@@ -20,13 +20,9 @@ export const SidebarLangDropdownTogglerText = styled(Typography)`
   pointer-events: none;
 `;
 
-export const SidebarLangDropdownTogglerArrow = styled(ArrowDownIcon).attrs({ size: 16 })<{
-  $isOpen?: boolean;
-}>`
+export const SidebarLangDropdownTogglerArrow = styled(ArrowDownIcon).attrs({ size: 16 })`
   pointer-events: none;
   transition: transform 0.15s ease-in-out;
-  ${({ $isOpen }) => css`
-    transform: ${$isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'}`};
 `;
 
 export const SidebarLangDropdownToggler = styled.button<{ $open: boolean }>`

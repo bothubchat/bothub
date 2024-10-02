@@ -480,7 +480,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                   {loading && (
                     <SelectFieldLoader />
                   )}
-                  <SelectFieldArrow $isOpen={isOpen} />
+                  <SelectFieldArrow 
+                    style={{
+                      transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)'
+                    }} 
+                  />
                 </SelectFieldInputSide>
               </SelectFieldInput>
             )}

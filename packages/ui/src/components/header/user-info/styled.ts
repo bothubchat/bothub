@@ -55,14 +55,9 @@ export const HeaderUserInfoName = styled(Typography).attrs({ variant: 'body-s-me
 
 export const HeaderUserInfoTokens = styled(Typography).attrs({ variant: 'body-xs-regular' })``;
 
-export const HeaderUserInfoArrow = styled(ArrowDownIcon)<{
-  $isOpen?: boolean;
-}>`
+export const HeaderUserInfoArrow = styled(ArrowDownIcon)`
   pointer-events: none;
   transition: transform 0.15s ease-in-out;
-  ${({ $isOpen }) => css`
-    transform: ${$isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'};
-  `}
 `;
 
 export interface HeaderUserInfoBodyProps {

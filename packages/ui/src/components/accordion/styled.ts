@@ -33,11 +33,8 @@ export const AccordionHead = styled.div`
 
 export const AccordionLabel = styled(Typography).attrs({ variant: 'body-m-semibold' })``;
 
-export const AccordionArrow = styled(Arrow2DownIcon).attrs({ size: 24 })<{
-  $isOpen: boolean;
-}>`
+export const AccordionArrow = styled(Arrow2DownIcon).attrs({ size: 24 })`
   transition: transform 0.2s ease-in-out;
-  transform: ${({ $isOpen }) => ($isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)')};
 `;
 
 export const AccordionBody = styled.div`
