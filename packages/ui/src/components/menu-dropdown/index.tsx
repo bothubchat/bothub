@@ -1,15 +1,25 @@
-import { MenuIcon, CloseIcon } from "@/ui/icons";
-import { MenuDropdownProvider } from "./context";
-import { useState, useCallback, useRef, useEffect } from "react";
-import { MenuDropdownBlock, MenuDropdownBlockContent, MenuDropdownBlockScrollbarWrapper, MenuDropdownStyled, MenuDropdownToggleButton } from "./styled";
-import { AnimatePresence } from "framer-motion";
+import {
+  useState, useCallback, useRef, useEffect 
+} from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { MenuIcon, CloseIcon } from '@/ui/icons';
+import { MenuDropdownProvider } from './context';
+import {
+  MenuDropdownBlock, 
+  MenuDropdownBlockContent, 
+  MenuDropdownBlockScrollbarWrapper, 
+  MenuDropdownStyled, 
+  MenuDropdownToggleButton 
+} from './styled';
 
 export type MenuDropdownProps = React.ComponentProps<'div'> & {
   disabled?: boolean;
   $isAdmin?: boolean;
 };
 
-export const MenuDropdown: React.FC<MenuDropdownProps> = ({ children, disabled = false, $isAdmin = false, ...props }) => {
+export const MenuDropdown: React.FC<MenuDropdownProps> = ({
+  children, disabled = false, $isAdmin = false, ...props 
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const menuDropdownRef = useRef<HTMLDivElement>(null);
