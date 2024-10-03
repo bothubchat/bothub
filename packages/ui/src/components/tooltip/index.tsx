@@ -1,10 +1,13 @@
-import React, {
-  useCallback, useEffect, useRef, useState
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Portal } from '@/ui/components/portal';
 import {
-  TooltipBlock, TooltipCode, TooltipLabel, TooltipLabelBold, TooltipMarkdown, TooltipStyled
+  TooltipBlock,
+  TooltipCode,
+  TooltipLabel,
+  TooltipLabelBold,
+  TooltipMarkdown,
+  TooltipStyled,
 } from './styled';
 import { TooltipArrow } from './arrow';
 import { TooltipProvider } from './context';
@@ -17,6 +20,7 @@ export interface TooltipProps extends React.PropsWithChildren {
   placementX?: number;
   placementY?: number;
   align?: TooltipAlign;
+  inverted?: boolean;
   label?: React.ReactNode;
   disabled?: boolean;
   disableHiddenAnimation?: boolean;
@@ -24,8 +28,18 @@ export interface TooltipProps extends React.PropsWithChildren {
 }
 
 export const Tooltip: React.FC<TooltipProps> = ({
-  className, variant = 'primary', placement = 'top', placementX = 0, placementY = -5, align = 'auto', label,
-  disabled = false, disableHiddenAnimation = false, markdown = false, children
+  className,
+  variant = 'primary',
+  placement = 'top',
+  placementX = 0,
+  placementY = -5,
+  align = 'auto',
+  inverted = false,
+  label,
+  disabled = false,
+  disableHiddenAnimation = false,
+  markdown = false,
+  children,
 }) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [hoveredElement, sethoveredElement] = useState<Element | null>();
@@ -42,13 +56,14 @@ export const Tooltip: React.FC<TooltipProps> = ({
       return [0, 0];
     }
 
-    const {
-      width: tooltipWidth, height: tooltipHeight
-    } = tooltipEl.getBoundingClientRect();
+    const { width: tooltipWidth, height: tooltipHeight } =
+      tooltipEl.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
     const { width: elWidth } = rect;
     const elX = rect.left + window.scrollX;
     const elY = rect.top + window.scrollY;
+
+    const elBottomY = rect.bottom + window.scrollY;
 
     let x: number;
     switch (placement) {
@@ -59,7 +74,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             x = elX;
             break;
           case 'center':
-            x = elX - (tooltipWidth / 2);
+            x = elX - tooltipWidth / 2;
             break;
           case 'right':
             x = elX - tooltipWidth;
@@ -69,14 +84,14 @@ export const Tooltip: React.FC<TooltipProps> = ({
       case 'top':
         switch (align) {
           case 'left':
-            x = elX + (elWidth / 2);
+            x = elX + elWidth / 2;
             break;
           case 'center':
           case 'auto':
-            x = elX + (elWidth / 2) - (tooltipWidth / 2);
+            x = elX + elWidth / 2 - tooltipWidth / 2;
             break;
           case 'right':
-            x = elX + (elWidth / 2) - tooltipWidth;
+            x = elX + elWidth / 2 - tooltipWidth;
             break;
         }
         break;
@@ -86,7 +101,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             x = elX + elWidth;
             break;
           case 'center':
-            x = elX + elWidth - (tooltipWidth / 2);
+            x = elX + elWidth - tooltipWidth / 2;
             break;
           case 'right':
           case 'auto':
@@ -95,7 +110,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
         }
         break;
     }
-    const y: number = elY - tooltipHeight;
+    const y: number = !inverted ? elY - tooltipHeight : elBottomY + 6;
 
     return [x, y];
   }, [placement, align, hoveredElement]);
@@ -106,16 +121,12 @@ export const Tooltip: React.FC<TooltipProps> = ({
     }
   }, [hoveredElement, getTooltipPosition]);
 
-  const top: string[] = [
-    `${coords[1]}px`
-  ];
+  const top: string[] = [`${coords[1]}px`];
   if (placementY !== 0) {
     top.push(`calc(var(--bothub-scale, 1) * ${placementY}px)`);
   }
 
-  const left: string[] = [
-    `${coords[0]}px`
-  ];
+  const left: string[] = [`${coords[0]}px`];
   switch (placement) {
     case 'top-left':
       switch (align) {
@@ -151,7 +162,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   if (placementX !== 0) {
     left.push(`calc(var(--bothub-scale, 1) * ${placementX}px)`);
   }
-  
+
   const tooltipNode: React.ReactNode = (
     <TooltipStyled
       $placement={placement}
@@ -160,60 +171,52 @@ export const Tooltip: React.FC<TooltipProps> = ({
       className={className}
       style={{
         top: top.length <= 1 ? top[0] : `calc(${top.join(' + ')})`,
-        left: left.length <= 1 ? left[0] : `calc(${left.join(' + ')})`
+        left: left.length <= 1 ? left[0] : `calc(${left.join(' + ')})`,
       }}
       initial={{
         opacity: 0,
-        y: -6
+        y: -6,
       }}
       animate={{
         opacity: 1,
-        y: 0
+        y: 0,
       }}
       exit={{
         opacity: 0,
         y: -6,
         transition: {
-          duration: disableHiddenAnimation ? 0 : 0.3
-        }
+          duration: disableHiddenAnimation ? 0 : 0.3,
+        },
       }}
     >
-      <TooltipBlock
-        $variant={variant}
-      >
-        {(typeof label === 'string' && !markdown) && (
+      {inverted && (
+        <TooltipArrow
+          variant={variant}
+          inverted={inverted}
+        />
+      )}
+      <TooltipBlock $variant={variant}>
+        {typeof label === 'string' && !markdown && (
           <TooltipLabel>
             {label.slice(0, 272)}
             {label.length > 272 && '...'}
           </TooltipLabel>
         )}
-        {(typeof label === 'string' && markdown) && (
+        {typeof label === 'string' && markdown && (
           <TooltipMarkdown
             components={{
               p: ({ children }) => (
-                <TooltipLabel
-                  component="p"
-                >
-                  {children}
-                </TooltipLabel>
+                <TooltipLabel component="p">{children}</TooltipLabel>
               ),
               b: ({ children }) => (
-                <TooltipLabelBold>
-                  {children}
-                </TooltipLabelBold>
+                <TooltipLabelBold>{children}</TooltipLabelBold>
               ),
               strong: ({ children }) => (
-                <TooltipLabelBold
-                  component="strong"
-                >
+                <TooltipLabelBold component="strong">
                   {children}
                 </TooltipLabelBold>
               ),
-              code: ({ children }) => (
-                <TooltipCode>
-                  {children}
-                </TooltipCode>
-              )
+              code: ({ children }) => <TooltipCode>{children}</TooltipCode>,
             }}
           >
             {label}
@@ -221,9 +224,12 @@ export const Tooltip: React.FC<TooltipProps> = ({
         )}
         {typeof label !== 'string' && label}
       </TooltipBlock>
-      <TooltipArrow
-        variant={variant}
-      />
+      {!inverted && (
+        <TooltipArrow
+          variant={variant}
+          inverted={inverted}
+        />
+      )}
     </TooltipStyled>
   );
 
@@ -263,9 +269,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       handleTooltipMouseDown={handleMouseDown}
     >
       <Portal>
-        <AnimatePresence>
-          {!!hoveredElement && tooltipNode}
-        </AnimatePresence>
+        <AnimatePresence>{!!hoveredElement && tooltipNode}</AnimatePresence>
       </Portal>
       {children}
     </TooltipProvider>
