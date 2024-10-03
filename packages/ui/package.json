@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.9.1",
+  "version": "2.9.1-Fix-toggle-send-hotkey-design-ffd267f8-11e7-4337-b26b-140e15a5f1e7",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
