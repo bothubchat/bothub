@@ -102,25 +102,25 @@ export const TariffCardStyledName: React.FC<{
   width: fit-content;
   -webkit-text-fill-color: transparent;
   background-image: ${({ theme, $color }) => {
-      switch ($color) {
-        case 'blue':
-          return theme.colors.accent.primary;
-        case 'blue-lilac':
-          return theme.colors.premiumGradient;
-        default:
-          return theme.colors.base.white;
-      }
-    }};
+    switch ($color) {
+      case 'blue':
+        return theme.colors.accent.primary;
+      case 'blue-lilac':
+        return theme.colors.premiumGradient;
+      default:
+        return theme.colors.base.white;
+    }
+  }};
   background-color: ${({ theme, $color }) => {
-      switch ($color) {
-        case 'blue':
-          return theme.colors.accent.primary;
-        case 'blue-lilac':
-          return theme.colors.premiumGradient;
-        default:
-          return theme.colors.base.white;
-      }
-    }};
+    switch ($color) {
+      case 'blue':
+        return theme.colors.accent.primary;
+      case 'blue-lilac':
+        return theme.colors.premiumGradient;
+      default:
+        return theme.colors.base.white;
+    }
+  }};
 `;
 
 export const TariffCardStyledMiddle = styled.div`
