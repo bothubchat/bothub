@@ -28,7 +28,7 @@ export const Disabled: InputMessageStory = {
 
 export const AlternativeInput: InputMessageStory = {
   args: {
-    useAlternateKey: true,
+    useAlternativeKey: true,
   },
 };
 

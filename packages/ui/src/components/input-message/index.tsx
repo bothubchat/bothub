@@ -14,6 +14,7 @@ import {
   InputMessageSendIcon,
   InputMessageStyled,
   InputMessageTextArea,
+  InputMessageToggleSendButton,
   InputMessageUploadFile,
   InputMessageUploadFileButton,
   InputMessageUploadFileInput,
@@ -67,7 +68,8 @@ export interface InputMessageProps
   uploadFileAccept?: string;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
-  useAlternateKey?: boolean;
+  useAlternativeKey?: boolean;
+  setAlternativeKeyMenu?: (state: boolean) => void;
   autoFocus?: boolean;
   voice?: boolean;
   onChange?: InputMessageChangeEventHandler;
@@ -86,7 +88,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   disabled = false,
   sendDisabled = false,
   textAreaDisabled = false,
-  useAlternateKey = false,
+  useAlternativeKey = false,
+  setAlternativeKeyMenu,
   uploadFileLimit = 5,
   hideUploadFile = false,
   uploadFileDisabled = false,
@@ -110,9 +113,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     'calc(var(--bothub-scale, 1) * 18px)'
   );
 
-  const [message, setMessage] = typeof initialMessage === 'string'
-    ? [initialMessage, onChange]
-    : useState('');
+  const [message, setMessage] =
+    typeof initialMessage === 'string'
+      ? [initialMessage, onChange]
+      : useState('');
   const [files, setFiles] = Array.isArray(initialFiles)
     ? [initialFiles, onFilesChange]
     : useState<IInputMessageFile[]>([]);
@@ -145,7 +149,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   );
 
   const handleChange = useCallback<
-  React.ChangeEventHandler<HTMLTextAreaElement>
+    React.ChangeEventHandler<HTMLTextAreaElement>
   >(
     (event) => {
       setMessage?.(event.target.value);
@@ -213,7 +217,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   );
 
   const handleUploadFileChange = useCallback<
-  React.ChangeEventHandler<HTMLInputElement>
+    React.ChangeEventHandler<HTMLInputElement>
   >(
     async (event) => {
       if (!setFiles || !event.target.files) {
@@ -250,7 +254,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       event.stopPropagation();
 
       if (isFocus && event.key === 'Enter') {
-        switch (useAlternateKey) {
+        switch (useAlternativeKey) {
           case true:
             if (event.shiftKey || event.ctrlKey) {
               event.preventDefault();
@@ -293,7 +297,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   }, []);
 
   const handleUploadFileClick = useCallback<
-  React.MouseEventHandler<HTMLDivElement>
+    React.MouseEventHandler<HTMLDivElement>
   >((event) => {
     event.stopPropagation();
   }, []);
@@ -485,17 +489,17 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               accept={uploadFileAccept}
               multiple
               disabled={
-                files.length >= uploadFileLimit
-                || disabled
-                || uploadFileDisabled
+                files.length >= uploadFileLimit ||
+                disabled ||
+                uploadFileDisabled
               }
               onChange={handleUploadFileChange}
             />
             <InputMessageUploadFileButton
               disabled={
-                files.length >= uploadFileLimit
-                || disabled
-                || uploadFileDisabled
+                files.length >= uploadFileLimit ||
+                disabled ||
+                uploadFileDisabled
               }
             />
           </InputMessageUploadFile>
@@ -517,10 +521,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                     let iconNode: React.ReactNode;
 
                     if (
-                      file.previewUrl
-                      && (file.name.match(/.png$/i)
-                        || file.name.match(/.jpg$/i)
-                        || file.name.match(/.jpeg$/i))
+                      file.previewUrl &&
+                      (file.name.match(/.png$/i) ||
+                        file.name.match(/.jpg$/i) ||
+                        file.name.match(/.jpeg$/i))
                     ) {
                       iconNode = <ChipImage src={file.previewUrl} />;
                     } else if (file.name.match(/.txt$/i)) {
@@ -553,11 +557,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                   })}
                 </InputMessageFiles>
               )}
-              {(!textAreaDisabled
-                || (textAreaDisabled
-                  && placeholder
-                  && files.length !== uploadFileLimit)
-                || (textAreaDisabled && message)) && (
+              {(!textAreaDisabled ||
+                (textAreaDisabled &&
+                  placeholder &&
+                  files.length !== uploadFileLimit) ||
+                (textAreaDisabled && message)) && (
                 <InputMessageTextArea
                   $disabled={disabled}
                   {...props}
@@ -580,6 +584,12 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             </>
           )}
         </InputMessageMain>
+        <InputMessageToggleSendButton
+          onClick={() => {
+            setAlternativeKeyMenu?.(!useAlternativeKey);
+          }}
+          disabled={disabled}
+        />
         {!voice || message || files.length > 0 ? (
           <InputMessageSendButton
             disabled={disabled || sendDisabled}
