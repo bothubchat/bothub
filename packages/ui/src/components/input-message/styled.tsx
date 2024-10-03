@@ -195,24 +195,6 @@ export const InputMessageVoiceRecordTimeText = styled(Typography).attrs({
   cursor: default;
 `;
 
-export const InputMessageToggleSendStyled = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 0;
-  right: 14px;
-  height: 100%;
-  width: fit-content;
-`;
-
-export const InputMessageToggleSendButtonWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-`;
-
 export const InputMessageToggleSendButton = styled(Button).attrs({
   variant: 'text',
   startIcon: <EnterIcon />,
@@ -225,32 +207,4 @@ export const InputMessageToggleSendButton = styled(Button).attrs({
       }
     }
   }
-`;
-
-export const InputMessageToggleSendSelect = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  position: absolute;
-  left: 0;
-  bottom: 30px;
-  padding: 6px;
-  border: 1px ${({ theme }) => theme.colors.grayScale.gray3};
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
-`;
-
-export const InputMessageToggleSendSelectOption = styled.button<{
-  active?: boolean;
-}>`
-  all: unset;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 12px;
-  color: white;
-  border-radius: 8px;
-  background-color: ${({ theme, active }) =>
-    active ? theme.colors.grayScale.gray1 : theme.colors.grayScale.gray3};
-  cursor: pointer;
 `;
