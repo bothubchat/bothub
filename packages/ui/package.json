@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.9.1",
+  "version": "2.8.6-Fix-tooltip-overflowing-screen-49cfa06f-a5df-4555-be10-f98f50297690",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
