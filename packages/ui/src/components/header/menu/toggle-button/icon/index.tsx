@@ -11,7 +11,7 @@ export const HeaderMenuToggleIcon = icon((
     const { isMenuOpen } = useHeader();
 
     return ((
-      <StyledBurgerIcon isOpen={isMenuOpen}>
+      <StyledBurgerIcon $isOpen={isMenuOpen}>
         <StyledLine />
         <StyledLine />
         <StyledLine />
