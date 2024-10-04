@@ -1,6 +1,36 @@
-import { css, styled } from 'styled-components';
+import { css, keyframes, styled } from 'styled-components';
 import React from 'react';
 import { ButtonCorner, ButtonSize, ButtonVariant } from './types';
+
+const boxShadowAnimation = (initialColor: string) => keyframes`
+  0% {
+    box-shadow: 0px 0px 0px 1px ${initialColor} inset;
+  }
+  10% {
+    box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.4) inset;
+  }
+  80% {
+    box-shadow: 0px 0.9px 0px 0px rgba(255, 255, 255, 0.4) inset;
+  }
+  100% {
+    box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
+  }
+`;
+
+const reverseBoxShadowAnimation = (initialColor: string) => keyframes`
+  0% {
+    box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
+  }
+  10% {
+    box-shadow: 0px 0.9px 0px 0px rgba(255, 255, 255, 0.4) inset;
+  }
+  50% {
+    box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.4) inset;
+  }
+  100% {
+    box-shadow: 0px 0px 0px 1px ${initialColor} inset;
+  }
+`;
 
 export interface ButtonStyledProps {
   ref: React.RefObject<HTMLButtonElement>;
@@ -31,19 +61,22 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
     }
     if ($variant === 'help') {
       return 'help';
-    } 
+    }
 
     return 'pointer';
   }};
 
   ${({
-    theme, $disabled, $variant, $skeleton, $color
+    theme, $disabled, $variant, $skeleton, $color 
   }) => {
     switch ($variant) {
       case 'primary':
         return css`
-          background: ${$color ?? ($disabled || $skeleton ? (theme.default.colors.grayScale.gray2) : (theme.colors.accent.primary))};
-          box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+          background: ${$color
+          ?? ($disabled || $skeleton
+            ? theme.default.colors.grayScale.gray2
+            : theme.colors.accent.primary)};
+          box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: 1;
 
           ${!$disabled && !$skeleton && css`
@@ -57,8 +90,11 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         `;
       case 'primary-transparent':
         return css`
-          background: ${$disabled || $skeleton ? ($color ?? theme.default.colors.grayScale.gray2) : ($color ?? theme.colors.accent.primary)};
-          box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+          background: ${$color
+          ?? ($disabled || $skeleton
+            ? theme.default.colors.grayScale.gray2
+            : theme.colors.accent.primary)};
+          box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: ${$disabled || $skeleton ? 1 : 0.5};
 
           ${!$disabled && !$skeleton && css`
@@ -70,18 +106,24 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
 
       case 'primary-outline':
         return css`
-          background: ${$disabled || $skeleton ? theme.default.colors.grayScale.gray2 : ($color ?? 'rgba(255, 255, 255, 0)')};
-          box-shadow: ${$disabled || $skeleton ? ('box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.0) inset;') : (`0px 0px 0px 1px ${theme.colors.accent.primary} inset`)};
+          background: ${$disabled || $skeleton ? theme.default.colors.grayScale.gray2 : 'rgba(255, 255, 255, 0)'};
+          
+          box-shadow: ${$disabled || $skeleton ? 'box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.0) inset;' : `0px 0px 0px 1px ${theme.colors.accent.primary} inset`};
+          animation: 
+            ${reverseBoxShadowAnimation(theme.colors.accent.primary)} 
+            0.3s linear forwards;
 
           ${!$disabled && !$skeleton && css`
             &:hover {
               background: ${$color ?? theme.colors.accent.primary};
-              box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+              animation: 
+                ${boxShadowAnimation(theme.colors.accent.primary)} 
+                0.3s linear forwards;
             }
             &:active {
               background: ${$color ?? theme.colors.accent.strongDown};
               transform: translateY(1px);
-              box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.0) inset;
+              box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0) inset;
             }
           `}
         `;
@@ -89,11 +131,16 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         return css`
           background: ${$color ?? theme.colors.grayScale.gray4};
           box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset;
+          animation: 
+            ${reverseBoxShadowAnimation(theme.colors.grayScale.gray2)} 
+            0.3s linear forwards;
 
           ${!$disabled && !$skeleton && css`
             &:hover {
               background: ${$color ?? theme.colors.grayScale.gray2};
-              box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+              animation: 
+                ${boxShadowAnimation(theme.colors.grayScale.gray2)}
+                0.3s linear forwards;
             }
             &:active {
               background: ${$color ?? theme.colors.grayScale.gray3};
@@ -102,8 +149,8 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         `;
       case 'success':
         return css`
-          background: ${$disabled || $skeleton ? ($color ?? theme.colors.grayScale.gray2) : theme.colors.green};
-          box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+          background: ${$disabled || $skeleton ? $color ?? theme.colors.grayScale.gray2 : theme.colors.green};
+          box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: 1;
 
           ${!$disabled && !$skeleton && css`
@@ -123,11 +170,11 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         `;
     }
   }}
-  ${({ $disabled, $skeleton }) => (!$disabled && !$skeleton && css`
+  ${({ $disabled, $skeleton }) => !$disabled && !$skeleton && css`
     &:active {
       transform: translateY(1px);
     }
-  `)}
+  `}
 
   ${({ $variant, $icon, $size }) => {
     switch ($variant) {
@@ -151,7 +198,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
               return css`
                 padding: 10px;
               `;
-            } 
+            }
             return css`
               padding: 10px 18px;
             `;
@@ -191,11 +238,12 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         return css``;
     }
   }}
-  ${({ $fullWidth }) => $fullWidth && css`
-    width: 100%;
-  `}
+  ${({ $fullWidth }) => $fullWidth
+    && css`
+      width: 100%;
+    `}
   ${({
-    theme, $variant, $icon, $iconFill, $disabled, $disableHoverColor
+    theme, $variant, $icon, $iconFill, $disabled, $disableHoverColor 
   }) => {
     if ($variant !== 'text' || $disabled || $disableHoverColor) {
       return css``;
@@ -224,28 +272,31 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
       }
     `;
   }}
-  ${({ theme, $variant }) => $variant === 'help' && css`
-    &:hover {
-      svg path {
-        fill: ${theme.colors.base.white} !important;
+  ${({ theme, $variant }) => $variant === 'help'
+    && css`
+      &:hover {
+        svg path {
+          fill: ${theme.colors.base.white} !important;
+        }
       }
-    }
-  `}
-  ${({ theme, $variant }) => $variant === 'primary-outline' && theme.mode === 'light' && css`
-    &:hover,
-    &:active {
-      ${ButtonText} {
-        color: ${theme.colors.base.black};
+    `}
+  ${({ theme, $variant }) => $variant === 'primary-outline'
+    && theme.mode === 'light'
+    && css`
+      &:hover,
+      &:active {
+        ${ButtonText} {
+          color: ${theme.colors.base.black};
+        }
+        svg path {
+          fill: ${theme.colors.base.black};
+        }
       }
-      svg path {
-        fill: ${theme.colors.base.black};
-      }
-    }
-  `}
+    `}
 
   transition: background 0.3s ease-out, 
               opacity 0.3s ease-out,
-              box-shadow 0.2s ease-out, 
+              box-shadow 0.2s ease-in-out, 
               transform 0.3s ease-out;
 `;
 
@@ -270,8 +321,8 @@ export const ButtonText = styled.span<ButtonTextProps>`
       case 'primary-transparent':
         return theme.default.colors.base.white;
       case 'primary-outline':
-        return theme.mode === 'light' 
-          ? theme.default.colors.base.black 
+        return theme.mode === 'light'
+          ? theme.default.colors.base.black
           : theme.colors.base.white;
       default:
         return theme.colors.base.white;
