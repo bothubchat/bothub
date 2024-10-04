@@ -42,7 +42,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
     switch ($variant) {
       case 'primary':
         return css`
-          background: ${$disabled || $skeleton ? ($color ?? theme.default.colors.grayScale.gray2) : ($color ?? theme.colors.accent.primary)};
+          background: ${$color ?? ($disabled || $skeleton ? (theme.default.colors.grayScale.gray2) : (theme.colors.accent.primary))};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
           opacity: 1;
 
@@ -52,7 +52,6 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
             }
             &:active {
               background: ${$color ?? theme.colors.accent.strongDown};
-              transform: translateY(1px);
             }
           `}
         `;
@@ -64,12 +63,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
 
           ${!$disabled && !$skeleton && css`
             &:hover {
-              background: ${$color ?? theme.colors.accent.strong};
               opacity: 1;
-            }
-            &:active {
-              background: ${$color ?? theme.colors.accent.strongDown};
-              transform: translateY(1px);
             }
           `}
         `;
@@ -77,17 +71,17 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
       case 'primary-outline':
         return css`
           background: ${$disabled || $skeleton ? theme.default.colors.grayScale.gray2 : ($color ?? 'rgba(255, 255, 255, 0)')};
-          box-shadow: 0px 0px 0px 1px ${theme.colors.accent.primary} inset;
+          box-shadow: ${$disabled || $skeleton ? ('box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.0) inset;') : (`0px 0px 0px 1px ${theme.colors.accent.primary} inset`)};
 
           ${!$disabled && !$skeleton && css`
             &:hover {
-              background: ${$color ?? theme.colors.accent.strong};
+              background: ${$color ?? theme.colors.accent.primary};
               box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
             }
             &:active {
               background: ${$color ?? theme.colors.accent.strongDown};
               transform: translateY(1px);
-              box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset;
+              box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.0) inset;
             }
           `}
         `;
@@ -103,7 +97,6 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
             }
             &:active {
               background: ${$color ?? theme.colors.grayScale.gray3};
-              transform: translateY(1px);
             }
           `}
         `;
@@ -119,7 +112,6 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
             }
             &:active {
               background: ${theme.colors.accent.strongDown};
-              transform: translateY(1px);
             }
           `}
         `;
@@ -128,15 +120,14 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         return css`
           background: rgba(255, 255, 255, 0);
           box-shadow: none;
-
-          ${!$disabled && !$skeleton && css`
-            &:active {
-              transform: translateY(1px);
-            }
-          `}
         `;
     }
   }}
+  ${({ $disabled, $skeleton }) => (!$disabled && !$skeleton && css`
+    &:active {
+      transform: translateY(1px);
+    }
+  `)}
 
   ${({ $variant, $icon, $size }) => {
     switch ($variant) {
@@ -253,6 +244,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
   `}
 
   transition: background 0.3s ease-out, 
+              opacity 0.3s ease-out,
               box-shadow 0.2s ease-out, 
               transform 0.3s ease-out;
 `;
@@ -267,6 +259,7 @@ export const ButtonText = styled.span<ButtonTextProps>`
   display: inline-flex;
   width: auto;
   font-weight: 500;
+  transition: color 0.3s ease-out;
   color: ${({ theme, $variant, $disabled }) => {
     if ($disabled) {
       return theme.colors.grayScale.gray1;
