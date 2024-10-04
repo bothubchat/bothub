@@ -26,9 +26,58 @@ export const Disabled: InputMessageStory = {
   },
 };
 
-export const AlternativeInput: InputMessageStory = {
+export const WithAlternativeKeyModalTexts: InputMessageStory = {
   args: {
-    useAlternativeKey: true,
+    defaultKeySendText: (
+      <h6
+        style={{
+          margin: 0,
+          color: '#616D8D',
+        }}
+      >
+        <span
+          style={{
+            color: '#fff',
+          }}
+        >
+          Enter
+        </span>{' '}
+        - отправить,{' '}
+        <span
+          style={{
+            color: '#fff',
+          }}
+        >
+          Ctrl/Shift + Enter
+        </span>{' '}
+        - перенос строки
+      </h6>
+    ),
+    alternativeKeySendText: (
+      <h6
+        style={{
+          margin: 0,
+          color: '#616D8D',
+        }}
+      >
+        <span
+          style={{
+            color: '#fff',
+          }}
+        >
+          Ctrl/Shift + Enter
+        </span>{' '}
+        - отправить,{' '}
+        <span
+          style={{
+            color: '#fff',
+          }}
+        >
+          Enter
+        </span>{' '}
+        - перенос строки
+      </h6>
+    ),
   },
 };
 

@@ -15,6 +15,9 @@ import {
   InputMessageStyled,
   InputMessageTextArea,
   InputMessageToggleSendButton,
+  InputMessageToggleSendModalOption,
+  InputMessageToggleSendModalStyled,
+  InputMessageToggleSendStyled,
   InputMessageUploadFile,
   InputMessageUploadFileButton,
   InputMessageUploadFileInput,
@@ -37,6 +40,7 @@ import {
 } from './utils';
 import { AttachFileIcon } from '@/ui/icons/attach-file';
 import { useTheme } from '@/ui/theme';
+import { AnimatePresence } from 'framer-motion';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
@@ -68,8 +72,8 @@ export interface InputMessageProps
   uploadFileAccept?: string;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
-  useAlternativeKey?: boolean;
-  setAlternativeKeyMenu?: (state: boolean) => void;
+  defaultKeySendText: React.ReactNode;
+  alternativeKeySendText: React.ReactNode;
   autoFocus?: boolean;
   voice?: boolean;
   onChange?: InputMessageChangeEventHandler;
@@ -88,8 +92,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   disabled = false,
   sendDisabled = false,
   textAreaDisabled = false,
-  useAlternativeKey = false,
-  setAlternativeKeyMenu,
+  defaultKeySendText,
+  alternativeKeySendText,
   uploadFileLimit = 5,
   hideUploadFile = false,
   uploadFileDisabled = false,
@@ -131,6 +135,22 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const voiceChunksRef = useRef<Blob[]>([]);
   const voiceTimerRef = useRef<number | null>(null);
   const voicePressedRef = useRef(false);
+
+  const inputMessageToggleSendKeyRef = useRef<HTMLDivElement | null>(null);
+
+  const [useAlternativeKey, setUseAlternativeKey] = useState<boolean>(false);
+  const [alternativeKeyModalShown, setAlternativeKeyModalShown] =
+    useState<boolean>(false);
+
+  const handleDefaultKey = useCallback(() => {
+    setUseAlternativeKey(false);
+    setAlternativeKeyModalShown(false);
+  }, []);
+
+  const handleAlternativeKey = useCallback(() => {
+    setUseAlternativeKey(true);
+    setAlternativeKeyModalShown(false);
+  }, []);
 
   const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
     (event) => {
@@ -454,6 +474,21 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     };
   }, [voiceMediaRecorderRef.current]);
 
+  useEffect(() => {
+    const closeModalOnOutsideClick = (e: MouseEvent) => {
+      if (!inputMessageToggleSendKeyRef?.current?.contains(e.target as Node)) {
+        e.preventDefault();
+        setAlternativeKeyModalShown(false);
+      }
+    };
+
+    document.addEventListener('click', closeModalOnOutsideClick);
+
+    return () => {
+      document.removeEventListener('click', closeModalOnOutsideClick);
+    };
+  }, []);
+
   return (
     <InputMessageStyled
       $active={isFocus}
@@ -584,12 +619,32 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             </>
           )}
         </InputMessageMain>
-        <InputMessageToggleSendButton
-          onClick={() => {
-            setAlternativeKeyMenu?.(!useAlternativeKey);
-          }}
-          disabled={disabled}
-        />
+        <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
+          <InputMessageToggleSendButton
+            onClick={() => {
+              setAlternativeKeyModalShown(!alternativeKeyModalShown);
+            }}
+            disabled={disabled}
+          />
+          <AnimatePresence>
+            {alternativeKeyModalShown && (
+              <InputMessageToggleSendModalStyled key="alternative-key-modal">
+                <InputMessageToggleSendModalOption
+                  active={!useAlternativeKey}
+                  onClick={handleDefaultKey}
+                >
+                  {defaultKeySendText}
+                </InputMessageToggleSendModalOption>
+                <InputMessageToggleSendModalOption
+                  active={useAlternativeKey}
+                  onClick={handleAlternativeKey}
+                >
+                  {alternativeKeySendText}
+                </InputMessageToggleSendModalOption>
+              </InputMessageToggleSendModalStyled>
+            )}
+          </AnimatePresence>
+        </InputMessageToggleSendStyled>
         {!voice || message || files.length > 0 ? (
           <InputMessageSendButton
             disabled={disabled || sendDisabled}

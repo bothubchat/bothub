@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { css, keyframes, styled } from 'styled-components';
 import { Button } from '@/ui/components/button';
 import { EnterIcon } from '@/ui/icons';
@@ -41,7 +42,7 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
   max-width: ${({ theme }) => theme.dashboard.chat.containerWidth};
   padding: 14px 20px;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
   cursor: ${({ $disabled, $textAreaDisabled, $voiceRecording }) => {
     if ($disabled) {
       return 'not-allowed';
@@ -195,6 +196,12 @@ export const InputMessageVoiceRecordTimeText = styled(Typography).attrs({
   cursor: default;
 `;
 
+export const InputMessageToggleSendStyled = styled.div`
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+`;
+
 export const InputMessageToggleSendButton = styled(Button).attrs({
   variant: 'text',
   startIcon: <EnterIcon />,
@@ -206,5 +213,63 @@ export const InputMessageToggleSendButton = styled(Button).attrs({
         fill: ${({ theme }) => theme.colors.grayScale.gray2} !important;
       }
     }
+  }
+`;
+
+export const InputMessageToggleSendModalStyled = styled(motion.div).attrs({
+  initial: {
+    opacity: 0,
+    translateY: 10,
+  },
+  animate: {
+    opacity: 1,
+    translateY: 0,
+  },
+  exit: {
+    opacity: 0,
+    translateY: 10,
+  },
+  transition: {
+    duration: 0.15,
+    ease: 'easeOut',
+  },
+})`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: fit-content;
+  width: max-content;
+  max-width: 60vw;
+  padding: 6px;
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  border-radius: 10px;
+  border: 1px ${({ theme }) => theme.colors.grayScale.gray2} solid;
+  background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+  z-index: 50;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+`;
+
+export const InputMessageToggleSendModalOption = styled(motion.button).attrs({
+  whileTap: {
+    opacity: 0.9,
+    translateY: 1,
+    transition: {
+      duration: 0.1,
+    },
+  },
+})<{ active: boolean }>`
+  all: unset;
+  margin: 0;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: ${({ theme, active }) =>
+    active ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray3};
+  cursor: pointer;
+  &:hover {
+    filter: brightness(1.1);
   }
 `;
