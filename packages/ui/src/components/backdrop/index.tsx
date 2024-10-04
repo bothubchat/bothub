@@ -6,6 +6,7 @@ export interface BackdropProps
   extends React.ComponentProps<typeof BackdropStyled> {
   open: boolean;
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => unknown;
+  children?: React.ReactNode;
 }
 
 export const Backdrop: React.FC<BackdropProps> = ({
@@ -43,9 +44,6 @@ export const Backdrop: React.FC<BackdropProps> = ({
     leave: { background: 'rgba(0, 0, 0, 0)', backdropFilter: 'blur(0px)' },
   });
 
-  if (!open) {
-    return null;
-  }
   return backdropTransition((style, item) => item && (
     <BackdropStyled
       {...props}
