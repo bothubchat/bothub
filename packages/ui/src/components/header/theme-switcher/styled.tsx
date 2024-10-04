@@ -94,14 +94,15 @@ export const HeaderThemeSwitcherItemBackground = styled.span<{
   position: absolute;
   top: 0px;
   bottom: 0px;
-  left: ${({ $isLight }) => ($isLight ? '0%' : 'calc(50% + 3px)')};
+  left: 0px;
   right: 0px;
   width: calc(50% - 3px);
   height: 100%;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 12px;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
-  transition: left 0.2s ease-out, background 0.2s ease-out;
+  transition: transform 0.2s ease-out, background 0.2s ease-out;
+  transform: ${({ $isLight }) => ($isLight ? 'translateX(0%)' : 'translateX(calc(100% + 6px))')};
 `;
 
 export interface HeaderThemeSwitcherItemContentProps {
