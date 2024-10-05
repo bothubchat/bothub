@@ -174,3 +174,6 @@ export * from './yandex';
 export * from './vk';
 export * from './resend';
 export * from './big-article';
+export * from './min-window';
+export * from './max-window';
+export * from './happy-robot';
