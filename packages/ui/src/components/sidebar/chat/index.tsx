@@ -6,7 +6,6 @@ import {
   SidebarChatName,
   SidebarChatNameSkeleton,
   SidebarChatCaps,
-  SidebarChatRight,
   SidebarChatStyled,
   SidebarChatTooltip,
   SidebarChatNameTooltip,
@@ -43,7 +42,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
   onClick, ...props
 }) => {
   const {
-    attributes, listeners, setNodeRef, transform 
+    attributes, listeners, setNodeRef, transform
   } = useDraggable({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
   });
@@ -87,6 +86,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
           </TooltipConsumer>
         </SidebarChatTooltip>
       )}
+      {props.skeleton && <SidebarChatIconStyled />}
       <SidebarChatLeft>
         <SidebarChatNameTooltip
           {...(!props.skeleton && {

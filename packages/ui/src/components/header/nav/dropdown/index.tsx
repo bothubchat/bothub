@@ -1,9 +1,9 @@
 import React, {
-  useCallback, useEffect, useRef, useState 
+  useCallback, useEffect, useRef, useState
 } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import {
-  HeaderNavDropdownArrow, HeaderNavDropdownBody, HeaderNavDropdownHead, HeaderNavDropdownStyled 
+  HeaderNavDropdownArrow, HeaderNavDropdownBody, HeaderNavDropdownHead, HeaderNavDropdownStyled
 } from './styled';
 import { HeaderNavDropdownProvider } from './context';
 import { useHeaderMenu } from '../../menu/context';
@@ -51,15 +51,15 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
   return (
     <HeaderNavDropdownProvider setIsOpen={setIsOpen}>
       <HeaderNavDropdownStyled $inMenu={isInMenu} ref={dropdownRef}>
-        <HeaderNavDropdownHead 
+        <HeaderNavDropdownHead
           as="span"
           $variant={variant}
-          $active={isOpen} 
+          $active={isOpen}
           $inMenu={isInMenu}
           onClick={toggleDropdown}
         >
           {label}
-          <HeaderNavDropdownArrow 
+          <HeaderNavDropdownArrow
             initial={{
               transform: `rotateZ(${isOpen ? -180 : 0}deg)`
             }}
@@ -70,7 +70,7 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
         </HeaderNavDropdownHead>
         <AnimatePresence>
           {isOpen && (
-            <HeaderNavDropdownBody 
+            <HeaderNavDropdownBody
               $inMenu={isInMenu}
               {...(!isInMenu ? {
                 animate: {
@@ -84,7 +84,7 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
                 transition: {
                   duration: 0.15
                 }
-              } : {})}  
+              } : {})}
             >
               {children}
             </HeaderNavDropdownBody>

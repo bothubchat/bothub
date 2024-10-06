@@ -1,21 +1,22 @@
 import React, {
-  useCallback, useRef, useState, useEffect, forwardRef, useImperativeHandle
+  useCallback, useRef, useState, useEffect, forwardRef, useImperativeHandle,
+  UIEventHandler
 } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { ScrollbarContent, ScrollbarShadows, ScrollbarStyled } from './styled';
 import {
   SetScrollFunction,
-  SetScrollOptions, 
-  ScrollbarOverflow, 
-  ScrollbarRef, 
-  ScrollbarShadowsProps, 
-  ScrollbarVariant 
+  SetScrollOptions,
+  ScrollbarOverflow,
+  ScrollbarRef,
+  ScrollbarShadowsProps,
+  ScrollbarVariant
 } from './types';
 import { ScrollbarProvider } from './context';
 
 export interface ScrollbarProps extends React.PropsWithChildren {
   className?: string;
-  scrollbarClassName?: string; 
+  scrollbarClassName?: string;
   variant?: ScrollbarVariant;
   size?: number;
   scrollShadows?: ScrollbarShadowsProps;
@@ -25,10 +26,13 @@ export interface ScrollbarProps extends React.PropsWithChildren {
   disableShadows?: boolean;
   withStickyBottom?: boolean;
   defaultStickyBottom?: boolean;
+  onScroll?: ScrollbarScrollEventHandler;
 }
 
-export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({ 
-  className, scrollbarClassName, variant = 'primary', size = 6, scrollShadows, scrollLocked, overflow = 'auto', disabled = false, disableShadows = false, children, defaultStickyBottom = false, withStickyBottom = false,
+export type ScrollbarScrollEventHandler = (event: { isTop: boolean; isBottom: boolean; }) => unknown;
+
+export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
+  className, scrollbarClassName, variant = 'primary', size = 6, scrollShadows, scrollLocked, overflow = 'auto', disabled = false, disableShadows = false, children, defaultStickyBottom = false, withStickyBottom = false, onScroll
 }, ref) => {
   const scrollbarRef = useRef<HTMLDivElement>(null);
   const [isLeft, setIsLeft] = useState<boolean>(false);
@@ -62,12 +66,12 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
       !isBiggerThanContentWidth
       && (Math.round(scrollLeft) + 1 < scrollWidth - clientWidth)
     );
-    setIsTop(!isBiggerThanContentHeight && scrollTop !== 0);
-    setIsBottom(
-      !isBiggerThanContentHeight
-      && (Math.round(scrollTop) + 1 < scrollHeight - clientHeight)
-    );
+    const isTop = !isBiggerThanContentHeight && scrollTop !== 0;
+    const isBottom = !isBiggerThanContentHeight
+      && (Math.round(scrollTop) + 1 < scrollHeight - clientHeight);
 
+    setIsTop(isTop);
+    setIsBottom(isBottom);
     const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
     setPreviousScrollTop(scrollbarEl.scrollTop);
 
@@ -84,7 +88,8 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
     if (disabled) {
       scrollbarEl.scrollTo(0, 0);
     }
-  }, [scrollbarRef.current, disabled, previousScrollTop, withStickyBottom, scrollShadowsSize]);
+    onScroll?.({ isTop, isBottom });
+  }, [scrollbarRef.current, disabled, previousScrollTop, withStickyBottom, scrollShadowsSize, onScroll]);
 
   const setScroll = useCallback<SetScrollFunction>((options) => {
     const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
@@ -107,7 +112,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
     element: scrollbarRef.current,
     setScroll
   }), [scrollbarRef.current, setScroll]);
-  
+
   useEffect(() => {
     setScroll();
   }, [children, setScroll]);
@@ -143,7 +148,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(({
 
     const resizeListener = () => {
       window.clearTimeout(slowScrollListener);
-      
+
       handleScroll();
 
       // height of the scrollbar is updating very slow, so we need to wait for it and check again

@@ -5,15 +5,15 @@ import { useHeader } from '../context';
 
 export type HeaderNavProps = Omit<React.ComponentProps<typeof HeaderNavStyled>, keyof HeaderNavStyledProps>;
 
-export const HeaderNav: React.FC<HeaderNavProps> = ({ ...props}) => {
+export const HeaderNav: React.FC<HeaderNavProps> = ({ ...props }) => {
   const { variant } = useHeader();
   const { isInMenu } = useHeaderMenu();
   return (
     <>
       <HeaderNavStyled
-        {...props} 
-        $variant={variant} 
-        $inMenu={isInMenu} 
+        {...props}
+        $variant={variant}
+        $inMenu={isInMenu}
       />
     </>
 

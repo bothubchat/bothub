@@ -4,7 +4,6 @@ import {
   Sidebar,
   SidebarChat,
   SidebarChatActions,
-  SidebarChatDeleteAction,
   SidebarGroup,
   SidebarGroups,
   SidebarCreateChatButton,
@@ -22,7 +21,6 @@ import {
   SidebarButtons,
   SidebarDeleteChatsButton,
   SidebarLogo,
-  SidebarThemeSwitcher,
   SidebarLogoLink,
   SidebarMenu,
   SidebarMenuNav,
@@ -53,47 +51,45 @@ export const Basic: SidebarStory = {
       </SidebarLogoLink>
     ),
     menu: (
-      <SidebarMenu>
-        <SidebarMenuNav>
-          <SidebarMenuNavLink
-            href="#"
-            icon={<ChatsIcon />}
-            active
-          >
-            Чаты
-          </SidebarMenuNavLink>
-          <SidebarMenuNavLink
-            href="#"
-            icon={<BookmarksBigIcon />}
-          >
-            Закладки
-          </SidebarMenuNavLink>
-          <SidebarMenuNavLink
-            href="#"
-            icon={<PresetsBigIcon />}
-          >
-            Пресеты
-          </SidebarMenuNavLink>
-          <SidebarMenuNavLink
-            href="#"
-            icon={<ReferalIcon />}
-          >
-            Партнерская программа
-          </SidebarMenuNavLink>
-          <SidebarMenuNavLink
-            href="#"
-            icon={<TariffIcon />}
-          >
-            Пакеты
-          </SidebarMenuNavLink>
-          <SidebarMenuNavLink
-            href="#"
-            icon={<GearIcon />}
-          >
-            Для разработчиков
-          </SidebarMenuNavLink>
-        </SidebarMenuNav>
-      </SidebarMenu>
+      <SidebarMenuNav>
+        <SidebarMenuNavLink
+          href="#"
+          icon={<ChatsIcon />}
+          active
+        >
+          Чаты
+        </SidebarMenuNavLink>
+        <SidebarMenuNavLink
+          href="#"
+          icon={<BookmarksBigIcon />}
+        >
+          Закладки
+        </SidebarMenuNavLink>
+        <SidebarMenuNavLink
+          href="#"
+          icon={<PresetsBigIcon />}
+        >
+          Пресеты
+        </SidebarMenuNavLink>
+        <SidebarMenuNavLink
+          href="#"
+          icon={<ReferalIcon />}
+        >
+          Партнерская программа
+        </SidebarMenuNavLink>
+        <SidebarMenuNavLink
+          href="#"
+          icon={<TariffIcon />}
+        >
+          Пакеты
+        </SidebarMenuNavLink>
+        <SidebarMenuNavLink
+          href="#"
+          icon={<GearIcon />}
+        >
+          Для разработчиков
+        </SidebarMenuNavLink>
+      </SidebarMenuNav>
     ),
     toggle: (
       <SidebarConsumer>
@@ -150,7 +146,7 @@ export const Basic: SidebarStory = {
     ),
     children: (
       <SidebarGroups>
-        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Вчера">
+        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Работа">
           <SidebarChat
             id="chat-1"
             isDndOverflow
@@ -182,7 +178,7 @@ export const Basic: SidebarStory = {
             )}
           />
         </SidebarGroup>
-        <SidebarGroup id="chat-group-2" name="Предыдущие 7 дней">
+        <SidebarGroup id="chat-group-2" name="Учеба">
           <SidebarChat
             active
             id="chat-3"
@@ -197,7 +193,6 @@ export const Basic: SidebarStory = {
           />
           <SidebarChat
             id="chat-4"
-
             color="#F29C1C"
             name="Реферат"
             caps="6.9K"
@@ -408,7 +403,7 @@ export const SkeletonClosed: SidebarStory = {
 export default {
   title: 'Components/Sidebar',
   component: Sidebar,
-  decorators: [StoryDecorator()],
+  decorators: [StoryDecorator({ scale: 'dashboard' })],
   argTypes: {
     children: {
       table: {

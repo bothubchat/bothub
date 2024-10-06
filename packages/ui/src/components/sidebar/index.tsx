@@ -7,16 +7,21 @@ import {
   SidebarBodyScrollbarWrapper,
   SidebarBottom,
   SidebarContent,
+  SidebarContentNav,
+  SidebarDivider,
   SidebarGlobalStyle,
   SidebarHead,
   SidebarHeader,
   SidebarHeaderMain,
+  SidebarMobileToggle,
   SidebarStyled,
   SidebarToolbar,
-  SidebarTop
+  SidebarTop,
+  SidebarWrapper
 } from './styled';
 import { SidebarProvider } from './context';
-import { ScrollbarRef } from '../scrollbar';
+import { SidebarMenu } from './menu';
+import { ScrollbarRef, ScrollbarScrollEventHandler } from '../scrollbar';
 
 export type SidebarOpenEventHandler = (open: boolean) => unknown;
 
@@ -45,7 +50,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
   }, [onOpen]);
   const [isOpen, setIsOpen] = typeof initialIsOpen === 'boolean' ? [initialIsOpen, setInitialIsOpen] : useState(defaultOpen);
-
+  const [isBottom, setIsBottom] = useState<boolean>(false);
+  const scrollbarRef = React.useRef<ScrollbarRef>(null);
   const handleOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
     setIsOpen(open);
 
@@ -54,6 +60,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
   }, [setIsOpen, initialIsOpen, onOpen]);
 
+  const handleScroll = useCallback<ScrollbarScrollEventHandler>(({ isTop, isBottom }) => {
+    setIsBottom(isBottom);
+  }, [setIsBottom])
+
+  const handleScrollTop = useCallback(() => {
+    scrollbarRef.current?.element?.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [])
+
+  const handleScrollBottom = useCallback(() => {
+    scrollbarRef.current?.element?.scrollTo({
+      top: scrollbarRef.current?.element?.scrollHeight + 9999,
+      behavior: "smooth",
+    });
+  }, [])
   return (
     <SidebarProvider
       isOpen={isOpen}
@@ -65,40 +88,60 @@ export const Sidebar: React.FC<SidebarProps> = ({
         id={id}
       >
         <SidebarContent>
-          <SidebarTop>
-            <SidebarHead
-              $open={isOpen}
-            >
-              <SidebarHeader
-                $open={isOpen}
+          <SidebarHeader $open={isOpen}>
+            {logo}
+            {isOpen && (
+              <SidebarMenu>
+                {menu}
+              </SidebarMenu>
+            )}
+          </SidebarHeader>
+          <SidebarToolbar>
+            {buttons}
+            {!isOpen && (
+              <SidebarMenu>
+                {menu}
+              </SidebarMenu>
+            )}
+            {toggle}
+          </SidebarToolbar>
+          <SidebarDivider />
+          <SidebarBody>
+            {!isOpen &&
+              <SidebarArrowUpButton
+                $hidden={isBottom && !isOpen}
+                onClick={handleScrollTop}
+              />
+            }
+            <SidebarWrapper>
+              <SidebarBodyScrollbarWrapper
+                ref={scrollbarRef}
+                size={!isOpen ? 0 : 6}
+                onScroll={handleScroll}
               >
-                <SidebarHeaderMain
-                  $open={isOpen}
-                >
-                  {logo}
-                  {isOpen && menu}
-                </SidebarHeaderMain>
-              </SidebarHeader>
-              <SidebarToolbar>
-                {buttons}
-                {!isOpen && menu}
-                {toggle}
-              </SidebarToolbar>
-            </SidebarHead>
-            <SidebarBody>
-              <SidebarBodyScrollbarWrapper size={!isOpen ? 0 : 6} >
-                <SidebarArrowUpButton $hidden={isOpen} />
                 <SidebarBodyContent>
                   {children}
                 </SidebarBodyContent>
-                <SidebarArrowDownButton $hidden={isOpen} />
               </SidebarBodyScrollbarWrapper>
-            </SidebarBody>
-          </SidebarTop>
+            </SidebarWrapper>
+            {!isOpen && <SidebarArrowDownButton
+              $hidden={!isBottom}
+              onClick={handleScrollBottom}
+            />}
+          </SidebarBody>
           <SidebarBottom>
             {user}
           </SidebarBottom>
         </SidebarContent>
+        <SidebarContentNav>
+          <div>
+            <SidebarMobileToggle>
+              {toggle}
+            </SidebarMobileToggle>
+            {menu}
+          </div>
+          {user}
+        </SidebarContentNav>
       </SidebarStyled>
       <SidebarGlobalStyle
         $open={isOpen}

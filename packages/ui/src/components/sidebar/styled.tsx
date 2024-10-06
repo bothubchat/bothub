@@ -3,25 +3,29 @@ import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 import { Logo } from '@/ui/components/logo';
 import {
-  SidebarChat,
-  SidebarChatCaps, SidebarChatIconStyled, SidebarChatName, SidebarChatNameTooltip, SidebarChatStyled, SidebarChatTooltip
+  SidebarChatIconStyled,
+  SidebarChatStyled,
+  SidebarChatTooltip,
 } from './chat';
 import {
-  SidebarGroupSkeleton,
-  SidebarGroupTooltip,
-  SidebarGroupArrowDown,
-  SidebarGroupDragHandle,
+  SidebarChatList,
   SidebarGroupDragFolder,
-  SidebarGroupStyled,
-  SidebarGroupNameBox,
   SidebarGroupName,
-  SidebarGroupsStyled
+  SidebarGroupsStyled,
+  SidebarGroupStyled
 } from './group';
-import { SidebarMenuNavLinkStyled, SidebarMenuNavLinkText } from './menu/nav/link/styled';
-import { ArrowDownIcon, ArrowUpIcon } from '@/ui/icons';
+import { SidebarMenuNavLinkText } from './menu/nav/link/styled';
 import {
-  SidebarMenuBlock, SidebarMenuBlockScrollbarWrapper, SidebarMenuNav, SidebarMenuStyled
+  ArrowDownIcon,
+  ArrowUpIcon
+} from '@/ui/icons';
+import {
+  SidebarMenuBlock,
+  SidebarMenuBlockScrollbarWrapper,
+  SidebarMenuNav,
+  SidebarMenuStyled
 } from './menu';
+import { SidebarUserInfoStyled } from './user-info';
 
 export interface SidebarStyledProps {
   $open: boolean;
@@ -33,6 +37,7 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   align-items: flex-start;
   flex-shrink: 0;
   width: 100%;
+  position: relative;
   height: 100%;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
   overflow: hidden;
@@ -48,15 +53,12 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
     max-width: 80px;
   `}
   @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
-    padding: 14px;
-    ${({ $open }) => $open && css`
-      min-width: 302px;
-      max-width: 302px;
-    `}
-    ${({ $open }) => !$open && css`
-      min-width: 62px;
-      max-width: 62px;
-    `}
+    padding: 18px;
+    gap: 14px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    min-width: 100%;
   }
   max-height: 100vh;
   ${adaptive({
@@ -77,8 +79,70 @@ export interface SidebarGlobalStyleProps {
   $open: boolean;
 }
 
+export const SidebarContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  transition: max-width 0.3s;
+  ${adaptive({
+  variant: 'dashboard',
+  merge: true,
+  tablet: css`
+    min-width: 312px; 
+    max-width: 412px;
+    ${SidebarUserInfoStyled as any} {
+      display: none;
+    }
+    `,
+  mobile: css`
+    min-width: none;
+    max-width: none;
+    display: none;
+    ${SidebarMenuStyled as any} {
+      display: none;
+    }
+    ${SidebarUserInfoStyled as any} {
+      display: none;
+    }
+    `
+})}
+  overflow: hidden;
+`;
+export const SidebarContentNav = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  transition: max-width 0.3s;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  border-radius: 20px;
+  background: ${({ theme }) => theme.colors.grayScale.gray7};
+  padding: 16px;
+  ${adaptive({
+  variant: 'dashboard',
+  merge: true,
+  desktop: css`
+    display: none;
+    `,
+  tablet: css`
+    display: flex;
+  `,
+  mobile: css`
+    display: flex;
+  `
+})}
+`;
+
+
 export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
-  ${({ $open }) => !$open && css`
+  ${({ $open }) => !$open && adaptive({
+  variant: 'dashboard',
+  desktop: css`
     ${SidebarToolbar} {
       flex-direction: column-reverse;
     }
@@ -114,60 +178,120 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
     }
     ${SidebarGroupsStyled} {
       gap: 10px;
+      ${SidebarGroupStyled} {
+        ${SidebarGroupName} {
+          padding: 9px;
+          width: fit-content;
+          border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+          border-radius: 8px;
+          & > * {
+            display: none;
+          }
+          ${SidebarGroupDragFolder} {
+            display: inline-flex;
+            margin: 0;
+          }
+        }
+        ${SidebarChatList} {
+          gap: 10px;
+          ${SidebarChatStyled} {
+            padding: 9px;
+            width: fit-content;
+            border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+            border-radius: 8px;
+            &:first-child {
+              margin-top: 20px;
+            }
+            &:last-child {
+              margin-bottom: 10px;
+            }
+            & > * {
+              display: none;
+            }
+            ${SidebarChatTooltip} {
+              & > * {
+                display: block;
+              }
+            }
+            ${SidebarChatIconStyled} {
+              display: inline-flex;
+            }
+          }
+        }
+      }
+    }`,
+  tablet: css`
+    ${SidebarMenuStyled} {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+      padding: 20px 0px;
+      border-radius: 0px;
+      width: 100%;
+      margin-bottom: 10px;
     }
-    ${SidebarGroupName} {
-      padding: 0;
-      & > * {
-        display: none;
-      }
-      ${SidebarGroupDragFolder} {
-        width: 38px;
-        height: 38px;
-        padding: 10px;
-        border-radius: 8px;
-        display: inline-flex;
-        visibility: visible !important;
-        border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
-      }
+    ${SidebarToolbar} {
+      flex-direction: row;
     }
-    ${SidebarChatStyled} {
-      padding: 0;
-      & > * {
-        display: none;
-      }
-      margin-top: 10px;
-      &:first-child {
-        margin-top: 20px;
-      }
-      &:last-child {
-        margin-bottom: 10px;
-      }
-      ${SidebarChatIconStyled}{
-        display: inline-flex;
-        height: 38px;
-        width: 38px;
-        padding: 9px;
-        border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
-        border-radius: 8px;
-      }
+    ${SidebarMenuStyled} {
+      display: none;
     }
-  `}
-`;
-
-export const SidebarContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+    ${SidebarMenuBlock as any} {
+      top: 0;
+      margin-top: 20px;
+      background: none;
+      position: relative;
+      flex-direction: column;
+      padding: 0px;
+      border: none;
+      border-radius: 0px;
+    }
+    ${SidebarMenuNav} {
+      gap: 10px;
+    }
+    ${SidebarMenuNavLinkText} {
+      display: none;
+    }
+    ${SidebarMenuBlockScrollbarWrapper} {
+      padding-right: 0px;
+    }
+    ${SidebarContentNav} {
+      min-width: 74px;
+      max-width: 74px;
+    }
+    ${SidebarContent} {
+      max-width: none;
+    }
+  `,
+  mobile: css`
+    ${SidebarContent} {
+      display: flex;
+    }
+    ${SidebarContentNav} {
+      display: none;
+    }
+  `
+})}
 `;
 
 export interface SidebarHeadProps {
   $open: boolean;
 }
 
+export const SidebarMobileToggle = styled.div`
+  display: none;
+  ${adaptive({
+  variant: 'dashboard',
+  merge: true,
+  mobile: css`
+    display: inline-grid;
+    justify-content: flex-end;
+    width: 100%;
+  `,
+})}
+`;
 export const SidebarHead = styled.div<SidebarHeadProps>`
   display: flex;
   flex-direction: column;
@@ -194,14 +318,18 @@ export const SidebarHeader = styled.div<SidebarHeaderProps>`
   display: ${({ $open }) => (
     $open ? 'flex' : 'none'
   )};
+  position: relative;
   align-items: center;
   width: 100%;
+  margin-bottom: 34px;
+  justify-content: space-between;
   height: 39px;
   ${adaptive({
     variant: 'dashboard',
     merge: true,
     tablet: css`
       width: auto;
+      display: none;
     `
   })}
 `;
@@ -226,6 +354,19 @@ export const SidebarToolbar = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
+
+export const SidebarDivider = styled.div`
+  height: 1px;
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+  margin-top: 14px;
+`;
+
+export const SidebarWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+`
 
 export const SidebarLogo = styled(Logo).attrs({ size: 39 })``;
 
@@ -255,7 +396,10 @@ export const SidebarBottom = styled.div`
 
 export const SidebarBody = styled.div`
   display: flex;
+  flex-direction: column;
+  position: relative;
   width: 100%;
+  height: 100%;
   overflow: hidden;
   ${adaptive({
   variant: 'dashboard',
@@ -276,7 +420,7 @@ export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
     variant: 'secondary',
     scrollShadows: {
       size: 90,
-      color: theme.colors.grayScale.gray7,
+      color: theme.colors.grayScale.gray4,
       top: <ScrollbarShadow side="top" />,
       bottom: <ScrollbarShadow side="bottom" />
     }
@@ -290,6 +434,7 @@ export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
 
 export const SidebarArrowUpButton = styled(ArrowUpIcon) <{ $hidden: boolean }>`
   position: sticky;
+  margin-bottom: 10px;
   top: 0px;
   z-index: 10;
   width: 38px;
@@ -300,10 +445,21 @@ export const SidebarArrowUpButton = styled(ArrowUpIcon) <{ $hidden: boolean }>`
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   ${({ $hidden }) => $hidden && css` display: none;`}
+  ${adaptive({
+  variant: 'dashboard',
+  merge: true,
+  tablet: css`
+    display: none;
+  `,
+  mobile: css`
+    display: none;
+  `,
+})}
 `;
 
 export const SidebarArrowDownButton = styled(ArrowDownIcon) <{ $hidden: boolean }>`
   position: sticky;
+  margin-top: 10px;
   bottom: 0px;
   opacity: 1;
   width: 38px;
@@ -315,6 +471,16 @@ export const SidebarArrowDownButton = styled(ArrowDownIcon) <{ $hidden: boolean 
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   ${({ $hidden }) => $hidden && css` display: none;`}
+  ${adaptive({
+  variant: 'dashboard',
+  merge: true,
+  tablet: css`
+    display: none;
+  `,
+  mobile: css`
+    display: none;
+  `,
+})}
 `;
 
 export const SidebarBodyContent = styled.div`

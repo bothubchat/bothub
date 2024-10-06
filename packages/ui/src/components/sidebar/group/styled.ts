@@ -1,5 +1,4 @@
 import { css, styled } from 'styled-components';
-import { Swiper } from 'swiper/react';
 import { Typography } from '@/ui/components/typography';
 import { Tooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -12,8 +11,6 @@ export const SidebarGroupsStyled = styled.div`
   position: relative;
   flex-direction: column;
   width: 100%;
-  padding-top: 20px;
-  border-top: 1px solid ${({ theme }) => theme.colors.grayScale.gray7};
 `;
 
 export const SidebarGroupStyled = styled.div<{ $over?: boolean; }>`
@@ -30,19 +27,25 @@ export const SidebarGroupStyled = styled.div<{ $over?: boolean; }>`
     }
   }}
 `;
-export const SidebarGroupArrowDown = styled(ArrowDownIcon)``;
+export const SidebarGroupArrowDown = styled(ArrowDownIcon)`
+  transition: transform 0.2s ease;
+`;
 
-export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medium', component: 'div' }) <{ open?: boolean; }>`
+export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medium', component: 'div' }) <{ open?: boolean; $skeleton?: boolean; }>`
   color: ${({ theme }) => theme.colors.base.white};
   display: flex;
-  cursor: pointer;
+  cursor: ${({ $skeleton }) => {
+    if ($skeleton) {
+      return 'not-allowed';
+    }
+    return 'pointer';
+  }};
   padding: 8px;
   align-items: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  transition: transform 0.3s;
   & > ${SidebarGroupArrowDown} {
     transform: ${({ open }) => (open ? 'rotate(180deg)' : 'rotate(0deg)')};
   }

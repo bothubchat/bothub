@@ -18,7 +18,7 @@ export const SidebarMenuBlock: React.FC<React.ComponentProps<'div'> & AnimationP
   z-index: ${({ theme }) => theme.zIndex.menu};
   top: 53px;
   left: 0px;
-  background: ${({ theme }) => theme.colors.base.black};
+  background: ${({ theme }) => theme.colors.grayScale.gray7};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 12px;
   overflow: hidden;

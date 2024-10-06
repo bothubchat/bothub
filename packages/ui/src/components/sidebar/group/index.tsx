@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   SidebarChatList,
   SidebarGroupStyled,
@@ -12,8 +12,6 @@ import {
   SidebarGroupsStyled
 } from './styled';
 import { useDroppable } from '@dnd-kit/core';
-import { SwiperRef } from 'swiper/react';
-import Swiper from 'swiper';
 
 export interface SidebarGroupDefaultProps {
   name: string;
@@ -55,10 +53,11 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
     >
       <SidebarGroupName
         open={open}
-        onClick={onHandleOpen}
+        $skeleton={!!props.skeleton}
+        onClick={!props.skeleton ? onHandleOpen : undefined}
       >
         {!props.skeleton && props.edit && <SidebarGroupDragHandle />}
-        {!props.skeleton && <SidebarGroupDragFolder />}
+        <SidebarGroupDragFolder />
         {!props.skeleton && (
           <SidebarGroupNameBox>
             {props.name}
