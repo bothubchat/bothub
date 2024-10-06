@@ -1,26 +1,24 @@
 import React, {
-  useCallback, useEffect, useRef, useState 
+  useCallback, useEffect, useRef, useState
 } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import {
-  SidebarLangDropdownContent, 
-  SidebarLangDropdownStyled, 
-  SidebarLangDropdownToggler, 
-  SidebarLangDropdownTogglerArrow, 
-  SidebarLangDropdownTogglerIcon, 
-  SidebarLangDropdownTogglerText 
+  SidebarDropdownContent,
+  SidebarDropdownStyled,
+  SidebarDropdownToggler,
+  SidebarDropdownTogglerIcon,
 } from './styled';
-import { SidebarLangDropdownProvider } from './context';
+import { SidebarDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
-export interface SidebarLangDropdownProps extends 
-  React.ComponentProps<typeof SidebarLangDropdownStyled> {
-  lang: string;
+export interface SidebarDropdownProps extends
+  React.ComponentProps<typeof SidebarDropdownStyled> {
+
 }
 
-export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
-  lang, children, ...props
+export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
+  children, ...props
 }) => {
   const theme = useTheme();
 
@@ -53,32 +51,19 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
   }, []);
 
   return (
-    <SidebarLangDropdownProvider setIsOpen={setIsOpen}>
-      <SidebarLangDropdownStyled {...props} ref={dropdownRef}>
+    <SidebarDropdownProvider setIsOpen={setIsOpen}>
+      <SidebarDropdownStyled {...props} ref={dropdownRef}>
         <IconProvider
           fill={theme.colors.base.white}
         >
-          <SidebarLangDropdownToggler $open={isOpen} onClick={handleToggle}>
-            <SidebarLangDropdownTogglerIcon />
-            <SidebarLangDropdownTogglerText>
-              {lang}
-            </SidebarLangDropdownTogglerText>
-            <SidebarLangDropdownTogglerArrow 
-              initial={{
-                transform: `rotateZ(${isOpen ? -180 : 0}deg)`
-              }}
-              animate={{
-                transform: `rotateZ(${isOpen ? -180 : 0}deg)`,
-                transition: {
-                  duration: 0.15
-                }
-              }}
-            />
-          </SidebarLangDropdownToggler>
+          <SidebarDropdownToggler $open={isOpen} onClick={handleToggle}>
+            <SidebarDropdownTogglerIcon />
+          </SidebarDropdownToggler>
         </IconProvider>
         <AnimatePresence>
           {isOpen && (
-            <SidebarLangDropdownContent
+            <SidebarDropdownContent
+              style={{ translateX: dropdownRef.current?.clientLeft + 'px' || 0 }}
               animate={{
                 opacity: isOpen ? 1 : 0.5,
                 transform: `scale(${isOpen ? 1 : 0.999})`,
@@ -86,17 +71,21 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
                   duration: 0.15
                 }
               }}
+              initial={{
+                opacity: 0,
+                transform: 'scale(0.999)'
+              }}
               exit={{
                 opacity: 0,
                 transform: 'scale(0.999)'
               }}
             >
               {children}
-            </SidebarLangDropdownContent>
+            </SidebarDropdownContent>
           )}
         </AnimatePresence>
-      </SidebarLangDropdownStyled>
-    </SidebarLangDropdownProvider>
+      </SidebarDropdownStyled>
+    </SidebarDropdownProvider>
   );
 };
 

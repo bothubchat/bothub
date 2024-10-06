@@ -18,7 +18,6 @@ import {
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Logo } from '@/ui/components/logo';
 import { HeaderLangDropdown, HeaderLangDropdownItem, HeaderLangDropdownList } from './lang-dropdown';
-import { Sidebar } from '../sidebar';
 import {
   BookmarksBigIcon,
   BothubAggIcon,

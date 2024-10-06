@@ -160,4 +160,4 @@ export * from './group';
 export * from './empty';
 export * from './theme-switcher';
 export * from './menu';
-export * from './lang-dropdown';
+export * from './dropdown';

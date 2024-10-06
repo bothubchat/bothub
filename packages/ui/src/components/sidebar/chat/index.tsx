@@ -12,9 +12,7 @@ import {
   SidebarChatDragHandle,
   SidebarChatIconStyled
 } from './styled';
-import { Skeleton } from '@/ui/components/skeleton';
 import { TooltipConsumer } from '@/ui/components/tooltip';
-import { SidebarChatIcon } from '@/ui/icons';
 
 export interface SidebarChatDefaultProps {
   color: string;

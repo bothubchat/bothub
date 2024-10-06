@@ -3,7 +3,6 @@ import { StoryDecorator } from '@/ui/story-decorator';
 import {
   Sidebar,
   SidebarChat,
-  SidebarChatActions,
   SidebarGroup,
   SidebarGroups,
   SidebarCreateChatButton,
@@ -16,17 +15,20 @@ import {
   SidebarUserInfoPremiumTariff,
   SidebarUserInfoEliteTariff,
   SidebarConsumer,
-  SidebarChatEditAction,
   SidebarEmpty,
   SidebarButtons,
-  SidebarDeleteChatsButton,
   SidebarLogo,
   SidebarLogoLink,
   SidebarMenu,
   SidebarMenuNav,
   SidebarMenuNavLink,
   SidebarChatCheckbox,
-  SidebarUserInfoLogoutButton
+  SidebarUserInfoLogoutButton,
+  SidebarAddGroupButton,
+  SidebarEditButton,
+  SidebarDropdown,
+  SidebarDropdownItem,
+  SidebarDropdownList
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -35,10 +37,11 @@ import {
   PresetsBigIcon,
   ReferalIcon,
   TariffIcon,
-  GearIcon
+  GearIcon,
+  EditIcon,
+  TrashIcon,
 } from '@/ui/icons';
 import { Checkbox } from '../checkbox';
-
 export type SidebarMeta = Meta<typeof Sidebar>;
 
 export type SidebarStory = StoryObj<typeof Sidebar>;
@@ -106,11 +109,9 @@ export const Basic: SidebarStory = {
     ),
     buttons: (
       <SidebarButtons>
-        <SidebarDeleteChatsButton />
-        <SidebarDeleteChatsButton />
-        <SidebarDeleteChatsButton />
-        <SidebarDeleteChatsButton />
-        <SidebarDeleteChatsButton />
+        <SidebarCreateChatButton variant='primary' />
+        <SidebarAddGroupButton variant='secondary' />
+        <SidebarEditButton variant='secondary' />
       </SidebarButtons>
     ),
     user: (
@@ -161,80 +162,12 @@ export const Basic: SidebarStory = {
               />
             )}
             actions={(
-              <SidebarChatActions>
-                <SidebarChatEditAction />
-              </SidebarChatActions>
-            )}
-          />
-          <SidebarChat
-            id="chat-2"
-            color="#941CF2"
-            name="Придумать логотип"
-            caps="1.7K"
-            actions={(
-              <SidebarChatActions>
-                <SidebarChatEditAction />
-              </SidebarChatActions>
-            )}
-          />
-        </SidebarGroup>
-        <SidebarGroup id="chat-group-2" name="Учеба">
-          <SidebarChat
-            active
-            id="chat-3"
-            color="#1CB2F2"
-            name="Дипломная работа"
-            caps="12.7K"
-            actions={(
-              <SidebarChatActions>
-                <SidebarChatEditAction />
-              </SidebarChatActions>
-            )}
-          />
-          <SidebarChat
-            id="chat-4"
-            color="#F29C1C"
-            name="Реферат"
-            caps="6.9K"
-            actions={(
-              <SidebarChatActions>
-                <SidebarChatEditAction />
-              </SidebarChatActions>
-            )}
-          />
-        </SidebarGroup>
-        <SidebarGroup id="chat-group-3" name="Предыдущие 7 дней">
-          <SidebarChat
-            id="chat-5"
-            color="#1ABB34"
-            name="Для клиентов"
-            caps="12.7K"
-            actions={(
-              <SidebarChatActions>
-                <SidebarChatEditAction />
-              </SidebarChatActions>
-            )}
-          />
-          <SidebarChat
-            id="chat-6"
-            color="#F2DD1C"
-            name="Придумай мне резюме"
-            caps="6.9K"
-            actions={(
-              <SidebarChatActions>
-                <SidebarChatEditAction />
-              </SidebarChatActions>
-            )}
-          />
-          <SidebarChat
-            id="chat-7"
-            color="#941CF2"
-            name="Длинное название чата Длинное название чата Длинное название чата Длинное название чата Длинное название чата"
-            caps="1.7K"
-            actions={(
-              <SidebarChatActions>
-                <SidebarChatEditAction />
-              </SidebarChatActions>
+              <SidebarDropdown>
+                <SidebarDropdownList>
+                  <SidebarDropdownItem startIcon={<EditIcon />}>Редактировать</SidebarDropdownItem>
+                  <SidebarDropdownItem startIcon={<TrashIcon />}>Удалить</SidebarDropdownItem>
+                </SidebarDropdownList>
+              </SidebarDropdown>
             )}
           />
         </SidebarGroup>
@@ -343,14 +276,6 @@ export const Skeleton: SidebarStory = {
     ),
     buttons: (
       <SidebarButtons>
-        <SidebarCreateChatButton
-          disabled
-        >
-          Создать чат
-        </SidebarCreateChatButton>
-        <SidebarDeleteChatsButton
-          disabled
-        />
       </SidebarButtons>
     ),
     user: (

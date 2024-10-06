@@ -4,9 +4,12 @@ import { Button } from '@/ui/components/button';
 import { TrashIcon } from '@/ui/icons/trash';
 import { Skeleton } from '@/ui/components/skeleton';
 import { adaptive } from '@/ui/adaptive';
-import { DragDotIcon, MenuDotIcon, SidebarChatIcon } from '@/ui/icons';
+import { MenuDotIcon } from '@/ui/icons/menu-dot';
+import { SidebarChatIcon } from '@/ui/icons/sidebar-chat';
+import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { Checkbox } from '@/ui/components/checkbox';
 import { Tooltip } from '../../tooltip';
+import { SidebarDropdown, SidebarDropdownStyled } from '../dropdown';
 
 export const SidebarChatLeft = styled.div`
   display: flex;
@@ -113,6 +116,18 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
       `;
     }
   }}
+  ${SidebarDropdownStyled} {
+    margin-left: 0;
+    width: 0;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  &:hover {
+    ${SidebarDropdownStyled} {
+      width: 38px;
+      fill: ${({ theme }) => theme.colors.base.white};
+    }
+  }
   ${({ $skeleton, $active }) => {
     if ($skeleton || $active) {
       return css``;
