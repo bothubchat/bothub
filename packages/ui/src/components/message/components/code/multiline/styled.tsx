@@ -1,12 +1,6 @@
-import { css, styled } from 'styled-components';
-import HL from 'react-highlight';
+import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '@/ui/components/message';
-import { ScrollbarStyle } from '@/ui/components/scrollbar';
-import { adaptive } from '@/ui/adaptive';
-import { interopDefaultCJSImport } from '@/ui/utils';
-
-const Highlight = interopDefaultCJSImport<typeof HL>(HL);
 
 export const MessageMultilineCodeStyled = styled.div`
   display: flex;
@@ -90,63 +84,4 @@ export const MessageMultilineCodeBody = styled.div`
   > pre {
     margin: 0px;
   }
-`;
-
-export interface MessageMultilineCodeContentProps {
-  $messageColor: string;
-}
-
-export const MessageMultilineCodeContent = styled(Highlight)<MessageMultilineCodeContentProps>`
-  ${ScrollbarStyle}
-  line-height: 1.3;
-  span {
-    line-height: 1.3;
-  }
-  &::selection,
-  *::selection {
-    ${({ $messageColor }) => {
-    switch ($messageColor) {
-      case 'default':
-        return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)} !important;
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)} !important;
-        `;
-      case 'green':
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white} !important;
-          color: ${({ theme }) => theme.colors.gpt3} !important;
-        `;
-      case 'purple':
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white} !important;
-          color: ${({ theme }) => theme.colors.gpt4} !important;
-        `;
-      default:
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white} !important;
-          color: ${$messageColor} !important;
-        `;
-    }
-  }}
-  }
-  ${adaptive({
-    variant: 'dashboard',
-    miniTablet: css`
-      font-size: 14px !important;
-      span {
-        font-size: 14px !important;
-      }
-    `,
-    mobile: css`
-      font-size: 12px !important;
-      span {
-        font-size: 12px !important;
-      }
-    `,
-    touch: css`
-      &::-webkit-scrollbar {
-        display: none;
-      }
-    `
-  })}
 `;
