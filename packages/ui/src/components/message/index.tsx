@@ -7,10 +7,12 @@ import {
   MessageName,
   MessageSender,
   MessageStyled,
-  MessageTop
+  MessageTop,
 } from './styled';
 import {
-  MessageCodeCopyEventHandler, MessageCopyEventHandler, MessageVariant 
+  MessageCodeCopyEventHandler,
+  MessageCopyEventHandler,
+  MessageVariant,
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
@@ -18,6 +20,8 @@ import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
 import { ScrollbarShadow } from '@/ui/components/scrollbar';
+import { MessageTimestamp } from './timestamp';
+import { MessageAdditiveActions } from './additive-actions';
 
 export interface MessageProps {
   className?: string;
@@ -29,6 +33,7 @@ export interface MessageProps {
   transaction?: React.ReactNode;
   actions?: React.ReactNode;
   typing?: boolean;
+  timestamp?: string;
   skeleton?: boolean;
   buttons?: ReactNode;
   after?: ReactNode;
@@ -36,9 +41,11 @@ export interface MessageProps {
   children?: ReactNode;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
+  onAdditiveActionMenuClick?: () => void;
+  onRecall?: () => void;
 }
 
-export const Message: React.FC<MessageProps> = ({ 
+export const Message: React.FC<MessageProps> = ({
   className,
   variant = 'user',
   color = 'default',
@@ -48,21 +55,28 @@ export const Message: React.FC<MessageProps> = ({
   transaction,
   actions,
   typing = false,
+  timestamp,
   skeleton = false,
   buttons,
   after,
   components,
   children,
   onCopy,
-  onCodeCopy
+  onCodeCopy,
+  onAdditiveActionMenuClick,
+  onRecall,
 }) => {
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement>(null);
 
-  if (!(color
-    && typeof CSS === 'object' 
-    && typeof CSS.supports === 'function'
-    && CSS.supports('background', color ?? '#000'))) {
+  if (
+    !(
+      color &&
+      typeof CSS === 'object' &&
+      typeof CSS.supports === 'function' &&
+      CSS.supports('background', color ?? '#000')
+    )
+  ) {
     color = 'default';
   }
 
@@ -110,21 +124,13 @@ export const Message: React.FC<MessageProps> = ({
       onCopy={onCopy}
       onCodeCopy={onCodeCopy}
     >
-      <MessageStyled
-        $variant={variant}
-        ref={messageRef}
-        className={className}
-      >
+      <MessageStyled $variant={variant} ref={messageRef} className={className}>
         <MessageContent $variant={variant}>
           {(name || transaction) && (
             <MessageTop>
               {typeof name === 'string' && (
                 <MessageSender>
-                  <MessageName
-                    $color={color}
-                  >
-                    {name}
-                  </MessageName>
+                  <MessageName $color={color}>{name}</MessageName>
                   {tags}
                 </MessageSender>
               )}
@@ -134,26 +140,25 @@ export const Message: React.FC<MessageProps> = ({
           )}
           {typeof name !== 'string' && name}
           {avatar}
-          <MessageBlock 
+          <MessageBlock
             $variant={variant}
             $hexColor={hexColor}
             $skeleton={skeleton}
+            $hasTimestamp={!!timestamp}
           >
             <MessageBlockScrollbarWrapper
               scrollShadows={{
                 color: hexColor,
                 size: 60,
                 left: <ScrollbarShadow side="left" />,
-                right: <ScrollbarShadow side="right" />
+                right: <ScrollbarShadow side="right" />,
               }}
             >
               <MessageBlockContent>
                 {!skeleton && (
                   <>
                     {typeof children === 'string' && (
-                      <MessageMarkdown
-                        components={components}
-                      >
+                      <MessageMarkdown components={components}>
                         {children}
                       </MessageMarkdown>
                     )}
@@ -161,19 +166,19 @@ export const Message: React.FC<MessageProps> = ({
                   </>
                 )}
                 {skeleton && (
-                  <MessageParagraph
-                    disableMargin
-                  >
+                  <MessageParagraph disableMargin>
                     <Skeleton
                       width={260}
                       opacity={[
                         theme.mode === 'light' ? 0.1 : 0.15,
-                        theme.mode === 'light' ? 0.225 : 0.45
+                        theme.mode === 'light' ? 0.225 : 0.45,
                       ]}
                       colors={[
-                        variant === 'user' ? theme.colors.base.white : (
-                          theme.mode === 'light' ? theme.default.colors.base.black : theme.colors.grayScale.gray6
-                        )
+                        variant === 'user'
+                          ? theme.colors.base.white
+                          : theme.mode === 'light'
+                          ? theme.default.colors.base.black
+                          : theme.colors.grayScale.gray6,
                       ]}
                     />
                   </MessageParagraph>
@@ -182,9 +187,16 @@ export const Message: React.FC<MessageProps> = ({
               </MessageBlockContent>
             </MessageBlockScrollbarWrapper>
           </MessageBlock>
+          {timestamp && <MessageTimestamp time={timestamp} />}
           {actions}
           {buttons}
         </MessageContent>
+        {!buttons && variant === 'assistant' && (
+          <MessageAdditiveActions
+            onAdditiveActionMenuClick={onAdditiveActionMenuClick}
+            onRecall={onRecall}
+          />
+        )}
       </MessageStyled>
     </MessageProvider>
   );
