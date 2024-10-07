@@ -617,32 +617,34 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             </>
           )}
         </InputMessageMain>
-        <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
-          <InputMessageToggleSendButton
-            onClick={() => {
-              setAlternativeKeyModalShown(!alternativeKeyModalShown);
-            }}
-            disabled={disabled}
-          />
-          <AnimatePresence>
-            {alternativeKeyModalShown && (
-              <InputMessageToggleSendModalStyled key="alternative-key-modal">
-                <InputMessageToggleSendModalOption
-                  active={!useAlternativeKey}
-                  onClick={handleDefaultKey}
-                >
-                  {defaultKeySendText}
-                </InputMessageToggleSendModalOption>
-                <InputMessageToggleSendModalOption
-                  active={useAlternativeKey}
-                  onClick={handleAlternativeKey}
-                >
-                  {alternativeKeySendText}
-                </InputMessageToggleSendModalOption>
-              </InputMessageToggleSendModalStyled>
-            )}
-          </AnimatePresence>
-        </InputMessageToggleSendStyled>
+        {!!defaultKeySendText && !!alternativeKeySendText && (
+          <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
+            <InputMessageToggleSendButton
+              onClick={() => {
+                setAlternativeKeyModalShown(!alternativeKeyModalShown);
+              }}
+              disabled={disabled}
+            />
+            <AnimatePresence>
+              {alternativeKeyModalShown && (
+                <InputMessageToggleSendModalStyled key="alternative-key-modal">
+                  <InputMessageToggleSendModalOption
+                    active={!useAlternativeKey}
+                    onClick={handleDefaultKey}
+                  >
+                    {defaultKeySendText}
+                  </InputMessageToggleSendModalOption>
+                  <InputMessageToggleSendModalOption
+                    active={useAlternativeKey}
+                    onClick={handleAlternativeKey}
+                  >
+                    {alternativeKeySendText}
+                  </InputMessageToggleSendModalOption>
+                </InputMessageToggleSendModalStyled>
+              )}
+            </AnimatePresence>
+          </InputMessageToggleSendStyled>
+        )}
         {!voice || message || files.length > 0 ? (
           <InputMessageSendButton
             disabled={disabled || sendDisabled}
