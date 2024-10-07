@@ -14,6 +14,10 @@ import {
   InputMessageSendIcon,
   InputMessageStyled,
   InputMessageTextArea,
+  InputMessageToggleSendButton,
+  InputMessageToggleSendModalOption,
+  InputMessageToggleSendModalStyled,
+  InputMessageToggleSendStyled,
   InputMessageUploadFile,
   InputMessageUploadFileButton,
   InputMessageUploadFileInput,
@@ -36,6 +40,7 @@ import {
 } from './utils';
 import { AttachFileIcon } from '@/ui/icons/attach-file';
 import { useTheme } from '@/ui/theme';
+import { AnimatePresence } from 'framer-motion';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
@@ -67,7 +72,8 @@ export interface InputMessageProps
   uploadFileAccept?: string;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
-  useAlternateKey?: boolean;
+  defaultKeySendText: React.ReactNode;
+  alternativeKeySendText: React.ReactNode;
   autoFocus?: boolean;
   voice?: boolean;
   onChange?: InputMessageChangeEventHandler;
@@ -86,7 +92,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   disabled = false,
   sendDisabled = false,
   textAreaDisabled = false,
-  useAlternateKey = false,
+  defaultKeySendText,
+  alternativeKeySendText,
   uploadFileLimit = 5,
   hideUploadFile = false,
   uploadFileDisabled = false,
@@ -110,9 +117,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     'calc(var(--bothub-scale, 1) * 18px)'
   );
 
-  const [message, setMessage] = typeof initialMessage === 'string'
-    ? [initialMessage, onChange]
-    : useState('');
+  const [message, setMessage] =
+    typeof initialMessage === 'string'
+      ? [initialMessage, onChange]
+      : useState('');
   const [files, setFiles] = Array.isArray(initialFiles)
     ? [initialFiles, onFilesChange]
     : useState<IInputMessageFile[]>([]);
@@ -127,6 +135,22 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const voiceChunksRef = useRef<Blob[]>([]);
   const voiceTimerRef = useRef<number | null>(null);
   const voicePressedRef = useRef(false);
+
+  const inputMessageToggleSendKeyRef = useRef<HTMLDivElement | null>(null);
+
+  const [useAlternativeKey, setUseAlternativeKey] = useState<boolean>(false);
+  const [alternativeKeyModalShown, setAlternativeKeyModalShown] =
+    useState<boolean>(false);
+
+  const handleDefaultKey = useCallback(() => {
+    setUseAlternativeKey(false);
+    setAlternativeKeyModalShown(false);
+  }, []);
+
+  const handleAlternativeKey = useCallback(() => {
+    setUseAlternativeKey(true);
+    setAlternativeKeyModalShown(false);
+  }, []);
 
   const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
     (event) => {
@@ -145,7 +169,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   );
 
   const handleChange = useCallback<
-  React.ChangeEventHandler<HTMLTextAreaElement>
+    React.ChangeEventHandler<HTMLTextAreaElement>
   >(
     (event) => {
       setMessage?.(event.target.value);
@@ -213,7 +237,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   );
 
   const handleUploadFileChange = useCallback<
-  React.ChangeEventHandler<HTMLInputElement>
+    React.ChangeEventHandler<HTMLInputElement>
   >(
     async (event) => {
       if (!setFiles || !event.target.files) {
@@ -250,7 +274,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       event.stopPropagation();
 
       if (isFocus && event.key === 'Enter') {
-        switch (useAlternateKey) {
+        switch (useAlternativeKey) {
           case true:
             if (event.shiftKey || event.ctrlKey) {
               event.preventDefault();
@@ -293,7 +317,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   }, []);
 
   const handleUploadFileClick = useCallback<
-  React.MouseEventHandler<HTMLDivElement>
+    React.MouseEventHandler<HTMLDivElement>
   >((event) => {
     event.stopPropagation();
   }, []);
@@ -450,6 +474,21 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     };
   }, [voiceMediaRecorderRef.current]);
 
+  useEffect(() => {
+    const closeModalOnOutsideClick = (e: MouseEvent) => {
+      if (!inputMessageToggleSendKeyRef?.current?.contains(e.target as Node)) {
+        e.preventDefault();
+        setAlternativeKeyModalShown(false);
+      }
+    };
+
+    document.addEventListener('click', closeModalOnOutsideClick);
+
+    return () => {
+      document.removeEventListener('click', closeModalOnOutsideClick);
+    };
+  }, []);
+
   return (
     <InputMessageStyled
       $active={isFocus}
@@ -485,17 +524,17 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               accept={uploadFileAccept}
               multiple
               disabled={
-                files.length >= uploadFileLimit
-                || disabled
-                || uploadFileDisabled
+                files.length >= uploadFileLimit ||
+                disabled ||
+                uploadFileDisabled
               }
               onChange={handleUploadFileChange}
             />
             <InputMessageUploadFileButton
               disabled={
-                files.length >= uploadFileLimit
-                || disabled
-                || uploadFileDisabled
+                files.length >= uploadFileLimit ||
+                disabled ||
+                uploadFileDisabled
               }
             />
           </InputMessageUploadFile>
@@ -517,10 +556,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                     let iconNode: React.ReactNode;
 
                     if (
-                      file.previewUrl
-                      && (file.name.match(/.png$/i)
-                        || file.name.match(/.jpg$/i)
-                        || file.name.match(/.jpeg$/i))
+                      file.previewUrl &&
+                      (file.name.match(/.png$/i) ||
+                        file.name.match(/.jpg$/i) ||
+                        file.name.match(/.jpeg$/i))
                     ) {
                       iconNode = <ChipImage src={file.previewUrl} />;
                     } else if (file.name.match(/.txt$/i)) {
@@ -553,11 +592,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                   })}
                 </InputMessageFiles>
               )}
-              {(!textAreaDisabled
-                || (textAreaDisabled
-                  && placeholder
-                  && files.length !== uploadFileLimit)
-                || (textAreaDisabled && message)) && (
+              {(!textAreaDisabled ||
+                (textAreaDisabled &&
+                  placeholder &&
+                  files.length !== uploadFileLimit) ||
+                (textAreaDisabled && message)) && (
                 <InputMessageTextArea
                   $disabled={disabled}
                   {...props}
@@ -580,6 +619,32 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             </>
           )}
         </InputMessageMain>
+        <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
+          <InputMessageToggleSendButton
+            onClick={() => {
+              setAlternativeKeyModalShown(!alternativeKeyModalShown);
+            }}
+            disabled={disabled}
+          />
+          <AnimatePresence>
+            {alternativeKeyModalShown && (
+              <InputMessageToggleSendModalStyled key="alternative-key-modal">
+                <InputMessageToggleSendModalOption
+                  active={!useAlternativeKey}
+                  onClick={handleDefaultKey}
+                >
+                  {defaultKeySendText}
+                </InputMessageToggleSendModalOption>
+                <InputMessageToggleSendModalOption
+                  active={useAlternativeKey}
+                  onClick={handleAlternativeKey}
+                >
+                  {alternativeKeySendText}
+                </InputMessageToggleSendModalOption>
+              </InputMessageToggleSendModalStyled>
+            )}
+          </AnimatePresence>
+        </InputMessageToggleSendStyled>
         {!voice || message || files.length > 0 ? (
           <InputMessageSendButton
             disabled={disabled || sendDisabled}
