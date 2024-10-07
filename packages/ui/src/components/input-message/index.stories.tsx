@@ -41,15 +41,18 @@ export const WithAlternativeKeyModalTexts: InputMessageStory = {
           }}
         >
           Enter
-        </span>{' '}
-        - отправить,{' '}
+        </span>
+        {' '}
+        - отправить,
+        {' '}
         <span
           style={{
             color: '#fff',
           }}
         >
           Ctrl/Shift + Enter
-        </span>{' '}
+        </span>
+        {' '}
         - перенос строки
       </h6>
     ),
@@ -66,15 +69,18 @@ export const WithAlternativeKeyModalTexts: InputMessageStory = {
           }}
         >
           Ctrl/Shift + Enter
-        </span>{' '}
-        - отправить,{' '}
+        </span>
+        {' '}
+        - отправить,
+        {' '}
         <span
           style={{
             color: '#fff',
           }}
         >
           Enter
-        </span>{' '}
+        </span>
+        {' '}
         - перенос строки
       </h6>
     ),
