@@ -3,6 +3,8 @@ import { ScrollbarStyle } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 import { MessageMultilineCodeContentProps } from './types';
 
+export const MessageMultilineCodeContentContainer = styled.div``;
+
 export const contentStyles = css<MessageMultilineCodeContentProps>`
   ${ScrollbarStyle}
   line-height: 1.3;
