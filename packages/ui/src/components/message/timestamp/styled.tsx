@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Typography } from '../../typography';
 import { adaptive } from '@/ui/adaptive';
+import { MessageVariant } from '../types';
 
 export const TimestampStyled = styled.div`
   position: absolute;
