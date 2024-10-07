@@ -1,13 +1,13 @@
 import React from 'react';
 import { 
   MessageMultilineCodeBody,
-  MessageMultilineCodeContent,
   MessageMultilineCodeHead, 
   MessageMultilineCodeLanguage, 
   MessageMultilineCodeStyled
 } from './styled';
 import { Tooltip } from '@/ui/components/tooltip';
 import { MessageMultilineCodeCopyButton } from './copy';
+import { MessageMultilineCodeContent } from './content';
 import { useMessage } from '../../../context';
 
 export interface MessageMultilineCodeProps {
