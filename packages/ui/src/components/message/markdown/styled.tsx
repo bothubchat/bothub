@@ -17,8 +17,7 @@ import {
   MessageTableStyled,
   MessageTitleStyled
 } from '@/ui/components/message/components';
-import { MessageMultilineCodeContentStyled } from '../components/code/multiline/content/styled';
-import { MessageMultilineCodeContentHighlighted } from '../components/code/multiline/content/highlighted';
+import { MessageMultilineCodeContentContainer } from '../components/code/multiline/content/styled';
 
 export const MessageMarkdownStyled = styled.div`
   display: flex;
@@ -62,8 +61,7 @@ export const MessageMarkdownLine = React.memo(styled(ReactMarkdown)<MessageMarkd
     &:last-child > ${MessageBoldStyled}:last-child,
     &:last-child > ${MessageItalicStyled}:last-child,
     &:last-child > ${MessageInlineCodeStyled}:last-child,
-    &:last-child > ${MessagePre}:last-child > ${MessageMultilineCodeStyled}:last-child ${MessageMultilineCodeContentStyled},
-    &:last-child > ${MessagePre}:last-child > ${MessageMultilineCodeStyled}:last-child ${MessageMultilineCodeContentHighlighted},
+    &:last-child > ${MessagePre}:last-child > ${MessageMultilineCodeStyled}:last-child ${MessageMultilineCodeContentContainer} > *,
     &:last-child > ${MessageTableStyled} *:last-child > ${MessageTableRow}:last-child > ${MessageTableCellStyled}:last-child,
     &:last-child > ${MessageListStyled}:last-child > ${MessageListItemStyled}:last-child,
     &:last-child > ${MessageTitleStyled}:last-child,
