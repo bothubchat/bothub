@@ -17,5 +17,11 @@ export const TimestampText = styled(Typography).attrs({
     desktop: css`
       font-size: 12px;
     `,
+    tablet: css`
+      font-size: 10px;
+    `,
+    mobile: css`
+      font-size: 10px;
+    `,
   })}
 `;
