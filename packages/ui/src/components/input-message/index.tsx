@@ -5,8 +5,8 @@ import React, {
   useRef,
   useLayoutEffect,
 } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import { useOnClickOutside } from '@/ui/utils/useOnClickOutside';
+import { useTransition } from '@react-spring/web';
 import {
   InputMessageContent,
   InputMessageFile,
@@ -485,6 +485,25 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     setAlternativeKeyModalShown(false);
   });
 
+  const modalTransition = useTransition(alternativeKeyModalShown, {
+    from: {
+      opacity: 0,
+      y: 10,
+    },
+    enter: {
+      opacity: 1,
+      y: 0,
+    },
+    leave: {
+      opacity: 0,
+      y: 10,
+    },
+    config: {
+      duration: 150,
+      ease: 'easeOut',
+    },
+  });
+
   return (
     <InputMessageStyled
       $active={isFocus}
@@ -615,34 +634,35 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             </>
           )}
         </InputMessageMain>
-        {!!defaultKeySendText && !!alternativeKeySendText && (
-          <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
-            <InputMessageToggleSendButton
-              onClick={() => {
-                setAlternativeKeyModalShown(!alternativeKeyModalShown);
-              }}
-              disabled={disabled}
-            />
-            <AnimatePresence>
-              {alternativeKeyModalShown && (
-                <InputMessageToggleSendModalStyled key="alternative-key-modal">
-                  <InputMessageToggleSendModalOption
-                    active={!useAlternativeKey}
-                    onClick={handleDefaultKey}
-                  >
-                    {defaultKeySendText}
-                  </InputMessageToggleSendModalOption>
-                  <InputMessageToggleSendModalOption
-                    active={useAlternativeKey}
-                    onClick={handleAlternativeKey}
-                  >
-                    {alternativeKeySendText}
-                  </InputMessageToggleSendModalOption>
-                </InputMessageToggleSendModalStyled>
-              )}
-            </AnimatePresence>
-          </InputMessageToggleSendStyled>
-        )}
+        <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
+          <InputMessageToggleSendButton
+            onClick={() => {
+              setAlternativeKeyModalShown(!alternativeKeyModalShown);
+            }}
+            disabled={disabled}
+          />
+          {modalTransition(
+            (style, item) => item && (
+              <InputMessageToggleSendModalStyled
+                key="alternative-key-modal"
+                style={style}
+              >
+                <InputMessageToggleSendModalOption
+                  active={!useAlternativeKey}
+                  onClick={handleDefaultKey}
+                >
+                  {defaultKeySendText}
+                </InputMessageToggleSendModalOption>
+                <InputMessageToggleSendModalOption
+                  active={useAlternativeKey}
+                  onClick={handleAlternativeKey}
+                >
+                  {alternativeKeySendText}
+                </InputMessageToggleSendModalOption>
+              </InputMessageToggleSendModalStyled>
+            )
+          )}
+        </InputMessageToggleSendStyled>
         {!voice || message || files.length > 0 ? (
           <InputMessageSendButton
             disabled={disabled || sendDisabled}
