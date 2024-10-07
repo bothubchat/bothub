@@ -81,7 +81,7 @@ export const MessageMultilineCodeLanguage = styled(Typography).attrs({ variant: 
 `;
 
 export const MessageMultilineCodeBody = styled.div`
-  > pre {
+  > div > pre {
     margin: 0px;
   }
 `;
