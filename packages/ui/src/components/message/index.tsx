@@ -188,7 +188,6 @@ export const Message: React.FC<MessageProps> = ({
             </MessageBlockScrollbarWrapper>
             {timestamp && <MessageTimestamp time={timestamp} />}
           </MessageBlock>
-
           {actions}
           {buttons}
         </MessageContent>

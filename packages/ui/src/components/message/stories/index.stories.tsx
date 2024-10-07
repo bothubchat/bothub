@@ -623,6 +623,7 @@ export const WithTimestamp: MessageStory = {
     variant: 'assistant',
     name: 'ChatGPT',
     children: 'Hi! How can I help you?',
+    avatar: <MessageAvatar />,
   },
 };
 

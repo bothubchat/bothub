@@ -143,6 +143,7 @@ export interface MessageBlockProps {
 }
 
 export const MessageBlock = styled.div<MessageBlockProps>`
+  position: relative;
   display: flex;
   grid-area: block;
   border-radius: 10px;

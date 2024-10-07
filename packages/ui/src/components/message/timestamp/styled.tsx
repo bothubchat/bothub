@@ -6,7 +6,7 @@ import { MessageVariant } from '../types';
 export const TimestampStyled = styled.div`
   position: absolute;
   bottom: 6px;
-  right: 18px;
+  right: 12px;
   display: flex;
   justify-content: flex-end;
 `;
