@@ -6,6 +6,7 @@ import React, {
   useLayoutEffect,
 } from 'react';
 import { useTransition } from '@react-spring/web';
+import { useOnClickOutside } from '@/ui/utils/useOnClickOutside';
 import {
   InputMessageContent,
   InputMessageFile,
@@ -472,20 +473,9 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     };
   }, [voiceMediaRecorderRef.current]);
 
-  useEffect(() => {
-    const closeModalOnOutsideClick = (e: MouseEvent) => {
-      if (!inputMessageToggleSendKeyRef?.current?.contains(e.target as Node)) {
-        e.preventDefault();
-        setAlternativeKeyModalShown(false);
-      }
-    };
-
-    document.addEventListener('click', closeModalOnOutsideClick);
-
-    return () => {
-      document.removeEventListener('click', closeModalOnOutsideClick);
-    };
-  }, []);
+  useOnClickOutside(inputMessageToggleSendKeyRef, () => {
+    setAlternativeKeyModalShown(false);
+  });
 
   const modalTransition = useTransition(alternativeKeyModalShown, {
     from: {
