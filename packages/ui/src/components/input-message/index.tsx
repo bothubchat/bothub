@@ -5,6 +5,7 @@ import React, {
   useRef,
   useLayoutEffect,
 } from 'react';
+import { useTransition } from '@react-spring/web';
 import {
   InputMessageContent,
   InputMessageFile,
@@ -40,7 +41,6 @@ import {
 } from './utils';
 import { AttachFileIcon } from '@/ui/icons/attach-file';
 import { useTheme } from '@/ui/theme';
-import { AnimatePresence } from 'framer-motion';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
@@ -117,10 +117,9 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     'calc(var(--bothub-scale, 1) * 18px)'
   );
 
-  const [message, setMessage] =
-    typeof initialMessage === 'string'
-      ? [initialMessage, onChange]
-      : useState('');
+  const [message, setMessage] = typeof initialMessage === 'string'
+    ? [initialMessage, onChange]
+    : useState('');
   const [files, setFiles] = Array.isArray(initialFiles)
     ? [initialFiles, onFilesChange]
     : useState<IInputMessageFile[]>([]);
@@ -139,8 +138,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const inputMessageToggleSendKeyRef = useRef<HTMLDivElement | null>(null);
 
   const [useAlternativeKey, setUseAlternativeKey] = useState<boolean>(false);
-  const [alternativeKeyModalShown, setAlternativeKeyModalShown] =
-    useState<boolean>(false);
+  const [alternativeKeyModalShown, setAlternativeKeyModalShown] = useState<boolean>(false);
 
   const handleDefaultKey = useCallback(() => {
     setUseAlternativeKey(false);
@@ -169,7 +167,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   );
 
   const handleChange = useCallback<
-    React.ChangeEventHandler<HTMLTextAreaElement>
+  React.ChangeEventHandler<HTMLTextAreaElement>
   >(
     (event) => {
       setMessage?.(event.target.value);
@@ -237,7 +235,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   );
 
   const handleUploadFileChange = useCallback<
-    React.ChangeEventHandler<HTMLInputElement>
+  React.ChangeEventHandler<HTMLInputElement>
   >(
     async (event) => {
       if (!setFiles || !event.target.files) {
@@ -317,7 +315,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   }, []);
 
   const handleUploadFileClick = useCallback<
-    React.MouseEventHandler<HTMLDivElement>
+  React.MouseEventHandler<HTMLDivElement>
   >((event) => {
     event.stopPropagation();
   }, []);
@@ -489,6 +487,25 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     };
   }, []);
 
+  const modalTransition = useTransition(alternativeKeyModalShown, {
+    from: {
+      opacity: 0,
+      y: 10,
+    },
+    enter: {
+      opacity: 1,
+      y: 0,
+    },
+    leave: {
+      opacity: 0,
+      y: 10,
+    },
+    config: {
+      duration: 150,
+      ease: 'easeOut',
+    },
+  });
+
   return (
     <InputMessageStyled
       $active={isFocus}
@@ -524,17 +541,17 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               accept={uploadFileAccept}
               multiple
               disabled={
-                files.length >= uploadFileLimit ||
-                disabled ||
-                uploadFileDisabled
+                files.length >= uploadFileLimit
+                || disabled
+                || uploadFileDisabled
               }
               onChange={handleUploadFileChange}
             />
             <InputMessageUploadFileButton
               disabled={
-                files.length >= uploadFileLimit ||
-                disabled ||
-                uploadFileDisabled
+                files.length >= uploadFileLimit
+                || disabled
+                || uploadFileDisabled
               }
             />
           </InputMessageUploadFile>
@@ -556,10 +573,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                     let iconNode: React.ReactNode;
 
                     if (
-                      file.previewUrl &&
-                      (file.name.match(/.png$/i) ||
-                        file.name.match(/.jpg$/i) ||
-                        file.name.match(/.jpeg$/i))
+                      file.previewUrl
+                      && (file.name.match(/.png$/i)
+                        || file.name.match(/.jpg$/i)
+                        || file.name.match(/.jpeg$/i))
                     ) {
                       iconNode = <ChipImage src={file.previewUrl} />;
                     } else if (file.name.match(/.txt$/i)) {
@@ -592,11 +609,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                   })}
                 </InputMessageFiles>
               )}
-              {(!textAreaDisabled ||
-                (textAreaDisabled &&
-                  placeholder &&
-                  files.length !== uploadFileLimit) ||
-                (textAreaDisabled && message)) && (
+              {(!textAreaDisabled
+                || (textAreaDisabled
+                  && placeholder
+                  && files.length !== uploadFileLimit)
+                || (textAreaDisabled && message)) && (
                 <InputMessageTextArea
                   $disabled={disabled}
                   {...props}
@@ -626,9 +643,12 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             }}
             disabled={disabled}
           />
-          <AnimatePresence>
-            {alternativeKeyModalShown && (
-              <InputMessageToggleSendModalStyled key="alternative-key-modal">
+          {modalTransition(
+            (style, item) => item && (
+              <InputMessageToggleSendModalStyled
+                key="alternative-key-modal"
+                style={style}
+              >
                 <InputMessageToggleSendModalOption
                   active={!useAlternativeKey}
                   onClick={handleDefaultKey}
@@ -642,8 +662,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                   {alternativeKeySendText}
                 </InputMessageToggleSendModalOption>
               </InputMessageToggleSendModalStyled>
-            )}
-          </AnimatePresence>
+            )
+          )}
         </InputMessageToggleSendStyled>
         {!voice || message || files.length > 0 ? (
           <InputMessageSendButton
