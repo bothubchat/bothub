@@ -39,21 +39,6 @@ export const SidebarDropdownContent: React.FC<React.ComponentProps<'div'> & HTML
   display: flex;
   position: fixed;
   transform-origin: top left;
-  right: 120px;
-  ${adaptive({
-  desktop: css`
-      right: auto;
-    `,
-  miniTablet: css`
-      right: 35px;
-  `,
-  tablet: css`
-    right: auto;
-    `,
-  mobile: css`
-      right: 35px;
-    `,
-  })}
   z-index: ${({ theme }) => theme.zIndex.menu};
 `;
 
@@ -68,7 +53,7 @@ export const SidebarDropdownList = styled.ul`
   list-style: none;
   padding: 0px;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
-  opacity: 0.75;
-  padding: 10px 16px;
+  opacity: 0.8;
+  padding: 8px;
   box-sizing: border-box;
 `;

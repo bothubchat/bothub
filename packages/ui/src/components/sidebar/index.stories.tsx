@@ -28,7 +28,8 @@ import {
   SidebarEditButton,
   SidebarDropdown,
   SidebarDropdownItem,
-  SidebarDropdownList
+  SidebarDropdownList,
+  SidebarDeleteButton
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -114,6 +115,10 @@ export const Basic: SidebarStory = {
         <SidebarEditButton variant='secondary' />
       </SidebarButtons>
     ),
+    deleteButton: (
+      <SidebarDeleteButton>
+        Удалить выбранное
+      </SidebarDeleteButton>),
     user: (
       <SidebarConsumer>
         {({ isOpen }) => (
@@ -164,8 +169,12 @@ export const Basic: SidebarStory = {
             actions={(
               <SidebarDropdown>
                 <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>Редактировать</SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>Удалить</SidebarDropdownItem>
+                  <SidebarDropdownItem startIcon={<EditIcon />}>
+                    Редактировать
+                  </SidebarDropdownItem>
+                  <SidebarDropdownItem startIcon={<TrashIcon />}>
+                    Удалить
+                  </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
             )}

@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useEffect, useRef, useState
+  useCallback, useEffect, useMemo, useRef, useState
 } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import {
@@ -24,7 +24,7 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-
+  const contentRef = useRef<HTMLDivElement>(null);
   const handleToggle = useCallback(() => {
     setIsOpen(!isOpen);
   }, [isOpen]);
@@ -49,7 +49,10 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
       };
     }
   }, []);
+  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? { left: 0 };
 
+
+  console.log(contentPosition);
   return (
     <SidebarDropdownProvider setIsOpen={setIsOpen}>
       <SidebarDropdownStyled {...props} ref={dropdownRef}>
@@ -63,7 +66,8 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
         <AnimatePresence>
           {isOpen && (
             <SidebarDropdownContent
-              style={{ translateX: dropdownRef.current?.clientLeft + 'px' || 0 }}
+              ref={contentRef}
+              style={{ left: contentPosition.left - 135 }}
               animate={{
                 opacity: isOpen ? 1 : 0.5,
                 transform: `scale(${isOpen ? 1 : 0.999})`,

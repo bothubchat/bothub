@@ -36,11 +36,13 @@ export interface SidebarProps extends React.PropsWithChildren {
   toggle?: React.ReactNode;
   user?: React.ReactNode;
   onOpen?: SidebarOpenEventHandler;
+  deleteButton?: React.ReactNode;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
   open, defaultOpen = true,
   className, id, user, logo, menu, buttons, toggle,
+  deleteButton,
   children, onOpen
 }) => {
   const initialIsOpen = open;
@@ -130,6 +132,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             />}
           </SidebarBody>
           <SidebarBottom>
+            {deleteButton}
             {user}
           </SidebarBottom>
         </SidebarContent>

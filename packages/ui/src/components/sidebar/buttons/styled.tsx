@@ -27,9 +27,11 @@ export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
 `;
 
 export const SidebarDeleteButton = styled(Button).attrs({
-  variant: 'secondary',
-  startIcon: <TrashIcon />
-})
+  variant: 'primary',
+  fullWidth: true,
+  startIcon: <TrashIcon />,
+  color: '#FE4242',
+})``;
 
 export const SidebarCreateChatButton = styled(Button).attrs({
   children: <AddChatIcon />,

@@ -1,18 +1,25 @@
 import { Button } from '@/ui/components/button';
+import { Typography } from '@/ui/components/typography';
 import { styled } from 'styled-components';
 
-export const SidebarDropdownItemStyled = styled(Button).attrs({ variant: 'text', iconSize: 18 })`
-  display: inline-flex;
-  width: 100%;
+export const SidebarDropdownItemStyled = styled.button`
+  display: flex;
+  align-items: center;
   justify-content: flex-start;
-  line-height: 22px;
-  padding: 6px 0px;
-  color: ${({ theme }) => theme.colors.base.white};
-  font-weight: 700;
-  font-size: 16px;
+  background: none;
+  outline: none;
+  width: 100%;
+  align-items: center;
+  border: none;
+  gap: 10px;
   cursor: pointer;
+  
+  padding: 10px;
+  border-radius: 8px;
+  color: ${({ theme }) => theme.colors.base.white};
   &:hover {
     background: ${({ theme }) => theme.colors.grayScale.gray3};
-    color: ${({ theme }) => theme.colors.base.white};
   }
 `;
+
+export const SidebarDropdownItemText = styled(Typography).attrs({ variant: 'body-m-regular' })``;

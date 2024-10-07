@@ -1,13 +1,16 @@
 import React, { useCallback } from 'react';
 import { useSidebarDropdown } from '../context';
-import { SidebarDropdownItemStyled } from './styled';
+import { SidebarDropdownItemStyled, SidebarDropdownItemText } from './styled';
 
 export type SidebarDropdownItemProps = React.ComponentProps<
   typeof SidebarDropdownItemStyled
->;
+> & {
+  startIcon?: React.ReactElement;
+};
 
 export const SidebarDropdownItem: React.FC<SidebarDropdownItemProps> = ({
   onClick,
+  startIcon,
   ...props
 }) => {
   const { setIsOpen } = useSidebarDropdown();
@@ -17,6 +20,13 @@ export const SidebarDropdownItem: React.FC<SidebarDropdownItemProps> = ({
     setIsOpen(false);
   }, [onClick]);
 
-  return <SidebarDropdownItemStyled {...props} onClick={handleClick} />;
+  return (
+    <SidebarDropdownItemStyled {...props} onClick={handleClick}>
+      {startIcon}
+      <SidebarDropdownItemText>
+        {props.children}
+      </SidebarDropdownItemText>
+    </SidebarDropdownItemStyled>
+  );
 };
 
