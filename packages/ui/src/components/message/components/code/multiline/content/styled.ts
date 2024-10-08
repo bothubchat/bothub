@@ -66,4 +66,6 @@ export const contentStyles = css<MessageMultilineCodeContentProps>`
 
 export const MessageMultilineCodeContentStyled = styled.div<MessageMultilineCodeContentProps>`
   ${contentStyles}
+  padding: 1em;
+  background-color: #002635;
 `;
