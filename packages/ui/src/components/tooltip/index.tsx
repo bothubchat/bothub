@@ -151,7 +151,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   if (placementX !== 0) {
     left.push(`calc(var(--bothub-scale, 1) * ${placementX}px)`);
   }
-  
+
   const tooltipNode: React.ReactNode = (
     <TooltipStyled
       $placement={placement}

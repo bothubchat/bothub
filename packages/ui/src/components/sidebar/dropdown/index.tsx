@@ -49,10 +49,7 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
       };
     }
   }, []);
-  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? { left: 0 };
-
-
-  console.log(contentPosition);
+  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? { left: 0, bottom: 0 };
   return (
     <SidebarDropdownProvider setIsOpen={setIsOpen}>
       <SidebarDropdownStyled {...props} ref={dropdownRef}>
@@ -67,7 +64,7 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
           {isOpen && (
             <SidebarDropdownContent
               ref={contentRef}
-              style={{ left: contentPosition.left - 135 }}
+              style={{ left: contentPosition.left, top: contentPosition.bottom }}
               animate={{
                 opacity: isOpen ? 1 : 0.5,
                 transform: `scale(${isOpen ? 1 : 0.999})`,

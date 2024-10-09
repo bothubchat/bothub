@@ -77,6 +77,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
               handleTooltipMouseLeave
             }) => (
               <SidebarChatIconStyled
+                onClick={onClick as any}
                 onMouseEnter={handleTooltipMouseEnter}
                 onMouseLeave={handleTooltipMouseLeave}
               />
@@ -85,7 +86,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
         </SidebarChatTooltip>
       )}
       {props.skeleton && <SidebarChatIconStyled />}
-      <SidebarChatLeft>
+      <SidebarChatLeft onClick={onClick}>
         <SidebarChatNameTooltip
           {...(!props.skeleton && {
             label: props.name

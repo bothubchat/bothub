@@ -75,6 +75,8 @@ export const SidebarChatEditAction = styled(Button).attrs({ variant: 'text', chi
 
 export const SidebarChatDeleteAction = styled(Button).attrs({ variant: 'text', children: <TrashIcon /> })``;
 
+export const SidebarChatClosed = styled.div``;
+
 export const SidebarChatCaps = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })`
   display: inline-flex;
   padding: 4px 8px;
