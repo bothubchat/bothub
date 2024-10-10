@@ -3,10 +3,7 @@ import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 import { Logo } from '@/ui/components/logo';
 import {
-  SidebarChatCaps,
   SidebarChatIconStyled,
-  SidebarChatName,
-  SidebarChatNameTooltip,
   SidebarChatStyled,
   SidebarChatTooltip,
 } from './chat';
@@ -14,10 +11,8 @@ import {
   SidebarChatList,
   SidebarGroupDragFolder,
   SidebarGroupName,
-  SidebarGroupSkeleton,
   SidebarGroupsStyled,
   SidebarGroupStyled,
-  SidebarGroupTooltip
 } from './group';
 import { SidebarMenuNavLinkText } from './menu/nav/link/styled';
 import {
@@ -31,7 +26,6 @@ import {
   SidebarMenuStyled
 } from './menu';
 import { SidebarUserInfoStyled } from './user-info';
-import { portalId } from '@/ui/components/portal';
 
 export interface SidebarStyledProps {
   $open: boolean;
@@ -68,55 +62,23 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   }
   max-height: 100vh;
   ${adaptive({
-  variant: 'dashboard',
-  desktop: css`
+    variant: 'dashboard',
+    desktop: css`
       border-right: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
     `,
-  tablet: css`
+    tablet: css`
       border-radius: 18px;
     `,
-  mobile: css`
+    mobile: css`
       border-radius: 18px;
     `
-})}
+  })}
 `;
 
 export interface SidebarGlobalStyleProps {
   $open: boolean;
 }
-
-export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
-  ${({ $open }) => $open && css`
-    ${SidebarStyled} ${SidebarGroupSkeleton} {
-      width: 120px;
-    }
-    #${portalId} {
-      ${SidebarChatTooltip} {
-        visibility: hidden !important;
-      }
-      ${SidebarGroupTooltip} {
-        visibility: hidden !important;
-      }
-    }
-  `}
-  ${({ $open }) => !$open && css`
-    ${SidebarStyled} {
-      ${SidebarChatName} {
-        opacity: 0 !important;
-      }
-      ${SidebarChatCaps} {
-        opacity: 0 !important;
-      }
-      ${SidebarGroupSkeleton} {
-        width: 30px;
-      }
-    }
-    #${portalId} ${SidebarChatNameTooltip} {
-      visibility: hidden !important;
-    }
-  `}
-`;
-
+// @ts-ignore
 export const SidebarContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -126,16 +88,17 @@ export const SidebarContent = styled.div`
   height: 100%;
   transition: max-width 0.3s;
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-  tablet: css`
+    variant: 'dashboard',
+    merge: true,
+    tablet: css`
     min-width: 312px; 
     max-width: 412px;
-    ${SidebarUserInfoStyled as any} {
+    
+    ${SidebarUserInfoStyled} {
       display: none;
     }
     `,
-  mobile: css`
+    mobile: css`
     min-width: none;
     max-width: none;
     display: none;
@@ -146,7 +109,7 @@ export const SidebarContent = styled.div`
       display: none;
     }
     `
-})}
+  })}
   overflow: hidden;
 `;
 export const SidebarContentNav = styled.div`
@@ -162,25 +125,24 @@ export const SidebarContentNav = styled.div`
   background: ${({ theme }) => theme.colors.grayScale.gray7};
   padding: 16px;
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-  desktop: css`
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
     display: none;
     `,
-  tablet: css`
+    tablet: css`
     display: flex;
   `,
-  mobile: css`
+    mobile: css`
     display: flex;
   `
-})}
+  })}
 `;
-
 
 export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
   ${({ $open }) => !$open && adaptive({
-  variant: 'dashboard',
-  desktop: css`
+    variant: 'dashboard',
+    desktop: css`
     ${SidebarToolbar} {
       flex-direction: column-reverse;
     }
@@ -258,7 +220,7 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
         }
       }
     }`,
-  tablet: css`
+    tablet: css`
     ${SidebarMenuStyled} {
       display: flex;
       align-items: center;
@@ -303,7 +265,7 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
       max-width: none;
     }
   `,
-  mobile: css`
+    mobile: css`
     ${SidebarContent} {
       display: flex;
     }
@@ -311,7 +273,7 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
       display: none;
     }
   `
-})}
+  })}
 `;
 
 export interface SidebarHeadProps {
@@ -321,14 +283,14 @@ export interface SidebarHeadProps {
 export const SidebarMobileToggle = styled.div`
   display: none;
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-  mobile: css`
+    variant: 'dashboard',
+    merge: true,
+    mobile: css`
     display: inline-grid;
     justify-content: flex-end;
     width: 100%;
   `,
-})}
+  })}
 `;
 export const SidebarHead = styled.div<SidebarHeadProps>`
   display: flex;
@@ -339,13 +301,13 @@ export const SidebarHead = styled.div<SidebarHeadProps>`
   flex-shrink: 0;
   position: relative;
   ${adaptive(({ $open }) => ({
-  variant: 'dashboard',
-  merge: true,
-  tablet: css`
+    variant: 'dashboard',
+    merge: true,
+    tablet: css`
       flex-direction: row-reverse;
       justify-content: ${$open ? 'space-between' : 'center'};
     `
-}))}
+  }))}
 `;
 
 export interface SidebarHeaderProps {
@@ -404,7 +366,7 @@ export const SidebarWrapper = styled.div`
   display: flex;
   width: 100%;
   overflow: hidden;
-`
+`;
 
 export const SidebarLogo = styled(Logo).attrs({ size: 39 })``;
 
@@ -440,17 +402,17 @@ export const SidebarBody = styled.div`
   height: 100%;
   overflow: hidden;
   ${adaptive({
-  variant: 'dashboard',
-  desktop: css`
+    variant: 'dashboard',
+    desktop: css`
       margin: 18px 0px;
     `,
-  tablet: css`
+    tablet: css`
       margin: 14px 0px;
     `,
-  mobile: css`
+    mobile: css`
       margin: 14px 0px;
     `
-})}
+  })}
 `;
 
 export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
@@ -484,15 +446,15 @@ export const SidebarArrowUpButton = styled(ArrowUpIcon) <{ $hidden: boolean }>`
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   ${({ $hidden }) => $hidden && css` display: none;`}
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-  tablet: css`
+    variant: 'dashboard',
+    merge: true,
+    tablet: css`
     display: none;
   `,
-  mobile: css`
+    mobile: css`
     display: none;
   `,
-})}
+  })}
 `;
 
 export const SidebarArrowDownButton = styled(ArrowDownIcon) <{ $hidden: boolean }>`
@@ -510,15 +472,15 @@ export const SidebarArrowDownButton = styled(ArrowDownIcon) <{ $hidden: boolean 
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   ${({ $hidden }) => $hidden && css` display: none;`}
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-  tablet: css`
+    variant: 'dashboard',
+    merge: true,
+    tablet: css`
     display: none;
   `,
-  mobile: css`
+    mobile: css`
     display: none;
   `,
-})}
+  })}
 `;
 
 export const SidebarBodyContent = styled.div`
@@ -527,7 +489,7 @@ export const SidebarBodyContent = styled.div`
   align-items: flex-start;
   width: 100%;
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-})}
+    variant: 'dashboard',
+    merge: true,
+  })}
 `;

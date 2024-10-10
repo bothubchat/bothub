@@ -25,15 +25,15 @@ export const SidebarMenuBlock: React.FC<React.ComponentProps<'div'> & AnimationP
   padding: 16px;
   transform-origin: top center;
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-  desktop: css`
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
       right: 0px;
     `,
-  tablet: css`
+    tablet: css`
       right: 0px;
     `
-})}
+  })}
 `;
 
 export const SidebarMenuBlockScrollbarWrapper = styled(Scrollbar).attrs({ variant: 'secondary' })`

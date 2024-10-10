@@ -1,4 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback, useEffect, useRef, useState 
+} from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Portal } from '@/ui/components/portal';
 import {
@@ -56,8 +58,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       return [0, 0];
     }
 
-    const { width: tooltipWidth, height: tooltipHeight } =
-      tooltipEl.getBoundingClientRect();
+    const { width: tooltipWidth, height: tooltipHeight } = tooltipEl.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
     const { width: elWidth } = rect;
     const elX = rect.left + window.scrollX;

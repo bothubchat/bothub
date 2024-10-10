@@ -1,6 +1,5 @@
-import { Button } from '@/ui/components/button';
-import { Typography } from '@/ui/components/typography';
 import { styled } from 'styled-components';
+import { Typography } from '@/ui/components/typography';
 
 export const SidebarDropdownItemStyled = styled.button`
   display: flex;

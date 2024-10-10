@@ -1,6 +1,9 @@
 import React, { useCallback } from 'react';
 import {
-  SidebarMenuNavIcon, SidebarMenuNavLinkStyled, SidebarMenuNavLinkStyledProps, SidebarMenuNavLinkText 
+  SidebarMenuNavIcon,
+  SidebarMenuNavLinkStyled,
+  SidebarMenuNavLinkStyledProps,
+  SidebarMenuNavLinkText
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useSidebarMenu } from '../../context';

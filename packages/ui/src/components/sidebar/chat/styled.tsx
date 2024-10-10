@@ -9,7 +9,7 @@ import { SidebarChatIcon } from '@/ui/icons/sidebar-chat';
 import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { Checkbox } from '@/ui/components/checkbox';
 import { Tooltip } from '../../tooltip';
-import { SidebarDropdown, SidebarDropdownStyled } from '../dropdown';
+import { SidebarDropdownStyled } from '../dropdown';
 
 export const SidebarChatLeft = styled.div`
   display: flex;
@@ -40,27 +40,27 @@ export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-mediu
   width: 100%;
   transition: opacity 0.3s;
   ${adaptive({
-  tablet: css`
+    tablet: css`
       max-width: 130px;
     `,
-  mobile: css`
+    mobile: css`
       max-width: 130px;
     `
-})}
+  })}
 `;
 
 export const SidebarChatNameSkeleton = styled(Skeleton)`
   ${adaptive({
-  desktop: css`
+    desktop: css`
       width: 160px;
     `,
-  tablet: css`
+    tablet: css`
       width: 130px;
     `,
-  mobile: css`
+    mobile: css`
       width: 130px;
     `
-})}
+  })}
 `;
 
 export const SidebarChatActions = styled.div`

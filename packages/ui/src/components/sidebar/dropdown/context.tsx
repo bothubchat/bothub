@@ -5,18 +5,18 @@ export interface SidebarDropdownContextValue {
 }
 
 export const SidebarDropdownContext = React.createContext<
-  SidebarDropdownContextValue | null>(null);
+SidebarDropdownContextValue | null>(null);
 
 export const SidebarDropdownProvider: React.FC<
-  SidebarDropdownContextValue & React.PropsWithChildren
+SidebarDropdownContextValue & React.PropsWithChildren
 > = ({
   children,
   ...value
 }) => (
-    <SidebarDropdownContext.Provider value={value}>
-      {children}
-    </SidebarDropdownContext.Provider>
-  );
+  <SidebarDropdownContext.Provider value={value}>
+    {children}
+  </SidebarDropdownContext.Provider>
+);
 
 export function useSidebarDropdown(): SidebarDropdownContextValue {
   const value = useContext(SidebarDropdownContext);

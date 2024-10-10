@@ -1,10 +1,9 @@
-import { css, styled } from 'styled-components';
+import { styled } from 'styled-components';
 import { HTMLMotionProps, motion } from 'framer-motion';
 import React from 'react';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
 import { Typography } from '../../typography';
-import { adaptive } from '@/ui/adaptive';
 
 export const SidebarDropdownStyled = styled.div``;
 

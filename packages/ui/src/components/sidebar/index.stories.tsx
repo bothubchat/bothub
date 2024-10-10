@@ -43,6 +43,7 @@ import {
   TrashIcon,
 } from '@/ui/icons';
 import { Checkbox } from '../checkbox';
+
 export type SidebarMeta = Meta<typeof Sidebar>;
 
 export type SidebarStory = StoryObj<typeof Sidebar>;
@@ -110,9 +111,9 @@ export const Basic: SidebarStory = {
     ),
     buttons: (
       <SidebarButtons>
-        <SidebarCreateChatButton variant='primary' />
-        <SidebarAddGroupButton variant='secondary' />
-        <SidebarEditButton variant='secondary' />
+        <SidebarCreateChatButton variant="primary" />
+        <SidebarAddGroupButton variant="secondary" />
+        <SidebarEditButton variant="secondary" />
       </SidebarButtons>
     ),
     deleteButton: (
@@ -942,8 +943,7 @@ export const Skeleton: SidebarStory = {
       <SidebarToggleButton disabled />
     ),
     buttons: (
-      <SidebarButtons>
-      </SidebarButtons>
+      <SidebarButtons />
     ),
     user: (
       <SidebarUserInfo

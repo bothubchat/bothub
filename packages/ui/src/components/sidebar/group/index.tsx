@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useDroppable } from '@dnd-kit/core';
 import {
   SidebarChatList,
   SidebarGroupStyled,
@@ -11,7 +12,6 @@ import {
   SidebarGroupCheckbox,
   SidebarGroupsStyled
 } from './styled';
-import { useDroppable } from '@dnd-kit/core';
 
 export interface SidebarGroupDefaultProps {
   name: string;
@@ -36,7 +36,8 @@ export type SidebarGroupProps
 export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   children, ...props
 }) => {
-  const [open, setOpen] = props.open !== undefined ? [props.open, props.onHandleOpen] : useState<boolean>(false);
+  const [open, setOpen] = props.open !== undefined
+    ? [props.open, props.onHandleOpen] : useState<boolean>(false);
   const { setNodeRef } = useDroppable({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
   });
@@ -71,15 +72,13 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
         {children}
       </SidebarChatList>
     </SidebarGroupStyled>
-  )
+  );
 };
 
-export const SidebarGroups: React.FC<{ children: any }> = ({ children }) => {
-  return (
-    <SidebarGroupsStyled>
-      {children}
-    </SidebarGroupsStyled>
-  )
-};
+export const SidebarGroups: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <SidebarGroupsStyled>
+    {children}
+  </SidebarGroupsStyled>
+);
 
 export * from './styled';

@@ -29,4 +29,3 @@ export const SidebarDropdownItem: React.FC<SidebarDropdownItemProps> = ({
     </SidebarDropdownItemStyled>
   );
 };
-

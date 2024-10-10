@@ -10,13 +10,10 @@ import {
   SidebarContentNav,
   SidebarDivider,
   SidebarGlobalStyle,
-  SidebarHead,
   SidebarHeader,
-  SidebarHeaderMain,
   SidebarMobileToggle,
   SidebarStyled,
   SidebarToolbar,
-  SidebarTop,
   SidebarWrapper
 } from './styled';
 import { SidebarProvider } from './context';
@@ -62,23 +59,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
   }, [setIsOpen, initialIsOpen, onOpen]);
 
-  const handleScroll = useCallback<ScrollbarScrollEventHandler>(({ isTop, isBottom }) => {
+  const handleScroll = useCallback<ScrollbarScrollEventHandler>(({ isBottom }) => {
     setIsBottom(isBottom);
-  }, [setIsBottom])
+  }, [setIsBottom]);
 
   const handleScrollTop = useCallback(() => {
     scrollbarRef.current?.element?.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
-  }, [])
+  }, []);
 
   const handleScrollBottom = useCallback(() => {
     scrollbarRef.current?.element?.scrollTo({
-      top: scrollbarRef.current?.element?.scrollHeight + 9999,
-      behavior: "smooth",
+      top: scrollbarRef.current?.element?.scrollHeight + 999 || 0,
+      behavior: 'smooth',
     });
-  }, [])
+  }, []);
   return (
     <SidebarProvider
       isOpen={isOpen}
@@ -109,12 +106,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </SidebarToolbar>
           <SidebarDivider />
           <SidebarBody>
-            {!isOpen &&
-              <SidebarArrowUpButton
-                $hidden={isBottom && !isOpen}
-                onClick={handleScrollTop}
-              />
-            }
+            {!isOpen
+              && (
+                <SidebarArrowUpButton
+                  $hidden={isBottom && !isOpen}
+                  onClick={handleScrollTop}
+                />
+              )}
             <SidebarWrapper>
               <SidebarBodyScrollbarWrapper
                 ref={scrollbarRef}
@@ -126,10 +124,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </SidebarBodyContent>
               </SidebarBodyScrollbarWrapper>
             </SidebarWrapper>
-            {!isOpen && <SidebarArrowDownButton
-              $hidden={!isBottom}
-              onClick={handleScrollBottom}
-            />}
+            {!isOpen && (
+              <SidebarArrowDownButton
+                $hidden={!isBottom}
+                onClick={handleScrollBottom}
+              />
+            )}
           </SidebarBody>
           <SidebarBottom>
             {deleteButton}

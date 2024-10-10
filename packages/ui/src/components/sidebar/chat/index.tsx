@@ -40,7 +40,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
   onClick, ...props
 }) => {
   const {
-    attributes, listeners, setNodeRef, transform
+    attributes, listeners, setNodeRef
   } = useDraggable({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
   });
@@ -64,7 +64,9 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
       ref={!props.skeleton && props.edit ? setNodeRef : undefined}
       onClick={onClick}
     >
-      {!props.skeleton && props.edit ? <SidebarChatDragHandle {...draggable} /> : <SidebarChatColor />}
+      {!props.skeleton && props.edit
+        ? <SidebarChatDragHandle {...draggable} />
+        : <SidebarChatColor />}
       {!props.skeleton && (
         <SidebarChatTooltip
           label={props.name}
