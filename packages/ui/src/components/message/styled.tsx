@@ -170,10 +170,10 @@ export const MessageBlock = styled.div<MessageBlockProps>`
           variant: 'dashboard',
           merge: true,
           desktop: css`
-            padding: 16px 16px 24px 16px;
+            padding: 8px;
           `,
           tablet: css`
-            padding: 14px 14px 20px 14px;
+            padding: 8px;
           `,
         })
       : adaptive({
@@ -199,6 +199,7 @@ export const MessageBlockContent = styled.div`
   gap: 10px;
   grid-area: block;
   border-radius: 10px;
+  padding: 8px;
 `;
 
 export const MessageTransaction = styled(Typography).attrs({

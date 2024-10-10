@@ -1,4 +1,4 @@
-import { Icon, icon } from '@/ui/components';
+import { Icon, icon } from '@/ui/components/icon';
 
 export const MinWindowIcon = icon(({ ...props }) => (
   <Icon size={18} viewBox="0 0 18 18" fill="none" {...props}>

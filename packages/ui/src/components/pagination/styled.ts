@@ -1,6 +1,6 @@
 import { css, styled } from 'styled-components';
 import { getTypographyStyles } from '@/ui/components/typography/styled';
-import { ArrowNarrowLeftIcon } from '@/ui/icons';
+import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
 
 export const Container = styled.div`
   display: inline-flex;
@@ -22,12 +22,16 @@ export const PaginatorItem = styled.button.attrs<{
   padding: 6px 14px;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.base.white};
-  ${({ $active }) => $active && css`
-    background-color: ${({ theme }) => theme.colors.accent.primary};
-  `}
-  ${({ $disabled }) => $disabled && css`
-    pointer-events: none;
-  `})}
+  ${({ $active }) =>
+    $active &&
+    css`
+      background-color: ${({ theme }) => theme.colors.accent.primary};
+    `}
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      pointer-events: none;
+    `})}
 `;
 
 export const ControlButton = styled.button.attrs<{
@@ -38,9 +42,11 @@ export const ControlButton = styled.button.attrs<{
   border: none;
   cursor: pointer;
   padding: 6px 10px;
-  ${({ $disabled }) => $disabled && css`
-    pointer-events: none;
-  `}
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      pointer-events: none;
+    `}
 `;
 
 export const ArrowIcon = styled(ArrowNarrowLeftIcon)`

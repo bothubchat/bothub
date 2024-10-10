@@ -26,13 +26,13 @@ import {
   InputMessageVoiceRecordDot,
   InputMessageVoiceRecordTimeText,
 } from './styled';
-import { ChipImage } from '@/ui/components/chip';
+import { ChipImage } from '../chip';
 import { PdfIcon } from '@/ui/icons/pdf';
 import { TxtIcon } from '@/ui/icons/txt';
 import { WordIcon } from '@/ui/icons/word';
 import { XlsIcon } from '@/ui/icons/xls';
 import { IInputMessageFile } from './types';
-import { IconProvider } from '@/ui/components/icon';
+import { IconProvider } from '../icon';
 import {
   formatUploadFiles,
   getPreviewUrlForFile,

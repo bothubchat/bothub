@@ -1,17 +1,18 @@
-import { UpdateIcon, MenuDotIcon } from '@/ui/icons';
+import { MenuDotIcon } from '@/ui/icons/menu-dot';
+import { UpdateIcon } from '@/ui/icons/update';
 
 import * as S from './styled';
 
 export const MessageAdditiveActions = ({
-  onAdditiveActionMenuClick,
+  onAdditionalActionMenuClick,
   onRecall,
 }: {
-  onAdditiveActionMenuClick?: () => void;
+  onAdditionalActionMenuClick?: () => void;
   onRecall?: () => void;
 }) => {
   return (
     <S.MessageAdditiveActionsStyled>
-      <S.MessageAdditiveActionsButton onClick={onAdditiveActionMenuClick}>
+      <S.MessageAdditiveActionsButton onClick={onAdditionalActionMenuClick}>
         <MenuDotIcon size={18} />
       </S.MessageAdditiveActionsButton>
       <S.MessageAdditiveActionsButton onClick={onRecall}>

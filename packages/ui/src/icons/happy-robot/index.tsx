@@ -1,4 +1,4 @@
-import { Icon, icon } from '@/ui/components';
+import { Icon, icon } from '@/ui/components/icon';
 
 export const HappyRobotIcon = icon(({ ...props }) => (
   <Icon size={24} viewBox="0 0 24 24" fill="none" {...props}>

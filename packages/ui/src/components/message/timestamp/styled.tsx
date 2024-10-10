@@ -3,9 +3,9 @@ import { Typography } from '../../typography';
 import { adaptive } from '@/ui/adaptive';
 
 export const TimestampStyled = styled.div`
-  position: absolute;
-  bottom: 6px;
-  right: 12px;
+  margin-top: auto;
+  width: fit-content;
+  height: fit-content;
   display: flex;
   justify-content: flex-end;
 `;

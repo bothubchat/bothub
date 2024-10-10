@@ -41,7 +41,8 @@ export interface MessageProps {
   children?: ReactNode;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
-  onAdditiveActionMenuClick?: () => void;
+  showAdditionalActions?: boolean;
+  onAdditionalActionMenuClick?: () => void;
   onRecall?: () => void;
 }
 
@@ -56,6 +57,7 @@ export const Message: React.FC<MessageProps> = ({
   actions,
   typing = false,
   timestamp,
+  showAdditionalActions = false,
   skeleton = false,
   buttons,
   after,
@@ -63,7 +65,7 @@ export const Message: React.FC<MessageProps> = ({
   children,
   onCopy,
   onCodeCopy,
-  onAdditiveActionMenuClick,
+  onAdditionalActionMenuClick,
   onRecall,
 }) => {
   const theme = useTheme();
@@ -191,9 +193,9 @@ export const Message: React.FC<MessageProps> = ({
           {actions}
           {buttons}
         </MessageContent>
-        {!buttons && variant === 'assistant' && (
+        {showAdditionalActions && variant === 'assistant' && (
           <MessageAdditiveActions
-            onAdditiveActionMenuClick={onAdditiveActionMenuClick}
+            onAdditionalActionMenuClick={onAdditionalActionMenuClick}
             onRecall={onRecall}
           />
         )}
