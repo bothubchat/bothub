@@ -267,7 +267,9 @@ export const SelectFieldPlaceholder = styled(Typography).attrs({ variant: 'input
 
 export const SelectFieldLoader = styled(LoaderCircularGradientIcon)``;
 
-export const SelectFieldArrow = styled(ArrowDownIcon).attrs({ size: 16 })``;
+export const SelectFieldArrow = styled(ArrowDownIcon).attrs({ size: 16 })`
+  transition: transform 0.2s ease-in-out;
+`;
 
 export interface SelectFieldBlockProps {
   $contentWidth?: number;

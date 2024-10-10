@@ -2,15 +2,12 @@ import React, { useCallback, useState } from 'react';
 import {
   AccordionArrow, AccordionBody, AccordionHead, AccordionStyled, AccordionText, AccordionLabel 
 } from './styled';
-import { useTheme } from '../../theme';
 
 export interface AccordionProps extends React.ComponentProps<'div'> {
   label: string;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({ label, children, ...props }) => {
-  const theme = useTheme();
-
   const [isOpen, setIsOpen] = useState(false);
   const toggle = useCallback(() => {
     setIsOpen(!isOpen);
@@ -19,23 +16,15 @@ export const Accordion: React.FC<AccordionProps> = ({ label, children, ...props 
   return (
     <AccordionStyled
       {...props}
-      initial={{
-        background: theme.colors.grayScale.gray2
-      }}
-      animate={{
-        background: isOpen ? theme.colors.accent.primary : theme.colors.grayScale.gray2
-      }}
-      whileHover={{
-        background: theme.colors.accent.primary
-      }}
+      $isOpen={isOpen}
     >
       <AccordionHead onClick={toggle}>
         <AccordionLabel>
           {label}
         </AccordionLabel>
-        <AccordionArrow
-          animate={{
-            transform: `rotateZ(${isOpen ? 180 : 0}deg)`
+        <AccordionArrow 
+          style={{
+            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
           }}
         />
       </AccordionHead>

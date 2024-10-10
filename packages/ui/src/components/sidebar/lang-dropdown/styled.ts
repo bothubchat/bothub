@@ -1,6 +1,5 @@
 import { css, styled } from 'styled-components';
-import { HTMLMotionProps, motion } from 'framer-motion';
-import React from 'react';
+import { animated } from '@react-spring/web';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { LanguageIcon } from '@/ui/icons/language';
 import { Typography } from '../../typography';
@@ -23,6 +22,7 @@ export const SidebarLangDropdownTogglerText = styled(Typography)`
 
 export const SidebarLangDropdownTogglerArrow = styled(ArrowDownIcon).attrs({ size: 16 })`
   pointer-events: none;
+  transition: transform 0.15s ease-in-out;
 `;
 
 export const SidebarLangDropdownToggler = styled.button<{ $open: boolean }>`
@@ -57,7 +57,7 @@ export const SidebarLangDropdownToggler = styled.button<{ $open: boolean }>`
   `}
 `;
 
-export const SidebarLangDropdownContent: React.FC<React.ComponentProps<'div'> & HTMLMotionProps<'div'>> = styled(motion.div)`
+export const SidebarLangDropdownContent = styled(animated.div)`
   display: flex;
   position: fixed;
   transform-origin: top center;

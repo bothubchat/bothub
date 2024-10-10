@@ -1,5 +1,5 @@
-import { AnimationProps, motion } from 'framer-motion';
 import { styled } from 'styled-components';
+import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { CloseIcon } from '@/ui/icons/close';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
@@ -16,7 +16,7 @@ export const ModalStyled = styled.div`
   z-index: ${({ theme }) => theme.zIndex.modal};
 `;
 
-export const ModalWindow: React.FC<React.ComponentProps<'div'> & AnimationProps> = styled(motion.div)`
+export const ModalWindow = styled(animated.div)`
   display: flex;
   flex-direction: column;
   align-items: flex-start;

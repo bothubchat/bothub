@@ -58,6 +58,7 @@ export const BadgeProgressLineFilled = styled.div`
   width: inherit;
   height: inherit;
   background: ${({ theme }) => theme.colors.accent.primaryLight};
+  transition: width 0.3s ease-in-out;
 `;
 
 export const BadgeProgressContent = styled.div`

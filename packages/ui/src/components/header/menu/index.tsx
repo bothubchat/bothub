@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { useTransition } from '@react-spring/web';
 import { HeaderMenuContent, HeaderMenuStyled } from './styled';
 import { useHeader } from '../context';
 import { HeaderMenuProvider } from './context';
@@ -27,36 +27,41 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
     };
   }, [isMenuOpen]);
 
+  const w = typeof window !== 'undefined' ? window : {
+    innerHeight: 1920,
+  };
+  const menuTransition = useTransition(isMenuOpen, {
+    from: {
+      opacity: 0,
+      transform: `translateY(${-w.innerHeight}px)`,
+    },
+    enter: {
+      opacity: 1,
+      transform: 'translateY(0px)',
+    },
+    leave: {
+      opacity: 0,
+      transform: `translateY(${-w.innerHeight}px)`,
+    },
+    config: { duration: 150 }
+  });
+
   return (
     <HeaderMenuProvider 
       isInMenu
     >
-      <AnimatePresence>
-        {isMenuOpen && (
+      {menuTransition((style, item) => (
+        item && (
           <HeaderMenuStyled>
             <HeaderMenuContent
               $variant={variant}
-              initial={{
-                opacity: 0,
-                top: -window.innerHeight
-              }}
-              animate={{
-                opacity: 1,
-                top: 0
-              }}
-              exit={{
-                opacity: 0,
-                top: -window.innerHeight
-              }}
-              transition={{
-                duration: 0.15
-              }}
+              style={style}
             >
               {children}
             </HeaderMenuContent>
           </HeaderMenuStyled>
-        )}
-      </AnimatePresence>
+        )
+      ))}
     </HeaderMenuProvider>
   );
 };

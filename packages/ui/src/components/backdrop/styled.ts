@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
-import { AnimationProps, motion } from 'framer-motion';
+import { animated } from '@react-spring/web';
 
-export const BackdropStyled: React.FC<React.ComponentProps<'div'> & AnimationProps> = styled(motion.div)`
+export const BackdropStyled = styled(animated.div)`
   display: flex;
   justify-content: center;
   align-items: center;

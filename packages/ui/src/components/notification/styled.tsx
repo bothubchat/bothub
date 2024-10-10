@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { motion } from 'framer-motion';
+import { animated } from '@react-spring/web';
 import { CloseIcon } from '@/ui/icons/close';
 import { InfoBigIcon } from '@/ui/icons/info-big';
 import { Typography } from '@/ui/components/typography';
@@ -10,7 +10,7 @@ export interface NotificationStyledProps {
   $variant: NotificationVariant;
 }
 
-export const NotificationStyled = styled(motion.div)<NotificationStyledProps>`
+export const NotificationStyled = styled(animated.div)<NotificationStyledProps>`
   display: flex;
   background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray2)};
   border: 1px solid ${({ theme, $variant }) => {
