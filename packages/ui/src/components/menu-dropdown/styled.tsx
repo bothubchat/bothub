@@ -29,15 +29,15 @@ export const MenuDropdownBlock: React.FC<React.ComponentProps<'div'> & Animation
   padding-right: 8px;
   transform-origin: top center;
   ${adaptive({
-    variant: 'dashboard',
-    merge: true,
-    desktop: css`
+  variant: 'dashboard',
+  merge: true,
+  desktop: css`
       right: 9px;
     `,
-    tablet: css`
+  tablet: css`
       right: 7px;
     `
-  })}
+})}
 `;
 
 export const MenuDropdownBlockScrollbarWrapper = styled(Scrollbar).attrs({ variant: 'secondary' })`

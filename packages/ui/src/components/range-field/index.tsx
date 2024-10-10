@@ -73,12 +73,12 @@ export const RangeField: React.FC<RangeFieldProps> = ({
           {label}
         </RangeFieldLabel>
       )}
+      {(typeof label !== 'string' && !skeleton) && label}
       {preview && (
         <RangeFieldFormattedValue>
           {preview(value)}
         </RangeFieldFormattedValue>
       )}
-      {(typeof label !== 'string' && !skeleton) && label}
       {!skeleton && (
         <Tooltip 
           label={String(value)}

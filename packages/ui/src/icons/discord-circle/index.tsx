@@ -1,4 +1,4 @@
-import { icon, Icon } from '@/ui/components';
+import { icon, Icon } from '@/ui/components/icon';
 
 export const DiscordCircleIcon = icon(({ ...props }) => (
   <Icon size={24} viewBox="0 0 24 24" fill="none" {...props}>

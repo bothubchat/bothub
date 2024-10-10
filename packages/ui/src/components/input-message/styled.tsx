@@ -1,5 +1,7 @@
+import { motion } from 'framer-motion';
 import { css, keyframes, styled } from 'styled-components';
 import { Button } from '@/ui/components/button';
+import { EnterIcon } from '@/ui/icons';
 import { AttachIcon } from '@/ui/icons/attach';
 import { SendIcon } from '@/ui/icons/send';
 import { Chip } from '@/ui/components/chip';
@@ -16,26 +18,31 @@ export interface InputMessageStyledProps {
 
 export const InputMessageStyled = styled.div<InputMessageStyledProps>`
   display: flex;
-  position: relative; 
+  position: relative;
   border-radius: 10px;
-  border: 1px solid ${({ theme, $active, $disabled }) => {
-    if ($disabled) {
-      return theme.colors.grayScale.gray2;
-    } 
-    return $active ? theme.colors.accent.primary : theme.colors.grayScale.gray2;
-  }};
+  border: 1px solid
+    ${({ theme, $active, $disabled }) => {
+      if ($disabled) {
+        return theme.colors.grayScale.gray2;
+      }
+      return $active
+        ? theme.colors.accent.primary
+        : theme.colors.grayScale.gray2;
+    }};
   background: ${({ theme, $disabled }) => {
     if ($disabled) {
       return theme.colors.grayScale.gray3;
     }
 
-    return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
+    return theme.mode === 'light'
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray4;
   }};
   width: 100%;
   max-width: ${({ theme }) => theme.dashboard.chat.containerWidth};
   padding: 14px 20px;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible;
   cursor: ${({ $disabled, $textAreaDisabled, $voiceRecording }) => {
     if ($disabled) {
       return 'not-allowed';
@@ -47,12 +54,16 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
     return 'text';
   }};
   outline: none;
-  ${({ $disabled }) => !$disabled && css`
-    &:hover {
-      border-color: ${({ theme }) => theme.colors.accent.primary};
-    }
-  `}
-  ${({ $dragActive }) => $dragActive && `
+  ${({ $disabled }) =>
+    !$disabled &&
+    css`
+      &:hover {
+        border-color: ${({ theme }) => theme.colors.accent.primary};
+      }
+    `}
+  ${({ $dragActive }) =>
+    $dragActive &&
+    `
     opacity: 0.85;
   `}
 `;
@@ -68,12 +79,17 @@ export const InputMessageUploadFile = styled.div`
   display: inline-flex;
 `;
 
-export const InputMessageUploadFileInput = styled.input.attrs({ id: 'inputMessageUploadFileInput' })`
+export const InputMessageUploadFileInput = styled.input.attrs({
+  id: 'inputMessageUploadFileInput',
+})`
   display: none;
 `;
 
 export const InputMessageUploadFileButton = styled(Button).attrs({
-  variant: 'secondary', component: 'label', htmlFor: 'inputMessageUploadFileInput', children: <AttachIcon /> 
+  variant: 'secondary',
+  component: 'label',
+  htmlFor: 'inputMessageUploadFileInput',
+  children: <AttachIcon />,
 })`
   flex-shrink: 0;
   user-select: none;
@@ -129,9 +145,11 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   &::-webkit-scrollbar {
     display: none;
   }
-  ${({ $disabled }) => $disabled && css`
-    cursor: not-allowed;
-  `}
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      cursor: not-allowed;
+    `}
 `;
 
 export const InputMessageSendButton = styled(Button)`
@@ -157,8 +175,8 @@ export const InputMessageVoiceRecordDot = styled.span`
   height: 8px;
   background: ${({ theme }) => theme.colors.critic};
   border-radius: 50%;
-  animation: ${() => (
-    keyframes`
+  animation: ${() =>
+      keyframes`
       from {
         opacity: 1;
       }
@@ -168,10 +186,90 @@ export const InputMessageVoiceRecordDot = styled.span`
       to {
         opacity: 1;
       }
-    `
-  )} 1s ease-in-out infinite;
+    `}
+    1s ease-in-out infinite;
 `;
 
-export const InputMessageVoiceRecordTimeText = styled(Typography).attrs({ variant: 'body-s-medium' })`
+export const InputMessageVoiceRecordTimeText = styled(Typography).attrs({
+  variant: 'body-s-medium',
+})`
   cursor: default;
+`;
+
+export const InputMessageToggleSendStyled = styled.div`
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+`;
+
+export const InputMessageToggleSendButton = styled(Button).attrs({
+  variant: 'text',
+  startIcon: <EnterIcon />,
+  iconSize: 24,
+})`
+  &:hover {
+    svg {
+      path {
+        fill: ${({ theme }) => theme.colors.grayScale.gray2} !important;
+      }
+    }
+  }
+`;
+
+export const InputMessageToggleSendModalStyled = styled(motion.div).attrs({
+  initial: {
+    opacity: 0,
+    translateY: 10,
+  },
+  animate: {
+    opacity: 1,
+    translateY: 0,
+  },
+  exit: {
+    opacity: 0,
+    translateY: 10,
+  },
+  transition: {
+    duration: 0.15,
+    ease: 'easeOut',
+  },
+})`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: fit-content;
+  width: max-content;
+  max-width: 60vw;
+  padding: 6px;
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  border-radius: 10px;
+  border: 1px ${({ theme }) => theme.colors.grayScale.gray2} solid;
+  background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+  z-index: 50;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+`;
+
+export const InputMessageToggleSendModalOption = styled(motion.button).attrs({
+  whileTap: {
+    opacity: 0.9,
+    translateY: 1,
+    transition: {
+      duration: 0.1,
+    },
+  },
+})<{ active: boolean }>`
+  all: unset;
+  margin: 0;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: ${({ theme, active }) =>
+    active ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray3};
+  cursor: pointer;
+  &:hover {
+    filter: brightness(1.1);
+  }
 `;

@@ -164,7 +164,14 @@ import {
   BlackForestLabsIcon,
   FluxIcon,
   StableDiffusionIcon,
-  StabilityAIIcon
+  StabilityAIIcon,
+  ArticleGeneratorIcon,
+  SuccessIcon,
+  GoogleIcon,
+  YandexIcon,
+  VKIcon,
+  ResendIcon,
+  BigArticleIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -334,6 +341,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="BigPresetsIcon">{BigPresetsIcon}</IconItem>
         <IconItem name="BigFavoriteIcon">{BigFavoriteIcon}</IconItem>
         <IconItem name="BigReferalIcon">{BigReferalIcon}</IconItem>
+        <IconItem name="BigArticleIcon">{BigArticleIcon}</IconItem>
         <IconItem name="AttachFileIcon">{AttachFileIcon}</IconItem>
         <IconItem name="AttachFileBigIcon">{AttachFileBigIcon}</IconItem>
         <IconItem name="VoiceIcon">{VoiceIcon}</IconItem>
@@ -348,6 +356,12 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="FluxIcon">{FluxIcon}</IconItem>
         <IconItem name="StableDiffusionIcon">{StableDiffusionIcon}</IconItem>
         <IconItem name="StabilityAIIcon">{StabilityAIIcon}</IconItem>
+        <IconItem name="ArticleGeneratorIcon">{ArticleGeneratorIcon}</IconItem>
+        <IconItem name="SuccessIcon">{SuccessIcon}</IconItem>
+        <IconItem name="GoogleIcon">{GoogleIcon}</IconItem>
+        <IconItem name="YandexIcon">{YandexIcon}</IconItem>
+        <IconItem name="VKIcon">{VKIcon}</IconItem>
+        <IconItem name="ResendIcon">{ResendIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

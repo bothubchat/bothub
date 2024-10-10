@@ -10,20 +10,81 @@ export const Basic: InputMessageStory = {};
 
 export const Voice: InputMessageStory = {
   args: {
-    voice: true
-  }
+    voice: true,
+  },
 };
 
 export const UploadFileDisabled: InputMessageStory = {
   args: {
-    uploadFileDisabled: true
-  }
+    uploadFileDisabled: true,
+  },
 };
 
 export const Disabled: InputMessageStory = {
   args: {
-    disabled: true
-  }
+    disabled: true,
+  },
+};
+
+export const WithAlternativeKeyModalTexts: InputMessageStory = {
+  args: {
+    defaultKeySendText: (
+      <h6
+        style={{
+          margin: 0,
+          color: '#616D8D',
+        }}
+      >
+        <span
+          style={{
+            color: '#fff',
+          }}
+        >
+          Enter
+        </span>
+        {' '}
+        - отправить,
+        {' '}
+        <span
+          style={{
+            color: '#fff',
+          }}
+        >
+          Ctrl/Shift + Enter
+        </span>
+        {' '}
+        - перенос строки
+      </h6>
+    ),
+    alternativeKeySendText: (
+      <h6
+        style={{
+          margin: 0,
+          color: '#616D8D',
+        }}
+      >
+        <span
+          style={{
+            color: '#fff',
+          }}
+        >
+          Ctrl/Shift + Enter
+        </span>
+        {' '}
+        - отправить,
+        {' '}
+        <span
+          style={{
+            color: '#fff',
+          }}
+        >
+          Enter
+        </span>
+        {' '}
+        - перенос строки
+      </h6>
+    ),
+  },
 };
 
 export default {
@@ -31,6 +92,6 @@ export default {
   component: InputMessage,
   decorators: [StoryDecorator()],
   args: {
-    placeholder: 'Спроси о чем-нибудь...'
-  }
+    placeholder: 'Спроси о чем-нибудь...',
+  },
 } as InputMessageMeta;

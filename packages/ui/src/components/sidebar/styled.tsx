@@ -3,7 +3,10 @@ import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 import { Logo } from '@/ui/components/logo';
 import {
+  SidebarChatCaps,
   SidebarChatIconStyled,
+  SidebarChatName,
+  SidebarChatNameTooltip,
   SidebarChatStyled,
   SidebarChatTooltip,
 } from './chat';
@@ -11,8 +14,10 @@ import {
   SidebarChatList,
   SidebarGroupDragFolder,
   SidebarGroupName,
+  SidebarGroupSkeleton,
   SidebarGroupsStyled,
-  SidebarGroupStyled
+  SidebarGroupStyled,
+  SidebarGroupTooltip
 } from './group';
 import { SidebarMenuNavLinkText } from './menu/nav/link/styled';
 import {
@@ -26,6 +31,7 @@ import {
   SidebarMenuStyled
 } from './menu';
 import { SidebarUserInfoStyled } from './user-info';
+import { portalId } from '@/ui/components/portal';
 
 export interface SidebarStyledProps {
   $open: boolean;
@@ -78,6 +84,38 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
 export interface SidebarGlobalStyleProps {
   $open: boolean;
 }
+
+export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
+  ${({ $open }) => $open && css`
+    ${SidebarStyled} ${SidebarGroupSkeleton} {
+      width: 120px;
+    }
+    #${portalId} {
+      ${SidebarChatTooltip} {
+        visibility: hidden !important;
+      }
+      ${SidebarGroupTooltip} {
+        visibility: hidden !important;
+      }
+    }
+  `}
+  ${({ $open }) => !$open && css`
+    ${SidebarStyled} {
+      ${SidebarChatName} {
+        opacity: 0 !important;
+      }
+      ${SidebarChatCaps} {
+        opacity: 0 !important;
+      }
+      ${SidebarGroupSkeleton} {
+        width: 30px;
+      }
+    }
+    #${portalId} ${SidebarChatNameTooltip} {
+      visibility: hidden !important;
+    }
+  `}
+`;
 
 export const SidebarContent = styled.div`
   display: flex;
