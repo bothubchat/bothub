@@ -17,17 +17,17 @@ export const SidebarUserInfoStyled: React.FC<AnimationProps & SidebarUserInfoSty
   width: 100%;
   transition: padding 0.3s;
   ${({ $open }) => $open && adaptive({
-    variant: 'dashboard',
-    desktop: css`
+  variant: 'dashboard',
+  desktop: css`
       padding: 20px;
     `,
-    tablet: css`
+  tablet: css`
       padding: 18px;
     `,
-    mobile: css`
+  mobile: css`
       padding: 14px;
     `
-  })}
+})}
   ${({ $open }) => !$open && css`
     padding: 0px;
   `}
@@ -132,7 +132,7 @@ export const SidebarUserInfoDeluxeTariff = styled(SidebarUserInfoTariff).attrs({
 
 export const SidebarUserInfoEliteTariff = styled(SidebarUserInfoPremiumTariff).attrs({ children: 'Elite' })``;
 
-export const SidebarUserInfoUpdateTariffButton = styled(Button).attrs({ 
+export const SidebarUserInfoUpdateTariffButton = styled(Button).attrs({
   fullWidth: true
 })``;
 
@@ -151,10 +151,10 @@ export interface SidebarUserInfoUpdateTariffContainerProps {
 }
 
 export const SidebarUserInfoLogoutButton = styled(Button).attrs(
-  () => ({ 
+  () => ({
     variant: 'text',
     iconSize: 18,
-    children: <LogoutIcon /> 
+    children: <LogoutIcon />
   })
 )`
   svg path {
