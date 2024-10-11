@@ -6,23 +6,7 @@ export const MessageAdditiveActionsStyled = styled.div`
   display: flex;
 `;
 
-export const MessageAdditiveActionsButton = styled(motion.button).attrs({
-  whileHover: {
-    opacity: 0.8,
-  },
-  whileTap: {
-    opacity: 0.6,
-    translateY: 1,
-    transition: {
-      duration: 0.1,
-      ease: 'circOut',
-    },
-  },
-  transition: {
-    duration: 0.2,
-    ease: 'easeInOut',
-  },
-})`
+export const MessageAdditiveActionsButton = styled(motion.button)`
   all: unset;
   width: fit-content;
   height: fit-content;

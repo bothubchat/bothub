@@ -22,13 +22,13 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
   border-radius: 10px;
   border: 1px solid
     ${({ theme, $active, $disabled }) => {
-      if ($disabled) {
-        return theme.colors.grayScale.gray2;
-      }
-      return $active
-        ? theme.colors.accent.primary
-        : theme.colors.grayScale.gray2;
-    }};
+    if ($disabled) {
+      return theme.colors.grayScale.gray2;
+    }
+    return $active
+      ? theme.colors.accent.primary
+      : theme.colors.grayScale.gray2;
+  }};
   background: ${({ theme, $disabled }) => {
     if ($disabled) {
       return theme.colors.grayScale.gray3;
@@ -54,16 +54,14 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
     return 'text';
   }};
   outline: none;
-  ${({ $disabled }) =>
-    !$disabled &&
-    css`
+  ${({ $disabled }) => !$disabled
+    && css`
       &:hover {
         border-color: ${({ theme }) => theme.colors.accent.primary};
       }
     `}
-  ${({ $dragActive }) =>
-    $dragActive &&
-    `
+  ${({ $dragActive }) => $dragActive
+    && `
     opacity: 0.85;
   `}
 `;
@@ -145,9 +143,8 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   &::-webkit-scrollbar {
     display: none;
   }
-  ${({ $disabled }) =>
-    $disabled &&
-    css`
+  ${({ $disabled }) => $disabled
+    && css`
       cursor: not-allowed;
     `}
 `;
@@ -175,8 +172,7 @@ export const InputMessageVoiceRecordDot = styled.span`
   height: 8px;
   background: ${({ theme }) => theme.colors.critic};
   border-radius: 50%;
-  animation: ${() =>
-      keyframes`
+  animation: ${() => keyframes`
       from {
         opacity: 1;
       }
@@ -216,24 +212,7 @@ export const InputMessageToggleSendButton = styled(Button).attrs({
   }
 `;
 
-export const InputMessageToggleSendModalStyled = styled(motion.div).attrs({
-  initial: {
-    opacity: 0,
-    translateY: 10,
-  },
-  animate: {
-    opacity: 1,
-    translateY: 0,
-  },
-  exit: {
-    opacity: 0,
-    translateY: 10,
-  },
-  transition: {
-    duration: 0.15,
-    ease: 'easeOut',
-  },
-})`
+export const InputMessageToggleSendModalStyled = styled(motion.div)`
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -253,21 +232,12 @@ export const InputMessageToggleSendModalStyled = styled(motion.div).attrs({
   -webkit-user-select: none;
 `;
 
-export const InputMessageToggleSendModalOption = styled(motion.button).attrs({
-  whileTap: {
-    opacity: 0.9,
-    translateY: 1,
-    transition: {
-      duration: 0.1,
-    },
-  },
-})<{ active: boolean }>`
+export const InputMessageToggleSendModalOption = styled(motion.button)<{ active: boolean }>`
   all: unset;
   margin: 0;
   padding: 12px;
   border-radius: 8px;
-  background-color: ${({ theme, active }) =>
-    active ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray3};
+  background-color: ${({ theme, active }) => (active ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray3)};
   cursor: pointer;
   &:hover {
     filter: brightness(1.1);
