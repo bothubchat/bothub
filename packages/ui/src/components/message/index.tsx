@@ -21,7 +21,7 @@ import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
 import { ScrollbarShadow } from '@/ui/components/scrollbar';
 import { MessageTimestamp } from './timestamp';
-import { MessageAdditiveActions } from './additive-actions';
+import { MessageActions } from './actions';
 
 export interface MessageProps {
   className?: string;
@@ -31,7 +31,16 @@ export interface MessageProps {
   tags?: React.ReactNode;
   avatar?: React.ReactNode;
   transaction?: React.ReactNode;
-  actions?: React.ReactNode;
+  disableResend?: boolean;
+  disableEdit?: boolean;
+  disableDelete?: boolean;
+  disableUpdate?: boolean;
+  disableCopy?: boolean;
+  editText?: string;
+  resendText?: string;
+  deleteText?: string;
+  updateTooltipLabel?: string;
+  copyTooltipLabel?: string;
   typing?: boolean;
   timestamp?: string;
   skeleton?: boolean;
@@ -41,9 +50,10 @@ export interface MessageProps {
   children?: ReactNode;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
-  showAdditionalActions?: boolean;
-  onAdditionalActionMenuClick?: () => void;
-  onRecall?: () => void;
+  onEdit?: () => void;
+  onResend?: () => void;
+  onDelete?: () => void;
+  onUpdate?: () => void;
 }
 
 export const Message: React.FC<MessageProps> = ({
@@ -54,10 +64,18 @@ export const Message: React.FC<MessageProps> = ({
   tags,
   avatar,
   transaction,
-  actions,
+  disableResend = false,
+  disableEdit = false,
+  disableDelete = false,
+  disableUpdate = false,
+  disableCopy = false,
+  editText,
+  resendText,
+  deleteText,
+  updateTooltipLabel,
+  copyTooltipLabel,
   typing = false,
   timestamp,
-  showAdditionalActions = false,
   skeleton = false,
   buttons,
   after,
@@ -65,18 +83,20 @@ export const Message: React.FC<MessageProps> = ({
   children,
   onCopy,
   onCodeCopy,
-  onAdditionalActionMenuClick,
-  onRecall,
+  onEdit,
+  onResend,
+  onDelete,
+  onUpdate,
 }) => {
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement>(null);
 
   if (
     !(
-      color &&
-      typeof CSS === 'object' &&
-      typeof CSS.supports === 'function' &&
-      CSS.supports('background', color ?? '#000')
+      color
+      && typeof CSS === 'object'
+      && typeof CSS.supports === 'function'
+      && CSS.supports('background', color ?? '#000')
     )
   ) {
     color = 'default';
@@ -123,7 +143,6 @@ export const Message: React.FC<MessageProps> = ({
       variant={variant}
       color={color}
       typing={typing}
-      onCopy={onCopy}
       onCodeCopy={onCodeCopy}
     >
       <MessageStyled $variant={variant} ref={messageRef} className={className}>
@@ -179,8 +198,8 @@ export const Message: React.FC<MessageProps> = ({
                         variant === 'user'
                           ? theme.colors.base.white
                           : theme.mode === 'light'
-                          ? theme.default.colors.base.black
-                          : theme.colors.grayScale.gray6,
+                            ? theme.default.colors.base.black
+                            : theme.colors.grayScale.gray6,
                       ]}
                     />
                   </MessageParagraph>
@@ -190,15 +209,26 @@ export const Message: React.FC<MessageProps> = ({
             </MessageBlockScrollbarWrapper>
             {timestamp && <MessageTimestamp time={timestamp} />}
           </MessageBlock>
-          {actions}
           {buttons}
         </MessageContent>
-        {showAdditionalActions && variant === 'assistant' && (
-          <MessageAdditiveActions
-            onAdditionalActionMenuClick={onAdditionalActionMenuClick}
-            onRecall={onRecall}
-          />
-        )}
+        <MessageActions
+          variant={variant}
+          disableResend={disableResend}
+          disableEdit={disableEdit}
+          disableDelete={disableDelete}
+          disableUpdate={disableUpdate}
+          disableCopy={disableCopy}
+          editText={editText}
+          resendText={resendText}
+          deleteText={deleteText}
+          updateTooltipLabel={updateTooltipLabel}
+          copyTooltipLabel={copyTooltipLabel}
+          onEdit={onEdit}
+          onResend={onResend}
+          onDelete={onDelete}
+          onUpdate={onUpdate}
+          onCopy={onCopy}
+        />
       </MessageStyled>
     </MessageProvider>
   );

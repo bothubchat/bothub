@@ -27,7 +27,8 @@ export const MessageStyled = styled.div<MessageStyledProps>`
     switch ($variant) {
       case 'user':
         return css`
-          justify-content: flex-end;
+          justify-content: flex-start;
+          flex-direction: row-reverse;
         `;
       case 'assistant':
         return css``;
@@ -164,28 +165,27 @@ export const MessageBlock = styled.div<MessageBlockProps>`
   }}
   background: ${({ $hexColor }) => $hexColor};
 
-  ${({ $hasTimestamp }) =>
-    $hasTimestamp
-      ? adaptive({
-          variant: 'dashboard',
-          merge: true,
-          desktop: css`
+  ${({ $hasTimestamp }) => ($hasTimestamp
+    ? adaptive({
+      variant: 'dashboard',
+      merge: true,
+      desktop: css`
             padding: 8px;
           `,
-          tablet: css`
+      tablet: css`
             padding: 8px;
           `,
-        })
-      : adaptive({
-          variant: 'dashboard',
-          merge: true,
-          desktop: css`
+    })
+    : adaptive({
+      variant: 'dashboard',
+      merge: true,
+      desktop: css`
             padding: 14px 16px;
           `,
-          tablet: css`
+      tablet: css`
             padding: 14px;
           `,
-        })}
+    }))}
 `;
 
 export const MessageBlockScrollbarWrapper = styled(Scrollbar).attrs({
