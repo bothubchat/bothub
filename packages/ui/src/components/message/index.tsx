@@ -10,8 +10,8 @@ import {
   MessageTop,
 } from './styled';
 import {
+  MessageActionEventHandler,
   MessageCodeCopyEventHandler,
-  MessageCopyEventHandler,
   MessageVariant,
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -24,6 +24,8 @@ import { MessageTimestamp } from './timestamp';
 import { MessageActions } from './actions';
 
 export interface MessageProps {
+  id?: string;
+  content?: string;
   className?: string;
   variant?: MessageVariant;
   color?: string;
@@ -48,15 +50,17 @@ export interface MessageProps {
   after?: ReactNode;
   components?: MessageComponentsProps;
   children?: ReactNode;
-  onCopy?: MessageCopyEventHandler;
+  onCopy?: MessageActionEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
-  onEdit?: () => void;
-  onResend?: () => void;
-  onDelete?: () => void;
-  onUpdate?: () => void;
+  onEdit?: MessageActionEventHandler;
+  onResend?: MessageActionEventHandler;
+  onDelete?: MessageActionEventHandler;
+  onUpdate?: MessageActionEventHandler;
 }
 
 export const Message: React.FC<MessageProps> = ({
+  id,
+  content,
   className,
   variant = 'user',
   color = 'default',
@@ -212,6 +216,8 @@ export const Message: React.FC<MessageProps> = ({
           {buttons}
         </MessageContent>
         <MessageActions
+          id={id}
+          message={content}
           variant={variant}
           disableResend={disableResend}
           disableEdit={disableEdit}

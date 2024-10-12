@@ -6,8 +6,10 @@ import { MessageVariant } from '../types';
 export const MessageActionsStyled = styled.div<{ $variant?: MessageVariant }>`
   margin-top: auto;
   display: flex;
-  flex-direction: ${({ $variant }) =>
-    $variant === 'assistant' ? 'row' : 'row-reverse'};
+  flex-direction: ${({ $variant }) => ($variant === 'assistant' ? 'row' : 'row-reverse')};
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 `;
 
 export const MessageActionsMenuStyled = styled.div`
@@ -19,15 +21,14 @@ export const MessageActionsMenuModal = styled(motion.div)<{
   $variant?: MessageVariant;
 }>`
   position: absolute;
-  top: 30px;
-  ${({ $variant }) =>
-    $variant === 'assistant'
-      ? css`
+  top: 36px;
+  ${({ $variant }) => ($variant === 'assistant'
+    ? css`
           left: 14px;
         `
-      : css`
+    : css`
           right: 14px;
-        `}
+        `)}
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -35,6 +36,7 @@ export const MessageActionsMenuModal = styled(motion.div)<{
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  z-index: 100;
 `;
 
 export const MessageActionsMenuModalOption = styled(motion.button)`

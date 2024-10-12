@@ -2,24 +2,27 @@ import React from 'react';
 import { Variants } from 'framer-motion';
 import * as S from '../styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
+import { MessageActionEventHandler } from '../../types';
 
 type ActionButtonProps = {
+  id?: string;
+  message?: string;
   children?: React.ReactNode;
   variantsFramer?: Variants;
-  onClick?: () => void;
-  onHoverStart?: () => void;
-  onHoverEnd?: () => void;
+  onClick?: MessageActionEventHandler;
+  onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   tooltipLabel?: string;
   props?: unknown;
 };
 
 export const ActionButton = ({
+  id,
+  message,
   children,
   variantsFramer,
   onClick,
-  onHoverStart,
-  onHoverEnd,
+  onMouseEnter,
   onMouseLeave,
   tooltipLabel,
   ...props
@@ -28,9 +31,10 @@ export const ActionButton = ({
     whileHover="hover"
     whileTap="tap"
     variants={variantsFramer}
-    onClick={onClick}
-    onHoverStart={onHoverStart}
-    onHoverEnd={onHoverEnd}
+    onClick={() => {
+      onClick?.({ id, message });
+    }}
+    onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
     {...props}
   >

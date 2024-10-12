@@ -8,13 +8,15 @@ import { EditIcon } from '@/ui/icons/edit';
 import { TrashIcon } from '@/ui/icons/trash';
 
 import * as S from './styled';
-import { MessageVariant } from '../types';
+import { MessageActionEventHandler, MessageVariant } from '../types';
 import { MenuOption } from './menu-option';
 import { CopyButton } from './copy-button';
 import { ActionButton } from './action-button';
 
 type MessageActionsProps = {
-  variant: MessageVariant;
+  id?: string;
+  message?: string;
+  variant?: MessageVariant;
   disableResend?: boolean;
   disableEdit?: boolean;
   disableDelete?: boolean;
@@ -25,14 +27,18 @@ type MessageActionsProps = {
   deleteText?: string;
   updateTooltipLabel?: string;
   copyTooltipLabel?: string;
-  onEdit?: () => void;
-  onResend?: () => void;
-  onDelete?: () => void;
-  onUpdate?: () => void;
-  onCopy?: () => void;
+  onEdit?: MessageActionEventHandler;
+  onResend?: MessageActionEventHandler;
+  onDelete?: MessageActionEventHandler;
+  onUpdate?: MessageActionEventHandler;
+  onCopy?: MessageActionEventHandler;
 };
 
+type ModalOption = 'edit' | 'resend' | 'delete';
+
 export const MessageActions = ({
+  id,
+  message,
   variant = 'user',
   disableResend,
   disableEdit,
@@ -61,6 +67,24 @@ export const MessageActions = ({
   const handleButtonHoverOut = () => {
     setTimeoutId(setTimeout(() => setMenuShown(false), 200));
   };
+  const handleOptionClick = (option: ModalOption) => {
+    const data = {
+      id,
+      message,
+    };
+    switch (option) {
+      case 'edit':
+        onEdit?.(data);
+        break;
+      case 'delete':
+        onDelete?.(data);
+        break;
+      case 'resend':
+        onResend?.(data);
+        break;
+    }
+    setMenuShown(false);
+  };
 
   const buttonVariant = {
     hover: {
@@ -83,19 +107,19 @@ export const MessageActions = ({
   const modalStylesFramer = {
     initial: {
       opacity: 0,
-      translateY: 45,
+      translateY: 10,
     },
     animate: {
       opacity: 1,
       translateY: 0,
     },
+    exit: {
+      opacity: 0,
+      translateY: 0,
+    },
     transition: {
       duration: 0.15,
       ease: 'easeOut',
-    },
-    exit: {
-      opacity: 0,
-      translateY: 45,
     },
   };
 
@@ -104,7 +128,7 @@ export const MessageActions = ({
       <S.MessageActionsMenuStyled>
         <ActionButton
           variantsFramer={buttonVariant}
-          onHoverStart={handleButtonHoverIn}
+          onMouseEnter={handleButtonHoverIn}
           onMouseLeave={handleButtonHoverOut}
         >
           <MenuDotIcon size={18} />
@@ -113,13 +137,17 @@ export const MessageActions = ({
           {menuShown && (!disableEdit || !disableDelete) && (
             <S.MessageActionsMenuModal
               key="message-actions-modal"
-              onHoverStart={handleButtonHoverIn}
-              onHoverEnd={handleButtonHoverOut}
+              onMouseEnter={handleButtonHoverIn}
+              onMouseLeave={handleButtonHoverOut}
               $variant={variant}
               {...modalStylesFramer}
             >
               {!disableResend && variant === 'user' && (
-                <MenuOption onHover={handleButtonHoverIn} onClick={onResend}>
+                <MenuOption
+                  onClick={() => {
+                    handleOptionClick('resend');
+                  }}
+                >
                   <S.MessageActionsMenuModalOptionContent>
                     <ResendIcon fill="#616D8D" />
                     <S.MessageActionsButtonText>
@@ -129,7 +157,11 @@ export const MessageActions = ({
                 </MenuOption>
               )}
               {!disableEdit && (
-                <MenuOption onHover={handleButtonHoverIn} onClick={onEdit}>
+                <MenuOption
+                  onClick={() => {
+                    handleOptionClick('edit');
+                  }}
+                >
                   <S.MessageActionsMenuModalOptionContent>
                     <EditIcon />
                     <S.MessageActionsButtonText>
@@ -139,7 +171,11 @@ export const MessageActions = ({
                 </MenuOption>
               )}
               {!disableDelete && (
-                <MenuOption onHover={handleButtonHoverIn} onClick={onDelete}>
+                <MenuOption
+                  onClick={() => {
+                    handleOptionClick('delete');
+                  }}
+                >
                   <S.MessageActionsMenuModalOptionContent>
                     <TrashIcon />
                     <S.MessageActionsButtonText>
@@ -156,7 +192,6 @@ export const MessageActions = ({
         <ActionButton
           variantsFramer={buttonVariant}
           onClick={onUpdate}
-          onHoverStart={handleButtonHoverOut}
           tooltipLabel={updateTooltipLabel}
         >
           <UpdateIcon size={18} />
@@ -164,9 +199,10 @@ export const MessageActions = ({
       )}
       {!disableCopy && (
         <CopyButton
+          id={id}
+          message={message}
           framerVariant={buttonVariant}
           onCopy={onCopy}
-          onHoverIn={handleButtonHoverOut}
           tooltipLabel={copyTooltipLabel}
         />
       )}
