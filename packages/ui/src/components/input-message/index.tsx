@@ -73,10 +73,12 @@ export interface InputMessageProps
   uploadFileAccept?: string;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
+  useAlternativeKeyDefaultValue?: boolean;
   defaultKeySendText?: React.ReactNode;
   alternativeKeySendText?: React.ReactNode;
   autoFocus?: boolean;
   voice?: boolean;
+  onSetAlternativeKeyValue?: (value: boolean) => unknown;
   onChange?: InputMessageChangeEventHandler;
   onFilesChange?: InputMessageFilesChangeEventHandler;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
@@ -93,6 +95,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   disabled = false,
   sendDisabled = false,
   textAreaDisabled = false,
+  useAlternativeKeyDefaultValue = false,
   defaultKeySendText,
   alternativeKeySendText,
   uploadFileLimit = 5,
@@ -101,6 +104,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   uploadFileAccept,
   autoFocus = true,
   voice = false,
+  onSetAlternativeKeyValue,
   onChange,
   onFilesChange,
   onTextAreaChange,
@@ -138,16 +142,20 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
   const inputMessageToggleSendKeyRef = useRef<HTMLDivElement | null>(null);
 
-  const [useAlternativeKey, setUseAlternativeKey] = useState<boolean>(false);
+  const [useAlternativeKey, setUseAlternativeKey] = useState(
+    useAlternativeKeyDefaultValue
+  );
   const [alternativeKeyModalShown, setAlternativeKeyModalShown] = useState<boolean>(false);
 
   const handleDefaultKey = useCallback(() => {
     setUseAlternativeKey(false);
+    onSetAlternativeKeyValue?.(false);
     setAlternativeKeyModalShown(false);
   }, []);
 
   const handleAlternativeKey = useCallback(() => {
     setUseAlternativeKey(true);
+    onSetAlternativeKeyValue?.(true);
     setAlternativeKeyModalShown(false);
   }, []);
 
@@ -634,24 +642,27 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               }}
               disabled={disabled}
             />
-            {modalTransition((style, item) => (item
-                && (
-                  <InputMessageToggleSendModalStyled key="alternative-key-modal" style={style}>
-                    <InputMessageToggleSendModalOption
-                      active={!useAlternativeKey}
-                      onClick={handleDefaultKey}
-                    >
-                      {defaultKeySendText}
-                    </InputMessageToggleSendModalOption>
-                    <InputMessageToggleSendModalOption
-                      active={useAlternativeKey}
-                      onClick={handleAlternativeKey}
-                    >
-                      {alternativeKeySendText}
-                    </InputMessageToggleSendModalOption>
-                  </InputMessageToggleSendModalStyled>
-                )
-            ))}
+            {modalTransition(
+              (style, item) => item && (
+                <InputMessageToggleSendModalStyled
+                  key="alternative-key-modal"
+                  style={style}
+                >
+                  <InputMessageToggleSendModalOption
+                    active={!useAlternativeKey}
+                    onClick={handleDefaultKey}
+                  >
+                    {defaultKeySendText}
+                  </InputMessageToggleSendModalOption>
+                  <InputMessageToggleSendModalOption
+                    active={useAlternativeKey}
+                    onClick={handleAlternativeKey}
+                  >
+                    {alternativeKeySendText}
+                  </InputMessageToggleSendModalOption>
+                </InputMessageToggleSendModalStyled>
+              )
+            )}
           </InputMessageToggleSendStyled>
         )}
         {!voice || message || files.length > 0 ? (
