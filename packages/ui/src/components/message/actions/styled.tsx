@@ -17,18 +17,45 @@ export const MessageActionsMenuStyled = styled.div`
   display: flex;
 `;
 
+const getModalStylesX = (variant?: MessageVariant, inverted?: boolean) => {
+  switch (variant) {
+    case 'assistant':
+      if (!inverted) {
+        return css`
+          left: 14px;
+        `;
+      }
+      return css`
+        right: 14px;
+      `;
+    case 'user':
+      if (!inverted) {
+        return css`
+          right: 14px;
+        `;
+      }
+      return css`
+        left: 14px;
+      `;
+    default:
+      return css``;
+  }
+};
+
 export const MessageActionsMenuModal = styled(motion.div)<{
   $variant?: MessageVariant;
+  $invertedX?: boolean;
+  $invertedY?: boolean;
 }>`
   position: absolute;
-  top: 36px;
-  ${({ $variant }) => ($variant === 'assistant'
+  ${({ $invertedY }) => (!$invertedY
     ? css`
-          left: 14px;
+          top: 36px;
         `
     : css`
-          right: 14px;
+          bottom: 36px;
         `)}
+  ${({ $variant, $invertedX }) => getModalStylesX($variant, $invertedX)}
   display: flex;
   flex-direction: column;
   gap: 0;

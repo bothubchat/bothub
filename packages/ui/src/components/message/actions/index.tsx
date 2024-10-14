@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { AnimatePresence } from 'framer-motion';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
@@ -58,15 +58,57 @@ export const MessageActions = ({
 }: MessageActionsProps) => {
   const [menuShown, setMenuShown] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
+  const [invertedX, setInvertedX] = useState<boolean>(false);
+  const [invertedY, setInvertedY] = useState<boolean>(false);
+  const messageActionsRef = useRef<HTMLDivElement | null>(null);
+  const messageActonsButtonRef = useRef<HTMLButtonElement | null>(null);
+
+  const modalEnabled = () => {
+    switch (variant) {
+      case 'assistant':
+        return !disableEdit || !disableDelete;
+      case 'user':
+        return !disableEdit || !disableDelete || !disableResend;
+    }
+  };
+
+  const handleInvertedModalState = () => {
+    const messagesScroll = document.getElementById(
+      'messages-scrollbar-content'
+    );
+    const scrollHeight = messagesScroll?.scrollHeight ?? 0;
+    const scrollWidth = messagesScroll?.scrollWidth ?? 0;
+    const offsetTop = messageActionsRef.current?.offsetTop ?? 0;
+    const offsetLeft = messageActionsRef.current?.offsetLeft ?? 0;
+    if (scrollHeight - offsetTop <= 180) {
+      setInvertedY(true);
+    } else {
+      setInvertedY(false);
+    }
+    if (offsetLeft <= 160 || scrollWidth - offsetLeft <= 160) {
+      setInvertedX(true);
+    } else {
+      setInvertedX(false);
+    }
+  };
+
   const handleButtonHoverIn = () => {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
+    handleInvertedModalState();
     setMenuShown(true);
   };
+
   const handleButtonHoverOut = () => {
-    setTimeoutId(setTimeout(() => setMenuShown(false), 200));
+    setTimeoutId(setTimeout(() => setMenuShown(false), 300));
   };
+
+  const handleButtonClick = () => {
+    handleInvertedModalState();
+    setMenuShown(!menuShown);
+  };
+
   const handleOptionClick = (option: ModalOption) => {
     const data = {
       id,
@@ -84,6 +126,15 @@ export const MessageActions = ({
         break;
     }
     setMenuShown(false);
+  };
+
+  const handleClickOutsideButton = (
+    e: MouseEvent,
+    el: React.MutableRefObject<HTMLButtonElement | null>
+  ) => {
+    if (!el?.current?.contains(e.target as Node)) {
+      setMenuShown(false);
+    }
   };
 
   const buttonVariant = {
@@ -118,76 +169,96 @@ export const MessageActions = ({
       translateY: 0,
     },
     transition: {
-      duration: 0.15,
+      duration: 0.3,
       ease: 'easeOut',
     },
   };
 
+  const handleGiveOutCoord = () => {};
+
+  useEffect(() => {
+    document.addEventListener('mousedown', (e: MouseEvent) => handleClickOutsideButton(e, messageActonsButtonRef));
+    return () => {
+      document.removeEventListener('mousedown', (e: MouseEvent) => handleClickOutsideButton(e, messageActonsButtonRef));
+    };
+  }, []);
+
   return (
-    <S.MessageActionsStyled $variant={variant}>
-      <S.MessageActionsMenuStyled>
-        <ActionButton
-          variantsFramer={buttonVariant}
-          onMouseEnter={handleButtonHoverIn}
-          onMouseLeave={handleButtonHoverOut}
-        >
-          <MenuDotIcon size={18} />
-        </ActionButton>
-        <AnimatePresence>
-          {menuShown && (!disableEdit || !disableDelete) && (
-            <S.MessageActionsMenuModal
-              key="message-actions-modal"
-              onMouseEnter={handleButtonHoverIn}
-              onMouseLeave={handleButtonHoverOut}
-              $variant={variant}
-              {...modalStylesFramer}
-            >
-              {!disableResend && variant === 'user' && (
-                <MenuOption
-                  onClick={() => {
-                    handleOptionClick('resend');
-                  }}
-                >
-                  <S.MessageActionsMenuModalOptionContent>
-                    <ResendIcon fill="#616D8D" />
-                    <S.MessageActionsButtonText>
-                      {resendText}
-                    </S.MessageActionsButtonText>
-                  </S.MessageActionsMenuModalOptionContent>
-                </MenuOption>
-              )}
-              {!disableEdit && (
-                <MenuOption
-                  onClick={() => {
-                    handleOptionClick('edit');
-                  }}
-                >
-                  <S.MessageActionsMenuModalOptionContent>
-                    <EditIcon />
-                    <S.MessageActionsButtonText>
-                      {editText}
-                    </S.MessageActionsButtonText>
-                  </S.MessageActionsMenuModalOptionContent>
-                </MenuOption>
-              )}
-              {!disableDelete && (
-                <MenuOption
-                  onClick={() => {
-                    handleOptionClick('delete');
-                  }}
-                >
-                  <S.MessageActionsMenuModalOptionContent>
-                    <TrashIcon />
-                    <S.MessageActionsButtonText>
-                      {deleteText}
-                    </S.MessageActionsButtonText>
-                  </S.MessageActionsMenuModalOptionContent>
-                </MenuOption>
-              )}
-            </S.MessageActionsMenuModal>
-          )}
-        </AnimatePresence>
-      </S.MessageActionsMenuStyled>
+    <S.MessageActionsStyled
+      $variant={variant}
+      ref={messageActionsRef}
+      onMouseDown={handleGiveOutCoord}
+      onMouseEnter={handleGiveOutCoord}
+    >
+      {modalEnabled() && (
+        <S.MessageActionsMenuStyled>
+          <ActionButton
+            ref={messageActonsButtonRef}
+            variantsFramer={buttonVariant}
+            onMouseEnter={handleButtonHoverIn}
+            onMouseLeave={handleButtonHoverOut}
+            onClick={handleButtonClick}
+          >
+            <MenuDotIcon size={18} />
+          </ActionButton>
+          <AnimatePresence>
+            {menuShown && (
+              <S.MessageActionsMenuModal
+                key="message-actions-modal"
+                onMouseEnter={handleButtonHoverIn}
+                onMouseLeave={handleButtonHoverOut}
+                $variant={variant}
+                $invertedX={invertedX}
+                $invertedY={invertedY}
+                {...modalStylesFramer}
+              >
+                {!disableResend && variant === 'user' && (
+                  <MenuOption
+                    onClick={() => {
+                      handleOptionClick('resend');
+                    }}
+                  >
+                    <S.MessageActionsMenuModalOptionContent>
+                      <ResendIcon fill="#616D8D" />
+                      <S.MessageActionsButtonText>
+                        {resendText}
+                      </S.MessageActionsButtonText>
+                    </S.MessageActionsMenuModalOptionContent>
+                  </MenuOption>
+                )}
+                {!disableEdit && (
+                  <MenuOption
+                    onClick={() => {
+                      handleOptionClick('edit');
+                    }}
+                  >
+                    <S.MessageActionsMenuModalOptionContent>
+                      <EditIcon />
+                      <S.MessageActionsButtonText>
+                        {editText}
+                      </S.MessageActionsButtonText>
+                    </S.MessageActionsMenuModalOptionContent>
+                  </MenuOption>
+                )}
+                {!disableDelete && (
+                  <MenuOption
+                    onClick={() => {
+                      handleOptionClick('delete');
+                    }}
+                  >
+                    <S.MessageActionsMenuModalOptionContent>
+                      <TrashIcon />
+                      <S.MessageActionsButtonText>
+                        {deleteText}
+                      </S.MessageActionsButtonText>
+                    </S.MessageActionsMenuModalOptionContent>
+                  </MenuOption>
+                )}
+              </S.MessageActionsMenuModal>
+            )}
+          </AnimatePresence>
+        </S.MessageActionsMenuStyled>
+      )}
       {!disableUpdate && variant !== 'user' && (
         <ActionButton
           variantsFramer={buttonVariant}

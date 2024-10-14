@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { MutableRefObject } from 'react';
 import { Variants } from 'framer-motion';
 import * as S from '../styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { MessageActionEventHandler } from '../../types';
 
-type ActionButtonProps = {
+interface ActionButtonProps {
   id?: string;
+  ref?: MutableRefObject<HTMLButtonElement | null>;
   message?: string;
   children?: React.ReactNode;
   variantsFramer?: Variants;
@@ -13,11 +14,11 @@ type ActionButtonProps = {
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   tooltipLabel?: string;
-  props?: unknown;
-};
+}
 
 export const ActionButton = ({
   id,
+  ref,
   message,
   children,
   variantsFramer,
@@ -28,6 +29,7 @@ export const ActionButton = ({
   ...props
 }: ActionButtonProps) => (
   <S.MessageActionsButton
+    ref={ref}
     whileHover="hover"
     whileTap="tap"
     variants={variantsFramer}

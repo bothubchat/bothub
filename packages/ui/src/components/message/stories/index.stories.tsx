@@ -594,13 +594,20 @@ export const MarkdownImage: MessageStory = {
   },
 };
 
-export const WithTimestamp: MessageStory = {
+export const NewDesignFeatures: MessageStory = {
   args: {
+    id: 'test-id',
     timestamp: 'Date Mon Oct 07 2024 21:20:03 GMT+0400 (Samara Standard Time)',
     variant: 'assistant',
     name: 'ChatGPT',
     children: 'Hi! How can I help you?',
     avatar: <MessageAvatar />,
+    editText: 'Редактировать',
+    resendText: 'Переотправить',
+    deleteText: 'Удалить',
+    copyTooltipLabel: 'Копировать',
+    updateTooltipLabel: 'Повторная генерация',
+    content: 'Hi! How can I help you?',
   },
 };
 

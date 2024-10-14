@@ -206,6 +206,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
 
     const contentNode: React.ReactNode = (
       <ScrollbarContent
+        id="messages-scrollbar-content"
         $variant={variant}
         $size={size}
         $disabled={disabled}
