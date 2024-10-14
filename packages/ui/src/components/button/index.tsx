@@ -110,6 +110,8 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
   return (
     <ButtonStyled 
       {...props}
+      disabled={disabled}
+      type={type}
       $variant={variant}
       $icon={isIconButton}
       $size={size}
