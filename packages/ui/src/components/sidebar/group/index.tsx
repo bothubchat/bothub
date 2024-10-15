@@ -9,7 +9,6 @@ import {
   SidebarGroupNameBox,
   SidebarGroupDragHandle,
   SidebarGroupDragFolder,
-  SidebarGroupCheckbox,
   SidebarGroupsStyled,
   SidebarGroupSkeletonIcon
 } from './styled';
@@ -48,7 +47,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
   });
 
-  const onHandleOpen = useCallback((e: React.MouseEvent) => {
+  const onHandleOpen = useCallback(() => {
     setOpen?.(!open);
   }, [open, setOpen]);
 
