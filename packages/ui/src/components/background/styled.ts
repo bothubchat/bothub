@@ -1,7 +1,7 @@
 import { styled, css } from 'styled-components';
 import grid from './assets/grid.svg';
 import { BackgroundVariant } from './types';
-import bluePurple from './assets/blue-purple.webp';
+import bluePurple from './assets/blue-purple.svg';
 
 export interface BackgroundStyledProps {
   $variant: BackgroundVariant;

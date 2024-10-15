@@ -1,7 +1,7 @@
 import React, {
   useCallback, useEffect, useRef, useState
 } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { useTransition } from '@react-spring/web';
 import {
   SidebarDropdownContent,
   SidebarDropdownStyled,
@@ -50,6 +50,26 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
       };
     }
   }, []);
+
+  const dropdownTransition = useTransition(isOpen, {
+    from: {
+      opacity: 0,
+      transform: 'scale(0.0)',
+    },
+    enter: {
+      opacity: isOpen ? 1 : 0.5,
+      transform: `scale(${isOpen ? 1 : 0.999})`,
+      transition: {
+        duration: 150,
+      },
+    },
+    leave: {
+      opacity: 0,
+      transform: 'scale(0.999)',
+    },
+    config: { duration: 150 },
+  });
+
   const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? { right: 0, bottom: 0 };
   return (
     <SidebarDropdownProvider setIsOpen={setIsOpen}>
@@ -61,31 +81,19 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
             <SidebarDropdownTogglerIcon />
           </SidebarDropdownToggler>
         </IconProvider>
-        <AnimatePresence>
-          {isOpen && (
-            <SidebarDropdownContent
-              ref={contentRef}
-              style={{ left: contentPosition.right, top: contentPosition.bottom }}
-              animate={{
-                opacity: isOpen ? 1 : 0.5,
-                transform: `scale(${isOpen ? 1 : 0.999})`,
-                transition: {
-                  duration: 0.15
-                }
-              }}
-              initial={{
-                opacity: 0,
-                transform: 'scale(0.999)'
-              }}
-              exit={{
-                opacity: 0,
-                transform: 'scale(0.999)'
-              }}
-            >
-              {children}
-            </SidebarDropdownContent>
-          )}
-        </AnimatePresence>
+        {dropdownTransition((style, item) => item && (
+          <SidebarDropdownContent
+            ref={contentRef}
+            style={{ ...style, left: contentPosition.right, top: contentPosition.bottom }}
+
+            exit={{
+              opacity: 0,
+              transform: 'scale(0.999)'
+            }}
+          >
+            {children}
+          </SidebarDropdownContent>
+        ))}
       </SidebarDropdownStyled>
     </SidebarDropdownProvider>
   );

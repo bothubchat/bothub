@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
 import { css, keyframes, styled } from 'styled-components';
+import { animated } from '@react-spring/web';
 import { Button } from '@/ui/components/button';
 import { EnterIcon } from '@/ui/icons';
 import { AttachIcon } from '@/ui/icons/attach';
@@ -212,24 +212,7 @@ export const InputMessageToggleSendButton = styled(Button).attrs({
   }
 `;
 
-export const InputMessageToggleSendModalStyled = styled(motion.div).attrs({
-  initial: {
-    opacity: 0,
-    translateY: 10,
-  },
-  animate: {
-    opacity: 1,
-    translateY: 0,
-  },
-  exit: {
-    opacity: 0,
-    translateY: 10,
-  },
-  transition: {
-    duration: 0.15,
-    ease: 'easeOut',
-  },
-})`
+export const InputMessageToggleSendModalStyled = styled(animated.div)`
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -249,22 +232,21 @@ export const InputMessageToggleSendModalStyled = styled(motion.div).attrs({
   -webkit-user-select: none;
 `;
 
-export const InputMessageToggleSendModalOption = styled(motion.button).attrs({
-  whileTap: {
-    opacity: 0.9,
-    translateY: 1,
-    transition: {
-      duration: 0.1,
-    },
-  },
-})<{ active: boolean }>`
+export const InputMessageToggleSendModalOption = styled.button<{ active: boolean }>`
   all: unset;
   margin: 0;
   padding: 12px;
   border-radius: 8px;
   background-color: ${({ theme, active }) => (active ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray3)};
   cursor: pointer;
+  transition: opacity 0.1s ease-in-out, 
+              transform 0.1s ease-in-out, 
+              filter 0.1s ease-in-out;
   &:hover {
     filter: brightness(1.1);
+  }
+  &:active {
+    opacity: 0.9;
+    transform: translateY(1px);
   }
 `;

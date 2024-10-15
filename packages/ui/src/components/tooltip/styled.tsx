@@ -1,7 +1,7 @@
 import { css, styled } from 'styled-components';
-import { HTMLMotionProps, motion } from 'framer-motion';
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { TooltipAlign, TooltipPlacement, TooltipVariant } from './types';
 import { Image } from '@/ui/components/image';
@@ -12,7 +12,7 @@ export interface TooltipStyledProps {
   ref: React.RefObject<HTMLDivElement>;
 }
 
-export const TooltipStyled: React.FC<HTMLMotionProps<'div'> & TooltipStyledProps> = styled(motion.div)<TooltipStyledProps>`
+export const TooltipStyled = styled(animated.div)<TooltipStyledProps>`
   display: inline-flex;
   position: absolute;
   top: 0px;

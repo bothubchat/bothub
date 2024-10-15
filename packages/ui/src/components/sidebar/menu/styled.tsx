@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import { AnimationProps, motion } from 'framer-motion';
+import { animated } from '@react-spring/web';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 import { Scrollbar } from '@/ui/components/scrollbar';
@@ -12,7 +12,7 @@ export const SidebarMenuToggleButton = styled(Button)`
   }
 `;
 
-export const SidebarMenuBlock: React.FC<React.ComponentProps<'div'> & AnimationProps> = styled(motion.div)`
+export const SidebarMenuBlock = styled(animated.div)`
   display: flex;
   position: absolute;
   z-index: ${({ theme }) => theme.zIndex.menu};

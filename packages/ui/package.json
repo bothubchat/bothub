@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.8.0-feat-new-sidebar-bf31968b-b879-4ead-aa78-85a72fc34cd4",
+  "version": "2.10.4",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -32,10 +32,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
     "./components/*": "./dist/components/*",
     "./fonts/*": "./fonts/*"
@@ -50,11 +49,10 @@
   "dependencies": {
     "@floating-ui/react": "^0.26.16",
     "@floating-ui/react-dom": "^2.1.0",
+    "@react-spring/web": "^9.7.4",
     "date-fns": "^3.6.0",
-    "framer-motion": "^10.16.3",
     "highlight.js": "^11.9.0",
     "katex": "^0.16.10",
-    "nanoid": "^5.0.7",
     "normalize.css": "^8.0.1",
     "react-highlight": "^0.15.0",
     "react-markdown": "^8.0.7",

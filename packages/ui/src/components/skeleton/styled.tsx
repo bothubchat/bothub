@@ -1,15 +1,47 @@
-import { styled, css } from 'styled-components';
-import { motion } from 'framer-motion';
+import {
+  styled, css, DefaultTheme, keyframes 
+} from 'styled-components';
 import { SkeletonVariant } from './types';
+
+const pulse = ({
+  theme,
+  $opacity,
+  $colors,
+}: {
+  theme: DefaultTheme;
+  $opacity?: [number, number?];
+  $colors?: [string, string?];
+}) => keyframes`
+  0% {
+    background: ${$colors?.[0] ?? (theme.mode === 'light'
+    ? theme.colors.grayScale.gray2
+    : theme.colors.grayScale.gray5)};
+    opacity: ${$opacity?.[0] ?? 1};
+  }
+  85% {
+    background: ${$colors?.[1] ?? (theme.mode === 'light'
+    ? theme.colors.grayScale.gray5
+    : theme.colors.grayScale.gray1)};
+    opacity: ${$opacity?.[1] ?? 1};
+  }
+  100% {
+    background: ${$colors?.[0] ?? (theme.mode === 'light'
+    ? theme.colors.grayScale.gray2
+    : theme.colors.grayScale.gray5)};
+    opacity: ${$opacity?.[0] ?? 1};
+  }
+`;
 
 export interface SkeletonStyledProps {
   $variant?: SkeletonVariant;
   $width?: number | string;
   $height?: number | string;
   $fullWidth: boolean;
+  $colors?: [string, string?];
+  $opacity?: [number, number?];
 }
 
-export const SkeletonStyled = styled(motion.span)<SkeletonStyledProps>`
+export const SkeletonStyled = styled.span<SkeletonStyledProps>`
   display: inline-flex;
   flex-shrink: 0;
   vertical-align: middle;
@@ -48,5 +80,12 @@ export const SkeletonStyled = styled(motion.span)<SkeletonStyledProps>`
         `;
     }
   }}
+  animation: ${({ theme, $opacity, $colors }) => css`
+    ${pulse({
+    theme,
+    $opacity,
+    $colors,
+  })} 2s infinite forwards;
+  `};
   overflow: hidden;
 `;

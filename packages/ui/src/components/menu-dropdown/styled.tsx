@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import { AnimationProps, motion } from 'framer-motion';
+import { animated } from '@react-spring/web';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 import { Scrollbar } from '../scrollbar';
@@ -13,7 +13,9 @@ export const MenuDropdownToggleButton = styled(Button)`
   }
 `;
 
-export const MenuDropdownBlock: React.FC<React.ComponentProps<'div'> & AnimationProps> = styled(motion.div)`
+export const MenuDropdownBlock = styled(
+  animated.div
+)`
   display: flex;
   position: absolute;
   width: fit-content;
@@ -35,11 +37,13 @@ export const MenuDropdownBlock: React.FC<React.ComponentProps<'div'> & Animation
     `,
     tablet: css`
       right: 7px;
-    `
+    `,
   })}
 `;
 
-export const MenuDropdownBlockScrollbarWrapper = styled(Scrollbar).attrs({ variant: 'secondary' })`
+export const MenuDropdownBlockScrollbarWrapper = styled(Scrollbar).attrs({
+  variant: 'secondary',
+})`
   width: 100%;
   padding-right: 8px;
   @media (max-height: 720px) {

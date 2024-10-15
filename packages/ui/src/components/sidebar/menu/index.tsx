@@ -1,7 +1,7 @@
 import React, {
   useCallback, useEffect, useRef, useState
 } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { useTransition } from '@react-spring/web';
 import {
   SidebarMenuBlock,
   SidebarMenuBlockContent,
@@ -48,6 +48,22 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
     };
   }, []);
 
+  const menuTransition = useTransition(isOpen, {
+    from: {
+      opacity: 0,
+      transform: 'scale(0.85)',
+    },
+    enter: {
+      opacity: 1,
+      transform: 'scale(1)',
+    },
+    leave: {
+      opacity: 0,
+      transform: 'scale(0.85)',
+    },
+    config: { duration: 135 }
+  });
+
   return (
     <SidebarMenuProvider
       isOpen={isOpen}
@@ -64,34 +80,15 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
           {isOpen && <CloseIcon />}
           {!isOpen && <MenuIcon />}
         </SidebarMenuToggleButton>
-        <AnimatePresence>
-          {isOpen && (
-            <SidebarMenuBlock
-              variants={{
-                open: {
-                  scale: 1,
-                  opacity: 1
-                },
-                close: {
-                  scale: 0.85,
-                  opacity: 0
-                }
-              }}
-              initial="close"
-              animate="open"
-              exit="close"
-              transition={{
-                duration: 0.135
-              }}
-            >
-              <SidebarMenuBlockScrollbarWrapper>
-                <SidebarMenuBlockContent>
-                  {children}
-                </SidebarMenuBlockContent>
-              </SidebarMenuBlockScrollbarWrapper>
-            </SidebarMenuBlock>
-          )}
-        </AnimatePresence>
+        {menuTransition((style, item) => item && (
+          <SidebarMenuBlock style={style}>
+            <SidebarMenuBlockScrollbarWrapper>
+              <SidebarMenuBlockContent>
+                {children}
+              </SidebarMenuBlockContent>
+            </SidebarMenuBlockScrollbarWrapper>
+          </SidebarMenuBlock>
+        ))}
       </SidebarMenuStyled>
     </SidebarMenuProvider>
   );

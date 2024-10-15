@@ -5,7 +5,7 @@ import React, {
   useRef,
   useLayoutEffect,
 } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { useTransition } from '@react-spring/web';
 import { useOnClickOutside } from '@/ui/utils/useOnClickOutside';
 import {
   InputMessageContent,
@@ -73,10 +73,12 @@ export interface InputMessageProps
   uploadFileAccept?: string;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
+  useAlternativeKeyDefaultValue?: boolean;
   defaultKeySendText?: React.ReactNode;
   alternativeKeySendText?: React.ReactNode;
   autoFocus?: boolean;
   voice?: boolean;
+  onSetAlternativeKeyValue?: (value: boolean) => unknown;
   onChange?: InputMessageChangeEventHandler;
   onFilesChange?: InputMessageFilesChangeEventHandler;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
@@ -93,6 +95,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   disabled = false,
   sendDisabled = false,
   textAreaDisabled = false,
+  useAlternativeKeyDefaultValue = false,
   defaultKeySendText,
   alternativeKeySendText,
   uploadFileLimit = 5,
@@ -101,6 +104,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   uploadFileAccept,
   autoFocus = true,
   voice = false,
+  onSetAlternativeKeyValue,
   onChange,
   onFilesChange,
   onTextAreaChange,
@@ -138,16 +142,20 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
   const inputMessageToggleSendKeyRef = useRef<HTMLDivElement | null>(null);
 
-  const [useAlternativeKey, setUseAlternativeKey] = useState<boolean>(false);
+  const [useAlternativeKey, setUseAlternativeKey] = useState(
+    useAlternativeKeyDefaultValue
+  );
   const [alternativeKeyModalShown, setAlternativeKeyModalShown] = useState<boolean>(false);
 
   const handleDefaultKey = useCallback(() => {
     setUseAlternativeKey(false);
+    onSetAlternativeKeyValue?.(false);
     setAlternativeKeyModalShown(false);
   }, []);
 
   const handleAlternativeKey = useCallback(() => {
     setUseAlternativeKey(true);
+    onSetAlternativeKeyValue?.(true);
     setAlternativeKeyModalShown(false);
   }, []);
 
@@ -477,6 +485,25 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     setAlternativeKeyModalShown(false);
   });
 
+  const modalTransition = useTransition(alternativeKeyModalShown, {
+    from: {
+      opacity: 0,
+      y: 10,
+    },
+    enter: {
+      opacity: 1,
+      y: 0,
+    },
+    leave: {
+      opacity: 0,
+      y: 10,
+    },
+    config: {
+      duration: 150,
+      ease: 'easeOut',
+    },
+  });
+
   return (
     <InputMessageStyled
       $active={isFocus}
@@ -615,9 +642,12 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               }}
               disabled={disabled}
             />
-            <AnimatePresence>
-              {alternativeKeyModalShown && (
-                <InputMessageToggleSendModalStyled key="alternative-key-modal">
+            {modalTransition(
+              (style, item) => item && (
+                <InputMessageToggleSendModalStyled
+                  key="alternative-key-modal"
+                  style={style}
+                >
                   <InputMessageToggleSendModalOption
                     active={!useAlternativeKey}
                     onClick={handleDefaultKey}
@@ -631,8 +661,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                     {alternativeKeySendText}
                   </InputMessageToggleSendModalOption>
                 </InputMessageToggleSendModalStyled>
-              )}
-            </AnimatePresence>
+              )
+            )}
           </InputMessageToggleSendStyled>
         )}
         {!voice || message || files.length > 0 ? (

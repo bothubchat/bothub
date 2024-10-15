@@ -6,7 +6,6 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from 'react';
-import { AnimatePresence } from 'framer-motion';
 import { ScrollbarContent, ScrollbarShadows, ScrollbarStyled } from './styled';
 import {
   SetScrollFunction,
@@ -230,25 +229,26 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>((
       scrollShadows={scrollShadows}
       setScroll={setScroll}
       disabled={disabled}
+      isLeft={isLeft}
+      isRight={isRight}
+      isTop={isTop}
+      isBottom={isBottom}
     >
       <ScrollbarStyled $overflow={overflow} className={scrollbarClassName}>
         {contentNode}
         {!disableShadows && (
           <ScrollbarShadows>
-            <AnimatePresence>{isLeft && scrollShadows.left}</AnimatePresence>
-            <AnimatePresence>
-              {isRight && scrollShadows.right}
-            </AnimatePresence>
-            <AnimatePresence>{isTop && scrollShadows.top}</AnimatePresence>
-            <AnimatePresence>
-              {isBottom && scrollShadows.bottom}
-            </AnimatePresence>
+            {scrollShadows.left}
+            {scrollShadows.right}
+            {scrollShadows.top}
+            {scrollShadows.bottom}
           </ScrollbarShadows>
         )}
       </ScrollbarStyled>
     </ScrollbarProvider>
   );
-});
+}
+);
 
 export * from './types';
 export * from './context';

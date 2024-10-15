@@ -1,7 +1,6 @@
 import React, {
   useCallback, useId, useRef, useState 
 } from 'react';
-import { motion } from 'framer-motion';
 import { 
   MessageVoiceAudio,
   MessageVoiceDurationText,
@@ -14,7 +13,8 @@ import {
   MessageVoiceText, 
   MessageVoiceToggleButton,
   MessageVoiceToggleTextButton,
-  MessageVoiceWaves
+  MessageVoiceWaves,
+  StyledRect
 } from './styled';
 import { formatSeconds } from './utils';
 import { useMessage } from '../context';
@@ -146,18 +146,11 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
               })}
             />
             {currentTime !== null && (
-              <motion.rect
+              <StyledRect
                 height="36" 
                 fill={theme.default.colors.base.white}
-                initial="animate"
-                animate="animate"
-                variants={{
-                  animate: {
-                    width: 145 * (currentTime / duration)
-                  }
-                }}
-                transition={{
-                  duration: 0.25
+                style={{
+                  width: 145 * (currentTime / duration)
                 }}
               />
             )}

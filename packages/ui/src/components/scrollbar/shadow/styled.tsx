@@ -1,6 +1,5 @@
 import { styled, css } from 'styled-components';
-import { AnimationProps, motion } from 'framer-motion';
-import React from 'react';
+import { animated } from '@react-spring/web';
 import { ScrollbarShadowSide } from './types';
 import { adaptive } from '@/ui/adaptive';
 
@@ -89,7 +88,7 @@ export const ScrollbarShadowStyled = styled.span<ScrollbarShadowStyledProps>`
   })}
 `;
 
-export const ScrollbarShadowContent: React.FC<React.ComponentProps<'span'> & AnimationProps> = styled(motion.span)`
+export const ScrollbarShadowContent = styled(animated.span)`
   display: inline-flex;
   position: relative;
   width: 100%;

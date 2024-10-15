@@ -1,8 +1,7 @@
-import { AnimationProps, motion } from 'framer-motion';
 import React from 'react';
 import { css, styled } from 'styled-components';
 
-export const IconStyled: React.FC<React.ComponentProps<'svg'> & AnimationProps> = styled(motion.svg)`
+export const IconStyled: React.FC<React.ComponentProps<'svg'>> = styled.svg`
   display: inline-flex;
   flex-shrink: 0;
   ${({ width }) => {
