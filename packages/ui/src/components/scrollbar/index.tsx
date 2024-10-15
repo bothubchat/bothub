@@ -247,8 +247,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>((
       </ScrollbarStyled>
     </ScrollbarProvider>
   );
-}
-);
+});
 
 export * from './types';
 export * from './context';

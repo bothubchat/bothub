@@ -1,5 +1,5 @@
-import { styled } from "styled-components";
-import { Typography } from "@/ui/components/typography";
+import { styled } from 'styled-components';
+import { Typography } from '@/ui/components/typography';
 
 export const SidebarEmptyGroupStyled = styled.div`
   margin-top: 10px;

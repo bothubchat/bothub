@@ -1,6 +1,7 @@
-import { DeleteChatIcon } from "@/ui/icons/delete-chat";
-import { SidebarEmptyGroupStyled, SidebarEmptyGroupText } from "./styled";
-import { useTheme } from "@/ui/theme";
+import { DeleteChatIcon } from '@/ui/icons/delete-chat';
+import { SidebarEmptyGroupStyled, SidebarEmptyGroupText } from './styled';
+import { useTheme } from '@/ui/theme';
+
 interface SidebarGroupEmptyProps {
   children?: React.ReactNode | string;
 }

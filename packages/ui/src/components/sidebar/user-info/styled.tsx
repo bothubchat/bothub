@@ -10,7 +10,7 @@ export interface SidebarUserInfoStyledProps {
 }
 
 export const SidebarUserInfoStyled: React.FC<
-  SidebarUserInfoStyledProps & React.PropsWithChildren
+SidebarUserInfoStyledProps & React.PropsWithChildren
 > = styled.div`
   display: flex;
   overflow: hidden;
@@ -37,12 +37,12 @@ export const SidebarUserInfoStyled: React.FC<
   ${({ theme, $open }) => ($open
     ? css`
     border: 1px solid ${theme.mode === 'light'
-        ? theme.colors.grayScale.gray3
-        : theme.colors.grayScale.gray2};
+      ? theme.colors.grayScale.gray3
+      : theme.colors.grayScale.gray2};
     border-radius: 18px;
     background: ${theme.mode === 'light'
-        ? theme.default.colors.base.white
-        : theme.colors.grayScale.gray3};
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray3};
     `
     : css`
     border: 0px solid rgba(0, 0, 0, 0);

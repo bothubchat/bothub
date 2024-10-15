@@ -58,25 +58,27 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
       $over={over}
       ref={!props.skeleton && props.edit ? setNodeRef : undefined}
     >
-      {!props.isDefault && <SidebarGroupName
-        open={open}
-        $skeleton={!!props.skeleton}
-        onClick={!props.skeleton ? onHandleOpen : undefined}
-      >
-        {!props.skeleton && props.edit && <SidebarGroupDragHandle />}
-        {!props.skeleton && <SidebarGroupDragFolder fill={props.color} />}
-        {props.skeleton && <SidebarGroupSkeletonIcon width={24} height={24} />}
-        {!props.skeleton && (
-          <SidebarGroupNameBox>
-            {props.name.slice(0, 22)}
-            {props.name.length > 22 && '...'}
-          </SidebarGroupNameBox>
-        )}
-        {!props.skeleton && <SidebarGroupArrowDown />}
-        {!props.skeleton && props.edit && props.checkbox}
-        {!props.skeleton && !props.edit && props.actions}
-        {props.skeleton && <SidebarGroupSkeleton />}
-      </SidebarGroupName>}
+      {!props.isDefault && (
+        <SidebarGroupName
+          open={open}
+          $skeleton={!!props.skeleton}
+          onClick={!props.skeleton ? onHandleOpen : undefined}
+        >
+          {!props.skeleton && props.edit && <SidebarGroupDragHandle />}
+          {!props.skeleton && <SidebarGroupDragFolder fill={props.color} />}
+          {props.skeleton && <SidebarGroupSkeletonIcon width={24} height={24} />}
+          {!props.skeleton && (
+            <SidebarGroupNameBox>
+              {props.name.slice(0, 22)}
+              {props.name.length > 22 && '...'}
+            </SidebarGroupNameBox>
+          )}
+          {!props.skeleton && <SidebarGroupArrowDown />}
+          {!props.skeleton && props.edit && props.checkbox}
+          {!props.skeleton && !props.edit && props.actions}
+          {props.skeleton && <SidebarGroupSkeleton />}
+        </SidebarGroupName>
+      )}
       <SidebarChatList open={props.isDefault ? true : open}>
         {children}
       </SidebarChatList>

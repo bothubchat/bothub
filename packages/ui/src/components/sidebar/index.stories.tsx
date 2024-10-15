@@ -44,6 +44,7 @@ import {
 } from '@/ui/icons';
 import { Checkbox } from '../checkbox';
 import { SidebarGroupEmpty } from './group-empty';
+
 export type SidebarMeta = Meta<typeof Sidebar>;
 
 export type SidebarStory = StoryObj<typeof Sidebar>;
@@ -555,7 +556,7 @@ export const Basic: SidebarStory = {
           checkbox={
             <Checkbox checked />
           }
-          actions={
+          actions={(
             <SidebarDropdown>
               <SidebarDropdownList>
                 <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -566,7 +567,7 @@ export const Basic: SidebarStory = {
                 </SidebarDropdownItem>
               </SidebarDropdownList>
             </SidebarDropdown>
-          }
+          )}
         >
           <SidebarChat
             id="chat-1"
