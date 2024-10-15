@@ -51,6 +51,8 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
     }
   }, []);
 
+  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? { left: 0, bottom: 0 };
+
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
@@ -67,10 +69,12 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
       opacity: 0,
       transform: 'scale(0.999)',
     },
-    config: { duration: 150 },
+    config: {
+      duration: 150,
+    },
   });
 
-  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? { right: 0, bottom: 0 };
+
   return (
     <SidebarDropdownProvider setIsOpen={setIsOpen}>
       <SidebarDropdownStyled {...props} ref={dropdownRef}>
@@ -84,11 +88,10 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
         {dropdownTransition((style, item) => item && (
           <SidebarDropdownContent
             ref={contentRef}
-            style={{ ...style, left: contentPosition.right, top: contentPosition.bottom }}
-
-            exit={{
-              opacity: 0,
-              transform: 'scale(0.999)'
+            style={{
+              ...style,
+              left: contentPosition.left,
+              top: contentPosition.bottom,
             }}
           >
             {children}

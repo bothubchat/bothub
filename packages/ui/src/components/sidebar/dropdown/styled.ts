@@ -1,9 +1,9 @@
 import { styled } from 'styled-components';
-import { HTMLMotionProps, motion } from 'framer-motion';
 import React from 'react';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
 import { Typography } from '../../typography';
+import { animated, AnimatedProps } from '@react-spring/web';
 
 export const SidebarDropdownStyled = styled.div`
   width: 24px;
@@ -37,7 +37,7 @@ export const SidebarDropdownToggler = styled.button<{ $open: boolean }>`
   gap: 6px;
   `;
 
-export const SidebarDropdownContent: React.FC<React.ComponentProps<'div'> & HTMLMotionProps<'div'>> = styled(motion.div)`
+export const SidebarDropdownContent: React.FC<AnimatedProps<React.ComponentProps<'div'>>> = styled(animated.div)`
   display: flex;
   position: fixed;
   transform-origin: top left;
