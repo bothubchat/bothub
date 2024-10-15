@@ -5,7 +5,10 @@ import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
 import { Typography } from '../../typography';
 
-export const SidebarDropdownStyled = styled.div``;
+export const SidebarDropdownStyled = styled.div`
+  width: 24px;
+  margin-left: 16px;
+`;
 
 export const SidebarDropdownTogglerIcon = styled(MenuDotIcon).attrs({ size: 18 })`
   pointer-events: none;

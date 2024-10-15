@@ -5,6 +5,7 @@ import { Skeleton } from '@/ui/components/skeleton';
 import { ArrowDownIcon, DragDotIcon } from '@/ui/icons';
 import { FolderIcon } from '@/ui/icons/folder';
 import { Checkbox } from '@/ui/components/checkbox';
+import { SidebarDropdownStyled } from '../dropdown';
 
 export const SidebarGroupsStyled = styled.div`
   display: flex;
@@ -42,10 +43,24 @@ export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medi
   }};
   padding: 8px;
   align-items: center;
+  position: relative;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
+  & > ${SidebarDropdownStyled} {
+    overflow: hidden;
+    width: 0;
+    margin-left: 0;
+    transition: width 0.3s ease, margin-left 0.3s ease;
+  }
+  &:hover {
+    & > ${SidebarDropdownStyled} {
+      display: flex;
+      width: 38px;
+      margin-left: 16px;
+    }
+  }
   & > ${SidebarGroupArrowDown} {
     transform: ${({ open }) => (open ? 'rotate(180deg)' : 'rotate(0deg)')};
   }
@@ -88,4 +103,8 @@ export const SidebarGroupTooltip = styled(Tooltip)`
   display: flex;
 `;
 
-export const SidebarGroupSkeleton = styled(Skeleton)``;
+export const SidebarGroupSkeleton = styled(Skeleton)`
+  margin-left: 10px;
+`;
+
+export const SidebarGroupSkeletonIcon = styled(Skeleton)``;

@@ -29,7 +29,7 @@ import {
   SidebarDropdown,
   SidebarDropdownItem,
   SidebarDropdownList,
-  SidebarDeleteButton
+  SidebarDeleteButton,
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -43,7 +43,7 @@ import {
   TrashIcon,
 } from '@/ui/icons';
 import { Checkbox } from '../checkbox';
-
+import { SidebarGroupEmpty } from './group-empty';
 export type SidebarMeta = Meta<typeof Sidebar>;
 
 export type SidebarStory = StoryObj<typeof Sidebar>;
@@ -153,8 +153,208 @@ export const Basic: SidebarStory = {
     ),
     children: (
       <SidebarGroups>
-        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Работа">
+        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Шабажка">
           <SidebarChat
+            id="chat-1"
+            color="#1C64F2"
+            name="Кто прочитал, тот молодец"
+            caps="36.7K"
+            checkbox={(
+              <SidebarChatCheckbox
+                checked
+                onValueChange={() => { }}
+              />
+            )}
+            actions={(
+              <SidebarDropdown>
+                <SidebarDropdownList>
+                  <SidebarDropdownItem startIcon={<EditIcon />}>
+                    Редактировать
+                  </SidebarDropdownItem>
+                  <SidebarDropdownItem startIcon={<TrashIcon />}>
+                    Удалить
+                  </SidebarDropdownItem>
+                </SidebarDropdownList>
+              </SidebarDropdown>
+            )}
+          />
+          <SidebarChat
+            id="chat-1"
+            color="#1C64F2"
+            name="Your first chat"
+            caps="36.7K"
+            checkbox={(
+              <SidebarChatCheckbox
+                checked
+                onValueChange={() => { }}
+              />
+            )}
+            actions={(
+              <SidebarDropdown>
+                <SidebarDropdownList>
+                  <SidebarDropdownItem startIcon={<EditIcon />}>
+                    Редактировать
+                  </SidebarDropdownItem>
+                  <SidebarDropdownItem startIcon={<TrashIcon />}>
+                    Удалить
+                  </SidebarDropdownItem>
+                </SidebarDropdownList>
+              </SidebarDropdown>
+            )}
+          />
+          <SidebarChat
+            id="chat-1"
+            color="#1C64F2"
+            name="Your first chat"
+            caps="36.7K"
+            checkbox={(
+              <SidebarChatCheckbox
+                checked
+                onValueChange={() => { }}
+              />
+            )}
+            actions={(
+              <SidebarDropdown>
+                <SidebarDropdownList>
+                  <SidebarDropdownItem startIcon={<EditIcon />}>
+                    Редактировать
+                  </SidebarDropdownItem>
+                  <SidebarDropdownItem startIcon={<TrashIcon />}>
+                    Удалить
+                  </SidebarDropdownItem>
+                </SidebarDropdownList>
+              </SidebarDropdown>
+            )}
+          />
+          <SidebarChat
+            id="chat-1"
+            color="#1C64F2"
+            name="Your first chat"
+            caps="36.7K"
+            checkbox={(
+              <SidebarChatCheckbox
+                checked
+                onValueChange={() => { }}
+              />
+            )}
+            actions={(
+              <SidebarDropdown>
+                <SidebarDropdownList>
+                  <SidebarDropdownItem startIcon={<EditIcon />}>
+                    Редактировать
+                  </SidebarDropdownItem>
+                  <SidebarDropdownItem startIcon={<TrashIcon />}>
+                    Удалить
+                  </SidebarDropdownItem>
+                </SidebarDropdownList>
+              </SidebarDropdown>
+            )}
+          />
+        </SidebarGroup>
+        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Калькулятор">
+          <SidebarChat
+            id="chat-1"
+            color="#1C64F2"
+            name="Your first chat"
+            caps="36.7K"
+            checkbox={(
+              <SidebarChatCheckbox
+                checked
+                onValueChange={() => { }}
+              />
+            )}
+            actions={(
+              <SidebarDropdown>
+                <SidebarDropdownList>
+                  <SidebarDropdownItem startIcon={<EditIcon />}>
+                    Редактировать
+                  </SidebarDropdownItem>
+                  <SidebarDropdownItem startIcon={<TrashIcon />}>
+                    Удалить
+                  </SidebarDropdownItem>
+                </SidebarDropdownList>
+              </SidebarDropdown>
+            )}
+          />
+          <SidebarChat
+            id="chat-1"
+            color="#1C64F2"
+            name="Your first chat"
+            caps="36.7K"
+            checkbox={(
+              <SidebarChatCheckbox
+                checked
+                onValueChange={() => { }}
+              />
+            )}
+            actions={(
+              <SidebarDropdown>
+                <SidebarDropdownList>
+                  <SidebarDropdownItem startIcon={<EditIcon />}>
+                    Редактировать
+                  </SidebarDropdownItem>
+                  <SidebarDropdownItem startIcon={<TrashIcon />}>
+                    Удалить
+                  </SidebarDropdownItem>
+                </SidebarDropdownList>
+              </SidebarDropdown>
+            )}
+          />
+          <SidebarChat
+            id="chat-1"
+            color="#1C64F2"
+            name="Your first chat"
+            caps="36.7K"
+            checkbox={(
+              <SidebarChatCheckbox
+                checked
+                onValueChange={() => { }}
+              />
+            )}
+            actions={(
+              <SidebarDropdown>
+                <SidebarDropdownList>
+                  <SidebarDropdownItem startIcon={<EditIcon />}>
+                    Редактировать
+                  </SidebarDropdownItem>
+                  <SidebarDropdownItem startIcon={<TrashIcon />}>
+                    Удалить
+                  </SidebarDropdownItem>
+                </SidebarDropdownList>
+              </SidebarDropdown>
+            )}
+          />
+          <SidebarChat
+            id="chat-1"
+            color="#1C64F2"
+            name="Your first chat"
+            caps="36.7K"
+            checkbox={(
+              <SidebarChatCheckbox
+                checked
+                onValueChange={() => { }}
+              />
+            )}
+            actions={(
+              <SidebarDropdown>
+                <SidebarDropdownList>
+                  <SidebarDropdownItem startIcon={<EditIcon />}>
+                    Редактировать
+                  </SidebarDropdownItem>
+                  <SidebarDropdownItem startIcon={<TrashIcon />}>
+                    Удалить
+                  </SidebarDropdownItem>
+                </SidebarDropdownList>
+              </SidebarDropdown>
+            )}
+          />
+        </SidebarGroup>
+        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Как разблокировать дискорд">
+          <SidebarGroupEmpty>Чатов нет идите отсюла</SidebarGroupEmpty>
+        </SidebarGroup>
+        <SidebarGroup edit checkbox={<SidebarChatCheckbox checked />} id="chat-group-1" name="Бесплатный впн">
+          <SidebarChat
+            edit
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
@@ -349,301 +549,25 @@ export const Basic: SidebarStory = {
             )}
           />
         </SidebarGroup>
-        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Работа">
-          <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-          <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-          <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-          <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-        </SidebarGroup>
-        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Работа">
-          <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-          <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-          <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-          <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-        </SidebarGroup>
-        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Работа">
-          <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-          <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-          <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-          <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-        </SidebarGroup>
-        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Работа">
+        <SidebarGroup
+          id="chat-group-1"
+          name="Работа"
+          checkbox={
+            <Checkbox checked />
+          }
+          actions={
+            <SidebarDropdown>
+              <SidebarDropdownList>
+                <SidebarDropdownItem startIcon={<EditIcon />}>
+                  Редактировать
+                </SidebarDropdownItem>
+                <SidebarDropdownItem startIcon={<TrashIcon />}>
+                  Удалить
+                </SidebarDropdownItem>
+              </SidebarDropdownList>
+            </SidebarDropdown>
+          }
+        >
           <SidebarChat
             id="chat-1"
             color="#1C64F2"

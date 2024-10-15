@@ -10,7 +10,8 @@ import {
   SidebarGroupDragHandle,
   SidebarGroupDragFolder,
   SidebarGroupCheckbox,
-  SidebarGroupsStyled
+  SidebarGroupsStyled,
+  SidebarGroupSkeletonIcon
 } from './styled';
 
 export interface SidebarGroupDefaultProps {
@@ -18,15 +19,20 @@ export interface SidebarGroupDefaultProps {
   skeleton?: false;
   id: string;
   edit?: boolean;
+  actions?: React.ReactNode;
   checkbox?: React.ReactNode;
   over?: boolean;
   open?: boolean;
+  color?: string;
+  isDefault?: boolean;
   onHandleOpen?: () => void;
 }
 
 export interface SidebarGroupSkeletonProps {
   skeleton: true;
   open?: boolean;
+  color?: string;
+  isDefault?: boolean;
   onHandleOpen?: () => void;
 }
 
@@ -42,7 +48,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
   });
 
-  const onHandleOpen = useCallback(() => {
+  const onHandleOpen = useCallback((e: React.MouseEvent) => {
     setOpen?.(!open);
   }, [open, setOpen]);
 
@@ -52,23 +58,26 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
       $over={over}
       ref={!props.skeleton && props.edit ? setNodeRef : undefined}
     >
-      <SidebarGroupName
+      {!props.isDefault && <SidebarGroupName
         open={open}
         $skeleton={!!props.skeleton}
         onClick={!props.skeleton ? onHandleOpen : undefined}
       >
         {!props.skeleton && props.edit && <SidebarGroupDragHandle />}
-        <SidebarGroupDragFolder />
+        {!props.skeleton && <SidebarGroupDragFolder fill={props.color} />}
+        {props.skeleton && <SidebarGroupSkeletonIcon width={24} height={24} />}
         {!props.skeleton && (
           <SidebarGroupNameBox>
-            {props.name}
+            {props.name.slice(0, 22)}
+            {props.name.length > 22 && '...'}
           </SidebarGroupNameBox>
         )}
         {!props.skeleton && <SidebarGroupArrowDown />}
-        {!props.skeleton && props.edit && <SidebarGroupCheckbox />}
+        {!props.skeleton && props.edit && props.checkbox}
+        {!props.skeleton && !props.edit && props.actions}
         {props.skeleton && <SidebarGroupSkeleton />}
-      </SidebarGroupName>
-      <SidebarChatList open={open}>
+      </SidebarGroupName>}
+      <SidebarChatList open={props.isDefault ? true : open}>
         {children}
       </SidebarChatList>
     </SidebarGroupStyled>

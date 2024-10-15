@@ -25,7 +25,8 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const handleToggle = useCallback(() => {
+  const handleToggle = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
     setIsOpen(!isOpen);
   }, [isOpen]);
 
@@ -49,7 +50,7 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
       };
     }
   }, []);
-  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? { left: 0, bottom: 0 };
+  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? { right: 0, bottom: 0 };
   return (
     <SidebarDropdownProvider setIsOpen={setIsOpen}>
       <SidebarDropdownStyled {...props} ref={dropdownRef}>
@@ -64,7 +65,7 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
           {isOpen && (
             <SidebarDropdownContent
               ref={contentRef}
-              style={{ left: contentPosition.left, top: contentPosition.bottom }}
+              style={{ left: contentPosition.right, top: contentPosition.bottom }}
               animate={{
                 opacity: isOpen ? 1 : 0.5,
                 transform: `scale(${isOpen ? 1 : 0.999})`,

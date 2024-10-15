@@ -2,6 +2,7 @@ import React from 'react';
 import { SidebarEmptyIcon, SidebarEmptyStyled, SidebarEmptyText } from './styled';
 import { useSidebar } from '../context';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
+import { DeleteChatIcon } from '@/ui/icons';
 
 export type SidebarEmptyProps = React.ComponentProps<'div'>;
 
@@ -24,7 +25,7 @@ export const SidebarEmpty: React.FC<SidebarEmptyProps> = ({
             handleTooltipMouseEnter,
             handleTooltipMouseLeave
           }) => (
-            <SidebarEmptyIcon 
+            <SidebarEmptyIcon
               onMouseEnter={handleTooltipMouseEnter}
               onMouseLeave={handleTooltipMouseLeave}
             />

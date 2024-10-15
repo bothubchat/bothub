@@ -11,6 +11,7 @@ import {
   SidebarChatList,
   SidebarGroupDragFolder,
   SidebarGroupName,
+  SidebarGroupSkeletonIcon,
   SidebarGroupsStyled,
   SidebarGroupStyled,
 } from './group';
@@ -26,6 +27,7 @@ import {
   SidebarMenuStyled
 } from './menu';
 import { SidebarUserInfoStyled } from './user-info';
+import { SidebarEmptyGroupStyled } from './group-empty/styled';
 
 export interface SidebarStyledProps {
   $open: boolean;
@@ -146,6 +148,16 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
     ${SidebarToolbar} {
       flex-direction: column-reverse;
     }
+    ${SidebarEmptyGroupStyled} {
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      display: flex;
+      border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+      span {
+        display: none;
+      }
+    }
     ${SidebarMenuStyled} {
       display: flex;
       align-items: center;
@@ -190,6 +202,12 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
           ${SidebarGroupDragFolder} {
             display: inline-flex;
             margin: 0;
+          }
+          ${SidebarGroupSkeletonIcon} {
+            display: inline-flex;
+            margin: 0;
+            width: 18px;
+            height: 18px;
           }
         }
         ${SidebarChatList} {
