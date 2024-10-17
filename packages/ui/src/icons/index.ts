@@ -181,3 +181,5 @@ export * from './add-folder';
 export * from './temp-chat';
 export * from './delete-chat';
 export * from './sidebar-chat';
+export * from './organization';
+export * from './simple-gear';
