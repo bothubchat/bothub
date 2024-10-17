@@ -1,9 +1,8 @@
-import { Icon, icon, IconConsumer } from '@/ui/components/icon';
 import { useTheme } from 'styled-components';
+import { Icon, icon, IconConsumer } from '@/ui/components/icon';
 
 export const ChatsIcon = icon(({ ...props }) => {
   const theme = useTheme();
-
 
   return (
     <Icon size={16} viewBox="0 0 16 16" fill="none" {...props}>
@@ -13,5 +12,5 @@ export const ChatsIcon = icon(({ ...props }) => {
         )}
       </IconConsumer>
     </Icon>
-  )
+  );
 });

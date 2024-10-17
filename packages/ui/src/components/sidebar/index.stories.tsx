@@ -45,7 +45,6 @@ import {
   TrashIcon,
 } from '@/ui/icons';
 import { Checkbox } from '../checkbox';
-import { TextField } from '../text-field';
 import { SidebarGroupEmpty } from './group-empty';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
@@ -122,7 +121,7 @@ export const Basic: SidebarStory = {
       </SidebarButtons>
     ),
     search: (
-      <SidebarTextField type='search' fullWidth placeholder="Поиск" />
+      <SidebarTextField type="search" fullWidth placeholder="Поиск" />
     ),
     deleteButton: (
       <SidebarDeleteButton>

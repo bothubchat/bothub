@@ -22,5 +22,5 @@ export const OrganizationIcon = icon(({ ...props }) => {
         )}
       </IconConsumer>
     </Icon>
-  )
+  );
 });

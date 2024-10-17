@@ -74,7 +74,6 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
     },
   });
 
-
   return (
     <SidebarDropdownProvider setIsOpen={setIsOpen}>
       <SidebarDropdownStyled {...props} ref={dropdownRef}>

@@ -1,9 +1,9 @@
 import { styled } from 'styled-components';
 import React from 'react';
+import { animated, AnimatedProps } from '@react-spring/web';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
 import { Typography } from '../../typography';
-import { animated, AnimatedProps } from '@react-spring/web';
 
 export const SidebarDropdownStyled = styled.div`
   width: 24px;

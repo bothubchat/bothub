@@ -13,8 +13,6 @@ import {
   SidebarChatIconContainer
 } from './styled';
 import { TooltipConsumer } from '@/ui/components/tooltip';
-import { SidebarChatIcon } from '@/ui/icons';
-
 export interface SidebarChatDefaultProps {
   color: string;
   name: string;
@@ -69,9 +67,11 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
     >
       {!props.skeleton && props.edit
         ? <SidebarChatDragHandle {...draggable} />
-        : <SidebarChatIconContainer $isDefault={props.isDefault}>
-          <SidebarChatIconStyled />
-        </SidebarChatIconContainer>}
+        : (
+          <SidebarChatIconContainer $isDefault={props.isDefault}>
+            <SidebarChatIconStyled />
+          </SidebarChatIconContainer>
+        )}
       {!props.skeleton && (
         <SidebarChatTooltip
           label={props.name}

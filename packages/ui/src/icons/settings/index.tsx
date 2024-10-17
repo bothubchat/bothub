@@ -1,5 +1,5 @@
-import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 import { useTheme } from 'styled-components';
+import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const SettingsIcon = icon(({ ...props }) => {
   const theme = useTheme();
@@ -12,5 +12,5 @@ export const SettingsIcon = icon(({ ...props }) => {
         )}
       </IconConsumer>
     </Icon>
-  )
+  );
 });
