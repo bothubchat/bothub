@@ -1,13 +1,19 @@
 import React, { useCallback, useEffect, useRef } from 'react';
+import { useTransition } from '@react-spring/web';
 import { BackdropStyled } from './styled';
 
-export interface BackdropProps extends React.ComponentProps<typeof BackdropStyled> {
+export interface BackdropProps
+  extends React.ComponentProps<typeof BackdropStyled> {
   open: boolean;
   onClick?: (event: React.MouseEvent<HTMLDivElement>) => unknown;
+  children?: React.ReactNode;
 }
 
 export const Backdrop: React.FC<BackdropProps> = ({
-  open, onClick, children, ...props 
+  open,
+  onClick,
+  children,
+  ...props
 }) => {
   const backdropRef = useRef<HTMLDivElement>(null);
 
@@ -32,29 +38,23 @@ export const Backdrop: React.FC<BackdropProps> = ({
     };
   }, [open]);
 
-  if (!open) {
-    return null;
-  }
-  return (
+  const backdropTransition = useTransition(open, {
+    from: { background: 'rgba(0, 0, 0, 0)', backdropFilter: 'blur(0px)' },
+    enter: { background: 'rgba(0, 0, 0, 0.55)', backdropFilter: 'blur(5px)' },
+    leave: { background: 'rgba(0, 0, 0, 0)', backdropFilter: 'blur(0px)' },
+  });
+
+  return backdropTransition((style, item) => item && (
     <BackdropStyled
       {...props}
-      variants={{
-        visible: {
-          background: 'rgba(0, 0, 0, 0.55)',
-          backdropFilter: 'blur(5px)'
-        },
-        hidden: {
-          background: 'rgba(0, 0, 0, 0)',
-          backdropFilter: 'blur(0px)'
-        }
-      }}
-      initial="hidden"
-      animate="visible"
-      exit="hidden"
       ref={backdropRef}
       onClick={handleClick}
+      style={{
+        ...style,
+        ...(props.style || {}),
+      }}
     >
       {children}
     </BackdropStyled>
-  );
+  ));
 };

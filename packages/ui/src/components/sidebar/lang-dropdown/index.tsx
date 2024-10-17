@@ -1,26 +1,28 @@
 import React, {
   useCallback, useEffect, useRef, useState 
 } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import { useTransition } from '@react-spring/web';
 import {
-  SidebarLangDropdownContent, 
-  SidebarLangDropdownStyled, 
-  SidebarLangDropdownToggler, 
-  SidebarLangDropdownTogglerArrow, 
-  SidebarLangDropdownTogglerIcon, 
-  SidebarLangDropdownTogglerText 
+  SidebarLangDropdownContent,
+  SidebarLangDropdownStyled,
+  SidebarLangDropdownToggler,
+  SidebarLangDropdownTogglerArrow,
+  SidebarLangDropdownTogglerIcon,
+  SidebarLangDropdownTogglerText,
 } from './styled';
 import { SidebarLangDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
-export interface SidebarLangDropdownProps extends 
-  React.ComponentProps<typeof SidebarLangDropdownStyled> {
+export interface SidebarLangDropdownProps
+  extends React.ComponentProps<typeof SidebarLangDropdownStyled> {
   lang: string;
 }
 
 export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
-  lang, children, ...props
+  lang,
+  children,
+  ...props
 }) => {
   const theme = useTheme();
 
@@ -52,49 +54,48 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
     }
   }, []);
 
+  const dropdownTransition = useTransition(isOpen, {
+    from: {
+      opacity: 0,
+      transform: 'scale(0.0)',
+    },
+    enter: {
+      opacity: isOpen ? 1 : 0.5,
+      transform: `scale(${isOpen ? 1 : 0.999})`,
+      transition: {
+        duration: 150,
+      },
+    },
+    leave: {
+      opacity: 0,
+      transform: 'scale(0.999)',
+    },
+    config: { duration: 150 },
+  });
+
   return (
     <SidebarLangDropdownProvider setIsOpen={setIsOpen}>
       <SidebarLangDropdownStyled {...props} ref={dropdownRef}>
-        <IconProvider
-          fill={theme.colors.base.white}
-        >
+        <IconProvider fill={theme.colors.base.white}>
           <SidebarLangDropdownToggler $open={isOpen} onClick={handleToggle}>
             <SidebarLangDropdownTogglerIcon />
             <SidebarLangDropdownTogglerText>
               {lang}
             </SidebarLangDropdownTogglerText>
-            <SidebarLangDropdownTogglerArrow 
-              initial={{
-                transform: `rotateZ(${isOpen ? -180 : 0}deg)`
-              }}
-              animate={{
-                transform: `rotateZ(${isOpen ? -180 : 0}deg)`,
-                transition: {
-                  duration: 0.15
-                }
+            <SidebarLangDropdownTogglerArrow
+              style={{
+                transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'
               }}
             />
           </SidebarLangDropdownToggler>
         </IconProvider>
-        <AnimatePresence>
-          {isOpen && (
-            <SidebarLangDropdownContent
-              animate={{
-                opacity: isOpen ? 1 : 0.5,
-                transform: `scale(${isOpen ? 1 : 0.999})`,
-                transition: {
-                  duration: 0.15
-                }
-              }}
-              exit={{
-                opacity: 0,
-                transform: 'scale(0.999)'
-              }}
-            >
+        {dropdownTransition(
+          (style, item) => item && (
+            <SidebarLangDropdownContent style={style}>
               {children}
             </SidebarLangDropdownContent>
-          )}
-        </AnimatePresence>
+          )
+        )}
       </SidebarLangDropdownStyled>
     </SidebarLangDropdownProvider>
   );

@@ -1,5 +1,5 @@
-import { AnimationProps, motion } from 'framer-motion';
 import { css, styled } from 'styled-components';
+import { animated } from '@react-spring/web';
 import { HeaderVariant } from '../types';
 import { adaptive } from '@/ui/adaptive';
 
@@ -11,7 +11,7 @@ export const HeaderMenuStyled = styled.div`
   position: relative;
 `;
 
-export const HeaderMenuContent = styled(motion.div)<HeaderMenuStyledProps>`
+export const HeaderMenuContent = styled(animated.div)<HeaderMenuStyledProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -60,4 +60,4 @@ export const HeaderMenuContent = styled(motion.div)<HeaderMenuStyledProps>`
         });
     }
   }}
-` as React.FC<AnimationProps & HeaderMenuStyledProps & React.PropsWithChildren>;
+`;

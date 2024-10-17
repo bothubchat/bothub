@@ -1,5 +1,5 @@
 import { styled, css } from 'styled-components';
-import { motion } from 'framer-motion';
+import { animated } from '@react-spring/web';
 import { HeaderNavLinkStyled } from '../link/styled';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 
@@ -11,7 +11,10 @@ export const HeaderNavDropdownStyled = styled.div<{ $inMenu: boolean }>`
   `}
 `;
 
-export const HeaderNavDropdownArrow = styled(ArrowDownIcon)``;
+export const HeaderNavDropdownArrow = styled(ArrowDownIcon)`
+  pointer-events: none;
+  transition: transform 0.2s ease-in-out;
+`;
 
 export const HeaderNavDropdownHead = styled(HeaderNavLinkStyled)<{ $active: boolean, $inMenu: boolean }>`
   display: inline-flex;
@@ -37,7 +40,7 @@ export const HeaderNavDropdownHead = styled(HeaderNavLinkStyled)<{ $active: bool
   `}
 `;
 
-export const HeaderNavDropdownBody = styled(motion.div)<{ $inMenu: boolean }>`
+export const HeaderNavDropdownBody = styled(animated.div)<{ $inMenu: boolean }>`
   ${({ theme, $inMenu }) => {
     if ($inMenu) {
       return css`
@@ -67,6 +70,7 @@ export const HeaderNavDropdownBody = styled(motion.div)<{ $inMenu: boolean }>`
       transform-origin: top left;
     `;
   }}
+  will-change: transform, opacity;
 `;
 
 export const HeaderNavDropdownList = styled.div`

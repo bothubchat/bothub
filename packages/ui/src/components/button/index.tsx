@@ -1,9 +1,6 @@
 import React, {
   forwardRef, useCallback, useImperativeHandle, useRef 
 } from 'react';
-import {
-  AnimationProps, HoverHandlers, TapHandlers, motion 
-} from 'framer-motion';
 import { ButtonStyled, ButtonText } from './styled';
 import { useTheme } from '@/ui/theme';
 import { IconProvider, IconProviderProps, isIconComponent } from '@/ui/components/icon';
@@ -87,161 +84,6 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
     size: iconSize,
     fill: iconFill
   };
-  let animationProps: AnimationProps & HoverHandlers & TapHandlers = {};
-  if (disabled || skeleton) {
-    switch (variant) {
-      case 'primary':
-      case 'primary-outline':
-      case 'primary-transparent':
-      case 'success':
-        animationProps = {
-          initial: {
-            background: color ?? theme.colors.grayScale.gray2,
-            opacity: 1
-          },
-          animate: {
-            background: color ?? theme.colors.grayScale.gray2,
-            opacity: 1
-          }
-        };
-        break;
-      case 'secondary':
-        animationProps = {
-          initial: {
-            background: color ?? theme.colors.grayScale.gray4,
-            boxShadow: `0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset`
-          },
-          animate: {
-            background: color ?? theme.colors.grayScale.gray4,
-            boxShadow: `0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset`
-          }
-        };
-        break;
-      case 'text':
-      case 'help':
-        animationProps = {
-          initial: {
-            background: 'rgba(255, 255, 255, 0)'
-          },
-          animate: {
-            background: 'rgba(255, 255, 255, 0)'
-          }
-        };
-        break;
-    }
-  } else {
-    switch (variant) {
-      case 'primary':
-        animationProps = {
-          initial: {
-            background: color ?? theme.colors.accent.primary
-          },
-          animate: {
-            background: color ?? theme.colors.accent.primary
-          },
-          whileHover: {
-            background: color ?? theme.colors.accent.strong
-          },
-          whileTap: {
-            background: color ?? theme.colors.accent.strongDown,
-            transform: 'translateY(1px)'
-          }
-        };
-        break;
-      case 'primary-outline':  
-        animationProps = {
-          initial: {
-            background: color ?? '#00000000',
-          },
-          animate: {
-            background: color ?? '#00000000',
-          },
-          whileHover: {
-            background: color ?? theme.colors.accent.strong,
-            boxShadow: '0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset',
-          },
-          whileTap: {
-            background: color ?? theme.colors.accent.strongDown,
-            transform: 'translateY(1px)',
-            boxShadow: '0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset',
-          }
-        };
-        break;
-      case 'primary-transparent':
-        animationProps = {
-          variants: {
-            default: {
-              background: color ?? theme.colors.accent.primary,
-              opacity: 0.5
-            },
-            hover: {
-              opacity: 1
-            },
-            tap: {
-              transform: 'translateY(1px)'
-            }
-          },
-          initial: 'default',
-          animate: 'default',
-          whileHover: 'hover',
-          whileTap: 'tap'
-        };
-        break;
-      case 'secondary':
-        animationProps = {
-          initial: {
-            background: color ?? theme.colors.grayScale.gray4,
-            boxShadow: `0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset`
-          },
-          animate: {
-            background: color ?? theme.colors.grayScale.gray4,
-            boxShadow: `0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset`
-          },
-          whileHover: {
-            background: color ?? theme.colors.grayScale.gray2,
-            boxShadow: '0px 1px 1px 0px rgba(255, 255, 255, 0.40) inset'
-          },
-          whileTap: {
-            background: color ?? theme.colors.grayScale.gray3,
-            transform: 'translateY(1px)'
-          }
-        };
-        break;
-      case 'text':
-      case 'help':
-        animationProps = {
-          initial: {
-            background: 'rgba(255, 255, 255, 0)',
-            boxShadow: 'none'
-          },
-          animate: {
-            background: 'rgba(255, 255, 255, 0)',
-            boxShadow: 'none'
-          },
-          whileTap: {
-            transform: 'translateY(1px)'
-          }
-        };
-        break;
-      case 'success':
-        animationProps = {
-          initial: {
-            background: theme.colors.green
-          },
-          animate: {
-            background: theme.colors.green
-          },
-          whileHover: {
-            background: theme.colors.accent.strong
-          },
-          whileTap: {
-            background: theme.colors.accent.strongDown,
-            transform: 'translateY(1px)'
-          }
-        };
-        break;
-    }
-  }
 
   const {
     handleTooltipMouseEnter,
@@ -268,6 +110,8 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
   return (
     <ButtonStyled 
       {...props}
+      disabled={disabled}
+      type={type}
       $variant={variant}
       $icon={isIconButton}
       $size={size}
@@ -277,13 +121,13 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
       $skeleton={skeleton}
       $disabled={disabled}
       $disableHoverColor={disableHoverColor}
-      as={motion[component]}
+      $color={color}
+      as={component}
       {...(component === 'button' && {
         type,
         disabled
       })}
       {...(component === 'label' && { htmlFor: props.htmlFor })}
-      {...animationProps}
       ref={elementRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

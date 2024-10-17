@@ -4,7 +4,10 @@ import { StoryDecorator } from '@/ui/story-decorator';
 import { Form, FormButtons, FormText } from '@/ui/components/form';
 import { TextField } from '@/ui/components/text-field';
 import {
-  BookmarksIcon, EmailCircleIcon, LockCircleIcon, TrashIcon 
+  BookmarksIcon,
+  EmailCircleIcon,
+  LockCircleIcon,
+  TrashIcon,
 } from '@/ui/icons';
 import { Button } from '@/ui/components/button';
 import { Link } from '@/ui/components/link';
@@ -12,13 +15,13 @@ import { Typography } from '@/ui/components/typography';
 import { Divider } from '@/ui/components/divider';
 import { SelectField } from '@/ui/components/select-field';
 import {
-  ReferralRadio, 
-  ReferralRadioGroup, 
-  ReferralRadioTable, 
-  ReferralRadioTableCell, 
-  ReferralRadioTableHeadCell, 
-  ReferralRadioTableRow, 
-  ReferralRadioTableSelectedCell 
+  ReferralRadio,
+  ReferralRadioGroup,
+  ReferralRadioTable,
+  ReferralRadioTableCell,
+  ReferralRadioTableHeadCell,
+  ReferralRadioTableRow,
+  ReferralRadioTableSelectedCell,
 } from '@/ui/components/referral';
 
 export type ModalMeta = Meta<typeof Modal>;
@@ -30,22 +33,27 @@ export const Auth: ModalStory = {
     open: true,
     title: 'Авторизация',
     children: (
-      <Form>
-        <TextField 
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          alert('Submitted');
+        }}
+      >
+        <TextField
           label="E-Mail"
           name="email"
           placeholder="Ваш E-Mail"
           startIcon={<EmailCircleIcon />}
           fullWidth
         />
-        <TextField 
+        <TextField
           label="Пароль"
           name="password"
           placeholder="Ваш пароль"
           startIcon={<LockCircleIcon />}
           fullWidth
         />
-        <Button fullWidth>
+        <Button fullWidth type="submit">
           Войти
         </Button>
         <Link href="#link" align="center" fullWidth>
@@ -53,15 +61,13 @@ export const Auth: ModalStory = {
         </Link>
         <Divider />
         <Typography align="center" fullWidth>
-          Нет аккаунта?
+          Нет аккаунта? 
           {' '}
-          <Link href="#link">
-            Регистрация
-          </Link>
+          <Link href="#link">Регистрация</Link>
         </Typography>
       </Form>
-    )
-  }
+    ),
+  },
 };
 
 export const AuthTelegram: ModalStory = {
@@ -69,26 +75,24 @@ export const AuthTelegram: ModalStory = {
     open: true,
     title: 'Объединение',
     children: (
-      <Form>
-        <FormText>
-          Вы действительно хотите объединить ваши аккаунты?
-        </FormText>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          alert('Submitted');
+        }}
+      >
+        <FormText>Вы действительно хотите объединить ваши аккаунты?</FormText>
         <FormButtons>
-          <Button
-            fullWidth
-          >
+          <Button fullWidth type="submit">
             Да
           </Button>
-          <Button
-            variant="secondary"
-            fullWidth
-          >
+          <Button variant="secondary" fullWidth>
             Нет
           </Button>
         </FormButtons>
       </Form>
-    )
-  }
+    ),
+  },
 };
 
 export const UpdateBookmark: ModalStory = {
@@ -96,7 +100,12 @@ export const UpdateBookmark: ModalStory = {
     open: true,
     title: 'Редактировать закладку',
     children: (
-      <Form>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          alert('Submitted');
+        }}
+      >
         <TextField
           startIcon={<BookmarksIcon />}
           name="name"
@@ -109,44 +118,41 @@ export const UpdateBookmark: ModalStory = {
           data={[
             {
               color: '#1C64F2',
-              value: 'Синий'
+              value: 'Синий',
             },
             {
               color: '#FE4242',
-              value: 'Красный'
+              value: 'Красный',
             },
             {
               color: '#F29C1C',
-              value: 'Оранжевый'
+              value: 'Оранжевый',
             },
             {
               color: '#941CF2',
-              value: 'Фиолетовый'
+              value: 'Фиолетовый',
             },
             {
               color: '#1ABB34',
-              value: 'Зеленый'
+              value: 'Зеленый',
             },
             {
               color: '#1CB2F2',
-              value: 'Аква'
+              value: 'Аква',
             },
             {
               color: 'linear-gradient(90deg, #1C64F2 -0.39%, #D41CF2 99.61%)',
-              value: 'Сине-фиолетовый'
-            }
+              value: 'Сине-фиолетовый',
+            },
           ]}
           fullWidth
         />
-        <Button
-          type="submit"
-          fullWidth
-        >
+        <Button type="submit" fullWidth>
           Сохранить
         </Button>
       </Form>
-    )
-  }
+    ),
+  },
 };
 
 export const DeleteBookmark: ModalStory = {
@@ -154,27 +160,24 @@ export const DeleteBookmark: ModalStory = {
     open: true,
     title: 'Удалить закладку',
     children: (
-      <Form>
-        <FormText>
-          Вы уверены в том, что хотите удалить закладку?
-        </FormText>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          alert('Submitted');
+        }}
+      >
+        <FormText>Вы уверены в том, что хотите удалить закладку?</FormText>
         <FormButtons>
-          <Button
-            startIcon={<TrashIcon />}
-            fullWidth
-          >
+          <Button startIcon={<TrashIcon />} fullWidth type="submit">
             Удалить
           </Button>
-          <Button
-            variant="secondary"
-            fullWidth
-          >
+          <Button variant="secondary" fullWidth>
             Отмена
           </Button>
         </FormButtons>
       </Form>
-    )
-  }
+    ),
+  },
 };
 
 export const CreateReferral: ModalStory = {
@@ -183,36 +186,33 @@ export const CreateReferral: ModalStory = {
     title: 'Новая партнёрская программа',
     scrollbar: true,
     children: (
-      <Form>
+      <Form
+        onSubmit={(e) => {
+          e.preventDefault();
+          alert('Submitted');
+        }}
+      >
         <ReferralRadioGroup>
           {[...Array(3)].map(() => (
-            <ReferralRadio
-              name="Стандартная реферальная программа"
-            >
+            <ReferralRadio name="Стандартная реферальная программа">
               <ReferralRadioTable>
                 <ReferralRadioTableRow>
                   <ReferralRadioTableHeadCell>
                     Валюта:
                   </ReferralRadioTableHeadCell>
-                  <ReferralRadioTableCell>
-                    RUB
-                  </ReferralRadioTableCell>
+                  <ReferralRadioTableCell>RUB</ReferralRadioTableCell>
                 </ReferralRadioTableRow>
                 <ReferralRadioTableRow>
                   <ReferralRadioTableHeadCell>
                     Процент вознаграждения:
                   </ReferralRadioTableHeadCell>
-                  <ReferralRadioTableCell>
-                    5%
-                  </ReferralRadioTableCell>
+                  <ReferralRadioTableCell>5%</ReferralRadioTableCell>
                 </ReferralRadioTableRow>
                 <ReferralRadioTableRow>
                   <ReferralRadioTableHeadCell>
                     Минимальная сумма вывода:
                   </ReferralRadioTableHeadCell>
-                  <ReferralRadioTableCell>
-                    3000 RUB
-                  </ReferralRadioTableCell>
+                  <ReferralRadioTableCell>3000 RUB</ReferralRadioTableCell>
                 </ReferralRadioTableRow>
                 <ReferralRadioTableRow>
                   <ReferralRadioTableHeadCell>
@@ -235,8 +235,8 @@ export const CreateReferral: ModalStory = {
           ))}
         </ReferralRadioGroup>
       </Form>
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -244,13 +244,13 @@ export default {
   component: Modal,
   decorators: [StoryDecorator()],
   args: {
-    open: true
+    open: true,
   },
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as ModalMeta;
