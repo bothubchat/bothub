@@ -6,6 +6,7 @@ import { ArrowDownIcon, DragDotIcon } from '@/ui/icons';
 import { FolderIcon } from '@/ui/icons/folder';
 import { Checkbox } from '@/ui/components/checkbox';
 import { SidebarDropdownStyled } from '../dropdown';
+import { SidebarChatIconContainer } from '../chat';
 
 export const SidebarGroupsStyled = styled.div`
   display: flex;
@@ -72,7 +73,7 @@ export const SidebarGroupNameBox = styled.div`
   align-items: center;
 `;
 
-export const SidebarChatList = styled.div<{ open?: boolean; }>`
+export const SidebarChatList = styled.div<{ open?: boolean; isDefault?: boolean }>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -84,6 +85,14 @@ export const SidebarChatList = styled.div<{ open?: boolean; }>`
       `;
     }
   }}
+  ${isDefault => !isDefault && css`
+    min-height: 100px;
+
+    ${SidebarChatIconContainer} svg path {
+        stroke: ${({ theme }) => theme.colors.grayScale.gray4};
+        fill: ${({ theme }) => theme.colors.grayScale.gray4};
+      }
+  `}
   transition: opacity 0.3s;
 `;
 

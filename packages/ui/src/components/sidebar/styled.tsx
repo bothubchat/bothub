@@ -28,6 +28,7 @@ import {
 } from './menu';
 import { SidebarUserInfoStyled } from './user-info';
 import { SidebarEmptyGroupStyled } from './group-empty/styled';
+import { TextField } from '../text-field';
 
 export interface SidebarStyledProps {
   $open: boolean;
@@ -64,17 +65,21 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   }
   max-height: 100vh;
   ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
+  variant: 'dashboard',
+  desktop: css`
       border-right: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
     `,
-    tablet: css`
+  tablet: css`
       border-radius: 18px;
     `,
-    mobile: css`
+  mobile: css`
       border-radius: 18px;
     `
-  })}
+})}
+`;
+
+export const SidebarTextField = styled(TextField)`
+  margin-top: 10px;
 `;
 
 export interface SidebarGlobalStyleProps {
@@ -90,9 +95,9 @@ export const SidebarContent = styled.div`
   height: 100%;
   transition: max-width 0.3s;
   ${adaptive({
-    variant: 'dashboard',
-    merge: true,
-    tablet: css`
+  variant: 'dashboard',
+  merge: true,
+  tablet: css`
     min-width: 312px; 
     max-width: 412px;
     
@@ -100,7 +105,7 @@ export const SidebarContent = styled.div`
       display: none;
     }
     `,
-    mobile: css`
+  mobile: css`
     min-width: none;
     max-width: none;
     display: none;
@@ -111,7 +116,7 @@ export const SidebarContent = styled.div`
       display: none;
     }
     `
-  })}
+})}
   overflow: hidden;
 `;
 export const SidebarContentNav = styled.div`
@@ -127,24 +132,24 @@ export const SidebarContentNav = styled.div`
   background: ${({ theme }) => theme.colors.grayScale.gray7};
   padding: 16px;
   ${adaptive({
-    variant: 'dashboard',
-    merge: true,
-    desktop: css`
+  variant: 'dashboard',
+  merge: true,
+  desktop: css`
     display: none;
     `,
-    tablet: css`
+  tablet: css`
     display: flex;
   `,
-    mobile: css`
+  mobile: css`
     display: flex;
   `
-  })}
+})}
 `;
 
 export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
   ${({ $open }) => !$open && adaptive({
-    variant: 'dashboard',
-    desktop: css`
+  variant: 'dashboard',
+  desktop: css`
     ${SidebarToolbar} {
       flex-direction: column-reverse;
     }
@@ -168,25 +173,25 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
       border-radius: 0px;
       width: 100%;
       margin-bottom: 10px;
-    }
-    ${SidebarMenuBlock as any} {
-      top: 0;
-      margin-top: 20px;
-      background: none;
-      position: relative;
-      flex-direction: column;
-      padding: 0px;
-      border: none;
-      border-radius: 0px;
-    }
-    ${SidebarMenuNav} {
-      gap: 10px;
-    }
-    ${SidebarMenuNavLinkText} {
-      display: none;
-    }
-    ${SidebarMenuBlockScrollbarWrapper} {
-      padding-right: 0px;
+      ${SidebarMenuBlock as any} {
+        top: 0;
+        margin-top: 20px;
+        background: none;
+        position: relative;
+        flex-direction: column;
+        padding: 0px;
+        border: none;
+        border-radius: 0px;
+      }
+      ${SidebarMenuNav} {
+        gap: 10px;
+      }
+      ${SidebarMenuNavLinkText} {
+          display: none;
+      }
+      ${SidebarMenuBlockScrollbarWrapper} {
+        padding-right: 0px;
+      }
     }
     ${SidebarGroupsStyled} {
       gap: 10px;
@@ -238,7 +243,7 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
         }
       }
     }`,
-    tablet: css`
+  tablet: css`
     ${SidebarMenuStyled} {
       display: flex;
       align-items: center;
@@ -283,7 +288,7 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
       max-width: none;
     }
   `,
-    mobile: css`
+  mobile: css`
     ${SidebarContent} {
       display: flex;
     }
@@ -291,7 +296,7 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
       display: none;
     }
   `
-  })}
+})}
 `;
 
 export interface SidebarHeadProps {
@@ -301,14 +306,14 @@ export interface SidebarHeadProps {
 export const SidebarMobileToggle = styled.div`
   display: none;
   ${adaptive({
-    variant: 'dashboard',
-    merge: true,
-    mobile: css`
+  variant: 'dashboard',
+  merge: true,
+  mobile: css`
     display: inline-grid;
     justify-content: flex-end;
     width: 100%;
   `,
-  })}
+})}
 `;
 export const SidebarHead = styled.div<SidebarHeadProps>`
   display: flex;
@@ -319,13 +324,13 @@ export const SidebarHead = styled.div<SidebarHeadProps>`
   flex-shrink: 0;
   position: relative;
   ${adaptive(({ $open }) => ({
-    variant: 'dashboard',
-    merge: true,
-    tablet: css`
+  variant: 'dashboard',
+  merge: true,
+  tablet: css`
       flex-direction: row-reverse;
       justify-content: ${$open ? 'space-between' : 'center'};
     `
-  }))}
+}))}
 `;
 
 export interface SidebarHeaderProps {
@@ -420,17 +425,17 @@ export const SidebarBody = styled.div`
   height: 100%;
   overflow: hidden;
   ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
+  variant: 'dashboard',
+  desktop: css`
       margin: 18px 0px;
     `,
-    tablet: css`
+  tablet: css`
       margin: 14px 0px;
     `,
-    mobile: css`
+  mobile: css`
       margin: 14px 0px;
     `
-  })}
+})}
 `;
 
 export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
@@ -464,15 +469,15 @@ export const SidebarArrowUpButton = styled(ArrowUpIcon) <{ $hidden: boolean }>`
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   ${({ $hidden }) => $hidden && css` display: none;`}
   ${adaptive({
-    variant: 'dashboard',
-    merge: true,
-    tablet: css`
+  variant: 'dashboard',
+  merge: true,
+  tablet: css`
     display: none;
   `,
-    mobile: css`
+  mobile: css`
     display: none;
   `,
-  })}
+})}
 `;
 
 export const SidebarArrowDownButton = styled(ArrowDownIcon) <{ $hidden: boolean }>`
@@ -490,15 +495,15 @@ export const SidebarArrowDownButton = styled(ArrowDownIcon) <{ $hidden: boolean 
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   ${({ $hidden }) => $hidden && css` display: none;`}
   ${adaptive({
-    variant: 'dashboard',
-    merge: true,
-    tablet: css`
+  variant: 'dashboard',
+  merge: true,
+  tablet: css`
     display: none;
   `,
-    mobile: css`
+  mobile: css`
     display: none;
   `,
-  })}
+})}
 `;
 
 export const SidebarBodyContent = styled.div`
@@ -507,7 +512,7 @@ export const SidebarBodyContent = styled.div`
   align-items: flex-start;
   width: 100%;
   ${adaptive({
-    variant: 'dashboard',
-    merge: true,
-  })}
+  variant: 'dashboard',
+  merge: true,
+})}
 `;

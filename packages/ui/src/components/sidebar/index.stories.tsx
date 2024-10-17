@@ -30,6 +30,8 @@ import {
   SidebarDropdownItem,
   SidebarDropdownList,
   SidebarDeleteButton,
+  SidebarTextField,
+  SidebarSearchButton,
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -43,6 +45,7 @@ import {
   TrashIcon,
 } from '@/ui/icons';
 import { Checkbox } from '../checkbox';
+import { TextField } from '../text-field';
 import { SidebarGroupEmpty } from './group-empty';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
@@ -114,8 +117,12 @@ export const Basic: SidebarStory = {
       <SidebarButtons>
         <SidebarCreateChatButton variant="primary" />
         <SidebarAddGroupButton variant="secondary" />
+        <SidebarSearchButton variant="secondary" />
         <SidebarEditButton variant="secondary" />
       </SidebarButtons>
+    ),
+    search: (
+      <SidebarTextField type='search' fullWidth placeholder="Поиск" />
     ),
     deleteButton: (
       <SidebarDeleteButton>
@@ -666,9 +673,10 @@ export const Basic: SidebarStory = {
             )}
           />
         </SidebarGroup>
-        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Работа">
+        <SidebarGroup isDefault checkbox={<Checkbox checked />} id="chat-group-1" name="Работа">
           <SidebarChat
             id="chat-1"
+            isDefault
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
@@ -693,6 +701,7 @@ export const Basic: SidebarStory = {
           />
           <SidebarChat
             id="chat-1"
+            isDefault
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"

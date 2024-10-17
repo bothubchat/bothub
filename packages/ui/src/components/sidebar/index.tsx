@@ -32,6 +32,7 @@ export interface SidebarProps extends React.PropsWithChildren {
   buttons?: React.ReactNode;
   toggle?: React.ReactNode;
   user?: React.ReactNode;
+  search?: React.ReactNode;
   onOpen?: SidebarOpenEventHandler;
   deleteButton?: React.ReactNode;
 }
@@ -40,6 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   open, defaultOpen = true,
   className, id, user, logo, menu, buttons, toggle,
   deleteButton,
+  search,
   children, onOpen
 }) => {
   const initialIsOpen = open;
@@ -104,6 +106,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             )}
             {toggle}
           </SidebarToolbar>
+          {search}
           <SidebarDivider />
           <SidebarBody>
             {!isOpen

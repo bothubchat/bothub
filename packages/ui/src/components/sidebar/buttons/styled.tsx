@@ -5,6 +5,7 @@ import { adaptive } from '@/ui/adaptive';
 import { AddChatIcon } from '@/ui/icons/add-chat';
 import { AddGroupIcon } from '@/ui/icons/add-group';
 import { EditIcon } from '@/ui/icons/edit';
+import { SearchSimpleIcon } from '@/ui/icons';
 
 export interface SidebarButtonsStyledProps {
   $open: boolean;
@@ -17,13 +18,13 @@ export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
   width: 100%;
   gap: 12px;
   ${({ $open }) => !$open && adaptive(
-    {
-      variant: 'dashboard',
-      merge: true,
-      desktop: css`flex-direction: column;`,
-      tablet: css`flex-direction: row;`
-    }
-  )}
+  {
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`flex-direction: column;`,
+    tablet: css`flex-direction: row;`
+  }
+)}
 `;
 
 export const SidebarDeleteButton = styled(Button).attrs({
@@ -56,10 +57,16 @@ export const SidebarEditButton = styled(Button).attrs({
     }
   `}
 `;
-
-export const SidebarSearchButton: React.FC<{ $variant: ButtonVariant }> = styled(Button).attrs({
-  children: <TrashIcon />
-})``;
+export const SidebarSearchButton = styled(Button).attrs({
+  children: <SearchSimpleIcon size={16} />,
+}) <{ variant: ButtonVariant }>`
+  ${({ variant }) => variant === 'secondary' && css`
+    svg path {
+      fill: ${({ theme }) => theme.colors.grayScale.gray1};
+      stroke: ${({ theme }) => theme.colors.grayScale.gray1};
+    }
+  `}
+`;
 
 export const SidebarSortButton: React.FC<{ $variant: ButtonVariant }> = styled(Button).attrs({
   children: <TrashIcon />

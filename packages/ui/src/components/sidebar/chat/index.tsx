@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import {
-  SidebarChatColor,
   SidebarChatLeft,
   SidebarChatName,
   SidebarChatNameSkeleton,
@@ -10,9 +9,11 @@ import {
   SidebarChatTooltip,
   SidebarChatNameTooltip,
   SidebarChatDragHandle,
-  SidebarChatIconStyled
+  SidebarChatIconStyled,
+  SidebarChatIconContainer
 } from './styled';
 import { TooltipConsumer } from '@/ui/components/tooltip';
+import { SidebarChatIcon } from '@/ui/icons';
 
 export interface SidebarChatDefaultProps {
   color: string;
@@ -26,10 +27,12 @@ export interface SidebarChatDefaultProps {
   edit?: boolean;
   checkbox?: React.ReactNode;
   dragging?: boolean;
+  isDefault?: boolean;
 }
 
 export interface SidebarChatSkeletonProps {
   skeleton: true;
+  isDefault?: boolean;
 }
 
 export type SidebarChatProps = (SidebarChatDefaultProps | SidebarChatSkeletonProps) & {
@@ -66,7 +69,9 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
     >
       {!props.skeleton && props.edit
         ? <SidebarChatDragHandle {...draggable} />
-        : <SidebarChatColor />}
+        : <SidebarChatIconContainer $isDefault={props.isDefault}>
+          <SidebarChatIconStyled />
+        </SidebarChatIconContainer>}
       {!props.skeleton && (
         <SidebarChatTooltip
           label={props.name}
