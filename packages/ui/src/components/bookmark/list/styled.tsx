@@ -36,13 +36,13 @@ export const BookmarkList = styled.div`
   overflow: hidden;
 `;
 
-export const BookmarkListScrollbarWrapper = styled(Scrollbar).attrs({ 
-  variant: 'secondary', 
+export const BookmarkListScrollbarWrapper = styled(Scrollbar).attrs({
+  variant: 'secondary',
   size: 4,
   scrollShadows: {
     left: <ScrollbarShadow side="left" />,
     right: <ScrollbarShadow side="right" />
-  }  
+  }
 })`
   display: flex;
   overflow: auto;
@@ -67,11 +67,5 @@ export const AddBookmarkButton = styled(Button).attrs({ children: <Plus2Icon /> 
   ${adaptive({
     variant: 'dashboard',
     merge: true,
-    desktop: css`
-      margin-bottom: 8px;
-    `,
-    mobile: css`
-      margin-bottom: 5px;
-    `
   })}
 `;

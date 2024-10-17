@@ -182,7 +182,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     },
     config: { duration: 150 }
   });
-  
+
   const tooltipNode: React.ReactNode = tooltipTransition((style, item) => item && (
     <TooltipStyled
       $placement={placement}

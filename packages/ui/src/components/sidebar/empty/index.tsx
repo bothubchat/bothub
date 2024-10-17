@@ -24,7 +24,7 @@ export const SidebarEmpty: React.FC<SidebarEmptyProps> = ({
             handleTooltipMouseEnter,
             handleTooltipMouseLeave
           }) => (
-            <SidebarEmptyIcon 
+            <SidebarEmptyIcon
               onMouseEnter={handleTooltipMouseEnter}
               onMouseLeave={handleTooltipMouseLeave}
             />

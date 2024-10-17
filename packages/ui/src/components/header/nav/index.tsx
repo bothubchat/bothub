@@ -14,9 +14,9 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ ...props }) => {
   return (
     <>
       <HeaderNavStyled
-        {...props} 
-        $variant={variant} 
-        $inMenu={isInMenu} 
+        {...props}
+        $variant={variant}
+        $inMenu={isInMenu}
       />
     </>
 
