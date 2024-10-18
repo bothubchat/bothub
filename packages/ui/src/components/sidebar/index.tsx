@@ -11,6 +11,7 @@ import {
   SidebarDivider,
   SidebarGlobalStyle,
   SidebarHeader,
+  SidebarHeaderRight,
   SidebarMobileToggle,
   SidebarStyled,
   SidebarToolbar,
@@ -27,6 +28,7 @@ export interface SidebarProps extends React.PropsWithChildren {
   defaultOpen?: boolean;
   className?: string;
   id?: string;
+  lang: React.ReactNode;
   logo?: React.ReactNode;
   menu?: React.ReactNode;
   buttons?: React.ReactNode;
@@ -41,7 +43,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   open, defaultOpen = true,
   className, id, user, logo, menu, buttons, toggle,
   deleteButton,
-  search,
+  search, lang,
   children, onOpen
 }) => {
   const initialIsOpen = open;
@@ -92,9 +94,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <SidebarHeader $open={isOpen}>
             {logo}
             {isOpen && (
-              <SidebarMenu>
-                {menu}
-              </SidebarMenu>
+              <SidebarHeaderRight style={{ display: 'flex' }}>
+                {lang}
+                <SidebarMenu>
+                  {menu}
+                </SidebarMenu>
+              </SidebarHeaderRight>
             )}
           </SidebarHeader>
           <SidebarToolbar>
@@ -168,3 +173,4 @@ export * from './theme-switcher';
 export * from './menu';
 export * from './dropdown';
 export * from './group-empty';
+export * from './lang-dropdown';

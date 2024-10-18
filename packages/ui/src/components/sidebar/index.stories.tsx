@@ -46,6 +46,7 @@ import {
 } from '@/ui/icons';
 import { Checkbox } from '../checkbox';
 import { SidebarGroupEmpty } from './group-empty';
+import { SidebarLangDropdown, SidebarLangDropdownList, SidebarLangDropdownItem } from './lang-dropdown';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
 
@@ -111,6 +112,17 @@ export const Basic: SidebarStory = {
           </Tooltip>
         )}
       </SidebarConsumer>
+    ),
+    lang: (
+      <SidebarLangDropdown lang="ru">
+        <SidebarLangDropdownList>
+          <SidebarLangDropdownItem>ru</SidebarLangDropdownItem>
+          <SidebarLangDropdownItem>en</SidebarLangDropdownItem>
+          <SidebarLangDropdownItem>es</SidebarLangDropdownItem>
+          <SidebarLangDropdownItem>de</SidebarLangDropdownItem>
+          <SidebarLangDropdownItem>fr</SidebarLangDropdownItem>
+        </SidebarLangDropdownList>
+      </SidebarLangDropdown>
     ),
     buttons: (
       <SidebarButtons>
@@ -725,6 +737,7 @@ export const Basic: SidebarStory = {
           />
           <SidebarChat
             id="chat-1"
+            isDefault
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
@@ -750,6 +763,7 @@ export const Basic: SidebarStory = {
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
+            isDefault
             name="Your first chat"
             caps="36.7K"
             checkbox={(
