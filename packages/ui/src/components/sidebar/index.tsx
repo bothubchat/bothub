@@ -28,7 +28,7 @@ export interface SidebarProps extends React.PropsWithChildren {
   defaultOpen?: boolean;
   className?: string;
   id?: string;
-  lang: React.ReactNode;
+  lang?: React.ReactNode;
   logo?: React.ReactNode;
   menu?: React.ReactNode;
   buttons?: React.ReactNode;
@@ -93,22 +93,19 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <SidebarContent>
           <SidebarHeader $open={isOpen}>
             {logo}
-            {isOpen && (
-              <SidebarHeaderRight style={{ display: 'flex' }}>
-                {lang}
-                <SidebarMenu>
-                  {menu}
-                </SidebarMenu>
-              </SidebarHeaderRight>
-            )}
-          </SidebarHeader>
-          <SidebarToolbar>
-            {buttons}
-            {!isOpen && (
+            <SidebarHeaderRight>
+              {lang}
               <SidebarMenu>
                 {menu}
               </SidebarMenu>
-            )}
+            </SidebarHeaderRight>
+          </SidebarHeader>
+          <SidebarToolbar $open={isOpen}>
+            {buttons}
+            {!isOpen && <SidebarMenu>
+              {menu}
+            </SidebarMenu>
+            }
             {toggle}
           </SidebarToolbar>
           {search}

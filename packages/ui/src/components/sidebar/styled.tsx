@@ -21,6 +21,7 @@ import {
   ArrowUpIcon
 } from '@/ui/icons';
 import {
+  SidebarMenu,
   SidebarMenuBlock,
   SidebarMenuBlockScrollbarWrapper,
   SidebarMenuNav,
@@ -348,32 +349,6 @@ export interface SidebarHeaderProps {
   $open: boolean;
 }
 
-export const SidebarHeader = styled.div<SidebarHeaderProps>`
-  display: ${({ $open }) => (
-    $open ? 'flex' : 'none'
-  )};
-  position: relative;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 34px;
-  justify-content: space-between;
-  height: 39px;
-  ${adaptive({
-    variant: 'dashboard',
-    merge: true,
-    tablet: css`
-      width: auto;
-      display: none;
-    `
-  })}
-`;
-
-export const SidebarHeaderRight = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-`
-
 export interface SidebarHeaderMainProps {
   $open: boolean;
 }
@@ -387,12 +362,19 @@ export const SidebarHeaderMain = styled.div<SidebarHeaderMainProps>`
   align-items: center;
 `;
 
-export const SidebarToolbar = styled.div`
+export const SidebarToolbar = styled.div<{
+  $open: boolean;
+}>`
   display: flex;
   width: inherit;
   gap: 10px;
   align-items: center;
   justify-content: space-between;
+  ${SidebarMenu as any} {
+    display: ${({ $open }) => (
+    !$open ? 'flex' : 'none'
+  )}
+  }
 `;
 
 export const SidebarDivider = styled.div`
@@ -416,6 +398,26 @@ export const SidebarLogoLink = styled.a`
   &:hover {
     opacity: 0.7;
   }
+`;
+
+export const SidebarHeader = styled.div<SidebarHeaderProps>`
+  display: ${({ $open }) => (
+    $open ? 'flex' : 'none'
+  )};
+  position: relative;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 34px;
+  justify-content: space-between;
+  height: 39px;
+  ${adaptive({
+    variant: 'dashboard',
+    merge: true,
+    tablet: css`
+      width: auto;
+      display: none;
+    `
+  })}
 `;
 
 export const SidebarTop = styled.div`
@@ -522,6 +524,12 @@ export const SidebarArrowDownButton = styled(ArrowDownIcon) <{ $hidden: boolean 
   `,
 })}
 `;
+
+export const SidebarHeaderRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`
 
 export const SidebarBodyContent = styled.div`
   display: flex;

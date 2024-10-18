@@ -5,7 +5,9 @@ import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { LanguageIcon } from '@/ui/icons/language';
 import { Typography } from '../../typography';
 
-export const SidebarLangDropdownStyled = styled.div``;
+export const SidebarLangDropdownStyled = styled.div`
+  z-index: ${({ theme }) => theme.zIndex.header + 1};
+`;
 
 export const SidebarLangDropdownTogglerIcon = styled(LanguageIcon).attrs({ size: 18 })`
   pointer-events: none;
@@ -71,7 +73,6 @@ export const SidebarLangDropdownList = styled.ul`
   border-radius: 8px;
   overflow: hidden;
   list-style: none;
-  z-index: ${({ theme }) => theme.zIndex.menu};
   background: ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray4 : theme.colors.grayScale.gray3)};
   width: 80px;
   padding: 10px 16px;
