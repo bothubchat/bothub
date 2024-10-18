@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { animated } from '@react-spring/web';
 import styled, { css } from 'styled-components';
 import { Typography } from '../../typography';
 import { MessageVariant } from '../types';
@@ -42,7 +42,7 @@ const getModalStylesX = (variant?: MessageVariant, inverted?: boolean) => {
   }
 };
 
-export const MessageActionsMenuModal = styled(motion.div)<{
+export const MessageActionsMenuModal = styled(animated.div)<{
   $variant?: MessageVariant;
   $invertedX?: boolean;
   $invertedY?: boolean;
@@ -66,7 +66,7 @@ export const MessageActionsMenuModal = styled(motion.div)<{
   z-index: 100;
 `;
 
-export const MessageActionsMenuModalOption = styled(motion.button)`
+export const MessageActionsMenuModalOption = styled.button`
   all: unset;
   display: flex;
   align-items: center;
@@ -77,10 +77,14 @@ export const MessageActionsMenuModalOption = styled(motion.button)`
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayScale.gray2};
   }
+  &:active {
+    filter: brightness(0.8);
+    transform: translateY(1px);
+  }
   cursor: pointer;
 `;
 
-export const MessageActionsButton = styled(motion.button)`
+export const MessageActionsButton = styled(animated.button)`
   all: unset;
   width: fit-content;
   height: fit-content;
@@ -89,6 +93,14 @@ export const MessageActionsButton = styled(motion.button)`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  &:hover {
+    filter: brightness(1.2)
+  }
+  &:active {
+    filter: brightness(0.8);
+    transform: translateY(1px);
+  }
+  transition: all 100ms ease-out;
 `;
 
 export const MessageActionsMenuModalOptionContent = styled.div`
@@ -100,13 +112,5 @@ export const MessageActionsMenuModalOptionContent = styled.div`
 export const MessageActionsButtonText = styled(Typography).attrs({
   variant: 'body-m-regular',
 })``;
-
-export const MessageActionsButtonIconStyled = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-`;
 
 export const MessageActionsButtonWithTooltip = styled.div``;

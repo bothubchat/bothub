@@ -8,14 +8,6 @@ export const MenuOption = ({
   onClick?: () => void;
 }) => (
   <S.MessageActionsMenuModalOption
-    whileTap={{
-      filter: 'brightness(0.8)',
-      translateY: 1,
-      transition: {
-        duration: 0.01,
-        ease: 'easeInOut',
-      },
-    }}
     onClick={onClick}
   >
     {children}

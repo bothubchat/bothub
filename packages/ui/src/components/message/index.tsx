@@ -215,26 +215,29 @@ export const Message: React.FC<MessageProps> = ({
           </MessageBlock>
           {buttons}
         </MessageContent>
-        <MessageActions
-          id={id}
-          message={content}
-          variant={variant}
-          disableResend={disableResend}
-          disableEdit={disableEdit}
-          disableDelete={disableDelete}
-          disableUpdate={disableUpdate}
-          disableCopy={disableCopy}
-          editText={editText}
-          resendText={resendText}
-          deleteText={deleteText}
-          updateTooltipLabel={updateTooltipLabel}
-          copyTooltipLabel={copyTooltipLabel}
-          onEdit={onEdit}
-          onResend={onResend}
-          onDelete={onDelete}
-          onUpdate={onUpdate}
-          onCopy={onCopy}
-        />
+        {!skeleton && (
+          <MessageActions
+            id={id}
+            message={content}
+            variant={variant}
+            skeleton={skeleton}
+            disableResend={disableResend}
+            disableEdit={disableEdit}
+            disableDelete={disableDelete}
+            disableUpdate={disableUpdate}
+            disableCopy={disableCopy}
+            editText={editText}
+            resendText={resendText}
+            deleteText={deleteText}
+            updateTooltipLabel={updateTooltipLabel}
+            copyTooltipLabel={copyTooltipLabel}
+            onEdit={onEdit}
+            onResend={onResend}
+            onDelete={onDelete}
+            onUpdate={onUpdate}
+            onCopy={onCopy}
+          />
+        )}
       </MessageStyled>
     </MessageProvider>
   );

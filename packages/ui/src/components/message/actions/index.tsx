@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { AnimatePresence } from 'framer-motion';
+import { easings, useTransition } from '@react-spring/web';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
 import { UpdateIcon } from '@/ui/icons/update';
 import { ResendIcon } from '@/ui/icons/resend';
@@ -17,6 +17,7 @@ type MessageActionsProps = {
   id?: string;
   message?: string;
   variant?: MessageVariant;
+  skeleton?: boolean;
   disableResend?: boolean;
   disableEdit?: boolean;
   disableDelete?: boolean;
@@ -40,6 +41,7 @@ export const MessageActions = ({
   id,
   message,
   variant = 'user',
+  skeleton,
   disableResend,
   disableEdit,
   disableDelete,
@@ -61,9 +63,12 @@ export const MessageActions = ({
   const [invertedX, setInvertedX] = useState<boolean>(false);
   const [invertedY, setInvertedY] = useState<boolean>(false);
   const messageActionsRef = useRef<HTMLDivElement | null>(null);
-  const messageActonsButtonRef = useRef<HTMLButtonElement | null>(null);
+  const messageActionsMenuRef = useRef<HTMLDivElement | null>(null);
 
   const modalEnabled = () => {
+    if (skeleton) {
+      return false;
+    }
     switch (variant) {
       case 'assistant':
         return !disableEdit || !disableDelete;
@@ -130,87 +135,60 @@ export const MessageActions = ({
 
   const handleClickOutsideButton = (
     e: MouseEvent,
-    el: React.MutableRefObject<HTMLButtonElement | null>
+    el: React.MutableRefObject<HTMLDivElement | null>
   ) => {
     if (!el?.current?.contains(e.target as Node)) {
       setMenuShown(false);
     }
   };
 
-  const buttonVariant = {
-    hover: {
-      filter: 'brightness(1.2)',
-      transition: {
-        duration: 0.2,
-        ease: 'easeInOut',
-      },
-    },
-    tap: {
-      filter: 'brightness(0.8)',
-      translateY: 1,
-      transition: {
-        duration: 0.01,
-        ease: 'easeInOut',
-      },
-    },
-  };
-
-  const modalStylesFramer = {
-    initial: {
+  const modalTransition = useTransition(menuShown, {
+    from: {
       opacity: 0,
-      translateY: 10,
+      y: 5,
     },
-    animate: {
+    enter: {
       opacity: 1,
-      translateY: 0,
+      y: 0,
     },
-    exit: {
+    leave: {
       opacity: 0,
-      translateY: 0,
+      y: 0,
     },
-    transition: {
-      duration: 0.3,
-      ease: 'easeOut',
+    config: {
+      duration: 250,
+      easing: easings.easeOutSine,
     },
-  };
-
-  const handleGiveOutCoord = () => {};
+  });
 
   useEffect(() => {
-    document.addEventListener('mousedown', (e: MouseEvent) => handleClickOutsideButton(e, messageActonsButtonRef));
+    document.addEventListener('mousedown', (e: MouseEvent) => handleClickOutsideButton(e, messageActionsMenuRef));
     return () => {
-      document.removeEventListener('mousedown', (e: MouseEvent) => handleClickOutsideButton(e, messageActonsButtonRef));
+      document.removeEventListener('mousedown', (e: MouseEvent) => handleClickOutsideButton(e, messageActionsMenuRef));
     };
   }, []);
 
   return (
-    <S.MessageActionsStyled
-      $variant={variant}
-      ref={messageActionsRef}
-      onMouseDown={handleGiveOutCoord}
-      onMouseEnter={handleGiveOutCoord}
-    >
+    <S.MessageActionsStyled $variant={variant} ref={messageActionsRef}>
       {modalEnabled() && (
-        <S.MessageActionsMenuStyled>
+        <S.MessageActionsMenuStyled ref={messageActionsMenuRef}>
           <ActionButton
-            ref={messageActonsButtonRef}
-            variantsFramer={buttonVariant}
             onMouseEnter={handleButtonHoverIn}
             onMouseLeave={handleButtonHoverOut}
             onClick={handleButtonClick}
           >
             <MenuDotIcon size={18} />
           </ActionButton>
-          <AnimatePresence>
-            {menuShown && (
+          {modalTransition(
+            (style, show) => show && (
               <S.MessageActionsMenuModal
+                style={style}
                 key="message-actions-modal"
                 onMouseEnter={handleButtonHoverIn}
                 onMouseLeave={handleButtonHoverOut}
                 $variant={variant}
                 $invertedX={invertedX}
                 $invertedY={invertedY}
-                {...modalStylesFramer}
               >
                 {!disableResend && variant === 'user' && (
                   <MenuOption
@@ -255,13 +233,14 @@ export const MessageActions = ({
                   </MenuOption>
                 )}
               </S.MessageActionsMenuModal>
-            )}
-          </AnimatePresence>
+            )
+          )}
         </S.MessageActionsMenuStyled>
       )}
       {!disableUpdate && variant !== 'user' && (
         <ActionButton
-          variantsFramer={buttonVariant}
+          id={id}
+          message={message}
           onClick={onUpdate}
           tooltipLabel={updateTooltipLabel}
         >
@@ -272,7 +251,6 @@ export const MessageActions = ({
         <CopyButton
           id={id}
           message={message}
-          framerVariant={buttonVariant}
           onCopy={onCopy}
           tooltipLabel={copyTooltipLabel}
         />
