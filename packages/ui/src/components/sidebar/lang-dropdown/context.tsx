@@ -5,18 +5,18 @@ export interface SidebarLangDropdownContextValue {
 }
 
 export const SidebarLangDropdownContext = React.createContext<
-SidebarLangDropdownContextValue | null>(null);
+  SidebarLangDropdownContextValue | null>(null);
 
 export const SidebarLangDropdownProvider: React.FC<
-SidebarLangDropdownContextValue & React.PropsWithChildren
+  SidebarLangDropdownContextValue & React.PropsWithChildren
 > = ({
   children,
   ...value
 }) => (
-  <SidebarLangDropdownContext.Provider value={value}>
-    {children}
-  </SidebarLangDropdownContext.Provider>
-);
+    <SidebarLangDropdownContext.Provider value={value}>
+      {children}
+    </SidebarLangDropdownContext.Provider>
+  );
 
 export function useSidebarLangDropdown(): SidebarLangDropdownContextValue {
   const value = useContext(SidebarLangDropdownContext);
@@ -27,3 +27,5 @@ export function useSidebarLangDropdown(): SidebarLangDropdownContextValue {
 
   return value;
 }
+
+

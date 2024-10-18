@@ -1,5 +1,10 @@
 import React, { useCallback } from 'react';
-import { SidebarMenuNavLinkStyled, SidebarMenuNavLinkStyledProps, SidebarMenuNavLinkText } from './styled';
+import {
+  SidebarMenuNavIcon,
+  SidebarMenuNavLinkStyled,
+  SidebarMenuNavLinkStyledProps,
+  SidebarMenuNavLinkText
+} from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useSidebarMenu } from '../../context';
 
@@ -20,7 +25,7 @@ export const SidebarMenuNavLink: React.FC<SidebarMenuNavLinkProps> = ({
 
   const handleClick = useCallback<React.MouseEventHandler<HTMLAnchorElement>>((event) => {
     setIsOpen(false);
-    
+
     props.onClick?.(event);
   }, [props.onClick]);
 
@@ -32,11 +37,14 @@ export const SidebarMenuNavLink: React.FC<SidebarMenuNavLinkProps> = ({
       to={to}
       onClick={handleClick}
     >
-      <IconProvider
-        size={34}
-      >
-        {icon}
-      </IconProvider>
+      <SidebarMenuNavIcon>
+        <IconProvider
+          size={18}
+        >
+          {icon}
+        </IconProvider>
+      </SidebarMenuNavIcon>
+
       <SidebarMenuNavLinkText>
         {children}
       </SidebarMenuNavLinkText>

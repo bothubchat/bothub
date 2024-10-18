@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useEffect, useRef, useState 
+  useCallback, useEffect, useRef, useState
 } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
@@ -57,19 +57,13 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      transform: 'scale(0.0)',
+      transform: 'scale(0)',
     },
     enter: {
       opacity: isOpen ? 1 : 0.5,
       transform: `scale(${isOpen ? 1 : 0.999})`,
-      transition: {
-        duration: 150,
-      },
     },
-    leave: {
-      opacity: 0,
-      transform: 'scale(0.999)',
-    },
+    leave: { opacity: 0, transform: 'scale(0.999)' },
     config: { duration: 150 },
   });
 
@@ -89,13 +83,13 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
             />
           </SidebarLangDropdownToggler>
         </IconProvider>
-        {dropdownTransition(
-          (style, item) => item && (
+        {dropdownTransition((style, item) => (
+          item && (
             <SidebarLangDropdownContent style={style}>
               {children}
             </SidebarLangDropdownContent>
           )
-        )}
+        ))}
       </SidebarLangDropdownStyled>
     </SidebarLangDropdownProvider>
   );
@@ -103,3 +97,4 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
 
 export * from './styled';
 export * from './item';
+

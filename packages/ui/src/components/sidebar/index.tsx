@@ -1,18 +1,25 @@
 import React, { useCallback, useState } from 'react';
 import {
+  SidebarArrowDownButton,
+  SidebarArrowUpButton,
   SidebarBody,
   SidebarBodyContent,
   SidebarBodyScrollbarWrapper,
   SidebarBottom,
   SidebarContent,
+  SidebarContentNav,
+  SidebarDivider,
   SidebarGlobalStyle,
-  SidebarHead, 
-  SidebarHeader, 
-  SidebarHeaderMain, 
+  SidebarHeader,
+  SidebarHeaderRight,
+  SidebarMobileToggle,
   SidebarStyled,
-  SidebarTop 
+  SidebarToolbar,
+  SidebarWrapper
 } from './styled';
 import { SidebarProvider } from './context';
+import { SidebarMenu } from './menu';
+import { ScrollbarRef, ScrollbarScrollEventHandler } from '../scrollbar';
 
 export type SidebarOpenEventHandler = (open: boolean) => unknown;
 
@@ -21,19 +28,22 @@ export interface SidebarProps extends React.PropsWithChildren {
   defaultOpen?: boolean;
   className?: string;
   id?: string;
+  lang?: React.ReactNode;
   logo?: React.ReactNode;
   menu?: React.ReactNode;
   buttons?: React.ReactNode;
   toggle?: React.ReactNode;
-  themeSwitcher?: React.ReactNode;
-  lang?: React.ReactNode;
   user?: React.ReactNode;
+  search?: React.ReactNode;
   onOpen?: SidebarOpenEventHandler;
+  deleteButton?: React.ReactNode;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ 
-  open, defaultOpen = true, 
-  className, id, user, logo, menu, buttons, toggle, themeSwitcher, lang, 
+export const Sidebar: React.FC<SidebarProps> = ({
+  open, defaultOpen = true,
+  className, id, user, logo, menu, buttons, toggle,
+  deleteButton,
+  search, lang,
   children, onOpen
 }) => {
   const initialIsOpen = open;
@@ -43,7 +53,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
   }, [onOpen]);
   const [isOpen, setIsOpen] = typeof initialIsOpen === 'boolean' ? [initialIsOpen, setInitialIsOpen] : useState(defaultOpen);
-
+  const [isBottom, setIsBottom] = useState<boolean>(false);
+  const scrollbarRef = React.useRef<ScrollbarRef>(null);
   const handleOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
     setIsOpen(open);
 
@@ -52,6 +63,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
     }
   }, [setIsOpen, initialIsOpen, onOpen]);
 
+  const handleScroll = useCallback<ScrollbarScrollEventHandler>(({ isBottom }) => {
+    setIsBottom(isBottom);
+  }, [setIsBottom]);
+
+  const handleScrollTop = useCallback(() => {
+    scrollbarRef.current?.element?.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, []);
+
+  const handleScrollBottom = useCallback(() => {
+    scrollbarRef.current?.element?.scrollTo({
+      top: scrollbarRef.current?.element?.scrollHeight + 999 || 0,
+      behavior: 'smooth',
+    });
+  }, []);
   return (
     <SidebarProvider
       isOpen={isOpen}
@@ -63,45 +91,71 @@ export const Sidebar: React.FC<SidebarProps> = ({
         id={id}
       >
         <SidebarContent>
-          <SidebarTop>
-            <SidebarHead
-              $open={isOpen}
-            >
-              <SidebarHeader
-                $open={isOpen}
-              >
-                <SidebarHeaderMain
-                  $open={isOpen}
-                >
-                  {logo}
-                  {menu}
-                  {lang}
-                </SidebarHeaderMain>
-                {toggle}
-              </SidebarHeader>
-              {buttons}
-            </SidebarHead>
-            <SidebarBody>
+          <SidebarHeader $open={isOpen}>
+            {logo}
+            <SidebarHeaderRight>
+              {lang}
+              <SidebarMenu>
+                {menu}
+              </SidebarMenu>
+            </SidebarHeaderRight>
+          </SidebarHeader>
+          <SidebarToolbar $open={isOpen}>
+            {buttons}
+            {!isOpen && <SidebarMenu>
+              {menu}
+            </SidebarMenu>
+            }
+            {toggle}
+          </SidebarToolbar>
+          {search}
+          <SidebarDivider />
+          <SidebarBody>
+            {!isOpen
+              && (
+                <SidebarArrowUpButton
+                  $hidden={isBottom && !isOpen}
+                  onClick={handleScrollTop}
+                />
+              )}
+            <SidebarWrapper>
               <SidebarBodyScrollbarWrapper
-                disabled={!isOpen}
+                ref={scrollbarRef}
+                size={!isOpen ? 0 : 6}
+                onScroll={handleScroll}
               >
                 <SidebarBodyContent>
                   {children}
                 </SidebarBodyContent>
               </SidebarBodyScrollbarWrapper>
-            </SidebarBody>
-          </SidebarTop>
+            </SidebarWrapper>
+            {!isOpen && (
+              <SidebarArrowDownButton
+                $hidden={!isBottom}
+                onClick={handleScrollBottom}
+              />
+            )}
+          </SidebarBody>
           <SidebarBottom>
-            {themeSwitcher}
+            {deleteButton}
             {user}
           </SidebarBottom>
         </SidebarContent>
+        <SidebarContentNav>
+          <div>
+            <SidebarMobileToggle>
+              {toggle}
+            </SidebarMobileToggle>
+            {menu}
+          </div>
+          {user}
+        </SidebarContentNav>
       </SidebarStyled>
-      <SidebarGlobalStyle 
+      <SidebarGlobalStyle
         $open={isOpen}
       />
     </SidebarProvider>
-  );  
+  );
 };
 
 export * from './styled';
@@ -114,4 +168,6 @@ export * from './group';
 export * from './empty';
 export * from './theme-switcher';
 export * from './menu';
+export * from './dropdown';
+export * from './group-empty';
 export * from './lang-dropdown';
