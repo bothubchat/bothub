@@ -1,6 +1,11 @@
 import React from 'react';
 import {
-  DeveloperKeyList, DeveloperKeysButtons, DeveloperKeysStyled, DeveloperKeysTitle 
+  DeveloperKeyList,
+  DeveloperKeysButtons,
+  DeveloperKeysHeader,
+  DeveloperKeysIcon,
+  DeveloperKeysStyled,
+  DeveloperKeysTitle,
 } from './styled';
 
 export interface DeveloperKeysProps extends React.PropsWithChildren {
@@ -10,23 +15,23 @@ export interface DeveloperKeysProps extends React.PropsWithChildren {
 }
 
 export const DeveloperKeys: React.FC<DeveloperKeysProps> = ({
-  title, empty, add, children
+  title,
+  empty,
+  add,
+  children,
 }) => (
   <DeveloperKeysStyled>
     {title && (
-      <DeveloperKeysTitle>
-        {title}
-      </DeveloperKeysTitle>
+      <DeveloperKeysHeader>
+        <DeveloperKeysIcon />
+        <DeveloperKeysTitle>{title}</DeveloperKeysTitle>
+      </DeveloperKeysHeader>
     )}
     {React.Children.toArray(children).length === 0 && empty}
     {React.Children.toArray(children).length !== 0 && (
-      <DeveloperKeyList>
-        {children}
-      </DeveloperKeyList>
+      <DeveloperKeyList>{children}</DeveloperKeyList>
     )}
-    <DeveloperKeysButtons>
-      {add}
-    </DeveloperKeysButtons>
+    <DeveloperKeysButtons>{add}</DeveloperKeysButtons>
   </DeveloperKeysStyled>
 );
 
