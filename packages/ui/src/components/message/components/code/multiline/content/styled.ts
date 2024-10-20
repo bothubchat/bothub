@@ -69,3 +69,5 @@ export const MessageMultilineCodeContentStyled = styled.div<MessageMultilineCode
   padding: 1em;
   background-color: #002635;
 `;
+
+export const MessageMultilineCodeLastLine = styled.div``;
