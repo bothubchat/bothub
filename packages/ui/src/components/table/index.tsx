@@ -6,10 +6,11 @@ import { ScrollbarShadowsProps } from '@/ui/components/scrollbar';
 
 export interface TableProps extends Omit<React.ComponentProps<'table'>, 'ref'> {
   scrollShadows?: ScrollbarShadowsProps;
+  fullWidth?: boolean;
 }
 
 export const Table: React.FC<TableProps> = ({
-  scrollShadows, children, ...props
+  scrollShadows, children, fullWidth, ...props
 }) => {
   if (React.Children.toArray(children).length === 0) {
     return null;
@@ -22,7 +23,7 @@ export const Table: React.FC<TableProps> = ({
       <TableScrollbarWrapper
         scrollShadows={scrollShadows}
       >
-        <TableContent>
+        <TableContent $fullWidth={fullWidth}> 
           {children}
         </TableContent>
       </TableScrollbarWrapper>

@@ -7,19 +7,25 @@ export const TableStyled = styled.div`
   width: 100%;
 `;
 
-export const TableScrollbarWrapper = styled(Scrollbar).attrs(({ theme, scrollShadows }) => ({
-  variant: 'secondary',
-  scrollShadows: {
-    color: theme.colors.base.black,
-    left: <ScrollbarShadow side="left" />,
-    right: <ScrollbarShadow side="right" />,
-    ...scrollShadows
-  }
-}))``;
+export const TableScrollbarWrapper = styled(Scrollbar).attrs(
+  ({ theme, scrollShadows }) => ({
+    variant: 'secondary',
+    scrollShadows: {
+      color: theme.colors.base.black,
+      left: <ScrollbarShadow side="left" />,
+      right: <ScrollbarShadow side="right" />,
+      ...scrollShadows,
+    },
+  })
+)``;
 
-export const TableContent = styled.table`
+export const TableContent = styled.table<{ $fullWidth?: boolean }>`
   border-collapse: separate;
   border-spacing: 0;
+  ${({ $fullWidth }) => $fullWidth
+    && css`
+      width: 100%;
+    `}
   ${() => css`
     ${TableRow} {
       &:not(:first-child) > ${TableCellStyled} {
