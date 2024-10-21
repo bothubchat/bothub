@@ -19,3 +19,5 @@ export const SidebarGroupEmpty: React.FC<SidebarGroupEmptyProps> = ({ children }
     </SidebarEmptyGroupStyled>
   );
 };
+
+export * from './styled';

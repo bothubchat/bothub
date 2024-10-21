@@ -1,17 +1,15 @@
 import { css, styled } from 'styled-components';
-import React from 'react';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 import { LogoutIcon } from '@/ui/icons/logout';
+import { Scrollbar } from '../../scrollbar';
 
 export interface SidebarUserInfoStyledProps {
   $open: boolean;
 }
 
-export const SidebarUserInfoStyled: React.FC<
-  SidebarUserInfoStyledProps & React.PropsWithChildren
-> = styled.div`
+export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
   display: flex;
   overflow: hidden;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
@@ -275,7 +273,7 @@ export interface SidebarUserInfoLogoutButtonContainerProps {
 }
 
 export const SidebarUserInfoLogoutButtonContainer = styled.div<SidebarUserInfoLogoutButtonContainerProps>`
-  ${({ $open }) => !$open
+  ${({ $open }) => (!$open
     ? adaptive({
       variant: 'dashboard',
       desktop: css`
@@ -299,7 +297,7 @@ export const SidebarUserInfoLogoutButtonContainer = styled.div<SidebarUserInfoLo
       mobile: css`
         display: none;
       `,
-    })}
+    }))}
 `;
 
 export interface SidebarUserInfoUpdateTariffContainerProps {

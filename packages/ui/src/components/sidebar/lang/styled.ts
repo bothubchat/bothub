@@ -79,4 +79,3 @@ export const SidebarLangDropdownList = styled.ul`
   box-sizing: border-box;
   margin-block-start: 16px;
 `;
-

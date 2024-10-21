@@ -12,6 +12,7 @@ import {
 import { CloseIcon } from '@/ui/icons/close';
 import { MenuIcon } from '@/ui/icons/menu';
 import { SidebarMenuProvider } from './context';
+import { useSidebar } from '../context';
 
 export type SidebarMenuProps = React.ComponentProps<'div'> & {
   disabled?: boolean;
@@ -22,6 +23,8 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
 }) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { isOpen: sidebarOpen } = useSidebar();
 
   const handleToggle = useCallback(() => {
     setIsOpen(!isOpen);
@@ -81,7 +84,7 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
           {!isOpen && <MenuIcon />}
         </SidebarMenuToggleButton>
         {menuTransition((style, item) => item && (
-          <SidebarMenuBlock style={style}>
+          <SidebarMenuBlock style={style} $sidebarOpen={sidebarOpen}>
             <SidebarMenuBlockScrollbarWrapper>
               <SidebarMenuBlockContent>
                 {children}

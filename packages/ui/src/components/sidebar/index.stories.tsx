@@ -32,6 +32,11 @@ import {
   SidebarDeleteButton,
   SidebarTextField,
   SidebarSearchButton,
+  SidebarLangDropdown,
+  SidebarLangDropdownList,
+  SidebarLangDropdownItem,
+  SidebarGroupEmpty,
+  SidebarGroupCheckbox,
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -44,10 +49,6 @@ import {
   EditIcon,
   TrashIcon,
 } from '@/ui/icons';
-import { Checkbox } from '../checkbox';
-import { SidebarGroupEmpty } from './group-empty';
-import { SidebarLangDropdown, SidebarLangDropdownList, SidebarLangDropdownItem } from './lang-dropdown';
-
 export type SidebarMeta = Meta<typeof Sidebar>;
 
 export type SidebarStory = StoryObj<typeof Sidebar>;
@@ -91,6 +92,24 @@ export const Basic: SidebarStory = {
           icon={<TariffIcon />}
         >
           Пакеты
+        </SidebarMenuNavLink>
+        <SidebarMenuNavLink
+          href="#"
+          icon={<GearIcon />}
+        >
+          Для разработчиков
+        </SidebarMenuNavLink>
+        <SidebarMenuNavLink
+          href="#"
+          icon={<GearIcon />}
+        >
+          Для разработчиков
+        </SidebarMenuNavLink>
+        <SidebarMenuNavLink
+          href="#"
+          icon={<GearIcon />}
+        >
+          Для разработчиков
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
@@ -172,7 +191,7 @@ export const Basic: SidebarStory = {
     ),
     children: (
       <SidebarGroups>
-        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Шабажка">
+        <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Шабажка">
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
@@ -270,7 +289,7 @@ export const Basic: SidebarStory = {
             )}
           />
         </SidebarGroup>
-        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Калькулятор">
+        <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Калькулятор">
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
@@ -368,7 +387,7 @@ export const Basic: SidebarStory = {
             )}
           />
         </SidebarGroup>
-        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Как разблокировать дискорд">
+        <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Как разблокировать дискорд">
           <SidebarGroupEmpty>Чатов нет идите отсюла</SidebarGroupEmpty>
         </SidebarGroup>
         <SidebarGroup edit checkbox={<SidebarChatCheckbox checked />} id="chat-group-1" name="Бесплатный впн">
@@ -470,7 +489,7 @@ export const Basic: SidebarStory = {
             )}
           />
         </SidebarGroup>
-        <SidebarGroup checkbox={<Checkbox checked />} id="chat-group-1" name="Работа">
+        <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Работа">
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
@@ -572,7 +591,7 @@ export const Basic: SidebarStory = {
           id="chat-group-1"
           name="Работа"
           checkbox={
-            <Checkbox checked />
+            <SidebarGroupCheckbox checked />
           }
           actions={(
             <SidebarDropdown>
@@ -684,7 +703,7 @@ export const Basic: SidebarStory = {
             )}
           />
         </SidebarGroup>
-        <SidebarGroup isDefault checkbox={<Checkbox checked />} id="chat-group-1" name="Работа">
+        <SidebarGroup isDefault checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Работа">
           <SidebarChat
             id="chat-1"
             isDefault
