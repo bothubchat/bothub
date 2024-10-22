@@ -77,7 +77,7 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
 
   return (
     <IconProvider>
-      <DeveloperKeyWrapper>
+      <DeveloperKeyWrapper $skeleton={skeleton}>
         {label && (
           <DeveloperKeyLabel>
             {label}

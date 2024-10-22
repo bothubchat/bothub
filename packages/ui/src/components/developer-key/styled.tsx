@@ -7,9 +7,11 @@ export interface DeveloperKeyStyledProps {
   $skeleton: boolean;
 }
 
-export const DeveloperKeyWrapper = styled.div`
+export const DeveloperKeyWrapper = styled.div<{ $skeleton?: boolean }>`
   display: flex;
-  width: fit-content;
+  ${({ $skeleton }) => $skeleton && css`
+    width: 100%;
+    `}
   max-width: 100%;
   flex-direction: column;
   align-items: flex-start;
