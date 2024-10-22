@@ -1,13 +1,13 @@
 import React, { useCallback, useState } from 'react';
 import {
-  HeaderContainer,
-  HeaderContent,
-  HeaderLeft,
-  HeaderOffset,
-  HeaderRight,
-  HeaderStyled,
-  HeaderContainerContent
-} from './styled';
+  HeaderContainer, 
+  HeaderContent, 
+  HeaderLeft, 
+  HeaderOffset, 
+  HeaderRight, 
+  HeaderStyled, 
+  HeaderContainerContent 
+} from './styled'; 
 import { HeaderMenu, HeaderMenuToggleButton } from './menu';
 import { HeaderVariant } from './types';
 import { HeaderProvider } from './context';
@@ -27,7 +27,7 @@ export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyl
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  id, variant = 'main', logo, nav, lang, user, themeSwitcher, open, onOpen, ...props
+  id, variant = 'main', logo, nav, lang, user, themeSwitcher, open, onOpen, ...props 
 }) => {
   const initialIsMenuOpen = open;
   const setInitialIsMenuOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>(
@@ -35,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({
       if (typeof open === 'boolean') {
         onOpen?.(open);
       }
-    },
+    }, 
     [onOpen]
   );
 
@@ -50,13 +50,13 @@ export const Header: React.FC<HeaderProps> = ({
   );
 
   return (
-    <HeaderProvider
+    <HeaderProvider 
       variant={variant}
       isMenuOpen={isMenuOpen}
-      setIsMenuOpen={setIsMenuOpen}
+      setIsMenuOpen={setIsMenuOpen} 
     >
-      <HeaderStyled
-        {...props}
+      <HeaderStyled 
+        {...props} 
         $variant={variant}
         id={id}
       >

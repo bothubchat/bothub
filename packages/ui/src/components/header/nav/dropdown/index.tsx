@@ -1,9 +1,9 @@
 import React, {
-  useCallback, useEffect, useRef, useState
+  useCallback, useEffect, useRef, useState 
 } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
-  HeaderNavDropdownArrow, HeaderNavDropdownBody, HeaderNavDropdownHead, HeaderNavDropdownStyled
+  HeaderNavDropdownArrow, HeaderNavDropdownBody, HeaderNavDropdownHead, HeaderNavDropdownStyled 
 } from './styled';
 import { HeaderNavDropdownProvider } from './context';
 import { useHeaderMenu } from '../../menu/context';
@@ -67,23 +67,23 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
   return (
     <HeaderNavDropdownProvider setIsOpen={setIsOpen}>
       <HeaderNavDropdownStyled $inMenu={isInMenu} ref={dropdownRef}>
-        <HeaderNavDropdownHead
+        <HeaderNavDropdownHead 
           as="span"
           $variant={variant}
-          $active={isOpen}
+          $active={isOpen} 
           $inMenu={isInMenu}
           onClick={toggleDropdown}
         >
           {label}
-          <HeaderNavDropdownArrow
+          <HeaderNavDropdownArrow 
             style={{
               transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'
-            }}
+            }} 
           />
         </HeaderNavDropdownHead>
         {dropdownTransition((style, item) => (
           item && (
-            <HeaderNavDropdownBody
+            <HeaderNavDropdownBody 
               $inMenu={isInMenu}
               style={style}
             >

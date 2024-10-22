@@ -11,7 +11,7 @@ export const HeaderMenuStyled = styled.div`
   position: relative;
 `;
 
-export const HeaderMenuContent = styled(animated.div) <HeaderMenuStyledProps>`
+export const HeaderMenuContent = styled(animated.div)<HeaderMenuStyledProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -50,10 +50,12 @@ export const HeaderMenuContent = styled(animated.div) <HeaderMenuStyledProps>`
             height: calc(100vh - ${theme.dashboard.header.height});
           `,
           tablet: css`
-            display: none;
+            padding: 42px 18px;
+            height: calc(100vh - ${theme.dashboard.header.tablet.height});
           `,
           mobile: css`
-            display: none;
+            padding: 32px 16px;
+            height: calc(100vh - ${theme.dashboard.header.mobile.height});
           `
         });
     }

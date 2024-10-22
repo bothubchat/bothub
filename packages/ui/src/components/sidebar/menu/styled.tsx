@@ -7,6 +7,7 @@ import { Scrollbar } from '@/ui/components/scrollbar';
 export const SidebarMenuStyled = styled.div``;
 
 export const SidebarMenuToggleButton = styled(Button)`
+  margin-left: 16px;
   svg {
     pointer-events: none;
   }
@@ -18,20 +19,21 @@ export const SidebarMenuBlock = styled(animated.div)`
   z-index: ${({ theme }) => theme.zIndex.menu};
   top: 53px;
   left: 0px;
-  background: ${({ theme }) => theme.colors.grayScale.gray7};
+  background: ${({ theme }) => theme.colors.base.black};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 12px;
   overflow: hidden;
   padding: 16px;
+  padding-right: 8px;
   transform-origin: top center;
   ${adaptive({
     variant: 'dashboard',
     merge: true,
     desktop: css`
-      right: 0px;
+      right: 9px;
     `,
     tablet: css`
-      right: 0px;
+      right: 7px;
     `
   })}
 `;

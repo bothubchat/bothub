@@ -18,9 +18,8 @@ export const SidebarToggleButton: React.FC<SidebarToggleButtonProps> = (props) =
   }, [isOpen]);
 
   return (
-    <SidebarToggleButtonStyled
+    <SidebarToggleButtonStyled 
       {...props}
-      $isOpen={isOpen}
       onClick={handleToggle}
     >
       <IconProvider fill={theme.colors.grayScale.gray1} size={24}>
