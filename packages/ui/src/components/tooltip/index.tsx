@@ -58,8 +58,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       return [0, 0];
     }
 
-    const { width: tooltipWidth, height: tooltipHeight } =
-      tooltipEl.getBoundingClientRect();
+    const { width: tooltipWidth, height: tooltipHeight } = tooltipEl.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
     const { width: elWidth } = rect;
     const elX = rect.left + window.scrollX;
