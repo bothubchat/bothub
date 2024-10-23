@@ -1,5 +1,5 @@
 import {
-  useState, useCallback, useRef, useEffect 
+  useState, useCallback, useRef, useEffect
 } from 'react';
 import { useTransition } from '@react-spring/web';
 import { MenuIcon, CloseIcon } from '@/ui/icons';

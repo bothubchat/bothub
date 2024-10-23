@@ -1,29 +1,73 @@
-import { styled } from 'styled-components';
-import { Button } from '@/ui/components/button';
-import { Plus1Icon } from '@/ui/icons/plus-1';
+import { css, styled } from 'styled-components';
+import { Button, ButtonVariant } from '@/ui/components/button';
 import { TrashIcon } from '@/ui/icons/trash';
+import { adaptive } from '@/ui/adaptive';
+import { AddChatIcon } from '@/ui/icons/add-chat';
+import { AddGroupIcon } from '@/ui/icons/add-group';
+import { EditIcon } from '@/ui/icons/edit';
+import { SearchSimpleIcon } from '@/ui/icons';
 
 export interface SidebarButtonsStyledProps {
   $open: boolean;
 }
 
 export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
-  display: ${({ $open }) => (
-    $open ? 'flex' : 'none'
-  )};
+  display: flex;
+  flex-direction: row;
   transition: all 0.3s;
   width: 100%;
   gap: 12px;
+  ${({ $open }) => !$open && adaptive(
+    {
+      variant: 'dashboard',
+      merge: true,
+      desktop: css`flex-direction: column;`,
+      tablet: css`flex-direction: row;`
+    }
+  )}
 `;
+
+export const SidebarDeleteButton = styled(Button).attrs({
+  fullWidth: true,
+  startIcon: <TrashIcon />
+})``;
 
 export const SidebarCreateChatButton = styled(Button).attrs({
-  startIcon: <Plus1Icon />,
-  fullWidth: true
-})`
-  white-space: nowrap;
+  children: <AddChatIcon />,
+}) <{ variant: ButtonVariant }>``;
+
+export const SidebarAddGroupButton = styled(Button).attrs({
+  children: <AddGroupIcon />
+}) <{ variant: ButtonVariant }>`
+  ${({ variant }) => variant === 'secondary' && css`
+    background: ${({ theme }) => theme.colors.grayScale.gray3};
+    svg path {
+      stroke: ${({ theme }) => theme.colors.accent.primary};
+    }
+  `}
 `;
 
-export const SidebarDeleteChatsButton = styled(Button).attrs({
-  variant: 'secondary',
+export const SidebarEditButton = styled(Button).attrs({
+  children: <EditIcon />,
+}) <{ variant: ButtonVariant }>`
+  ${({ variant }) => variant === 'secondary' && css`
+    svg path {
+      fill: ${({ theme }) => theme.colors.grayScale.gray1};
+      stroke: ${({ theme }) => theme.colors.grayScale.gray1};
+    }
+  `}
+`;
+export const SidebarSearchButton = styled(Button).attrs({
+  children: <SearchSimpleIcon size={16} />,
+}) <{ variant: ButtonVariant }>`
+  ${({ variant }) => variant === 'secondary' && css`
+    svg path {
+      fill: ${({ theme }) => theme.colors.grayScale.gray1};
+      stroke: ${({ theme }) => theme.colors.grayScale.gray1};
+    }
+  `}
+`;
+
+export const SidebarSortButton: React.FC<{ $variant: ButtonVariant }> = styled(Button).attrs({
   children: <TrashIcon />
 })``;

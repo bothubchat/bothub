@@ -55,7 +55,9 @@ export const Bold: TooltipStory = {
   args: {
     label: (
       <TooltipLabel>
-        <TooltipLabelBold>Причина:</TooltipLabelBold> API не отвечает.
+        <TooltipLabelBold>Причина:</TooltipLabelBold>
+        {' '}
+        API не отвечает.
       </TooltipLabel>
     ),
     placement: 'top-left',

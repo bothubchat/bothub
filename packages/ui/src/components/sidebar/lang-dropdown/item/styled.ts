@@ -15,3 +15,4 @@ export const SidebarLangDropdownItemStyled = styled.li`
     color: ${({ theme }) => theme.colors.accent.primaryLight};
   }
 `;
+
