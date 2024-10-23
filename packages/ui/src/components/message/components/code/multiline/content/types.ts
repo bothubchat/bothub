@@ -1,5 +1,5 @@
 export interface MessageMultilineCodeContentProps {
-  children: string;
+  children: React.ReactNode | string;
   $messageColor: string;
   className: string;
 }
