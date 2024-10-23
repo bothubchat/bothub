@@ -148,7 +148,7 @@ export const Basic: SidebarStory = {
         <SidebarCreateChatButton variant="primary" />
         <SidebarAddGroupButton variant="secondary" />
         <SidebarSearchButton variant="secondary" />
-        <SidebarEditButton variant="secondary" />
+        <SidebarEditButton variant="secondary" $active />
       </SidebarButtons>
     ),
     search: (

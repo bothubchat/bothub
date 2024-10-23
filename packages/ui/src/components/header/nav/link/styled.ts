@@ -56,3 +56,13 @@ export const HeaderNavLinkStyled = styled.a<HeaderNavLinkStyledProps>`
     `;
   }}
 `;
+
+export const HeaderNavLinkIcon = styled.div`
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+`;
