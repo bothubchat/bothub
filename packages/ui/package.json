@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.12.0",
+  "version": "2.11.3-Fix-typing-cursor-place-b68ec796-8d77-40f4-a6f1-fb056247dc21",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
