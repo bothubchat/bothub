@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import {
-  Header,
-  HeaderUserInfo,
-  HeaderUserInfoAvatar,
-  HeaderUserInfoItem,
-  HeaderUserInfoList,
-  HeaderLogoLink,
-  HeaderNav,
-  HeaderNavDropdown,
-  HeaderNavDropdownItem,
-  HeaderNavDropdownList,
-  HeaderNavLink,
-  HeaderUser,
+  Header, 
+  HeaderUserInfo, 
+  HeaderUserInfoAvatar, 
+  HeaderUserInfoItem, 
+  HeaderUserInfoList, 
+  HeaderLogoLink, 
+  HeaderNav, 
+  HeaderNavDropdown, 
+  HeaderNavDropdownItem, 
+  HeaderNavDropdownList, 
+  HeaderNavLink, 
+  HeaderUser, 
   HeaderUserButton,
   HeaderThemeSwitcher
 } from '.';
@@ -20,18 +20,18 @@ import { Logo } from '@/ui/components/logo';
 import { HeaderLangDropdown, HeaderLangDropdownItem, HeaderLangDropdownList } from './lang-dropdown';
 import {
   BookmarksBigIcon,
-  BothubAggIcon,
-  BusinessColoredIcon,
-  ChatsIcon,
-  CoderIcon,
-  DashboardIcon,
-  LogoutIcon,
-  PresetsBigIcon,
-  ReferalIcon,
-  SettingsIcon,
-  TariffIcon,
-  TgColoredIcon,
-  UserProfileIcon
+  BothubAggIcon, 
+  BusinessColoredIcon, 
+  ChatsIcon, 
+  CoderIcon, 
+  DashboardIcon, 
+  LogoutIcon, 
+  PresetsBigIcon, 
+  ReferalIcon, 
+  SettingsIcon, 
+  TariffIcon, 
+  TgColoredIcon, 
+  UserProfileIcon 
 } from '@/ui/icons';
 
 export type HeaderMeta = Meta<typeof Header>;
@@ -50,7 +50,7 @@ export const Basic: HeaderStory = {
         <HeaderNavLink href="#">Главная</HeaderNavLink>
         <HeaderNavDropdown label="Продукты">
           <HeaderNavDropdownList>
-            <HeaderNavDropdownItem
+            <HeaderNavDropdownItem 
               icon={<BothubAggIcon />}
               title="Агрегатор нейросетей BotHub"
               text="ChatGPT на базе 3.5 и 4.0 версии OpenAI"
@@ -97,7 +97,7 @@ export const Authorized: HeaderStory = {
     ...Basic.args,
     user: (
       <HeaderUser>
-        <HeaderUserInfo
+        <HeaderUserInfo 
           avatar={<HeaderUserInfoAvatar src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album" />}
           name="Артём"
           tokens="2 023 CAPS"

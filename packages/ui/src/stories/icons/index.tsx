@@ -172,17 +172,9 @@ import {
   VKIcon,
   ResendIcon,
   BigArticleIcon,
-  AddChatIcon,
-  AddGroupIcon,
-  DeleteChatIcon,
-  DragDotIcon,
-  TempChatIcon,
-  SidebarChatIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
-import { OrganizationIcon } from '@/ui/icons/organization';
-import { SimpleGearIcon } from '@/ui/icons/simple-gear';
 
 export type IconsProps = IconProviderProps;
 
@@ -250,7 +242,6 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="WarningBigIcon">{WarningBigIcon}</IconItem>
         <IconItem name="ErrorBigIcon">{ErrorBigIcon}</IconItem>
         <IconItem name="SuccessBigIcon">{SuccessBigIcon}</IconItem>
-        <IconItem name="DragDotIcon">{DragDotIcon}</IconItem>
         <IconItem name="MjIcon">{MjIcon}</IconItem>
         <IconItem name="CardIcon">{CardIcon}</IconItem>
         <IconItem name="ArrowNarrowUpIcon">{ArrowNarrowUpIcon}</IconItem>
@@ -371,13 +362,6 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="YandexIcon">{YandexIcon}</IconItem>
         <IconItem name="VKIcon">{VKIcon}</IconItem>
         <IconItem name="ResendIcon">{ResendIcon}</IconItem>
-        <IconItem name="AddChatIcon">{AddChatIcon}</IconItem>
-        <IconItem name="AddGroupIcon">{AddGroupIcon}</IconItem>
-        <IconItem name="DeleteChatIcon">{DeleteChatIcon}</IconItem>
-        <IconItem name="TempChatIcon">{TempChatIcon}</IconItem>
-        <IconItem name="SidebarChatIcon">{SidebarChatIcon}</IconItem>
-        <IconItem name="OrganizationIcon">{OrganizationIcon}</IconItem>
-        <IconItem name="SimpleGearIcon">{SimpleGearIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

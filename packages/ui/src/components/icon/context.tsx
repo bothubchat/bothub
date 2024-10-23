@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 export interface IconContextValue {
   size?: number;
   fill?: string;
-  stroke?: string;
 }
 
 export const IconContext = React.createContext<IconContextValue | undefined>(undefined);
