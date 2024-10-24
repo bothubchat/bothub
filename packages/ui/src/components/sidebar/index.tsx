@@ -8,6 +8,8 @@ import {
   SidebarBottom,
   SidebarContent,
   SidebarContentNav,
+  SidebarContentNavContainer,
+  SidebarContentNavMenuWrapper,
   SidebarDivider,
   SidebarGlobalStyle,
   SidebarHeader,
@@ -90,22 +92,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
         className={className}
         id={id}
       >
-        <SidebarContent>
+        <SidebarContent $open={isOpen}>
           <SidebarHeader $open={isOpen}>
             {logo}
             <SidebarHeaderRight>
               {lang}
-              <SidebarMenu>
-                {menu}
-              </SidebarMenu>
+              {isOpen &&
+                <SidebarMenu>
+                  {menu}
+                </SidebarMenu>
+              }
             </SidebarHeaderRight>
           </SidebarHeader>
           <SidebarToolbar $open={isOpen}>
             {buttons}
-            {!isOpen && <SidebarMenu>
-              {menu}
-            </SidebarMenu>
-            }
+            {!isOpen && (
+              <SidebarMenu>
+                {menu}
+              </SidebarMenu>
+            )}
             {toggle}
           </SidebarToolbar>
           {search}
@@ -136,18 +141,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
               />
             )}
           </SidebarBody>
+          {deleteButton}
           <SidebarBottom>
-            {deleteButton}
             {user}
           </SidebarBottom>
         </SidebarContent>
-        <SidebarContentNav>
-          <div>
+        <SidebarContentNav $open={isOpen}>
+          <SidebarContentNavContainer $open={isOpen}>
             <SidebarMobileToggle>
               {toggle}
             </SidebarMobileToggle>
-            {menu}
-          </div>
+            <SidebarContentNavMenuWrapper>
+              {menu}
+            </SidebarContentNavMenuWrapper>
+          </SidebarContentNavContainer>
           {user}
         </SidebarContentNav>
       </SidebarStyled>
@@ -170,4 +177,4 @@ export * from './theme-switcher';
 export * from './menu';
 export * from './dropdown';
 export * from './group-empty';
-export * from './lang-dropdown';
+export * from './lang';

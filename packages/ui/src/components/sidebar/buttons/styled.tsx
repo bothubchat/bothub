@@ -18,13 +18,13 @@ export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
   width: 100%;
   gap: 12px;
   ${({ $open }) => !$open && adaptive(
-    {
-      variant: 'dashboard',
-      merge: true,
-      desktop: css`flex-direction: column;`,
-      tablet: css`flex-direction: row;`
-    }
-  )}
+  {
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`flex-direction: column;`,
+    tablet: css`flex-direction: row;`
+  }
+)}
 `;
 
 export const SidebarDeleteButton = styled(Button).attrs({
@@ -34,13 +34,13 @@ export const SidebarDeleteButton = styled(Button).attrs({
 
 export const SidebarCreateChatButton = styled(Button).attrs({
   children: <AddChatIcon />,
-}) <{ variant: ButtonVariant }>``;
+})``;
 
 export const SidebarAddGroupButton = styled(Button).attrs({
   children: <AddGroupIcon />
 }) <{ variant: ButtonVariant }>`
   ${({ variant }) => variant === 'secondary' && css`
-    background: ${({ theme }) => theme.colors.grayScale.gray3};
+    background: ${({ theme }) => theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
     svg path {
       stroke: ${({ theme }) => theme.colors.accent.primary};
     }
@@ -49,21 +49,35 @@ export const SidebarAddGroupButton = styled(Button).attrs({
 
 export const SidebarEditButton = styled(Button).attrs({
   children: <EditIcon />,
-}) <{ variant: ButtonVariant }>`
+}) <{ variant: ButtonVariant, $active?: boolean }>`
   ${({ variant }) => variant === 'secondary' && css`
     svg path {
       fill: ${({ theme }) => theme.colors.grayScale.gray1};
       stroke: ${({ theme }) => theme.colors.grayScale.gray1};
     }
   `}
+
+  ${({ $active }) => $active && css`
+    background: ${({ theme }) => theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
+    svg path {
+      fill: ${({ theme }) => theme.colors.accent.primary};
+      stroke: ${({ theme }) => theme.colors.accent.primary};
+    }
+  `}
 `;
+
 export const SidebarSearchButton = styled(Button).attrs({
   children: <SearchSimpleIcon size={16} />,
-}) <{ variant: ButtonVariant }>`
+}) <{ variant: ButtonVariant, $active?: boolean }>`
   ${({ variant }) => variant === 'secondary' && css`
     svg path {
       fill: ${({ theme }) => theme.colors.grayScale.gray1};
-      stroke: ${({ theme }) => theme.colors.grayScale.gray1};
+    }
+  `}
+  ${({ $active }) => $active && css`
+    background: ${({ theme }) => theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
+    svg path {
+      fill: ${({ theme }) => theme.colors.accent.primary};
     }
   `}
 `;

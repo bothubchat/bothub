@@ -46,27 +46,27 @@ export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-mediu
   width: 100%;
   transition: opacity 0.3s;
   ${adaptive({
-    tablet: css`
+  tablet: css`
       max-width: 130px;
     `,
-    mobile: css`
+  mobile: css`
       max-width: 130px;
     `
-  })}
+})}
 `;
 
 export const SidebarChatNameSkeleton = styled(Skeleton)`
   ${adaptive({
-    desktop: css`
+  desktop: css`
       width: 160px;
     `,
-    tablet: css`
+  tablet: css`
       width: 130px;
     `,
-    mobile: css`
+  mobile: css`
       width: 130px;
     `
-  })}
+})}
 `;
 
 export const SidebarChatActions = styled.div`
@@ -163,7 +163,7 @@ export const SidebarChatCheckbox = styled(Checkbox)`
 `;
 
 export const SidebarChatTooltip = styled(Tooltip)`
-  width: 100%;
+  overflow: hidden;
 `;
 
 export const SidebarChatDragHandle = styled(DragDotIcon)`
@@ -172,4 +172,4 @@ export const SidebarChatDragHandle = styled(DragDotIcon)`
   cursor: grab;
 `;
 
-export const SidebarChatNameTooltip = styled(Tooltip)``;
+export const SidebarChatNameTooltip = styled(Tooltip)`overflow: hidden;`;
