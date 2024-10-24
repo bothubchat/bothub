@@ -104,11 +104,16 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   align-items: center;
   width: 100%;
   padding: 8px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   ${({ $draggble }) => {
     if ($draggble) {
       return css`
         background: ${({ theme }) => theme.colors.grayScale.gray3};
         border-radius: 10px;
+        opacity: 0.7;
       `;
     }
   }}
@@ -168,6 +173,7 @@ export const SidebarChatTooltip = styled(Tooltip)`
 
 export const SidebarChatDragHandle = styled(DragDotIcon)`
   outline: none;
+  touch-action: none;
   margin-right: 10px;
   cursor: grab;
 `;
