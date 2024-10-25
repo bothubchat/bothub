@@ -53,7 +53,6 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
   } : {};
 
   const style = !props.skeleton && props.dragging ? {
-    height: 0,
     opacity: 0,
   } : {};
 

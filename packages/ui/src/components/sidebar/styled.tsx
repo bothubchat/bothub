@@ -435,14 +435,15 @@ export const SidebarBody = styled.div`
 `;
 
 export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
-  ({ theme }) => ({
+  ({ theme, ref }) => ({
+    ref,
     variant: 'secondary',
     scrollShadows: {
       size: 90,
       color: theme.colors.grayScale.gray4,
       top: <ScrollbarShadow side="top" />,
       bottom: <ScrollbarShadow side="bottom" />
-    }
+    },
   })
 )`
   position: relative;

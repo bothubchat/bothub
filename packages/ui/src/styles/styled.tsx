@@ -17,6 +17,7 @@ export const BothubGlobalStyleStyled = createGlobalStyle<BothubGlobalStyleProps>
 
   * {
     box-sizing: border-box;
+    scroll-behavior: unset;
   }
 
   a {
