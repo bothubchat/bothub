@@ -435,8 +435,7 @@ export const SidebarBody = styled.div`
 `;
 
 export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
-  ({ theme, ref }) => ({
-    ref,
+  ({ theme }) => ({
     variant: 'secondary',
     scrollShadows: {
       size: 90,
