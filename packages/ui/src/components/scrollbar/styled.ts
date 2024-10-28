@@ -31,6 +31,7 @@ export const ScrollbarContent = styled.div<ScrollbarContentProps>`
   position: relative;
   width: inherit;
   height: inherit;
+  
   overflow: ${({ $overflow }) => {
     switch ($overflow) {
       case 'auto':

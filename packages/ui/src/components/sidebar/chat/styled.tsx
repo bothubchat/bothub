@@ -23,6 +23,11 @@ export const SidebarChatRight = styled.div`
 `;
 
 export const SidebarChatIconStyled = styled(SidebarChatIcon)`
+  ${({ theme }) => css`
+    path {
+      stroke: ${theme.colors.base.white};
+    }
+  `}
   display: none;
 `;
 

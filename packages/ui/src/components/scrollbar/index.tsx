@@ -29,6 +29,7 @@ export interface ScrollbarProps extends React.PropsWithChildren {
   disableShadows?: boolean;
   withStickyBottom?: boolean;
   defaultStickyBottom?: boolean;
+  isHorizontalScrollbar?: boolean;
   onScroll?: ScrollbarScrollEventHandler;
 }
 
@@ -49,6 +50,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>((
     onScroll,
     defaultStickyBottom = false,
     withStickyBottom = false,
+    isHorizontalScrollbar = false,
   },
   ref
 ) => {
@@ -201,6 +203,31 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>((
       resizeObserver?.disconnect();
     };
   }, [scrollbarRef.current, handleScroll, sticky]);
+
+  useEffect(() => {
+    if (!isHorizontalScrollbar) {
+      return;
+    }
+    const handleWheel = (e: WheelEvent) => {
+      if (scrollbarRef.current) {
+        e.preventDefault();
+        // Сдвиг по горизонтали
+        scrollbarRef.current.scrollLeft += e.deltaY;
+      }
+    };
+
+    const container = scrollbarRef.current;
+    if (container) {
+      container.addEventListener('wheel', handleWheel);
+    }
+
+    // Очистка обработчика события при размонтировании
+    return () => {
+      if (container) {
+        container.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [isHorizontalScrollbar, scrollbarRef.current]);
 
   const contentNode: React.ReactNode = (
     <ScrollbarContent

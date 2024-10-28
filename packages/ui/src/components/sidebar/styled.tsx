@@ -442,7 +442,7 @@ export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
       color: theme.colors.grayScale.gray4,
       top: <ScrollbarShadow side="top" />,
       bottom: <ScrollbarShadow side="bottom" />
-    }
+    },
   })
 )`
   position: relative;

@@ -78,11 +78,11 @@ export const SidebarChatList = styled.div<{ open?: boolean; isDefault?: boolean 
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 40px;
   ${({ open }) => {
     if (!open) {
       return css`
-        overflow: hidden;
-        height: 0;
+        display: none;
       `;
     }
   }}
@@ -110,6 +110,7 @@ export const SidebarGroupDragFolder = styled(FolderIcon)`
 `;
 
 export const SidebarGroupTooltip = styled(Tooltip)`
+  overflow: hidden;
   ${adaptive({
     variant: 'dashboard',
     desktop: css`
