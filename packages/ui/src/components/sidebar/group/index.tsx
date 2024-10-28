@@ -102,7 +102,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
           {props.skeleton && <SidebarGroupSkeleton />}
         </SidebarGroupName>
       )}
-      <SidebarChatList open={props.isDefault || open}>
+      <SidebarChatList open={props.isDefault ? true : open}>
         {children}
       </SidebarChatList>
     </SidebarGroupStyled>

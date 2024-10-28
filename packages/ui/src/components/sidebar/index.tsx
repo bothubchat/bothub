@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   SidebarArrowDownButton,
   SidebarArrowUpButton,
@@ -41,13 +41,13 @@ export interface SidebarProps extends React.PropsWithChildren {
   deleteButton?: React.ReactNode;
 }
 
-export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
+export const Sidebar: React.FC<SidebarProps> = ({
   open, defaultOpen = true,
   className, id, user, logo, menu, buttons, toggle,
   deleteButton,
   search, lang,
   children, onOpen
-}, ref) => {
+}) => {
   const initialIsOpen = open;
   const setInitialIsOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
     if (typeof open === 'boolean') {
@@ -56,6 +56,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
   }, [onOpen]);
   const [isOpen, setIsOpen] = typeof initialIsOpen === 'boolean' ? [initialIsOpen, setInitialIsOpen] : useState(defaultOpen);
   const [isBottom, setIsBottom] = useState<boolean>(false);
+  const scrollbarRef = React.useRef<ScrollbarRef>(null);
   const handleOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
     setIsOpen(open);
 
@@ -69,23 +70,18 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
   }, [setIsBottom]);
 
   const handleScrollTop = useCallback(() => {
-    if (ref && typeof ref !== 'function' && ref.current?.element) {
-      ref.current.element.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-      });
-    }
-  }, [ref]);
+    scrollbarRef.current?.element?.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, []);
 
   const handleScrollBottom = useCallback(() => {
-    if (ref && typeof ref !== 'function' && ref.current?.element) {
-      ref.current.element.scrollTo({
-        top: ref.current.element.scrollHeight,
-        behavior: 'smooth',
-      });
-    }
-  }, [ref]);
-
+    scrollbarRef.current?.element?.scrollTo({
+      top: scrollbarRef.current?.element?.scrollHeight + 999 || 0,
+      behavior: 'smooth',
+    });
+  }, []);
   return (
     <SidebarProvider
       isOpen={isOpen}
@@ -129,7 +125,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
               )}
             <SidebarWrapper>
               <SidebarBodyScrollbarWrapper
-                ref={ref}
+                ref={scrollbarRef}
                 size={!isOpen ? 0 : 6}
                 onScroll={handleScroll}
               >
@@ -167,7 +163,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
       />
     </SidebarProvider>
   );
-});
+};
 
 export * from './styled';
 export * from './context';
@@ -182,4 +178,3 @@ export * from './menu';
 export * from './dropdown';
 export * from './group-empty';
 export * from './lang';
-
