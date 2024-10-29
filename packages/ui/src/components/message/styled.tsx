@@ -202,6 +202,34 @@ export const MessageBlockContent = styled.div`
   padding: 8px;
 `;
 
+export const MessageBlockTextArea = styled.span.attrs({
+  role: 'textbox',
+  contentEditable: true,
+  suppressContentEditableWarning: true,
+})`
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  resize: none;
+  overflow: clip;
+  white-space: pre-wrap;
+  border: none;
+  outline: none;
+  color: ${({ theme }) => (theme.mode === 'dark' ? theme.colors.base.white : theme.colors.base.black)};
+  background-color: transparent;
+  ${adaptive({
+    desktop: css`
+      font-size: 16px;
+    `,
+    tablet: css`
+      font-size: 12px;
+    `,
+    mobile: css`
+      font-size: 10px;
+    `,
+  })}
+`;
+
 export const MessageTransaction = styled(Typography).attrs({
   variant: 'body-m-regular',
 })`

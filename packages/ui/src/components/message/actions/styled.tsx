@@ -84,7 +84,7 @@ export const MessageActionsMenuModalOption = styled.button`
   cursor: pointer;
 `;
 
-export const MessageActionsButton = styled(animated.button)`
+export const MessageActionsButton = styled.button`
   all: unset;
   width: fit-content;
   height: fit-content;
@@ -101,6 +101,11 @@ export const MessageActionsButton = styled(animated.button)`
     transform: translateY(1px);
   }
   transition: all 100ms ease-out;
+`;
+
+export const MessageEditButtonsStyled = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export const MessageActionsMenuModalOptionContent = styled.div`

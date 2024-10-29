@@ -1,8 +1,11 @@
-import React, { ReactNode, useRef } from 'react';
+import React, {
+  ReactNode, useEffect, useRef, useState 
+} from 'react';
 import {
   MessageBlock,
   MessageBlockContent,
   MessageBlockScrollbarWrapper,
+  MessageBlockTextArea,
   MessageContent,
   MessageName,
   MessageSender,
@@ -41,6 +44,8 @@ export interface MessageProps {
   editText?: string;
   resendText?: string;
   deleteText?: string;
+  submitEditTooltipLabel?: string;
+  discardEditTooltipLabel?: string;
   updateTooltipLabel?: string;
   copyTooltipLabel?: string;
   typing?: boolean;
@@ -76,6 +81,8 @@ export const Message: React.FC<MessageProps> = ({
   editText,
   resendText,
   deleteText,
+  submitEditTooltipLabel,
+  discardEditTooltipLabel,
   updateTooltipLabel,
   copyTooltipLabel,
   typing = false,
@@ -93,7 +100,14 @@ export const Message: React.FC<MessageProps> = ({
   onUpdate,
 }) => {
   const theme = useTheme();
-  const messageRef = useRef<HTMLDivElement>(null);
+  const messageRef = useRef<HTMLDivElement | null>(null);
+
+  const editFieldRef = useRef<HTMLSpanElement | null>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editedText, setEditedText] = useState<string>(content ?? '');
+  const handleEditText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setEditedText(e.target.innerText);
+  };
 
   if (
     !(
@@ -142,6 +156,18 @@ export const Message: React.FC<MessageProps> = ({
       break;
   }
 
+  useEffect(() => {
+    if (editFieldRef.current) {
+      editFieldRef.current.focus();
+      const range = document.createRange();
+      const selection = window.getSelection();
+      range.selectNodeContents(editFieldRef.current);
+      range.collapse(false);
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+    }
+  }, [editFieldRef, isEditing]);
+
   return (
     <MessageProvider
       variant={variant}
@@ -180,35 +206,46 @@ export const Message: React.FC<MessageProps> = ({
               }}
             >
               <MessageBlockContent>
-                {!skeleton && (
+                {!isEditing ? (
                   <>
-                    {typeof children === 'string' && (
-                      <MessageMarkdown components={components}>
-                        {children}
-                      </MessageMarkdown>
+                    {!skeleton && (
+                      <>
+                        {typeof children === 'string' && (
+                          <MessageMarkdown components={components}>
+                            {children}
+                          </MessageMarkdown>
+                        )}
+                        {typeof children !== 'string' && children}
+                      </>
                     )}
-                    {typeof children !== 'string' && children}
+                    {skeleton && (
+                      <MessageParagraph disableMargin>
+                        <Skeleton
+                          width={260}
+                          opacity={[
+                            theme.mode === 'light' ? 0.1 : 0.15,
+                            theme.mode === 'light' ? 0.225 : 0.45,
+                          ]}
+                          colors={[
+                            variant === 'user'
+                              ? theme.colors.base.white
+                              : theme.mode === 'light'
+                                ? theme.default.colors.base.black
+                                : theme.colors.grayScale.gray6,
+                          ]}
+                        />
+                      </MessageParagraph>
+                    )}
+                    {after}
                   </>
+                ) : (
+                  <MessageBlockTextArea
+                    onInput={handleEditText}
+                    ref={editFieldRef}
+                  >
+                    {children}
+                  </MessageBlockTextArea>
                 )}
-                {skeleton && (
-                  <MessageParagraph disableMargin>
-                    <Skeleton
-                      width={260}
-                      opacity={[
-                        theme.mode === 'light' ? 0.1 : 0.15,
-                        theme.mode === 'light' ? 0.225 : 0.45,
-                      ]}
-                      colors={[
-                        variant === 'user'
-                          ? theme.colors.base.white
-                          : theme.mode === 'light'
-                            ? theme.default.colors.base.black
-                            : theme.colors.grayScale.gray6,
-                      ]}
-                    />
-                  </MessageParagraph>
-                )}
-                {after}
               </MessageBlockContent>
             </MessageBlockScrollbarWrapper>
             {timestamp && <MessageTimestamp time={timestamp} />}
@@ -229,8 +266,14 @@ export const Message: React.FC<MessageProps> = ({
             editText={editText}
             resendText={resendText}
             deleteText={deleteText}
+            submitEditTooltipLabel={submitEditTooltipLabel}
+            discardEditTooltipLabel={discardEditTooltipLabel}
             updateTooltipLabel={updateTooltipLabel}
             copyTooltipLabel={copyTooltipLabel}
+            editing={isEditing}
+            editedText={editedText}
+            setEditing={setIsEditing}
+            setEditedText={setEditedText}
             onEdit={onEdit}
             onResend={onResend}
             onDelete={onDelete}

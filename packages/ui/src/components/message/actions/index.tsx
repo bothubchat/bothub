@@ -1,4 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+  useEffect, useRef, useState 
+} from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
@@ -12,6 +14,8 @@ import { MessageActionEventHandler, MessageVariant } from '../types';
 import { MenuOption } from './menu-option';
 import { CopyButton } from './copy-button';
 import { ActionButton } from './action-button';
+import { CheckSmallIcon } from '@/ui/icons/check-small';
+import { CloseIcon } from '@/ui/icons/close';
 
 type MessageActionsProps = {
   id?: string;
@@ -26,8 +30,14 @@ type MessageActionsProps = {
   editText?: string;
   resendText?: string;
   deleteText?: string;
+  submitEditTooltipLabel?: string;
+  discardEditTooltipLabel?: string;
   updateTooltipLabel?: string;
   copyTooltipLabel?: string;
+  editing?: boolean;
+  editedText?: string;
+  setEditing?: (value: boolean) => unknown;
+  setEditedText?: (value: string) => unknown;
   onEdit?: MessageActionEventHandler;
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
@@ -50,8 +60,14 @@ export const MessageActions = ({
   editText,
   resendText,
   deleteText,
+  submitEditTooltipLabel,
+  discardEditTooltipLabel,
   updateTooltipLabel,
   copyTooltipLabel,
+  editing,
+  editedText,
+  setEditing,
+  setEditedText,
   onEdit,
   onResend,
   onDelete,
@@ -121,7 +137,8 @@ export const MessageActions = ({
     };
     switch (option) {
       case 'edit':
-        onEdit?.(data);
+        setEditing?.(true);
+        setEditedText?.(message ?? '');
         break;
       case 'delete':
         onDelete?.(data);
@@ -131,6 +148,21 @@ export const MessageActions = ({
         break;
     }
     setMenuShown(false);
+  };
+
+  const handleConfirmEdit = ({
+    id,
+    message,
+  }: {
+    id?: string;
+    message?: string;
+  }) => {
+    setEditing?.(false);
+    onEdit?.({ id, message });
+  };
+  const handleDiscardEdit = () => {
+    setEditing?.(false);
+    setEditedText?.(message ?? '');
   };
 
   const handleClickOutsideButton = (
@@ -170,90 +202,111 @@ export const MessageActions = ({
 
   return (
     <S.MessageActionsStyled $variant={variant} ref={messageActionsRef}>
-      {modalEnabled() && (
-        <S.MessageActionsMenuStyled ref={messageActionsMenuRef}>
-          <ActionButton
-            onMouseEnter={handleButtonHoverIn}
-            onMouseLeave={handleButtonHoverOut}
-            onClick={handleButtonClick}
-          >
-            <MenuDotIcon size={18} />
-          </ActionButton>
-          {modalTransition(
-            (style, show) => show && (
-              <S.MessageActionsMenuModal
-                style={style}
-                key="message-actions-modal"
+      {!editing ? (
+        <>
+          {modalEnabled() && (
+            <S.MessageActionsMenuStyled ref={messageActionsMenuRef}>
+              <ActionButton
                 onMouseEnter={handleButtonHoverIn}
                 onMouseLeave={handleButtonHoverOut}
-                $variant={variant}
-                $invertedX={invertedX}
-                $invertedY={invertedY}
+                onClick={handleButtonClick}
               >
-                {!disableResend && variant === 'user' && (
-                  <MenuOption
-                    onClick={() => {
-                      handleOptionClick('resend');
-                    }}
+                <MenuDotIcon size={18} />
+              </ActionButton>
+              {modalTransition(
+                (style, show) => show && (
+                  <S.MessageActionsMenuModal
+                    style={style}
+                    key="message-actions-modal"
+                    onMouseEnter={handleButtonHoverIn}
+                    onMouseLeave={handleButtonHoverOut}
+                    $variant={variant}
+                    $invertedX={invertedX}
+                    $invertedY={invertedY}
                   >
-                    <S.MessageActionsMenuModalOptionContent>
-                      <ResendIcon fill="#616D8D" />
-                      <S.MessageActionsButtonText>
-                        {resendText}
-                      </S.MessageActionsButtonText>
-                    </S.MessageActionsMenuModalOptionContent>
-                  </MenuOption>
-                )}
-                {!disableEdit && (
-                  <MenuOption
-                    onClick={() => {
-                      handleOptionClick('edit');
-                    }}
-                  >
-                    <S.MessageActionsMenuModalOptionContent>
-                      <EditIcon />
-                      <S.MessageActionsButtonText>
-                        {editText}
-                      </S.MessageActionsButtonText>
-                    </S.MessageActionsMenuModalOptionContent>
-                  </MenuOption>
-                )}
-                {!disableDelete && (
-                  <MenuOption
-                    onClick={() => {
-                      handleOptionClick('delete');
-                    }}
-                  >
-                    <S.MessageActionsMenuModalOptionContent>
-                      <TrashIcon />
-                      <S.MessageActionsButtonText>
-                        {deleteText}
-                      </S.MessageActionsButtonText>
-                    </S.MessageActionsMenuModalOptionContent>
-                  </MenuOption>
-                )}
-              </S.MessageActionsMenuModal>
-            )
+                    {!disableResend && variant === 'user' && (
+                      <MenuOption
+                        onClick={() => {
+                          handleOptionClick('resend');
+                        }}
+                      >
+                        <S.MessageActionsMenuModalOptionContent>
+                          <ResendIcon fill="#616D8D" />
+                          <S.MessageActionsButtonText>
+                            {resendText}
+                          </S.MessageActionsButtonText>
+                        </S.MessageActionsMenuModalOptionContent>
+                      </MenuOption>
+                    )}
+                    {!disableEdit && (
+                      <MenuOption
+                        onClick={() => {
+                          handleOptionClick('edit');
+                        }}
+                      >
+                        <S.MessageActionsMenuModalOptionContent>
+                          <EditIcon />
+                          <S.MessageActionsButtonText>
+                            {editText}
+                          </S.MessageActionsButtonText>
+                        </S.MessageActionsMenuModalOptionContent>
+                      </MenuOption>
+                    )}
+                    {!disableDelete && (
+                      <MenuOption
+                        onClick={() => {
+                          handleOptionClick('delete');
+                        }}
+                      >
+                        <S.MessageActionsMenuModalOptionContent>
+                          <TrashIcon />
+                          <S.MessageActionsButtonText>
+                            {deleteText}
+                          </S.MessageActionsButtonText>
+                        </S.MessageActionsMenuModalOptionContent>
+                      </MenuOption>
+                    )}
+                  </S.MessageActionsMenuModal>
+                )
+              )}
+            </S.MessageActionsMenuStyled>
           )}
-        </S.MessageActionsMenuStyled>
-      )}
-      {!disableUpdate && variant !== 'user' && (
-        <ActionButton
-          id={id}
-          message={message}
-          onClick={onUpdate}
-          tooltipLabel={updateTooltipLabel}
-        >
-          <UpdateIcon size={18} />
-        </ActionButton>
-      )}
-      {!disableCopy && (
-        <CopyButton
-          id={id}
-          message={message}
-          onCopy={onCopy}
-          tooltipLabel={copyTooltipLabel}
-        />
+          {!disableUpdate && variant !== 'user' && (
+            <ActionButton
+              id={id}
+              message={message}
+              onClick={onUpdate}
+              tooltipLabel={updateTooltipLabel}
+            >
+              <UpdateIcon size={18} />
+            </ActionButton>
+          )}
+          {!disableCopy && (
+            <CopyButton
+              id={id}
+              message={message}
+              onCopy={onCopy}
+              tooltipLabel={copyTooltipLabel}
+            />
+          )}
+        </>
+      ) : (
+        <S.MessageEditButtonsStyled>
+          <ActionButton
+            id={id}
+            message={editedText}
+            tooltipLabel={submitEditTooltipLabel}
+            onClick={handleConfirmEdit}
+          >
+            <CheckSmallIcon size={20} fill="#1c64f2" />
+          </ActionButton>
+          <ActionButton
+            tooltipLabel={discardEditTooltipLabel}
+            onClick={handleDiscardEdit}
+          >
+            <CloseIcon size={14} fill="#616D8D" />
+          </ActionButton>
+        </S.MessageEditButtonsStyled>
       )}
     </S.MessageActionsStyled>
   );
