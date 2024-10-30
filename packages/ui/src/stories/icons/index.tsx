@@ -178,6 +178,16 @@ import {
   DragDotIcon,
   TempChatIcon,
   SidebarChatIcon,
+  TextBoldIcon,
+  TextItalicIcon,
+  TextUnderlineIcon,
+  TextStrikethroughIcon,
+  RefreshIcon,
+  CopyVariantsIcon,
+  SortAscendingIcon,
+  SortDescendingIcon,
+  QuoteIcon,
+  URLCircleIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -378,6 +388,16 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="SidebarChatIcon">{SidebarChatIcon}</IconItem>
         <IconItem name="OrganizationIcon">{OrganizationIcon}</IconItem>
         <IconItem name="SimpleGearIcon">{SimpleGearIcon}</IconItem>
+        <IconItem name="TextBoldIcon">{TextBoldIcon}</IconItem>
+        <IconItem name="TextItalicIcon">{TextItalicIcon}</IconItem>
+        <IconItem name="TextUnderlineIcon">{TextUnderlineIcon}</IconItem>
+        <IconItem name="TextStrikethroughIcon">{TextStrikethroughIcon}</IconItem>
+        <IconItem name="RefreshIcon">{RefreshIcon}</IconItem>
+        <IconItem name="CopyVariantsIcon">{CopyVariantsIcon}</IconItem>
+        <IconItem name="SortAscendingIcon">{SortAscendingIcon}</IconItem>
+        <IconItem name="SortDescendingIcon">{SortDescendingIcon}</IconItem>
+        <IconItem name="QuoteIcon">{QuoteIcon}</IconItem>
+        <IconItem name="URLCircleIcon">{URLCircleIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
