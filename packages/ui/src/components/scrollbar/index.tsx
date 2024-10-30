@@ -29,6 +29,7 @@ export interface ScrollbarProps extends React.PropsWithChildren {
   disableShadows?: boolean;
   withStickyBottom?: boolean;
   defaultStickyBottom?: boolean;
+  isHorizontalScrollbar?: boolean;
   onScroll?: ScrollbarScrollEventHandler;
 }
 
@@ -49,6 +50,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>((
     onScroll,
     defaultStickyBottom = false,
     withStickyBottom = false,
+    isHorizontalScrollbar = false,
   },
   ref
 ) => {
@@ -106,6 +108,28 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>((
     }
     onScroll?.({ isTop, isBottom });
   }, [scrollbarRef.current, disabled, previousScrollTop, withStickyBottom, scrollShadowsSize, onScroll]);
+
+  useEffect(() => {
+    if (!isHorizontalScrollbar) {
+      return;
+    }
+    const handleWheel = (e: WheelEvent) => {
+      if (scrollbarRef.current) {
+        e.preventDefault();
+        scrollbarRef.current.scrollLeft += e.deltaY;
+      }
+    };
+    const container = scrollbarRef.current;
+    if (container) {
+      container.addEventListener('wheel', handleWheel);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [isHorizontalScrollbar, scrollbarRef.current]);
 
   const setScroll = useCallback<SetScrollFunction>(
     (options) => {

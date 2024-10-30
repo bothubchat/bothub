@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { forwardRef, useCallback, useState } from 'react';
 import {
   SidebarArrowDownButton,
   SidebarArrowUpButton,
@@ -41,13 +41,13 @@ export interface SidebarProps extends React.PropsWithChildren {
   deleteButton?: React.ReactNode;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({
+export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
   open, defaultOpen = true,
   className, id, user, logo, menu, buttons, toggle,
   deleteButton,
   search, lang,
   children, onOpen
-}) => {
+}, ref) => {
   const initialIsOpen = open;
   const setInitialIsOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
     if (typeof open === 'boolean') {
@@ -56,7 +56,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   }, [onOpen]);
   const [isOpen, setIsOpen] = typeof initialIsOpen === 'boolean' ? [initialIsOpen, setInitialIsOpen] : useState(defaultOpen);
   const [isBottom, setIsBottom] = useState<boolean>(false);
-  const scrollbarRef = React.useRef<ScrollbarRef>(null);
   const handleOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
     setIsOpen(open);
 
@@ -70,18 +69,22 @@ export const Sidebar: React.FC<SidebarProps> = ({
   }, [setIsBottom]);
 
   const handleScrollTop = useCallback(() => {
-    scrollbarRef.current?.element?.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  }, []);
+    if (ref && typeof ref !== 'function' && ref.current?.element) {
+      ref.current.element.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+  }, [ref]);
 
   const handleScrollBottom = useCallback(() => {
-    scrollbarRef.current?.element?.scrollTo({
-      top: scrollbarRef.current?.element?.scrollHeight + 999 || 0,
-      behavior: 'smooth',
-    });
-  }, []);
+    if (ref && typeof ref !== 'function' && ref.current?.element) {
+      ref.current.element.scrollTo({
+        top: ref.current.element.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  }, [ref]);
   return (
     <SidebarProvider
       isOpen={isOpen}
@@ -125,7 +128,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               )}
             <SidebarWrapper>
               <SidebarBodyScrollbarWrapper
-                ref={scrollbarRef}
+                ref={ref}
                 size={!isOpen ? 0 : 6}
                 onScroll={handleScroll}
               >
@@ -163,7 +166,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       />
     </SidebarProvider>
   );
-};
+});
 
 export * from './styled';
 export * from './context';

@@ -50,24 +50,19 @@ export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medi
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  ${adaptive({
-    desktop: css`
-      & > ${SidebarDropdownStyled} {
-        overflow: hidden;
-        width: 0;
-        margin-left: 0;
-        transition: width 0.3s ease, margin-left 0.3s ease;
-      }
-      &:hover {
-        & > ${SidebarDropdownStyled} {
-          display: flex;
-          width: 38px;
-          margin-left: 16px;
-        }
-      }
-    `
-  })}
-
+  & > ${SidebarDropdownStyled} {
+    overflow: hidden;
+    width: 0;
+    margin-left: 0;
+    transition: width 0.3s ease, margin-left 0.3s ease;
+  }
+  &:hover {
+    & > ${SidebarDropdownStyled} {
+      display: flex;
+      width: 38px;
+      margin-left: 16px;
+    }
+  }
   & > ${SidebarGroupArrowDown} {
     transform: ${({ open }) => (open ? 'rotate(180deg)' : 'rotate(0deg)')};
   }
@@ -83,17 +78,16 @@ export const SidebarChatList = styled.div<{ open?: boolean; isDefault?: boolean 
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 40px;
   ${({ open }) => {
     if (!open) {
       return css`
-        overflow: hidden;
-        height: 0;
+        display: none;
       `;
     }
   }}
   ${(isDefault) => !isDefault && css`
     min-height: 100px;
-
     ${SidebarChatIconContainer} svg path {
         stroke: ${({ theme }) => theme.colors.grayScale.gray4};
         fill: ${({ theme }) => theme.colors.grayScale.gray4};
@@ -115,6 +109,7 @@ export const SidebarGroupDragFolder = styled(FolderIcon)`
 `;
 
 export const SidebarGroupTooltip = styled(Tooltip)`
+  overflow: hidden;
   ${adaptive({
     variant: 'dashboard',
     desktop: css`
