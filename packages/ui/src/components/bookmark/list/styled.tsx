@@ -39,6 +39,7 @@ export const BookmarkList = styled.div`
 export const BookmarkListScrollbarWrapper = styled(Scrollbar).attrs({
   variant: 'secondary',
   size: 6,
+  isHorizontalScrollbar: true,
   scrollShadows: {
     left: <ScrollbarShadow side="left" />,
     right: <ScrollbarShadow side="right" />
