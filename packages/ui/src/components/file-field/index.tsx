@@ -1,15 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import {
-  FileFieldBlock, 
-  FileFieldErrorText, 
-  FileFieldFile, 
-  FileFieldFileDeleteButton, 
-  FileFieldFiles, 
-  FileFieldIcon, 
-  FileFieldInput, 
-  FileFieldLabel, 
-  FileFieldPlaceholder, 
-  FileFieldStyled 
+  FileFieldBlock,
+  FileFieldErrorText,
+  FileFieldFile,
+  FileFieldFileDeleteButton,
+  FileFieldFiles,
+  FileFieldIcon,
+  FileFieldInput,
+  FileFieldLabel,
+  FileFieldPlaceholder,
+  FileFieldStyled
 } from './styled';
 import { BadgeText } from '@/ui/components/badge';
 import { IconProvider } from '@/ui/components/icon';
@@ -32,11 +32,12 @@ export interface FileFieldProps extends Omit<React.ComponentProps<'div'>, 'onCha
   icon?: React.ReactNode;
   multiple?: boolean;
   accept?: string;
+  id?: string;
 }
 
 export const FileField: React.FC<FileFieldProps> = ({
-  label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false, 
-  multiple = true, accept, onChange,
+  label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false,
+  multiple = true, accept, onChange, id,
   icon = <FileFieldIcon />,
   ...props
 }) => {
@@ -53,7 +54,7 @@ export const FileField: React.FC<FileFieldProps> = ({
       setFiles([
         ...(
           new Map([
-            ...files, 
+            ...files,
             ...(event.currentTarget.files ?? [])
           ].map((file) => [file.name, file]))
         ).values()
@@ -65,7 +66,7 @@ export const FileField: React.FC<FileFieldProps> = ({
 
   const handleFileDelete = useCallback((file: File, event: React.MouseEvent) => {
     event.preventDefault();
-    
+
     setFiles(
       files.filter(({ name }) => (
         name !== file.name
@@ -92,6 +93,7 @@ export const FileField: React.FC<FileFieldProps> = ({
       >
         {icon}
         <FileFieldInput
+          id={id}
           disabled={disabled}
           multiple={multiple}
           accept={accept}
@@ -132,7 +134,7 @@ export const FileField: React.FC<FileFieldProps> = ({
                     {file.name.length > 18 && '...'}
                     {file.name.slice(-18)}
                   </BadgeText>
-                  <FileFieldFileDeleteButton 
+                  <FileFieldFileDeleteButton
                     disabled={disabled}
                     onClick={handleFileDelete.bind(null, file)}
                   />
