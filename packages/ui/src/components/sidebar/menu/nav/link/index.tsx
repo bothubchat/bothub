@@ -7,10 +7,11 @@ import {
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useSidebarMenu } from '../../context';
+import { useSidebar } from '../../../context';
 
 export type SidebarMenuNavLinkProps = Omit<
-React.ComponentProps<typeof SidebarMenuNavLinkStyled>,
-keyof SidebarMenuNavLinkStyledProps
+  React.ComponentProps<typeof SidebarMenuNavLinkStyled>,
+  keyof SidebarMenuNavLinkStyledProps
 > & {
   as?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   to?: string;
@@ -22,7 +23,7 @@ export const SidebarMenuNavLink: React.FC<SidebarMenuNavLinkProps> = ({
   as, to, icon, active = false, children, ...props
 }) => {
   const { setIsOpen } = useSidebarMenu();
-
+  const { isOpen } = useSidebar();
   const handleClick = useCallback<React.MouseEventHandler<HTMLAnchorElement>>((event) => {
     setIsOpen(false);
 
@@ -45,7 +46,7 @@ export const SidebarMenuNavLink: React.FC<SidebarMenuNavLinkProps> = ({
         </IconProvider>
       </SidebarMenuNavIcon>
 
-      <SidebarMenuNavLinkText>
+      <SidebarMenuNavLinkText $open={isOpen}>
         {children}
       </SidebarMenuNavLinkText>
     </SidebarMenuNavLinkStyled>

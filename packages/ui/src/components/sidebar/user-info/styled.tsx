@@ -1,22 +1,44 @@
 import { css, styled } from 'styled-components';
-import React from 'react';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 import { LogoutIcon } from '@/ui/icons/logout';
+import { Scrollbar } from '../../scrollbar';
 
 export interface SidebarUserInfoStyledProps {
   $open: boolean;
 }
 
-export const SidebarUserInfoStyled: React.FC<
-  SidebarUserInfoStyledProps & React.PropsWithChildren
-> = styled.div`
+export const SidebarUserInfoBottom = styled.div`
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  & > *:first-child {
+    width: 0;
+    overflow: hidden;
+    transform: translateX(-100%);
+    transition: all 0.3s;
+  }
+`;
+
+export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
   display: flex;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => theme.colors.grayScale.gray4};
   width: 100%;
   transition: padding 0.3s;
+  &:hover {
+    background: ${({ theme }) => theme.colors.grayScale.gray3};
+    ${SidebarUserInfoBottom} {
+      gap: 10px;
+      transition: width 0.3s;
+      & > *:first-child {
+        overflow: visible;
+        transform: translateX(0);
+        width: fit-content;
+      }
+    }
+  }
   ${({ $open }) => $open
     && adaptive({
       variant: 'dashboard',
@@ -54,7 +76,7 @@ export const SidebarUserInfoStyled: React.FC<
         border-radius: 18px;
         background: ${theme.mode === 'light'
           ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray3};
+          : theme.colors.grayScale.gray4};
       `,
       tablet: css`
         border-radius: 0px;
@@ -78,7 +100,7 @@ export const SidebarUserInfoStyled: React.FC<
         border-radius: 10px;
         background: ${theme.mode === 'light'
           ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray3};
+          : theme.colors.grayScale.gray4};
         border: 1px solid ${theme.mode === 'light'
           ? theme.colors.grayScale.gray2
           : theme.colors.grayScale.gray3};
@@ -156,6 +178,7 @@ export const SidebarUserInfoUpdateTariffContainer = styled.div<SidebarUserInfoUp
   display: flex;
   transition: all 0.3s;
   width: 100%;
+  height: 40px;
   white-space: nowrap;
   overflow: hidden;
   ${({ $open }) => {
@@ -267,7 +290,7 @@ export const SidebarUserInfoEliteTariff = styled(
 ).attrs({ children: 'Elite' })``;
 
 export const SidebarUserInfoUpdateTariffButton = styled(Button).attrs({
-  fullWidth: true,
+  fullWidth: true, size: 'small',
 })``;
 
 export interface SidebarUserInfoLogoutButtonContainerProps {
@@ -275,7 +298,7 @@ export interface SidebarUserInfoLogoutButtonContainerProps {
 }
 
 export const SidebarUserInfoLogoutButtonContainer = styled.div<SidebarUserInfoLogoutButtonContainerProps>`
-  ${({ $open }) => !$open
+  ${({ $open }) => (!$open
     ? adaptive({
       variant: 'dashboard',
       desktop: css`
@@ -299,7 +322,7 @@ export const SidebarUserInfoLogoutButtonContainer = styled.div<SidebarUserInfoLo
       mobile: css`
         display: none;
       `,
-    })}
+    }))}
 `;
 
 export interface SidebarUserInfoUpdateTariffContainerProps {

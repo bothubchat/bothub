@@ -4,9 +4,11 @@ import { HeaderMenuContent, HeaderMenuStyled } from './styled';
 import { useHeader } from '../context';
 import { HeaderMenuProvider } from './context';
 
-export interface HeaderMenuProps extends React.PropsWithChildren {}
+export interface HeaderMenuProps extends React.PropsWithChildren {
+  isPreset?: boolean;
+}
 
-export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
+export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children, isPreset }) => {
   const { variant, isMenuOpen } = useHeader();
 
   useEffect(() => {
@@ -47,13 +49,14 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children }) => {
   });
 
   return (
-    <HeaderMenuProvider 
+    <HeaderMenuProvider
       isInMenu
     >
       {menuTransition((style, item) => (
         item && (
           <HeaderMenuStyled>
             <HeaderMenuContent
+              $isPreset={isPreset}
               $variant={variant}
               style={style}
             >

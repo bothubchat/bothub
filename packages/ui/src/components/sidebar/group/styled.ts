@@ -7,6 +7,7 @@ import { FolderIcon } from '@/ui/icons/folder';
 import { Checkbox } from '@/ui/components/checkbox';
 import { SidebarDropdownStyled } from '../dropdown';
 import { SidebarChatIconContainer } from '../chat';
+import { adaptive } from '@/ui/adaptive';
 
 export const SidebarGroupsStyled = styled.div`
   display: flex;
@@ -77,17 +78,16 @@ export const SidebarChatList = styled.div<{ open?: boolean; isDefault?: boolean 
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 40px;
   ${({ open }) => {
     if (!open) {
       return css`
-        overflow: hidden;
-        height: 0;
+        display: none;
       `;
     }
   }}
   ${(isDefault) => !isDefault && css`
     min-height: 100px;
-
     ${SidebarChatIconContainer} svg path {
         stroke: ${({ theme }) => theme.colors.grayScale.gray4};
         fill: ${({ theme }) => theme.colors.grayScale.gray4};
@@ -109,7 +109,28 @@ export const SidebarGroupDragFolder = styled(FolderIcon)`
 `;
 
 export const SidebarGroupTooltip = styled(Tooltip)`
-  display: flex;
+  overflow: hidden;
+  ${adaptive({
+    variant: 'dashboard',
+    desktop: css`
+      display: flex;
+    `,
+    tablet: css`
+      display: none;
+    `,
+  })}
+`;
+
+export const SidebarGroupIconContainer = styled.div`
+  ${adaptive({
+    variant: 'dashboard',
+    desktop: css`
+      display: none;
+    `,
+    tablet: css`
+      display: flex;
+    `,
+  })}
 `;
 
 export const SidebarGroupSkeleton = styled(Skeleton)`

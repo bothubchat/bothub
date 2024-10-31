@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { forwardRef, useCallback, useState } from 'react';
 import {
   SidebarArrowDownButton,
   SidebarArrowUpButton,
@@ -8,6 +8,8 @@ import {
   SidebarBottom,
   SidebarContent,
   SidebarContentNav,
+  SidebarContentNavContainer,
+  SidebarContentNavMenuWrapper,
   SidebarDivider,
   SidebarGlobalStyle,
   SidebarHeader,
@@ -37,15 +39,17 @@ export interface SidebarProps extends React.PropsWithChildren {
   search?: React.ReactNode;
   onOpen?: SidebarOpenEventHandler;
   deleteButton?: React.ReactNode;
+  isHide?: boolean;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({
+export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
   open, defaultOpen = true,
   className, id, user, logo, menu, buttons, toggle,
   deleteButton,
   search, lang,
+  isHide = false,
   children, onOpen
-}) => {
+}, ref) => {
   const initialIsOpen = open;
   const setInitialIsOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
     if (typeof open === 'boolean') {
@@ -54,7 +58,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   }, [onOpen]);
   const [isOpen, setIsOpen] = typeof initialIsOpen === 'boolean' ? [initialIsOpen, setInitialIsOpen] : useState(defaultOpen);
   const [isBottom, setIsBottom] = useState<boolean>(false);
-  const scrollbarRef = React.useRef<ScrollbarRef>(null);
   const handleOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
     setIsOpen(open);
 
@@ -68,44 +71,52 @@ export const Sidebar: React.FC<SidebarProps> = ({
   }, [setIsBottom]);
 
   const handleScrollTop = useCallback(() => {
-    scrollbarRef.current?.element?.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  }, []);
+    if (ref && typeof ref !== 'function' && ref.current?.element) {
+      ref.current.element.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+  }, [ref]);
 
   const handleScrollBottom = useCallback(() => {
-    scrollbarRef.current?.element?.scrollTo({
-      top: scrollbarRef.current?.element?.scrollHeight + 999 || 0,
-      behavior: 'smooth',
-    });
-  }, []);
+    if (ref && typeof ref !== 'function' && ref.current?.element) {
+      ref.current.element.scrollTo({
+        top: ref.current.element.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  }, [ref]);
   return (
     <SidebarProvider
       isOpen={isOpen}
       setIsOpen={handleOpen}
     >
       <SidebarStyled
-        $open={isOpen}
-        className={className}
         id={id}
+        className={className}
+        $isHide={isHide}
+        $open={isOpen}
       >
-        <SidebarContent>
+        <SidebarContent $open={isOpen}>
           <SidebarHeader $open={isOpen}>
             {logo}
             <SidebarHeaderRight>
               {lang}
-              <SidebarMenu>
-                {menu}
-              </SidebarMenu>
+              {isOpen &&
+                <SidebarMenu>
+                  {menu}
+                </SidebarMenu>
+              }
             </SidebarHeaderRight>
           </SidebarHeader>
           <SidebarToolbar $open={isOpen}>
             {buttons}
-            {!isOpen && <SidebarMenu>
-              {menu}
-            </SidebarMenu>
-            }
+            {!isOpen && (
+              <SidebarMenu>
+                {menu}
+              </SidebarMenu>
+            )}
             {toggle}
           </SidebarToolbar>
           {search}
@@ -120,7 +131,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               )}
             <SidebarWrapper>
               <SidebarBodyScrollbarWrapper
-                ref={scrollbarRef}
+                ref={ref}
                 size={!isOpen ? 0 : 6}
                 onScroll={handleScroll}
               >
@@ -136,18 +147,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
               />
             )}
           </SidebarBody>
+          {deleteButton}
           <SidebarBottom>
-            {deleteButton}
             {user}
           </SidebarBottom>
         </SidebarContent>
-        <SidebarContentNav>
-          <div>
+        <SidebarContentNav $open={isOpen}>
+          <SidebarContentNavContainer $open={isOpen}>
             <SidebarMobileToggle>
               {toggle}
             </SidebarMobileToggle>
-            {menu}
-          </div>
+            <SidebarContentNavMenuWrapper>
+              {menu}
+            </SidebarContentNavMenuWrapper>
+          </SidebarContentNavContainer>
           {user}
         </SidebarContentNav>
       </SidebarStyled>
@@ -156,7 +169,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       />
     </SidebarProvider>
   );
-};
+});
 
 export * from './styled';
 export * from './context';
@@ -170,4 +183,4 @@ export * from './theme-switcher';
 export * from './menu';
 export * from './dropdown';
 export * from './group-empty';
-export * from './lang-dropdown';
+export * from './lang';

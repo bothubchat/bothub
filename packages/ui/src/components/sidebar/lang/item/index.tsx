@@ -17,4 +17,3 @@ export const SidebarLangDropdownItem: React.FC<SidebarLangDropdownItemProps> = (
 
   return <SidebarLangDropdownItemStyled {...props} onClick={handleClick} />;
 };
-

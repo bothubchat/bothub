@@ -23,11 +23,12 @@ export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyl
   user?: React.ReactNode;
   themeSwitcher?: React.ReactNode;
   open?: boolean;
+  isPreset?: boolean;
   onOpen?: HeaderOpenEventHandler;
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  id, variant = 'main', logo, nav, lang, user, themeSwitcher, open, onOpen, ...props
+  id, variant = 'main', logo, nav, lang, user, themeSwitcher, open, onOpen, isPreset = false, ...props
 }) => {
   const initialIsMenuOpen = open;
   const setInitialIsMenuOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>(
@@ -42,7 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
   const [isMenuOpen, setIsMenuOpen] = typeof initialIsMenuOpen === 'boolean' ? [initialIsMenuOpen, setInitialIsMenuOpen] : useState(false);
 
   const menuNode: React.ReactNode = (
-    <HeaderMenu>
+    <HeaderMenu isPreset={isPreset}>
       {themeSwitcher}
       {nav}
       {user}

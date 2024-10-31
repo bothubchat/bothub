@@ -13,6 +13,7 @@ import {
   SidebarChatIconContainer
 } from './styled';
 import { TooltipConsumer } from '@/ui/components/tooltip';
+
 export interface SidebarChatDefaultProps {
   color: string;
   name: string;

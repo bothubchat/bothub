@@ -10,8 +10,11 @@ import {
   SidebarGroupDragHandle,
   SidebarGroupDragFolder,
   SidebarGroupsStyled,
-  SidebarGroupSkeletonIcon
+  SidebarGroupSkeletonIcon,
+  SidebarGroupTooltip,
 } from './styled';
+import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
+import { useSidebar } from '../context';
 
 export interface SidebarGroupDefaultProps {
   name: string;
@@ -46,7 +49,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   const { setNodeRef } = useDroppable({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
   });
-
+  const sidebarOpen = useSidebar().isOpen;
   const onHandleOpen = useCallback(() => {
     setOpen?.(!open);
   }, [open, setOpen]);
@@ -64,13 +67,33 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
           onClick={!props.skeleton ? onHandleOpen : undefined}
         >
           {!props.skeleton && props.edit && <SidebarGroupDragHandle />}
-          {!props.skeleton && <SidebarGroupDragFolder fill={props.color} />}
+          {!props.skeleton && (
+            <>
+              <SidebarGroupTooltip label={props.name} placement="top-left" disabled={props.name.length <= 0 || sidebarOpen}>
+                <TooltipConsumer>
+                  {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                    <SidebarGroupDragFolder
+                      onMouseEnter={handleTooltipMouseEnter}
+                      onMouseLeave={handleTooltipMouseLeave}
+                      fill={props.color}
+                    />
+                  )}
+                </TooltipConsumer>
+              </SidebarGroupTooltip>
+            </>
+          )}
           {props.skeleton && <SidebarGroupSkeletonIcon width={24} height={24} />}
           {!props.skeleton && (
-            <SidebarGroupNameBox>
-              {props.name.slice(0, 22)}
-              {props.name.length > 22 && '...'}
-            </SidebarGroupNameBox>
+            <Tooltip label={props.name} placement="top-left" disabled={props.name.length <= 24}>
+              <TooltipConsumer>
+                {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                  <SidebarGroupNameBox onMouseEnter={handleTooltipMouseEnter} onMouseLeave={handleTooltipMouseLeave}>
+                    {props.name.slice(0, 22)}
+                    {props.name.length > 22 && '...'}
+                  </SidebarGroupNameBox>
+                )}
+              </TooltipConsumer>
+            </Tooltip>
           )}
           {!props.skeleton && <SidebarGroupArrowDown />}
           {!props.skeleton && props.edit && props.checkbox}
@@ -78,7 +101,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
           {props.skeleton && <SidebarGroupSkeleton />}
         </SidebarGroupName>
       )}
-      <SidebarChatList open={props.isDefault ? true : open}>
+      <SidebarChatList open={props.isDefault || open}>
         {children}
       </SidebarChatList>
     </SidebarGroupStyled>

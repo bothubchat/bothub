@@ -23,6 +23,11 @@ export const SidebarChatRight = styled.div`
 `;
 
 export const SidebarChatIconStyled = styled(SidebarChatIcon)`
+  ${({ theme }) => css`
+    path {
+      stroke: ${theme.colors.base.white};
+    }
+  `}
   display: none;
 `;
 
@@ -46,27 +51,27 @@ export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-mediu
   width: 100%;
   transition: opacity 0.3s;
   ${adaptive({
-    tablet: css`
+  tablet: css`
       max-width: 130px;
     `,
-    mobile: css`
+  mobile: css`
       max-width: 130px;
     `
-  })}
+})}
 `;
 
 export const SidebarChatNameSkeleton = styled(Skeleton)`
   ${adaptive({
-    desktop: css`
+  desktop: css`
       width: 160px;
     `,
-    tablet: css`
+  tablet: css`
       width: 130px;
     `,
-    mobile: css`
+  mobile: css`
       width: 130px;
     `
-  })}
+})}
 `;
 
 export const SidebarChatActions = styled.div`
@@ -104,11 +109,16 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   align-items: center;
   width: 100%;
   padding: 8px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   ${({ $draggble }) => {
     if ($draggble) {
       return css`
         background: ${({ theme }) => theme.colors.grayScale.gray3};
         border-radius: 10px;
+        opacity: 0.7;
       `;
     }
   }}
@@ -163,13 +173,14 @@ export const SidebarChatCheckbox = styled(Checkbox)`
 `;
 
 export const SidebarChatTooltip = styled(Tooltip)`
-  width: 100%;
+  overflow: hidden;
 `;
 
 export const SidebarChatDragHandle = styled(DragDotIcon)`
   outline: none;
+  touch-action: none;
   margin-right: 10px;
   cursor: grab;
 `;
 
-export const SidebarChatNameTooltip = styled(Tooltip)``;
+export const SidebarChatNameTooltip = styled(Tooltip)`overflow: hidden;`;
