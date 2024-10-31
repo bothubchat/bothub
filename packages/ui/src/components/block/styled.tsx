@@ -29,14 +29,14 @@ export const BlockStyled = styled.div<BlockStyledProps>`
           `,
           tablet: css`
             border-radius: 18px;
-          `
+          `,
         });
       case 'rectangular':
         return adaptive({
           variant: 'dashboard',
           tablet: css`
             border-radius: 18px;
-          `
+          `,
         });
     }
   }}
@@ -51,7 +51,18 @@ export const BlockHead = styled.div<BlockHeadProps>`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  ${adaptive({
+    desktop: css`
+      border: none;
+    `,
+    tablet: css`
+      border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+    `,
+    mobile: css`
+      border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+    `,
+  })}
+
   ${({ $toolbar }) => {
     if ($toolbar) {
       return adaptive({
@@ -64,7 +75,7 @@ export const BlockHead = styled.div<BlockHeadProps>`
         `,
         mobile: css`
           padding: 18px 16px;
-        `
+        `,
       });
     }
 
@@ -78,12 +89,15 @@ export const BlockHead = styled.div<BlockHeadProps>`
       `,
       mobile: css`
         padding: 18px 16px;
-      `
+      `,
     });
   }}
 `;
 
-export const BlockTitle = styled(Typography).attrs({ component: 'h2', variant: 'body-xl-semibold' })``;
+export const BlockTitle = styled(Typography).attrs({
+  component: 'h2',
+  variant: 'body-xl-semibold',
+})``;
 
 export const BlockToolbar = styled.div`
   display: flex;
@@ -112,11 +126,12 @@ export const BlockBody = styled.div<BlockBodyProps>`
     `,
     tablet: css`
       padding: 24px 0px;
-    `
+    `,
   })}
-  ${({ $head }) => $head && css`
-    padding-top: 0px !important;
-  `}
+  ${({ $head }) => $head
+    && css`
+      padding-top: 0px !important;
+    `}
   position: relative;
 `;
 
@@ -125,8 +140,8 @@ export const BlockBodyScrollbarWrapper = styled(Scrollbar).attrs({
   scrollShadows: {
     size: 90,
     top: <ScrollbarShadow side="top" />,
-    bottom: <ScrollbarShadow side="bottom" />
-  }
+    bottom: <ScrollbarShadow side="bottom" />,
+  },
 })`
   height: 100%;
   overflow: auto;
@@ -148,19 +163,21 @@ export const BlockBodyContent = styled.div<BlockBodyContentProps>`
     `,
     mobile: css`
       padding: 0px 16px;
-    `
-  })}
-  ${({ $head }) => $head && adaptive({
-    variant: 'dashboard',
-    merge: true,
-    desktop: css`
-      padding-top: 28px !important;
     `,
-    tablet: css`
-      padding-top: 24px !important;
-    `
   })}
-  ${({ $fullHeight }) => $fullHeight && css`
-    height: 100%;
-  `}
+  ${({ $head }) => $head
+    && adaptive({
+      variant: 'dashboard',
+      merge: true,
+      desktop: css`
+        padding-top: 28px !important;
+      `,
+      tablet: css`
+        padding-top: 24px !important;
+      `,
+    })}
+  ${({ $fullHeight }) => $fullHeight
+    && css`
+      height: 100%;
+    `}
 `;
