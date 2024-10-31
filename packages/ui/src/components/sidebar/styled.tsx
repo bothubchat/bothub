@@ -30,6 +30,7 @@ import { TextField } from '../text-field';
 
 export interface SidebarStyledProps {
   $open: boolean;
+  $isHide: boolean;
 }
 
 export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
@@ -160,6 +161,11 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
       border-radius: 18px;
     `
 })}
+  ${({ $isHide }) => $isHide && css`
+    max-width: 0px;
+    min-width: 0px;
+    padding: 0px;
+  `}
 `;
 
 export const SidebarTextField = styled(TextField)`

@@ -33,11 +33,12 @@ export interface FileFieldProps extends Omit<React.ComponentProps<'div'>, 'onCha
   multiple?: boolean;
   accept?: string;
   id?: string;
+  open?: boolean;
 }
 
 export const FileField: React.FC<FileFieldProps> = ({
   label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false,
-  multiple = true, accept, onChange, id,
+  multiple = true, accept, onChange, id, open = true,
   icon = <FileFieldIcon />,
   ...props
 }) => {
@@ -79,9 +80,10 @@ export const FileField: React.FC<FileFieldProps> = ({
       $error={!!error}
       $disabled={disabled}
       $fullWidth={fullWidth}
+      $open={open}
       {...props}
     >
-      {typeof label === 'string' && (
+      {typeof label === 'string' && open && (
         <FileFieldLabel>
           {label}
         </FileFieldLabel>
@@ -89,6 +91,7 @@ export const FileField: React.FC<FileFieldProps> = ({
       {typeof label !== 'string' && label}
       <FileFieldBlock
         $error={!!error}
+        $open={open}
         $disabled={disabled}
       >
         {icon}
@@ -99,7 +102,7 @@ export const FileField: React.FC<FileFieldProps> = ({
           accept={accept}
           onChange={handleInputChange}
         />
-        {(placeholder && files.length === 0) && (
+        {(placeholder && files.length === 0) && open && (
           <FileFieldPlaceholder>
             {placeholder}
           </FileFieldPlaceholder>
