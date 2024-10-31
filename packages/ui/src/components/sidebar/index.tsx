@@ -39,6 +39,7 @@ export interface SidebarProps extends React.PropsWithChildren {
   search?: React.ReactNode;
   onOpen?: SidebarOpenEventHandler;
   deleteButton?: React.ReactNode;
+  isHide?: boolean;
 }
 
 export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
@@ -46,6 +47,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
   className, id, user, logo, menu, buttons, toggle,
   deleteButton,
   search, lang,
+  isHide = false,
   children, onOpen
 }, ref) => {
   const initialIsOpen = open;
@@ -91,9 +93,10 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
       setIsOpen={handleOpen}
     >
       <SidebarStyled
-        $open={isOpen}
-        className={className}
         id={id}
+        className={className}
+        $isHide={isHide}
+        $open={isOpen}
       >
         <SidebarContent $open={isOpen}>
           <SidebarHeader $open={isOpen}>
