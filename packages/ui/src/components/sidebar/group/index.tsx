@@ -12,7 +12,6 @@ import {
   SidebarGroupsStyled,
   SidebarGroupSkeletonIcon,
   SidebarGroupTooltip,
-  SidebarGroupIconContainer
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { useSidebar } from '../context';
