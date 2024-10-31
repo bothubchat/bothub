@@ -19,6 +19,7 @@ export type DeveloperKeyCopyEventHandler = (key: string) => unknown;
 export type DeveloperKeyDeleteEventHandler = (key: string | null) => unknown;
 
 export interface DeveloperKeyProps {
+  id: string;
   className?: string;
   tabIndex?: number;
   label?: string;
@@ -29,6 +30,7 @@ export interface DeveloperKeyProps {
 }
 
 export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
+  id,
   className,
   tabIndex = 0,
   skeleton = false,
@@ -69,11 +71,8 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
     if (skeleton) {
       return;
     }
-
-    if (typeof children === 'string') {
-      onDelete?.(children);
-    }
-  }, [skeleton, children, onDelete]);
+    onDelete?.(id);
+  }, [skeleton, id, onDelete]);
 
   return (
     <IconProvider>
