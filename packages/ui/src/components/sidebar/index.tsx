@@ -87,7 +87,6 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
       });
     }
   }, [ref]);
-
   return (
     <SidebarProvider
       isOpen={isOpen}
@@ -185,4 +184,3 @@ export * from './menu';
 export * from './dropdown';
 export * from './group-empty';
 export * from './lang';
-

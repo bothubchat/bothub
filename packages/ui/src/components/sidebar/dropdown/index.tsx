@@ -51,7 +51,7 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
     }
   }, []);
 
-  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? { left: 0, bottom: 0 };
+  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? { right: 0, bottom: 0 };
 
   const dropdownTransition = useTransition(isOpen, {
     from: {
@@ -89,7 +89,8 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
             ref={contentRef}
             style={{
               ...style,
-              left: contentPosition.left,
+              transform: "translate3d(-100%, 0, 0)",
+              left: contentPosition.right,
               top: contentPosition.bottom,
             }}
           >

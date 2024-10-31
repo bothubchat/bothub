@@ -5,6 +5,7 @@ export * from './typography';
 export * from './text-field';
 export * from './header';
 export * from './logo';
+export * from './logo-halloween';
 export * from './section';
 export * from './container';
 export * from './description';

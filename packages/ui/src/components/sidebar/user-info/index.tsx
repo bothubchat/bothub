@@ -1,15 +1,16 @@
 import React from 'react';
 import {
-  SidebarUserInfoTariffContainer, 
+  SidebarUserInfoTariffContainer,
   SidebarUserInfoContent,
   SidebarUserInfoName,
-  SidebarUserInfoStyled, 
-  SidebarUserInfoText, 
-  SidebarUserInfoCaps,  
-  SidebarUserInfoLeft, 
+  SidebarUserInfoStyled,
+  SidebarUserInfoText,
+  SidebarUserInfoCaps,
+  SidebarUserInfoLeft,
   SidebarUserInfoUpdateTariffContainer,
   SidebarUserInfoMain,
-  SidebarUserInfoLogoutButtonContainer
+  SidebarUserInfoLogoutButtonContainer,
+  SidebarUserInfoBottom
 } from './styled';
 import { useSidebar } from '../context';
 import { SidebarUserInfoProvider } from './context';
@@ -27,8 +28,8 @@ export interface SidebarUserInfoProps {
 }
 
 export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
-  avatar, 
-  name, 
+  avatar,
+  name,
   caps,
   tariff,
   updateTariff,
@@ -46,9 +47,9 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
       <SidebarUserInfoStyled $open={isOpen}>
         <SidebarUserInfoContent>
           <SidebarUserInfoMain
-            as={linkAs} 
+            as={linkAs}
             to={to}
-            onClick={onClick}  
+            onClick={onClick}
           >
             <SidebarUserInfoLeft>
               {avatar}
@@ -71,16 +72,18 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
               {logout}
             </SidebarUserInfoLogoutButtonContainer>
           </SidebarUserInfoMain>
-          <SidebarUserInfoTariffContainer
-            $open={isOpen}
-          >
-            {tariff}
-          </SidebarUserInfoTariffContainer>
-          <SidebarUserInfoUpdateTariffContainer
-            $open={isOpen}
-          >
-            {updateTariff}
-          </SidebarUserInfoUpdateTariffContainer>
+          <SidebarUserInfoBottom>
+            <SidebarUserInfoTariffContainer
+              $open={isOpen}
+            >
+              {tariff}
+            </SidebarUserInfoTariffContainer>
+            <SidebarUserInfoUpdateTariffContainer
+              $open={isOpen}
+            >
+              {updateTariff}
+            </SidebarUserInfoUpdateTariffContainer>
+          </SidebarUserInfoBottom>
         </SidebarUserInfoContent>
       </SidebarUserInfoStyled>
     </SidebarUserInfoProvider>

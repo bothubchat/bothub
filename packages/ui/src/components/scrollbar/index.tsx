@@ -109,6 +109,28 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>((
     onScroll?.({ isTop, isBottom });
   }, [scrollbarRef.current, disabled, previousScrollTop, withStickyBottom, scrollShadowsSize, onScroll]);
 
+  useEffect(() => {
+    if (!isHorizontalScrollbar) {
+      return;
+    }
+    const handleWheel = (e: WheelEvent) => {
+      if (scrollbarRef.current) {
+        e.preventDefault();
+        scrollbarRef.current.scrollLeft += e.deltaY;
+      }
+    };
+    const container = scrollbarRef.current;
+    if (container) {
+      container.addEventListener('wheel', handleWheel);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [isHorizontalScrollbar, scrollbarRef.current]);
+
   const setScroll = useCallback<SetScrollFunction>(
     (options) => {
       const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
@@ -203,31 +225,6 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>((
       resizeObserver?.disconnect();
     };
   }, [scrollbarRef.current, handleScroll, sticky]);
-
-  useEffect(() => {
-    if (!isHorizontalScrollbar) {
-      return;
-    }
-    const handleWheel = (e: WheelEvent) => {
-      if (scrollbarRef.current) {
-        e.preventDefault();
-        // Сдвиг по горизонтали
-        scrollbarRef.current.scrollLeft += e.deltaY;
-      }
-    };
-
-    const container = scrollbarRef.current;
-    if (container) {
-      container.addEventListener('wheel', handleWheel);
-    }
-
-    // Очистка обработчика события при размонтировании
-    return () => {
-      if (container) {
-        container.removeEventListener('wheel', handleWheel);
-      }
-    };
-  }, [isHorizontalScrollbar, scrollbarRef.current]);
 
   const contentNode: React.ReactNode = (
     <ScrollbarContent

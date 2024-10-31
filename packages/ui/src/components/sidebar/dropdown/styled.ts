@@ -40,7 +40,7 @@ export const SidebarDropdownToggler = styled.button<{ $open: boolean }>`
 export const SidebarDropdownContent: React.FC<AnimatedProps<React.ComponentProps<'div'>>> = styled(animated.div)`
   display: flex;
   position: fixed;
-  transform-origin: top left;
+  transform-origin: top right;
   z-index: ${({ theme }) => theme.zIndex.menu};
 `;
 
