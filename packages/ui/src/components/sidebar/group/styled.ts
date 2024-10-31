@@ -88,7 +88,6 @@ export const SidebarChatList = styled.div<{ open?: boolean; isDefault?: boolean 
   }}
   ${(isDefault) => !isDefault && css`
     min-height: 100px;
-
     ${SidebarChatIconContainer} svg path {
         stroke: ${({ theme }) => theme.colors.grayScale.gray4};
         fill: ${({ theme }) => theme.colors.grayScale.gray4};

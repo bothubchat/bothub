@@ -755,6 +755,31 @@ export const Basic: SidebarStory = {
           />
           <SidebarChat
             id="chat-1"
+            isDefault
+            color="#1C64F2"
+            name="Your first chat"
+            caps="36.7K"
+            checkbox={(
+              <SidebarChatCheckbox
+                checked
+                onValueChange={() => { }}
+              />
+            )}
+            actions={(
+              <SidebarDropdown>
+                <SidebarDropdownList>
+                  <SidebarDropdownItem startIcon={<EditIcon />}>
+                    Редактировать
+                  </SidebarDropdownItem>
+                  <SidebarDropdownItem startIcon={<TrashIcon />}>
+                    Удалить
+                  </SidebarDropdownItem>
+                </SidebarDropdownList>
+              </SidebarDropdown>
+            )}
+          />
+          <SidebarChat
+            id="chat-1"
             color="#1C64F2"
             isDefault
             name="Your first chat"
