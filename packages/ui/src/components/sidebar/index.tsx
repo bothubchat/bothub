@@ -9,6 +9,7 @@ import {
   SidebarContent,
   SidebarContentNav,
   SidebarContentNavContainer,
+  SidebarContentNavMenuScrollbarWrapper,
   SidebarContentNavMenuWrapper,
   SidebarDivider,
   SidebarGlobalStyle,
@@ -161,7 +162,9 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
               {toggle}
             </SidebarMobileToggle>
             <SidebarContentNavMenuWrapper>
-              {menu}
+              <SidebarContentNavMenuScrollbarWrapper>
+                {menu}
+              </SidebarContentNavMenuScrollbarWrapper>
             </SidebarContentNavMenuWrapper>
           </SidebarContentNavContainer>
           {user}
