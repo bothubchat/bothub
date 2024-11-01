@@ -4,12 +4,12 @@ import { DarkIcon } from '@/ui/icons/dark';
 import { LightIcon } from '@/ui/icons/light';
 import { IconProvider } from '@/ui/components/icon';
 import {
-  SidebarThemeSwitcherIcon, 
-  SidebarThemeSwitcherItem, 
-  SidebarThemeSwitcherItemBackground, 
-  SidebarThemeSwitcherItemContent, 
-  SidebarThemeSwitcherList, 
-  SidebarThemeSwitcherStyled 
+  SidebarThemeSwitcherIcon,
+  SidebarThemeSwitcherItem,
+  SidebarThemeSwitcherItemBackground,
+  SidebarThemeSwitcherItemContent,
+  SidebarThemeSwitcherList,
+  SidebarThemeSwitcherStyled
 } from './styled';
 import { useTheme } from '@/ui/theme';
 import { useSidebar } from '../context';
@@ -26,16 +26,16 @@ export const SidebarThemeSwitcher: React.FC<SidebarThemeSwitcherProps> = ({
   mode: initialMode, defaultMode = 'dark', onChange
 }) => {
   const theme = useTheme();
-  const { isOpen } = useSidebar(); 
+  const { isOpen } = useSidebar();
 
   const setInitialMode = useCallback<
-  React.Dispatch<React.SetStateAction<SidebarThemeSwitcherMode>>
+    React.Dispatch<React.SetStateAction<SidebarThemeSwitcherMode>>
   >(
     (mode) => {
       if (typeof mode === 'string') {
         onChange?.(mode);
       }
-    }, 
+    },
     [onChange]
   );
   const [mode, setMode] = typeof initialMode === 'string' ? [initialMode, setInitialMode] : useState<SidebarThemeSwitcherMode>(defaultMode);
@@ -86,7 +86,7 @@ export const SidebarThemeSwitcher: React.FC<SidebarThemeSwitcherProps> = ({
                   size={20}
                   fill={fill}
                 >
-                  <SidebarThemeSwitcherIcon 
+                  <SidebarThemeSwitcherIcon
                     as={mode === 'light' ? LightIcon : DarkIcon}
                   />
                 </IconProvider>
