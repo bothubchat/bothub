@@ -27,18 +27,38 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
   background: ${({ theme }) => theme.colors.grayScale.gray4};
   width: 100%;
   transition: padding 0.3s;
-  &:hover {
-    background: ${({ theme }) => theme.colors.grayScale.gray3};
-    ${SidebarUserInfoBottom} {
-      gap: 10px;
-      transition: width 0.3s;
-      & > *:first-child {
-        overflow: visible;
-        transform: translateX(0);
-        width: fit-content;
+
+
+  ${({ theme }) => adaptive({
+  variant: 'dashboard',
+  merge: true,
+  desktop: `
+    &:hover {
+      background: ${theme.colors.grayScale.gray3};
+      ${SidebarUserInfoBottom} {
+        gap: 10px;
+        transition: width 0.3s;
+        & > *:first-child {
+          overflow: visible;
+          transform: translateX(0);
+          width: fit-content;
+        }
       }
     }
-  }
+    `,
+  tablet: `
+      background: ${theme.colors.grayScale.gray3};
+      ${SidebarUserInfoBottom} {
+        gap: 10px;
+        transition: width 0.3s;
+        & > *:first-child {
+          overflow: visible;
+          transform: translateX(0);
+          width: fit-content;
+        }
+      }
+    `,
+})}
   ${({ $open }) => $open
     && adaptive({
       variant: 'dashboard',

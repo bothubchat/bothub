@@ -50,19 +50,25 @@ export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medi
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  & > ${SidebarDropdownStyled} {
-    overflow: hidden;
-    width: 0;
-    margin-left: 0;
-    transition: width 0.3s ease, margin-left 0.3s ease;
-  }
-  &:hover {
-    & > ${SidebarDropdownStyled} {
-      display: flex;
-      width: 38px;
-      margin-left: 16px;
-    }
-  }
+  ${adaptive({
+    variant: 'dashboard',
+    desktop: css`
+      & > ${SidebarDropdownStyled} {
+        overflow: hidden;
+        width: 0;
+        margin-left: 0;
+        transition: width 0.3s ease, margin-left 0.3s ease;
+      }
+      &:hover {
+        & > ${SidebarDropdownStyled} {
+          display: flex;
+          width: 38px;
+          margin-left: 16px;
+        }
+      }
+    `,
+  })}
+
   & > ${SidebarGroupArrowDown} {
     transform: ${({ open }) => (open ? 'rotate(180deg)' : 'rotate(0deg)')};
   }

@@ -7,7 +7,4 @@ export const SidebarToggleButtonStyled = styled(Button).attrs({ variant: 'text' 
       fill: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)} !important;
     }
   }
-  ${({ $isOpen }) => !$isOpen && `
-    margin: 0 auto;
-  `}
 `;

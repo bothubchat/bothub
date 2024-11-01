@@ -6,7 +6,7 @@ import { MenuDotIcon } from '@/ui/icons/menu-dot';
 import { Typography } from '../../typography';
 
 export const SidebarDropdownStyled = styled.div`
-  width: 24px;
+  width: 28px;
   margin-left: 16px;
 `;
 
