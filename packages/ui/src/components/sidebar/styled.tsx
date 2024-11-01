@@ -274,6 +274,7 @@ export const SidebarContentNav = styled.div<{ $open?: boolean }>`
 export const SidebarContentNavMenuWrapper = styled(Scrollbar).attrs({ variant: 'secondary' })`
   width: 100%;
   height: 100%;
+  margin-top: 16px;
   overflow: hidden;
 `;
 
@@ -289,8 +290,9 @@ export const SidebarMobileToggle = styled.div`
   variant: 'dashboard',
   merge: true,
   mobile: css`
-    display: inline-grid;
-    justify-content: flex-end;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
   `,
 })}

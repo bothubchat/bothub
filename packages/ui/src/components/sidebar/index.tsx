@@ -40,6 +40,7 @@ export interface SidebarProps extends React.PropsWithChildren {
   onOpen?: SidebarOpenEventHandler;
   deleteButton?: React.ReactNode;
   isHide?: boolean;
+  themeSwitcher?: React.ReactNode;
 }
 
 export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
@@ -47,6 +48,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
   className, id, user, logo, menu, buttons, toggle,
   deleteButton,
   search, lang,
+  themeSwitcher,
   isHide = false,
   children, onOpen
 }, ref) => {
@@ -155,6 +157,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
         <SidebarContentNav $open={isOpen}>
           <SidebarContentNavContainer $open={isOpen}>
             <SidebarMobileToggle>
+              {themeSwitcher}
               {toggle}
             </SidebarMobileToggle>
             <SidebarContentNavMenuWrapper>

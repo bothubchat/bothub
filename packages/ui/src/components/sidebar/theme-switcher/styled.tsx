@@ -10,7 +10,7 @@ export const SidebarThemeSwitcherStyled = styled.button<SidebarThemeSwitcherStyl
   display: ${({ $open }) => (
     $open ? 'inline-flex' : 'none'
   )};
-  width: 100%;
+  width: fit-content;
   overflow: hidden;
   align-items: center;
   cursor: pointer;
@@ -21,8 +21,11 @@ export const SidebarThemeSwitcherStyled = styled.button<SidebarThemeSwitcherStyl
   ${adaptive({
     variant: 'dashboard',
     merge: true,
-    tablet: css`
+    desktop: css`
       display: none;
+    `,
+    mobile: css`
+      display: inline-flex;
     `
   })}
 `;
@@ -41,6 +44,7 @@ export const SidebarThemeSwitcherItem = styled.span`
   border-radius: 12px;
   width: 100%;
   padding: 6px;
+  
 `;
 
 export const SidebarThemeSwitcherItemBackground = styled.span<{ $isLight: boolean }>`

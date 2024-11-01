@@ -37,6 +37,7 @@ import {
   SidebarLangDropdownItem,
   SidebarGroupEmpty,
   SidebarGroupCheckbox,
+  SidebarThemeSwitcher,
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -60,6 +61,7 @@ export const Basic: SidebarStory = {
         <SidebarLogo />
       </SidebarLogoLink>
     ),
+    themeSwitcher: <SidebarThemeSwitcher />,
     menu: (
       <SidebarMenuNav>
         <SidebarMenuNavLink
