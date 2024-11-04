@@ -1,4 +1,6 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, {
+  ForwardedRef, useCallback, useMemo, useState 
+} from 'react';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
@@ -23,10 +25,10 @@ export interface MessageMarkdownProps {
   components?: MessageComponentsProps;
 }
 
-export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
+export const MessageMarkdown = React.forwardRef<HTMLDivElement, MessageMarkdownProps>(({
   children,
   components = {}
-}) => {
+}, ref: ForwardedRef<HTMLDivElement | null>) => {
   const { typing, variant, color } = useMessage();
   const isDisabled = variant === 'user';
   const theme = useTheme();
@@ -63,7 +65,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
     }
 
     return (
-      <MessageMarkdownStyled>
+      <MessageMarkdownStyled ref={ref}>
         {parsedBlocks.map((block, index) => (
           <MessageMarkdownLine
             $typing={typing}
@@ -100,4 +102,4 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
       {(!isDisabled && typeof children === 'string') && markdownNode}
     </>
   );
-};
+});
