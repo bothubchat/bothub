@@ -57,6 +57,7 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
     if (typeof children === 'string') {
       onCopy?.(children);
     }
+
     setIsCopied(true);
   }, [skeleton, isCopied, children, onCopy]);
 
