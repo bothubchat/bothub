@@ -1,4 +1,6 @@
-import React, { ReactNode, useCallback, useRef } from 'react';
+import React, {
+  ReactNode, useRef 
+} from 'react';
 import {
   MessageBlock,
   MessageBlockContent,
@@ -61,9 +63,9 @@ export const Message: React.FC<MessageProps> = ({
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
 
-  const messageMarkdownRef = useRef<HTMLDivElement | null>(null);
+  const messageBlockContentRef = useRef<HTMLDivElement | null>(null);
 
-  const getRichText = useCallback((content: HTMLElement) => {
+  const getRichText = (content: HTMLElement) => {
     const htmlStr = new DOMParser().parseFromString(
       content.innerHTML,
       'text/html'
@@ -75,17 +77,17 @@ export const Message: React.FC<MessageProps> = ({
       codeNode.replaceWith(el);
     }
     const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([content.innerHTML], { type: 'text/plain' }),
+      'text/plain': new Blob([content.innerText], { type: 'text/plain' }),
       'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' }),
     });
     return [clipboardItem];
-  }, []);
+  };
 
-  const handleCopy = useCallback(() => {
-    if (messageMarkdownRef.current) {
-      onCopy?.(getRichText(messageMarkdownRef.current));
+  const handleCopy = () => {
+    if (messageBlockContentRef.current) {
+      return onCopy?.(getRichText(messageBlockContentRef.current));
     }
-  }, [messageMarkdownRef]);
+  };
   if (
     !(
       color
@@ -170,13 +172,12 @@ export const Message: React.FC<MessageProps> = ({
                 right: <ScrollbarShadow side="right" />,
               }}
             >
-              <MessageBlockContent>
+              <MessageBlockContent ref={messageBlockContentRef}>
                 {!skeleton && (
                   <>
                     {typeof children === 'string' && (
                       <MessageMarkdown
                         components={components}
-                        ref={messageMarkdownRef}
                       >
                         {children}
                       </MessageMarkdown>
