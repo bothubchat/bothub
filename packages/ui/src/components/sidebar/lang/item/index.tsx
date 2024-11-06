@@ -2,12 +2,10 @@ import React, { useCallback } from 'react';
 import { useSidebarLangDropdown } from '../context';
 import { SidebarLangDropdownItemStyled } from './styled';
 
-export type SidebarLangDropdownItemProps = React.ComponentProps<
-typeof SidebarLangDropdownItemStyled
->;
+export type SidebarLangDropdownItemProps = React.ComponentProps<typeof SidebarLangDropdownItemStyled>;
 
-export const SidebarLangDropdownItem: React.FC<SidebarLangDropdownItemProps> = ({ 
-  onClick, 
+export const SidebarLangDropdownItem: React.FC<SidebarLangDropdownItemProps> = ({
+  onClick,
   ...props
 }) => {
   const { setIsOpen } = useSidebarLangDropdown();

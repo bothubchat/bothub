@@ -1,4 +1,6 @@
-import React, { ReactNode, useRef } from 'react';
+import React, {
+  ReactNode, useRef 
+} from 'react';
 import {
   MessageBlock,
   MessageBlockContent,
@@ -7,10 +9,12 @@ import {
   MessageName,
   MessageSender,
   MessageStyled,
-  MessageTop
+  MessageTop,
 } from './styled';
 import {
-  MessageCodeCopyEventHandler, MessageCopyEventHandler, MessageVariant 
+  MessageCodeCopyEventHandler,
+  MessageCopyEventHandler,
+  MessageVariant,
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
@@ -38,7 +42,7 @@ export interface MessageProps {
   onCodeCopy?: MessageCodeCopyEventHandler;
 }
 
-export const Message: React.FC<MessageProps> = ({ 
+export const Message: React.FC<MessageProps> = ({
   className,
   variant = 'user',
   color = 'default',
@@ -54,15 +58,44 @@ export const Message: React.FC<MessageProps> = ({
   components,
   children,
   onCopy,
-  onCodeCopy
+  onCodeCopy,
 }) => {
   const theme = useTheme();
-  const messageRef = useRef<HTMLDivElement>(null);
+  const messageRef = useRef<HTMLDivElement | null>(null);
 
-  if (!(color
-    && typeof CSS === 'object' 
-    && typeof CSS.supports === 'function'
-    && CSS.supports('background', color ?? '#000'))) {
+  const messageBlockContentRef = useRef<HTMLDivElement | null>(null);
+
+  const getRichText = (content: HTMLElement) => {
+    const htmlStr = new DOMParser().parseFromString(
+      content.innerHTML,
+      'text/html'
+    );
+    const codeNodes = htmlStr.getElementsByTagName('code');
+    for (const codeNode of codeNodes) {
+      const el = htmlStr.createElement('span');
+      el.innerText = codeNode.innerText;
+      codeNode.replaceWith(el);
+    }
+    const clipboardItem = new ClipboardItem({
+      'text/plain': new Blob([content.innerText], { type: 'text/plain' }),
+      'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' }),
+    });
+    return [clipboardItem];
+  };
+
+  const handleCopy = () => {
+    if (messageBlockContentRef.current) {
+      return onCopy?.(getRichText(messageBlockContentRef.current));
+    }
+  };
+  if (
+    !(
+      color
+      && typeof CSS === 'object'
+      && typeof CSS.supports === 'function'
+      && CSS.supports('background', color ?? '#000')
+    )
+  ) {
     color = 'default';
   }
 
@@ -107,24 +140,16 @@ export const Message: React.FC<MessageProps> = ({
       variant={variant}
       color={color}
       typing={typing}
-      onCopy={onCopy}
+      onCopy={handleCopy}
       onCodeCopy={onCodeCopy}
     >
-      <MessageStyled
-        $variant={variant}
-        ref={messageRef}
-        className={className}
-      >
+      <MessageStyled $variant={variant} ref={messageRef} className={className}>
         <MessageContent $variant={variant}>
           {(name || transaction) && (
             <MessageTop>
               {typeof name === 'string' && (
                 <MessageSender>
-                  <MessageName
-                    $color={color}
-                  >
-                    {name}
-                  </MessageName>
+                  <MessageName $color={color}>{name}</MessageName>
                   {tags}
                 </MessageSender>
               )}
@@ -134,7 +159,7 @@ export const Message: React.FC<MessageProps> = ({
           )}
           {typeof name !== 'string' && name}
           {avatar}
-          <MessageBlock 
+          <MessageBlock
             $variant={variant}
             $hexColor={hexColor}
             $skeleton={skeleton}
@@ -144,10 +169,10 @@ export const Message: React.FC<MessageProps> = ({
                 color: hexColor,
                 size: 60,
                 left: <ScrollbarShadow side="left" />,
-                right: <ScrollbarShadow side="right" />
+                right: <ScrollbarShadow side="right" />,
               }}
             >
-              <MessageBlockContent>
+              <MessageBlockContent ref={messageBlockContentRef}>
                 {!skeleton && (
                   <>
                     {typeof children === 'string' && (
@@ -161,19 +186,19 @@ export const Message: React.FC<MessageProps> = ({
                   </>
                 )}
                 {skeleton && (
-                  <MessageParagraph
-                    disableMargin
-                  >
+                  <MessageParagraph disableMargin>
                     <Skeleton
                       width={260}
                       opacity={[
                         theme.mode === 'light' ? 0.1 : 0.15,
-                        theme.mode === 'light' ? 0.225 : 0.45
+                        theme.mode === 'light' ? 0.225 : 0.45,
                       ]}
                       colors={[
-                        variant === 'user' ? theme.colors.base.white : (
-                          theme.mode === 'light' ? theme.default.colors.base.black : theme.colors.grayScale.gray6
-                        )
+                        variant === 'user'
+                          ? theme.colors.base.white
+                          : theme.mode === 'light'
+                            ? theme.default.colors.base.black
+                            : theme.colors.grayScale.gray6,
                       ]}
                     />
                   </MessageParagraph>
