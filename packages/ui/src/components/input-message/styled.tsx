@@ -225,28 +225,34 @@ export const InputMessageToggleSendModalStyled = styled(animated.div)`
   right: 0;
   border-radius: 10px;
   border: 1px ${({ theme }) => theme.colors.grayScale.gray2} solid;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+  background-color: ${({ theme }) => (theme.mode === 'dark'
+    ? theme.colors.grayScale.gray4
+    : theme.default.colors.base.white)};
   z-index: 50;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
 `;
 
-export const InputMessageToggleSendModalOption = styled.button<{ active: boolean }>`
+export const InputMessageToggleSendModalOption = styled.button<{
+  active: boolean;
+}>`
   all: unset;
   margin: 0;
   padding: 12px;
   border-radius: 8px;
-  background-color: ${({ theme, active }) => (active ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray3)};
+  background-color: ${({ theme, active }) => {
+    if (theme.mode === 'dark') {
+      return active
+        ? theme.colors.grayScale.gray3
+        : theme.colors.grayScale.gray4;
+    }
+    return active ? theme.colors.grayScale.gray3 : theme.default.colors.base.white;
+  }};
   cursor: pointer;
-  transition: opacity 0.1s ease-in-out, 
-              transform 0.1s ease-in-out, 
-              filter 0.1s ease-in-out;
-  &:hover {
-    filter: brightness(1.1);
-  }
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out,
+    filter 0.1s ease-in-out;
   &:active {
-    opacity: 0.9;
     transform: translateY(1px);
   }
 `;
