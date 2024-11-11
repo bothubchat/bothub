@@ -1,7 +1,7 @@
 import React from 'react';
 import { LogoStyled } from './styled';
 import { useTheme } from '@/ui/theme';
-import { LogoProps } from '../logo';
+import { LogoProps } from '@/ui/components/logo';
 
 export const LogoHalloween: React.FC<LogoProps> = ({ size = 29 }) => {
   const theme = useTheme();
