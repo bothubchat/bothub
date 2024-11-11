@@ -134,19 +134,24 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
       `;
     }
   }}
-  ${SidebarDropdownStyled} {
-    margin-left: 0;
-    width: 0;
-    overflow: hidden;
-    transition: width 0.3s ease, margin-left 0.3s ease;
-  }
-  &:hover {
-    ${SidebarDropdownStyled} {
-      width: 38px;
-      margin-left: 16px;
-      fill: ${({ theme }) => theme.colors.base.white};
-    }
-  }
+  ${adaptive({
+    variant: 'dashboard',
+    desktop: css`
+      ${SidebarDropdownStyled} {
+        margin-left: 0;
+        width: 0;
+        overflow: hidden;
+        transition: width 0.3s ease, margin-left 0.3s ease;
+      }
+      &:hover {
+        ${SidebarDropdownStyled} {
+          width: 38px;
+          margin-left: 16px;
+          fill: ${({ theme }) => theme.colors.base.white};
+        }
+      }
+    `
+  })}
   ${({ $skeleton, $active }) => {
     if ($skeleton || $active) {
       return css``;

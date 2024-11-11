@@ -271,10 +271,24 @@ export const SidebarContentNav = styled.div<{ $open?: boolean }>`
     })}
 `;
 
-export const SidebarContentNavMenuWrapper = styled(Scrollbar).attrs({ variant: 'secondary' })`
+export const SidebarContentNavMenuWrapper = styled.div`
+  display: flex;
   width: 100%;
-  height: 100%;
   overflow: hidden;
+  margin-top: 16px;
+`;
+
+export const SidebarContentNavMenuScrollbarWrapper = styled(Scrollbar).attrs({
+  variant: 'secondary',
+  scrollShadows: {
+    top: <ScrollbarShadow side="top" />,
+    bottom: <ScrollbarShadow side="bottom" />
+  }
+})`
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 export const SidebarContentNavContainer = styled.div<{ $open?: boolean }>``;
@@ -289,8 +303,9 @@ export const SidebarMobileToggle = styled.div`
   variant: 'dashboard',
   merge: true,
   mobile: css`
-    display: inline-grid;
-    justify-content: flex-end;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 100%;
   `,
 })}

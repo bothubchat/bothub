@@ -44,13 +44,6 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
   const [isFocus, setIsFocus] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
-  const handleFocus = useCallback(() => {
-    if (skeleton) {
-      return;
-    }
-
-    setIsFocus(true);
-  }, [skeleton]);
   const handleBlur = useCallback(() => {
     setIsFocus(false);
     setIsCopied(false);
@@ -64,8 +57,18 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
     if (typeof children === 'string') {
       onCopy?.(children);
     }
+
     setIsCopied(true);
   }, [skeleton, isCopied, children, onCopy]);
+
+  const handleFocus = useCallback(() => {
+    if (skeleton) {
+      return;
+    }
+
+    setIsFocus(true);
+    handleClick();
+  }, [skeleton]);
 
   const handleDelete = useCallback(() => {
     if (skeleton) {
@@ -77,11 +80,7 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
   return (
     <IconProvider>
       <DeveloperKeyWrapper $skeleton={skeleton}>
-        {label && (
-          <DeveloperKeyLabel>
-            {label}
-          </DeveloperKeyLabel>
-        )}
+        {label && <DeveloperKeyLabel>{label}</DeveloperKeyLabel>}
         <DeveloperKeyContent>
           <DeveloperKeyStyled
             $skeleton={skeleton}
@@ -91,10 +90,7 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
             onBlur={handleBlur}
             onClick={handleClick}
           >
-            {!skeleton 
-          && (
-            <DeveloperKeyValue>{children}</DeveloperKeyValue>
-          )}
+            {!skeleton && <DeveloperKeyValue>{children}</DeveloperKeyValue>}
             {skeleton && (
               <DeveloperKeyValue>
                 <Skeleton fullWidth />
