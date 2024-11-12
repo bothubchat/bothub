@@ -105,6 +105,7 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   align-items: flex-start;
   flex-shrink: 0;
   width: 100%;
+  border-radius: 20px;
   position: relative;
   height: 100%;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
@@ -149,10 +150,10 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
     min-width: 100%;
   }
   max-height: 100vh;
-  ${adaptive({
+  ${({ theme, $isHide }) => !$isHide && adaptive({
   variant: 'dashboard',
   desktop: css`
-      border-right: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+    border-right: 1px solid ${theme.colors.grayScale.gray3};
     `,
   tablet: css`
       border-radius: 18px;
