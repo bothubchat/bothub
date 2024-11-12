@@ -1,4 +1,6 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, {
+  useCallback, useMemo, useState 
+} from 'react';
 import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
@@ -23,7 +25,7 @@ export interface MessageMarkdownProps {
   components?: MessageComponentsProps;
 }
 
-export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
+export const MessageMarkdown: React.FC<MessageMarkdownProps> = (({
   children,
   components = {}
 }) => {
@@ -100,4 +102,4 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
       {(!isDisabled && typeof children === 'string') && markdownNode}
     </>
   );
-};
+});
