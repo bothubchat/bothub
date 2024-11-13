@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useRef,
   useLayoutEffect,
+  TextareaHTMLAttributes,
 } from 'react';
 import { useTransition } from '@react-spring/web';
 import { useOnClickOutside } from '@/ui/utils/useOnClickOutside';
@@ -399,6 +400,15 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     stopVoiceRecording();
   }, [isVoiceRecording, stopVoiceRecording]);
 
+  const fixPageUpDown = useCallback<React.KeyboardEventHandler>((event) => {
+    if (event.code === 'PageUp' || event.code === 'PageDown') {
+      const target = event.target as HTMLTextAreaElement;
+      const cursorPosition = event.key === 'PageUp' ? 0 : target.textLength;
+      event.preventDefault();
+      target.setSelectionRange(cursorPosition, cursorPosition);
+    }
+  }, []);
+
   useEffect(() => {
     const textareaEl: HTMLElement | null = textareaRef.current;
 
@@ -503,7 +513,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       ease: 'easeOut',
     },
   });
-
+  
   return (
     <InputMessageStyled
       $active={isFocus}
@@ -613,6 +623,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                   && files.length !== uploadFileLimit)
                 || (textAreaDisabled && message)) && (
                 <InputMessageTextArea
+                  onKeyDown={fixPageUpDown}
                   $disabled={disabled}
                   {...props}
                   ref={textareaRef}
