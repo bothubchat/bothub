@@ -55,4 +55,3 @@ export * from './switch';
 export * from './datepicker';
 export * from './stepper';
 export * from './menu-dropdown';
-export * from './logo-halloween';
