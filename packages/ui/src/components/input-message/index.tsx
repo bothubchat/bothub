@@ -4,7 +4,6 @@ import React, {
   useEffect,
   useRef,
   useLayoutEffect,
-  TextareaHTMLAttributes,
 } from 'react';
 import { useTransition } from '@react-spring/web';
 import { useOnClickOutside } from '@/ui/utils/useOnClickOutside';
