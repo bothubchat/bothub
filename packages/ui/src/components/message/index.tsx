@@ -1,5 +1,5 @@
 import React, {
-  ReactNode, useRef 
+  ReactNode, useRef
 } from 'react';
 import {
   MessageBlock,
@@ -120,7 +120,9 @@ export const Message: React.FC<MessageProps> = ({
     case 'assistant':
       switch (color) {
         case 'default':
-          hexColor = theme.colors.grayScale.gray2;
+          hexColor = theme.mode === 'dark'
+            ? theme.colors.grayScale.gray2
+            : theme.colors.grayScale.gray3;
           break;
         case 'green':
           hexColor = theme.colors.gpt3;
