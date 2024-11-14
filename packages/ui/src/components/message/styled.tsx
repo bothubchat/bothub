@@ -92,6 +92,11 @@ export const MessageTop = styled.div`
   margin-bottom: 8px;
 `;
 
+export const MessageBottom = styled.div`
+  margin-top: 4px;
+  grid-area: buttons;
+`
+
 export const MessageSender = styled.div`
   display: flex;
   align-items: center;
@@ -102,7 +107,7 @@ export interface MessageNameProps {
   $color: string;
 }
 
-export const MessageName = styled(Typography).attrs({ variant: 'body-m-regular' })<MessageNameProps>`
+export const MessageName = styled(Typography).attrs({ variant: 'body-m-regular' }) <MessageNameProps>`
   color: ${({ theme, $color }) => {
     switch ($color) {
       case 'green':
@@ -192,8 +197,8 @@ export const MessageActions = styled.div`
   align-self: flex-end;
 `;
 
-export const MessageAction = styled(Button).attrs({ 
-  variant: 'text', 
+export const MessageAction = styled(Button).attrs({
+  variant: 'text',
   iconSize: 18
 })``;
 
