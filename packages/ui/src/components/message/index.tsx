@@ -5,6 +5,7 @@ import {
   MessageBlock,
   MessageBlockContent,
   MessageBlockScrollbarWrapper,
+  MessageBottom,
   MessageContent,
   MessageName,
   MessageSender,
@@ -156,7 +157,7 @@ export const Message: React.FC<MessageProps> = ({
                 </MessageSender>
               )}
               {typeof name !== 'string' && <div />}
-              {transaction}
+
             </MessageTop>
           )}
           {typeof name !== 'string' && name}
@@ -209,8 +210,11 @@ export const Message: React.FC<MessageProps> = ({
               </MessageBlockContent>
             </MessageBlockScrollbarWrapper>
           </MessageBlock>
+          <MessageBottom>
+            {transaction}
+            {buttons}
+          </MessageBottom>
           {actions}
-          {buttons}
         </MessageContent>
       </MessageStyled>
     </MessageProvider>
