@@ -100,6 +100,7 @@ export const FileField: React.FC<FileFieldProps> = ({
           disabled={disabled}
           multiple={multiple}
           accept={accept}
+          value=''
           onChange={handleInputChange}
         />
         {(placeholder && files.length === 0) && open && (
