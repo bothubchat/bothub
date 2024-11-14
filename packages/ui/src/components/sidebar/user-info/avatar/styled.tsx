@@ -2,7 +2,7 @@ import { css, styled } from 'styled-components';
 import { Avatar } from '@/ui/components/avatar';
 import { TariffPlan } from './types';
 
-export const SidebarUserInfoAvatarStyled = styled(Avatar) <{ tariffPlan?: TariffPlan; }>`
+export const SidebarUserInfoAvatarStyled = styled(Avatar) <{ $tariffPlan?: TariffPlan; }>`
   position: relative;
   &::before {
     content: "";
@@ -17,8 +17,8 @@ export const SidebarUserInfoAvatarStyled = styled(Avatar) <{ tariffPlan?: Tariff
       linear-gradient(#fff 0 0) border-box;
     -webkit-mask-composite: destination-out;
     mask-composite: exclude;
-    ${({ tariffPlan, theme }) => {
-    switch (tariffPlan) {
+    ${({ $tariffPlan, theme }) => {
+    switch ($tariffPlan) {
       case 'FREE':
         return css`
             border: 2px solid ${theme.colors.grayScale.gray2};

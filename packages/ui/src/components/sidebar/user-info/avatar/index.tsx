@@ -19,7 +19,7 @@ export const SidebarUserInfoAvatar: React.FC<SidebarUserInfoAvatarProps> = ({
   return (
     <SidebarUserInfoAvatarStyled
       {...props}
-      tariffPlan={props.tariffPlan}
+      $tariffPlan={props.tariffPlan}
       size={isOpen ? 40 : 34}
       onMouseEnter={handleTooltipMouseEnter}
       onMouseLeave={handleTooltipMouseLeave}
