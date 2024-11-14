@@ -1,7 +1,8 @@
 import { styled, css } from 'styled-components';
 import grid from './assets/grid.svg';
 import { BackgroundVariant } from './types';
-import bluePurple from './assets/blue-purple.svg';
+import bluePurpleCenter from './assets/blue-purple-center.svg';
+import bluePurpleBottomLeft from './assets/blue-purple-bottom-left.svg';
 
 export interface BackgroundStyledProps {
   $variant: BackgroundVariant;
@@ -25,7 +26,8 @@ export const BackgroundStyled = styled.div<BackgroundStyledProps>`
           background: url(${JSON.stringify(grid)});
           background-size: contain;
           background-position: center;
-          ${!$disableRepeat && css`
+          ${!$disableRepeat
+          && css`
             background-repeat: repeat;
           `}
           opacity: 0.35;
@@ -41,7 +43,18 @@ export const BackgroundStyled = styled.div<BackgroundStyledProps>`
 
 export const BackgroundImage = styled.img``;
 
-export const BackgroundBluePurpleImage = styled(BackgroundImage).attrs({ src: bluePurple, width: 663, height: 300 })`
+export const BackgroundBluePurpleCenterImage = styled(BackgroundImage).attrs({
+  src: bluePurpleCenter,
+  width: 773,
+  height: 576,
+})`
+  width: 773px;
+  height: 576px;
+`;
+
+export const BackgroundBluePurpleBottomLeftImage = styled(
+  BackgroundImage
+).attrs({ src: bluePurpleBottomLeft, width: 663, height: 300 })`
   width: 663px;
   height: 300px;
 `;
