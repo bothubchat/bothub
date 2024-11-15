@@ -59,7 +59,7 @@ export const CopyButton = ({
         </S.MessageActionsButtonIconStyled>  
       ) : (
         <S.MessageActionsButtonIconStyled style={markSpring}>
-          <CheckSmallIcon fill="#616D8D" />
+          <CheckSmallIcon fill="#4785FF" />
         </S.MessageActionsButtonIconStyled>
       )}
     </ActionButton>

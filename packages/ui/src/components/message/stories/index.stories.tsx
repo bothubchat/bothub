@@ -608,6 +608,9 @@ export const NewDesignFeatures: MessageStory = {
     copyTooltipLabel: 'Копировать',
     updateTooltipLabel: 'Повторная генерация',
     content: 'Hi! How can I help you?',
+    version: 2,
+    totalVersions: 5,
+    transaction: <MessageTransaction>-1571 CAPS</MessageTransaction>,
   },
 };
 

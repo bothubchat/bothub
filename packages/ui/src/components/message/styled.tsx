@@ -20,9 +20,18 @@ export interface MessageStyledProps {
   $variant: MessageVariant;
 }
 
+export const MessageStyledWrapper = styled.div`
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
+  gap: 4px;
+`;
+
 export const MessageStyled = styled.div<MessageStyledProps>`
   display: flex;
   width: 100%;
+  max-width: 100%;
+  overflow: visible;
   ${({ $variant }) => {
     switch ($variant) {
       case 'user':
@@ -143,14 +152,21 @@ export interface MessageBlockProps {
   $hasTimestamp?: boolean;
 }
 
+export const MessageBlockWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  grid-area: block;
+  gap: 6px;
+  position: relative;
+`;
+
 export const MessageBlock = styled.div<MessageBlockProps>`
   position: relative;
   display: flex;
-  grid-area: block;
   border-radius: 10px;
   overflow: hidden;
   width: 100%;
-  overflow: auto;
   ${({ $variant }) => {
     switch ($variant) {
       case 'user':
@@ -188,6 +204,40 @@ export const MessageBlock = styled.div<MessageBlockProps>`
     }))}
 `;
 
+export const MessageBlockBottomPanel = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 48px;
+  margin-right: 96px;
+`;
+
+export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
+  ${({ $top }) => ($top
+    ? adaptive({
+      desktop: css`
+            display: none;
+          `,
+      tablet: css`
+            display: none;
+          `,
+      mobile: css`
+            display: block;
+          `,
+    })
+    : adaptive({
+      desktop: css`
+            display: block;
+          `,
+      tablet: css`
+            display: block;
+          `,
+      mobile: css`
+            display: none;
+          `,
+    }))}
+`;
+
 export const MessageBlockScrollbarWrapper = styled(Scrollbar).attrs({
   variant: 'secondary',
 })``;
@@ -200,6 +250,8 @@ export const MessageBlockContent = styled.div`
   grid-area: block;
   border-radius: 10px;
   padding: 8px;
+  max-width: 100%;
+  overflow: clip;
 `;
 
 export const MessageBlockTextArea = styled.span.attrs({
@@ -222,10 +274,10 @@ export const MessageBlockTextArea = styled.span.attrs({
       font-size: 16px;
     `,
     tablet: css`
-      font-size: 12px;
+      font-size: 14px;
     `,
     mobile: css`
-      font-size: 10px;
+      font-size: 14px;
     `,
   })}
 `;

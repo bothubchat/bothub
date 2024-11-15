@@ -7,22 +7,22 @@ interface ActionButtonProps {
   id?: string;
   ref?: MutableRefObject<HTMLButtonElement | null>;
   message?: string;
+  tooltipLabel?: string;
   children?: React.ReactNode;
   onClick?: MessageActionEventHandler;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
-  tooltipLabel?: string;
 }
 
 export const ActionButton = ({
   id,
   ref,
   message,
+  tooltipLabel,
   children,
   onClick,
   onMouseEnter,
   onMouseLeave,
-  tooltipLabel,
   ...props
 }: ActionButtonProps) => (
   <S.MessageActionsButton

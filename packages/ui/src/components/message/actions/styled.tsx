@@ -93,14 +93,16 @@ export const MessageActionsButton = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  &:hover {
-    filter: brightness(1.2)
-  }
   &:active {
-    filter: brightness(0.8);
+    svg {
+      path, circle {
+        fill: #4785FF;
+        transition: all 100ms ease-out;
+      }
+    }
     transform: translateY(1px);
   }
-  transition: all 100ms ease-out;
+  transition: all 50ms ease-out;
 `;
 
 export const MessageEditButtonsStyled = styled.div`

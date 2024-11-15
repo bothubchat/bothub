@@ -13,3 +13,5 @@ export type MessageActionEventHandler = ({
   id?: string;
   message?: string;
 }) => unknown;
+
+export type MessageVersionEventHandler = (id?: string) => unknown;

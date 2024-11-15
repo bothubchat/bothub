@@ -1,6 +1,4 @@
-import {
-  useEffect, useRef, useState 
-} from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
