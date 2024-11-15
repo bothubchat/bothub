@@ -10,13 +10,9 @@ import { MessageActionEventHandler } from '../../types';
 import * as S from './styled';
 
 export const CopyButton = ({
-  id,
-  message,
   onCopy,
   tooltipLabel,
 }: {
-  id?: string;
-  message?: string;
   onCopy?: MessageActionEventHandler;
   tooltipLabel?: string;
 }) => {
@@ -28,10 +24,7 @@ export const CopyButton = ({
       clearTimeout(timeoutId);
     }
     setCopied(true);
-    onCopy?.({
-      id,
-      message,
-    });
+    onCopy?.({});
     setTimeoutId(setTimeout(() => setCopied(false), 1000));
   };
 

@@ -281,8 +281,6 @@ export const MessageActions = ({
           )}
           {!disableCopy && (
             <CopyButton
-              id={id}
-              message={message}
               onCopy={onCopy}
               tooltipLabel={copyTooltipLabel}
             />

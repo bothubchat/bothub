@@ -1,4 +1,6 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, {
+  ReactNode, useEffect, useRef, useState 
+} from 'react';
 import {
   MessageBlock,
   MessageBlockBottomPanel,
@@ -17,6 +19,7 @@ import {
 import {
   MessageActionEventHandler,
   MessageCodeCopyEventHandler,
+  MessageCopyEventHandler,
   MessageVariant,
   MessageVersionEventHandler,
 } from './types';
@@ -61,7 +64,7 @@ export interface MessageProps {
   children?: ReactNode;
   version?: number;
   totalVersions?: number;
-  onCopy?: MessageActionEventHandler;
+  onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
   onEdit?: MessageActionEventHandler;
   onResend?: MessageActionEventHandler;
@@ -149,10 +152,10 @@ export const Message: React.FC<MessageProps> = ({
 
   if (
     !(
-      color &&
-      typeof CSS === 'object' &&
-      typeof CSS.supports === 'function' &&
-      CSS.supports('background', color ?? '#000')
+      color
+      && typeof CSS === 'object'
+      && typeof CSS.supports === 'function'
+      && CSS.supports('background', color ?? '#000')
     )
   ) {
     color = 'default';
@@ -179,10 +182,9 @@ export const Message: React.FC<MessageProps> = ({
     case 'assistant':
       switch (color) {
         case 'default':
-          hexColor =
-            theme.mode === 'dark'
-              ? theme.colors.grayScale.gray2
-              : theme.colors.grayScale.gray3;
+          hexColor = theme.mode === 'dark'
+            ? theme.colors.grayScale.gray2
+            : theme.colors.grayScale.gray3;
           break;
         case 'green':
           hexColor = theme.colors.gpt3;
@@ -214,6 +216,7 @@ export const Message: React.FC<MessageProps> = ({
       variant={variant}
       color={color}
       typing={typing}
+      onCopy={handleCopy}
       onCodeCopy={onCodeCopy}
     >
       <MessageStyledWrapper>
@@ -279,8 +282,8 @@ export const Message: React.FC<MessageProps> = ({
                                 variant === 'user'
                                   ? theme.colors.base.white
                                   : theme.mode === 'light'
-                                  ? theme.default.colors.base.black
-                                  : theme.colors.grayScale.gray6,
+                                    ? theme.default.colors.base.black
+                                    : theme.colors.grayScale.gray6,
                               ]}
                             />
                           </MessageParagraph>
@@ -328,7 +331,7 @@ export const Message: React.FC<MessageProps> = ({
               onResend={onResend}
               onDelete={onDelete}
               onUpdate={onUpdate}
-              onCopy={onCopy}
+              onCopy={handleCopy}
             />
           )}
         </MessageStyled>
