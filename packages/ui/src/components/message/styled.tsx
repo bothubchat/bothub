@@ -22,7 +22,6 @@ export interface MessageStyledProps {
 
 export const MessageStyledWrapper = styled.div`
   display: flex;
-  width: fit-content;
   flex-direction: column;
   gap: 4px;
 `;
