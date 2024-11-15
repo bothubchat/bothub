@@ -1,15 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import {
-  FileFieldBlock, 
-  FileFieldErrorText, 
-  FileFieldFile, 
-  FileFieldFileDeleteButton, 
-  FileFieldFiles, 
-  FileFieldIcon, 
-  FileFieldInput, 
-  FileFieldLabel, 
-  FileFieldPlaceholder, 
-  FileFieldStyled 
+  FileFieldBlock,
+  FileFieldErrorText,
+  FileFieldFile,
+  FileFieldFileDeleteButton,
+  FileFieldFiles,
+  FileFieldIcon,
+  FileFieldInput,
+  FileFieldLabel,
+  FileFieldPlaceholder,
+  FileFieldStyled
 } from './styled';
 import { BadgeText } from '@/ui/components/badge';
 import { IconProvider } from '@/ui/components/icon';
@@ -32,11 +32,13 @@ export interface FileFieldProps extends Omit<React.ComponentProps<'div'>, 'onCha
   icon?: React.ReactNode;
   multiple?: boolean;
   accept?: string;
+  id?: string;
+  open?: boolean;
 }
 
 export const FileField: React.FC<FileFieldProps> = ({
-  label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false, 
-  multiple = true, accept, onChange,
+  label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false,
+  multiple = true, accept, onChange, id, open = true,
   icon = <FileFieldIcon />,
   ...props
 }) => {
@@ -53,7 +55,7 @@ export const FileField: React.FC<FileFieldProps> = ({
       setFiles([
         ...(
           new Map([
-            ...files, 
+            ...files,
             ...(event.currentTarget.files ?? [])
           ].map((file) => [file.name, file]))
         ).values()
@@ -65,7 +67,7 @@ export const FileField: React.FC<FileFieldProps> = ({
 
   const handleFileDelete = useCallback((file: File, event: React.MouseEvent) => {
     event.preventDefault();
-    
+
     setFiles(
       files.filter(({ name }) => (
         name !== file.name
@@ -78,9 +80,10 @@ export const FileField: React.FC<FileFieldProps> = ({
       $error={!!error}
       $disabled={disabled}
       $fullWidth={fullWidth}
+      $open={open}
       {...props}
     >
-      {typeof label === 'string' && (
+      {typeof label === 'string' && open && (
         <FileFieldLabel>
           {label}
         </FileFieldLabel>
@@ -88,16 +91,19 @@ export const FileField: React.FC<FileFieldProps> = ({
       {typeof label !== 'string' && label}
       <FileFieldBlock
         $error={!!error}
+        $open={open}
         $disabled={disabled}
       >
         {icon}
         <FileFieldInput
+          id={id}
           disabled={disabled}
           multiple={multiple}
           accept={accept}
+          value=''
           onChange={handleInputChange}
         />
-        {(placeholder && files.length === 0) && (
+        {(placeholder && files.length === 0) && open && (
           <FileFieldPlaceholder>
             {placeholder}
           </FileFieldPlaceholder>
@@ -132,7 +138,7 @@ export const FileField: React.FC<FileFieldProps> = ({
                     {file.name.length > 18 && '...'}
                     {file.name.slice(-18)}
                   </BadgeText>
-                  <FileFieldFileDeleteButton 
+                  <FileFieldFileDeleteButton
                     disabled={disabled}
                     onClick={handleFileDelete.bind(null, file)}
                   />

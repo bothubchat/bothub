@@ -29,7 +29,14 @@ export interface ScrollbarProps extends React.PropsWithChildren {
   disableShadows?: boolean;
   withStickyBottom?: boolean;
   defaultStickyBottom?: boolean;
+  isHorizontalScrollbar?: boolean;
+  onScroll?: ScrollbarScrollEventHandler;
 }
+
+export type ScrollbarScrollEventHandler = (event: {
+  isTop: boolean;
+  isBottom: boolean;
+}) => unknown;
 
 export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
   (
@@ -44,8 +51,10 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
       disabled = false,
       disableShadows = false,
       children,
+      onScroll,
       defaultStickyBottom = false,
       withStickyBottom = false,
+      isHorizontalScrollbar = false,
     },
     ref
   ) => {
@@ -61,52 +70,82 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
 
     const scrollShadowsSize = scrollShadows?.size ?? 60;
 
-    const handleScroll = useCallback((scrollbarEl: HTMLDivElement) => {
-      const {
-        scrollTop,
-        scrollHeight,
-        clientHeight,
-        scrollLeft,
-        scrollWidth,
-        clientWidth,
-      } = scrollbarEl;
+    const handleScroll = useCallback(
+      (scrollbarEl: HTMLDivElement) => {
+        const {
+          scrollTop,
+          scrollHeight,
+          clientHeight,
+          scrollLeft,
+          scrollWidth,
+          clientWidth,
+        } = scrollbarEl;
 
-      const isBiggerThanContentHeight = scrollShadowsSize > clientHeight;
-      const isBiggerThanContentWidth = scrollShadowsSize > clientWidth;
+        const isBiggerThanContentHeight = scrollShadowsSize > clientHeight;
+        const isBiggerThanContentWidth = scrollShadowsSize > clientWidth;
+        const isTop = !isBiggerThanContentHeight && scrollTop !== 0;
+        const isBottom =
+          !isBiggerThanContentHeight &&
+          Math.round(scrollTop) + 1 < scrollHeight - clientHeight;
 
-      setIsLeft(!isBiggerThanContentWidth && scrollLeft !== 0);
-      setIsRight(
-        !isBiggerThanContentWidth
-          && Math.round(scrollLeft) + 1 < scrollWidth - clientWidth
-      );
-      setIsTop(!isBiggerThanContentHeight && scrollTop !== 0);
-      setIsBottom(
-        !isBiggerThanContentHeight
-          && Math.round(scrollTop) + 1 < scrollHeight - clientHeight
-      );
+        setIsTop(isTop);
+        setIsBottom(isBottom);
+        setIsLeft(!isBiggerThanContentWidth && scrollLeft !== 0);
+        setIsRight(
+          !isBiggerThanContentWidth &&
+            Math.round(scrollLeft) + 1 < scrollWidth - clientWidth
+        );
 
-      const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
-      setPreviousScrollTop(scrollbarEl.scrollTop);
+        const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
+        setPreviousScrollTop(scrollbarEl.scrollTop);
 
-      if (withStickyBottom) {
-        const scrollBottom = scrollbarEl.clientHeight
-          - Math.ceil(scrollbarEl.scrollHeight - scrollbarEl.scrollTop);
-        if (Math.abs(scrollBottom) < 20 && !isUpScroll) {
-          setSticky(true);
-        } else if (isUpScroll) {
-          setSticky(false);
+        if (withStickyBottom) {
+          const scrollBottom =
+            scrollbarEl.clientHeight -
+            Math.ceil(scrollbarEl.scrollHeight - scrollbarEl.scrollTop);
+          if (Math.abs(scrollBottom) < 20 && !isUpScroll) {
+            setSticky(true);
+          } else if (isUpScroll) {
+            setSticky(false);
+          }
         }
+
+        if (disabled) {
+          scrollbarEl.scrollTo(0, 0);
+        }
+        onScroll?.({ isTop, isBottom });
+      },
+      [
+        scrollbarRef.current,
+        disabled,
+        previousScrollTop,
+        withStickyBottom,
+        scrollShadowsSize,
+        onScroll,
+      ]
+    );
+
+    useEffect(() => {
+      if (!isHorizontalScrollbar) {
+        return;
+      }
+      const handleWheel = (e: WheelEvent) => {
+        if (scrollbarRef.current) {
+          e.preventDefault();
+          scrollbarRef.current.scrollLeft += e.deltaY;
+        }
+      };
+      const container = scrollbarRef.current;
+      if (container) {
+        container.addEventListener('wheel', handleWheel);
       }
 
-      if (disabled) {
-        scrollbarEl.scrollTo(0, 0);
-      }
-    }, [
-      disabled,
-      previousScrollTop,
-      withStickyBottom,
-      scrollShadowsSize,
-    ]);
+      return () => {
+        if (container) {
+          container.removeEventListener('wheel', handleWheel);
+        }
+      };
+    }, [isHorizontalScrollbar, scrollbarRef.current]);
 
     const setScroll = useCallback<SetScrollFunction>(
       (options) => {
@@ -116,8 +155,8 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
           return;
         }
         if (
-          (lockedMode || typeof options !== 'undefined')
-          && scrollbarEl !== null
+          (lockedMode || typeof options !== 'undefined') &&
+          scrollbarEl !== null
         ) {
           const { side } = options ?? scrollLocked ?? { side: 'bottom' };
 

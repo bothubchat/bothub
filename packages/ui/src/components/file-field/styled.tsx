@@ -9,6 +9,7 @@ export interface FileFieldStyledProps {
   $error: boolean;
   $fullWidth: boolean;
   $disabled: boolean;
+  $open: boolean;
 }
 
 export const FileFieldStyled = styled.div<FileFieldStyledProps>`
@@ -27,6 +28,11 @@ export const FileFieldStyled = styled.div<FileFieldStyledProps>`
   ${({ $fullWidth }) => !$fullWidth && css`
     max-width: 420px;
   `}
+  ${({ $open }) => !$open && css`
+    max-width: 36px;
+    max-height: 36px;
+    overflow: hidden;
+  `}
   user-select: none;
 `;
 
@@ -39,6 +45,7 @@ export const FileFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
 export interface FileFieldBlockProps {
   $error: boolean;
   $disabled: boolean;
+  $open: boolean;
 }
 
 export const FileFieldBlock = styled.label<FileFieldBlockProps>`
@@ -72,17 +79,22 @@ export const FileFieldBlock = styled.label<FileFieldBlockProps>`
   min-height: 46px;
   padding: 8px 16px;
   gap: 10px;
+    ${({ $open }) => !$open && css`
+    padding: 10px;
+    gap: 0;
+    min-height: 36px;
+  `}
   width: 100%;
 `;
 
 export const FileFieldIcon = styled(AttachIcon).attrs(
-  ({ theme }) => ({ 
+  ({ theme }) => ({
     size: 16,
     fill: theme.colors.base.white
   })
 )``;
 
-export const FileFieldInput = styled.input.attrs({ 
+export const FileFieldInput = styled.input.attrs({
   type: 'file',
   multiple: true
 })`

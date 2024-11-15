@@ -114,11 +114,37 @@ export const Message: React.FC<MessageProps> = ({
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
 
+  const messageBlockContentRef = useRef<HTMLDivElement | null>(null);
+
   const editFieldRef = useRef<HTMLSpanElement | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedText, setEditedText] = useState<string>(content ?? '');
   const handleEditText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setEditedText(e.target.innerText);
+  };
+
+  const getRichText = (content: HTMLElement) => {
+    const htmlStr = new DOMParser().parseFromString(
+      content.innerHTML,
+      'text/html'
+    );
+    const codeNodes = htmlStr.getElementsByTagName('code');
+    for (const codeNode of codeNodes) {
+      const el = htmlStr.createElement('span');
+      el.innerText = codeNode.innerText;
+      codeNode.replaceWith(el);
+    }
+    const clipboardItem = new ClipboardItem({
+      'text/plain': new Blob([content.innerText], { type: 'text/plain' }),
+      'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' }),
+    });
+    return [clipboardItem];
+  };
+
+  const handleCopy = () => {
+    if (messageBlockContentRef.current) {
+      return onCopy?.(getRichText(messageBlockContentRef.current));
+    }
   };
 
   if (
@@ -153,7 +179,10 @@ export const Message: React.FC<MessageProps> = ({
     case 'assistant':
       switch (color) {
         case 'default':
-          hexColor = theme.colors.grayScale.gray2;
+          hexColor =
+            theme.mode === 'dark'
+              ? theme.colors.grayScale.gray2
+              : theme.colors.grayScale.gray3;
           break;
         case 'green':
           hexColor = theme.colors.gpt3;
@@ -203,7 +232,9 @@ export const Message: React.FC<MessageProps> = ({
                   </MessageSender>
                 )}
                 {typeof name !== 'string' && <div />}
-                <MessageBlockTransaction $top>{transaction}</MessageBlockTransaction>
+                <MessageBlockTransaction $top>
+                  {transaction}
+                </MessageBlockTransaction>
               </MessageTop>
             )}
             {typeof name !== 'string' && name}
@@ -223,7 +254,7 @@ export const Message: React.FC<MessageProps> = ({
                     right: <ScrollbarShadow side="right" />,
                   }}
                 >
-                  <MessageBlockContent>
+                  <MessageBlockContent ref={messageBlockContentRef}>
                     {!isEditing ? (
                       <>
                         {!skeleton && (

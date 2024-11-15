@@ -1,16 +1,27 @@
 import React from 'react';
 import { StyleSheetManager } from 'styled-components';
-import { BothubStyleSheetDashboardPlugin, BothubStyleSheetMainPlugin } from './plugin';
+import {
+  BothubStyleSheetDashboardPlugin,
+  BothubStyleSheetMainPlugin,
+} from './plugin';
 
-export const BothubStyleSheetManager: React.FC<React.PropsWithChildren<{
+export type BothubStyleSheetManagerProps = React.ComponentProps<
+  typeof StyleSheetManager
+> & {
   variant?: 'main' | 'dashboard';
-}>> = ({
+};
+
+export const BothubStyleSheetManager = ({
   children,
-  variant = 'dashboard'
-}) => (
+  variant = 'dashboard',
+  ...props
+}: BothubStyleSheetManagerProps) => (
   <StyleSheetManager
+    {...props}
     stylisPlugins={[
-      variant === 'dashboard' ? BothubStyleSheetDashboardPlugin : BothubStyleSheetMainPlugin
+      variant === 'dashboard'
+        ? BothubStyleSheetDashboardPlugin
+        : BothubStyleSheetMainPlugin,
     ]}
   >
     {children}

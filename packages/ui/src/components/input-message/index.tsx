@@ -5,8 +5,8 @@ import React, {
   useRef,
   useLayoutEffect,
 } from 'react';
-import { useOnClickOutside } from '@/ui/utils/useOnClickOutside';
 import { useTransition } from '@react-spring/web';
+import { useOnClickOutside } from '@/ui/utils/useOnClickOutside';
 import {
   InputMessageContent,
   InputMessageFile,
@@ -503,7 +503,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       ease: 'easeOut',
     },
   });
-
+  
   return (
     <InputMessageStyled
       $active={isFocus}

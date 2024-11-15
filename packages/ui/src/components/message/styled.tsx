@@ -106,6 +106,11 @@ export const MessageTop = styled.div`
   margin-bottom: 8px;
 `;
 
+export const MessageBottom = styled.div`
+  margin-top: 4px;
+  grid-area: buttons;
+`;
+
 export const MessageSender = styled.div`
   display: flex;
   align-items: center;
@@ -181,27 +186,28 @@ export const MessageBlock = styled.div<MessageBlockProps>`
   }}
   background: ${({ $hexColor }) => $hexColor};
 
-  ${({ $hasTimestamp }) => ($hasTimestamp
-    ? adaptive({
-      variant: 'dashboard',
-      merge: true,
-      desktop: css`
+  ${({ $hasTimestamp }) =>
+    $hasTimestamp
+      ? adaptive({
+          variant: 'dashboard',
+          merge: true,
+          desktop: css`
             padding: 8px;
           `,
-      tablet: css`
+          tablet: css`
             padding: 8px;
           `,
-    })
-    : adaptive({
-      variant: 'dashboard',
-      merge: true,
-      desktop: css`
+        })
+      : adaptive({
+          variant: 'dashboard',
+          merge: true,
+          desktop: css`
             padding: 14px 16px;
           `,
-      tablet: css`
+          tablet: css`
             padding: 14px;
           `,
-    }))}
+        })}
 `;
 
 export const MessageBlockBottomPanel = styled.div`
@@ -213,29 +219,30 @@ export const MessageBlockBottomPanel = styled.div`
 `;
 
 export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
-  ${({ $top }) => ($top
-    ? adaptive({
-      desktop: css`
+  ${({ $top }) =>
+    $top
+      ? adaptive({
+          desktop: css`
             display: none;
           `,
-      tablet: css`
+          tablet: css`
             display: none;
           `,
-      mobile: css`
+          mobile: css`
             display: block;
           `,
-    })
-    : adaptive({
-      desktop: css`
+        })
+      : adaptive({
+          desktop: css`
             display: block;
           `,
-      tablet: css`
+          tablet: css`
             display: block;
           `,
-      mobile: css`
+          mobile: css`
             display: none;
           `,
-    }))}
+        })}
 `;
 
 export const MessageBlockScrollbarWrapper = styled(Scrollbar).attrs({
@@ -267,7 +274,8 @@ export const MessageBlockTextArea = styled.span.attrs({
   white-space: pre-wrap;
   border: none;
   outline: none;
-  color: ${({ theme }) => (theme.mode === 'dark' ? theme.colors.base.white : theme.colors.base.black)};
+  color: ${({ theme }) =>
+    theme.mode === 'dark' ? theme.colors.base.white : theme.colors.base.black};
   background-color: transparent;
   ${adaptive({
     desktop: css`

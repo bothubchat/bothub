@@ -20,14 +20,6 @@ export interface HeaderStyledProps {
 
 export const HeaderStyled = styled.header<HeaderStyledProps>`
   z-index: ${({ theme }) => theme.zIndex.header};
-  min-width: ${({ theme, $variant }) => {
-    switch ($variant) {
-      case 'main':
-        return theme.mobile.minWidth;
-      case 'dashboard':
-        return '300px';
-    }
-  }};
   width: 100%;
   ${({ theme, $variant }) => {
     switch ($variant) {

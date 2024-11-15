@@ -1,27 +1,83 @@
 import { css, styled } from 'styled-components';
-import React from 'react';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 import { LogoutIcon } from '@/ui/icons/logout';
+import { Scrollbar } from '../../scrollbar';
 
 export interface SidebarUserInfoStyledProps {
   $open: boolean;
 }
 
-export const SidebarUserInfoStyled: React.FC<
-SidebarUserInfoStyledProps & React.PropsWithChildren
-> = styled.div`
+export const SidebarUserInfoBottom = styled.div`
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  & > *:first-child {
+    width: 0;
+    overflow: hidden;
+    transform: translateX(-100%);
+    transition: all 0.3s;
+  }
+`;
+
+export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
   display: flex;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => theme.colors.grayScale.gray4};
   width: 100%;
   transition: padding 0.3s;
+
+
+  ${({ theme }) => adaptive({
+  variant: 'dashboard',
+  merge: true,
+  desktop: `
+    &:hover {
+      background: ${theme.colors.grayScale.gray3};
+      ${SidebarUserInfoBottom} {
+        gap: 10px;
+        transition: width 0.3s;
+        & > *:first-child {
+          overflow: visible;
+          transform: translateX(0);
+          width: fit-content;
+        }
+      }
+    }
+    `,
+  tablet: `
+      background: ${theme.colors.grayScale.gray3};
+      ${SidebarUserInfoBottom} {
+        gap: 10px;
+        transition: width 0.3s;
+        & > *:first-child {
+          overflow: visible;
+          transform: translateX(0);
+          width: fit-content;
+        }
+      }
+    `,
+})}
   ${({ $open }) => $open
     && adaptive({
       variant: 'dashboard',
       desktop: css`
         padding: 20px;
+      `,
+      tablet: css`
+        padding: 0px;
+      `,
+      mobile: css`
+        padding: 0px;
+      `,
+    })}
+  ${({ $open }) => !$open
+    && adaptive({
+      variant: 'dashboard',
+      merge: true,
+      desktop: css`
+        padding: 0px;
       `,
       tablet: css`
         padding: 18px;
@@ -30,25 +86,53 @@ SidebarUserInfoStyledProps & React.PropsWithChildren
         padding: 14px;
       `,
     })}
-  ${({ $open }) => !$open
-    && css`
-      padding: 0px;
-    `}
   ${({ theme, $open }) => ($open
-    ? css`
-    border: 1px solid ${theme.mode === 'light'
-      ? theme.colors.grayScale.gray3
-      : theme.colors.grayScale.gray2};
-    border-radius: 18px;
-    background: ${theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray3};
-    `
-    : css`
-    border: 0px solid rgba(0, 0, 0, 0);
-    border-radius: 0px;
-    background: rgba(0, 0, 0, 0);
-  `)}
+    ? adaptive({
+      variant: 'dashboard',
+      desktop: css`
+        border: 1px solid ${theme.mode === 'light'
+          ? theme.colors.grayScale.gray3
+          : theme.colors.grayScale.gray2};
+        border-radius: 18px;
+        background: ${theme.mode === 'light'
+          ? theme.default.colors.base.white
+          : theme.colors.grayScale.gray4};
+      `,
+      tablet: css`
+        border-radius: 0px;
+        border: 0px solid rgba(0, 0, 0, 0);
+        background: rgba(0, 0, 0, 0);
+      `,
+      mobile: css`
+        border-radius: 0px;
+        border: 0px solid rgba(0, 0, 0, 0);
+      `,
+    })
+    : adaptive({
+      variant: 'dashboard',
+      merge: true,
+      desktop: css`
+        border: 0px solid rgba(0, 0, 0, 0);
+        border-radius: 0px;
+        background: rgba(0, 0, 0, 0);
+      `,
+      tablet: css`
+        border-radius: 10px;
+        background: ${theme.mode === 'light'
+          ? theme.default.colors.base.white
+          : theme.colors.grayScale.gray4};
+        border: 1px solid ${theme.mode === 'light'
+          ? theme.colors.grayScale.gray2
+          : theme.colors.grayScale.gray3};
+      `,
+      mobile: css`
+        border-radius: 8px;
+        border: 1px solid ${theme.mode === 'light'
+          ? theme.colors.grayScale.gray2
+          : theme.colors.grayScale.gray3};
+      `,
+    })
+  )}
   transition: border-width 0.3s ease-out, 
               border-color 0.3s ease-out,
               border-radius 0.3s ease-out,
@@ -78,9 +162,32 @@ export interface SidebarUserInfoTariffContainerProps {
 
 export const SidebarUserInfoTariffContainer = styled.div<SidebarUserInfoTariffContainerProps>`
   ${({ $open }) => !$open
-    && css`
-      display: none;
-    `}
+    && adaptive({
+      variant: 'dashboard',
+      desktop: css`
+        display: none;
+      `,
+      tablet: css`
+        display: flex;
+      `,
+      mobile: css`
+        display: flex;
+      `,
+    })}
+
+  ${({ $open }) => $open
+    && adaptive({
+      variant: 'dashboard',
+      desktop: css`
+        display: flex;
+      `,
+      tablet: css`
+        display: none;
+      `,
+      mobile: css`
+        display: none;
+      `,
+    })}
 `;
 
 export interface SidebarUserInfoUpdateTariffContainerProps {
@@ -91,22 +198,48 @@ export const SidebarUserInfoUpdateTariffContainer = styled.div<SidebarUserInfoUp
   display: flex;
   transition: all 0.3s;
   width: 100%;
+  height: 40px;
   white-space: nowrap;
   overflow: hidden;
   ${({ $open }) => {
     if (!$open) {
-      return css`
+      return adaptive({
+        variant: 'dashboard',
+        desktop: css`
+          opacity: 0;
+          height: 0px;
+          margin-top: 0px;
+        `,
+        tablet: css`
+          opacity: 1;
+          height: auto;
+          margin-top: 12px;
+        `,
+        mobile: css`
+          opacity: 1;
+          height: auto;
+          margin-top: 10px;
+        `,
+      });
+    }
+    return adaptive({
+      variant: 'dashboard',
+      desktop: css`
+        opacity: 1;
+        height: auto;
+        margin-top: 14px;
+      `,
+      tablet: css`
         opacity: 0;
         height: 0px;
         margin-top: 0px;
-      `;
-    }
-
-    return css`
-      opacity: 1;
-      height: auto;
-      margin-top: 14px;
-    `;
+      `,
+      mobile: css`
+        opacity: 0;
+        height: 0px;
+        margin-top: 0px;
+      `,
+    });
   }}
 `;
 
@@ -177,7 +310,7 @@ export const SidebarUserInfoEliteTariff = styled(
 ).attrs({ children: 'Elite' })``;
 
 export const SidebarUserInfoUpdateTariffButton = styled(Button).attrs({
-  fullWidth: true,
+  fullWidth: true, size: 'small',
 })``;
 
 export interface SidebarUserInfoLogoutButtonContainerProps {
@@ -185,10 +318,31 @@ export interface SidebarUserInfoLogoutButtonContainerProps {
 }
 
 export const SidebarUserInfoLogoutButtonContainer = styled.div<SidebarUserInfoLogoutButtonContainerProps>`
-  ${({ $open }) => !$open
-    && css`
-      display: none;
-    `}
+  ${({ $open }) => (!$open
+    ? adaptive({
+      variant: 'dashboard',
+      desktop: css`
+        display: none;
+      `,
+      tablet: css`
+        display: flex;
+      `,
+      mobile: css`
+        display: flex;
+      `,
+    })
+    : adaptive({
+      variant: 'dashboard',
+      desktop: css`
+        display: flex;
+      `,
+      tablet: css`
+        display: none;
+      `,
+      mobile: css`
+        display: none;
+      `,
+    }))}
 `;
 
 export interface SidebarUserInfoUpdateTariffContainerProps {

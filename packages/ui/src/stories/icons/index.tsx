@@ -175,9 +175,29 @@ import {
   MinWindowIcon,
   MaxWindowIcon,
   HappyRobotIcon,
+  AddChatIcon,
+  AddGroupIcon,
+  DeleteChatIcon,
+  DragDotIcon,
+  TempChatIcon,
+  SidebarChatIcon,
+  TextBoldIcon,
+  TextItalicIcon,
+  TextUnderlineIcon,
+  TextStrikethroughIcon,
+  RefreshIcon,
+  CopyVariantsIcon,
+  SortAscendingIcon,
+  SortDescendingIcon,
+  QuoteIcon,
+  URLCircleIcon,
+  HideUiIcon,
+  ShowUiIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
+import { OrganizationIcon } from '@/ui/icons/organization';
+import { SimpleGearIcon } from '@/ui/icons/simple-gear';
 
 export type IconsProps = IconProviderProps;
 
@@ -245,6 +265,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="WarningBigIcon">{WarningBigIcon}</IconItem>
         <IconItem name="ErrorBigIcon">{ErrorBigIcon}</IconItem>
         <IconItem name="SuccessBigIcon">{SuccessBigIcon}</IconItem>
+        <IconItem name="DragDotIcon">{DragDotIcon}</IconItem>
         <IconItem name="MjIcon">{MjIcon}</IconItem>
         <IconItem name="CardIcon">{CardIcon}</IconItem>
         <IconItem name="ArrowNarrowUpIcon">{ArrowNarrowUpIcon}</IconItem>
@@ -368,6 +389,27 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="YandexIcon">{YandexIcon}</IconItem>
         <IconItem name="VKIcon">{VKIcon}</IconItem>
         <IconItem name="ResendIcon">{ResendIcon}</IconItem>
+        <IconItem name="AddChatIcon">{AddChatIcon}</IconItem>
+        <IconItem name="AddGroupIcon">{AddGroupIcon}</IconItem>
+        <IconItem name="DeleteChatIcon">{DeleteChatIcon}</IconItem>
+        <IconItem name="TempChatIcon">{TempChatIcon}</IconItem>
+        <IconItem name="SidebarChatIcon">{SidebarChatIcon}</IconItem>
+        <IconItem name="OrganizationIcon">{OrganizationIcon}</IconItem>
+        <IconItem name="SimpleGearIcon">{SimpleGearIcon}</IconItem>
+        <IconItem name="TextBoldIcon">{TextBoldIcon}</IconItem>
+        <IconItem name="TextItalicIcon">{TextItalicIcon}</IconItem>
+        <IconItem name="TextUnderlineIcon">{TextUnderlineIcon}</IconItem>
+        <IconItem name="TextStrikethroughIcon">
+          {TextStrikethroughIcon}
+        </IconItem>
+        <IconItem name="RefreshIcon">{RefreshIcon}</IconItem>
+        <IconItem name="CopyVariantsIcon">{CopyVariantsIcon}</IconItem>
+        <IconItem name="SortAscendingIcon">{SortAscendingIcon}</IconItem>
+        <IconItem name="SortDescendingIcon">{SortDescendingIcon}</IconItem>
+        <IconItem name="QuoteIcon">{QuoteIcon}</IconItem>
+        <IconItem name="URLCircleIcon">{URLCircleIcon}</IconItem>
+        <IconItem name="ShowUiIcon">{ShowUiIcon}</IconItem>
+        <IconItem name="HideUiIcon">{HideUiIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

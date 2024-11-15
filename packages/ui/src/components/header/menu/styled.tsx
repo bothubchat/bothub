@@ -2,16 +2,18 @@ import { css, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { HeaderVariant } from '../types';
 import { adaptive } from '@/ui/adaptive';
+import { HeaderNavLinkStyled } from '../nav/link/styled';
 
 export interface HeaderMenuStyledProps {
   $variant: HeaderVariant;
+  $isPreset?: boolean;
 }
 
 export const HeaderMenuStyled = styled.div`
   position: relative;
 `;
 
-export const HeaderMenuContent = styled(animated.div)<HeaderMenuStyledProps>`
+export const HeaderMenuContent = styled(animated.div) <HeaderMenuStyledProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -24,7 +26,7 @@ export const HeaderMenuContent = styled(animated.div)<HeaderMenuStyledProps>`
   left: 0px;
   right: 0px;
   z-index: ${({ theme }) => theme.zIndex.headerMenu};
-  ${({ theme, $variant }) => {
+  ${({ theme, $variant, $isPreset }) => {
     switch ($variant) {
       case 'main':
         return adaptive({
@@ -50,10 +52,12 @@ export const HeaderMenuContent = styled(animated.div)<HeaderMenuStyledProps>`
             height: calc(100vh - ${theme.dashboard.header.height});
           `,
           tablet: css`
+            ${$isPreset ? '' : 'display: none;'}
             padding: 42px 18px;
             height: calc(100vh - ${theme.dashboard.header.tablet.height});
           `,
           mobile: css`
+             ${$isPreset ? '' : 'display: none;'}
             padding: 32px 16px;
             height: calc(100vh - ${theme.dashboard.header.mobile.height});
           `

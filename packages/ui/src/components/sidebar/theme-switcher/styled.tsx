@@ -10,19 +10,22 @@ export const SidebarThemeSwitcherStyled = styled.button<SidebarThemeSwitcherStyl
   display: ${({ $open }) => (
     $open ? 'inline-flex' : 'none'
   )};
-  width: 100%;
+  width: fit-content;
   overflow: hidden;
   align-items: center;
   cursor: pointer;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
   border: none;
-  border-radius: 14px;
-  padding: 8px;
+  border-radius: 200px;
+  padding: 2px;
   ${adaptive({
     variant: 'dashboard',
     merge: true,
-    tablet: css`
+    desktop: css`
       display: none;
+    `,
+    mobile: css`
+      display: inline-flex;
     `
   })}
 `;
@@ -41,6 +44,7 @@ export const SidebarThemeSwitcherItem = styled.span`
   border-radius: 12px;
   width: 100%;
   padding: 6px;
+  
 `;
 
 export const SidebarThemeSwitcherItemBackground = styled.span<{ $isLight: boolean }>`
@@ -52,7 +56,7 @@ export const SidebarThemeSwitcherItemBackground = styled.span<{ $isLight: boolea
   width: calc(50% - 3px);
   height: 100%;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  border-radius: 12px;
+  border-radius: 50%;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
   transition: transform 0.2s ease-out, background 0.2s ease-out;
   transform: ${({ $isLight }) => ($isLight ? 'translateX(0%)' : 'translateX(calc(100% + 6px))')};
@@ -61,6 +65,7 @@ export const SidebarThemeSwitcherItemBackground = styled.span<{ $isLight: boolea
 export const SidebarThemeSwitcherItemContent = styled.span`
   display: inline-flex;
   position: relative;
+  padding: 4px;
   width: 100%;
   justify-content: center;
 `;
