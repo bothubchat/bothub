@@ -20,26 +20,44 @@ export interface MessageStyledProps {
   $variant: MessageVariant;
 }
 
-export const MessageStyledWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
-export const MessageStyled = styled.div<MessageStyledProps>`
+export const MessageStyledWrapper = styled.div<MessageStyledProps>`
   display: flex;
   width: 100%;
   max-width: 100%;
-  overflow: visible;
   ${({ $variant }) => {
     switch ($variant) {
       case 'user':
         return css`
           justify-content: flex-start;
           flex-direction: row-reverse;
+          margin-left: auto;
         `;
       case 'assistant':
-        return css``;
+        return css`
+          margin-right: auto;
+        `;
+    }
+  }}
+`;
+
+export const MessageStyledWithBottomPanel = styled.div`
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+export const MessageStyled = styled.div<MessageStyledProps>`
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  ${({ $variant }) => {
+    switch ($variant) {
+      case 'user':
+        return css`
+          flex-direction: row-reverse;
+        `;
     }
   }}
   ${() => css`
@@ -70,6 +88,7 @@ export const MessageContent = styled.div<MessageContentProps>`
   position: relative;
   display: grid;
   column-gap: 10px;
+  max-width: 100%;
   ${({ $variant }) => {
     switch ($variant) {
       case 'user':
@@ -163,14 +182,16 @@ export const MessageBlockWrapper = styled.div`
   grid-area: block;
   gap: 6px;
   position: relative;
+  overflow: auto;
 `;
 
 export const MessageBlock = styled.div<MessageBlockProps>`
   position: relative;
   display: flex;
   border-radius: 10px;
-  overflow: hidden;
   width: 100%;
+  max-width: 100%;
+  overflow: auto;
   ${({ $variant }) => {
     switch ($variant) {
       case 'user':
@@ -185,28 +206,27 @@ export const MessageBlock = styled.div<MessageBlockProps>`
   }}
   background: ${({ $hexColor }) => $hexColor};
 
-  ${({ $hasTimestamp }) =>
-    $hasTimestamp
-      ? adaptive({
-          variant: 'dashboard',
-          merge: true,
-          desktop: css`
+  ${({ $hasTimestamp }) => ($hasTimestamp
+    ? adaptive({
+      variant: 'dashboard',
+      merge: true,
+      desktop: css`
             padding: 8px;
           `,
-          tablet: css`
+      tablet: css`
             padding: 8px;
           `,
-        })
-      : adaptive({
-          variant: 'dashboard',
-          merge: true,
-          desktop: css`
+    })
+    : adaptive({
+      variant: 'dashboard',
+      merge: true,
+      desktop: css`
             padding: 14px 16px;
           `,
-          tablet: css`
+      tablet: css`
             padding: 14px;
           `,
-        })}
+    }))}
 `;
 
 export const MessageBlockBottomPanel = styled.div`
@@ -218,30 +238,29 @@ export const MessageBlockBottomPanel = styled.div`
 `;
 
 export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
-  ${({ $top }) =>
-    $top
-      ? adaptive({
-          desktop: css`
+  ${({ $top }) => ($top
+    ? adaptive({
+      desktop: css`
             display: none;
           `,
-          tablet: css`
+      tablet: css`
             display: none;
           `,
-          mobile: css`
+      mobile: css`
             display: block;
           `,
-        })
-      : adaptive({
-          desktop: css`
+    })
+    : adaptive({
+      desktop: css`
             display: block;
           `,
-          tablet: css`
+      tablet: css`
             display: block;
           `,
-          mobile: css`
+      mobile: css`
             display: none;
           `,
-        })}
+    }))}
 `;
 
 export const MessageBlockScrollbarWrapper = styled(Scrollbar).attrs({
@@ -273,8 +292,7 @@ export const MessageBlockTextArea = styled.span.attrs({
   white-space: pre-wrap;
   border: none;
   outline: none;
-  color: ${({ theme }) =>
-    theme.mode === 'dark' ? theme.colors.base.white : theme.colors.base.black};
+  color: ${({ theme }) => (theme.mode === 'dark' ? theme.colors.base.white : theme.colors.base.black)};
   background-color: transparent;
   ${adaptive({
     desktop: css`

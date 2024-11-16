@@ -27,10 +27,17 @@ export const MessageVersionsSwitchButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-inline: 4px;
+  margin-inline: 4px;
+  padding: 4px;
+  border-radius: 4px;
   color: ${({ theme }) => theme.colors.grayScale.gray1};
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+  }
   &:active {
+    transform: translateY(1px);
     color: #4785ff;
   }
+  transition: all 50ms ease-out;
   cursor: pointer;
 `;
