@@ -1,17 +1,17 @@
 import React, {
-  forwardRef, useCallback, useImperativeHandle, useRef 
+  forwardRef, useCallback, useImperativeHandle, useRef
 } from 'react';
 import { ButtonStyled, ButtonText } from './styled';
 import { useTheme } from '@/ui/theme';
 import { IconProvider, IconProviderProps, isIconComponent } from '@/ui/components/icon';
 import {
-  ButtonComponent, ButtonCorner, ButtonSize, ButtonVariant 
+  ButtonComponent, ButtonCorner, ButtonSize, ButtonVariant
 } from './types';
 import { useTooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
 import { InfoIcon } from '@/ui/icons/info';
 
-export type ButtonProps = 
+export type ButtonProps =
   Omit<React.ComponentProps<'button'>, 'ref' | 'onAnimationStart' | 'onDrag' | 'onDragStart' | 'onDragEnd'> & {
     disabled?: boolean;
     fullWidth?: boolean;
@@ -25,35 +25,36 @@ export type ButtonProps =
     iconFill?: string;
     skeleton?: boolean;
     htmlFor?: string;
+    href?: string;
     color?: string;
     disableHoverColor?: boolean;
     children?: React.ReactNode;
   };
 
 export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
-  children, 
-  fullWidth = false, 
+  children,
+  fullWidth = false,
   variant = 'primary',
   component = 'button',
   type = 'button',
-  size = 'small', 
-  corner = 'brick', 
-  startIcon = null, 
-  endIcon = null, 
+  size = 'small',
+  corner = 'brick',
+  startIcon = null,
+  endIcon = null,
   iconSize,
   iconFill,
-  disabled = false, 
+  disabled = false,
   skeleton = false,
   color,
   disableHoverColor = false,
-  ...props 
+  ...props
 }, ref) => {
   const theme = useTheme();
 
   const elementRef = useRef<HTMLButtonElement | null>(null);
 
   const childrenArray: React.ReactNode[] = React.Children.toArray(children);
-  const isIconButton: boolean = React.isValidElement(childrenArray[0]) 
+  const isIconButton: boolean = React.isValidElement(childrenArray[0])
     ? isIconComponent(childrenArray[0].type) : false;
   if (typeof iconSize !== 'number') {
     switch (size) {
@@ -79,7 +80,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
       }
     }
   }
-  
+
   const iconProps: IconProviderProps = {
     size: iconSize,
     fill: iconFill
@@ -100,15 +101,15 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
   }, [props.onMouseLeave, handleTooltipMouseLeave]);
 
   useImperativeHandle(
-    ref, 
+    ref,
     () => (
       elementRef.current as HTMLButtonElement
-    ), 
+    ),
     [elementRef.current]
   );
 
   return (
-    <ButtonStyled 
+    <ButtonStyled
       {...props}
       disabled={disabled}
       type={type}
@@ -127,6 +128,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
         type,
         disabled
       })}
+      {...(component === 'a' && { href: props.href })}
       {...(component === 'label' && { htmlFor: props.htmlFor })}
       ref={elementRef}
       onMouseEnter={handleMouseEnter}
@@ -159,9 +161,9 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(({
         </IconProvider>
       )}
       {skeleton && (
-        <Skeleton 
-          width={70} 
-          height={17.5} 
+        <Skeleton
+          width={70}
+          height={17.5}
           colors={[
             theme.colors.base.white
           ]}

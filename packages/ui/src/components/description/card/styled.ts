@@ -147,8 +147,9 @@ export const DescriptionCardTertiaryText = styled(Typography).attrs({ variant: '
 
 export const DescriptionCardButton = styled(Button)`
   margin-top: 20px;
+  display: flex;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    display: block;
+    display: flex;
     margin: auto;
     margin-top: 14px;
     margin-bottom: 0px;
