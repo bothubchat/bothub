@@ -88,6 +88,7 @@ export type SelectFieldProps = (SelectFieldDefaultProps | SelectFieldMultiProps)
   padding?: [number, number];
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
+  onInputFocus?: (event: React.FocusEvent<HTMLInputElement>) => unknown;
 } & React.PropsWithChildren;
 
 export const SelectField: React.FC<SelectFieldProps> = ({
@@ -115,6 +116,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   clearable = false,
   onOptionClick,
   onInputChange,
+  onInputFocus,
   children,
   ...props
 }) => {
@@ -381,7 +383,10 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                           disabled={disabled}
                           onClick={handleInputClick.bind(null, true)}
                           onChange={handleInputChange}
-                          onFocus={setIsInputNativeFocus.bind(null, true)}
+                          onFocus={(e) => {
+                            setIsInputNativeFocus(true);
+                            onInputFocus?.(e);
+                          }}
                           onBlur={setIsInputNativeFocus.bind(null, false)}
                         />
                       )}
