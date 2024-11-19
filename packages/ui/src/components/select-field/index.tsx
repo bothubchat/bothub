@@ -88,7 +88,7 @@ export type SelectFieldProps = (SelectFieldDefaultProps | SelectFieldMultiProps)
   padding?: [number, number];
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
-  onInputFocus?: (event: React.FocusEvent<HTMLInputElement>) => unknown;
+  onSelectClick?: () => void;
 } & React.PropsWithChildren;
 
 export const SelectField: React.FC<SelectFieldProps> = ({
@@ -116,7 +116,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   clearable = false,
   onOptionClick,
   onInputChange,
-  onInputFocus,
+  onSelectClick,
   children,
   ...props
 }) => {
@@ -220,6 +220,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   }, [value]);
 
   const handleInputClick = useCallback((native: boolean, event: React.MouseEvent<HTMLElement>) => {
+    onSelectClick?.();
     const inputEl: HTMLDivElement | null = inputRef.current;
     
     if (!inputEl || disabled) {
@@ -276,7 +277,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     } else {
       setIsOpen(!isOpen);
     }
-  }, [disabled, isOpen, placement, initialPlacement]);
+  }, [disabled, isOpen, placement, initialPlacement, onSelectClick]);
 
   const handleInputChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => {
     setInputValue(event.currentTarget.value);
@@ -383,10 +384,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                           disabled={disabled}
                           onClick={handleInputClick.bind(null, true)}
                           onChange={handleInputChange}
-                          onFocus={(e) => {
-                            setIsInputNativeFocus(true);
-                            onInputFocus?.(e);
-                          }}
+                          onFocus={setIsInputNativeFocus.bind(null, true)}
                           onBlur={setIsInputNativeFocus.bind(null, false)}
                         />
                       )}
