@@ -69,8 +69,8 @@ export const MessageImage: React.FC<MessageImageProps> = ({
             src: imageUrl
           })}
           {...(!fetchImage && { src })}
-          width={width}
-          height={height}
+          width={width ?? 300}
+          height={height ?? 300}
           onLoad={setIsLoading.bind(null, false)}
         />
         {!progress && buttons}
