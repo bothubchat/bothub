@@ -503,7 +503,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       ease: 'easeOut',
     },
   });
-
+  
   return (
     <InputMessageStyled
       $active={isFocus}

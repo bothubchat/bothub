@@ -1,6 +1,6 @@
 import React from 'react';
 import { BackgroundVariant } from './types';
-import { BackgroundBluePurpleImage, BackgroundStyled } from './styled';
+import { BackgroundBluePurpleBottomLeftImage, BackgroundBluePurpleCenterImage, BackgroundStyled } from './styled';
 
 export interface BackgroundProps extends React.ComponentProps<'div'> {
   variant?: BackgroundVariant;
@@ -15,7 +15,10 @@ export const Background: React.FC<BackgroundProps> = ({
   let imageNode: React.ReactNode;
   switch (variant) {
     case 'blue-purple':
-      imageNode = <BackgroundBluePurpleImage />; 
+      imageNode = <BackgroundBluePurpleCenterImage />; 
+      break;
+    case 'blue-purple-bottom-left':
+      imageNode = <BackgroundBluePurpleBottomLeftImage />;
       break;
     default:
       imageNode = null;

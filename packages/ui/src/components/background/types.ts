@@ -1,1 +1,1 @@
-export type BackgroundVariant = 'grid' | 'blue-purple';
+export type BackgroundVariant = 'grid' | 'blue-purple' | 'blue-purple-bottom-left';
