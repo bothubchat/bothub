@@ -34,3 +34,15 @@ body {
   font-display: swap;
   src: url("../../fonts/IBMPlexSans-Regular.ttf");
 }
+@font-face {
+  font-family: 'Inter';
+  font-weight: 700;
+  font-display: swap;
+  src: url('../../fonts/Inter-Bold.ttf');
+}
+@font-face {
+  font-family: 'Inter';
+  font-weight: 900;
+  font-display: swap;
+  src: url('../../fonts/Inter-ExtraBold.ttf');
+}
