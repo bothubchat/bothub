@@ -14,6 +14,7 @@ import {
   BlackFridayBannerBackgroundMainMobile,
   BlackFridayBannerBackgroundMainTablet,
   BlackFridayBannerBackgroundWave,
+  BlackFridayBannerStyledGradient,
 } from "./styled";
 import { BlackFridayBannerProps } from './types';
 
@@ -36,6 +37,7 @@ export const BlackFridayBanner: React.FC<BlackFridayBannerProps> = (
 
   return (
     <BlackFridayBannerStyled $variant={$variant}>
+      <BlackFridayBannerStyledGradient />
       <BlackFridayBannerBackgroundText $variant={$variant}>
         {backgroundText}
       </BlackFridayBannerBackgroundText>

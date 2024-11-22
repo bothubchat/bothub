@@ -1,5 +1,5 @@
 import { adaptive } from '@/ui/adaptive';
-import styled, { css } from 'styled-components';
+import { css,styled } from 'styled-components';
 
 import dashboardDesktop from './assets/dashboard/desktop.svg';
 import dashboardTablet from './assets/dashboard/tablet.svg';
@@ -19,9 +19,10 @@ export const BlackFridayBannerStyled = styled.div<BlackFridayBannerStyledProps>`
   align-items: center;
   height: 200px;
   padding: 60px 40px;
+  background: ${({ theme }) => theme.default.colors.grayScale.gray7};
   border-radius: 24px;
   width: 100%;
-  background: linear-gradient(90deg, rgba(16, 19, 38, 0.5) 0%, rgba(28, 100, 242, 0.5) 100%);
+
   overflow: hidden;
   ${({ $variant }) => {
     switch ($variant) {
@@ -58,6 +59,17 @@ export const BlackFridayBannerStyled = styled.div<BlackFridayBannerStyledProps>`
   }}
 `;
 
+export const BlackFridayBannerStyledGradient = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, rgba(16, 19, 38, 0.5) 0%, rgba(28, 100, 242, 0.5) 100%);
+  width: 100%;
+  height: 100%;
+`;
+
 export const BlackFridayBannerBackgroundText = styled.div<{ $variant?: 'dashboard' | 'main'}>`
   position: absolute;
   display: flex;
@@ -70,7 +82,7 @@ export const BlackFridayBannerBackgroundText = styled.div<{ $variant?: 'dashboar
   bottom: 0;
   opacity: 0.1;
   z-index: 1;
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => theme.default.colors.base.white};
   overflow: hidden;
   text-transform: uppercase;
   font-family: inherit;
@@ -236,7 +248,7 @@ export const BlackFridayContainer = styled.div<{$variant?: 'dashboard' | 'main'}
   white-space: pre-wrap;
   align-items: flex-start;
   gap: 20px;
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => theme.default.colors.base.white};
   ${({ $variant }) => {
     switch ($variant) {
       case 'dashboard':
