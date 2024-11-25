@@ -14,7 +14,9 @@ export const Basic: TariffListRowStory = {
         giveCapsText: 'Вы получаете',
         giveCaps: '10 000 Caps',
         price: '0',
+        variant: 'main',
         currency: '₽',
+        isFree: true,
         color: 'white',
         description: 'Хватит, чтобы написать небольшой абзац для сочинения',
       },
@@ -23,6 +25,7 @@ export const Basic: TariffListRowStory = {
         giveCapsText: 'Вы получаете',
         giveCaps: '1 000 000 Caps',
         price: '200',
+        oldPrice: '300',
         currency: '₽',
         color: 'blue',
         description:
@@ -32,6 +35,7 @@ export const Basic: TariffListRowStory = {
         name: 'Premium',
         giveCapsText: 'Вы получаете',
         giveCaps: '3 000 000 Caps',
+        oldPrice: '300',
         price: '600',
         currency: '₽',
         color: 'blue-lilac',
@@ -42,6 +46,7 @@ export const Basic: TariffListRowStory = {
         name: 'Deluxe',
         giveCapsText: 'Вы получаете',
         giveCaps: '7 500 000 Caps',
+        oldPrice: '300',
         price: '1500',
         currency: '₽',
         color: 'blue-lilac',
@@ -52,6 +57,7 @@ export const Basic: TariffListRowStory = {
         name: 'Elite',
         giveCapsText: 'Вы получаете',
         giveCaps: '30 000 000 Caps',
+        oldPrice: '3002',
         price: '5400',
         currency: '₽',
         color: 'blue-lilac',
@@ -64,5 +70,5 @@ export const Basic: TariffListRowStory = {
 export default {
   title: 'Components/Tariff/ListRow',
   component: TariffListRow,
-  decorators: [StoryDecorator()],
+  decorators: [StoryDecorator({ scale: 'dashboard' })],
 } as TariffListRowMeta;
