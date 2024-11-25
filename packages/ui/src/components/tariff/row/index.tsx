@@ -48,7 +48,6 @@ export interface TariffCardRowProps extends React.ComponentProps<'div'> {
   oldPrice?: string;
   selected?: boolean;
   variant?: 'main' | 'dashboard';
-  isFree?: boolean;
   color?: TariffCardColor;
   isDefault?: boolean;
 }
@@ -64,7 +63,6 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
   selected,
   isDefault = true,
   color = 'white',
-  isFree,
   oldPrice,
   children,
   description,
@@ -145,13 +143,13 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
           </TariffCardStyledMiddle>
         </TarrifCardStyledLeft>
         <TarrifCardStyledRight $variant={variant}>
-          <TariffCardStyledPrice $isFree={isFree} $variant={variant}>
+          <TariffCardStyledPrice $isDefault={isDefault} $variant={variant}>
             {price}
           </TariffCardStyledPrice>
-          <TariffCardStyledCurrency $isFree={isFree} $variant={variant}>
+          <TariffCardStyledCurrency $isDefault={isDefault} $variant={variant}>
             {currency}
           </TariffCardStyledCurrency>
-          {!isFree && oldPrice && (
+          {!isDefault && oldPrice && (
             <TariffCardStyledOldPriceWrapper $variant={variant}>
               <TariffCardStyledOldPrice $variant={variant}>
                 {`${oldPrice} ${currency}`}

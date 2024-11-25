@@ -30,7 +30,7 @@ export const TariffListRow: React.FC<ListRowProps> = ({ cardList, onChange }) =>
           key={index}
           name={card.name}
           oldPrice={card.oldPrice}
-          isFree={card.isFree}
+          isDefault={card.isDefault}
           giveCaps={card.giveCaps}
           giveCapsText={card.giveCapsText}
           price={card.price}

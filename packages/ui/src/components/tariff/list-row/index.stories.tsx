@@ -16,12 +16,13 @@ export const Basic: TariffListRowStory = {
         price: '0',
         variant: 'main',
         currency: '₽',
-        isFree: true,
+        isDefault: true,
         color: 'white',
         description: 'Хватит, чтобы написать небольшой абзац для сочинения',
       },
       {
         name: 'Basic',
+        isDefault: false,
         giveCapsText: 'Вы получаете',
         giveCaps: '1 000 000 Caps',
         price: '200',
@@ -33,6 +34,7 @@ export const Basic: TariffListRowStory = {
       },
       {
         name: 'Premium',
+        isDefault: true,
         giveCapsText: 'Вы получаете',
         giveCaps: '3 000 000 Caps',
         oldPrice: '300',
@@ -44,6 +46,7 @@ export const Basic: TariffListRowStory = {
       },
       {
         name: 'Deluxe',
+        isDefault: true,
         giveCapsText: 'Вы получаете',
         giveCaps: '7 500 000 Caps',
         oldPrice: '300',
@@ -55,6 +58,7 @@ export const Basic: TariffListRowStory = {
       },
       {
         name: 'Elite',
+        isDefault: true,
         giveCapsText: 'Вы получаете',
         giveCaps: '30 000 000 Caps',
         oldPrice: '3002',

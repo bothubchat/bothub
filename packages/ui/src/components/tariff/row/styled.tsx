@@ -365,7 +365,7 @@ export const TariffCardStyledDescription = styled(Typography).attrs({
   -webkit-box-orient: vertical;
 `;
 
-export const TarrifCardStyledRight = styled.div<{ $isFree?: boolean, $variant: Variant }>`
+export const TarrifCardStyledRight = styled.div<{ $variant: Variant }>`
   position: relative;
   white-space: nowrap;
   display: flex;
@@ -387,8 +387,8 @@ export const TarrifCardStyledRight = styled.div<{ $isFree?: boolean, $variant: V
 
 export const TariffCardStyledPrice = styled(Typography).attrs({
   variant: 'h2',
-}) <{ $isFree?: boolean, $variant: Variant }>`
-  color: ${({ theme, $isFree }) => $isFree ? theme.colors.base.white : theme.default.colors.base.white};
+}) <{ $isDefault?: boolean, $variant: Variant }>`
+  color: ${({ theme, $isDefault }) => $isDefault ? theme.colors.base.white : theme.default.colors.base.white};
   ${({ $variant }) => adaptive({
   variant: $variant,
   mobile: css`
@@ -399,9 +399,9 @@ export const TariffCardStyledPrice = styled(Typography).attrs({
 
 export const TariffCardStyledCurrency = styled(Typography).attrs({
   variant: 'body-l-medium',
-}) <{ $isFree?: boolean, $variant: Variant }>`
+}) <{ $isDefault?: boolean, $variant: Variant }>`
   padding-bottom: 4px;
-  color: ${({ theme, $isFree }) => $isFree ? theme.colors.base.white : theme.default.colors.base.white};
+  color: ${({ theme, $isDefault }) => $isDefault ? theme.colors.base.white : theme.default.colors.base.white};
   ${({ $variant }) => adaptive({
   variant: $variant,
   mobile: css`
