@@ -57,3 +57,5 @@ export const BlackFridayBanner: React.FC<BlackFridayBannerProps> = (
     </BlackFridayBannerStyled>
   );
 };
+
+export * from './mini'
