@@ -19,7 +19,7 @@ export const BothubUIProvider: React.FC<BothubUIProviderProps> = ({
   >
     {children}
     {!disableGlobalStyle && (
-      <BothubGlobalStyle 
+      <BothubGlobalStyle
         {...globalStyle}
       />
     )}
