@@ -7,7 +7,7 @@ interface ActionButtonProps {
   id?: string;
   ref?: MutableRefObject<HTMLButtonElement | null>;
   message?: string;
-  tooltipLabel?: string;
+  tooltipLabel?: string | null;
   children?: React.ReactNode;
   onClick?: MessageActionEventHandler;
   onMouseEnter?: () => void;

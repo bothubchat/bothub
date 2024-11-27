@@ -9,7 +9,8 @@ export const MessageTimestamp = ({ time }: { time: string }) => {
   return (
     <S.TimestampStyled>
       <S.TimestampText>
-        {hours < 10 ? `0${hours}` : hours}:
+        {hours < 10 ? `0${hours}` : hours}
+        :
         {minutes < 10 ? `0${minutes}` : minutes}
       </S.TimestampText>
     </S.TimestampStyled>

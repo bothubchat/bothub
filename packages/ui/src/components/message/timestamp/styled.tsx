@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components';
-import { Typography } from '../../typography';
+import { styled, css } from 'styled-components';
+import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
 
 export const TimestampStyled = styled.div`

@@ -23,7 +23,6 @@ export interface MessageStyledProps {
 export const MessageStyledWrapper = styled.div<MessageStyledProps>`
   display: flex;
   width: 100%;
-  max-width: 100%;
   ${({ $variant }) => {
     switch ($variant) {
       case 'user':
@@ -50,7 +49,6 @@ export const MessageStyledWithBottomPanel = styled.div`
 
 export const MessageStyled = styled.div<MessageStyledProps>`
   display: flex;
-  width: fit-content;
   max-width: 100%;
   ${({ $variant }) => {
     switch ($variant) {
@@ -101,17 +99,6 @@ export const MessageContent = styled.div<MessageContentProps>`
         `;
     }
   }}
-  ${adaptive({
-    desktop: css`
-      max-width: 90%;
-    `,
-    tablet: css`
-      max-width: 95%;
-    `,
-    mobile: css`
-      max-width: 100%;
-    `,
-  })}
 `;
 
 export const MessageTop = styled.div`
@@ -234,7 +221,7 @@ export const MessageBlockBottomPanel = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-left: 48px;
-  margin-right: 96px;
+  margin-right: 95px;
 `;
 
 export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
@@ -305,6 +292,10 @@ export const MessageBlockTextArea = styled.span.attrs({
       font-size: 14px;
     `,
   })}
+`;
+
+export const MessageButtonsStyled = styled.div`
+  margin-left: 48px;
 `;
 
 export const MessageTransaction = styled(Typography).attrs({

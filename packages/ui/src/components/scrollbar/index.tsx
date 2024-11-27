@@ -84,25 +84,23 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         const isBiggerThanContentHeight = scrollShadowsSize > clientHeight;
         const isBiggerThanContentWidth = scrollShadowsSize > clientWidth;
         const isTop = !isBiggerThanContentHeight && scrollTop !== 0;
-        const isBottom =
-          !isBiggerThanContentHeight &&
-          Math.round(scrollTop) + 1 < scrollHeight - clientHeight;
+        const isBottom = !isBiggerThanContentHeight
+          && Math.round(scrollTop) + 1 < scrollHeight - clientHeight;
 
         setIsTop(isTop);
         setIsBottom(isBottom);
         setIsLeft(!isBiggerThanContentWidth && scrollLeft !== 0);
         setIsRight(
-          !isBiggerThanContentWidth &&
-            Math.round(scrollLeft) + 1 < scrollWidth - clientWidth
+          !isBiggerThanContentWidth
+            && Math.round(scrollLeft) + 1 < scrollWidth - clientWidth
         );
 
         const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
         setPreviousScrollTop(scrollbarEl.scrollTop);
 
         if (withStickyBottom) {
-          const scrollBottom =
-            scrollbarEl.clientHeight -
-            Math.ceil(scrollbarEl.scrollHeight - scrollbarEl.scrollTop);
+          const scrollBottom = scrollbarEl.clientHeight
+            - Math.ceil(scrollbarEl.scrollHeight - scrollbarEl.scrollTop);
           if (Math.abs(scrollBottom) < 20 && !isUpScroll) {
             setSticky(true);
           } else if (isUpScroll) {
@@ -155,8 +153,8 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
           return;
         }
         if (
-          (lockedMode || typeof options !== 'undefined') &&
-          scrollbarEl !== null
+          (lockedMode || typeof options !== 'undefined')
+          && scrollbarEl !== null
         ) {
           const { side } = options ?? scrollLocked ?? { side: 'bottom' };
 
@@ -244,7 +242,6 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
 
     const contentNode: React.ReactNode = (
       <ScrollbarContent
-        id="messages-scrollbar-content"
         $variant={variant}
         $size={size}
         $disabled={disabled}

@@ -14,7 +14,7 @@ export const CopyButton = ({
   tooltipLabel,
 }: {
   onCopy?: MessageActionEventHandler;
-  tooltipLabel?: string;
+  tooltipLabel?: string | null;
 }) => {
   const [copied, setCopied] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();

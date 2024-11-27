@@ -611,6 +611,11 @@ export const NewDesignFeatures: MessageStory = {
     version: 2,
     totalVersions: 5,
     transaction: <MessageTransaction>-1571 CAPS</MessageTransaction>,
+    buttons: (
+      <MessageButtons>
+        <MessageButton startIcon={<StopIcon />}>Button</MessageButton>
+      </MessageButtons>
+    ),
   },
 };
 

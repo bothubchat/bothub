@@ -1,5 +1,5 @@
 import { animated } from '@react-spring/web';
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { Typography } from '../../typography';
 import { MessageVariant } from '../types';
 
@@ -63,7 +63,7 @@ export const MessageActionsMenuModal = styled(animated.div)<{
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  z-index: 100;
+  z-index: 10;
 `;
 
 export const MessageActionsMenuModalOption = styled.button`
@@ -95,8 +95,9 @@ export const MessageActionsButton = styled.button`
   cursor: pointer;
   &:active {
     svg {
-      path, circle {
-        fill: #4785FF;
+      path,
+      circle {
+        fill: #4785ff;
         transition: all 100ms ease-out;
       }
     }

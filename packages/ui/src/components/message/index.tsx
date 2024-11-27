@@ -1,5 +1,9 @@
 import React, {
-  ReactNode, useEffect, useRef, useState 
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
 } from 'react';
 import {
   MessageBlock,
@@ -17,6 +21,7 @@ import {
   MessageTop,
   MessageAvatar,
   MessageStyledWithBottomPanel,
+  MessageButtonsStyled,
 } from './styled';
 import {
   MessageActionEventHandler,
@@ -50,13 +55,13 @@ export interface MessageProps {
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
-  editText?: string;
-  resendText?: string;
-  deleteText?: string;
-  submitEditTooltipLabel?: string;
-  discardEditTooltipLabel?: string;
-  updateTooltipLabel?: string;
-  copyTooltipLabel?: string;
+  editText?: string | null;
+  resendText?: string | null;
+  deleteText?: string | null;
+  submitEditTooltipLabel?: string | null;
+  discardEditTooltipLabel?: string | null;
+  updateTooltipLabel?: string | null;
+  copyTooltipLabel?: string | null;
   typing?: boolean;
   timestamp?: string;
   skeleton?: boolean;
@@ -123,11 +128,14 @@ export const Message: React.FC<MessageProps> = ({
   const editFieldRef = useRef<HTMLSpanElement | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedText, setEditedText] = useState<string>(content ?? '');
-  const handleEditText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setEditedText(e.target.innerText);
-  };
+  const handleEditText = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setEditedText(e.target.innerText);
+    },
+    []
+  );
 
-  const getRichText = (content: HTMLElement) => {
+  const getRichText = useCallback((content: HTMLElement) => {
     const htmlStr = new DOMParser().parseFromString(
       content.innerHTML,
       'text/html'
@@ -143,13 +151,13 @@ export const Message: React.FC<MessageProps> = ({
       'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' }),
     });
     return [clipboardItem];
-  };
+  }, []);
 
-  const handleCopy = () => {
+  const handleCopy = useCallback(() => {
     if (messageBlockContentRef.current) {
       return onCopy?.(getRichText(messageBlockContentRef.current));
     }
-  };
+  }, [messageBlockContentRef.current]);
 
   if (
     !(
@@ -220,9 +228,9 @@ export const Message: React.FC<MessageProps> = ({
       onCopy={handleCopy}
       onCodeCopy={onCodeCopy}
     >
-      <MessageStyledWrapper $variant={variant}>
+      <MessageStyledWrapper $variant={variant} ref={messageRef}>
         <MessageStyledWithBottomPanel>
-          <MessageStyled $variant={variant} ref={messageRef} className={className}>
+          <MessageStyled $variant={variant} className={className}>
             <MessageContent $variant={variant}>
               {(name || transaction) && (
                 <MessageTop>
@@ -301,7 +309,6 @@ export const Message: React.FC<MessageProps> = ({
                   {timestamp && <MessageTimestamp time={timestamp} />}
                 </MessageBlock>
               </MessageBlockWrapper>
-              {buttons}
             </MessageContent>
             {!skeleton && (
               <MessageActions
@@ -323,6 +330,7 @@ export const Message: React.FC<MessageProps> = ({
                 copyTooltipLabel={copyTooltipLabel}
                 editing={isEditing}
                 editedText={editedText}
+                messageRef={messageRef}
                 setEditing={setIsEditing}
                 setEditedText={setEditedText}
                 onEdit={onEdit}
@@ -334,7 +342,11 @@ export const Message: React.FC<MessageProps> = ({
             )}
           </MessageStyled>
           <MessageBlockBottomPanel>
-            <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
+            {transaction !== null ? (
+              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
+            ) : (
+              buttons ?? <div />
+            )}
             <MessageVersions
               id={id}
               version={version}
@@ -344,6 +356,9 @@ export const Message: React.FC<MessageProps> = ({
               editing={isEditing}
             />
           </MessageBlockBottomPanel>
+          {transaction !== null && (
+            <MessageButtonsStyled>{buttons}</MessageButtonsStyled>
+          )}
         </MessageStyledWithBottomPanel>
       </MessageStyledWrapper>
     </MessageProvider>

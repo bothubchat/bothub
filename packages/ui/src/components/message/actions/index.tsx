@@ -1,4 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+  MutableRefObject,
+  useCallback,
+  useRef,
+  useState,
+} from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
@@ -14,6 +19,7 @@ import { CopyButton } from './copy-button';
 import { ActionButton } from './action-button';
 import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { CloseIcon } from '@/ui/icons/close';
+import { useScrollbarRef } from '../list';
 
 type MessageActionsProps = {
   id?: string;
@@ -25,15 +31,16 @@ type MessageActionsProps = {
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
-  editText?: string;
-  resendText?: string;
-  deleteText?: string;
-  submitEditTooltipLabel?: string;
-  discardEditTooltipLabel?: string;
-  updateTooltipLabel?: string;
-  copyTooltipLabel?: string;
+  editText?: string | null;
+  resendText?: string | null;
+  deleteText?: string | null;
+  submitEditTooltipLabel?: string | null;
+  discardEditTooltipLabel?: string | null;
+  updateTooltipLabel?: string | null;
+  copyTooltipLabel?: string | null;
   editing?: boolean;
   editedText?: string;
+  messageRef?: MutableRefObject<HTMLDivElement | null>;
   setEditing?: (value: boolean) => unknown;
   setEditedText?: (value: string) => unknown;
   onEdit?: MessageActionEventHandler;
@@ -64,6 +71,7 @@ export const MessageActions = ({
   copyTooltipLabel,
   editing,
   editedText,
+  messageRef,
   setEditing,
   setEditedText,
   onEdit,
@@ -79,6 +87,8 @@ export const MessageActions = ({
   const messageActionsRef = useRef<HTMLDivElement | null>(null);
   const messageActionsMenuRef = useRef<HTMLDivElement | null>(null);
 
+  const useScrollRef = useScrollbarRef();
+
   const modalEnabled = () => {
     if (skeleton) {
       return false;
@@ -92,11 +102,8 @@ export const MessageActions = ({
   };
 
   const handleInvertedModalState = () => {
-    const messagesScroll = document.getElementById(
-      'messages-scrollbar-content'
-    );
-    const scrollHeight = messagesScroll?.scrollHeight ?? 0;
-    const scrollWidth = messagesScroll?.scrollWidth ?? 0;
+    const scrollHeight = useScrollRef?.current?.element?.scrollHeight ?? 0;
+    const scrollWidth = messageRef?.current?.scrollWidth ?? 0;
     const offsetTop = messageActionsRef.current?.offsetTop ?? 0;
     const offsetLeft = messageActionsRef.current?.offsetLeft ?? 0;
     if (scrollHeight - offsetTop <= 180) {
@@ -104,72 +111,66 @@ export const MessageActions = ({
     } else {
       setInvertedY(false);
     }
-    if (offsetLeft <= 160 || scrollWidth - offsetLeft <= 160) {
+    if (
+      (variant === 'assistant' && scrollWidth - offsetLeft <= 160)
+      || (variant === 'user' && offsetLeft <= 160)
+    ) {
       setInvertedX(true);
     } else {
       setInvertedX(false);
     }
   };
 
-  const handleButtonHoverIn = () => {
+  const handleButtonHoverIn = useCallback(() => {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
     handleInvertedModalState();
     setMenuShown(true);
-  };
+  }, [timeoutId]);
 
-  const handleButtonHoverOut = () => {
+  const handleButtonHoverOut = useCallback(() => {
     setTimeoutId(setTimeout(() => setMenuShown(false), 300));
-  };
+  }, []);
 
-  const handleButtonClick = () => {
+  const handleButtonClick = useCallback(() => {
     handleInvertedModalState();
     setMenuShown(!menuShown);
-  };
+  }, [menuShown]);
 
-  const handleOptionClick = (option: ModalOption) => {
-    const data = {
-      id,
-      message,
-    };
-    switch (option) {
-      case 'edit':
-        setEditing?.(true);
-        setEditedText?.(message ?? '');
-        break;
-      case 'delete':
-        onDelete?.(data);
-        break;
-      case 'resend':
-        onResend?.(data);
-        break;
-    }
-    setMenuShown(false);
-  };
+  const handleOptionClick = useCallback(
+    (option: ModalOption) => {
+      const data = {
+        id,
+        message,
+      };
+      switch (option) {
+        case 'edit':
+          setEditing?.(true);
+          setEditedText?.(message ?? '');
+          break;
+        case 'delete':
+          onDelete?.(data);
+          break;
+        case 'resend':
+          onResend?.(data);
+          break;
+      }
+      setMenuShown(false);
+    },
+    [id, message]
+  );
 
-  const handleConfirmEdit = ({
-    id,
-    message,
-  }: {
-    id?: string;
-    message?: string;
-  }) => {
-    setEditing?.(false);
-    onEdit?.({ id, message });
-  };
+  const handleConfirmEdit = useCallback(
+    ({ id, message }: { id?: string; message?: string }) => {
+      setEditing?.(false);
+      onEdit?.({ id, message });
+    },
+    [id, message]
+  );
   const handleDiscardEdit = () => {
     setEditing?.(false);
     setEditedText?.(message ?? '');
-  };
-
-  const handleClickOutsideButton = (
-    e: MouseEvent,
-    el: React.MutableRefObject<HTMLDivElement | null>
-  ) => {
-    if (!el?.current?.contains(e.target as Node)) {
-      setMenuShown(false);
-    }
   };
 
   const modalTransition = useTransition(menuShown, {
@@ -191,19 +192,17 @@ export const MessageActions = ({
     },
   });
 
-  useEffect(() => {
-    document.addEventListener('mousedown', (e: MouseEvent) => handleClickOutsideButton(e, messageActionsMenuRef));
-    return () => {
-      document.removeEventListener('mousedown', (e: MouseEvent) => handleClickOutsideButton(e, messageActionsMenuRef));
-    };
-  }, []);
-
   return (
     <S.MessageActionsStyled $variant={variant} ref={messageActionsRef}>
       {!editing ? (
         <>
           {modalEnabled() && (
-            <S.MessageActionsMenuStyled ref={messageActionsMenuRef}>
+            <S.MessageActionsMenuStyled
+              ref={messageActionsMenuRef}
+              onBlur={() => {
+                setMenuShown(false);
+              }}
+            >
               <ActionButton
                 onMouseEnter={handleButtonHoverIn}
                 onMouseLeave={handleButtonHoverOut}
@@ -280,10 +279,7 @@ export const MessageActions = ({
             </ActionButton>
           )}
           {!disableCopy && (
-            <CopyButton
-              onCopy={onCopy}
-              tooltipLabel={copyTooltipLabel}
-            />
+            <CopyButton onCopy={onCopy} tooltipLabel={copyTooltipLabel} />
           )}
         </>
       ) : (
