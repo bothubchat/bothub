@@ -168,10 +168,10 @@ export const MessageActions = ({
     },
     [id, message]
   );
-  const handleDiscardEdit = () => {
+  const handleDiscardEdit = useCallback(() => {
     setEditing?.(false);
     setEditedText?.(message ?? '');
-  };
+  }, [message]);
 
   const modalTransition = useTransition(menuShown, {
     from: {

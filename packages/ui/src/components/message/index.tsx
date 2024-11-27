@@ -342,7 +342,7 @@ export const Message: React.FC<MessageProps> = ({
             )}
           </MessageStyled>
           <MessageBlockBottomPanel>
-            {transaction !== null ? (
+            {transaction ? (
               <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
             ) : (
               buttons ?? <div />
@@ -356,7 +356,7 @@ export const Message: React.FC<MessageProps> = ({
               editing={isEditing}
             />
           </MessageBlockBottomPanel>
-          {transaction !== null && (
+          {transaction && (
             <MessageButtonsStyled>{buttons}</MessageButtonsStyled>
           )}
         </MessageStyledWithBottomPanel>
