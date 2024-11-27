@@ -26,7 +26,7 @@ export const ModalWindow = styled(animated.div)`
   overflow: hidden;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  border-radius: 20px;
+  border-radius: 17px;
   position: relative;
   z-index: ${({ theme }) => theme.zIndex.modal + 1};
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
@@ -39,16 +39,16 @@ export const ModalWindowBody = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  padding: 34px;
+  padding: 20px;
   padding-right: 10px;
   width: 100%;
   box-sizing: border-box;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    padding: 30px;
+    padding: 18px;
     padding-right: 9px;
   }
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-    padding: 24px;
+    padding: 14px 18px;
     padding-right: 9px;
   }
 `;
@@ -107,8 +107,8 @@ export const ModalCloseButtonIcon = styled(CloseIcon)``;
 export const ModalCloseButton = styled.button`
   display: inline-flex;
   position: absolute;
-  top: 30px;
-  right: 30px;
+  top: 22.5px;
+  right: 20px;
   z-index: 1;
   padding: 0px;
   background: none;
