@@ -17,7 +17,8 @@ function formatString(string: string) {
   return string
     // math formulas
     .replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
-    .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$$${content}$$`);
+    .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$$${content}$$`)
+    .replace(/<!--.*-->/g, '');
 }
 
 export interface MessageMarkdownProps {

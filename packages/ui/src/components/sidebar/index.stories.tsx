@@ -50,6 +50,7 @@ import {
   EditIcon,
   TrashIcon,
 } from '@/ui/icons';
+
 export type SidebarMeta = Meta<typeof Sidebar>;
 
 export type SidebarStory = StoryObj<typeof Sidebar>;
@@ -173,7 +174,7 @@ export const Basic: SidebarStory = {
                 <SidebarUserInfoAvatar
                   src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
                   alt="Артём"
-                  tariffPlan='FREE'
+                  tariffPlan="FREE"
                 />
               )}
               name="Артём"
