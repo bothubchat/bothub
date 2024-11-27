@@ -4,10 +4,10 @@ import {
   ModalCloseButton,
   ModalCloseButtonIcon,
   ModalContent,
-  ModalStyled, 
-  ModalTitle, 
+  ModalStyled,
+  ModalTitle,
   ModalWindow,
-  ModalWindowBody, 
+  ModalWindowBody,
   ModalWindowBodyContent,
   ModalWindowBodyScrollbarWrapper
 } from './styled';
@@ -19,12 +19,13 @@ export type ModalCloseEventHandler = () => unknown;
 export interface ModalProps extends React.PropsWithChildren {
   open: boolean;
   title?: string | null;
-  scrollbar?: boolean; 
+  scrollbar?: boolean;
+  images?: React.ReactNode;
   onClose?: ModalCloseEventHandler;
 }
 
 export const Modal: React.FC<ModalProps> = ({
-  open, title = null, scrollbar = false, children, onClose 
+  open, title = null, scrollbar = false, children, onClose, images
 }) => {
   let modalNode: React.ReactNode;
 
@@ -42,6 +43,7 @@ export const Modal: React.FC<ModalProps> = ({
         <Backdrop open={open} onClick={onClose} />
         {modalTransition((style, item) => item && (
           <ModalWindow style={style}>
+            {images}
             <ModalWindowBody>
               {title ? <ModalTitle>{title}</ModalTitle> : null}
               <ModalCloseButton onClick={onClose}>

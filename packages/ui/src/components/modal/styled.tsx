@@ -22,7 +22,8 @@ export const ModalWindow = styled(animated.div)`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
-  max-width: 460px;
+  max-width: 494px;
+  overflow: hidden;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 17px;
@@ -108,6 +109,7 @@ export const ModalCloseButton = styled.button`
   position: absolute;
   top: 22.5px;
   right: 20px;
+  z-index: 1;
   padding: 0px;
   background: none;
   border: none;
