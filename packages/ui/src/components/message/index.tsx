@@ -126,11 +126,11 @@ export const Message: React.FC<MessageProps> = ({
   const messageBlockContentRef = useRef<HTMLDivElement | null>(null);
 
   const editFieldRef = useRef<HTMLSpanElement | null>(null);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [editedText, setEditedText] = useState<string>(content ?? '');
+  const [isEditing, onEditing] = useState<boolean>(false);
+  const [editedText, onEditedText] = useState<string>(content ?? '');
   const handleEditText = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setEditedText(e.target.innerText);
+      onEditedText(e.target.innerText);
     },
     []
   );
@@ -331,8 +331,8 @@ export const Message: React.FC<MessageProps> = ({
                 editing={isEditing}
                 editedText={editedText}
                 messageRef={messageRef}
-                setEditing={setIsEditing}
-                setEditedText={setEditedText}
+                onEditing={onEditing}
+                onEditedText={onEditedText}
                 onEdit={onEdit}
                 onResend={onResend}
                 onDelete={onDelete}

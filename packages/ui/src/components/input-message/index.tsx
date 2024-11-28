@@ -34,7 +34,7 @@ import { TxtIcon } from '@/ui/icons/txt';
 import { WordIcon } from '@/ui/icons/word';
 import { XlsIcon } from '@/ui/icons/xls';
 import { IInputMessageFile } from './types';
-import { IconProvider } from '../icon';
+import { IconProvider } from '@/ui/components/icon';
 import {
   formatUploadFiles,
   getPreviewUrlForFile,

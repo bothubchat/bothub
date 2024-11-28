@@ -1,8 +1,5 @@
 import {
-  MutableRefObject,
-  useCallback,
-  useRef,
-  useState,
+  MutableRefObject, useCallback, useEffect, useRef, useState 
 } from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
@@ -20,6 +17,7 @@ import { ActionButton } from './action-button';
 import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { CloseIcon } from '@/ui/icons/close';
 import { useScrollbarRef } from '../list';
+import { ModalOption } from './types';
 
 type MessageActionsProps = {
   id?: string;
@@ -41,16 +39,14 @@ type MessageActionsProps = {
   editing?: boolean;
   editedText?: string;
   messageRef?: MutableRefObject<HTMLDivElement | null>;
-  setEditing?: (value: boolean) => unknown;
-  setEditedText?: (value: string) => unknown;
+  onEditing?: (value: boolean) => unknown;
+  onEditedText?: (value: string) => unknown;
   onEdit?: MessageActionEventHandler;
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
   onCopy?: MessageActionEventHandler;
 };
-
-type ModalOption = 'edit' | 'resend' | 'delete';
 
 export const MessageActions = ({
   id,
@@ -72,8 +68,8 @@ export const MessageActions = ({
   editing,
   editedText,
   messageRef,
-  setEditing,
-  setEditedText,
+  onEditing,
+  onEditedText,
   onEdit,
   onResend,
   onDelete,
@@ -81,7 +77,7 @@ export const MessageActions = ({
   onCopy,
 }: MessageActionsProps) => {
   const [menuShown, setMenuShown] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
+  const [timeoutId, setTimeoutId] = useState<number>();
   const [invertedX, setInvertedX] = useState<boolean>(false);
   const [invertedY, setInvertedY] = useState<boolean>(false);
   const messageActionsRef = useRef<HTMLDivElement | null>(null);
@@ -106,31 +102,23 @@ export const MessageActions = ({
     const scrollWidth = messageRef?.current?.scrollWidth ?? 0;
     const offsetTop = messageActionsRef.current?.offsetTop ?? 0;
     const offsetLeft = messageActionsRef.current?.offsetLeft ?? 0;
-    if (scrollHeight - offsetTop <= 180) {
-      setInvertedY(true);
-    } else {
-      setInvertedY(false);
-    }
-    if (
+    setInvertedY(scrollHeight - offsetTop <= 180);
+    setInvertedX(
       (variant === 'assistant' && scrollWidth - offsetLeft <= 160)
-      || (variant === 'user' && offsetLeft <= 160)
-    ) {
-      setInvertedX(true);
-    } else {
-      setInvertedX(false);
-    }
+        || (variant === 'user' && offsetLeft <= 160)
+    );
   };
 
   const handleButtonHoverIn = useCallback(() => {
     if (timeoutId) {
-      clearTimeout(timeoutId);
+      window.clearTimeout(timeoutId);
     }
     handleInvertedModalState();
     setMenuShown(true);
   }, [timeoutId]);
 
   const handleButtonHoverOut = useCallback(() => {
-    setTimeoutId(setTimeout(() => setMenuShown(false), 300));
+    setTimeoutId(window.setTimeout(() => setMenuShown(false), 300));
   }, []);
 
   const handleButtonClick = useCallback(() => {
@@ -146,8 +134,8 @@ export const MessageActions = ({
       };
       switch (option) {
         case 'edit':
-          setEditing?.(true);
-          setEditedText?.(message ?? '');
+          onEditing?.(true);
+          onEditedText?.(message ?? '');
           break;
         case 'delete':
           onDelete?.(data);
@@ -163,14 +151,14 @@ export const MessageActions = ({
 
   const handleConfirmEdit = useCallback(
     ({ id, message }: { id?: string; message?: string }) => {
-      setEditing?.(false);
+      onEditing?.(false);
       onEdit?.({ id, message });
     },
     [id, message]
   );
   const handleDiscardEdit = useCallback(() => {
-    setEditing?.(false);
-    setEditedText?.(message ?? '');
+    onEditing?.(false);
+    onEditedText?.(message ?? '');
   }, [message]);
 
   const modalTransition = useTransition(menuShown, {
@@ -191,6 +179,12 @@ export const MessageActions = ({
       easing: easings.easeOutSine,
     },
   });
+
+  useEffect(() => {
+    if (timeoutId) {
+      window.clearTimeout(timeoutId);
+    }
+  }, []);
 
   return (
     <S.MessageActionsStyled $variant={variant} ref={messageActionsRef}>

@@ -1,5 +1,5 @@
+import { useEffect, useState } from 'react';
 import { useSpring } from '@react-spring/web';
-import { useState } from 'react';
 
 import { CopyIcon } from '@/ui/icons/copy';
 import { CheckSmallIcon } from '@/ui/icons/check-small';
@@ -7,7 +7,7 @@ import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { ActionButton } from '../action-button';
 import { MessageActionEventHandler } from '../../types';
 
-import * as S from './styled';
+import { MessageActionsButtonIconStyled } from './styled';
 
 export const CopyButton = ({
   onCopy,
@@ -41,19 +41,25 @@ export const CopyButton = ({
     }
   });
 
+  useEffect(() => () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+  }, []);
+
   return (
     <ActionButton
       onClick={handleClick}
       tooltipLabel={tooltipLabel}
     >
       {!copied ? (
-        <S.MessageActionsButtonIconStyled style={copySpring}>          
+        <MessageActionsButtonIconStyled style={copySpring}>          
           <CopyIcon size={18} />
-        </S.MessageActionsButtonIconStyled>  
+        </MessageActionsButtonIconStyled>  
       ) : (
-        <S.MessageActionsButtonIconStyled style={markSpring}>
+        <MessageActionsButtonIconStyled style={markSpring}>
           <CheckSmallIcon fill="#4785FF" />
-        </S.MessageActionsButtonIconStyled>
+        </MessageActionsButtonIconStyled>
       )}
     </ActionButton>
   );
