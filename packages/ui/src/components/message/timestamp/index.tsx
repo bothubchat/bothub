@@ -1,18 +1,19 @@
-import * as S from './styled';
+import { useMessage } from '@/ui/components/message/context';
+import { TimestampStyled, TimestampText } from './styled';
 
 export const MessageTimestamp = ({ time }: { time: string }) => {
+  const { variant } = useMessage();
   const date = new Date(time);
-
   const hours = date.getHours();
   const minutes = date.getMinutes();
 
   return (
-    <S.TimestampStyled>
-      <S.TimestampText>
+    <TimestampStyled>
+      <TimestampText $variant={variant}>
         {hours < 10 ? `0${hours}` : hours}
         :
         {minutes < 10 ? `0${minutes}` : minutes}
-      </S.TimestampText>
-    </S.TimestampStyled>
+      </TimestampText>
+    </TimestampStyled>
   );
 };

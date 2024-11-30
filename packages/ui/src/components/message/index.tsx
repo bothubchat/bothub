@@ -297,12 +297,14 @@ export const Message: React.FC<MessageProps> = ({
                           {after}
                         </>
                       ) : (
-                        <MessageBlockTextArea
-                          onInput={handleEditText}
-                          ref={editFieldRef}
-                        >
-                          {children}
-                        </MessageBlockTextArea>
+                        <MessageParagraph disableMargin>
+                          <MessageBlockTextArea
+                            onInput={handleEditText}
+                            ref={editFieldRef}
+                          >
+                            {children}
+                          </MessageBlockTextArea>
+                        </MessageParagraph>
                       )}
                     </MessageBlockContent>
                   </MessageBlockScrollbarWrapper>

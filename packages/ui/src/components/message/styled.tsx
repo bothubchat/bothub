@@ -279,7 +279,6 @@ export const MessageBlockTextArea = styled.span.attrs({
   white-space: pre-wrap;
   border: none;
   outline: none;
-  color: ${({ theme }) => (theme.mode === 'dark' ? theme.colors.base.white : theme.colors.base.black)};
   background-color: transparent;
   ${adaptive({
     desktop: css`
