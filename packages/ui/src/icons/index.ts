@@ -195,3 +195,6 @@ export * from './quote';
 export * from './url-circle';
 export * from './show-ui';
 export * from './hide-ui';
+export * from './min-window';
+export * from './max-window';
+export * from './happy-robot';

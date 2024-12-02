@@ -1,7 +1,7 @@
 import { css, keyframes, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { Button } from '@/ui/components/button';
-import { EnterIcon } from '@/ui/icons';
+import { EnterIcon } from '@/ui/icons/enter';
 import { AttachIcon } from '@/ui/icons/attach';
 import { SendIcon } from '@/ui/icons/send';
 import { Chip } from '@/ui/components/chip';

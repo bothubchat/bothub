@@ -1,21 +1,34 @@
 import React, {
-  ReactNode, useRef
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
 } from 'react';
 import {
   MessageBlock,
+  MessageBlockBottomPanel,
+  MessageBlockTransaction,
   MessageBlockContent,
   MessageBlockScrollbarWrapper,
-  MessageBottom,
+  MessageBlockTextArea,
+  MessageBlockWrapper,
   MessageContent,
   MessageName,
   MessageSender,
   MessageStyled,
+  MessageStyledWrapper,
   MessageTop,
+  MessageAvatar,
+  MessageStyledWithBottomPanel,
+  MessageButtonsStyled,
 } from './styled';
 import {
+  MessageActionEventHandler,
   MessageCodeCopyEventHandler,
   MessageCopyEventHandler,
   MessageVariant,
+  MessageVersionEventHandler,
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
@@ -23,8 +36,13 @@ import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
 import { ScrollbarShadow } from '@/ui/components/scrollbar';
+import { MessageTimestamp } from './timestamp';
+import { MessageActions } from './actions';
+import { MessageVersions } from './versions';
 
 export interface MessageProps {
+  id?: string;
+  content?: string;
   className?: string;
   variant?: MessageVariant;
   color?: string;
@@ -32,18 +50,40 @@ export interface MessageProps {
   tags?: React.ReactNode;
   avatar?: React.ReactNode;
   transaction?: React.ReactNode;
-  actions?: React.ReactNode;
+  disableResend?: boolean;
+  disableEdit?: boolean;
+  disableDelete?: boolean;
+  disableUpdate?: boolean;
+  disableCopy?: boolean;
+  editText?: string | null;
+  resendText?: string | null;
+  deleteText?: string | null;
+  submitEditTooltipLabel?: string | null;
+  discardEditTooltipLabel?: string | null;
+  updateTooltipLabel?: string | null;
+  copyTooltipLabel?: string | null;
   typing?: boolean;
+  timestamp?: string;
   skeleton?: boolean;
   buttons?: ReactNode;
   after?: ReactNode;
   components?: MessageComponentsProps;
   children?: ReactNode;
+  version?: number;
+  totalVersions?: number;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
+  onEdit?: MessageActionEventHandler;
+  onResend?: MessageActionEventHandler;
+  onDelete?: MessageActionEventHandler;
+  onUpdate?: MessageActionEventHandler;
+  onNextVersion?: MessageVersionEventHandler;
+  onPrevVersion?: MessageVersionEventHandler;
 }
 
 export const Message: React.FC<MessageProps> = ({
+  id,
+  content,
   className,
   variant = 'user',
   color = 'default',
@@ -51,22 +91,51 @@ export const Message: React.FC<MessageProps> = ({
   tags,
   avatar,
   transaction,
-  actions,
+  disableResend = false,
+  disableEdit = false,
+  disableDelete = false,
+  disableUpdate = false,
+  disableCopy = false,
+  editText,
+  resendText,
+  deleteText,
+  submitEditTooltipLabel,
+  discardEditTooltipLabel,
+  updateTooltipLabel,
+  copyTooltipLabel,
   typing = false,
+  timestamp,
   skeleton = false,
   buttons,
   after,
   components,
   children,
+  version,
+  totalVersions,
   onCopy,
   onCodeCopy,
+  onEdit,
+  onResend,
+  onDelete,
+  onUpdate,
+  onNextVersion,
+  onPrevVersion,
 }) => {
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
-
   const messageBlockContentRef = useRef<HTMLDivElement | null>(null);
 
-  const getRichText = (content: HTMLElement) => {
+  const editFieldRef = useRef<HTMLSpanElement | null>(null);
+  const [isEditing, onEditing] = useState<boolean>(false);
+  const [editedText, onEditedText] = useState<string>(content ?? '');
+  const handleEditText = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      onEditedText(e.target.innerText);
+    },
+    []
+  );
+
+  const getRichText = useCallback((content: HTMLElement) => {
     const htmlStr = new DOMParser().parseFromString(
       content.innerHTML,
       'text/html'
@@ -82,13 +151,14 @@ export const Message: React.FC<MessageProps> = ({
       'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' }),
     });
     return [clipboardItem];
-  };
+  }, []);
 
-  const handleCopy = () => {
+  const handleCopy = useCallback(() => {
     if (messageBlockContentRef.current) {
       return onCopy?.(getRichText(messageBlockContentRef.current));
     }
-  };
+  }, [messageBlockContentRef.current]);
+
   if (
     !(
       color
@@ -138,6 +208,18 @@ export const Message: React.FC<MessageProps> = ({
       break;
   }
 
+  useEffect(() => {
+    if (editFieldRef.current) {
+      editFieldRef.current.focus();
+      const range = document.createRange();
+      const selection = window.getSelection();
+      range.selectNodeContents(editFieldRef.current);
+      range.collapse(false);
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+    }
+  }, [editFieldRef, isEditing]);
+
   return (
     <MessageProvider
       variant={variant}
@@ -146,77 +228,141 @@ export const Message: React.FC<MessageProps> = ({
       onCopy={handleCopy}
       onCodeCopy={onCodeCopy}
     >
-      <MessageStyled $variant={variant} ref={messageRef} className={className}>
-        <MessageContent $variant={variant}>
-          {(name || transaction) && (
-            <MessageTop>
-              {typeof name === 'string' && (
-                <MessageSender>
-                  <MessageName $color={color}>{name}</MessageName>
-                  {tags}
-                </MessageSender>
+      <MessageStyledWrapper $variant={variant} ref={messageRef}>
+        <MessageStyledWithBottomPanel>
+          <MessageStyled $variant={variant} className={className}>
+            <MessageContent $variant={variant}>
+              {(name || transaction) && (
+                <MessageTop>
+                  {typeof name === 'string' && (
+                    <MessageSender>
+                      <MessageName $color={color}>{name}</MessageName>
+                      {tags}
+                    </MessageSender>
+                  )}
+                  {typeof name !== 'string' && <div />}
+                  <MessageBlockTransaction $top>
+                    {transaction}
+                  </MessageBlockTransaction>
+                </MessageTop>
               )}
-              {typeof name !== 'string' && <div />}
-
-            </MessageTop>
+              {typeof name !== 'string' && name}
+              <MessageAvatar>{avatar}</MessageAvatar>
+              <MessageBlockWrapper>
+                <MessageBlock
+                  $variant={variant}
+                  $hexColor={hexColor}
+                  $skeleton={skeleton}
+                  $hasTimestamp={!!timestamp}
+                >
+                  <MessageBlockScrollbarWrapper
+                    scrollShadows={{
+                      color: hexColor,
+                      size: 60,
+                      left: <ScrollbarShadow side="left" />,
+                      right: <ScrollbarShadow side="right" />,
+                    }}
+                  >
+                    <MessageBlockContent ref={messageBlockContentRef}>
+                      {!isEditing ? (
+                        <>
+                          {!skeleton && (
+                            <>
+                              {typeof children === 'string' && (
+                                <MessageMarkdown components={components}>
+                                  {children}
+                                </MessageMarkdown>
+                              )}
+                              {typeof children !== 'string' && children}
+                            </>
+                          )}
+                          {skeleton && (
+                            <MessageParagraph disableMargin>
+                              <Skeleton
+                                width={260}
+                                opacity={[
+                                  theme.mode === 'light' ? 0.1 : 0.15,
+                                  theme.mode === 'light' ? 0.225 : 0.45,
+                                ]}
+                                colors={[
+                                  variant === 'user'
+                                    ? theme.colors.base.white
+                                    : theme.mode === 'light'
+                                      ? theme.default.colors.base.black
+                                      : theme.colors.grayScale.gray6,
+                                ]}
+                              />
+                            </MessageParagraph>
+                          )}
+                          {after}
+                        </>
+                      ) : (
+                        <MessageParagraph disableMargin>
+                          <MessageBlockTextArea
+                            onInput={handleEditText}
+                            ref={editFieldRef}
+                          >
+                            {children}
+                          </MessageBlockTextArea>
+                        </MessageParagraph>
+                      )}
+                    </MessageBlockContent>
+                  </MessageBlockScrollbarWrapper>
+                  {timestamp && <MessageTimestamp time={timestamp} />}
+                </MessageBlock>
+              </MessageBlockWrapper>
+            </MessageContent>
+            {!skeleton && (
+              <MessageActions
+                id={id}
+                message={content}
+                variant={variant}
+                skeleton={skeleton}
+                disableResend={disableResend}
+                disableEdit={disableEdit}
+                disableDelete={disableDelete}
+                disableUpdate={disableUpdate}
+                disableCopy={disableCopy}
+                editText={editText}
+                resendText={resendText}
+                deleteText={deleteText}
+                submitEditTooltipLabel={submitEditTooltipLabel}
+                discardEditTooltipLabel={discardEditTooltipLabel}
+                updateTooltipLabel={updateTooltipLabel}
+                copyTooltipLabel={copyTooltipLabel}
+                editing={isEditing}
+                editedText={editedText}
+                messageRef={messageRef}
+                onEditing={onEditing}
+                onEditedText={onEditedText}
+                onEdit={onEdit}
+                onResend={onResend}
+                onDelete={onDelete}
+                onUpdate={onUpdate}
+                onCopy={handleCopy}
+              />
+            )}
+          </MessageStyled>
+          <MessageBlockBottomPanel>
+            {transaction ? (
+              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
+            ) : (
+              buttons ?? <div />
+            )}
+            <MessageVersions
+              id={id}
+              version={version}
+              totalVersions={totalVersions}
+              onNextVersion={onNextVersion}
+              onPrevVersion={onPrevVersion}
+              editing={isEditing}
+            />
+          </MessageBlockBottomPanel>
+          {transaction && (
+            <MessageButtonsStyled>{buttons}</MessageButtonsStyled>
           )}
-          {typeof name !== 'string' && name}
-          {avatar}
-          <MessageBlock
-            $variant={variant}
-            $hexColor={hexColor}
-            $skeleton={skeleton}
-          >
-            <MessageBlockScrollbarWrapper
-              scrollShadows={{
-                color: hexColor,
-                size: 60,
-                left: <ScrollbarShadow side="left" />,
-                right: <ScrollbarShadow side="right" />,
-              }}
-            >
-              <MessageBlockContent ref={messageBlockContentRef}>
-                {!skeleton && (
-                  <>
-                    {typeof children === 'string' && (
-                      <MessageMarkdown
-                        components={components}
-                      >
-                        {children}
-                      </MessageMarkdown>
-                    )}
-                    {typeof children !== 'string' && children}
-                  </>
-                )}
-                {skeleton && (
-                  <MessageParagraph disableMargin>
-                    <Skeleton
-                      width={260}
-                      opacity={[
-                        theme.mode === 'light' ? 0.1 : 0.15,
-                        theme.mode === 'light' ? 0.225 : 0.45,
-                      ]}
-                      colors={[
-                        variant === 'user'
-                          ? theme.colors.base.white
-                          : theme.mode === 'light'
-                            ? theme.default.colors.base.black
-                            : theme.colors.grayScale.gray6,
-                      ]}
-                    />
-                  </MessageParagraph>
-                )}
-                {after}
-              </MessageBlockContent>
-            </MessageBlockScrollbarWrapper>
-          </MessageBlock>
-          <MessageBottom>
-            {transaction}
-            {buttons}
-          </MessageBottom>
-          {actions}
-        </MessageContent>
-      </MessageStyled>
+        </MessageStyledWithBottomPanel>
+      </MessageStyledWrapper>
     </MessageProvider>
   );
 };
