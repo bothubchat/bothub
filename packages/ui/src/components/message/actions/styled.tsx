@@ -1,6 +1,6 @@
 import { animated } from '@react-spring/web';
 import { styled, css } from 'styled-components';
-import { Typography } from '../../typography';
+import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '../types';
 
 export const MessageActionsStyled = styled.div<{ $variant?: MessageVariant }>`

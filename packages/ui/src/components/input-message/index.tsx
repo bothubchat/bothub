@@ -28,7 +28,7 @@ import {
   InputMessageVoiceRecordDot,
   InputMessageVoiceRecordTimeText,
 } from './styled';
-import { ChipImage } from '../chip';
+import { ChipImage } from '@/ui/components/chip';
 import { PdfIcon } from '@/ui/icons/pdf';
 import { TxtIcon } from '@/ui/icons/txt';
 import { WordIcon } from '@/ui/icons/word';

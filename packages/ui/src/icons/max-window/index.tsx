@@ -9,9 +9,9 @@ export const MaxWindowIcon = icon(({ ...props }) => (
     <path
       d="M6.75 15.75H2.25M2.25 15.75V11.25M2.25 15.75L7.125 10.875M11.25 2.25H15.75M15.75 2.25V6.75M15.75 2.25L10.875 7.125"
       stroke="#616D8D"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </Icon>
 ));
