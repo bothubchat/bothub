@@ -174,6 +174,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                         {...(size === 'md' && {
                           variant: 'button-sm'
                         })}
+                        $bold={item.bold}
                       >
                         {item.label && (
                           <>
@@ -203,6 +204,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                             {item.label.length > 64 && '...'}
                           </>
                         )}
+
                         {!item.label && item.value}
                       </SelectFieldColorOptionText>
                     )}

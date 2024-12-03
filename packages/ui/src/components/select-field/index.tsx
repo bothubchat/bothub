@@ -177,6 +177,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
       return;
     }
 
+    if (typeof item === 'object' && item.noSelect) {
+      item?.onClick?.(item);
+      return;
+    }
+
     onOptionClick?.(item);
 
     if (!disableSelect) {

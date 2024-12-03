@@ -80,6 +80,16 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
         return 10;
     }
   }}px;
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.accent.primary} !important;
+    transition: all .2s ease-out;
+  }
+
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+
   ${({ theme, $selected, $disabled }) => {
     if ($disabled) {
       return css`
@@ -131,10 +141,14 @@ export const SelectFieldOptionColor = styled.span<SelectFieldOptionColorProps>`
 
 export interface SelectFieldOptionTextProps {
   $selected: boolean;
+  $bold?: boolean;
 }
 
 export const SelectFieldOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldOptionTextProps>`
   color: ${({ theme, $selected }) => ($selected ? theme.default.colors.base.white : theme.colors.base.white)};
+  ${({ $bold }) => $bold && css`
+    font-weight: 500;
+  `}
 `;
 
 export interface SelectFieldColorOptionTextProps {
