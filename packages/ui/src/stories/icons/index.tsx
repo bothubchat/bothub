@@ -172,6 +172,9 @@ import {
   VKIcon,
   ResendIcon,
   BigArticleIcon,
+  MinWindowIcon,
+  MaxWindowIcon,
+  HappyRobotIcon,
   AddChatIcon,
   AddGroupIcon,
   DeleteChatIcon,
@@ -284,6 +287,8 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="DownloadImgIcon">{DownloadImgIcon}</IconItem>
         <IconItem name="ErrorIcon">{ErrorIcon}</IconItem>
         <IconItem name="ExpandIcon">{ExpandIcon}</IconItem>
+        <IconItem name="MinWindowIcon">{MinWindowIcon}</IconItem>
+        <IconItem name="MaxWindowIcon">{MaxWindowIcon}</IconItem>
         <IconItem name="EyeIcon">{EyeIcon}</IconItem>
         <IconItem name="FaceIcon">{FaceIcon}</IconItem>
         <IconItem name="GearIcon">{GearIcon}</IconItem>
@@ -329,6 +334,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="GeminiIcon">{GeminiIcon}</IconItem>
         <IconItem name="StripeIcon">{StripeIcon}</IconItem>
         <IconItem name="SearchSimpleIcon">{SearchSimpleIcon}</IconItem>
+        <IconItem name="HappyRobotIcon">{HappyRobotIcon}</IconItem>
         <IconItem name="SadRobotIcon">{SadRobotIcon}</IconItem>
         <IconItem name="HappyRobotIcon">{HappyRobotIcon}</IconItem>
         <IconItem name="ModelIcon">{ModelIcon}</IconItem>
@@ -395,7 +401,9 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TextBoldIcon">{TextBoldIcon}</IconItem>
         <IconItem name="TextItalicIcon">{TextItalicIcon}</IconItem>
         <IconItem name="TextUnderlineIcon">{TextUnderlineIcon}</IconItem>
-        <IconItem name="TextStrikethroughIcon">{TextStrikethroughIcon}</IconItem>
+        <IconItem name="TextStrikethroughIcon">
+          {TextStrikethroughIcon}
+        </IconItem>
         <IconItem name="RefreshIcon">{RefreshIcon}</IconItem>
         <IconItem name="CopyVariantsIcon">{CopyVariantsIcon}</IconItem>
         <IconItem name="SortAscendingIcon">{SortAscendingIcon}</IconItem>

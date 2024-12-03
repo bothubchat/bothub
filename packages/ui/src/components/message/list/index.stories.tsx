@@ -3,11 +3,8 @@ import React from 'react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
   Message,
-  MessageActions, 
   MessageAvatar,
-  MessageCopyAction, 
-  MessageEditAction, 
-  MessageTransaction
+  MessageTransaction,
 } from '@/ui/components/message';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import { Messages } from '.';
@@ -21,84 +18,32 @@ export const Basic: MessagesStory = {
   args: {
     children: (
       <>
-        <Message
-          avatar={<MessageAvatar />}
-          actions={(
-            <MessageActions>
-              <MessageCopyAction />
-              <MessageEditAction />
-            </MessageActions>
-          )}
-        >
-          Привет бот
-        </Message>
+        <Message avatar={<MessageAvatar />}>Привет бот</Message>
         <Message
           variant="assistant"
-          avatar={(
-            <MessageAvatar variant="bot" />
-          )}
-          transaction={(
-            <MessageTransaction>
-              -223 CAPS
-            </MessageTransaction>
-          )}
-          actions={(
-            <MessageActions>
-              <MessageCopyAction />
-            </MessageActions>
-          )}
+          avatar={<MessageAvatar variant="bot" />}
+          transaction={<MessageTransaction>-223 CAPS</MessageTransaction>}
         >
           Привет! Чем я могу помочь?
         </Message>
-        <Message
-          avatar={<MessageAvatar />}
-          actions={(
-            <MessageActions>
-              <MessageCopyAction />
-              <MessageEditAction />
-            </MessageActions>
-          )}
-        >
+        <Message avatar={<MessageAvatar />}>
           Напиши код Helloworld на Javascript
         </Message>
         <Message
           variant="assistant"
-          avatar={(
-            <MessageAvatar variant="bot" />
-          )}
-          transaction={(
-            <MessageTransaction>
-              -1571 CAPS
-            </MessageTransaction>
-          )}
-          actions={(
-            <MessageActions>
-              <MessageCopyAction />
-            </MessageActions>
-          )}
+          avatar={<MessageAvatar variant="bot" />}
+          transaction={<MessageTransaction>-1571 CAPS</MessageTransaction>}
         >
           {`Конечно! Вот пример кода на JavaScript для вывода фразы "Hello, World!":
 \`\`\`javascript
 console.log("Hello, world!");
 \`\`\``}
         </Message>
-        <Message
-          avatar={<MessageAvatar />}
-          actions={(
-            <MessageActions>
-              <MessageCopyAction />
-              <MessageEditAction />
-            </MessageActions>
-          )}
-        >
-          Спасибо бот! то что нужно
-        </Message>
-        <ActionMessage>
-          Контекст сброшен
-        </ActionMessage>
+        <Message avatar={<MessageAvatar />}>Спасибо бот! то что нужно</Message>
+        <ActionMessage>Контекст сброшен</ActionMessage>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export const Skeleton: MessagesStory = {
@@ -113,18 +58,18 @@ export const Skeleton: MessagesStory = {
           )}
           skeleton
         />
-        <Message 
+        <Message
           variant="assistant"
           avatar={(
             <MessageAvatar>
               <BothubSkeleton />
             </MessageAvatar>
           )}
-          skeleton 
+          skeleton
         />
       </React.Fragment>
-    ))
-  }
+    )),
+  },
 };
 
 export default {
@@ -134,8 +79,8 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as MessagesMeta;
