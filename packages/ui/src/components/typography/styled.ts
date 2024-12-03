@@ -56,6 +56,74 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 30px;
           }
         `;
+      case 'body-xxxl-regular':
+        return `
+          font-size: 46px;
+          font-weight: 400;
+          line-height: 60px;
+          --skeleton-height: 60px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 30px;
+            line-height: 40px;
+            --skeleton-height: 40px;
+          }
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 24px;
+            line-height: 30px;
+            --skeleton-height: 30px;
+          }
+        `;
+      case 'banner-h1-bold': 
+        return`
+          font-size: 128px;
+          font-weight: 700;
+          line-height: 110px;
+          --skeleton-height: 110px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 76px;
+            line-height: 70px;
+            --skeleton-height: 70px;
+          }
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 36px;
+            line-height: 40px;
+            --skeleton-height: 40px;
+          }
+        `;
+      case 'body-h1-regular':
+        return `
+          font-weight: 400;
+          font-size: 46px;
+          line-height: 60px;
+          --skeleton-height: 60px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 40px;
+            line-height: 52px;
+            --skeleton-height: 52px;
+          }
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 28px;
+            line-height: 36px;
+            --skeleton-height: 36px;
+          }
+          `;
+      case 'body-xxl-regular':
+        return `
+          font-weight: 400;
+          font-size: 26px;
+          line-height: 34px;
+          --skeleton-height: 34px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 22px;
+            line-height: 30px;
+            --skeleton-height: 30px;
+          }
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 20px;
+            line-height: 26px;
+            --skeleton-height: 26px;
+          }
+        `;
       case 'body-xxl-semibold':
         return `
           font-weight: 600;
@@ -238,6 +306,23 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           font-size: 14px;
           line-height: 18px;
           --skeleton-height: 18px;
+        `;
+      case 'body-xl-regular':
+        return `
+          font-size: 24px;
+          font-weight: 400;
+          line-height: 31.2px;
+          --skeleton-height: 31.2px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 22px;
+            line-height: 30px;
+            --skeleton-height: 30px;
+          }
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 18px;
+            line-height: 24px;
+            --skeleton-height: 24px;
+          }
         `;
       default:
         return '';
