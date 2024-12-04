@@ -174,7 +174,6 @@ import {
   BigArticleIcon,
   MinWindowIcon,
   MaxWindowIcon,
-  HappyRobotIcon,
   AddChatIcon,
   AddGroupIcon,
   DeleteChatIcon,
