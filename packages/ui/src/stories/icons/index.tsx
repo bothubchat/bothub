@@ -193,6 +193,7 @@ import {
   URLCircleIcon,
   HideUiIcon,
   ShowUiIcon,
+  HappyRobotIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -335,6 +336,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="SearchSimpleIcon">{SearchSimpleIcon}</IconItem>
         <IconItem name="HappyRobotIcon">{HappyRobotIcon}</IconItem>
         <IconItem name="SadRobotIcon">{SadRobotIcon}</IconItem>
+        <IconItem name="HappyRobotIcon">{HappyRobotIcon}</IconItem>
         <IconItem name="ModelIcon">{ModelIcon}</IconItem>
         <IconItem name="PhoneColoredIcon">{PhoneColoredIcon}</IconItem>
         <IconItem name="QuestionsIcon">{QuestionsIcon}</IconItem>
