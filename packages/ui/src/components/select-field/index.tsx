@@ -89,6 +89,7 @@ export type SelectFieldProps = (SelectFieldDefaultProps | SelectFieldMultiProps)
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;
+  onClose?: () => void;
 } & React.PropsWithChildren;
 
 export const SelectField: React.FC<SelectFieldProps> = ({
@@ -117,6 +118,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   onOptionClick,
   onInputChange,
   onSelectClick,
+  onClose,
   children,
   ...props
 }) => {
@@ -172,6 +174,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const [width, setWidth] = useState(0);
   const [placement, setPlacement] = useState(initialPlacement);
 
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+    onClose?.();
+  }, []);
+
   const handleOptionClick = useCallback((item: SelectFieldDataItem) => {
     if (typeof item === 'object' && item.disabled) {
       return;
@@ -191,7 +198,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
         setValue(item);
       }
     }
-    setIsOpen(false);
+    handleClose();
   }, [value, setValue, multiple, onOptionClick, disableSelect]);
 
   const handleValueDelete = useCallback((item: SelectFieldDataItem, event: React.MouseEvent) => {
@@ -221,7 +228,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
       }
     }
     
-    setIsOpen(false);
+    handleClose();
   }, [value]);
 
   const handleInputClick = useCallback((native: boolean, event: React.MouseEvent<HTMLElement>) => {
@@ -312,7 +319,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
           return;
         }
 
-        setIsOpen(false);
+        handleClose();
       };
       
       document.addEventListener('click', clickListener);
@@ -326,7 +333,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   useEffect(() => {
     if (isOpen) {
       const scrollListener = () => {
-        setIsOpen(false);
+        handleClose();
       };
 
       document.addEventListener('scroll', scrollListener);
