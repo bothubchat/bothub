@@ -337,7 +337,7 @@ export const Bold: SelectFieldStory = {
       {
         label: 'Показать еще',
         bold: true,
-        icon: <Plus2Icon />,
+        icon: <Plus2Icon d="fill" />,
         noSelect: true
       }
     ]

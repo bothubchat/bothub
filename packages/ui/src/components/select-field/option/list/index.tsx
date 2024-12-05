@@ -158,10 +158,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                 >
                   <SelectFieldOptionSide>
                     {item.icon && (
-                      <IconProvider
-                        fill={theme.colors.base.white}
-                        size={18}
-                      >
+                      <IconProvider size={18}>
                         {item.icon}
                       </IconProvider>
                     )}
