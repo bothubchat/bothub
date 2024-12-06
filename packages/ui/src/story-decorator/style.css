@@ -7,42 +7,42 @@ body {
   font-style: italic;
   font-weight: 500;
   font-display: swap;
-  src: url("../../fonts/IBMPlexSans-MediumItalic.ttf");
+  src: url("../../fonts/IBMPlexSans-MediumItalic.woff2");
 }
 @font-face {
   font-family: 'IBMPlexSans';
   font-weight: 700;
   font-display: swap;
-  src: url("../../fonts/IBMPlexSans-Bold.ttf");
+  src: url("../../fonts/IBMPlexSans-Bold.woff2");
 }
 
 @font-face {
   font-family: 'IBMPlexSans';
   font-weight: 600;
   font-display: swap;
-  src: url("../../fonts/IBMPlexSans-SemiBold.ttf");
+  src: url("../../fonts/IBMPlexSans-SemiBold.woff2");
 }
 @font-face {
   font-family: 'IBMPlexSans';
   font-weight: 500;
   font-display: swap;
-  src: url("../../fonts/IBMPlexSans-Medium.ttf");
+  src: url("../../fonts/IBMPlexSans-Medium.woff2");
 }
 @font-face {
   font-family: 'IBMPlexSans';
   font-weight: 400;
   font-display: swap;
-  src: url("../../fonts/IBMPlexSans-Regular.ttf");
+  src: url("../../fonts/IBMPlexSans-Regular.woff2");
 }
 @font-face {
   font-family: 'Inter';
   font-weight: 700;
   font-display: swap;
-  src: url('../../fonts/Inter-Bold.ttf');
+  src: url('../../fonts/Inter-Bold.woff2');
 }
 @font-face {
   font-family: 'Inter';
   font-weight: 900;
   font-display: swap;
-  src: url('../../fonts/Inter-ExtraBold.ttf');
+  src: url('../../fonts/Inter-ExtraBold.woff2');
 }

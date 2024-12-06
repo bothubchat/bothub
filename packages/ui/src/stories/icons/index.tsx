@@ -172,6 +172,8 @@ import {
   VKIcon,
   ResendIcon,
   BigArticleIcon,
+  MinWindowIcon,
+  MaxWindowIcon,
   AddChatIcon,
   AddGroupIcon,
   DeleteChatIcon,
@@ -191,6 +193,7 @@ import {
   HideUiIcon,
   ShowUiIcon,
   SortUserIcon,
+  HappyRobotIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -284,6 +287,8 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="DownloadImgIcon">{DownloadImgIcon}</IconItem>
         <IconItem name="ErrorIcon">{ErrorIcon}</IconItem>
         <IconItem name="ExpandIcon">{ExpandIcon}</IconItem>
+        <IconItem name="MinWindowIcon">{MinWindowIcon}</IconItem>
+        <IconItem name="MaxWindowIcon">{MaxWindowIcon}</IconItem>
         <IconItem name="EyeIcon">{EyeIcon}</IconItem>
         <IconItem name="FaceIcon">{FaceIcon}</IconItem>
         <IconItem name="GearIcon">{GearIcon}</IconItem>
@@ -329,7 +334,9 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="GeminiIcon">{GeminiIcon}</IconItem>
         <IconItem name="StripeIcon">{StripeIcon}</IconItem>
         <IconItem name="SearchSimpleIcon">{SearchSimpleIcon}</IconItem>
+        <IconItem name="HappyRobotIcon">{HappyRobotIcon}</IconItem>
         <IconItem name="SadRobotIcon">{SadRobotIcon}</IconItem>
+        <IconItem name="HappyRobotIcon">{HappyRobotIcon}</IconItem>
         <IconItem name="ModelIcon">{ModelIcon}</IconItem>
         <IconItem name="PhoneColoredIcon">{PhoneColoredIcon}</IconItem>
         <IconItem name="QuestionsIcon">{QuestionsIcon}</IconItem>
@@ -394,7 +401,9 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TextBoldIcon">{TextBoldIcon}</IconItem>
         <IconItem name="TextItalicIcon">{TextItalicIcon}</IconItem>
         <IconItem name="TextUnderlineIcon">{TextUnderlineIcon}</IconItem>
-        <IconItem name="TextStrikethroughIcon">{TextStrikethroughIcon}</IconItem>
+        <IconItem name="TextStrikethroughIcon">
+          {TextStrikethroughIcon}
+        </IconItem>
         <IconItem name="RefreshIcon">{RefreshIcon}</IconItem>
         <IconItem name="CopyVariantsIcon">{CopyVariantsIcon}</IconItem>
         <IconItem name="SortUserIcon">{SortUserIcon}</IconItem>
