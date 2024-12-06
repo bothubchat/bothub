@@ -302,6 +302,48 @@ export const Preset: SelectFieldStory = {
   }
 };
 
+export const Bold: SelectFieldStory = {
+  args: {
+    data: [
+      {
+        label: 'Сортировать',
+        type: 'collapse',
+        data: [
+          {
+            label: 'По возрастанию',
+            noSelect: true,
+          },
+          {
+            label: 'По убыванию',
+            noSelect: true
+          }
+        ]
+      },
+      {
+        icon: <Gpt35Icon />,
+        value: 'gpt',
+        label: 'ChatGPT'
+      },
+      {
+        icon: <DallEIcon />,
+        value: 'dall-e',
+        label: 'DALL-E'
+      },
+      {
+        icon: <MjWhiteIcon />,
+        value: 'mj',
+        label: 'Midjourney'
+      },
+      {
+        label: 'Показать еще',
+        bold: true,
+        icon: <Plus2Icon d="fill" />,
+        noSelect: true
+      }
+    ]
+  }
+};
+
 export default {
   title: 'UI Components/Fields/Select',
   component: SelectField,

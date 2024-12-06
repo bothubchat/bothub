@@ -39,40 +39,31 @@ export const SelectFieldCollapseOption: React.FC<SelectFieldCollapseOptionProps>
   }
 
   return (
-    <SelectFieldCollapseOptionStyled
-      $size={size}
-    >
+    <SelectFieldCollapseOptionStyled $size={size}>
       <SelectFieldCollapseOptionHead
         $disabled={isDisabled}
         $size={size}
         {...(!isDisabled && {
-          onClick: setIsOpen.bind(null, (isOpen) => !isOpen)
+          onClick: setIsOpen.bind(null, (isOpen) => !isOpen),
         })}
       >
-        <SelectFieldCollapseOptionHeadSide
-          $size={size}
-        >
-          {(typeof item === 'object' && item.icon) && (
-            <IconProvider
-              size={16}
-              fill={theme.colors.base.white}
-            >
+        <SelectFieldCollapseOptionHeadSide $size={size}>
+          {typeof item === 'object' && item.icon && (
+            <IconProvider size={16} fill={theme.colors.base.white}>
               {item.icon}
             </IconProvider>
           )}
-          <SelectFieldCollapseOptionText>
+          <SelectFieldCollapseOptionText
+            $bold={typeof item === 'object' && item.bold}
+          >
             {typeof item === 'string' && item}
-            {typeof item !== 'string' && (
-              item.label ?? item.value
-            )}
+            {typeof item !== 'string' && (item.label ?? item.value)}
           </SelectFieldCollapseOptionText>
         </SelectFieldCollapseOptionHeadSide>
-        <SelectFieldCollapseOptionHeadSide
-          $size={size}
-        >
-          <SelectFieldCollapseOptionArrow 
+        <SelectFieldCollapseOptionHeadSide $size={size}>
+          <SelectFieldCollapseOptionArrow
             style={{
-              transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)'
+              transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)',
             }}
           />
         </SelectFieldCollapseOptionHeadSide>

@@ -85,7 +85,14 @@ export const SelectFieldCollapseOptionHeadSide = styled.div<SelectFieldCollapseO
   }}px;
 `;
 
-export const SelectFieldCollapseOptionText = styled(Typography).attrs({ variant: 'input-sm' })``;
+export interface SelectFieldCollapseOptionTextProps {
+  $bold?: boolean;
+}
+export const SelectFieldCollapseOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldCollapseOptionTextProps>`
+  ${({ $bold }) => $bold && css`
+    font-weight: 500;
+  `}
+`;
 
 export const SelectFieldCollapseOptionArrow = styled(ArrowDownIcon).attrs(
   ({ theme }) => ({ 

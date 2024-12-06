@@ -192,6 +192,7 @@ import {
   URLCircleIcon,
   HideUiIcon,
   ShowUiIcon,
+  SortUserIcon,
   HappyRobotIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
@@ -405,6 +406,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         </IconItem>
         <IconItem name="RefreshIcon">{RefreshIcon}</IconItem>
         <IconItem name="CopyVariantsIcon">{CopyVariantsIcon}</IconItem>
+        <IconItem name="SortUserIcon">{SortUserIcon}</IconItem>
         <IconItem name="SortAscendingIcon">{SortAscendingIcon}</IconItem>
         <IconItem name="SortDescendingIcon">{SortDescendingIcon}</IconItem>
         <IconItem name="QuoteIcon">{QuoteIcon}</IconItem>

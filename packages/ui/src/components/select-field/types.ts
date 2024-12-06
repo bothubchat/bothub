@@ -22,11 +22,14 @@ export type SelectFieldDataItem = string | {
   value?: string;
   icon?: React.ReactNode;
   label?: string | null;
+  bold?: boolean;
   disabled?: boolean;
   end?: React.ReactNode;
   tooltip?: TooltipProps;
   open?: boolean;
   data?: SelectFieldDataItem[];
+  noSelect?: boolean;
+  onClick?: SelectFieldOptionClickEventHandler;
 };
 
 export type SelectFieldData = SelectFieldDataItem[];
