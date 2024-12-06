@@ -113,6 +113,10 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   box-sizing: border-box;
   transition: all 0.3s;
   padding: 20px;
+  padding-right: 0px;
+  & > * > * {
+    padding-right: 20px;
+  }
   ${({ $open }) => $open && css`
     min-width: 412px;
     max-width: 412px;
@@ -235,8 +239,8 @@ export const SidebarContentNav = styled.div<{ $open?: boolean }>`
   border-radius: 20px;
   background: ${({ theme }) => theme.colors.grayScale.gray7};
   padding: 16px;
-  ${({ $open }) => $open ?
-    adaptive({
+  ${({ $open }) => ($open
+    ? adaptive({
       variant: 'dashboard',
       merge: true,
       desktop: css`display: none;`,
@@ -246,8 +250,7 @@ export const SidebarContentNav = styled.div<{ $open?: boolean }>`
       `,
       mobile: css`display: none;`,
     })
-    :
-    adaptive({
+    : adaptive({
       variant: 'dashboard',
       merge: true,
       desktop: css`display: none;`,
@@ -269,7 +272,7 @@ export const SidebarContentNav = styled.div<{ $open?: boolean }>`
         margin: 0 auto;
 
       `,
-    })}
+    }))}
 `;
 
 export const SidebarContentNavMenuWrapper = styled.div`
@@ -372,7 +375,7 @@ export const SidebarToolbar = styled.div<{
 
 export const SidebarDivider = styled.div`
   height: 1px;
-  width: 100%;
+  width: calc(100% - 20px);
   background-color: ${({ theme }) => theme.colors.grayScale.gray3};
   margin-top: 14px;
 `;
@@ -442,6 +445,7 @@ export const SidebarBody = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+  padding-right: 10px;
   ${adaptive({
   variant: 'dashboard',
   desktop: css`
@@ -485,6 +489,14 @@ export const SidebarArrowUpButton = styled(ArrowUpIcon) <{ $hidden: boolean }>`
   display: inline-flex;
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  cursor: pointer;
+  &:hover {
+    transition: background 0.2s;
+    background-color: ${({ theme }) => theme.colors.grayScale.gray7};
+  }
+  & path {
+    stroke: ${({ theme }) => theme.colors.base.white};
+  }
   ${({ $hidden }) => $hidden && css` display: none;`}
   ${adaptive({
   variant: 'dashboard',

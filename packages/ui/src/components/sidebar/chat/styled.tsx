@@ -109,6 +109,7 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   align-items: center;
   width: 100%;
   padding: 8px;
+  cursor: pointer;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -ms-user-select: none;

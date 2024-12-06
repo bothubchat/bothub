@@ -30,7 +30,9 @@ export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
 export const SidebarDeleteButton = styled(Button).attrs({
   fullWidth: true,
   startIcon: <TrashIcon />
-})``;
+})`
+  width: calc(100% - 20px);
+`;
 
 export const SidebarCreateChatButton = styled(Button).attrs({
   children: <AddChatIcon />,
@@ -39,10 +41,10 @@ export const SidebarCreateChatButton = styled(Button).attrs({
 export const SidebarAddGroupButton = styled(Button).attrs({
   children: <AddGroupIcon />
 }) <{ variant: ButtonVariant }>`
-  ${({ variant }) => variant === 'secondary' && css`
-    background: ${({ theme }) => theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
+  ${({ variant, theme }) => variant === 'secondary' && css`
+    background: ${theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
     svg path {
-      stroke: ${({ theme }) => theme.colors.accent.primary};
+      stroke: ${theme.colors.accent.primary};
     }
   `}
 `;
@@ -50,18 +52,18 @@ export const SidebarAddGroupButton = styled(Button).attrs({
 export const SidebarEditButton = styled(Button).attrs({
   children: <EditIcon />,
 }) <{ variant: ButtonVariant, $active?: boolean }>`
-  ${({ variant }) => variant === 'secondary' && css`
+  ${({ variant, theme }) => variant === 'secondary' && css`
     svg path {
-      fill: ${({ theme }) => theme.colors.grayScale.gray1};
-      stroke: ${({ theme }) => theme.colors.grayScale.gray1};
+      fill: ${theme.colors.grayScale.gray1};
+      stroke: ${theme.colors.grayScale.gray1};
     }
   `}
 
-  ${({ $active }) => $active && css`
-    background: ${({ theme }) => theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
+  ${({ $active, theme }) => $active && css`
+    background: ${theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
     svg path {
-      fill: ${({ theme }) => theme.colors.accent.primary};
-      stroke: ${({ theme }) => theme.colors.accent.primary};
+      fill: ${theme.colors.accent.primary};
+      stroke: ${theme.colors.accent.primary};
     }
   `}
 `;
@@ -74,10 +76,10 @@ export const SidebarSearchButton = styled(Button).attrs({
       fill: ${({ theme }) => theme.colors.grayScale.gray1};
     }
   `}
-  ${({ $active }) => $active && css`
-    background: ${({ theme }) => theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
+  ${({ $active, theme }) => $active && css`
+    background: ${theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
     svg path {
-      fill: ${({ theme }) => theme.colors.accent.primary};
+      fill: ${theme.colors.accent.primary};
     }
   `}
 `;
