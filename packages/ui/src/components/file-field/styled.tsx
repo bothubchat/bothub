@@ -29,8 +29,8 @@ export const FileFieldStyled = styled.div<FileFieldStyledProps>`
     max-width: 420px;
   `}
   ${({ $open }) => !$open && css`
-    max-width: 36px;
-    max-height: 36px;
+    width: fit-content;
+    aspect-ratio: 1/1;
     overflow: hidden;
   `}
   user-select: none;
