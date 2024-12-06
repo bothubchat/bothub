@@ -106,11 +106,11 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
             {logo}
             <SidebarHeaderRight>
               {lang}
-              {isOpen &&
+              {isOpen && (
                 <SidebarMenu>
                   {menu}
                 </SidebarMenu>
-              }
+              )}
             </SidebarHeaderRight>
           </SidebarHeader>
           <SidebarToolbar $open={isOpen}>

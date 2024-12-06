@@ -29,12 +29,12 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
   transition: padding 0.3s;
 
 
-  ${({ theme }) => adaptive({
+  ${({ theme, $open }) => adaptive({
   variant: 'dashboard',
   merge: true,
   desktop: `
     &:hover {
-      background: ${theme.colors.grayScale.gray3};
+      ${$open && `background: ${theme.colors.grayScale.gray3};`}
       ${SidebarUserInfoBottom} {
         gap: 10px;
         transition: width 0.3s;
