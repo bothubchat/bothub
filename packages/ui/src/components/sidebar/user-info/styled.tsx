@@ -31,7 +31,6 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
 
   ${({ theme, $open }) => adaptive({
   variant: 'dashboard',
-  merge: true,
   desktop: `
     &:hover {
       ${$open && `background: ${theme.colors.grayScale.gray3};`}
