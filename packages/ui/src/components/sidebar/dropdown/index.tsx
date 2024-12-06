@@ -1,6 +1,4 @@
-import React, {
-  useCallback, useEffect, useRef, useState
-} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   SidebarDropdownContent,
@@ -25,10 +23,11 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const handleToggle = useCallback((e: React.MouseEvent) => {
+
+  const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsOpen(!isOpen);
-  }, [isOpen]);
+    setIsOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     const dropdownEl: HTMLDivElement | null = dropdownRef.current;
@@ -41,12 +40,12 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
       };
       const blurListener = () => setIsOpen(false);
 
-      document.addEventListener('click', clickListener);
-      window.addEventListener('blur', blurListener);
+      document.addEventListener('click', clickListener, true);
+      window.addEventListener('blur', blurListener, true);
 
       return () => {
-        document.removeEventListener('click', clickListener);
-        window.removeEventListener('blur', blurListener);
+        document.removeEventListener('click', clickListener, true);
+        window.removeEventListener('blur', blurListener, true);
       };
     }
   }, []);
@@ -60,6 +59,7 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
     },
     enter: {
       opacity: isOpen ? 1 : 0.5,
+      backdropFilter: 'blur(2px)',
       transform: `scale(${isOpen ? 1 : 0.999})`,
       transition: {
         duration: 150,
@@ -89,7 +89,7 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
             ref={contentRef}
             style={{
               ...style,
-              transform: "translate3d(-100%, 0, 0)",
+              transform: 'translate3d(-100%, 0, 0)',
               left: contentPosition.right,
               top: contentPosition.bottom,
             }}
