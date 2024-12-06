@@ -114,8 +114,10 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   transition: all 0.3s;
   padding: 20px;
   padding-right: 0px;
-  & > * > * {
-    padding-right: 20px;
+  @media (min-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
+    & > * > * {
+      padding-right: 20px;
+    }
   }
   ${({ $open }) => $open && css`
     min-width: 412px;
@@ -156,9 +158,6 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   max-height: 100vh;
   ${({ theme, $isHide }) => !$isHide && adaptive({
   variant: 'dashboard',
-  desktop: css`
-    border-right: 1px solid ${theme.colors.grayScale.gray3};
-    `,
   tablet: css`
       border-radius: 18px;
     `,
