@@ -10,6 +10,10 @@ export const MessageActionsStyled = styled.div<{ $variant?: MessageVariant }>`
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+  @media (width <= ${({ theme }) => theme.mobile.maxWidth}) {
+    flex-direction: column;
+    gap: 8px;
+  }
 `;
 
 export const MessageActionsMenuStyled = styled.div`
