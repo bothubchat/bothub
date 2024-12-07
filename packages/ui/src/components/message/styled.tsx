@@ -222,6 +222,9 @@ export const MessageBlockBottomPanel = styled.div`
   align-items: center;
   margin-left: 48px;
   margin-right: 95px;
+  @media (width <= ${({ theme }) => theme.mobile.maxWidth}) {
+    margin-right: 28px;
+  }
 `;
 
 export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
