@@ -1,7 +1,7 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
-import { MessageVariant } from '../types';
+import { MessageColor, MessageVariant } from '../types';
 
 export const TimestampStyled = styled.div`
   margin-top: auto;
@@ -11,10 +11,19 @@ export const TimestampStyled = styled.div`
   justify-content: flex-end;
 `;
 
+export interface TimestampTextProp {
+  $variant: MessageVariant;
+  $color: MessageColor;
+}
 export const TimestampText = styled(Typography).attrs({
   variant: 'body-s-regular',
-})<{ $variant: MessageVariant }>`
-  color: ${({ theme, $variant }) => ($variant === 'assistant' ? theme.colors.base.white : theme.default.colors.base.white)};
+})<TimestampTextProp>`
+  color: ${({ theme, $variant, $color }) => {
+    if (theme.mode === 'dark' || $variant === 'user' || $color !== 'default') {
+      return theme.default.colors.base.white;
+    }
+    return theme.default.colors.base.black;
+  }} !important;
   ${adaptive({
     desktop: css`
       font-size: 12px;
@@ -25,5 +34,5 @@ export const TimestampText = styled(Typography).attrs({
     mobile: css`
       font-size: 10px;
     `
-  })}
+  })};
 `;

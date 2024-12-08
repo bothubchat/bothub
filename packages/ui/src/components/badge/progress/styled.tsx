@@ -76,6 +76,7 @@ export const BadgeProgressLoader = styled(LoaderCircularIcon).attrs({ size: 16 }
 export const BadgeProgressText = styled(Typography).attrs({ variant: 'body-s-regular' })`
   cursor: inherit;
   color: ${({ theme }) => theme.default.colors.base.white};
+  white-space: nowrap;
 `;
 
 export const BadgeProgressTextBold = styled(Typography).attrs({ variant: 'body-s-medium' })`
