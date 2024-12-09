@@ -25,7 +25,7 @@ export const SidebarChatRight = styled.div`
 export const SidebarChatIconStyled = styled(SidebarChatIcon)`
   ${({ theme }) => css`
     path {
-      stroke: ${theme.colors.base.white};
+      stroke: ${theme.colors.grayScale.gray1};
     }
   `}
   display: none;
