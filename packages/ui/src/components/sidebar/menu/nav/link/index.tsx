@@ -16,11 +16,13 @@ export type SidebarMenuNavLinkProps = Omit<
   as?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   to?: string;
   active?: boolean;
+  fill?: boolean;
+  stroke?: boolean;
   icon?: React.ReactNode;
 };
 
 export const SidebarMenuNavLink: React.FC<SidebarMenuNavLinkProps> = ({
-  as, to, icon, active = false, children, ...props
+  as, to, icon, active = false, children, fill = false, stroke = false, ...props
 }) => {
   const { setIsOpen } = useSidebarMenu();
   const { isOpen } = useSidebar();
@@ -36,6 +38,8 @@ export const SidebarMenuNavLink: React.FC<SidebarMenuNavLinkProps> = ({
       {...props}
       as={as}
       to={to}
+      $fill={fill}
+      $stroke={stroke}
       onClick={handleClick}
     >
       <SidebarMenuNavIcon>

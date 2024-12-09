@@ -37,9 +37,10 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
   ${({ $open }) => !$open && css`
   @media (min-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
     ${SidebarEmptyGroupStyled} {
-      padding: 10px;
       margin-top: 10px;
       border-radius: 8px;
+      width: 38px;
+      aspect-ratio: 1;
       display: flex;
       border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
       span {
@@ -444,7 +445,8 @@ export const SidebarBody = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
-  padding-right: 10px;
+  right: 0px;
+  padding-right: 14px;
   ${adaptive({
   variant: 'dashboard',
   desktop: css`

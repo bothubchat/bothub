@@ -4,6 +4,8 @@ import { adaptive } from '@/ui/adaptive';
 
 export interface SidebarMenuNavLinkStyledProps {
   $active: boolean;
+  $fill: boolean;
+  $stroke: boolean;
 }
 
 export const SidebarMenuNavLinkStyled = styled.a<SidebarMenuNavLinkStyledProps>`
@@ -11,11 +13,18 @@ export const SidebarMenuNavLinkStyled = styled.a<SidebarMenuNavLinkStyledProps>`
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  
   ${({ $active }) => !$active && css`
     transition: 0.25s opacity;
     &:hover {
       opacity: 1;
+    }
+  `}
+  ${({
+  $active, $fill, $stroke, theme
+}) => $active && css`
+    svg path {
+      ${$fill && `fill: ${theme.colors.accent.primary}`}
+      ${$stroke && `stroke: ${theme.colors.accent.primary}`}
     }
   `}
 `;
@@ -31,7 +40,7 @@ export const SidebarMenuNavIcon = styled.div`
 `;
 
 export const SidebarMenuNavLinkText = styled(Typography).attrs({ variant: 'body-m-medium' }) <{ $open?: boolean }>`
-  ${({ $open }) => !$open ? adaptive({
+  ${({ $open }) => (!$open ? adaptive({
   variant: 'dashboard',
   desktop: css`
       display: none;
@@ -50,5 +59,5 @@ export const SidebarMenuNavLinkText = styled(Typography).attrs({ variant: 'body-
   tablet: css`
       display: none;
       `,
-})}
+}))}
 `;

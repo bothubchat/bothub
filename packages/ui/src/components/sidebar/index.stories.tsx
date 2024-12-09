@@ -68,6 +68,7 @@ export const Basic: SidebarStory = {
         <SidebarMenuNavLink
           href="#"
           icon={<ChatsIcon />}
+          fill
           active
         >
           Чаты
@@ -75,48 +76,62 @@ export const Basic: SidebarStory = {
         <SidebarMenuNavLink
           href="#"
           icon={<BookmarksBigIcon />}
+          stroke
+          active
         >
           Закладки
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
           icon={<PresetsBigIcon />}
+          stroke
+          active
         >
           Пресеты
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
+          fill
           href="#"
           icon={<ReferalIcon />}
+          active
         >
           Партнерская программа
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
+          fill
           href="#"
           icon={<TariffIcon />}
+          active
         >
           Пакеты
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
+          fill
+          stroke
           icon={<GearIcon />}
+          active
         >
           Для разработчиков
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
           icon={<GearIcon />}
+          active
         >
           Для разработчиков
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
           icon={<GearIcon />}
+          active
         >
           Для разработчиков
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
           icon={<GearIcon />}
+          active
         >
           Для разработчиков
         </SidebarMenuNavLink>
@@ -830,7 +845,7 @@ export const BasicTariff: SidebarStory = {
         )}
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton>
-            Купить пакет
+            Купить пакет | Free
           </SidebarUserInfoUpdateTariffButton>
         )}
         logout={<SidebarUserInfoLogoutButton />}

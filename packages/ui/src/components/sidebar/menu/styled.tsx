@@ -28,11 +28,10 @@ export const SidebarMenuBlock = styled(animated.div) <{ $sidebarOpen?: boolean }
   z-index: ${({ theme }) => theme.zIndex.menu};
   top: 53px;
   left: 0px;
-  width: 100%;
+  width: calc(100% - 20px);
   background: ${({ theme }) => theme.colors.grayScale.gray7};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 12px;
-  overflow: hidden;
   padding: 16px;
   transform-origin: top center;
   ${({ $sidebarOpen }) => !$sidebarOpen && adaptive({
@@ -41,9 +40,10 @@ export const SidebarMenuBlock = styled(animated.div) <{ $sidebarOpen?: boolean }
   desktop: css`
     right: 0px;
     top: 0;
+    width: 100%;
+    white-space: nowrap;
     background: none;
     margin-top: 20px;
-    background: none;
     position: relative;
     flex-direction: column;
     padding: 0px;
