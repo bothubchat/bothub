@@ -4,46 +4,33 @@ import { adaptive } from '@/ui/adaptive';
 
 export interface SidebarMenuNavLinkStyledProps {
   $active: boolean;
-  $fill: boolean;
-  $stroke: boolean;
 }
 
-export const SidebarMenuNavLinkStyled = styled.a<SidebarMenuNavLinkStyledProps>`
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  ${({ $active }) => !$active && css`
-    transition: 0.25s opacity;
-    &:hover {
-      opacity: 1;
-    }
-  `}
-  ${({
-  $active, $fill, $stroke, theme
-}) => $active && css`
-    svg path {
-      ${$fill && `fill: ${theme.colors.accent.primary}`}
-      ${$stroke && `stroke: ${theme.colors.accent.primary}`}
-    }
-  `}
-`;
-
-export const SidebarMenuNavIcon = styled.div`
-  display: inline-flex;
-  width: 38px;
-  height: 38px;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
-`;
-
 export const SidebarMenuNavLinkText = styled(Typography).attrs({ variant: 'body-m-medium' }) <{ $open?: boolean }>`
-  ${({ $open }) => (!$open ? adaptive({
+  ${({ $open, theme }) => (!$open ? adaptive({
   variant: 'dashboard',
   desktop: css`
-      display: none;
+      position: fixed;
+      transition: 0.25s all;
+      padding: 8px;
+      background: ${theme.colors.grayScale.gray2};
+      border-radius: 6px;
+      display: block;
+      z-index: 40;
+      left: 120px;
+      white-space: nowrap;
+      &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: -10px;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 10px 10px 0;
+        border-color: transparent ${theme.colors.grayScale.gray2} transparent transparent;
+      }
     `,
   tablet: css`
       display: flex;
@@ -61,3 +48,35 @@ export const SidebarMenuNavLinkText = styled(Typography).attrs({ variant: 'body-
       `,
 }))}
 `;
+
+export const SidebarMenuNavLinkStyled = styled.a<SidebarMenuNavLinkStyledProps>`
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  opacity: 0.75;
+  ${({ $active }) => !$active && css`
+    transition: 0.25s opacity;
+    &:hover {
+      opacity: 1;
+    }
+  `}
+  
+`;
+
+export const SidebarMenuNavIcon = styled.div<{ $active?: boolean }>`
+  display: inline-flex;
+  width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  ${({ $active }) => $active && css`
+    background: ${({ theme }) => theme.colors.grayScale.gray3};
+  `}
+  &:hover ~ ${SidebarMenuNavLinkText}{
+    left: 100px;
+  }
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+`;
+

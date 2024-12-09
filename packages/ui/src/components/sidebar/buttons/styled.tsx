@@ -30,9 +30,7 @@ export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
 export const SidebarDeleteButton = styled(Button).attrs({
   fullWidth: true,
   startIcon: <TrashIcon />
-})`
-  width: calc(100% - 20px);
-`;
+})``;
 
 export const SidebarCreateChatButton = styled(Button).attrs({
   children: <AddChatIcon />,

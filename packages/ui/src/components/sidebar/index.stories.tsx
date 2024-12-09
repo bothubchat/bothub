@@ -42,13 +42,15 @@ import {
 import { Tooltip } from '@/ui/components/tooltip';
 import {
   ChatsIcon,
-  BookmarksBigIcon,
   PresetsBigIcon,
   ReferalIcon,
   TariffIcon,
-  GearIcon,
   EditIcon,
   TrashIcon,
+  BigModelsIcon,
+  CoderIcon,
+  OrganizationIcon,
+  SimpleGearIcon,
 } from '@/ui/icons';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
@@ -68,72 +70,51 @@ export const Basic: SidebarStory = {
         <SidebarMenuNavLink
           href="#"
           icon={<ChatsIcon />}
-          fill
           active
         >
           Чаты
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
-          icon={<BookmarksBigIcon />}
-          stroke
-          active
+          icon={<OrganizationIcon />}
         >
-          Закладки
+          Для организаций
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
           icon={<PresetsBigIcon />}
-          stroke
-          active
         >
           Пресеты
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
-          fill
           href="#"
           icon={<ReferalIcon />}
-          active
         >
           Партнерская программа
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
-          fill
           href="#"
           icon={<TariffIcon />}
-          active
         >
           Пакеты
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
-          fill
-          stroke
-          icon={<GearIcon />}
-          active
+          icon={<CoderIcon />}
         >
           Для разработчиков
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
-          icon={<GearIcon />}
-          active
+          icon={<SimpleGearIcon />}
         >
-          Для разработчиков
+          Настройки
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
-          icon={<GearIcon />}
-          active
+          icon={<BigModelsIcon />}
         >
-          Для разработчиков
-        </SidebarMenuNavLink>
-        <SidebarMenuNavLink
-          href="#"
-          icon={<GearIcon />}
-          active
-        >
-          Для разработчиков
+          Модели
         </SidebarMenuNavLink>
       </SidebarMenuNav>
     ),

@@ -87,7 +87,10 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
             <Tooltip label={props.name} placement="top-left" disabled={props.name.length <= 24}>
               <TooltipConsumer>
                 {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                  <SidebarGroupNameBox onMouseEnter={handleTooltipMouseEnter} onMouseLeave={handleTooltipMouseLeave}>
+                  <SidebarGroupNameBox
+                    onMouseEnter={handleTooltipMouseEnter}
+                    onMouseLeave={handleTooltipMouseLeave}
+                  >
                     {props.name.slice(0, 22)}
                     {props.name.length > 22 && '...'}
                   </SidebarGroupNameBox>

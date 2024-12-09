@@ -8,6 +8,7 @@ import {
 import { IconProvider } from '@/ui/components/icon';
 import { useSidebarMenu } from '../../context';
 import { useSidebar } from '../../../context';
+import { useTheme } from '@/ui/theme';
 
 export type SidebarMenuNavLinkProps = Omit<
   React.ComponentProps<typeof SidebarMenuNavLinkStyled>,
@@ -16,16 +17,15 @@ export type SidebarMenuNavLinkProps = Omit<
   as?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   to?: string;
   active?: boolean;
-  fill?: boolean;
-  stroke?: boolean;
   icon?: React.ReactNode;
 };
 
 export const SidebarMenuNavLink: React.FC<SidebarMenuNavLinkProps> = ({
-  as, to, icon, active = false, children, fill = false, stroke = false, ...props
+  as, to, icon, active = false, children, ...props
 }) => {
   const { setIsOpen } = useSidebarMenu();
   const { isOpen } = useSidebar();
+  const theme = useTheme();
   const handleClick = useCallback<React.MouseEventHandler<HTMLAnchorElement>>((event) => {
     setIsOpen(false);
 
@@ -38,18 +38,17 @@ export const SidebarMenuNavLink: React.FC<SidebarMenuNavLinkProps> = ({
       {...props}
       as={as}
       to={to}
-      $fill={fill}
-      $stroke={stroke}
       onClick={handleClick}
     >
-      <SidebarMenuNavIcon>
+      <SidebarMenuNavIcon $active={active}>
         <IconProvider
           size={18}
+          fill={active ? theme.colors.accent.primary : theme.colors.grayScale.gray1}
+          stroke={active ? theme.colors.accent.primary : theme.colors.grayScale.gray1}
         >
           {icon}
         </IconProvider>
       </SidebarMenuNavIcon>
-
       <SidebarMenuNavLinkText $open={isOpen}>
         {children}
       </SidebarMenuNavLinkText>

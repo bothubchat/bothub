@@ -115,11 +115,6 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   transition: all 0.3s;
   padding: 20px;
   padding-right: 0px;
-  @media (min-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
-    & > * > * {
-      padding-right: 20px;
-    }
-  }
   ${({ $open }) => $open && css`
     min-width: 412px;
     max-width: 412px;
@@ -150,6 +145,7 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   }
   @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
     padding: 18px;
+    padding-right: 0px;
     gap: 14px;
     display: flex;
     flex-direction: row;
@@ -354,9 +350,13 @@ export const SidebarToolbar = styled.div<{
 }>`
   display: flex;
   width: inherit;
+  padding-right: 20px;
   gap: 10px;
   align-items: center;
   justify-content: space-between;
+  & > * {
+    width: fit-content;
+  }
   ${adaptive({
   variant: 'dashboard',
   merge: true,
@@ -371,6 +371,16 @@ export const SidebarToolbar = styled.div<{
     flex-direction: column-reverse;
     `,
 })}
+`;
+
+export const SidebarSearchContainer = styled.div`
+  width: 100%;
+  padding-right: 20px;
+`;
+
+export const SidebarDeleteButtonContainer = styled.div`
+  width: 100%;
+  padding-right: 20px;
 `;
 
 export const SidebarDivider = styled.div`
@@ -398,14 +408,16 @@ export const SidebarLogoLink = styled.a`
 
 export const SidebarHeader = styled.div<SidebarHeaderProps>`
   display: ${({ $open }) => (
-    $open ? 'flex' : 'none'
+    $open ? 'grid' : 'none'
   )};
-  position: relative;
+  grid-template-columns: 1fr auto auto;
   align-items: center;
+  position: relative;
+  padding-right: 20px;
   width: 100%;
-  margin-bottom: 34px;
+  gap: 20px;
+  margin-bottom: 20px;
   justify-content: space-between;
-  height: 39px;
   ${adaptive({
     variant: 'dashboard',
     merge: true,
@@ -431,6 +443,7 @@ export const SidebarBottom = styled.div`
   gap: 14px;
   width: 100%;
   margin-top: 14px;
+  padding-right: 20px;
   ${adaptive({
   variant: 'dashboard',
   tablet: css`display: none;`,
