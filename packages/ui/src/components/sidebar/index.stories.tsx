@@ -38,6 +38,7 @@ import {
   SidebarGroupEmpty,
   SidebarGroupCheckbox,
   SidebarThemeSwitcher,
+  SidebarUserInfoSkeleton,
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -914,25 +915,7 @@ export const Skeleton: SidebarStory = {
       <SidebarButtons />
     ),
     user: (
-      <SidebarUserInfo
-        avatar={(
-          <SidebarUserInfoAvatar
-            src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
-            alt="Артём"
-          />
-        )}
-        name="Артём"
-        caps="9 012 CAPS"
-        tariff={(
-          <SidebarUserInfoFreeTariff />
-        )}
-        updateTariff={(
-          <SidebarUserInfoUpdateTariffButton disabled>
-            Купить пакет
-          </SidebarUserInfoUpdateTariffButton>
-        )}
-        logout={<SidebarUserInfoLogoutButton />}
-      />
+      <SidebarUserInfoSkeleton />
     ),
     children: (
       <SidebarGroups>
