@@ -123,7 +123,8 @@ export const Basic: SidebarStory = {
         {({ isOpen }) => (
           <Tooltip
             label={isOpen ? 'Скрыть боковую панель' : 'Открыть боковую панель'}
-            placement={isOpen ? 'top' : 'top-left'}
+            placement={isOpen ? 'top' : 'center-right'}
+            placementX={!isOpen ? 10 : 0}
             disableHiddenAnimation
           >
             <SidebarToggleButton />
@@ -162,7 +163,7 @@ export const Basic: SidebarStory = {
         {({ isOpen }) => (
           <Tooltip
             label="Профиль"
-            placement="top-left"
+            placement="center-right"
             disabled={isOpen}
           >
             <SidebarUserInfo

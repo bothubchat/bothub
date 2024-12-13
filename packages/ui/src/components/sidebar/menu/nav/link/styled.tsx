@@ -23,7 +23,7 @@ export const SidebarMenuNavLinkText = styled(Typography).attrs({ variant: 'body-
         content: '';
         position: absolute;
         top: 50%;
-        left: -10px;
+        left: -5px;
         transform: translateY(-50%);
         width: 0;
         height: 0;
@@ -76,7 +76,10 @@ export const SidebarMenuNavIcon = styled.div<{ $active?: boolean }>`
   `}
   &:hover ~ ${SidebarMenuNavLinkText}{
     left: 100px;
+    background: ${({ theme }) => (theme.mode === 'dark' ? theme.colors.grayScale.gray1 : 'rgba(159, 189, 251, 1);')};
+    &:after {
+      border-color: transparent ${({ theme }) => (theme.mode === 'dark' ? theme.colors.grayScale.gray1 : 'rgba(159, 189, 251, 1)')} transparent transparent;
+    }
   }
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
 `;
-
