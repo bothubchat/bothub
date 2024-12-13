@@ -81,7 +81,7 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
         babel({ 
           babelHelpers: 'bundled',
           exclude: 'node_modules/**',
-          extensions: ['.js', '.ts'],
+          extensions: ['.js', '.ts', '.tsx'],
           presets: ['@babel/preset-react'],
           plugins: [
             ['babel-plugin-styled-components', {

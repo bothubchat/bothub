@@ -66,7 +66,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
     const elBottomY = rect.bottom + window.scrollY;
 
-    let x: number;
+    let x: number = 0;
     switch (placement) {
       case 'top-left':
         switch (align) {
@@ -110,8 +110,28 @@ export const Tooltip: React.FC<TooltipProps> = ({
             break;
         }
         break;
+      case 'center-right':
+        x = elWidth * 2;
+        break;
+      case 'center-left':
+        x = elWidth - tooltipWidth / 1.5 - 6;
+        break;
     }
-    const y: number = !inverted ? elY - tooltipHeight : elBottomY + 6;
+    let y: number = 0;
+    switch (placement) {
+      case 'top-left':
+      case 'top':
+      case 'top-right':
+        y = inverted ? elBottomY + 6 : elY - tooltipHeight - 6;
+        break;
+      case 'center-right':
+      case 'center-left':
+        y = (elY + elBottomY) / 2 - tooltipHeight / 2 + 4;
+        break;
+      default:
+        y = elBottomY + 6;
+        break;
+    }
 
     return [x, y];
   }, [placement, align, hoveredElement]);
@@ -187,6 +207,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     <TooltipStyled
       $placement={placement}
       $align={align}
+      $inverted={inverted}
       ref={tooltipRef}
       className={className}
       style={{
@@ -197,6 +218,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     >
       {inverted && (
         <TooltipArrow
+          placement={placement}
           variant={variant}
           inverted={inverted}
         />
@@ -232,6 +254,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       </TooltipBlock>
       {!inverted && (
         <TooltipArrow
+          placement={placement}
           variant={variant}
           inverted={inverted}
         />
