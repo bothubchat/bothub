@@ -8,8 +8,8 @@ export interface SidebarMenuNavLinkStyledProps {
 
 export const SidebarMenuNavLinkText = styled(Typography).attrs({ variant: 'body-m-medium' }) <{ $open?: boolean }>`
   ${({ $open, theme }) => (!$open ? adaptive({
-  variant: 'dashboard',
-  desktop: css`
+    variant: 'dashboard',
+    desktop: css`
       position: fixed;
       transition: 0.25s all;
       padding: 8px;
@@ -32,21 +32,21 @@ export const SidebarMenuNavLinkText = styled(Typography).attrs({ variant: 'body-
         border-color: transparent ${theme.colors.grayScale.gray2} transparent transparent;
       }
     `,
-  tablet: css`
+    tablet: css`
       display: flex;
       `,
-  mobile: css`
+    mobile: css`
       display: flex;
       `
-}) : adaptive({
-  variant: 'dashboard',
-  desktop: css`
+  }) : adaptive({
+    variant: 'dashboard',
+    desktop: css`
       display: flex;
     `,
-  tablet: css`
+    tablet: css`
       display: none;
       `,
-}))}
+  }))}
 `;
 
 export const SidebarMenuNavLinkStyled = styled.a<SidebarMenuNavLinkStyledProps>`

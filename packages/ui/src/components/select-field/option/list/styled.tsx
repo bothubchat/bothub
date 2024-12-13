@@ -62,7 +62,7 @@ export interface SelectFieldOptionProps {
 export interface SelectFieldOptionTextProps {
   $selected: boolean;
   $bold?: boolean;
-};
+}
 
 export const SelectFieldOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldOptionTextProps>`
   color: ${({ theme, $selected }) => ($selected ? theme.default.colors.base.white : theme.colors.base.white)};

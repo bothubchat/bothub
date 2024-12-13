@@ -11,8 +11,8 @@ import { useSidebar } from '../../../context';
 import { useTheme } from '@/ui/theme';
 
 export type SidebarMenuNavLinkProps = Omit<
-  React.ComponentProps<typeof SidebarMenuNavLinkStyled>,
-  keyof SidebarMenuNavLinkStyledProps
+React.ComponentProps<typeof SidebarMenuNavLinkStyled>,
+keyof SidebarMenuNavLinkStyledProps
 > & {
   as?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   to?: string;

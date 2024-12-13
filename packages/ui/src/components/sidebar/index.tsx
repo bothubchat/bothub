@@ -15,7 +15,6 @@ import {
   SidebarDivider,
   SidebarGlobalStyle,
   SidebarHeader,
-  SidebarHeaderRight,
   SidebarMobileToggle,
   SidebarSearchContainer,
   SidebarStyled,

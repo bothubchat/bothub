@@ -153,7 +153,7 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
     min-width: 100%;
   }
   max-height: 100vh;
-  ${({ theme, $isHide }) => !$isHide && adaptive({
+  ${({ $isHide }) => !$isHide && adaptive({
   variant: 'dashboard',
   tablet: css`
       border-radius: 18px;

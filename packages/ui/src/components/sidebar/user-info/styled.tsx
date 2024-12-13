@@ -3,7 +3,6 @@ import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 import { LogoutIcon } from '@/ui/icons/logout';
-import { Scrollbar } from '../../scrollbar';
 
 export interface SidebarUserInfoStyledProps {
   $open: boolean;

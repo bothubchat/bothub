@@ -18,13 +18,13 @@ export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
   width: 100%;
   gap: 12px;
   ${({ $open }) => !$open && adaptive(
-  {
-    variant: 'dashboard',
-    merge: true,
-    desktop: css`flex-direction: column;`,
-    tablet: css`flex-direction: row;`
-  }
-)}
+    {
+      variant: 'dashboard',
+      merge: true,
+      desktop: css`flex-direction: column;`,
+      tablet: css`flex-direction: row;`
+    }
+  )}
 `;
 
 export const SidebarDeleteButton = styled(Button).attrs({

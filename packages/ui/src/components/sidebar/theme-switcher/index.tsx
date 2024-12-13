@@ -29,7 +29,7 @@ export const SidebarThemeSwitcher: React.FC<SidebarThemeSwitcherProps> = ({
   const { isOpen } = useSidebar();
 
   const setInitialMode = useCallback<
-    React.Dispatch<React.SetStateAction<SidebarThemeSwitcherMode>>
+  React.Dispatch<React.SetStateAction<SidebarThemeSwitcherMode>>
   >(
     (mode) => {
       if (typeof mode === 'string') {
