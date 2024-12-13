@@ -29,8 +29,8 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
 
 
   ${({ theme, $open }) => adaptive({
-  variant: 'dashboard',
-  desktop: `
+    variant: 'dashboard',
+    desktop: `
     &:hover {
       ${$open && `background: ${theme.colors.grayScale.gray3};`}
       ${SidebarUserInfoBottom} {
@@ -44,7 +44,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
       }
     }
     `,
-  tablet: `
+    tablet: `
       background: ${theme.colors.grayScale.gray3};
       ${SidebarUserInfoBottom} {
         gap: 10px;
@@ -56,7 +56,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
         }
       }
     `,
-})}
+  })}
   ${({ $open }) => $open
     && adaptive({
       variant: 'dashboard',
@@ -89,12 +89,12 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
       variant: 'dashboard',
       desktop: css`
         border: 1px solid ${theme.mode === 'light'
-          ? theme.colors.grayScale.gray3
-          : theme.colors.grayScale.gray2};
+      ? theme.colors.grayScale.gray3
+      : theme.colors.grayScale.gray2};
         border-radius: 18px;
         background: ${theme.mode === 'light'
-          ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray4};
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray4};
       `,
       tablet: css`
         border-radius: 0px;
@@ -117,17 +117,17 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
       tablet: css`
         border-radius: 10px;
         background: ${theme.mode === 'light'
-          ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray4};
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray4};
         border: 1px solid ${theme.mode === 'light'
-          ? theme.colors.grayScale.gray2
-          : theme.colors.grayScale.gray3};
+      ? theme.colors.grayScale.gray2
+      : theme.colors.grayScale.gray3};
       `,
       mobile: css`
         border-radius: 8px;
         border: 1px solid ${theme.mode === 'light'
-          ? theme.colors.grayScale.gray2
-          : theme.colors.grayScale.gray3};
+      ? theme.colors.grayScale.gray2
+      : theme.colors.grayScale.gray3};
       `,
     })
   )}

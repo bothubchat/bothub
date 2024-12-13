@@ -95,9 +95,9 @@ export const TariffCardBackgroundBlack = styled.div<{ $variant: Variant }>`
   position: absolute;
   right: clamp(-3.125rem, -8.854rem + 16.667vw, 0rem);
   bottom: 0;
-	height: 0;
-	border-bottom: 300px solid ${({ theme }) => theme.default.colors.base.black};
-	border-left: 180px solid transparent;
+  height: 0;
+  border-bottom: 300px solid ${({ theme }) => theme.default.colors.base.black};
+  border-left: 180px solid transparent;
   ${({ $variant }) => {
     switch ($variant) {
       case 'main':
