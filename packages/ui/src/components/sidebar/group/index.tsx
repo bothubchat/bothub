@@ -72,8 +72,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
               <SidebarGroupTooltip
                 label={props.name}
                 placement="center-right"
-                placementX={25}
-                placementY={-2}
+                placementX={15}
                 disabled={props.name.length <= 0 || sidebarOpen}
               >
                 <TooltipConsumer>

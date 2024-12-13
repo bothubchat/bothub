@@ -57,13 +57,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
     if (!(el instanceof Element)) {
       return [0, 0];
     }
-
     const { width: tooltipWidth, height: tooltipHeight } = tooltipEl.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
     const { width: elWidth } = rect;
     const elX = rect.left + window.scrollX;
     const elY = rect.top + window.scrollY;
-
     const elBottomY = rect.bottom + window.scrollY;
 
     let x: number = 0;
@@ -111,10 +109,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
         }
         break;
       case 'center-right':
-        x = elWidth * 2;
+        x = elX + elWidth - 18;
         break;
       case 'center-left':
-        x = elWidth - tooltipWidth / 1.5 - 6;
+        x = elX - tooltipWidth + 18;
         break;
     }
     let y: number = 0;
@@ -126,7 +124,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
         break;
       case 'center-right':
       case 'center-left':
-        y = (elY + elBottomY) / 2 - tooltipHeight / 2 + 4;
+        y = (elY + elBottomY - tooltipHeight + 10) / 2;
         break;
       default:
         y = elBottomY + 6;
