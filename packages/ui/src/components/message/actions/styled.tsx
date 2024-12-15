@@ -97,6 +97,15 @@ export const MessageActionsButton = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  &:hover {
+    svg {
+      path,
+      circle {
+        fill: ${({ theme }) => (theme.mode === 'dark' ? theme.colors.grayScale.gray6 : theme.colors.grayScale.gray2)};
+        transition: all 100ms ease-out;
+      }
+    }
+  }
   &:active {
     svg {
       path,
