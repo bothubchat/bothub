@@ -65,7 +65,11 @@ export const CheckboxCheckedIcon = styled(CheckSmallIcon).attrs({ size: 20 })`
 `;
 
 export const CheckboxInput = styled.input`
-  display: none;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  cursor: pointer;
+  position: absolute;
   &:checked + ${CheckboxBlock} {
     border-color: ${({ theme }) => theme.colors.accent.primary};
     background: ${({ theme }) => theme.colors.accent.primary};
@@ -86,5 +90,8 @@ export const CheckboxInput = styled.input`
         fill: ${({ theme }) => theme.colors.grayScale.gray6};
       }
     }
+  }
+  &:focus-visible + ${CheckboxBlock} {
+    border-color: ${({ theme }) => theme.colors.base.white};
   }
 `;
