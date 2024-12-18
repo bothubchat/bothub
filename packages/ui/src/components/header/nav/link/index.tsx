@@ -4,7 +4,7 @@ import { useHeaderMenu } from '../../menu/context';
 import { useHeader } from '../../context';
 
 export type HeaderNavLinkProps = Omit<
-  React.ComponentProps<typeof HeaderNavLinkStyled>, keyof HeaderNavLinkStyledProps
+React.ComponentProps<typeof HeaderNavLinkStyled>, keyof HeaderNavLinkStyledProps
 > & {
   as?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   to?: string;

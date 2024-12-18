@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import wave from './assets/wave-bg.svg';
-import percent from './assets/percent.svg'
+import percent from './assets/percent.svg';
 import { Typography } from '../../typography';
 
 export const BannerMiniStyled = styled.div`

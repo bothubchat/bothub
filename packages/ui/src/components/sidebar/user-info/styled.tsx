@@ -3,7 +3,6 @@ import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 import { LogoutIcon } from '@/ui/icons/logout';
-import { Scrollbar } from '../../scrollbar';
 
 export interface SidebarUserInfoStyledProps {
   $open: boolean;
@@ -29,12 +28,11 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
   transition: padding 0.3s;
 
 
-  ${({ theme }) => adaptive({
-  variant: 'dashboard',
-  merge: true,
-  desktop: `
+  ${({ theme, $open }) => adaptive({
+    variant: 'dashboard',
+    desktop: `
     &:hover {
-      background: ${theme.colors.grayScale.gray3};
+      ${$open && `background: ${theme.colors.grayScale.gray3};`}
       ${SidebarUserInfoBottom} {
         gap: 10px;
         transition: width 0.3s;
@@ -46,7 +44,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
       }
     }
     `,
-  tablet: `
+    tablet: `
       background: ${theme.colors.grayScale.gray3};
       ${SidebarUserInfoBottom} {
         gap: 10px;
@@ -58,7 +56,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
         }
       }
     `,
-})}
+  })}
   ${({ $open }) => $open
     && adaptive({
       variant: 'dashboard',
@@ -91,12 +89,12 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
       variant: 'dashboard',
       desktop: css`
         border: 1px solid ${theme.mode === 'light'
-          ? theme.colors.grayScale.gray3
-          : theme.colors.grayScale.gray2};
+      ? theme.colors.grayScale.gray3
+      : theme.colors.grayScale.gray2};
         border-radius: 18px;
         background: ${theme.mode === 'light'
-          ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray4};
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray4};
       `,
       tablet: css`
         border-radius: 0px;
@@ -119,17 +117,17 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
       tablet: css`
         border-radius: 10px;
         background: ${theme.mode === 'light'
-          ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray4};
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray4};
         border: 1px solid ${theme.mode === 'light'
-          ? theme.colors.grayScale.gray2
-          : theme.colors.grayScale.gray3};
+      ? theme.colors.grayScale.gray2
+      : theme.colors.grayScale.gray3};
       `,
       mobile: css`
         border-radius: 8px;
         border: 1px solid ${theme.mode === 'light'
-          ? theme.colors.grayScale.gray2
-          : theme.colors.grayScale.gray3};
+      ? theme.colors.grayScale.gray2
+      : theme.colors.grayScale.gray3};
       `,
     })
   )}

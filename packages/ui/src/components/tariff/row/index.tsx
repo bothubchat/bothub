@@ -105,7 +105,7 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
       <TariffCardBackgroundPercentMobileElite $variant={variant} />,
       <TariffCardDiscountImageElite $variant={variant} />
     ],
-  }
+  };
 
   return (
     <TariffCardStyled

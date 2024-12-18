@@ -11,11 +11,12 @@ import {
   SidebarContentNavContainer,
   SidebarContentNavMenuScrollbarWrapper,
   SidebarContentNavMenuWrapper,
+  SidebarDeleteButtonContainer,
   SidebarDivider,
   SidebarGlobalStyle,
   SidebarHeader,
-  SidebarHeaderRight,
   SidebarMobileToggle,
+  SidebarSearchContainer,
   SidebarStyled,
   SidebarToolbar,
   SidebarWrapper
@@ -104,14 +105,10 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
         <SidebarContent $open={isOpen}>
           <SidebarHeader $open={isOpen}>
             {logo}
-            <SidebarHeaderRight>
-              {lang}
-              {isOpen &&
-                <SidebarMenu>
-                  {menu}
-                </SidebarMenu>
-              }
-            </SidebarHeaderRight>
+            {lang}
+            <SidebarMenu>
+              {menu}
+            </SidebarMenu>
           </SidebarHeader>
           <SidebarToolbar $open={isOpen}>
             {buttons}
@@ -122,7 +119,9 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
             )}
             {toggle}
           </SidebarToolbar>
-          {search}
+          <SidebarSearchContainer>
+            {search}
+          </SidebarSearchContainer>
           <SidebarDivider />
           <SidebarBody>
             {!isOpen
@@ -150,7 +149,9 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
               />
             )}
           </SidebarBody>
-          {deleteButton}
+          <SidebarDeleteButtonContainer>
+            {deleteButton}
+          </SidebarDeleteButtonContainer>
           <SidebarBottom>
             {user}
           </SidebarBottom>

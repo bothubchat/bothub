@@ -57,16 +57,14 @@ export const Tooltip: React.FC<TooltipProps> = ({
     if (!(el instanceof Element)) {
       return [0, 0];
     }
-
     const { width: tooltipWidth, height: tooltipHeight } = tooltipEl.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
     const { width: elWidth } = rect;
     const elX = rect.left + window.scrollX;
     const elY = rect.top + window.scrollY;
-
     const elBottomY = rect.bottom + window.scrollY;
 
-    let x: number;
+    let x: number = 0;
     switch (placement) {
       case 'top-left':
         switch (align) {
@@ -110,8 +108,28 @@ export const Tooltip: React.FC<TooltipProps> = ({
             break;
         }
         break;
+      case 'center-right':
+        x = elX + elWidth - 18;
+        break;
+      case 'center-left':
+        x = elX - tooltipWidth + 18;
+        break;
     }
-    const y: number = !inverted ? elY - tooltipHeight : elBottomY + 6;
+    let y: number = 0;
+    switch (placement) {
+      case 'top-left':
+      case 'top':
+      case 'top-right':
+        y = inverted ? elBottomY + 6 : elY - tooltipHeight - 6;
+        break;
+      case 'center-right':
+      case 'center-left':
+        y = (elY + elBottomY - tooltipHeight + 10) / 2;
+        break;
+      default:
+        y = elBottomY + 6;
+        break;
+    }
 
     return [x, y];
   }, [placement, align, hoveredElement]);
@@ -187,6 +205,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     <TooltipStyled
       $placement={placement}
       $align={align}
+      $inverted={inverted}
       ref={tooltipRef}
       className={className}
       style={{
@@ -197,6 +216,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     >
       {inverted && (
         <TooltipArrow
+          placement={placement}
           variant={variant}
           inverted={inverted}
         />
@@ -232,6 +252,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       </TooltipBlock>
       {!inverted && (
         <TooltipArrow
+          placement={placement}
           variant={variant}
           inverted={inverted}
         />

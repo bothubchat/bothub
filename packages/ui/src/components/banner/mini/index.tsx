@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   BannerMiniStyled,
   BannerMiniImageWave,
@@ -7,22 +7,20 @@ import {
   BannerMiniTitle,
   BannerMiniText,
   BannerMiniBackground
-} from "./styled";
+} from './styled';
 
 interface BannerMiniBlackFridayProps {
   title: string;
   text: string;
 }
-export const BannerMiniBlackFriday: React.FC<BannerMiniBlackFridayProps> = ({ title, text }) => {
-  return (
-    <BannerMiniStyled>
-      <BannerMiniBackground />
-      <BannerMiniImageWave />
-      <BannerMiniImagePercent />
-      <BannerMiniContent>
-        <BannerMiniTitle>{title}</BannerMiniTitle>
-        <BannerMiniText>{text}</BannerMiniText>
-      </BannerMiniContent>
-    </BannerMiniStyled>
-  )
-}
+export const BannerMiniBlackFriday: React.FC<BannerMiniBlackFridayProps> = ({ title, text }) => (
+  <BannerMiniStyled>
+    <BannerMiniBackground />
+    <BannerMiniImageWave />
+    <BannerMiniImagePercent />
+    <BannerMiniContent>
+      <BannerMiniTitle>{title}</BannerMiniTitle>
+      <BannerMiniText>{text}</BannerMiniText>
+    </BannerMiniContent>
+  </BannerMiniStyled>
+);

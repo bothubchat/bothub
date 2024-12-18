@@ -69,7 +69,12 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
           {!props.skeleton && props.edit && <SidebarGroupDragHandle />}
           {!props.skeleton && (
             <>
-              <SidebarGroupTooltip label={props.name} placement="top-left" disabled={props.name.length <= 0 || sidebarOpen}>
+              <SidebarGroupTooltip
+                label={props.name}
+                placement="center-right"
+                placementX={15}
+                disabled={props.name.length <= 0 || sidebarOpen}
+              >
                 <TooltipConsumer>
                   {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                     <SidebarGroupDragFolder
@@ -87,7 +92,10 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
             <Tooltip label={props.name} placement="top-left" disabled={props.name.length <= 24}>
               <TooltipConsumer>
                 {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                  <SidebarGroupNameBox onMouseEnter={handleTooltipMouseEnter} onMouseLeave={handleTooltipMouseLeave}>
+                  <SidebarGroupNameBox
+                    onMouseEnter={handleTooltipMouseEnter}
+                    onMouseLeave={handleTooltipMouseLeave}
+                  >
                     {props.name.slice(0, 22)}
                     {props.name.length > 22 && '...'}
                   </SidebarGroupNameBox>

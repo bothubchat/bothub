@@ -1,18 +1,35 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { TooltipArrowStyled } from './styled';
-import { TooltipVariant } from '../types';
+import { TooltipVariant, TooltipPlacement } from '../types';
 import { useTheme } from '@/ui/theme';
 
 export interface TooltipArrowProps {
   variant: TooltipVariant;
   inverted?: boolean;
+  placement?: TooltipPlacement;
 }
 
 export const TooltipArrow: React.FC<TooltipArrowProps> = ({
   variant,
   inverted = false,
+  placement,
 }) => {
   const theme = useTheme();
+
+  const transformArrow = useMemo(() => {
+    switch (placement) {
+      case 'center-left':
+        return 'translateX(-12px) rotate(-90deg)';
+      case 'center-right':
+        return 'translateX(12px) rotate(90deg)';
+      case 'top-left':
+      case 'top-right':
+      case 'top':
+        return inverted ? 'translateY(3px) rotate(180deg)' : '';
+      default:
+        return '';
+    }
+  }, [placement, inverted]);
 
   return (
     <TooltipArrowStyled
@@ -21,7 +38,7 @@ export const TooltipArrow: React.FC<TooltipArrowProps> = ({
       viewBox="0 0 9 7"
       fill="none"
       style={{
-        transform: `${inverted ? 'rotate(180deg) translateY(-3px)' : ''}`,
+        transform: transformArrow,
       }}
     >
       <path
