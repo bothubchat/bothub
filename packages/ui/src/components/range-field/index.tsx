@@ -26,6 +26,7 @@ export interface RangeFieldProps {
   skeleton?: boolean;
   formatValue?: (value: RangeFieldValue) => React.ReactNode;
   onChange?: (value: RangeFieldValue) => unknown;
+  onPointerLeave?: React.PointerEventHandler<HTMLDivElement>;
 }
 
 export const RangeField: React.FC<RangeFieldProps> = ({
@@ -40,6 +41,7 @@ export const RangeField: React.FC<RangeFieldProps> = ({
   skeleton = false,
   onChange, 
   formatValue: preview,
+  onPointerLeave,
   ...props 
 }) => {
   const {
@@ -59,6 +61,7 @@ export const RangeField: React.FC<RangeFieldProps> = ({
     <RangeFieldStyled 
       $fullWidth={fullWidth}
       $disabled={disabled}  
+      onPointerLeave={onPointerLeave}
     >
       {(label && skeleton) && (
         <RangeFieldLabel>
