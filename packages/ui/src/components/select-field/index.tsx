@@ -90,6 +90,7 @@ export type SelectFieldProps = (SelectFieldDefaultProps | SelectFieldMultiProps)
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;
   onClose?: () => void;
+  onPointerLeave?: React.PointerEventHandler<HTMLDivElement>;
 } & React.PropsWithChildren;
 
 export const SelectField: React.FC<SelectFieldProps> = ({
@@ -119,6 +120,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   onInputChange,
   onSelectClick,
   onClose,
+  onPointerLeave,
   children,
   ...props
 }) => {
@@ -353,6 +355,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
         $fullWidth={fullWidth}
         $disabled={disabled}
         className={className}
+        onPointerLeave={onPointerLeave}
       >
         {(label && skeleton) && (
           <SelectFieldLabel>

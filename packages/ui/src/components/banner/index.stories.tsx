@@ -9,7 +9,7 @@ export type BlackFridayBannerStory = StoryObj<typeof BlackFridayBanner>;
 export const Basic: BlackFridayBannerStory = {
   args: {
     backgroundText: 'Черная \nпятница',
-    title: `Волна\nскидок \nДо 30%`,
+    title: 'Волна\nскидок \nДо 30%',
     text: 'Только в эту пятницу',
     date: '29.11-30.11',
     $variant: 'dashboard'

@@ -43,13 +43,15 @@ import {
 import { Tooltip } from '@/ui/components/tooltip';
 import {
   ChatsIcon,
-  BookmarksBigIcon,
   PresetsBigIcon,
   ReferalIcon,
   TariffIcon,
-  GearIcon,
   EditIcon,
   TrashIcon,
+  BigModelsIcon,
+  CoderIcon,
+  OrganizationIcon,
+  SimpleGearIcon,
 } from '@/ui/icons';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
@@ -75,9 +77,9 @@ export const Basic: SidebarStory = {
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
-          icon={<BookmarksBigIcon />}
+          icon={<OrganizationIcon />}
         >
-          Закладки
+          Для организаций
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
@@ -99,27 +101,21 @@ export const Basic: SidebarStory = {
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
-          icon={<GearIcon />}
+          icon={<CoderIcon />}
         >
           Для разработчиков
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
-          icon={<GearIcon />}
+          icon={<SimpleGearIcon />}
         >
-          Для разработчиков
+          Настройки
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
-          icon={<GearIcon />}
+          icon={<BigModelsIcon />}
         >
-          Для разработчиков
-        </SidebarMenuNavLink>
-        <SidebarMenuNavLink
-          href="#"
-          icon={<GearIcon />}
-        >
-          Для разработчиков
+          Модели
         </SidebarMenuNavLink>
       </SidebarMenuNav>
     ),
@@ -128,7 +124,8 @@ export const Basic: SidebarStory = {
         {({ isOpen }) => (
           <Tooltip
             label={isOpen ? 'Скрыть боковую панель' : 'Открыть боковую панель'}
-            placement={isOpen ? 'top' : 'top-left'}
+            placement={isOpen ? 'top' : 'center-right'}
+            placementX={!isOpen ? 10 : 0}
             disableHiddenAnimation
           >
             <SidebarToggleButton />
@@ -167,7 +164,7 @@ export const Basic: SidebarStory = {
         {({ isOpen }) => (
           <Tooltip
             label="Профиль"
-            placement="top-left"
+            placement="center-right"
             disabled={isOpen}
           >
             <SidebarUserInfo
@@ -831,7 +828,7 @@ export const BasicTariff: SidebarStory = {
         )}
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton>
-            Купить пакет
+            Купить пакет | Free
           </SidebarUserInfoUpdateTariffButton>
         )}
         logout={<SidebarUserInfoLogoutButton />}

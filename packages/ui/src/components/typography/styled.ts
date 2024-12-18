@@ -74,7 +74,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
           }
         `;
       case 'banner-h1-bold': 
-        return`
+        return `
           font-size: 128px;
           font-weight: 700;
           line-height: 110px;

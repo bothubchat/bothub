@@ -54,11 +54,11 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
   const menuTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      transform: 'scale(0.85)',
+      // transform: 'scale(0.85)',
     },
     enter: {
       opacity: 1,
-      transform: 'scale(1)',
+      // transform: 'scale(1)',
     },
     leave: {
       opacity: 0,

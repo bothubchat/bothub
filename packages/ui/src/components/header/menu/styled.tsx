@@ -2,7 +2,6 @@ import { css, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { HeaderVariant } from '../types';
 import { adaptive } from '@/ui/adaptive';
-import { HeaderNavLinkStyled } from '../nav/link/styled';
 
 export interface HeaderMenuStyledProps {
   $variant: HeaderVariant;
