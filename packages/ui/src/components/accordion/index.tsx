@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import {
-  AccordionArrow, AccordionBody, AccordionHead, AccordionStyled, AccordionText, AccordionLabel 
+  AccordionArrow, AccordionBody, AccordionHead, AccordionStyled, AccordionText, AccordionLabel
 } from './styled';
 
 export interface AccordionProps extends React.ComponentProps<'div'> {
@@ -22,22 +22,20 @@ export const Accordion: React.FC<AccordionProps> = ({ label, children, ...props 
         <AccordionLabel>
           {label}
         </AccordionLabel>
-        <AccordionArrow 
+        <AccordionArrow
           style={{
             transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
           }}
         />
       </AccordionHead>
-      {isOpen && (
-        <AccordionBody>
-          {typeof children === 'string' && (
-            <AccordionText>
-              {children}
-            </AccordionText>
-          )}
-          {typeof children !== 'string' && children}
-        </AccordionBody>
-      )}
+      <AccordionBody hidden={!isOpen}>
+        {typeof children === 'string' && (
+          <AccordionText>
+            {children}
+          </AccordionText>
+        )}
+        {typeof children !== 'string' && children}
+      </AccordionBody>
     </AccordionStyled>
   );
 };
