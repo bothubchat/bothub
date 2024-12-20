@@ -38,17 +38,20 @@ import {
   SidebarGroupEmpty,
   SidebarGroupCheckbox,
   SidebarThemeSwitcher,
+  SidebarUserInfoSkeleton,
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
   ChatsIcon,
-  BookmarksBigIcon,
   PresetsBigIcon,
   ReferalIcon,
   TariffIcon,
-  GearIcon,
   EditIcon,
   TrashIcon,
+  BigModelsIcon,
+  CoderIcon,
+  OrganizationIcon,
+  SimpleGearIcon,
 } from '@/ui/icons';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
@@ -74,9 +77,9 @@ export const Basic: SidebarStory = {
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
-          icon={<BookmarksBigIcon />}
+          icon={<OrganizationIcon />}
         >
-          Закладки
+          Для организаций
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
@@ -98,27 +101,21 @@ export const Basic: SidebarStory = {
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
-          icon={<GearIcon />}
+          icon={<CoderIcon />}
         >
           Для разработчиков
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
-          icon={<GearIcon />}
+          icon={<SimpleGearIcon />}
         >
-          Для разработчиков
+          Настройки
         </SidebarMenuNavLink>
         <SidebarMenuNavLink
           href="#"
-          icon={<GearIcon />}
+          icon={<BigModelsIcon />}
         >
-          Для разработчиков
-        </SidebarMenuNavLink>
-        <SidebarMenuNavLink
-          href="#"
-          icon={<GearIcon />}
-        >
-          Для разработчиков
+          Модели
         </SidebarMenuNavLink>
       </SidebarMenuNav>
     ),
@@ -127,7 +124,8 @@ export const Basic: SidebarStory = {
         {({ isOpen }) => (
           <Tooltip
             label={isOpen ? 'Скрыть боковую панель' : 'Открыть боковую панель'}
-            placement={isOpen ? 'top' : 'top-left'}
+            placement={isOpen ? 'top' : 'center-right'}
+            placementX={!isOpen ? 10 : 0}
             disableHiddenAnimation
           >
             <SidebarToggleButton />
@@ -166,7 +164,7 @@ export const Basic: SidebarStory = {
         {({ isOpen }) => (
           <Tooltip
             label="Профиль"
-            placement="top-left"
+            placement="center-right"
             disabled={isOpen}
           >
             <SidebarUserInfo
@@ -830,7 +828,7 @@ export const BasicTariff: SidebarStory = {
         )}
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton>
-            Купить пакет
+            Купить пакет | Free
           </SidebarUserInfoUpdateTariffButton>
         )}
         logout={<SidebarUserInfoLogoutButton />}
@@ -914,25 +912,7 @@ export const Skeleton: SidebarStory = {
       <SidebarButtons />
     ),
     user: (
-      <SidebarUserInfo
-        avatar={(
-          <SidebarUserInfoAvatar
-            src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
-            alt="Артём"
-          />
-        )}
-        name="Артём"
-        caps="9 012 CAPS"
-        tariff={(
-          <SidebarUserInfoFreeTariff />
-        )}
-        updateTariff={(
-          <SidebarUserInfoUpdateTariffButton disabled>
-            Купить пакет
-          </SidebarUserInfoUpdateTariffButton>
-        )}
-        logout={<SidebarUserInfoLogoutButton />}
-      />
+      <SidebarUserInfoSkeleton />
     ),
     children: (
       <SidebarGroups>

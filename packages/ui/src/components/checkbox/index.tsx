@@ -12,16 +12,17 @@ import { Skeleton } from '@/ui/components/skeleton';
 
 export type CheckboxValueChangeEventHandler = (checked: boolean) => unknown;
 
-export interface CheckboxProps extends React.ComponentProps<'input'> {
+export interface CheckboxProps extends Omit<React.ComponentProps<'input'>, 'onPointerLeave'> {
   className?: string;
   label?: string | boolean | React.ReactNode;
   skeleton?: boolean;
   fullWidth?: boolean;
   onValueChange?: CheckboxValueChangeEventHandler;
+  onPointerLeave?: React.PointerEventHandler<HTMLLabelElement>;
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({ 
-  className, label, skeleton = false, fullWidth = false, onValueChange, ...props 
+  className, label, skeleton = false, fullWidth = false, onValueChange, onPointerLeave, ...props 
 }) => {
   const {
     handleTooltipMouseEnter,
@@ -40,6 +41,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       className={className}
       onMouseEnter={handleTooltipMouseEnter}
       onMouseLeave={handleTooltipMouseLeave}
+      onPointerLeave={onPointerLeave}
     >
       {!skeleton && (
         <>

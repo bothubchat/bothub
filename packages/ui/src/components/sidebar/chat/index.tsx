@@ -76,7 +76,8 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
       {!props.skeleton && (
         <SidebarChatTooltip
           label={props.name}
-          placement="top-left"
+          placement="center-right"
+          placementX={15}
           disabled={props.name.length <= 0}
         >
           <TooltipConsumer>

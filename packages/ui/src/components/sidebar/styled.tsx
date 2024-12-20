@@ -37,9 +37,10 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
   ${({ $open }) => !$open && css`
   @media (min-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
     ${SidebarEmptyGroupStyled} {
-      padding: 10px;
       margin-top: 10px;
       border-radius: 8px;
+      width: 38px;
+      aspect-ratio: 1;
       display: flex;
       border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
       span {
@@ -113,6 +114,7 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   box-sizing: border-box;
   transition: all 0.3s;
   padding: 20px;
+  padding-right: 0px;
   ${({ $open }) => $open && css`
     min-width: 412px;
     max-width: 412px;
@@ -143,6 +145,7 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   }
   @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
     padding: 18px;
+    padding-right: 0px;
     gap: 14px;
     display: flex;
     flex-direction: row;
@@ -150,18 +153,15 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
     min-width: 100%;
   }
   max-height: 100vh;
-  ${({ theme, $isHide }) => !$isHide && adaptive({
-  variant: 'dashboard',
-  desktop: css`
-    border-right: 1px solid ${theme.colors.grayScale.gray3};
-    `,
-  tablet: css`
+  ${({ $isHide }) => !$isHide && adaptive({
+    variant: 'dashboard',
+    tablet: css`
       border-radius: 18px;
     `,
-  mobile: css`
+    mobile: css`
       border-radius: 18px;
     `
-})}
+  })}
   ${({ $isHide }) => $isHide && css`
     max-width: 0px;
     min-width: 0px;
@@ -187,8 +187,8 @@ export const SidebarContent = styled.div<{ $open?: boolean }>`
   overflow: hidden;
   transition: max-width 0.3s;
   ${adaptive({
-  variant: 'dashboard',
-  tablet: css`
+    variant: 'dashboard',
+    tablet: css`
     min-width: 312px;
     max-width: none;
     width: 100%;
@@ -199,7 +199,7 @@ export const SidebarContent = styled.div<{ $open?: boolean }>`
       display: none;
     }
     `,
-  mobile: css`
+    mobile: css`
     min-width: none;
     max-width: none;
     display: flex;
@@ -210,17 +210,17 @@ export const SidebarContent = styled.div<{ $open?: boolean }>`
       display: none;
     }
     `
-})}
+  })}
   ${({ $open }) => !$open && adaptive({
-  variant: 'dashboard',
-  tablet: css`
+    variant: 'dashboard',
+    tablet: css`
       max-width: 412px;
     `,
-  mobile: css`
+    mobile: css`
       opacity: 0;
       visibility: hidden;
     `
-})}
+  })}
 `;
 
 export const SidebarContentNav = styled.div<{ $open?: boolean }>`
@@ -235,8 +235,8 @@ export const SidebarContentNav = styled.div<{ $open?: boolean }>`
   border-radius: 20px;
   background: ${({ theme }) => theme.colors.grayScale.gray7};
   padding: 16px;
-  ${({ $open }) => $open ?
-    adaptive({
+  ${({ $open }) => ($open
+    ? adaptive({
       variant: 'dashboard',
       merge: true,
       desktop: css`display: none;`,
@@ -246,8 +246,7 @@ export const SidebarContentNav = styled.div<{ $open?: boolean }>`
       `,
       mobile: css`display: none;`,
     })
-    :
-    adaptive({
+    : adaptive({
       variant: 'dashboard',
       merge: true,
       desktop: css`display: none;`,
@@ -269,7 +268,7 @@ export const SidebarContentNav = styled.div<{ $open?: boolean }>`
         margin: 0 auto;
 
       `,
-    })}
+    }))}
 `;
 
 export const SidebarContentNavMenuWrapper = styled.div`
@@ -304,15 +303,15 @@ export interface SidebarHeadProps {
 export const SidebarMobileToggle = styled.div`
   display: none;
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-  mobile: css`
+    variant: 'dashboard',
+    merge: true,
+    mobile: css`
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
   `,
-})}
+  })}
 `;
 export const SidebarHead = styled.div<SidebarHeadProps>`
   display: flex;
@@ -323,13 +322,13 @@ export const SidebarHead = styled.div<SidebarHeadProps>`
   flex-shrink: 0;
   position: relative;
   ${adaptive(({ $open }) => ({
-  variant: 'dashboard',
-  merge: true,
-  tablet: css`
+    variant: 'dashboard',
+    merge: true,
+    tablet: css`
       flex-direction: row-reverse;
       justify-content: ${$open ? 'space-between' : 'center'};
     `
-}))}
+  }))}
 `;
 
 export interface SidebarHeaderProps {
@@ -354,28 +353,42 @@ export const SidebarToolbar = styled.div<{
 }>`
   display: flex;
   width: inherit;
+  padding-right: 20px;
   gap: 10px;
   align-items: center;
   justify-content: space-between;
+  & > * {
+    width: fit-content;
+  }
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-  tablet: css`
+    variant: 'dashboard',
+    merge: true,
+    tablet: css`
     flex-direction: row;
     `,
-})}
+  })}
   ${({ $open }) => !$open && adaptive({
-  variant: 'dashboard',
-  merge: true,
-  desktop: css`
+    variant: 'dashboard',
+    merge: true,
+    desktop: css`
     flex-direction: column-reverse;
     `,
-})}
+  })}
+`;
+
+export const SidebarSearchContainer = styled.div`
+  width: 100%;
+  padding-right: 20px;
+`;
+
+export const SidebarDeleteButtonContainer = styled.div`
+  width: 100%;
+  padding-right: 20px;
 `;
 
 export const SidebarDivider = styled.div`
   height: 1px;
-  width: 100%;
+  width: calc(100% - 20px);
   background-color: ${({ theme }) => theme.colors.grayScale.gray3};
   margin-top: 14px;
 `;
@@ -398,14 +411,16 @@ export const SidebarLogoLink = styled.a`
 
 export const SidebarHeader = styled.div<SidebarHeaderProps>`
   display: ${({ $open }) => (
-    $open ? 'flex' : 'none'
+    $open ? 'grid' : 'none'
   )};
-  position: relative;
+  grid-template-columns: 1fr auto auto;
   align-items: center;
+  position: relative;
+  padding-right: 20px;
   width: 100%;
-  margin-bottom: 34px;
+  gap: 20px;
+  margin-bottom: 20px;
   justify-content: space-between;
-  height: 39px;
   ${adaptive({
     variant: 'dashboard',
     merge: true,
@@ -431,11 +446,12 @@ export const SidebarBottom = styled.div`
   gap: 14px;
   width: 100%;
   margin-top: 14px;
+  padding-right: 20px;
   ${adaptive({
-  variant: 'dashboard',
-  tablet: css`display: none;`,
-  mobile: css`display:none;`,
-})}
+    variant: 'dashboard',
+    tablet: css`display: none;`,
+    mobile: css`display:none;`,
+  })}
 `;
 
 export const SidebarBody = styled.div`
@@ -445,18 +461,20 @@ export const SidebarBody = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
+  right: 0px;
+  padding-right: 14px;
   ${adaptive({
-  variant: 'dashboard',
-  desktop: css`
+    variant: 'dashboard',
+    desktop: css`
       margin: 18px 0px;
     `,
-  tablet: css`
+    tablet: css`
       margin: 14px 0px;
     `,
-  mobile: css`
+    mobile: css`
       margin: 14px 0px;
     `
-})}
+  })}
 `;
 
 export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
@@ -488,17 +506,25 @@ export const SidebarArrowUpButton = styled(ArrowUpIcon) <{ $hidden: boolean }>`
   display: inline-flex;
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  cursor: pointer;
+  &:hover {
+    transition: background 0.2s;
+    background-color: ${({ theme }) => theme.colors.grayScale.gray7};
+  }
+  & path {
+    stroke: ${({ theme }) => theme.colors.base.white};
+  }
   ${({ $hidden }) => $hidden && css` display: none;`}
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-  tablet: css`
+    variant: 'dashboard',
+    merge: true,
+    tablet: css`
     display: none;
   `,
-  mobile: css`
+    mobile: css`
     display: none;
   `,
-})}
+  })}
 `;
 
 export const SidebarArrowDownButton = styled(ArrowDownIcon) <{ $hidden: boolean }>`
@@ -516,15 +542,15 @@ export const SidebarArrowDownButton = styled(ArrowDownIcon) <{ $hidden: boolean 
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   ${({ $hidden }) => $hidden && css` display: none;`}
   ${adaptive({
-  variant: 'dashboard',
-  merge: true,
-  tablet: css`
+    variant: 'dashboard',
+    merge: true,
+    tablet: css`
     display: none;
   `,
-  mobile: css`
+    mobile: css`
     display: none;
   `,
-})}
+  })}
 `;
 
 export const SidebarHeaderRight = styled.div`
@@ -533,11 +559,11 @@ export const SidebarHeaderRight = styled.div`
   gap: 20px;
   &:last-child {
     ${adaptive({
-  variant: 'dashboard',
-  tablet: css`
+    variant: 'dashboard',
+    tablet: css`
       display:none;
       `,
-})}
+  })}
   }
 `;
 

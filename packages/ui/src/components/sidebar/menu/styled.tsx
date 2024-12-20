@@ -3,6 +3,7 @@ import { animated } from '@react-spring/web';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 import { Scrollbar } from '@/ui/components/scrollbar';
+import { SidebarMenuNavLinkText } from './nav/link/styled';
 
 export const SidebarMenuStyled = styled.div`
   ${adaptive({
@@ -26,29 +27,38 @@ export const SidebarMenuBlock = styled(animated.div) <{ $sidebarOpen?: boolean }
   display: flex;
   position: absolute;
   z-index: ${({ theme }) => theme.zIndex.menu};
-  top: 53px;
-  left: 0px;
-  width: 100%;
+  top: 58px;
+  right: 20px;
+  width: calc(100% - 20px);
   background: ${({ theme }) => theme.colors.grayScale.gray7};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
-  border-radius: 12px;
-  overflow: hidden;
+  border-radius: 8px;
   padding: 16px;
   transform-origin: top center;
   ${({ $sidebarOpen }) => !$sidebarOpen && adaptive({
   variant: 'dashboard',
-  merge: true,
   desktop: css`
-    right: 0px;
+    right: 0;
     top: 0;
+    width: 100%;
+    white-space: nowrap;
     background: none;
     margin-top: 20px;
-    background: none;
     position: relative;
     flex-direction: column;
     padding: 0px;
     border: none;
     border-radius: 0px;
+    ${SidebarMenuNavLinkText} {
+      visibility: hidden;
+      left: 120px;
+      transition: left 0.3s ease-out, visibility 0.2s ease-out, transform 0.3s ease-out;
+      transform: translateX(10px);
+    }
+    &:hover ${SidebarMenuNavLinkText} {
+      visibility: visible;
+      transform: translateX(0px);
+    }
     `,
   tablet: css`
     display: none;
@@ -68,7 +78,9 @@ export const SidebarMenuBlockScrollbarWrapper = styled(Scrollbar).attrs({ varian
 })}
 `;
 
-export const SidebarMenuBlockContent = styled.div``;
+export const SidebarMenuBlockContent = styled.div`
+
+`;
 
 export const SidebarMenuNav = styled.nav`
   display: flex;

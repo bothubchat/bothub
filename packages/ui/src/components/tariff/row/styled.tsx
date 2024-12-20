@@ -3,7 +3,7 @@ import { Typography } from '@/ui/components/typography';
 import { Badge } from '@/ui/components/badge';
 import { Radio } from '@/ui/components/radio';
 import { CheckCircleIcon } from '@/ui/icons/check-circle';
-import { TariffCardVariant, TariffCardColor } from './types';
+import { TariffCardColor } from './types';
 import basicBg from '../assets/basic/basic-bg.svg';
 import basicPercent from '../assets/basic/basic-percent.svg';
 import basicPercentMobile from '../assets/basic/basic-percent-mobile.svg';
@@ -95,9 +95,9 @@ export const TariffCardBackgroundBlack = styled.div<{ $variant: Variant }>`
   position: absolute;
   right: clamp(-3.125rem, -8.854rem + 16.667vw, 0rem);
   bottom: 0;
-	height: 0;
-	border-bottom: 300px solid ${({ theme }) => theme.default.colors.base.black};
-	border-left: 180px solid transparent;
+  height: 0;
+  border-bottom: 300px solid ${({ theme }) => theme.default.colors.base.black};
+  border-left: 180px solid transparent;
   ${({ $variant }) => {
     switch ($variant) {
       case 'main':
@@ -107,7 +107,7 @@ export const TariffCardBackgroundBlack = styled.div<{ $variant: Variant }>`
           desktop: css`width: 270px;`,
           tablet: css`width: 240px;`,
           mobile: css`display: none`,
-        })
+        });
       case 'dashboard':
         return adaptive({
           variant: 'dashboard',
@@ -115,7 +115,7 @@ export const TariffCardBackgroundBlack = styled.div<{ $variant: Variant }>`
           desktop: css`width: 270px;`,
           tablet: css`width: 220px;`,
           mobile: css`display: none`,
-        })
+        });
     }
   }}
 `;
@@ -155,12 +155,12 @@ export const TariffCardBackgroundPercent = styled.img<{ $variant: Variant }>`
         return adaptive({
           variant: 'main',
           mobile: css`display: none`,
-        })
+        });
       case 'dashboard':
         return adaptive({
           variant: 'dashboard',
           mobile: css`display: none`,
-        })
+        });
     }
   }}
 `;
@@ -194,21 +194,25 @@ export const TariffCardBackgroundPercentMobile = styled.img<{ $variant: Variant 
 })}
 `;
 
-export const TariffCardBackgroundPercentMobileBasic = styled(TariffCardBackgroundPercentMobile).attrs({
-  src: basicPercentMobile
-})``;
+export const TariffCardBackgroundPercentMobileBasic = styled(TariffCardBackgroundPercentMobile)
+  .attrs({
+    src: basicPercentMobile
+  })``;
 
-export const TariffCardBackgroundPercentMobilePremium = styled(TariffCardBackgroundPercentMobile).attrs({
-  src: premiumPercentMobile
-})``;
+export const TariffCardBackgroundPercentMobilePremium = styled(TariffCardBackgroundPercentMobile)
+  .attrs({
+    src: premiumPercentMobile
+  })``;
 
-export const TariffCardBackgroundPercentMobileDeluxe = styled(TariffCardBackgroundPercentMobile).attrs({
-  src: deluxePercentMobile
-})``;
+export const TariffCardBackgroundPercentMobileDeluxe = styled(TariffCardBackgroundPercentMobile)
+  .attrs({
+    src: deluxePercentMobile
+  })``;
 
-export const TariffCardBackgroundPercentMobileElite = styled(TariffCardBackgroundPercentMobile).attrs({
-  src: elitePercentMobile
-})``;
+export const TariffCardBackgroundPercentMobileElite = styled(TariffCardBackgroundPercentMobile)
+  .attrs({
+    src: elitePercentMobile
+  })``;
 
 export const TariffCardDiscountImage = styled.img<{ $variant: Variant }>`
   position: absolute;
@@ -261,7 +265,7 @@ export const TariffCardContainer = styled.div<{ $variant: Variant }>`
           mobile: css`
             min-width: 210px;
           `
-        })
+        });
       case 'main':
         return adaptive({
           variant: 'main',
@@ -274,7 +278,7 @@ export const TariffCardContainer = styled.div<{ $variant: Variant }>`
           mobile: css`
             min-width: 210px;
           `
-        })
+        });
     }
   }}
 `;
@@ -388,7 +392,7 @@ export const TarrifCardStyledRight = styled.div<{ $variant: Variant }>`
 export const TariffCardStyledPrice = styled(Typography).attrs({
   variant: 'h2',
 }) <{ $isDefault?: boolean, $variant: Variant }>`
-  color: ${({ theme, $isDefault }) => $isDefault ? theme.colors.base.white : theme.default.colors.base.white};
+  color: ${({ theme, $isDefault }) => ($isDefault ? theme.colors.base.white : theme.default.colors.base.white)};
   ${({ $variant }) => adaptive({
   variant: $variant,
   mobile: css`
@@ -401,7 +405,7 @@ export const TariffCardStyledCurrency = styled(Typography).attrs({
   variant: 'body-l-medium',
 }) <{ $isDefault?: boolean, $variant: Variant }>`
   padding-bottom: 4px;
-  color: ${({ theme, $isDefault }) => $isDefault ? theme.colors.base.white : theme.default.colors.base.white};
+  color: ${({ theme, $isDefault }) => ($isDefault ? theme.colors.base.white : theme.default.colors.base.white)};
   ${({ $variant }) => adaptive({
   variant: $variant,
   mobile: css`
@@ -421,7 +425,7 @@ export const TariffCardStyledOldPriceWrapper = styled.div<{ $variant: Variant }>
     right: 0;
     `,
 })}
-`
+`;
 
 export const TariffCardStyledOldPrice = styled(Typography) <{ $variant: Variant }>`
   color: ${({ theme }) => theme.default.colors.grayScale.gray6};
@@ -453,9 +457,9 @@ export const TariffCardStyledGiveCaps = styled.div`
 
 export const TariffCardGiveCapsBadge = styled(Badge).attrs({ variant: 'info' })`
   ${({ theme }) => `
-    background-color: ${theme.mode === 'dark' ?
-      theme.colors.grayScale.gray2 :
-      theme.colors.grayScale.gray5};
+    background-color: ${theme.mode === 'dark'
+      ? theme.colors.grayScale.gray2
+      : theme.colors.grayScale.gray5};
     color: ${theme.default.colors.base.white};
   `}
 `;

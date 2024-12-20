@@ -53,6 +53,12 @@ export const SidebarDropdownContent: React.FC<AnimatedProps<React.ComponentProps
   display: flex;
   position: fixed;
   transform-origin: top right;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray2)};
+  background: ${({ theme }) => (theme.mode === 'light' ? 'rgba(255, 255, 255, 0.65)' : 'rgba(18, 24, 37, 0.75)')};
+  opacity: 0.8;
+  padding: 0;
   z-index: ${({ theme }) => theme.zIndex.menu};
 `;
 
@@ -61,12 +67,10 @@ export const SidebarDropdownList = styled.ul`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  border: 1px solid ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray2)};
-  border-radius: 8px;
   overflow: hidden;
+
   list-style: none;
-  padding: 0px;
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  margin: 0;
   opacity: 0.8;
   padding: 8px;
   box-sizing: border-box;

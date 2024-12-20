@@ -9,33 +9,64 @@ import { Image } from '@/ui/components/image';
 export interface TooltipStyledProps {
   $placement: TooltipPlacement;
   $align: TooltipAlign;
+  $inverted?: boolean;
   ref: React.RefObject<HTMLDivElement>;
 }
 
-export const TooltipStyled = styled(animated.div)<TooltipStyledProps>`
+export const TooltipStyled = styled(animated.div) <TooltipStyledProps>`
   display: inline-flex;
   position: absolute;
   top: 0px;
   left: 0px;
-  flex-direction: column;
   width: auto;
   pointer-events: none;
   user-select: none;
+  ${({ $placement, $inverted }) => {
+    switch ($placement) {
+      case 'center-left': return css`
+        ${$inverted ? css`
+          flex-direction: row-reverse;
+        ` : css`
+          flex-direction: row;
+        `}
+      `;
+      case 'center-right': return css`
+        ${$inverted ? css`
+          flex-direction: row;
+        ` : css`
+          flex-direction: row-reverse;
+        `}
+      `;
+      default: return css`
+        flex-direction: column;
+      `;
+    }
+  }}
   z-index: ${({ theme }) => theme.zIndex.tooltip};
   ${({ $placement, $align }) => {
     if ($align !== 'auto') {
       switch ($align) {
         case 'left':
+          if ($placement !== 'center-right' && $placement !== 'center-left') {
+            return css`
+              align-items: flex-start;
+            `;
+          }
           return css`
-            align-items: flex-start;
+            align-items: center;
           `;
         case 'center':
           return css`
             align-items: center;
           `;
         case 'right':
+          if ($placement !== 'center-right' && $placement !== 'center-left') {
+            return css`
+              align-items: flex-end;
+            `;
+          }
           return css`
-            align-items: flex-end;
+            align-items: center;
           `;
       }
     }
@@ -52,6 +83,14 @@ export const TooltipStyled = styled(animated.div)<TooltipStyledProps>`
       case 'top-right':
         return css`
           align-items: flex-end;
+        `;
+      case 'center-left':
+        return css`
+          align-items: center;
+        `;
+      case 'center-right':
+        return css`
+          align-items: center;
         `;
     }
   }}

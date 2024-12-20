@@ -1,5 +1,5 @@
-import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 import { useTheme } from 'styled-components';
+import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const BigModelsIcon = icon(({ ...props }) => {
   const theme = useTheme();
@@ -17,5 +17,5 @@ export const BigModelsIcon = icon(({ ...props }) => {
         )}
       </IconConsumer>
     </Icon>
-  )
+  );
 });

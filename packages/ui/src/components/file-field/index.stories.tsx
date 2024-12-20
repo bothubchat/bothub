@@ -58,6 +58,13 @@ export const CustomIcon: FileFieldStory = {
   }
 };
 
+export const Closed: FileFieldStory = {
+  args: {
+    ...Basic.args,
+    open: false,
+  }
+};
+
 export default {
   title: 'UI Components/Fields/File',
   component: FileField,
