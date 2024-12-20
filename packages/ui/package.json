@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.16.4-develop-45273a92-0a41-4dcf-b676-ee4f5da50d81",
+  "version": "2.16.4-fix-use-react-to-for-svg-6c20471d-f94a-4659-8a8d-ad207b9c0272",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
