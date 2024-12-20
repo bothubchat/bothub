@@ -7,6 +7,8 @@ export const MessageActionsStyled = styled.div<{ $variant?: MessageVariant }>`
   margin-top: auto;
   display: flex;
   flex-direction: ${({ $variant }) => ($variant === 'assistant' ? 'row' : 'row-reverse')};
+  align-items: center;
+  justify-content: center;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
