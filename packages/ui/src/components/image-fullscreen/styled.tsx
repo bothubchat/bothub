@@ -9,6 +9,7 @@ import { Container } from '@/ui/components/container';
 import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
 import { ArrowNarrowRightIcon } from '@/ui/icons/arrow-narrow-right';
 import { adaptive } from '@/ui/adaptive';
+import { ZoommableImage } from './zoommable-image';
 
 export const ImageFullScreenStyled = styled.div`
   display: flex;
@@ -92,23 +93,66 @@ export const ImageFullScreenMain = styled.div`
   height: 100%;
 `;
 
-export const ImageFullScreenSwiper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 24px;
+export const ImageFullScreenCarousel = styled.div`
   position: relative;
   width: 100vw;
-  .swiper-wrapper {
-    width: 100vw;
-    align-items: center;
+  overflow: hidden;
+`;
+
+export const ImageFullScreenCarouselContainer = styled.div`
+  display: flex;
+  will-change: transform;
+  touch-action: none;
+  user-select: none;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  transition: transform 0.3s ease-in-out;
+  
+  &:active {
+    cursor: grabbing;
   }
 `;
 
-export interface ImageFullScreenSwiperButtonsProps {
+export const ImageFullScreenSlide = styled.div`
+  width: 100vw;
+  flex-shrink: 0;
+  pointer-events: all;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const ImageFullScreenImage = styled(ZoommableImage)`
+  & > img {
+    border-radius: 10px;
+    object-fit: cover;
+    width: auto;
+    height: auto;
+    max-height: min(60vh, 512px);
+    pointer-events: none;
+    user-select: none;
+    ${adaptive({
+    merge: true,
+    desktop: css`
+        max-width: 512px;
+      `,
+    mobile: css`
+        max-width: 256px;
+      `
+  })}
+    @media (max-height: 600px) {
+      max-width: 256px;
+      max-height: 256px;
+    }
+  }
+`;
+
+export interface ImageFullScreenCarouselButtonsProps {
   $imageWidth: number;
 }
 
-export const ImageFullScreenSwiperButtons = styled.div<ImageFullScreenSwiperButtonsProps>`
+export const ImageFullScreenCarouselButtons = styled.div<ImageFullScreenCarouselButtonsProps>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,6 +161,7 @@ export const ImageFullScreenSwiperButtons = styled.div<ImageFullScreenSwiperButt
   bottom: 0px;
   left: 0px;
   right: 0px;
+  width: 100vw;
   z-index: 1;
   pointer-events: none;
   ${adaptive(({ $imageWidth }) => ({
@@ -133,36 +178,12 @@ export const ImageFullScreenSwiperButtons = styled.div<ImageFullScreenSwiperButt
   }
 `;
 
-export const ImageFullScreenSwiperPrevButton = styled(Button).attrs({ children: <ArrowNarrowLeftIcon /> })`
+export const ImageFullScreenCarouselPrevButton = styled(Button).attrs({ children: <ArrowNarrowLeftIcon /> })`
   pointer-events: auto;
 `;
 
-export const ImageFullScreenSwiperNextButton = styled(Button).attrs({ children: <ArrowNarrowRightIcon /> })`
+export const ImageFullScreenCarouselNextButton = styled(Button).attrs({ children: <ArrowNarrowRightIcon /> })`
   pointer-events: auto;
-`;
-
-export const ImageFullScreenImage = styled(Image).attrs({ loading: 'skeleton' })`
-  display: flex;
-  margin: auto;
-  border-radius: 10px;
-  object-fit: cover;
-  width: auto;
-  height: auto;
-  max-height: min(60vh, 512px);
-  pointer-events: auto;
-  ${adaptive({
-    merge: true,
-    desktop: css`
-      max-width: 512px;
-    `,
-    mobile: css`
-      max-width: 256px;
-    `
-  })}
-  @media (max-height: 600px) {
-    max-width: 256px;
-    max-height: 256px;
-  }
 `;
 
 export const ImageFullScreenPreview = styled.div`
@@ -205,5 +226,3 @@ export const ImageFullScreenPreviewImage = styled(Image).attrs({ width: 64, heig
     opacity: 1;
   }
 `;
-
-export const ImageFullScreenSlideWrapper = styled.div``;
