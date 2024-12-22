@@ -194,16 +194,16 @@ export const MessageBlock = styled.div<MessageBlockProps>`
   }}
   background: ${({ $hexColor }) => $hexColor};
 
-  ${({ $hasTimestamp }) => ($hasTimestamp
+  ${({ $hasTimestamp, $timestampPosition }) => ($hasTimestamp
     ? adaptive({
       variant: 'dashboard',
       merge: true,
       desktop: css`
-            padding: 8px;
+            padding: ${$timestampPosition === 'right' ? '8px' : '8px 8px 5px 8px'};
           `,
       tablet: css`
-            padding: 8px;
-          `,
+            padding: ${$timestampPosition === 'right' ? '8px' : '8px 8px 5px 8px'};
+            `,
     })
     : adaptive({
       variant: 'dashboard',
