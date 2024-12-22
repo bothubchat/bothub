@@ -7,7 +7,7 @@ import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
 import { ArrowNarrowRightIcon } from '@/ui/icons/arrow-narrow-right';
 import { ArrowNarrowUpIcon } from '@/ui/icons/arrow-narrow-up';
 import { EditIcon } from '@/ui/icons/edit';
-import { MessageVariant } from './types';
+import { MessageTimestampPosition, MessageVariant } from './types';
 import { adaptive } from '@/ui/adaptive';
 import { Badge } from '@/ui/components/badge';
 import { Scrollbar } from '@/ui/components/scrollbar';
@@ -160,6 +160,7 @@ export interface MessageBlockProps {
   $hexColor: string;
   $skeleton: boolean;
   $hasTimestamp?: boolean;
+  $timestampPosition?: MessageTimestampPosition;
 }
 
 export const MessageBlockWrapper = styled.div`
@@ -214,6 +215,11 @@ export const MessageBlock = styled.div<MessageBlockProps>`
             padding: 14px;
           `,
     }))}
+
+  ${({ $timestampPosition }) => $timestampPosition === 'bottom'
+    && css`
+      flex-direction: column;
+    `}
 `;
 
 export const MessageBlockBottomPanel = styled.div`
