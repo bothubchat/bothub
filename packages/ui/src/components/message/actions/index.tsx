@@ -267,7 +267,7 @@ export const MessageActions = ({
               id={id}
               message={message}
               onClick={onDelete}
-              tooltipLabel={updateTooltipLabel}
+              tooltipLabel={deleteText}
             >
               <TrashIcon size={20} />
             </ActionButton>
