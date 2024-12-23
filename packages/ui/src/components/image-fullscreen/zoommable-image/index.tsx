@@ -1,5 +1,9 @@
 import React, { useCallback, useState, useRef } from 'react';
-import { ZoommableImageContainer, ZoommableImageStyled } from './styled';
+import {
+  ZoommableImageContainer,
+  ZoommableImageWrapper,
+  ZoommableImageStyled,
+} from './styled';
 
 export interface ZoommableImageProps {
   className?: string;
@@ -20,35 +24,37 @@ export const ZoommableImage = ({
   const [isDragging, setIsDragging] = useState(false);
   const positionRef = useRef({ x: 0, y: 0 });
   const lastMousePositionRef = useRef({ x: 0, y: 0 });
-  const imageRef = useRef<HTMLImageElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const getBoundedPosition = useCallback(
     (x: number, y: number) => {
-      if (!imageRef.current) return { x, y };
+      if (!wrapperRef.current) return { x, y };
 
-      const image = imageRef.current.getBoundingClientRect();
-
-      x = Math.min(x, image.width * 0.25);
-      y = Math.min(y, image.height * 0.5);
+      const wrapper = wrapperRef.current.getBoundingClientRect();
+      const boundX = (wrapper.width * (zoom - 1)) / 2;
+      const boundY = (wrapper.height * (zoom - 1)) / 2;
 
       return {
-        x: Math.max(-image.width * 0.25, x),
-        y: Math.max(-image.height * 0.5, y),
+        x: Math.max(-boundX, Math.min(boundX, x)),
+        y: Math.max(-boundY, Math.min(boundY, y)),
       };
     },
     [zoom]
   );
 
-  const updateImageTransform = useCallback((zoom: number) => {
-    if (imageRef.current) {
-      const { x, y } = getBoundedPosition(positionRef.current.x, positionRef.current.y);
-      imageRef.current.style.transform = zoom !== 1 ? `translate(${x}px, ${y}px) scale(${zoom})` : '';
+  const updateTransform = useCallback((zoom: number) => {
+    if (wrapperRef.current) {
+      const { x, y } = getBoundedPosition(
+        positionRef.current.x,
+        positionRef.current.y
+      );
+      wrapperRef.current.style.transform = zoom !== 1 ? `translate(${x}px, ${y}px) scale(${zoom})` : '';
     }
   }, [getBoundedPosition]);
 
   const onDoubleClick = useCallback(() => {
-    if (imageRef.current) {
-      imageRef.current.style.transition = 'transform 0.3s ease';
+    if (wrapperRef.current) {
+      wrapperRef.current.style.transition = 'transform 0.3s ease';
     }
 
     const newZoom = isZooming ? 1 : 2;
@@ -59,18 +65,27 @@ export const ZoommableImage = ({
     }
     setZoom(newZoom);
     positionRef.current = { x: 0, y: 0 };
-    updateImageTransform(newZoom);
-  }, [isZooming, onZoomStart, onZoomEnd, updateImageTransform]);
+    updateTransform(newZoom);
+  }, [isZooming, onZoomStart, onZoomEnd, updateTransform]);
 
-  const onPointerDown = useCallback((e: React.PointerEvent) => {
-    setIsDragging(true);
-    lastMousePositionRef.current = { x: e.clientX, y: e.clientY };
-  }, []);
+  const onPointerDown = useCallback(
+    (e: React.PointerEvent) => {
+      if (!isZooming) return;
+      e.preventDefault();
+      setIsDragging(true);
+      lastMousePositionRef.current = { x: e.clientX, y: e.clientY };
+    },
+    [isZooming]
+  );
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent) => {
-      if (!isDragging || !imageRef.current) return;
-      imageRef.current.style.transition = 'none';
+      if (!isDragging || !isZooming) return;
+      e.preventDefault();
+
+      if (wrapperRef.current) {
+        wrapperRef.current.style.transition = 'none';
+      }
 
       const deltaX = e.clientX - lastMousePositionRef.current.x;
       const deltaY = e.clientY - lastMousePositionRef.current.y;
@@ -80,31 +95,37 @@ export const ZoommableImage = ({
         y: positionRef.current.y + deltaY,
       };
 
-      // Apply bounded position
       positionRef.current = getBoundedPosition(newPosition.x, newPosition.y);
       lastMousePositionRef.current = { x: e.clientX, y: e.clientY };
-      updateImageTransform(zoom);
+      updateTransform(zoom);
     },
-    [updateImageTransform, isDragging, zoom, getBoundedPosition]
+    [updateTransform, isDragging, zoom, isZooming, getBoundedPosition]
   );
 
-  const onPointerUp = useCallback(() => {
-    setIsDragging(false);
-  }, []);
+  const onPointerUp = useCallback(
+    (e: React.PointerEvent) => {
+      if (!isZooming) return;
+      e.preventDefault();
+      setIsDragging(false);
+    },
+    [isZooming]
+  );
 
   return (
-    <ZoommableImageContainer
-      className={className}
-      onDoubleClick={onDoubleClick}
-      onPointerDown={isZooming ? onPointerDown : undefined}
-      onPointerMove={isZooming ? onPointerMove : undefined}
-      onPointerUp={isZooming ? onPointerUp : undefined}
-      onPointerLeave={isZooming ? onPointerUp : undefined}
-      style={{
-        cursor: isDragging ? 'grabbing' : 'grab',
-      }}
-    >
-      <ZoommableImageStyled ref={imageRef} {...imageProps} draggable="false" />
+    <ZoommableImageContainer className={className}>
+      <ZoommableImageWrapper
+        ref={wrapperRef}
+        onDoubleClick={onDoubleClick}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerLeave={onPointerUp}
+        style={{
+          cursor: isDragging ? 'grabbing' : 'grab',
+        }}
+      >
+        <ZoommableImageStyled {...imageProps} draggable="false" />
+      </ZoommableImageWrapper>
     </ZoommableImageContainer>
   );
 };

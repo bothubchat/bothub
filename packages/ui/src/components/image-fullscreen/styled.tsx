@@ -106,26 +106,27 @@ export const ImageFullScreenCarouselContainer = styled.div`
   user-select: none;
   width: 100%;
   height: 100%;
-  cursor: grab;
-  transition: transform 0.3s ease-in-out;
   
-  &:active {
-    cursor: grabbing;
-  }
+  transition: transform 0.3s ease-in-out;
 `;
 
 export const ImageFullScreenSlide = styled.div`
   width: 100vw;
   flex-shrink: 0;
-  pointer-events: all;
+  pointer-events: none;
   display: flex;
   align-items: center;
   justify-content: center;
+  & > * {
+    pointer-events: all;
+  };
+  &:active {
+    cursor: grabbing;
+  }
 `;
 
 export const ImageFullScreenImage = styled(ZoommableImage)`
-  & > img {
-    border-radius: 10px;
+  & > * > img {
     object-fit: cover;
     width: auto;
     height: auto;
