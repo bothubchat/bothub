@@ -27,6 +27,7 @@ import {
   MessageActionEventHandler,
   MessageCodeCopyEventHandler,
   MessageCopyEventHandler,
+  MessageTimestampPosition,
   MessageVariant,
   MessageVersionEventHandler,
 } from './types';
@@ -63,7 +64,8 @@ export interface MessageProps {
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
   typing?: boolean;
-  timestamp?: string;
+  timestamp?: string | number;
+  timestampPosition?: MessageTimestampPosition;
   skeleton?: boolean;
   buttons?: ReactNode;
   after?: ReactNode;
@@ -105,6 +107,7 @@ export const Message: React.FC<MessageProps> = ({
   copyTooltipLabel,
   typing = false,
   timestamp,
+  timestampPosition = 'right',
   skeleton = false,
   buttons,
   after,
@@ -254,6 +257,7 @@ export const Message: React.FC<MessageProps> = ({
                   $hexColor={hexColor}
                   $skeleton={skeleton}
                   $hasTimestamp={!!timestamp}
+                  $timestampPosition={timestampPosition}
                 >
                   <MessageBlockScrollbarWrapper
                     scrollShadows={{
@@ -308,7 +312,7 @@ export const Message: React.FC<MessageProps> = ({
                       )}
                     </MessageBlockContent>
                   </MessageBlockScrollbarWrapper>
-                  {timestamp && <MessageTimestamp time={timestamp} />}
+                  {timestamp && <MessageTimestamp time={timestamp} position={timestampPosition} />}
                 </MessageBlock>
               </MessageBlockWrapper>
             </MessageContent>
