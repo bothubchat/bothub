@@ -1,5 +1,4 @@
 import 'normalize.css';
-import 'swiper/css';
 import 'highlight.js/styles/base16/atlas.css';
 import './style.css';
 import React from 'react';

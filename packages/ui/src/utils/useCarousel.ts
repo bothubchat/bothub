@@ -1,9 +1,13 @@
 import {
-  MutableRefObject, useCallback, useEffect, useRef, useState 
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
 } from 'react';
 
 const velocityThreshold = 0.4; // px/ms
-const dragThresholdPercent = 0.25; // %
+const dragThresholdPercent = 0.15; // %
 
 export interface UseCarouselProps {
   defaultIndex?: number | (() => number);
@@ -22,7 +26,6 @@ export const useCarousel = ({
   const dragStartXRef = useRef(0);
   const dragStartTimeRef = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
-  const dragThreshold = window.innerWidth * dragThresholdPercent;
 
   const [activeSlideIndex, setActiveSlideIndex] = useState(defaultIndex ?? 0);
 
@@ -35,10 +38,67 @@ export const useCarousel = ({
     return deltaX / deltaTime;
   }, []);
 
-  const updateTransform = useCallback((slideIndex: number, offset = 0) => {
+  const slideWidthsRef = useRef<number[]>([]);
+  const containerWidthRef = useRef<number>(0);
+  const gapRef = useRef<number>(0);
+
+  const measureElements = useCallback(() => {
     if (!containerRef.current) return;
 
-    const transform = -(slideIndex * 100) + (offset / window.innerWidth) * 100;
+    const container = containerRef.current;
+    containerWidthRef.current = container.clientWidth;
+
+    slideWidthsRef.current = Array.from(container.children).map(
+      (child) => child.clientWidth
+    );
+
+    const containerFullWidth = container.scrollWidth;
+    const totalGap = containerFullWidth - slideWidthsRef.current.reduce(
+      (sum, width) => sum + width,
+      0
+    );
+
+    gapRef.current = totalGap / (slideWidthsRef.current.length - 1);
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    measureElements();
+
+    let timeoutId: number | undefined;
+    const update = () => {
+      clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => {
+        measureElements();
+        updateTransform(activeSlideIndex);
+        timeoutId = undefined;
+      }, 30);
+    };
+
+    const resizeObserver = new ResizeObserver(update);
+
+    resizeObserver.observe(containerRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, [measureElements, activeSlideIndex]);
+
+  const updateTransform = useCallback((slideIndex: number, offset = 0) => {
+    if (!containerRef.current || !slideWidthsRef.current[slideIndex]) return;
+
+    const slideWidth = slideWidthsRef.current[slideIndex];
+    const containerWidth = containerWidthRef.current;
+    const gap = gapRef.current;
+
+    const slidePosition = slideIndex * (slideWidth + gap);
+    const centerOffset = (containerWidth - slideWidth) / 2;
+
+    const windowWidth = window.innerWidth;
+    const slideOffset = (slidePosition / windowWidth) * 100;
+    const centeringOffset = (centerOffset / windowWidth) * 100;
+    const dragOffset = (offset / windowWidth) * 100;
+
+    const transform = -slideOffset + centeringOffset + dragOffset;
     containerRef.current.style.transform = `translateX(${transform}vw)`;
   }, []);
 
@@ -98,6 +158,8 @@ export const useCarousel = ({
 
       containerRef.current.style.transition = 'transform 0.3s ease-in-out';
 
+      const dragThreshold = window.innerWidth * dragThresholdPercent;
+
       const shouldNavigate = absDragOffset > dragThreshold
         || (absDragOffset > dragThreshold * 0.1
           && absVelocity > velocityThreshold);
@@ -118,7 +180,6 @@ export const useCarousel = ({
     },
     [
       isDragging,
-      dragThreshold,
       isPrevAllowed,
       isNextAllowed,
       activeSlideIndex,
@@ -137,9 +198,10 @@ export const useCarousel = ({
   const ref = useCallback(
     (node: HTMLDivElement | null) => {
       (containerRef as MutableRefObject<HTMLDivElement | null>).current = node;
+      measureElements();
       updateTransform(activeSlideIndex);
     },
-    [activeSlideIndex]
+    []
   );
 
   return {

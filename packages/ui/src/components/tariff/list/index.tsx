@@ -1,6 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { SwiperRef } from 'swiper/react';
-import Swiper from 'swiper';
+import React from 'react';
 import {
   TariffDesktopList, 
   TariffsStyled, 
@@ -16,7 +14,7 @@ import { Button } from '@/ui/components/button';
 import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
 import { ArrowNarrowRightIcon } from '@/ui/icons/arrow-narrow-right';
 import { TariffsVariant } from './types';
-import './style.css';
+import { useCarousel } from '@/ui/utils/useCarousel';
 
 export interface TariffsProps extends React.PropsWithChildren {
   variant?: TariffsVariant;
@@ -25,51 +23,33 @@ export interface TariffsProps extends React.PropsWithChildren {
 export const Tariffs: React.FC<TariffsProps> = ({ 
   variant = 'default', children 
 }) => {
-  const sliderRef = useRef<SwiperRef>(null);
-  const [activeIndex, setActiveIndex] = useState<number>(0);
-  const isPrev = activeIndex > 0;
-  const isNext = activeIndex !== React.Children.toArray(children).length - 1;
-
-  const handleSlideChange = useCallback((swiper: Swiper) => {
-    setActiveIndex(swiper.activeIndex);
-  }, []);
-
-  const handlePrev = useCallback(() => {
-    if (!sliderRef.current) {
-      return;
-    }
-
-    sliderRef.current.swiper.slidePrev();
-  }, []);
-  const handleNext = useCallback(() => {
-    if (!sliderRef.current) {
-      return;
-    }
-
-    sliderRef.current.swiper.slideNext();
-  }, []);
+  const {
+    goPrev,
+    goNext,
+    isPrevAllowed,
+    isNextAllowed,
+    carouselProps,
+  } = useCarousel({
+    slidesCount: React.Children.toArray(children).length,
+  });
 
   return (
     <TariffsStyled>
       <TariffSlider>
         <TariffSliderContent>
           <TariffSlideList
-            ref={sliderRef}
-            slidesPerView="auto"
-            spaceBetween={20}
-            centeredSlides
-            onSlideChange={handleSlideChange}
+            {...carouselProps}
           >
             {children}
           </TariffSlideList>
           <TariffSliderShadows>
             <TariffSliderLeftShadow
               $variant={variant}
-              $hidden={!isPrev}
+              $hidden={!isPrevAllowed}
             />
             <TariffSliderRightShadow
               $variant={variant} 
-              $hidden={!isNext}
+              $hidden={!isNextAllowed}
             />
           </TariffSliderShadows>
         </TariffSliderContent>
@@ -78,8 +58,8 @@ export const Tariffs: React.FC<TariffsProps> = ({
             corner="rounded"
             size="small" 
             aria-label="Prev Slide Button"
-            disabled={!isPrev}
-            onClick={handlePrev}
+            disabled={!isPrevAllowed}
+            onClick={goPrev}
           >
             <ArrowNarrowLeftIcon />
           </Button>
@@ -87,8 +67,8 @@ export const Tariffs: React.FC<TariffsProps> = ({
             corner="rounded" 
             size="small" 
             aria-label="Next Slide Button"
-            disabled={!isNext}
-            onClick={handleNext}
+            disabled={!isNextAllowed}
+            onClick={goNext}
           >
             <ArrowNarrowRightIcon />
           </Button>
