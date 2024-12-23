@@ -7,12 +7,14 @@ import {
 } from 'react';
 
 const velocityThreshold = 0.4; // px/ms
-const dragThresholdPercent = 0.15; // %
+const dragThresholdPercent = 0.1; // %
 
 export interface UseCarouselProps {
   defaultIndex?: number | (() => number);
   slidesCount: number;
   enableSwipes?: boolean;
+  slidesPerScreen?: number;
+  align?: 'center' | 'left';
   onSlideChange?: (index: number) => void;
 }
 
@@ -20,6 +22,8 @@ export const useCarousel = ({
   defaultIndex,
   slidesCount,
   enableSwipes = true,
+  slidesPerScreen = 1,
+  align = 'center',
   onSlideChange,
 }: UseCarouselProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -29,8 +33,8 @@ export const useCarousel = ({
 
   const [activeSlideIndex, setActiveSlideIndex] = useState(defaultIndex ?? 0);
 
-  const isPrevAllowed = activeSlideIndex > 0;
-  const isNextAllowed = activeSlideIndex < slidesCount - 1;
+  const isPrevAllowed = activeSlideIndex >= slidesPerScreen;
+  const isNextAllowed = activeSlideIndex + slidesPerScreen < slidesCount;
 
   const calculateVelocity = useCallback((endX: number, endTime: number) => {
     const deltaX = endX - dragStartXRef.current;
@@ -53,13 +57,45 @@ export const useCarousel = ({
     );
 
     const containerFullWidth = container.scrollWidth;
-    const totalGap = containerFullWidth - slideWidthsRef.current.reduce(
-      (sum, width) => sum + width,
-      0
-    );
+    const totalGap = containerFullWidth
+      - slideWidthsRef.current.reduce((sum, width) => sum + width, 0);
 
     gapRef.current = totalGap / (slideWidthsRef.current.length - 1);
   }, []);
+
+  const updateTransform = useCallback(
+    (slideIndex: number, offset = 0) => {
+      if (!containerRef.current || !slideWidthsRef.current[slideIndex]) return;
+
+      const slideWidth = slideWidthsRef.current[slideIndex];
+      const containerWidth = containerWidthRef.current;
+      const gap = gapRef.current;
+      const windowWidth = window.innerWidth;
+
+      const groupWidth = slideWidth * slidesPerScreen + gap * (slidesPerScreen - 1);
+      const currentGroup = Math.floor(slideIndex / slidesPerScreen);
+      let slidePosition = currentGroup * (groupWidth + gap);
+
+      if (align === 'center') {
+        const centerOffset = (containerWidth - groupWidth) / 2;
+        slidePosition = Math.max(0, slidePosition - centerOffset);
+      } else {
+        // For 'left' alignment, we don't need any additional offset
+        // Just ensure we don't overflow at the end
+        const maxPosition = (slideWidthsRef.current.length * slideWidth) 
+                          + ((slideWidthsRef.current.length - 1) * gap) 
+                          - containerWidth;
+        slidePosition = Math.max(0, Math.min(slidePosition, maxPosition));
+      }
+
+      const slidePositionVW = (slidePosition / windowWidth) * 100;
+      const dragOffsetVW = (offset / windowWidth) * 100;
+
+      const transform = -slidePositionVW + dragOffsetVW;
+      containerRef.current.style.transform = `translateX(${transform}vw)`;
+    },
+    [slidesPerScreen, align]
+  );
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -77,54 +113,46 @@ export const useCarousel = ({
     };
 
     const resizeObserver = new ResizeObserver(update);
-
     resizeObserver.observe(containerRef.current);
 
-    return () => resizeObserver.disconnect();
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      resizeObserver.disconnect();
+    };
   }, [measureElements, activeSlideIndex]);
 
-  const updateTransform = useCallback((slideIndex: number, offset = 0) => {
-    if (!containerRef.current || !slideWidthsRef.current[slideIndex]) return;
-
-    const slideWidth = slideWidthsRef.current[slideIndex];
-    const containerWidth = containerWidthRef.current;
-    const gap = gapRef.current;
-
-    const slidePosition = slideIndex * (slideWidth + gap);
-    const centerOffset = (containerWidth - slideWidth) / 2;
-
-    const windowWidth = window.innerWidth;
-    const slideOffset = (slidePosition / windowWidth) * 100;
-    const centeringOffset = (centerOffset / windowWidth) * 100;
-    const dragOffset = (offset / windowWidth) * 100;
-
-    const transform = -slideOffset + centeringOffset + dragOffset;
-    containerRef.current.style.transform = `translateX(${transform}vw)`;
-  }, []);
+  useEffect(() => {
+    if (!enableSwipes) {
+      setIsDragging(false);
+    }
+  }, [enableSwipes]);
 
   const goToSlide = useCallback(
     (newIndex: number) => {
-      setActiveSlideIndex(newIndex);
-      updateTransform(newIndex);
-      onSlideChange?.(newIndex);
-      return newIndex;
+      const groupIndex = Math.floor(newIndex / slidesPerScreen) * slidesPerScreen;
+      const finalIndex = Math.min(Math.max(0, groupIndex), slidesCount - 1);
+
+      setActiveSlideIndex(finalIndex);
+      updateTransform(finalIndex);
+      onSlideChange?.(finalIndex);
+      return finalIndex;
     },
-    [updateTransform]
+    [updateTransform, slidesCount, onSlideChange, slidesPerScreen]
   );
 
   const goPrev = useCallback(() => {
     if (isPrevAllowed) {
-      return goToSlide(activeSlideIndex - 1);
+      return goToSlide(activeSlideIndex - slidesPerScreen);
     }
     return activeSlideIndex;
-  }, [isPrevAllowed, activeSlideIndex, goToSlide]);
+  }, [isPrevAllowed, activeSlideIndex, goToSlide, slidesPerScreen]);
 
   const goNext = useCallback(() => {
     if (isNextAllowed) {
-      return goToSlide(activeSlideIndex + 1);
+      return goToSlide(activeSlideIndex + slidesPerScreen);
     }
     return activeSlideIndex;
-  }, [isNextAllowed, activeSlideIndex, goToSlide]);
+  }, [isNextAllowed, activeSlideIndex, goToSlide, slidesPerScreen]);
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     if (!containerRef.current) return;
@@ -157,18 +185,19 @@ export const useCarousel = ({
       const absDragOffset = Math.abs(currentOffset);
 
       containerRef.current.style.transition = 'transform 0.3s ease-in-out';
+      const slideWidth = slideWidthsRef.current[activeSlideIndex] ?? 100;
 
-      const dragThreshold = window.innerWidth * dragThresholdPercent;
+      const dragThreshold = slideWidth * dragThresholdPercent;
 
       const shouldNavigate = absDragOffset > dragThreshold
-        || (absDragOffset > dragThreshold * 0.1
+        || (absDragOffset > dragThreshold
           && absVelocity > velocityThreshold);
 
       if (shouldNavigate) {
         if (currentOffset > 0 && isPrevAllowed) {
-          goToSlide(activeSlideIndex - 1);
+          goToSlide(activeSlideIndex - slidesPerScreen);
         } else if (currentOffset < 0 && isNextAllowed) {
-          goToSlide(activeSlideIndex + 1);
+          goToSlide(activeSlideIndex + slidesPerScreen);
         } else {
           updateTransform(activeSlideIndex);
         }
@@ -189,19 +218,15 @@ export const useCarousel = ({
     ]
   );
 
-  useEffect(() => {
-    if (!enableSwipes) {
-      setIsDragging(false);
-    }
-  }, [enableSwipes]);
-
   const ref = useCallback(
     (node: HTMLDivElement | null) => {
       (containerRef as MutableRefObject<HTMLDivElement | null>).current = node;
-      measureElements();
-      updateTransform(activeSlideIndex);
+      if (node) {
+        measureElements();
+        updateTransform(activeSlideIndex);
+      }
     },
-    []
+    [activeSlideIndex, measureElements, updateTransform]
   );
 
   return {
@@ -211,6 +236,7 @@ export const useCarousel = ({
     goPrev,
     goNext,
     goToSlide,
+    isDragging,
     carouselProps: {
       ref,
       onPointerDown: enableSwipes ? onPointerDown : undefined,
