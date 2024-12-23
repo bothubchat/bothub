@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.16.4-fix-use-react-to-for-svg-35d22c47-7037-47d1-9b50-02a0b2e7bc63",
+  "version": "2.16.4-fix-use-react-to-for-svg-854ada43-45cf-45cb-b939-1fddfa33a7ac",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -37,7 +37,8 @@
       "default": "./dist/index.js"
     },
     "./components/*": "./dist/components/*",
-    "./fonts/*": "./fonts/*"
+    "./fonts/*": "./fonts/*",
+    "./utils/*": "./dist/utils/*"
   },
   "sideEffects": false,
   "peerDependencies": {
