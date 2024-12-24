@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.16.4-feat-13894-pwa-682707f0-c043-444b-bfb9-eef4e6b188f7",
+  "version": "2.16.4-feat-13894-pwa-98cf26a0-dec4-40f3-abb9-eac3ff2512b6",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -56,7 +56,6 @@
     "highlight.js": "^11.11.0",
     "katex": "^0.16.10",
     "normalize.css": "^8.0.1",
-    "react-highlight": "^0.15.0",
     "react-markdown": "^8.0.7",
     "react-slider": "^2.0.6",
     "rehype-katex": "^7.0.0",
