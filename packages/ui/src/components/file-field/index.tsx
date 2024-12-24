@@ -113,7 +113,7 @@ export const FileField: React.FC<FileFieldProps> = ({
                 {placeholder}
               </FileFieldPlaceholder>
             )}
-            {files.length > 0 && (
+            {files.length > 0 && open && (
               <FileFieldFiles>
                 {files.map((file) => {
                   let iconNode: React.ReactNode;
