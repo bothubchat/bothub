@@ -1,3 +1,4 @@
+import 'katex/dist/katex.min.css';
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect, useState } from 'react';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
@@ -86,7 +87,7 @@ export const Assistant: MessageStory = {
     variant: 'assistant',
     avatar: <MessageAvatar variant="bot" />,
     transaction: <MessageTransaction>-1571 CAPS</MessageTransaction>,
-    children: 'Привет! Чем я могу помочь?',
+    children: 'Привет! Чем я могу помочь? $2+3/2$',
   },
 };
 

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { lazy, Suspense, useRef } from 'react';
 import {
   TariffCardStyled,
   TariffCardStyledContent,
@@ -14,29 +14,13 @@ import {
   TariffCardGiveCapsText,
   TariffCardGiveCapsBadge,
   TariffCardGiveCapsBadgeText,
-  TariffCardStyledGiveCaps,
-  TariffCardBackgroundGradientBasic,
-  TariffCardBackgroundPercentBasic,
-  TariffCardBackgroundPercentMobileBasic,
-  TariffCardDiscountImageBasic,
-  TariffCardBackgroundGradientDeluxe,
-  TariffCardBackgroundGradientElite,
-  TariffCardBackgroundGradientPremium,
-  TariffCardBackgroundPercentDeluxe,
-  TariffCardBackgroundPercentElite,
-  TariffCardBackgroundPercentMobileDeluxe,
-  TariffCardBackgroundPercentMobileElite,
-  TariffCardBackgroundPercentMobilePremium,
-  TariffCardBackgroundPercentPremium,
-  TariffCardDiscountImageDeluxe,
-  TariffCardDiscountImageElite,
-  TariffCardDiscountImagePremium,
-  TariffCardContainer,
-  TariffCardBackgroundBlack,
-  TariffCardStyledOldPrice,
-  TariffCardStyledOldPriceWrapper,
+  TariffCardStyledGiveCaps, TariffCardContainer, TariffCardStyledOldPrice,
+  TariffCardStyledOldPriceWrapper
 } from './styled';
 import { TariffCardColor, TariffType } from './types';
+
+const TariffCardImages = lazy(() => import('./tariff-card-images')
+  .then((module) => ({ default: module.TariffCardImages })));
 
 export interface TariffCardRowProps extends React.ComponentProps<'div'> {
   name: string;
@@ -76,37 +60,6 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
     }
   };
 
-  const tariffImages = {
-    Basic: [
-      <TariffCardBackgroundGradientBasic />,
-      <TariffCardBackgroundBlack $variant={variant} />,
-      <TariffCardBackgroundPercentBasic $variant={variant} />,
-      <TariffCardBackgroundPercentMobileBasic $variant={variant} />,
-      <TariffCardDiscountImageBasic $variant={variant} />
-    ],
-    Premium: [
-      <TariffCardBackgroundGradientPremium />,
-      <TariffCardBackgroundBlack $variant={variant} />,
-      <TariffCardBackgroundPercentPremium $variant={variant} />,
-      <TariffCardBackgroundPercentMobilePremium $variant={variant} />,
-      <TariffCardDiscountImagePremium $variant={variant} />
-    ],
-    Deluxe: [
-      <TariffCardBackgroundGradientDeluxe />,
-      <TariffCardBackgroundBlack $variant={variant} />,
-      <TariffCardBackgroundPercentDeluxe $variant={variant} />,
-      <TariffCardBackgroundPercentMobileDeluxe $variant={variant} />,
-      <TariffCardDiscountImageDeluxe $variant={variant} />
-    ],
-    Elite: [
-      <TariffCardBackgroundGradientElite />,
-      <TariffCardBackgroundBlack $variant={variant} />,
-      <TariffCardBackgroundPercentElite $variant={variant} />,
-      <TariffCardBackgroundPercentMobileElite $variant={variant} />,
-      <TariffCardDiscountImageElite $variant={variant} />
-    ],
-  };
-
   return (
     <TariffCardStyled
       $variant={variant}
@@ -115,7 +68,14 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
       selected={selected}
       {...props}
     >
-      {!isDefault && tariffImages[name as TariffType]}
+      {!isDefault && (
+        <Suspense>
+          <TariffCardImages 
+            variant={variant} 
+            name={name as TariffType}
+          />
+        </Suspense>
+      )}
       <TariffCardStyledContent $variant={variant}>
         <TarrifCardStyledLeft $variant={variant}>
           <TarrifCardStyledRadio

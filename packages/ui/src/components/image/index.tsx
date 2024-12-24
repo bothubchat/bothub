@@ -1,5 +1,7 @@
 /* eslint-disable react/no-unknown-property */
-import React, { LinkHTMLAttributes, useCallback, useState } from 'react';
+import React, {
+  forwardRef, LinkHTMLAttributes, useCallback, useState 
+} from 'react';
 import { Helmet } from 'react-helmet';
 import { useTheme } from '../../theme';
 import {
@@ -29,9 +31,9 @@ export interface ImageProps extends Omit<React.ComponentProps<'img'>, 'src' | 'a
   fetchPriority?: LinkHTMLAttributes<HTMLLinkElement>['fetchPriority'];
 }
 
-export const Image: React.FC<ImageProps> = ({
+export const Image = forwardRef<HTMLImageElement, ImageProps>(({
   src, alt, width, height, preload = false, loading = 'default', fetchPriority, ...props 
-}) => {
+}, ref) => {
   const theme = useTheme();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -55,6 +57,7 @@ export const Image: React.FC<ImageProps> = ({
       )}
       {typeof src === 'string' && (
         <ImageImg 
+          ref={ref}
           $hidden={isHidden}
           {...props}
           src={src} 
@@ -136,7 +139,7 @@ export const Image: React.FC<ImageProps> = ({
       )}
     </>
   );
-};
+});
 
 export * from './types';
 export * from './styled';

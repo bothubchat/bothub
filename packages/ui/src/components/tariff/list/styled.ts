@@ -1,5 +1,4 @@
 import { css, styled } from 'styled-components';
-import { Swiper } from 'swiper/react';
 import { TariffsVariant } from './types';
 import { adaptive } from '@/ui/adaptive';
 
@@ -54,6 +53,7 @@ export const TariffSlider = styled.div`
 
 export const TariffSliderContent = styled.div`
   position: relative;
+  overflow: hidden;
 `;
 
 export const TariffSliderShadows = styled.div`
@@ -84,11 +84,11 @@ export const TariffSliderLeftShadow = styled(TariffSliderShadow)`
   ${({ theme, $variant }) => {
     let color: string;
     switch ($variant) {
-      case 'default':
-        color = theme.colors.base.black;
-        break;
       case 'settings':
         color = theme.colors.grayScale.gray4;
+        break;
+      default:
+        color = theme.colors.base.black;
         break;
     }
 
@@ -117,11 +117,11 @@ export const TariffSliderRightShadow = styled(TariffSliderShadow)`
   }}
 `;
 
-export const TariffSlideList = styled(Swiper)`
-  overflow: visible !important;
+export const TariffSlideList = styled.div`
+  gap: 20px;
+  display: flex;
+  transition: transform 0.3s ease-in-out;
 `;
-
-TariffSlideList.displayName = 'SwiperSlider';
 
 export const TariffSliderActions = styled.div`
   display: flex;

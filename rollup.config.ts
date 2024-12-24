@@ -34,8 +34,6 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
       ...packageConfig.devDependencies,
       ...packageConfig.dependencies,
     }),
-    'swiper/css',
-    'swiper/react'
   ];
   const aliasPlugin: Plugin = alias({
     entries: [
