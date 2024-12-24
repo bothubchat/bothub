@@ -5,7 +5,7 @@ import React, {
   ElementType,
   useCallback,
 } from 'react';
-import { hljs } from './languages';
+import hljs from 'highlight.js/lib/common';
 
 export interface HighlightProps {
   children: ReactNode;
