@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { DndContext, useSensors } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
   Sidebar,
@@ -193,7 +195,8 @@ export const Basic: SidebarStory = {
       <SidebarGroups>
         <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Шабажка">
           <SidebarChat
-            id="chat-1"
+            id="chat-24"
+            edit
             color="#1C64F2"
             name="Кто прочитал, тот молодец"
             caps="36.7K"
@@ -217,8 +220,9 @@ export const Basic: SidebarStory = {
             )}
           />
           <SidebarChat
-            id="chat-1"
+            id="chat-2"
             color="#1C64F2"
+            edit
             name="Your first chat"
             caps="36.7K"
             checkbox={(
@@ -241,31 +245,8 @@ export const Basic: SidebarStory = {
             )}
           />
           <SidebarChat
-            id="chat-1"
-            color="#1C64F2"
-            name="Your first chat"
-            caps="36.7K"
-            checkbox={(
-              <SidebarChatCheckbox
-                checked
-                onValueChange={() => { }}
-              />
-            )}
-            actions={(
-              <SidebarDropdown>
-                <SidebarDropdownList>
-                  <SidebarDropdownItem startIcon={<EditIcon />}>
-                    Редактировать
-                  </SidebarDropdownItem>
-                  <SidebarDropdownItem startIcon={<TrashIcon />}>
-                    Удалить
-                  </SidebarDropdownItem>
-                </SidebarDropdownList>
-              </SidebarDropdown>
-            )}
-          />
-          <SidebarChat
-            id="chat-1"
+            id="chat-3"
+            edit
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"

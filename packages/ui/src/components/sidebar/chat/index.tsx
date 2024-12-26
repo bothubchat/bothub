@@ -1,5 +1,5 @@
-import React from 'react';
-import { useDraggable } from '@dnd-kit/core';
+import React, { useMemo } from 'react';
+import { useSortable } from '@dnd-kit/sortable';
 import {
   SidebarChatLeft,
   SidebarChatName,
@@ -22,44 +22,69 @@ export interface SidebarChatDefaultProps {
   actions?: React.ReactNode;
   skeleton?: false;
   id: string;
-  isDndOverflow?: boolean;
   edit?: boolean;
   checkbox?: React.ReactNode;
+}
+
+export interface SidebarChatDragAndDropProps {
   dragging?: boolean;
-  isDefault?: boolean;
+  countDragging?: number;
+  isDndOverflow?: boolean;
+  draggingHidden?: boolean;
 }
 
 export interface SidebarChatSkeletonProps {
   skeleton: true;
-  isDefault?: boolean;
 }
 
-export type SidebarChatProps = (SidebarChatDefaultProps | SidebarChatSkeletonProps) & {
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
+export type SidebarChatProps = (
+  SidebarChatDefaultProps &
+  SidebarChatDragAndDropProps |
+  SidebarChatSkeletonProps
+) & {
+  onClick?: React.MouseEventHandler<HTMLDivElement | HTMLOrSVGElement>;
+  isDefault?: boolean;
+  id?: string;
 };
 
 export const SidebarChat: React.FC<SidebarChatProps> = ({
   onClick, ...props
 }) => {
   const {
-    attributes, listeners, setNodeRef
-  } = useDraggable({
+    attributes, listeners, setNodeRef, transform, transition,
+  } = useSortable({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
   });
 
   const draggable = !props.skeleton && props.edit ? {
     ...listeners,
-    ...attributes
+    ...attributes,
   } : {};
 
-  const style = !props.skeleton && props.dragging ? {
-    height: 0,
+  const dragStyle = {
+    transform: transform ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)` : undefined,
+    transition,
+  };
+
+  const style = !props.skeleton && props.edit && props.dragging ? {
+    height: (props?.countDragging !== undefined ? props.countDragging * 38 : undefined),
     opacity: 0,
   } : {};
 
+  const styleDraggingHidden = !props.skeleton && props.edit && props.draggingHidden ? {
+    display: 'none',
+  } : {};
+
+  const chatStyle = useMemo(() => ({
+    ...style,
+    ...dragStyle,
+    ...styleDraggingHidden
+  }), [style, dragStyle, styleDraggingHidden]);
+
   return (
     <SidebarChatStyled
-      style={style}
+      style={chatStyle}
+      id={props.id}
       $draggble={!props.skeleton && props.isDndOverflow || false}
       $active={(!props.skeleton && props.active) ?? false}
       $skeleton={!!props.skeleton}
@@ -86,7 +111,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
               handleTooltipMouseLeave
             }) => (
               <SidebarChatIconStyled
-                onClick={onClick as any}
+                onClick={onClick}
                 onMouseEnter={handleTooltipMouseEnter}
                 onMouseLeave={handleTooltipMouseLeave}
               />

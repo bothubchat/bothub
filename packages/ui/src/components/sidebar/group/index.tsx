@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useDroppable } from '@dnd-kit/core';
+import { useSortable } from '@dnd-kit/sortable';
 import {
   SidebarChatList,
   SidebarGroupStyled,
@@ -46,7 +46,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
 }) => {
   const [open, setOpen] = props.open !== undefined
     ? [props.open, props.onHandleOpen] : useState<boolean>(false);
-  const { setNodeRef } = useDroppable({
+  const { setNodeRef } = useSortable({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
   });
   const sidebarOpen = useSidebar().isOpen;
