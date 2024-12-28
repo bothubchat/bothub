@@ -75,12 +75,14 @@ export const DescriptionCardContent = styled.div<{ $variant: DescriptionCardVari
           flex-direction: column;
           justify-content: center;
           align-items: flex-start;
-          padding: 47px 25px;
+          padding: 34px;
           @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
             align-items: center;
+            padding: 30px;
           }
           @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-            padding: 26px 10px;
+            padding: 67px 30px;
+            align-items: center;
           }
         `;
     }
@@ -159,7 +161,7 @@ export const DescriptionCardButton = styled(Button)`
 export const DescriptionCardStyled = styled.div<{ $variant: DescriptionCardVariant }>`
   display: flex;
   width: 100%;
-  min-height: 244px;
+  min-height: 180px;
   max-width: 630px;
   ${({ $variant }) => $variant === 'main' && css`
     height: 532px;
