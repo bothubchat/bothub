@@ -14,11 +14,11 @@ export const DescriptionCardBorderWrapper = styled.div<DescriptionCardBorderWrap
   border-radius: 12px;
   height: 100%;
   width: 100%;
-  ${({ $variant }) => {
+  ${({ $variant, theme }) => {
     switch ($variant) {
       case 'tertiary':
         return css`
-          background: radial-gradient(50% 100% at 150px -10%, ${({ theme }) => theme.colors.accent.primary}, rgba(0, 0, 0, 0.0));
+          background: radial-gradient(50% 100% at 150px -10%, ${theme.colors.accent.primary}, rgba(0, 0, 0, 0.0));
         `;
       default:
         return css``;
@@ -43,7 +43,7 @@ export const DescriptionCardContent = styled.div<{ $variant: DescriptionCardVari
   height: 100%;
   position: relative;
   box-sizing: border-box;
-  ${({ $variant }) => {
+  ${({ $variant, theme }) => {
     switch ($variant) {
       case 'tertiary':
         return css`
@@ -51,21 +51,21 @@ export const DescriptionCardContent = styled.div<{ $variant: DescriptionCardVari
           flex-direction: column;
           align-items: flex-start;
           padding: 24px 20px;
-          @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+          @media (max-width: ${theme.tablet.maxWidth}) {
             padding: 24px 18px;
           }
-          @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+          @media (max-width: ${theme.mobile.maxWidth}) {
             padding: 24px 14px;
           }
         `;
       case 'quaternary':
         return css`
           padding: 28px 24px;
-          @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+          @media (max-width: ${theme.tablet.maxWidth}) {
             padding: 24px 18px;
             align-items: center;
           }
-          @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+          @media (max-width: ${theme.mobile.maxWidth}) {
             padding: 30px 16px;
           }
         `;
@@ -76,13 +76,12 @@ export const DescriptionCardContent = styled.div<{ $variant: DescriptionCardVari
           justify-content: center;
           align-items: flex-start;
           padding: 34px;
-          @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+          @media (max-width: ${theme.tablet.maxWidth}) {
             align-items: center;
             padding: 30px;
           }
-          @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+          @media (max-width: ${theme.mobile.maxWidth}) {
             padding: 67px 30px;
-            align-items: center;
           }
         `;
     }
@@ -163,9 +162,9 @@ export const DescriptionCardStyled = styled.div<{ $variant: DescriptionCardVaria
   width: 100%;
   min-height: 180px;
   max-width: 630px;
-  ${({ $variant }) => $variant === 'main' && css`
+  ${({ $variant, theme }) => $variant === 'main' && css`
     height: 532px;
-    @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    @media (max-width: ${theme.mobile.maxWidth}) {
       height: 380px;
     }
     ${DescriptionCardContent} {
@@ -190,8 +189,8 @@ export const DescriptionCardStyled = styled.div<{ $variant: DescriptionCardVaria
       background-position: bottom right;
     }
   `}
-  ${({ $variant }) => $variant === 'secondary' && css`
-    @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+  ${({ $variant, theme }) => $variant === 'secondary' && css`
+    @media (max-width: ${theme.mobile.maxWidth}) {
       min-height: auto;
       height: auto;
       ${DescriptionCardBackground} {
