@@ -62,6 +62,7 @@ export const MessageMarkdownLine = React.memo(styled(ReactMarkdown)<MessageMarkd
     &:last-child > ${MessageItalicStyled}:last-child,
     &:last-child > ${MessageInlineCodeStyled}:last-child,
     &:last-child > ${MessagePre}:last-child > ${MessageMultilineCodeStyled}:last-child ${MessageMultilineCodeContentContainer} ${MessageMultilineCodeLastLine}:last-child,
+    &:last-child > ${MessagePre}:last-child > ${MessageMultilineCodeStyled}:last-child ${MessageMultilineCodeContentContainer} pre code:last-child,
     &:last-child > ${MessageTableStyled} *:last-child > ${MessageTableRow}:last-child > ${MessageTableCellStyled}:last-child,
     &:last-child > ${MessageListStyled}:last-child > ${MessageListItemStyled}:last-child,
     &:last-child > ${MessageTitleStyled}:last-child,

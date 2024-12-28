@@ -115,7 +115,9 @@ export const MultilineCode: MessageStory = {
     ...Assistant.args,
     children: `Конечно! Вот пример кода на JavaScript для вывода фразы "Hello, World!":
 \`\`\`javascript
-console.log("Hello, World!");
+function main() {
+  console.log("Hello, World!");
+}
 \`\`\``,
   },
 };
