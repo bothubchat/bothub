@@ -22,10 +22,11 @@ export interface ModalProps extends React.PropsWithChildren {
   scrollbar?: boolean;
   images?: React.ReactNode;
   onClose?: ModalCloseEventHandler;
+  className?: string;
 }
 
 export const Modal: React.FC<ModalProps> = ({
-  open, title = null, scrollbar = false, children, onClose, images
+  open, title = null, scrollbar = false, children, onClose, images, className
 }) => {
   let modalNode: React.ReactNode;
 
@@ -42,7 +43,7 @@ export const Modal: React.FC<ModalProps> = ({
       <ModalStyled>
         <Backdrop open={open} onClick={onClose} />
         {modalTransition((style, item) => item && (
-          <ModalWindow style={style}>
+          <ModalWindow style={style} className={className}>
             {images}
             <ModalWindowBody>
               {title ? <ModalTitle>{title}</ModalTitle> : null}
