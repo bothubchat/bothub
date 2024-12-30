@@ -13,5 +13,8 @@ export const ContainerStyled = styled.div<ContainerStyledProps>`
     @media (max-width: ${theme.mobile.maxWidth}) {
       padding: 0px 30px;
     }
+    @media (max-width: ${theme.mobile.maxWidth}) {
+      padding: 0px 16px;
+    }
   `}
 `;
