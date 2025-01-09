@@ -180,7 +180,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   if (typeof initialInputValue !== 'undefined') {
     [inputValue, setInputValue] = [initialInputValue, setInitialInputValue];
   }
-  
+
   const [isInputNativeFocus, setIsInputNativeFocus] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [x, setX] = useState(0);
