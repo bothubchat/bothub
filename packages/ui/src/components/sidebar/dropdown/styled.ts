@@ -35,7 +35,19 @@ export const SidebarDropdownToggler = styled.button<{ $open: boolean }>`
   align-items: center;
   cursor: pointer;
   gap: 6px;
-  `;
+  &:hover {
+    ${SidebarDropdownTogglerIcon} circle {
+      fill: ${({ theme }) => theme.colors.grayScale.gray6};
+      transition: fill 200ms ease-in-out;
+    };
+  }
+  &:active {
+    ${SidebarDropdownTogglerIcon} circle {
+      fill: ${({ theme }) => theme.colors.grayScale.gray1};
+      transition: fill 50ms ease-in-out;
+    };
+  }
+`;
 
 export const SidebarDropdownContent: React.FC<AnimatedProps<React.ComponentProps<'div'>>> = styled(animated.div)`
   display: flex;

@@ -1,14 +1,33 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
-import { MessageColor, MessageVariant } from '../types';
+import {
+  MessageColor,
+  MessageTimestampPosition,
+  MessageVariant,
+} from '../types';
 
-export const TimestampStyled = styled.div`
-  margin-top: auto;
+export interface TimestampProps {
+  $timestampPosition?: MessageTimestampPosition;
+}
+export const TimestampStyled = styled.div<TimestampProps>`
   width: fit-content;
   height: fit-content;
   display: flex;
   justify-content: flex-end;
+  
+  ${({ $timestampPosition }) => {
+    switch ($timestampPosition) {
+      case 'right':
+        return css`
+          margin-top: auto;
+        `;
+      case 'bottom':
+        return css`
+          margin-left: auto;
+        `;
+    }
+  }};
 `;
 
 export interface TimestampTextProp {
@@ -33,6 +52,6 @@ export const TimestampText = styled(Typography).attrs({
     `,
     mobile: css`
       font-size: 10px;
-    `
+    `,
   })};
 `;

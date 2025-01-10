@@ -82,8 +82,6 @@ export const TariffCard: React.FC<TariffCardProps> = ({
   </TariffCardStyled>
 );
 
-TariffCard.displayName = 'SwiperSlide';
-
 export * from './types';
 export * from './styled';
 export * from './model';

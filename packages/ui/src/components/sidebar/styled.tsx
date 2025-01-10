@@ -274,6 +274,7 @@ export const SidebarContentNav = styled.div<{ $open?: boolean }>`
 export const SidebarContentNavMenuWrapper = styled.div`
   display: flex;
   width: 100%;
+  max-height: calc(100% - 60px);
   overflow: hidden;
   margin-top: 16px;
 `;
@@ -291,7 +292,9 @@ export const SidebarContentNavMenuScrollbarWrapper = styled(Scrollbar).attrs({
   overflow-x: hidden;
 `;
 
-export const SidebarContentNavContainer = styled.div<{ $open?: boolean }>``;
+export const SidebarContentNavContainer = styled.div<{ $open?: boolean }>`
+  max-height: calc(100% - 100px);
+`;
 
 export interface SidebarHeadProps {
   $open: boolean;

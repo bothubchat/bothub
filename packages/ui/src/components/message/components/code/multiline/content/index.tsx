@@ -21,7 +21,10 @@ export const MessageMultilineCodeContent = ({
             $messageColor={$messageColor}
             className={className}
           >
-            {children}
+            {message.slice(0, -2).join('\n')}
+            <MessageMultilineCodeLastLine>
+              {message.slice(-2)}
+            </MessageMultilineCodeLastLine>
           </MessageMultilineCodeContentStyled>
         )}
       >
@@ -29,9 +32,9 @@ export const MessageMultilineCodeContent = ({
           $messageColor={$messageColor}
           className={className}
         >
-          {message.slice(0, -2).join('\n')}
+          {message.slice(0, -1).join('\n')}
           <MessageMultilineCodeLastLine>
-            {message.slice(-2)[0]}
+            {message.slice(-1)}
           </MessageMultilineCodeLastLine>
         </MessageMultilineCodeContentHighlighted>
       </Suspense>
