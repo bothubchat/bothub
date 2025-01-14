@@ -1,4 +1,4 @@
-import { css, styled } from 'styled-components';
+import { css, styled, keyframes } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { TrashIcon } from '@/ui/icons/trash';
@@ -95,6 +95,73 @@ export const SidebarChatCaps = styled(Typography).attrs({ variant: 'body-s-mediu
   border-radius: 10px;
   cursor: default;
   transition: opacity 0.3s;
+`;
+
+const SidebarChatOutlineAnimation = keyframes`
+  from {
+    left: 0px;
+  }
+  to {
+    left: -4px;
+  }
+`;
+
+export interface SidebarChatWithOutlineStyledProps {
+  $active: boolean;
+}
+
+export const SidebarChatWithOutlineStyled = styled.div<SidebarChatWithOutlineStyledProps>`
+  margin-left: 4px;
+  height: 100%;
+  border-radius: 10px;
+  position: relative;
+  ${({ $active }) => $active && css`
+    &:before {
+      content: '';
+      width: 20px;
+      height: 100%;
+      border-radius: 10px;
+      position: absolute;
+      top: 0;
+      left: 0px;
+      background-color: ${({ theme }) => theme.colors.accent.primary};
+      z-index: 0;
+      animation: ${SidebarChatOutlineAnimation} .3s ease-in-out 1 forwards;
+    }
+  `};
+`;
+
+const SidebarChatBackgroundAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+`;
+
+export interface SidebarChatWithBackgroundStyledProps {
+  $active: boolean;
+}
+
+export const SidebarChatWithBackgroundStyled = styled.div<SidebarChatWithBackgroundStyledProps>`
+  height: 100%;
+  border-radius: 10px;
+  position: relative;
+  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+  ${({ $active }) => $active && css`
+  &:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    left: 0px;
+    background-color: ${({ theme }) => theme.colors.accent.primaryLight};
+    opacity: 0.5;
+    animation: ${SidebarChatBackgroundAnimation} .3s ease-in-out 1 forwards;
+}`};
 `;
 
 export interface SidebarChatStyledProps {

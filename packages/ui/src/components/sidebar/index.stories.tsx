@@ -708,7 +708,8 @@ export const Basic: SidebarStory = {
             id="chat-1"
             isDefault
             color="#1C64F2"
-            name="Your first chat"
+            name="Active chat"
+            active
             caps="36.7K"
             checkbox={(
               <SidebarChatCheckbox
