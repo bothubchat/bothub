@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { Image } from '@/ui/components/image';
 
 export const ZoommableImageContainer = styled.div`
