@@ -10,7 +10,7 @@ import { EditIcon } from '@/ui/icons/edit';
 import { TrashIcon } from '@/ui/icons/trash';
 
 import * as S from './styled';
-import { MessageActionEventHandler, MessageVariant } from '../types';
+import { MessageActionEditEventHandler, MessageActionEventHandler, MessageVariant } from '../types';
 import { MenuOption } from './menu-option';
 import { CopyButton } from './copy-button';
 import { ActionButton } from './action-button';
@@ -41,7 +41,7 @@ type MessageActionsProps = {
   messageRef?: MutableRefObject<HTMLDivElement | null>;
   onEditing?: (value: boolean) => unknown;
   onEditedText?: (value: string) => unknown;
-  onEdit?: MessageActionEventHandler;
+  onEdit?: MessageActionEditEventHandler;
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
@@ -152,7 +152,7 @@ export const MessageActions = ({
   const handleConfirmEdit = useCallback(
     ({ id, message }: { id?: string; message?: string }) => {
       onEditing?.(false);
-      onEdit?.({ id, message });
+      onEdit?.({ id, message, variant });
     },
     [id, message]
   );
