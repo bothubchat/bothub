@@ -247,11 +247,17 @@ export const InputMessageToggleSendModalOption = styled.button<{
         ? theme.colors.grayScale.gray3
         : theme.colors.grayScale.gray4;
     }
-    return active ? theme.colors.grayScale.gray3 : theme.default.colors.base.white;
+    return active
+      ? theme.colors.grayScale.gray3
+      : theme.default.colors.base.white;
   }};
   cursor: pointer;
   transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out,
     filter 0.1s ease-in-out;
+  &:hover {
+    filter: ${({ theme }) => (theme.mode === 'dark' ? 'brightness(120%)' : 'brightness(80%)')};
+    transition: filter 100ms ease-in-out;
+  }
   &:active {
     transform: translateY(1px);
   }

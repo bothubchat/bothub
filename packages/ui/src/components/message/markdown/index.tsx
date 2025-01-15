@@ -1,17 +1,12 @@
-import React, {
-  useCallback, useMemo, useState 
-} from 'react';
-import remarkGfm from 'remark-gfm';
-import rehypeKatex from 'rehype-katex';
-import remarkMath from 'remark-math';
+import React, { useMemo } from 'react';
 import { useMessage } from '@/ui/components/message/context';
 import {
   MessageComponentsProps, 
   MessageParagraph, 
 } from '@/ui/components/message/components';
-import { useTheme } from '@/ui/theme';
 import { MessageMarkdownLine, MessageMarkdownStyled } from './styled';
 import { markdownComponents } from './markdown-components';
+import { useMarkdownPlugins } from './useMarkdownPlugins';
 
 function formatString(string: string) {
   return string
@@ -32,8 +27,6 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = (({
 }) => {
   const { typing, variant, color } = useMessage();
   const isDisabled = variant === 'user';
-  const theme = useTheme();
-  const [singleDollarTextMath, setSingleDollarTextMath] = useState(true);
 
   const formattedChildren = useMemo(() => {
     if (typeof children === 'string' && !isDisabled) {
@@ -42,9 +35,13 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = (({
     return children;
   }, [children, isDisabled]);
 
-  const handleKatexStrict = useCallback(() => {
-    if (singleDollarTextMath) queueMicrotask(() => setSingleDollarTextMath(false));
-  }, [singleDollarTextMath]);
+  const { 
+    remarkPlugins, 
+    rehypePlugins, 
+    singleDollarTextMath 
+  } = useMarkdownPlugins({
+    children: formattedChildren,
+  });
 
   const markdownNode = useMemo(() => {
     const blocks = formattedChildren.split('\n\n');
@@ -72,15 +69,11 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = (({
             $typing={typing}
             $color={color}
             $singleDollarTextMath={singleDollarTextMath}
-            key={index}
-            remarkPlugins={[remarkGfm, [remarkMath, { singleDollarTextMath }]]}
+            key={`${rehypePlugins.length}-${remarkPlugins.length}-${index}`}
             // @ts-ignore
-            rehypePlugins={[[rehypeKatex, {
-              displayMode: true,
-              output: 'html',
-              errorColor: theme.colors.orange,
-              strict: handleKatexStrict,
-            }]]}
+            remarkPlugins={remarkPlugins}
+            // @ts-ignore
+            rehypePlugins={rehypePlugins}
             components={markdownComponents(components)}
           >
             {block}
@@ -88,7 +81,9 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = (({
         ))}
       </MessageMarkdownStyled>
     );
-  }, [typing, formattedChildren, handleKatexStrict, singleDollarTextMath]);
+  }, [
+    typing, 
+    formattedChildren, singleDollarTextMath, remarkPlugins, rehypePlugins]);
 
   return (
     <>

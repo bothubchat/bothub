@@ -91,7 +91,7 @@ export const MessageActions = ({
     }
     switch (variant) {
       case 'assistant':
-        return !disableEdit || !disableDelete;
+        return !disableEdit;
       case 'user':
         return !disableEdit || !disableDelete || !disableResend;
     }
@@ -261,6 +261,16 @@ export const MessageActions = ({
                 )
               )}
             </S.MessageActionsMenuStyled>
+          )}
+          {!modalEnabled() && !disableDelete && (
+            <ActionButton
+              id={id}
+              message={message}
+              onClick={onDelete}
+              tooltipLabel={deleteText}
+            >
+              <TrashIcon size={20} />
+            </ActionButton>
           )}
           {!disableUpdate && variant !== 'user' && (
             <ActionButton

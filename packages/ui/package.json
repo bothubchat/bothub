@@ -37,7 +37,8 @@
       "default": "./dist/index.js"
     },
     "./components/*": "./dist/components/*",
-    "./fonts/*": "./fonts/*"
+    "./fonts/*": "./fonts/*",
+    "./utils/*": "./dist/utils/*"
   },
   "sideEffects": false,
   "peerDependencies": {
@@ -52,16 +53,14 @@
     "@floating-ui/react-dom": "^2.1.0",
     "@react-spring/web": "^9.7.4",
     "date-fns": "^3.6.0",
-    "highlight.js": "^11.9.0",
+    "highlight.js": "^11.11.0",
     "katex": "^0.16.10",
     "normalize.css": "^8.0.1",
-    "react-highlight": "^0.15.0",
     "react-markdown": "^8.0.7",
     "react-slider": "^2.0.6",
     "rehype-katex": "^7.0.0",
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",
-    "swiper": "^10.2.0",
     "tslib": "^2.6.2",
     "unist-util-visit": "^5.0.0"
   }

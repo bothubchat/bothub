@@ -2,6 +2,8 @@ export type MessageVariant = 'user' | 'assistant';
 
 export type MessageColor = string | 'default' | 'green' | 'purple';
 
+export type MessageTimestampPosition = 'right' | 'bottom';
+
 export type MessageCopyEventHandler = (data: ClipboardItem[]) => unknown;
 export type MessageContextCopyEventHandler = () => unknown;
 

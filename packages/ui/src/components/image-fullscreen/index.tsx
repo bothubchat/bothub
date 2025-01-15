@@ -1,12 +1,12 @@
-import React, {
-  useCallback, useRef, useState, useEffect 
-} from 'react';
-import { Swiper as ReactSwiper, SwiperRef, SwiperSlide } from 'swiper/react';
-import Swiper from 'swiper';
-import { Zoom } from 'swiper/modules';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Portal } from '@/ui/components/portal';
 import {
   ImageFullScreenBackdrop,
+  ImageFullScreenCarousel,
+  ImageFullScreenCarouselButtons,
+  ImageFullScreenCarouselContainer,
+  ImageFullScreenCarouselNextButton,
+  ImageFullScreenCarouselPrevButton,
   ImageFullScreenContainer,
   ImageFullScreenContent,
   ImageFullScreenImage,
@@ -14,23 +14,23 @@ import {
   ImageFullScreenPreview,
   ImageFullScreenPreviewImage,
   ImageFullScreenPreviewImages,
-  ImageFullScreenSlideWrapper,
+  ImageFullScreenSlide,
   ImageFullScreenStyled,
-  ImageFullScreenSwiper,
-  ImageFullScreenSwiperButtons,
-  ImageFullScreenSwiperNextButton,
-  ImageFullScreenSwiperPrevButton,
   ImageFullScreenTopBlock,
-  ImageFullScreenTopBlockContent
+  ImageFullScreenTopBlockContent,
 } from './styled';
 import { ImageFullScreenData, ImageFullScreenDataItem } from './types';
 import { ImageFullScreenProvider } from './context';
+import { useCarousel } from '../../utils/useCarousel';
 
 export type ImageFullScreenCloseEventHandler = () => unknown;
 
-export type ImageFullScreenChangeEventHandler = (item: ImageFullScreenDataItem) => unknown;
+export type ImageFullScreenChangeEventHandler = (
+  item: ImageFullScreenDataItem
+) => unknown;
 
-export interface ImageFullScreenProps extends Omit<React.ComponentProps<'div'>, 'onChange'> {
+export interface ImageFullScreenProps
+  extends Omit<React.ComponentProps<'div'>, 'onChange'> {
   open: boolean;
   data: ImageFullScreenData;
   item?: string | ImageFullScreenDataItem;
@@ -41,72 +41,58 @@ export interface ImageFullScreenProps extends Omit<React.ComponentProps<'div'>, 
 }
 
 export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
-  open, data, item, author, toolbar, onChange, onClose
+  open,
+  data,
+  item,
+  author,
+  toolbar,
+  onChange,
+  onClose,
 }) => {
-  const sliderRef = useRef<SwiperRef>(null);
+  const [isZooming, setIsZooming] = useState(false);
 
-  const [activeSlideIndex, setActiveSlideIndex] = useState<number>(() => {
-    if (!item) {
-      return 0;
-    }
+  const handleSlideChange = useCallback(
+    (newIndex: number) => {
+      onChange?.(data[newIndex]);
+    },
+    [onChange, data]
+  );
 
-    return data.findIndex(({ id }) => (
-      id === (typeof item === 'object' ? item.id : item)
-    )) ?? 0;
+  const {
+    activeSlideIndex,
+    isPrevAllowed,
+    isNextAllowed,
+    goPrev,
+    goNext,
+    goToSlide,
+    carouselProps,
+  } = useCarousel({
+    slidesCount: data.length,
+    onSlideChange: handleSlideChange,
+    enableSwipes: !isZooming,
+    defaultIndex: () => {
+      if (!item) {
+        return 0;
+      }
+
+      return (
+        data.findIndex(
+          ({ id }) => id === (typeof item === 'object' ? item.id : item)
+        ) ?? 0
+      );
+    },
   });
   const activeItem: ImageFullScreenDataItem = data[activeSlideIndex] ?? null;
-
-  const isPrevAllowed = activeSlideIndex > 0;
-  const isNextAllowed = activeSlideIndex !== data.length - 1;
-
-  const handleSlideChange = useCallback((swiper: Swiper) => {
-    setActiveSlideIndex(swiper.activeIndex);
-
-    const item: ImageFullScreenDataItem | null = data.find((_, index) => (
-      index === swiper.activeIndex
-    )) ?? null;
-
-    if (item) {
-      onChange?.(item);
-    }
-  }, [data, onChange]);
-
-  const handlePrev = useCallback(() => {
-    if (!sliderRef.current) {
-      return;
-    }
-
-    sliderRef.current.swiper.slidePrev();
-  }, []);
-  const handleNext = useCallback(() => {
-    if (!sliderRef.current) {
-      return;
-    }
-
-    sliderRef.current.swiper.slideNext();
-  }, []);
-
-  const handleChange = useCallback((slideIndex: number) => {
-    if (!sliderRef.current) {
-      return;
-    }
-
-    sliderRef.current.swiper.slideTo(slideIndex);
-  }, []);
 
   useEffect(() => {
     if (open) {
       const keyDownListener = (event: KeyboardEvent) => {
-        if (!sliderRef.current) {
-          return;
-        }
-
         switch (event.code) {
           case 'ArrowLeft':
-            sliderRef.current.swiper.slidePrev();
+            goPrev();
             break;
           case 'ArrowRight':
-            sliderRef.current.swiper.slideNext();
+            goNext();
             break;
         }
       };
@@ -117,20 +103,14 @@ export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
         document.removeEventListener('keydown', keyDownListener);
       };
     }
-  }, [open]);
+  }, [open, goPrev, goNext]);
 
   return (
-    <ImageFullScreenProvider
-      data={data}
-      activeItem={activeItem}
-    >
+    <ImageFullScreenProvider data={data} activeItem={activeItem}>
       {open && (
         <Portal>
           <ImageFullScreenStyled>
-            <ImageFullScreenBackdrop 
-              open={open}
-              onClick={onClose}
-            />
+            <ImageFullScreenBackdrop open={open} onClick={onClose} />
             <ImageFullScreenContainer>
               <ImageFullScreenContent>
                 {(author || toolbar) && (
@@ -142,45 +122,41 @@ export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
                   </ImageFullScreenTopBlock>
                 )}
                 <ImageFullScreenMain>
-                  <ImageFullScreenSwiper>
-                    <ReactSwiper
-                      ref={sliderRef}
-                      initialSlide={activeSlideIndex}
-                      spaceBetween={0}
-                      onSlideChange={handleSlideChange}
-                      zoom
-                      modules={[Zoom]}
-                    >
+                  <ImageFullScreenCarousel>
+                    <ImageFullScreenCarouselContainer {...carouselProps}>
                       {data.map((item) => (
-                        <SwiperSlide
-                          key={item.id ?? item.url}
-                        >
-                          <ImageFullScreenSlideWrapper className="swiper-zoom-container">
-                            <ImageFullScreenImage
-                              src={item.url}
-                              width={item.width}
-                              height={item.height}
-                              alt={item.name}
-                            />
-                          </ImageFullScreenSlideWrapper>
-                        </SwiperSlide>
+                        <ImageFullScreenSlide key={item.id ?? item.url}>
+                          <ImageFullScreenImage
+                            imageProps={{
+                              src: item.url,
+                              alt: item.name,
+                              width: item.width,
+                              height: item.height,
+                              loading: 'skeleton',
+                            }}
+                            onZoomStart={setIsZooming.bind(null, true)}
+                            onZoomEnd={setIsZooming.bind(null, false)}
+                          />
+                        </ImageFullScreenSlide>
                       ))}
-                    </ReactSwiper>
-                    {data.length > 1 && (
-                      <ImageFullScreenSwiperButtons
+                    </ImageFullScreenCarouselContainer>
+
+                    {data.length > 1 && !isZooming && (
+                      <ImageFullScreenCarouselButtons
                         $imageWidth={activeItem.width}
                       >
-                        <ImageFullScreenSwiperPrevButton
+                        <ImageFullScreenCarouselPrevButton
                           disabled={!isPrevAllowed}
-                          onClick={handlePrev}
+                          onClick={goPrev}
                         />
-                        <ImageFullScreenSwiperNextButton
+                        <ImageFullScreenCarouselNextButton
                           disabled={!isNextAllowed}
-                          onClick={handleNext}
+                          onClick={goNext}
                         />
-                      </ImageFullScreenSwiperButtons>
+                      </ImageFullScreenCarouselButtons>
                     )}
-                  </ImageFullScreenSwiper>
+                  </ImageFullScreenCarousel>
+
                   {data.length > 1 && (
                     <ImageFullScreenPreview>
                       <ImageFullScreenPreviewImages>
@@ -192,7 +168,7 @@ export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
                             width={item.previewWidth ?? item.width}
                             height={item.previewHeight ?? item.height}
                             alt={item.name}
-                            onClick={handleChange.bind(null, index)}
+                            onClick={goToSlide.bind(null, index)}
                           />
                         ))}
                       </ImageFullScreenPreviewImages>

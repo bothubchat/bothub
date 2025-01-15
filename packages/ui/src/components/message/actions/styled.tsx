@@ -7,6 +7,8 @@ export const MessageActionsStyled = styled.div<{ $variant?: MessageVariant }>`
   margin-top: auto;
   display: flex;
   flex-direction: ${({ $variant }) => ($variant === 'assistant' ? 'row' : 'row-reverse')};
+  align-items: center;
+  justify-content: center;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
@@ -97,6 +99,15 @@ export const MessageActionsButton = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  &:hover {
+    svg {
+      path,
+      circle {
+        fill: ${({ theme }) => (theme.mode === 'dark' ? theme.colors.grayScale.gray6 : theme.colors.grayScale.gray2)};
+        transition: all 100ms ease-out;
+      }
+    }
+  }
   &:active {
     svg {
       path,

@@ -94,6 +94,33 @@ export const Images: ImageFullScreenStory = {
   }
 };
 
+export const Images2: ImageFullScreenStory = {
+  args: {
+    ...Toolbar.args,
+    item: 'image2',
+    data: [
+      {
+        id: 'image1',
+        url: image1,
+        width: 1024,
+        height: 1024
+      },
+      {
+        id: 'image2',
+        url: image2,
+        width: 1024,
+        height: 1024
+      },
+      {
+        id: 'image3',
+        url: image3,
+        width: 1024,
+        height: 1024
+      },
+    ]
+  }
+};
+
 export default {
   title: 'Components/Image/FullScreen',
   component: ImageFullScreen,

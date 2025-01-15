@@ -63,6 +63,10 @@ export interface SelectFieldMultiProps {
   onValueChange?: SelectFieldMultiValueChangeEventHandler;
 }
 
+export type ValueType = SelectFieldDataItem | SelectFieldDataItem[] | null;
+
+export type ValueSetter = (value: ValueType) => void;
+
 export type SelectFieldProps = (SelectFieldDefaultProps | SelectFieldMultiProps) & {
   className?: string;
   label?: string | boolean | React.ReactNode;
@@ -129,7 +133,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const { multiple = false } = props;
 
   const setInitialValue = useCallback((
-    item: SelectFieldDataItem | SelectFieldDataItem[] | null
+    item: ValueType
   ) => {
     if (props.multiple && Array.isArray(item)) {
       const items = item;
@@ -167,8 +171,16 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     onInputChange?.(value);
   }, [onInputChange]);
 
-  const [value, setValue] = typeof initialValue !== 'undefined' ? [initialValue, setInitialValue] : useState<SelectFieldDataItem | SelectFieldDataItem[] | null>(multiple ? [] : null);
-  const [inputValue, setInputValue] = typeof initialInputValue !== 'undefined' ? [initialInputValue, setInitialInputValue] : useState('');
+  let [value, setValue] = useState<ValueType>(multiple ? [] : null) as [ValueType, ValueSetter];
+  if (typeof initialValue !== 'undefined') {
+    [value, setValue] = [initialValue, setInitialValue];
+  }
+
+  let [inputValue, setInputValue] = useState('') as [string, (value: string) => void];
+  if (typeof initialInputValue !== 'undefined') {
+    [inputValue, setInputValue] = [initialInputValue, setInitialInputValue];
+  }
+
   const [isInputNativeFocus, setIsInputNativeFocus] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [x, setX] = useState(0);

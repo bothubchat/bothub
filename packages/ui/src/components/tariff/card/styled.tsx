@@ -1,5 +1,4 @@
 import { css, styled } from 'styled-components';
-import { SwiperSlide } from 'swiper/react';
 import React from 'react';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
@@ -144,11 +143,11 @@ export const TariffCardValidityPeriod = styled(Typography)`
   width: 100%;
 `;
 
-export type TariffCardStyledProps = Omit<React.ComponentProps<typeof SwiperSlide>, 'children'> & React.PropsWithChildren & {
+export type TariffCardStyledProps = Omit<React.ComponentProps<'div'>, 'children'> & React.PropsWithChildren & {
   $color: TariffCardColor;
 };
 
-export const TariffCardStyled: React.FC<TariffCardStyledProps> = styled(SwiperSlide)<TariffCardStyledProps>`
+export const TariffCardStyled: React.FC<TariffCardStyledProps> = styled.div<TariffCardStyledProps>`
   display: flex !important;
   flex-direction: column;
   overflow: hidden;
