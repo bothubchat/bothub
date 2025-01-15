@@ -73,7 +73,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 30px;
           }
         `;
-      case 'banner-h1-bold': 
+      case 'banner-h1-bold':
         return `
           font-size: 128px;
           font-weight: 700;
@@ -88,6 +88,23 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             font-size: 36px;
             line-height: 40px;
             --skeleton-height: 40px;
+          }
+        `;
+      case 'banner-h3-black':
+        return `
+          font-weight: 900;
+          font-size: 40px;
+          line-height: 40px;
+          --skeleton-height: 40px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 24px;
+            line-height: 24px;
+            --skeleton-height: 24px;
+          }
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 20px;
+            line-height: 24px;
+            --skeleton-height: 24px;
           }
         `;
       case 'body-h1-regular':

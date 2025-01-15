@@ -8,16 +8,16 @@ export interface DescriptionCardGridStyledProps {
 export const DescriptionCardGridStyled = styled.div<DescriptionCardGridStyledProps>`
   display: grid;
   justify-items: center;
-  gap: 30px;
+  gap: 34px;
   ${adaptive(({ $columns }) => ({
-    desktop: css`
+  desktop: css`
       grid-template-columns: repeat(${$columns}, 1fr);
     `,
-    tablet: css`
+  tablet: css`
       grid-template-columns: repeat(2, 1fr);
     `,
-    mobile: css`
+  mobile: css`
       grid-template-columns: 1fr;
     `
-  }))}
+}))}
 `;

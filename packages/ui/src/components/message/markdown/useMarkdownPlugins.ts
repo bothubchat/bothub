@@ -4,22 +4,14 @@ import {
 import remarkGfm from 'remark-gfm';
 import { useTheme } from '@/ui/theme';
 
-type RemarkMath = null | typeof import('remark-math');
-type RehypeKatex = null | typeof import('rehype-katex');
+type Plugins = typeof import('./markdown-plugins') | null;
 
-let globalRemarkMath: RemarkMath = null;
-let globalRehypeKatex: RehypeKatex = null;
+let globalPlugins: Plugins = null;
 
-const getRemarkMath = async () => {
-  if (globalRemarkMath) return globalRemarkMath;
-  globalRemarkMath = await import('remark-math');
-  return globalRemarkMath;
-};
-
-const getRehypeKatex = async () => {
-  if (globalRehypeKatex) return globalRehypeKatex;
-  globalRehypeKatex = await import('rehype-katex');
-  return globalRehypeKatex;
+const getPlugins = async () => {
+  if (globalPlugins) return globalPlugins;
+  globalPlugins = await import('./markdown-plugins');
+  return globalPlugins;
 };
 
 const hasMathBlock = (children: string) => {
@@ -48,12 +40,7 @@ export const useMarkdownPlugins = ({ children }: UseMarkdownPluginsProps) => {
   const theme = useTheme();
   const [singleDollarTextMath, setSingleDollarTextMath] = useState(true);
 
-  const [remarkMath, setRemarkMath] = useState<RemarkMath>(
-    globalRemarkMath ?? null
-  );
-  const [rehypeKatex, setRehypeKatex] = useState<RehypeKatex>(
-    globalRehypeKatex ?? null
-  );
+  const [plugins, setPlugins] = useState<Plugins>(null);
 
   const handleKatexStrict = useCallback(() => {
     if (singleDollarTextMath) queueMicrotask(() => setSingleDollarTextMath(false));
@@ -62,36 +49,31 @@ export const useMarkdownPlugins = ({ children }: UseMarkdownPluginsProps) => {
   useEffect(() => {
     async function checkMathRequirements() {
       if (typeof children === 'string' && hasMathBlock(children)) {
-        const [math, katex] = await Promise.all([
-          getRemarkMath(),
-          getRehypeKatex(),
-        ]);
-        setRemarkMath(math);
-        setRehypeKatex(katex);
-        await import('katex/dist/katex.min.css');
+        const p = await getPlugins();
+        setPlugins(p);
       }
     }
 
-    if (remarkMath && rehypeKatex) {
+    if (plugins) {
       return;
     }
 
     checkMathRequirements();
-  }, [children, remarkMath, rehypeKatex]);
+  }, [children, plugins]);
 
   const remarkPlugins = useMemo(() => {
-    if (remarkMath !== null) {
-      return [remarkGfm, [remarkMath.default, { singleDollarTextMath }]];
+    if (plugins !== null) {
+      return [remarkGfm, [plugins.remarkMath, { singleDollarTextMath }]];
     }
 
     return [remarkGfm];
-  }, [singleDollarTextMath, remarkMath]);
+  }, [singleDollarTextMath, plugins]);
 
   const rehypePlugins = useMemo(() => {
-    if (rehypeKatex !== null) {
+    if (plugins !== null) {
       return [
         [
-          rehypeKatex.default,
+          plugins.rehypeKatex,
           {
             displayMode: true,
             output: 'html',
@@ -103,7 +85,7 @@ export const useMarkdownPlugins = ({ children }: UseMarkdownPluginsProps) => {
     }
 
     return [];
-  }, [handleKatexStrict, theme, rehypeKatex]);
+  }, [handleKatexStrict, theme, plugins]);
 
   return { remarkPlugins, rehypePlugins, singleDollarTextMath };
 };

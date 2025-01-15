@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { contentStyles } from './styled';
 import { MessageMultilineCodeContentProps } from './types';
 import { Highlight } from './highlight';

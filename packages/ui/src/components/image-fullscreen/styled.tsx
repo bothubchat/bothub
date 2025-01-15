@@ -136,12 +136,32 @@ export const ImageFullScreenImage = styled(ZoommableImage)`
     ${adaptive({
     merge: true,
     desktop: css`
-        max-width: 512px;
-      `,
+      max-width: 512px;
+    `,
     mobile: css`
-        max-width: 256px;
-      `
+      max-width: 256px;
+    `
   })}
+    @media (max-height: 600px) {
+      max-width: 256px;
+      max-height: 256px;
+    }
+  }
+  & > div > span {
+    max-height: min(60vh, 512px);
+    ${adaptive({
+    merge: true,
+    desktop: css`
+      max-width: 512px;
+    `,
+    mobile: css`
+      max-width: 256px;
+    `
+  })}
+    @media (max-width: 600px) {
+      max-width: 256px;
+      max-height: 256px;
+    }
     @media (max-height: 600px) {
       max-width: 256px;
       max-height: 256px;
