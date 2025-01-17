@@ -19,6 +19,7 @@ import { TooltipConsumer } from '@/ui/components/tooltip';
 export interface SidebarChatDefaultProps {
   color: string;
   name: string;
+  icon?: React.ReactNode;
   caps?: string;
   active?: boolean;
   actions?: React.ReactNode;
@@ -74,7 +75,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
             ? <SidebarChatDragHandle {...draggable} />
             : (
               <SidebarChatIconContainer $isDefault={props.isDefault}>
-                <SidebarChatIconStyled />
+                {!props.skeleton && props.icon ? props.icon : <SidebarChatIconStyled />}
               </SidebarChatIconContainer>
             )}
           {!props.skeleton && (
@@ -118,8 +119,8 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
                   >
                     {!props.skeleton && (
                       <>
-                        {props.name.slice(0, 24)}
-                        {props.name.length > 24 && '...'}
+                        {props.name.slice(0, 18)}
+                        {props.name.length > 18 && '...'}
                       </>
                     )}
                     {props.skeleton && <SidebarChatNameSkeleton />}

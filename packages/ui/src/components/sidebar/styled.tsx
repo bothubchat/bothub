@@ -6,6 +6,7 @@ import {
   SidebarChatIconStyled,
   SidebarChatStyled,
   SidebarChatTooltip,
+  SidebarChatWithOutlineStyled,
 } from './chat';
 import {
   SidebarChatList,
@@ -71,17 +72,19 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
         }
         ${SidebarChatList} {
           gap: 10px;
-          ${SidebarChatStyled} {
-            padding: 9px;
-            width: fit-content;
-            border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
-            border-radius: 8px;
+          ${SidebarChatWithOutlineStyled} {
             &:first-child {
               margin-top: 20px;
             }
             &:last-child {
               margin-bottom: 10px;
             }
+          }
+          ${SidebarChatStyled} {
+            padding: 9px;
+            width: fit-content;
+            border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+            border-radius: 8px;
             & > * {
               display: none;
             }
@@ -116,8 +119,8 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   padding: 20px;
   padding-right: 0px;
   ${({ $open }) => $open && css`
-    min-width: 412px;
-    max-width: 412px;
+    min-width: 342px;
+    max-width: 342px;
   `}
   @media (min-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
     ${({ $open, theme }) => !$open && css`
@@ -189,7 +192,7 @@ export const SidebarContent = styled.div<{ $open?: boolean }>`
   ${adaptive({
     variant: 'dashboard',
     tablet: css`
-    min-width: 312px;
+    min-width: 342px;
     max-width: none;
     width: 100%;
     ${SidebarUserInfoStyled} {
@@ -214,7 +217,7 @@ export const SidebarContent = styled.div<{ $open?: boolean }>`
   ${({ $open }) => !$open && adaptive({
     variant: 'dashboard',
     tablet: css`
-      max-width: 412px;
+      max-width: 342px;
     `,
     mobile: css`
       opacity: 0;

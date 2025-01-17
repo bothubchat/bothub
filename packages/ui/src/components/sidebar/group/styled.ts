@@ -1,4 +1,4 @@
-import { css, styled } from 'styled-components';
+import { css, keyframes, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Tooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -16,7 +16,11 @@ export const SidebarGroupsStyled = styled.div`
   width: 100%;
 `;
 
-export const SidebarGroupStyled = styled.div<{ $over?: boolean; }>`
+export interface SidebarGroupStyledProps {
+  $over?: boolean;
+}
+
+export const SidebarGroupStyled = styled.div<SidebarGroupStyledProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -34,7 +38,62 @@ export const SidebarGroupArrowDown = styled(ArrowDownIcon)`
   transition: transform 0.2s ease;
 `;
 
-export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medium', component: 'div' }) <{ open?: boolean; $skeleton?: boolean; }>`
+const SidebarGroupNameOutlineAnimation = keyframes`
+  from {
+    opacity: 0;
+    left: 0;
+  }
+  to {
+    opacity: 1;
+    left: -3px;
+  }
+`;
+
+export interface SidebarGroupNameWithOutlineProps {
+  $active?: boolean;
+  $open?: boolean;
+}
+
+export const SidebarGroupNameWithOutline = styled.div<SidebarGroupNameWithOutlineProps>`
+  width: calc(100% - 3px);
+  margin-left: 3px;
+  position: relative;
+  &:before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 10px;
+    z-index: 0;
+  }
+  &:hover {
+    &:before {
+      background-color: ${({ theme }) => theme.colors.accent.primary};
+    }
+  } 
+  ${({ $active }) => $active && css`
+  &:before {
+    background-color: ${({ theme }) => theme.colors.accent.primary};
+    animation: ${SidebarGroupNameOutlineAnimation} .3s ease-out 1 forwards;
+  }
+  `}
+`;
+
+export const SidebarGroupNameWithBg = styled.div`
+  width: 100%;
+  border-radius: 10px;
+  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+  position: relative;
+`;
+
+export interface SidebarGroupNameProps {
+  open?: boolean;
+  $skeleton?: boolean;
+}
+
+export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medium', component: 'div' }) <SidebarGroupNameProps>`
   color: ${({ theme }) => theme.colors.base.white};
   display: flex;
   cursor: ${({ $skeleton }) => {
@@ -50,6 +109,11 @@ export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medi
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
+  &:hover{
+    background-color: ${({ theme }) => `${theme.colors.accent.primaryLight}80`};
+    border-radius: 10px;
+    transition: background-color .3s ease-out;
+  }
   ${adaptive({
     variant: 'dashboard',
     desktop: css`
@@ -91,6 +155,9 @@ export const SidebarChatList = styled.div<{ open?: boolean; isDefault?: boolean 
         display: none;
       `;
     }
+    return css`
+      margin-top: 3px;
+    `;
   }}
   ${(isDefault) => !isDefault && css`
     min-height: 100px;

@@ -99,10 +99,12 @@ export const SidebarChatCaps = styled(Typography).attrs({ variant: 'body-s-mediu
 
 const SidebarChatOutlineAnimation = keyframes`
   from {
+    opacity: 0;
     left: 0px;
   }
   to {
-    left: -4px;
+    opacity: 1;
+    left: -3px;
   }
 `;
 
@@ -111,11 +113,11 @@ export interface SidebarChatWithOutlineStyledProps {
 }
 
 export const SidebarChatWithOutlineStyled = styled.div<SidebarChatWithOutlineStyledProps>`
-  margin-left: 4px;
+  margin-left: 3px;
   height: 100%;
-  border-radius: 10px;
   position: relative;
   ${({ $active }) => $active && css`
+    border-radius: 10px;
     &:before {
       content: '';
       width: 20px;
@@ -131,15 +133,6 @@ export const SidebarChatWithOutlineStyled = styled.div<SidebarChatWithOutlineSty
   `};
 `;
 
-const SidebarChatBackgroundAnimation = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 0.5;
-  }
-`;
-
 export interface SidebarChatWithBackgroundStyledProps {
   $active: boolean;
 }
@@ -149,19 +142,6 @@ export const SidebarChatWithBackgroundStyled = styled.div<SidebarChatWithBackgro
   border-radius: 10px;
   position: relative;
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
-  ${({ $active }) => $active && css`
-  &:before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-    position: absolute;
-    top: 0;
-    left: 0px;
-    background-color: ${({ theme }) => theme.colors.accent.primaryLight};
-    opacity: 0.5;
-    animation: ${SidebarChatBackgroundAnimation} .3s ease-in-out 1 forwards;
-}`};
 `;
 
 export interface SidebarChatStyledProps {
@@ -193,6 +173,9 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   ${({ $active }) => {
     if ($active) {
       return css`
+        border-radius: 10px;
+        background-color: ${({ theme }) => `${theme.colors.accent.primaryLight}80`};
+        transition: background-color .3s ease-out;
         ${SidebarChatIconStyled} {
           path {
             stroke: ${({ theme }) => theme.colors.base.white};
@@ -201,6 +184,13 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
         }
       `;
     }
+    return css`
+      &:hover {
+        border-radius: 10px;
+        background-color: ${({ theme }) => `${theme.colors.accent.primaryLight}80`};
+        transition: background-color .3s ease-out;
+      }
+    `;
   }}
   ${adaptive({
     variant: 'dashboard',

@@ -388,7 +388,7 @@ export const Basic: SidebarStory = {
           />
         </SidebarGroup>
         <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Как разблокировать дискорд">
-          <SidebarGroupEmpty>Чатов нет идите отсюла</SidebarGroupEmpty>
+          <SidebarGroupEmpty>Чатов нет идите отсюда</SidebarGroupEmpty>
         </SidebarGroup>
         <SidebarGroup edit checkbox={<SidebarChatCheckbox checked />} id="chat-group-1" name="Бесплатный впн">
           <SidebarChat
@@ -489,9 +489,10 @@ export const Basic: SidebarStory = {
             )}
           />
         </SidebarGroup>
-        <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Работа">
+        <SidebarGroup active checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Работа">
           <SidebarChat
             id="chat-1"
+            active
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
@@ -709,7 +710,6 @@ export const Basic: SidebarStory = {
             isDefault
             color="#1C64F2"
             name="Active chat"
-            active
             caps="36.7K"
             checkbox={(
               <SidebarChatCheckbox
