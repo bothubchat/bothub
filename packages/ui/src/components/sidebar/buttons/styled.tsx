@@ -82,6 +82,23 @@ export const SidebarSearchButton = styled(Button).attrs({
   `}
 `;
 
-export const SidebarSortButton: React.FC<{ $variant: ButtonVariant }> = styled(Button).attrs({
-  children: <TrashIcon />
-})``;
+export interface SidebarSortButtonProps {
+  $active?: boolean;
+}
+
+export const SidebarSortButton = styled(Button)<SidebarSortButtonProps>`
+  ${({ $active }) =>
+    $active
+      ? css`
+          svg path {
+            fill: ${({ theme }) => theme.default.colors.base.white};
+            stroke: ${({ theme }) => theme.default.colors.base.white};
+          }
+        `
+      : css`
+          svg path {
+            fill: ${({ theme }) => theme.colors.grayScale.gray1};
+            stroke: ${({ theme }) => theme.colors.grayScale.gray1};
+          }
+        `}
+`;

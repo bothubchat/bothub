@@ -39,6 +39,7 @@ import {
   SidebarGroupCheckbox,
   SidebarThemeSwitcher,
   SidebarUserInfoSkeleton,
+  SidebarSortButton,
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -150,6 +151,7 @@ export const Basic: SidebarStory = {
         <SidebarAddGroupButton variant="secondary" />
         <SidebarSearchButton variant="secondary" />
         <SidebarEditButton variant="secondary" $active />
+        <SidebarSortButton variant="secondary" />
       </SidebarButtons>
     ),
     search: (

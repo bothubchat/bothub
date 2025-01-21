@@ -36,6 +36,7 @@ export interface SidebarProps extends React.PropsWithChildren {
   logo?: React.ReactNode;
   menu?: React.ReactNode;
   buttons?: React.ReactNode;
+  buttonsModal?: React.ReactNode;
   toggle?: React.ReactNode;
   user?: React.ReactNode;
   search?: React.ReactNode;
@@ -47,7 +48,7 @@ export interface SidebarProps extends React.PropsWithChildren {
 
 export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
   open, defaultOpen = true,
-  className, id, user, logo, menu, buttons, toggle,
+  className, id, user, logo, menu, buttons, buttonsModal, toggle,
   deleteButton,
   search, lang,
   themeSwitcher,
@@ -112,6 +113,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
           </SidebarHeader>
           <SidebarToolbar $open={isOpen}>
             {buttons}
+            {buttonsModal}
             {!isOpen && (
               <SidebarMenu>
                 {menu}

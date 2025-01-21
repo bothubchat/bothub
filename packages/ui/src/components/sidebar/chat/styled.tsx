@@ -170,7 +170,7 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
       `;
     }
   }}
-  ${({ $active }) => {
+  ${({ $active, $skeleton }) => {
     if ($active) {
       return css`
         border-radius: 10px;
@@ -184,13 +184,15 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
         }
       `;
     }
-    return css`
+    if (!$active && !$skeleton) {
+      return css`
       &:hover {
         border-radius: 10px;
         background-color: ${({ theme }) => `${theme.colors.accent.primaryLight}80`};
         transition: background-color .3s ease-out;
       }
     `;
+    }
   }}
   ${adaptive({
     variant: 'dashboard',
