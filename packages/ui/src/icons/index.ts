@@ -200,3 +200,7 @@ export * from './happy-robot';
 export * from './happy-robot-gradient';
 export * from './min-window';
 export * from './max-window';
+export * from './sort-alphabet-ascending';
+export * from './sort-alphabet-descending';
+export * from './sort-date-ascending';
+export * from './sort-date-descending';

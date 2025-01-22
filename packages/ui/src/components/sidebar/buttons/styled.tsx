@@ -17,19 +17,22 @@ export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
   transition: all 0.3s;
   width: 100%;
   gap: 12px;
-  ${({ $open }) => !$open && adaptive(
-    {
+  ${({ $open }) => !$open
+    && adaptive({
       variant: 'dashboard',
       merge: true,
-      desktop: css`flex-direction: column;`,
-      tablet: css`flex-direction: row;`
-    }
-  )}
+      desktop: css`
+        flex-direction: column;
+      `,
+      tablet: css`
+        flex-direction: row;
+      `,
+    })}
 `;
 
 export const SidebarDeleteButton = styled(Button).attrs({
   fullWidth: true,
-  startIcon: <TrashIcon />
+  startIcon: <TrashIcon />,
 })``;
 
 export const SidebarCreateChatButton = styled(Button).attrs({
@@ -37,49 +40,60 @@ export const SidebarCreateChatButton = styled(Button).attrs({
 })``;
 
 export const SidebarAddGroupButton = styled(Button).attrs({
-  children: <AddGroupIcon />
-}) <{ variant: ButtonVariant }>`
-  ${({ variant, theme }) => variant === 'secondary' && css`
-    background: ${theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
-    svg path {
-      stroke: ${theme.colors.accent.primary};
-    }
-  `}
+  children: <AddGroupIcon />,
+})<{ variant: ButtonVariant }>`
+  ${({ variant, theme }) => variant === 'secondary'
+    && css`
+      background: ${theme.mode === 'dark'
+    ? theme.colors.grayScale.gray3
+    : theme.colors.grayScale.gray4};
+      svg path {
+        stroke: ${theme.colors.accent.primary};
+      }
+    `}
 `;
 
 export const SidebarEditButton = styled(Button).attrs({
   children: <EditIcon />,
-}) <{ variant: ButtonVariant, $active?: boolean }>`
-  ${({ variant, theme }) => variant === 'secondary' && css`
-    svg path {
-      fill: ${theme.colors.grayScale.gray1};
-      stroke: ${theme.colors.grayScale.gray1};
-    }
-  `}
+})<{ variant: ButtonVariant; $active?: boolean }>`
+  ${({ variant, theme }) => variant === 'secondary'
+    && css`
+      svg path {
+        fill: ${theme.colors.grayScale.gray1};
+        stroke: ${theme.colors.grayScale.gray1};
+      }
+    `}
 
-  ${({ $active, theme }) => $active && css`
-    background: ${theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
-    svg path {
-      fill: ${theme.colors.accent.primary};
-      stroke: ${theme.colors.accent.primary};
-    }
-  `}
+  ${({ $active, theme }) => $active
+    && css`
+      background: ${theme.mode === 'dark'
+    ? theme.colors.grayScale.gray3
+    : theme.colors.grayScale.gray4};
+      svg path {
+        fill: ${theme.colors.accent.primary};
+        stroke: ${theme.colors.accent.primary};
+      }
+    `}
 `;
 
 export const SidebarSearchButton = styled(Button).attrs({
   children: <SearchSimpleIcon size={16} />,
-}) <{ variant: ButtonVariant, $active?: boolean }>`
-  ${({ variant }) => variant === 'secondary' && css`
-    svg path {
-      fill: ${({ theme }) => theme.colors.grayScale.gray1};
-    }
-  `}
-  ${({ $active, theme }) => $active && css`
-    background: ${theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
-    svg path {
-      fill: ${theme.colors.accent.primary};
-    }
-  `}
+})<{ variant: ButtonVariant; $active?: boolean }>`
+  ${({ variant }) => variant === 'secondary'
+    && css`
+      svg path {
+        fill: ${({ theme }) => theme.colors.grayScale.gray1};
+      }
+    `}
+  ${({ $active, theme }) => $active
+    && css`
+      background: ${theme.mode === 'dark'
+    ? theme.colors.grayScale.gray3
+    : theme.colors.grayScale.gray4};
+      svg path {
+        fill: ${theme.colors.accent.primary};
+      }
+    `}
 `;
 
 export interface SidebarSortButtonProps {
@@ -87,18 +101,16 @@ export interface SidebarSortButtonProps {
 }
 
 export const SidebarSortButton = styled(Button)<SidebarSortButtonProps>`
-  ${({ $active }) =>
-    $active
-      ? css`
+  ${({ $active }) => ($active
+    ? css`
           svg path {
             fill: ${({ theme }) => theme.default.colors.base.white};
-            stroke: ${({ theme }) => theme.default.colors.base.white};
           }
         `
-      : css`
+    : css`
           svg path {
             fill: ${({ theme }) => theme.colors.grayScale.gray1};
-            stroke: ${({ theme }) => theme.colors.grayScale.gray1};
+            stroke: none;
           }
-        `}
+        `)}
 `;
