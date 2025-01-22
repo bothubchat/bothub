@@ -16,25 +16,31 @@ export const SidebarGroupsStyled = styled.div`
   width: 100%;
 `;
 
-export const SidebarGroupStyled = styled.div<{ $over?: boolean; }>`
+export const SidebarGroupStyled = styled.div<{ $over?: boolean; $dragging?: boolean }>`
   display: flex;
+  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  ${({ $over }) => {
-    if ($over) {
-      return css`
-        background: ${({ theme }) => theme.colors.grayScale.gray7};
-        border-radius: 10px;
-      `;
-    }
-  }}
+  ${({ $over, theme }) => $over && css`
+    background: ${theme.colors.grayScale.gray7};
+    border-radius: 10px;
+  `}
+  ${({ $dragging, theme }) => $dragging && css`
+    background: ${theme.colors.grayScale.gray3};
+    border-radius: 10px;
+    opacity: 0.7;
+  `}
 `;
 export const SidebarGroupArrowDown = styled(ArrowDownIcon)`
   transition: transform 0.2s ease;
 `;
 
-export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medium', component: 'div' }) <{ open?: boolean; $skeleton?: boolean; }>`
+export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medium', component: 'div' }) <{ $open?: boolean; $skeleton?: boolean; }>`
   color: ${({ theme }) => theme.colors.base.white};
   display: flex;
   cursor: ${({ $skeleton }) => {
@@ -70,7 +76,7 @@ export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medi
   })}
 
   & > ${SidebarGroupArrowDown} {
-    transform: ${({ open }) => (open ? 'rotate(180deg)' : 'rotate(0deg)')};
+    transform: ${({ $open }) => ($open ? 'rotate(180deg)' : 'rotate(0deg)')};
   }
 `;
 
@@ -108,6 +114,7 @@ export const SidebarGroupCheckbox = styled(Checkbox)`
 
 export const SidebarGroupDragHandle = styled(DragDotIcon)`
   margin-right: 8px;
+  cursor: grab;
 `;
 
 export const SidebarGroupDragFolder = styled(FolderIcon)`

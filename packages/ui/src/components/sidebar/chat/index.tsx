@@ -31,6 +31,8 @@ export interface SidebarChatDragAndDropProps {
   countDragging?: number;
   isDndOverflow?: boolean;
   draggingHidden?: boolean;
+  parentId?: string;
+  index?: number;
 }
 
 export interface SidebarChatSkeletonProps {
@@ -51,9 +53,14 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
   onClick, ...props
 }) => {
   const {
-    attributes, listeners, setNodeRef, transform, transition,
+    attributes, listeners, setNodeRef, transform, transition
   } = useSortable({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
+    data: {
+      type: 'chat',
+      parent: !props.skeleton && props?.parentId || '',
+      index: !props.skeleton && props?.index || 0,
+    }
   });
 
   const draggable = !props.skeleton && props.edit ? {
@@ -67,7 +74,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
   };
 
   const style = !props.skeleton && props.edit && props.dragging ? {
-    height: (props?.countDragging !== undefined ? props.countDragging * 38 : undefined),
+    height: (props?.countDragging !== undefined ? props.countDragging * 36 : undefined),
     opacity: 0,
   } : {};
 

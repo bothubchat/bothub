@@ -51,27 +51,27 @@ export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-mediu
   width: 100%;
   transition: opacity 0.3s;
   ${adaptive({
-    tablet: css`
+  tablet: css`
       max-width: 130px;
     `,
-    mobile: css`
+  mobile: css`
       max-width: 130px;
     `
-  })}
+})}
 `;
 
 export const SidebarChatNameSkeleton = styled(Skeleton)`
   ${adaptive({
-    desktop: css`
+  desktop: css`
       width: 160px;
     `,
-    tablet: css`
+  tablet: css`
       width: 130px;
     `,
-    mobile: css`
+  mobile: css`
       width: 130px;
     `
-  })}
+})}
 `;
 
 export const SidebarChatActions = styled.div`
@@ -114,15 +114,11 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  ${({ $draggble }) => {
-    if ($draggble) {
-      return css`
-        background: ${({ theme }) => theme.colors.grayScale.gray3};
-        border-radius: 10px;
-        opacity: 0.7;
-      `;
-    }
-  }}
+  ${({ $draggble, theme }) => $draggble && css`
+    background: ${theme.colors.grayScale.gray3};
+    border-radius: 10px;
+    opacity: 0.7;
+  `}
   ${({ $active }) => {
     if ($active) {
       return css`

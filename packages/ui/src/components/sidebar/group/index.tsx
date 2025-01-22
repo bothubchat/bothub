@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from 'react';
-import { useSortable } from '@dnd-kit/sortable';
+import {
+  AnimateLayoutChanges, defaultAnimateLayoutChanges, useSortable
+} from '@dnd-kit/sortable';
 import {
   SidebarChatList,
   SidebarGroupStyled,
@@ -17,17 +19,22 @@ import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { useSidebar } from '../context';
 
 export interface SidebarGroupDefaultProps {
-  name: string;
   skeleton?: false;
   id: string;
-  edit?: boolean;
+  name: string;
   actions?: React.ReactNode;
   checkbox?: React.ReactNode;
-  over?: boolean;
   open?: boolean;
   color?: string;
   isDefault?: boolean;
   onHandleOpen?: () => void;
+}
+
+export interface SidebarGroupDraggableProps {
+  edit?: boolean;
+  itemsSortable?: string[];
+  index?: number;
+  isDragOverflow?: boolean;
 }
 
 export interface SidebarGroupSkeletonProps {
@@ -39,34 +46,80 @@ export interface SidebarGroupSkeletonProps {
 }
 
 export type SidebarGroupProps
-  = (SidebarGroupDefaultProps | SidebarGroupSkeletonProps) & React.PropsWithChildren;
+  = (SidebarGroupDefaultProps | SidebarGroupSkeletonProps)
+  & SidebarGroupDraggableProps
+  & React.PropsWithChildren;
+
+const animateLayoutChanges: AnimateLayoutChanges = (args) => defaultAnimateLayoutChanges({
+  ...args, wasDragging: true
+});
 
 export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   children, ...props
 }) => {
-  const [open, setOpen] = props.open !== undefined
-    ? [props.open, props.onHandleOpen] : useState<boolean>(false);
-  const { setNodeRef } = useSortable({
+  const {
+    setNodeRef,
+    listeners,
+    attributes,
+    transform,
+    transition,
+    active,
+    isDragging,
+    over
+  } = useSortable({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
+    data: {
+      type: 'group',
+      index: !props.skeleton && props?.index || 0,
+      items: props.itemsSortable,
+    },
+    animateLayoutChanges,
   });
-  const sidebarOpen = useSidebar().isOpen;
-  const onHandleOpen = useCallback(() => {
+  const { isOpen: sidebarOpen } = useSidebar();
+
+  const [open, setOpen] = props.open !== undefined
+    ? [props.open, props.onHandleOpen]
+    : useState<boolean>(false);
+
+  const onChangeOpen = useCallback(() => {
     setOpen?.(!open);
   }, [open, setOpen]);
 
-  const over = !props.skeleton && props.edit && props.over;
+  const dragHandle = !props.skeleton && props.edit ? {
+    ...listeners,
+    ...attributes,
+  } : {};
+
+  const style = !props.skeleton && props.edit ? {
+    transform: transform ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)` : undefined,
+    transition,
+    opacity: isDragging ? 0 : 1,
+  } : {};
+
+  const isOverContainer = !props.skeleton
+    && over
+    && active?.data.current?.type !== 'group'
+    ? props.id === over.id
+    || props.itemsSortable?.includes(`${over.id}`)
+    : false;
+
   return (
     <SidebarGroupStyled
-      $over={over}
+      id={!props.skeleton ? props.id : ''}
+      style={style}
       ref={!props.skeleton && props.edit ? setNodeRef : undefined}
+      $over={isOverContainer}
+      $dragging={props.isDragOverflow}
     >
       {!props.isDefault && (
         <SidebarGroupName
-          open={open}
+          onClick={!props.skeleton ? onChangeOpen : undefined}
+          $open={isDragging ? false : open}
           $skeleton={!!props.skeleton}
-          onClick={!props.skeleton ? onHandleOpen : undefined}
         >
-          {!props.skeleton && props.edit && <SidebarGroupDragHandle />}
+          {!props.skeleton && props.edit && (
+            <SidebarGroupDragHandle {...dragHandle} />
+          )}
           {!props.skeleton && (
             <>
               <SidebarGroupTooltip
