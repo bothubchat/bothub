@@ -194,7 +194,9 @@ import {
   ShowUiIcon,
   SortUserIcon,
   HappyRobotIcon,
-  QueueIcon
+  QueueIcon,
+  SortAlphabetTopBottomIcon,
+  SortAlphabetBottomTopIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -415,6 +417,8 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="ShowUiIcon">{ShowUiIcon}</IconItem>
         <IconItem name="HideUiIcon">{HideUiIcon}</IconItem>
         <IconItem name="QueueIcon">{QueueIcon}</IconItem>
+        <IconItem name="SortAlphabetTopBottomIcon">{SortAlphabetTopBottomIcon}</IconItem>
+        <IconItem name="SortAlphabetBottomTopIcon">{SortAlphabetBottomTopIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

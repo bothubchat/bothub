@@ -13,11 +13,7 @@ import {
 } from './styled';
 import { BadgeText } from '@/ui/components/badge';
 import { IconProvider } from '@/ui/components/icon';
-import { PdfIcon } from '@/ui/icons/pdf';
-import { TxtIcon } from '@/ui/icons/txt';
-import { WordIcon } from '@/ui/icons/word';
-import { XlsIcon } from '@/ui/icons/xls';
-import { AttachFileIcon } from '@/ui/icons/attach-file';
+import { FileIcon } from '@/ui/components/file-icon';
 import { TooltipConsumer } from '../tooltip';
 
 export type FileFieldChangeEventHandler = (files: File[]) => unknown;
@@ -115,41 +111,25 @@ export const FileField: React.FC<FileFieldProps> = ({
             )}
             {files.length > 0 && open && (
               <FileFieldFiles>
-                {files.map((file) => {
-                  let iconNode: React.ReactNode;
-
-                  if (file.name.match(/.txt$/i)) {
-                    iconNode = <TxtIcon />;
-                  } else if (file.name.match(/.docx$/i)) {
-                    iconNode = <WordIcon />;
-                  } else if (file.name.match(/.xlsx$/i)) {
-                    iconNode = <XlsIcon />;
-                  } else if (file.name.match(/.pdf$/i)) {
-                    iconNode = <PdfIcon />;
-                  } else {
-                    iconNode = <AttachFileIcon />;
-                  }
-
-                  return (
-                    <FileFieldFile
-                      key={file.name}
+                {files.map((file) => (
+                  <FileFieldFile
+                    key={file.name}
+                  >
+                    <IconProvider
+                      size={12}
                     >
-                      <IconProvider
-                        size={12}
-                      >
-                        {iconNode}
-                      </IconProvider>
-                      <BadgeText>
-                        {file.name.length > 18 && '...'}
-                        {file.name.slice(-18)}
-                      </BadgeText>
-                      <FileFieldFileDeleteButton
-                        disabled={disabled}
-                        onClick={handleFileDelete.bind(null, file)}
-                      />
-                    </FileFieldFile>
-                  );
-                })}
+                      <FileIcon filename={file.name} />
+                    </IconProvider>
+                    <BadgeText>
+                      {file.name.length > 18 && '...'}
+                      {file.name.slice(-18)}
+                    </BadgeText>
+                    <FileFieldFileDeleteButton
+                      disabled={disabled}
+                      onClick={handleFileDelete.bind(null, file)}
+                    />
+                  </FileFieldFile>
+                ))}
               </FileFieldFiles>
             )}
           </FileFieldBlock>

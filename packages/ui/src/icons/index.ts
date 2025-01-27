@@ -201,3 +201,5 @@ export * from './happy-robot-gradient';
 export * from './min-window';
 export * from './max-window';
 export * from './queue';
+export * from './sort-alphabet-top-bottom';
+export * from './sort-alphabet-bottom-top';

@@ -259,6 +259,18 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 16px;
           }
         `;
+      case 'body-xs-medium':
+        return `
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 16px;
+            --skeleton-height: 16px;
+            @media (max-width: ${theme.tablet.maxWidth}) {
+              font-size: 10px;
+              line-height: 16px;
+              --skeleton-height: 16px;
+            }
+          `;
       case 'body-l-semibold':
         return `
           font-weight: 600;
