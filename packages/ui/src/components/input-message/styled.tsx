@@ -203,6 +203,7 @@ export const InputMessageToggleSendButton = styled(Button).attrs({
   startIcon: <EnterIcon />,
   iconSize: 24,
 })`
+  display: flex;
   &:hover {
     svg {
       path {
