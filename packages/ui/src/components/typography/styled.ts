@@ -341,6 +341,23 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 24px;
           }
         `;
+      case 'body-xl-medium':
+        return `
+            font-size: 24px;
+            font-weight: 500;
+            line-height: 31.2px;
+            --skeleton-height: 31.2px;
+            @media (max-width: ${theme.tablet.maxWidth}) {
+              font-size: 22px;
+              line-height: 30px;
+              --skeleton-height: 30px;
+            }
+            @media (max-width: ${theme.mobile.maxWidth}) {
+              font-size: 18px;
+              line-height: 24px;
+              --skeleton-height: 24px;
+            }
+          `;
       default:
         return '';
     }

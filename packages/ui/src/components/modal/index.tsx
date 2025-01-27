@@ -18,7 +18,7 @@ export type ModalCloseEventHandler = () => unknown;
 
 export interface ModalProps extends React.PropsWithChildren {
   open: boolean;
-  title?: string | null;
+  title?: React.ReactNode;
   scrollbar?: boolean;
   images?: React.ReactNode;
   onClose?: ModalCloseEventHandler;
