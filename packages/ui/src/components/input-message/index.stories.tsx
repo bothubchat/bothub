@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { InputMessage } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
+import { Button } from '../button';
+import { QueueIcon } from '@/ui/icons';
 
 export type InputMessageMeta = Meta<typeof InputMessage>;
 
@@ -84,6 +86,9 @@ export const WithAlternativeKeyModalTexts: InputMessageStory = {
         - перенос строки
       </h6>
     ),
+    rightActions: (
+      <Button variant="text" startIcon={<QueueIcon />} iconSize={24} />
+    )
   },
 };
 
