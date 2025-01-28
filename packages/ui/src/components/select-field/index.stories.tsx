@@ -191,19 +191,19 @@ export const Plans: SelectFieldStory = {
         icon: <PublicIcon />,
         value: 'public',
         label: 'Public',
-        backgroundPlanColor: 'primary'
+        backgroundHoverColor: 'primary'
       },
       {
         icon: <StarIcon />,
         value: 'premium',
         label: 'Premium',
-        backgroundPlanColor: 'primary'
+        backgroundHoverColor: 'primary'
       },
       {
         icon: <LightningIcon />,
         value: 'elite',
         label: 'Elite',
-        backgroundPlanColor: 'gradient',
+        backgroundHoverColor: 'gradient',
       }
     ]
   }
