@@ -1,15 +1,15 @@
 import React, { useCallback } from 'react';
 import { SelectFieldData, SelectFieldDataItem, SelectFieldSize } from '@/ui/components/select-field/types';
 import {
-  SelectFieldColorOptionText, 
-  SelectFieldDivider, 
-  SelectFieldEmpty, 
-  SelectFieldEmptyText, 
-  SelectFieldOption, 
-  SelectFieldOptionColor, 
-  SelectFieldOptionSide, 
-  SelectFieldOptionText, 
-  SelectFieldOptionsStyled 
+  SelectFieldColorOptionText,
+  SelectFieldDivider,
+  SelectFieldEmpty,
+  SelectFieldEmptyText,
+  SelectFieldOption,
+  SelectFieldOptionColor,
+  SelectFieldOptionSide,
+  SelectFieldOptionText,
+  SelectFieldOptionsStyled
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { IconProvider } from '@/ui/components/icon';
@@ -44,13 +44,13 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
       {data.map((item, index) => {
         if (typeof item === 'string') {
           let selected: boolean;
-          
+
           if (!value || Array.isArray(value)) {
             selected = false;
           } else {
             selected = typeof value === 'string' ? item === value : item === value.value;
           }
-  
+
           return (
             <SelectFieldOption
               $selected={selected}
@@ -75,7 +75,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
             </SelectFieldOption>
           );
         }
-  
+
         if (item.type === 'divider') {
           return (
             <SelectFieldDivider
@@ -123,7 +123,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
 
         const disabled: boolean = !!item.disabled;
         let selected: boolean;
-        
+
         if (!value || Array.isArray(value)) {
           selected = false;
         } else {
@@ -152,6 +152,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                   $selected={selected}
                   $disabled={disabled}
                   $size={size}
+                  $backgroundHoverColor={item.backgroundHoverColor}
                   onMouseEnter={handleTooltipMouseEnter}
                   onMouseLeave={handleTooltipMouseLeave}
                   onClick={handleOptionClick.bind(null, item)}
@@ -183,12 +184,12 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                       </SelectFieldOptionText>
                     )}
                     {item.color && (
-                      <SelectFieldOptionColor 
+                      <SelectFieldOptionColor
                         $color={
                           item.color === theme.colors.accent.primary && selected ? (
                             theme.colors.accent.primaryLight
                           ) : item.color
-                        } 
+                        }
                       />
                     )}
                     {item.color && (
