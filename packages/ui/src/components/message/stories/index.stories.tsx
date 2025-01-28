@@ -605,6 +605,7 @@ export const NewDesignFeatures: MessageStory = {
     name: 'ChatGPT',
     children: 'Hi! How can I help you?',
     avatar: <MessageAvatar />,
+    copyPlainText: 'Копировать без форматирования',
     editText: 'Редактировать',
     resendText: 'Переотправить',
     deleteText: 'Удалить',

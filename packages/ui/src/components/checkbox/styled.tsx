@@ -6,6 +6,7 @@ import { Skeleton } from '@/ui/components/skeleton';
 export interface CheckboxStyledProps {
   $disabled: boolean;
   $fullWidth: boolean;
+  $rowReverse?: boolean;
 }
 
 export const CheckboxStyled = styled.label<CheckboxStyledProps>`
@@ -27,6 +28,9 @@ export const CheckboxStyled = styled.label<CheckboxStyledProps>`
   }}
   ${({ $fullWidth }) => $fullWidth && css`
     width: 100%;
+  `}
+  ${({ $rowReverse }) => $rowReverse && css`
+    flex-direction: row-reverse;
   `}
 `;
 
