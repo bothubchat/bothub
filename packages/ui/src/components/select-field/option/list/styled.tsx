@@ -57,6 +57,7 @@ export interface SelectFieldOptionProps {
   $selected: boolean;
   $disabled: boolean;
   $size: SelectFieldSize;
+  $backgroundHoverColor?: 'gradient' | 'primary';
 }
 
 export interface SelectFieldOptionTextProps {
@@ -64,7 +65,7 @@ export interface SelectFieldOptionTextProps {
   $bold?: boolean;
 }
 
-export const SelectFieldOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldOptionTextProps>`
+export const SelectFieldOptionText = styled(Typography).attrs({ variant: 'input-sm' }) <SelectFieldOptionTextProps>`
   color: ${({ theme, $selected }) => ($selected ? theme.default.colors.base.white : theme.colors.base.white)};
   ${({ $bold }) => $bold && css`
   font-weight: 500;
@@ -75,7 +76,7 @@ export interface SelectFieldColorOptionTextProps {
   $selected: boolean;
 }
 
-export const SelectFieldColorOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldColorOptionTextProps>`
+export const SelectFieldColorOptionText = styled(Typography).attrs({ variant: 'input-sm' }) <SelectFieldColorOptionTextProps>`
   color: ${({ theme, $selected }) => ($selected ? theme.default.colors.base.white : theme.colors.base.white)};
 `;
 export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
@@ -118,7 +119,9 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
   -moz-user-select: none;
   -webkit-user-select: none;
 
-  ${({ theme, $selected, $disabled }) => {
+  ${({
+    theme, $selected, $disabled, $backgroundHoverColor
+  }) => {
     if ($disabled) {
       return css`
         cursor: not-allowed;
@@ -130,19 +133,64 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
         }
       `;
     }
-    if ($selected) {
-      return css`
-        cursor: default;
-        background: ${({ theme }) => theme.colors.accent.primary};
-      `;
+    switch ($backgroundHoverColor) {
+      case 'gradient':
+        return css`
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        justify-content: center;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        &:hover::before {
+          background: ${theme.colors.premiumGradient};
+          content: "";
+          opacity: 0.2;
+          border: inherit;
+          left: 0;
+          top: 0;
+          z-index: -1;
+          width: 100%;
+          height: 100%;
+          position: absolute;
+        }
+        `;
+      case 'primary':
+        return css`
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          justify-content: center;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-align: center;
+          &:hover::before {
+            background: ${theme.colors.accent.primary};
+            content: "";
+            opacity: 0.2;
+            border: inherit;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+          }
+        `;
+      default:
+        return css`
+          ${!$selected && `
+            cursor: pointer;
+            &:hover {
+              background: ${theme.mode === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'};
+            }
+          `}
+          ${$selected && `
+            background: ${theme.colors.accent.primary};
+            cursor: default;
+          `}
+        `;
     }
-
-    return css`
-      cursor: pointer;
-      &:hover {
-        background: ${theme.mode === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'};
-      }
-    `;
   }}
 `;
 

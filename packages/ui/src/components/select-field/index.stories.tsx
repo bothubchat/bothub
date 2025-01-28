@@ -5,15 +5,15 @@ import { StoryDecorator } from '@/ui/story-decorator';
 import { Tooltip } from '@/ui/components/tooltip';
 import { Button } from '@/ui/components/button';
 import {
-  ClaudeIcon, 
-  DallEIcon, 
-  Gpt35Icon, 
-  LightningIcon, 
-  LockCircleIcon, 
-  MjWhiteIcon, 
-  Plus2Icon, 
-  PublicIcon, 
-  StarIcon 
+  ClaudeIcon,
+  DallEIcon,
+  Gpt35Icon,
+  LightningIcon,
+  LockCircleIcon,
+  MjWhiteIcon,
+  Plus2Icon,
+  PublicIcon,
+  StarIcon
 } from '@/ui/icons';
 
 export type SelectFieldMeta = Meta<typeof SelectField>;
@@ -178,6 +178,32 @@ export const Icon: SelectFieldStory = {
           label: 'Эта модель отсутствует в вашем текущем пакете. Для доступа к ней необходимо приобрести пакет Elite.'
         },
         disabled: true
+      }
+    ]
+  }
+};
+
+export const Plans: SelectFieldStory = {
+  args: {
+    ...Basic.args,
+    data: [
+      {
+        icon: <PublicIcon />,
+        value: 'public',
+        label: 'Public',
+        backgroundPlanColor: 'primary'
+      },
+      {
+        icon: <StarIcon />,
+        value: 'premium',
+        label: 'Premium',
+        backgroundPlanColor: 'primary'
+      },
+      {
+        icon: <LightningIcon />,
+        value: 'elite',
+        label: 'Elite',
+        backgroundPlanColor: 'gradient',
       }
     ]
   }

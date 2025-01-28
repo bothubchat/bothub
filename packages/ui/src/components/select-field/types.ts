@@ -27,6 +27,7 @@ export type SelectFieldDataItem = string | {
   end?: React.ReactNode;
   tooltip?: TooltipProps;
   open?: boolean;
+  backgroundPlanColor?: 'gradient' | 'primary';
   data?: SelectFieldDataItem[];
   noSelect?: boolean;
   onClick?: SelectFieldOptionClickEventHandler;
