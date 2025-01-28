@@ -60,3 +60,5 @@ export * from './banner';
 export * from './logo-new-year';
 export * from './dropzone-field';
 export * from './file-icon';
+export * from './uploaded-file';
+export * from './file-size';

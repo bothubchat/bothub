@@ -17,6 +17,8 @@ export const Label = () => {
 
   return (
     <DropzoneField
+      accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+      showFiles={false}
       files={files}
       onChange={(files) => setFiles(files)}
       label={(
@@ -41,7 +43,7 @@ export const Label = () => {
         <div
           style={{
             maxWidth: '340px',
-            height: '210px',
+            height: '250px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',

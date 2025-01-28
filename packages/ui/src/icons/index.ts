@@ -203,3 +203,6 @@ export * from './max-window';
 export * from './queue';
 export * from './sort-alphabet-top-bottom';
 export * from './sort-alphabet-bottom-top';
+export * from './pause';
+export * from './play';
+export * from './restore-2';

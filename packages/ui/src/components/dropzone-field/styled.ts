@@ -9,7 +9,7 @@ export const DropzoneFieldStyled = styled.div<{
   justify-content: stretch;
   gap: 20px;
 
-  background: rgba(18, 24, 37, 0.5); // gray4-50
+  background-color: rgba(18, 24, 37, 0.5); // gray4-50
   padding: 20px;
   border-radius: 20px;
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' vector-effect='non-scaling-stroke' stroke='%23222B44FF' stroke-width='4' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
@@ -17,8 +17,9 @@ export const DropzoneFieldStyled = styled.div<{
   transition: background 0.3s ease-out;
 
   position: relative;
-
+  
   &:active, &[data-dragged="true"] {
+    background-color: rgba(28, 100, 242, 0.2);
     background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' vector-effect='non-scaling-stroke' stroke='%231C64F2FF' stroke-width='4' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
   }
 `;
@@ -41,7 +42,6 @@ export const DropzoneFieldPlaceholder = styled.div`
   min-height: 150px;
   position: relative;
 
-  padding: 20px;
   border-radius: 20px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
 `;
@@ -55,6 +55,7 @@ export const DropzoneFieldFilesStyled = styled.div`
   justify-content: center;
   align-items: center;
   gap: 10px;
+  padding: 20px;
 `;
 
 export const DropzoneFieldFile = styled.div`

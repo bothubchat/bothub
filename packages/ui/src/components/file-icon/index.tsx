@@ -4,21 +4,22 @@ import {
 
 export type FileIconProps = {
   filename: string;
+  size?: number;
 };
 
-export const FileIcon = ({ filename }: FileIconProps) => {
+export const FileIcon = ({ filename, size = 24 }: FileIconProps) => {
   let iconNode: React.ReactNode;
 
   if (filename.match(/.txt$/i)) {
-    iconNode = <TxtIcon />;
-  } else if (filename.match(/.docx$/i)) {
-    iconNode = <WordIcon />;
-  } else if (filename.match(/.xlsx$/i)) {
-    iconNode = <XlsIcon />;
+    iconNode = <TxtIcon size={size} />;
+  } else if (filename.match(/.docx$/i) || filename.match(/.doc$/i)) {
+    iconNode = <WordIcon size={size} />;
+  } else if (filename.match(/.xlsx$/i) || filename.match(/.xls$/i)) {
+    iconNode = <XlsIcon size={size} />;
   } else if (filename.match(/.pdf$/i)) {
-    iconNode = <PdfIcon />;
+    iconNode = <PdfIcon size={size} />;
   } else {
-    iconNode = <AttachFileIcon />;
+    iconNode = <AttachFileIcon size={size} />;
   }
 
   return iconNode;

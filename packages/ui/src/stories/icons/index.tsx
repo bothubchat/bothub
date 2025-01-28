@@ -196,7 +196,10 @@ import {
   HappyRobotIcon,
   QueueIcon,
   SortAlphabetTopBottomIcon,
-  SortAlphabetBottomTopIcon
+  SortAlphabetBottomTopIcon,
+  PauseIcon,
+  PlayIcon,
+  Restore2Icon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -260,6 +263,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="UnminimizeIcon">{UnminimizeIcon}</IconItem>
         <IconItem name="UpdateIcon">{UpdateIcon}</IconItem>
         <IconItem name="RestoreIcon">{RestoreIcon}</IconItem>
+        <IconItem name="Restore2Icon">{Restore2Icon}</IconItem>
         <IconItem name="ChatIcon">{ChatIcon}</IconItem>
         <IconItem name="StopIcon">{StopIcon}</IconItem>
         <IconItem name="ThumbUpIcon">{ThumbUpIcon}</IconItem>
@@ -419,6 +423,8 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="QueueIcon">{QueueIcon}</IconItem>
         <IconItem name="SortAlphabetTopBottomIcon">{SortAlphabetTopBottomIcon}</IconItem>
         <IconItem name="SortAlphabetBottomTopIcon">{SortAlphabetBottomTopIcon}</IconItem>
+        <IconItem name="PauseIcon">{PauseIcon}</IconItem>
+        <IconItem name="PlayIcon">{PlayIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

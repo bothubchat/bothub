@@ -2,9 +2,7 @@ import { useCallback, useId, useState } from 'react';
 import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { FileIcon } from '@/ui/components/file-icon';
-import {
-  CloseIcon,
-} from '@/ui/icons';
+import { CloseIcon } from '@/ui/icons';
 import {
   DropzoneFieldFile,
   DropzoneFieldFilesStyled,
@@ -59,17 +57,19 @@ export const DropzoneField = ({
   React.ChangeEventHandler<HTMLInputElement>
   >(
     (event) => {
+      const droppedFiles = [...(event.currentTarget.files ?? [])];
+
       if (multiple) {
         setFiles([
           ...new Map(
-            [...files, ...(event.currentTarget.files ?? [])].map((file) => [
+            [...files, ...droppedFiles].map((file) => [
               file.name,
               file,
             ])
           ).values(),
         ]);
       } else {
-        setFiles([...(event.currentTarget.files ?? [])].slice(0, 1));
+        setFiles([...droppedFiles].slice(0, 1));
       }
     },
     [files, setFiles, multiple]
@@ -85,21 +85,22 @@ export const DropzoneField = ({
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
+      const droppedFiles = [...(e.dataTransfer.files ?? [])].filter(
+        (file) => accept?.includes(file.type)
+      );
+      
       if (multiple) {
         setFiles([
           ...new Map(
-            [...files, ...(e.dataTransfer.files ?? [])].map((file) => [
-              file.name,
-              file,
-            ])
+            [...files, ...droppedFiles].map((file) => [file.name, file])
           ).values(),
         ]);
       } else {
-        setFiles([...(e.dataTransfer.files ?? [])].slice(0, 1));
+        setFiles([...droppedFiles].slice(0, 1));
       }
       setIsDragActive(false);
     },
-    [multiple]
+    [files, setFiles, multiple, accept]
   );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
