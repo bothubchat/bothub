@@ -9,7 +9,6 @@ import { SidebarChatIcon } from '@/ui/icons/sidebar-chat';
 import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { Checkbox } from '@/ui/components/checkbox';
 import { Tooltip } from '../../tooltip';
-import { SidebarDropdownStyled } from '../dropdown';
 
 export const SidebarChatLeft = styled.div`
   display: flex;
@@ -135,24 +134,6 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
       `;
     }
   }}
-  ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
-      ${SidebarDropdownStyled} {
-        margin-left: 0;
-        width: 0;
-        overflow: hidden;
-        transition: width 0.3s ease, margin-left 0.3s ease;
-      }
-      &:hover {
-        ${SidebarDropdownStyled} {
-          width: 38px;
-          margin-left: 16px;
-          fill: ${({ theme }) => theme.colors.base.white};
-        }
-      }
-    `
-  })}
   ${({ $skeleton, $active }) => {
     if ($skeleton || $active) {
       return css``;

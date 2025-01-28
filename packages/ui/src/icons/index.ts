@@ -200,3 +200,4 @@ export * from './happy-robot';
 export * from './happy-robot-gradient';
 export * from './min-window';
 export * from './max-window';
+export * from './manage-chat';
