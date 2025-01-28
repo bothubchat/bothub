@@ -1,5 +1,5 @@
 import React, {
-  useCallback, useEffect, useRef, useState 
+  useCallback, useEffect, useRef, useState
 } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
@@ -84,11 +84,9 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
           </HeaderLangDropdownToggler>
         </IconProvider>
         {dropdownTransition((style, item) => (
-          item && (
-            <HeaderLangDropdownContent style={style}>
-              {children}
-            </HeaderLangDropdownContent>
-          )
+          <HeaderLangDropdownContent $open={isOpen && !!item} style={style}>
+            {children}
+          </HeaderLangDropdownContent>
         ))}
       </HeaderLangDropdownStyled>
     </HeaderLangDropdownProvider>
