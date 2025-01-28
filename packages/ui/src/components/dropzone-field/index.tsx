@@ -42,6 +42,7 @@ export const DropzoneField = ({
   ...props
 }: DropzoneFieldProps) => {
   const id = useId();
+  const [isDragActive, setIsDragActive] = useState(false);
 
   const setInitialFilesChange = useCallback<DropzoneFieldChangeEventHandler>(
     (files) => {
@@ -96,19 +97,28 @@ export const DropzoneField = ({
       } else {
         setFiles([...(e.dataTransfer.files ?? [])].slice(0, 1));
       }
+      setIsDragActive(false);
     },
     [multiple]
   );
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
+    setIsDragActive(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragActive(false);
   }, []);
 
   return (
     <DropzoneFieldStyled
       onDrop={handleDrop}
       onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
       $fullWidth={fullWidth}
+      data-dragged={isDragActive}
       {...props}
     >
       {label && (
