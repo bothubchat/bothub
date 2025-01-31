@@ -175,6 +175,11 @@ export const MessageActions = ({
     onEditedText?.(message ?? '');
   }, [message]);
 
+  const handlePlainTextCopy = useCallback(() => {
+    onPlainTextCopy?.();
+    setMenuShown(false);
+  }, []);
+
   const modalTransition = useTransition(menuShown, {
     from: {
       opacity: 0,
@@ -230,7 +235,7 @@ export const MessageActions = ({
                     $invertedY={invertedY}
                   >
                     {!disableCopy && (
-                      <MenuOption onClick={onPlainTextCopy}>
+                      <MenuOption onClick={handlePlainTextCopy}>
                         <S.MessageActionsMenuModalOptionContent>
                           <CopyIcon fill="#616D8D" />
                           <S.MessageActionsButtonText>
