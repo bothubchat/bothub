@@ -215,11 +215,18 @@ export const InputMessageToggleSendButton = styled(Button).attrs({
   startIcon: <EnterIcon />,
   iconSize: 24,
 })`
+  svg {
+    g path {
+      fill: ${({ theme }) => (theme.colors.grayScale.gray3)} !important;
+    }
+  }
+
   display: flex;
   &:hover {
     svg {
       path {
-        fill: ${({ theme }) => theme.colors.grayScale.gray2} !important;
+        fill: ${({ theme }) => (theme.mode === 'dark' 
+    ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray1)} !important;
       }
     }
   }
