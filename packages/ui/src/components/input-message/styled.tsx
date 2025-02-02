@@ -7,6 +7,7 @@ import { SendIcon } from '@/ui/icons/send';
 import { Chip } from '@/ui/components/chip';
 import { VoiceIcon } from '@/ui/icons/voice';
 import { Typography } from '@/ui/components/typography';
+import { adaptive } from '@/ui/adaptive';
 
 export interface InputMessageStyledProps {
   $active: boolean;
@@ -196,6 +197,17 @@ export const InputMessageToggleSendStyled = styled.div`
   position: relative;
   width: fit-content;
   height: fit-content;
+
+  ${
+  adaptive({
+    tablet: css`
+      display: none;
+    `,
+    mobile: css`
+      display: none;
+    `
+  })
+}
 `;
 
 export const InputMessageToggleSendButton = styled(Button).attrs({
@@ -203,10 +215,18 @@ export const InputMessageToggleSendButton = styled(Button).attrs({
   startIcon: <EnterIcon />,
   iconSize: 24,
 })`
+  svg {
+    g path {
+      fill: ${({ theme }) => (theme.colors.grayScale.gray3)} !important;
+    }
+  }
+
+  display: flex;
   &:hover {
     svg {
       path {
-        fill: ${({ theme }) => theme.colors.grayScale.gray2} !important;
+        fill: ${({ theme }) => (theme.mode === 'dark' 
+    ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray1)} !important;
       }
     }
   }

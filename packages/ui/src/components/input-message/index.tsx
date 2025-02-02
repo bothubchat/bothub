@@ -85,6 +85,7 @@ export interface InputMessageProps
   onSend?: InputMessageSendEventHandler;
   emitError?(event: InputMessageErrorEvent): void;
   onVoice?: InputMessageVoiceEventHandler;
+  rightActions?: React.ReactNode;
 }
 
 export const InputMessage: React.FC<InputMessageProps> = ({
@@ -113,6 +114,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   onBlur,
   onVoice,
   emitError,
+  rightActions,
   ...props
 }) => {
   const theme = useTheme();
@@ -666,6 +668,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             )}
           </InputMessageToggleSendStyled>
         )}
+        {rightActions}
         {!voice || message || files.length > 0 ? (
           <InputMessageSendButton
             disabled={disabled || sendDisabled}

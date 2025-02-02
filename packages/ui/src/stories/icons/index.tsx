@@ -197,7 +197,8 @@ import {
   ManageChatIcon,
   IncludeContextIcon,
   WebSearchIcon,
-  AnalyzeUrlsIcon
+  AnalyzeUrlsIcon,
+  QueueIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -421,6 +422,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="IncludeContextIcon">{IncludeContextIcon}</IconItem>
         <IconItem name="WebSearchIcon">{WebSearchIcon}</IconItem>
         <IconItem name="AnalyzeUrlsIcon">{AnalyzeUrlsIcon}</IconItem>
+        <IconItem name="QueueIcon">{QueueIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
