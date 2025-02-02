@@ -19,7 +19,6 @@ export interface SidebarUserInfoProps {
   avatar?: React.ReactNode;
   name?: string;
   caps?: string;
-  tariff?: React.ReactNode;
   updateTariff?: React.ReactNode;
   logout?: React.ReactNode;
   linkAs?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -31,7 +30,6 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   avatar,
   name,
   caps,
-  tariff,
   updateTariff,
   logout,
   linkAs,

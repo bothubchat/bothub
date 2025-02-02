@@ -243,34 +243,6 @@ export const SidebarUserInfoTariff = styled(Typography).attrs({
   cursor: default;
 `;
 
-export const SidebarUserInfoFreeTariff = styled(SidebarUserInfoTariff).attrs({
-  children: 'Free',
-})`
-  color: ${({ theme }) => theme.default.colors.base.white};
-`;
-
-export const SidebarUserInfoBasicTariff = styled(SidebarUserInfoTariff).attrs({
-  children: 'Basic',
-})`
-  background: ${({ theme }) => theme.colors.accent.primary};
-`;
-
-export const SidebarUserInfoPremiumTariff = styled(SidebarUserInfoTariff).attrs(
-  { children: 'Premium' }
-)`
-  background: ${({ theme }) => theme.colors.premiumGradient};
-`;
-
-export const SidebarUserInfoDeluxeTariff = styled(SidebarUserInfoTariff).attrs({
-  children: 'Deluxe',
-})`
-  background: ${({ theme }) => theme.colors.premiumGradient};
-`;
-
-export const SidebarUserInfoEliteTariff = styled(
-  SidebarUserInfoPremiumTariff
-).attrs({ children: 'Elite' })``;
-
 export const SidebarUserInfoUpdateTariffButton = styled.button`
   all: unset;
   margin-top: 4px;
@@ -283,14 +255,13 @@ export const SidebarUserInfoUpdateTariffButton = styled.button`
   padding: 6px 18px 6px 6px;
   box-shadow: inset 0 1px 1px 0 #ffffff60;
   background: linear-gradient(90deg, #00247D 15%, #1c64f2 100%);
-  color: ${({ theme }) => theme.default.colors.base.white};
   font-weight: 500;
   &:hover {
-    opacity: 0.8;
+    filter: brightness(0.8);
     cursor: pointer;
   }
   &:active {
-    opacity: 0.6;
+    filter: brightness(0.7);
     transform: translateY(1px);
   }
   transition: all .2s ease-out;
@@ -302,6 +273,7 @@ export const SidebarUserInfoUpdateTariffButton = styled.button`
 export const SidebarUserInfoUpdateTariffButtonText = styled(Typography).attrs({
   variant: 'body-m-medium'
 })`
+  color: ${({ theme }) => theme.default.colors.base.white};
   margin-inline: auto;
 `;
 
