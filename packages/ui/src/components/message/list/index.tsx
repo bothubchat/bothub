@@ -20,6 +20,7 @@ import {
 import { MessagesProvider, MessagesScrollProvider } from './context';
 
 export interface MessagesRef {
+  element: Element | null;
   setScroll: SetScrollFunction;
 }
 
@@ -43,9 +44,10 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(
     useImperativeHandle(
       ref,
       () => ({
+        element: scrollbarRef.current?.element ?? null,
         setScroll,
       }),
-      [setScroll]
+      [setScroll, scrollbarRef.current]
     );
 
     return (
