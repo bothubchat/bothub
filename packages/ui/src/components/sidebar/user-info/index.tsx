@@ -73,11 +73,6 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
             </SidebarUserInfoLogoutButtonContainer>
           </SidebarUserInfoMain>
           <SidebarUserInfoBottom>
-            <SidebarUserInfoTariffContainer
-              $open={isOpen}
-            >
-              {tariff}
-            </SidebarUserInfoTariffContainer>
             <SidebarUserInfoUpdateTariffContainer
               $open={isOpen}
             >

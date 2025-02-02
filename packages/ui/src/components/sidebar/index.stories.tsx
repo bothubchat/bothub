@@ -39,6 +39,9 @@ import {
   SidebarGroupCheckbox,
   SidebarThemeSwitcher,
   SidebarUserInfoSkeleton,
+  SidebarUserInfoUpdateTariffBadgeText,
+  SidebarUserInfoUpdateTariffBadge,
+  SidebarUserInfoUpdateTariffButtonText,
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -828,7 +831,14 @@ export const BasicTariff: SidebarStory = {
         )}
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton>
-            Купить пакет | Free
+            <SidebarUserInfoUpdateTariffBadge>
+              <SidebarUserInfoUpdateTariffBadgeText>
+                FREE
+              </SidebarUserInfoUpdateTariffBadgeText>
+            </SidebarUserInfoUpdateTariffBadge>
+            <SidebarUserInfoUpdateTariffButtonText>
+              Обновить тариф
+            </SidebarUserInfoUpdateTariffButtonText>
           </SidebarUserInfoUpdateTariffButton>
         )}
         logout={<SidebarUserInfoLogoutButton />}
