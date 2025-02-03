@@ -12,10 +12,6 @@ import {
   SidebarUserInfo,
   SidebarUserInfoAvatar,
   SidebarUserInfoUpdateTariffButton,
-  SidebarUserInfoFreeTariff,
-  SidebarUserInfoBasicTariff,
-  SidebarUserInfoPremiumTariff,
-  SidebarUserInfoEliteTariff,
   SidebarConsumer,
   SidebarEmpty,
   SidebarButtons,
@@ -41,6 +37,9 @@ import {
   SidebarGroupCheckbox,
   SidebarThemeSwitcher,
   SidebarUserInfoSkeleton,
+  SidebarUserInfoUpdateTariffBadgeText,
+  SidebarUserInfoUpdateTariffBadge,
+  SidebarUserInfoUpdateTariffButtonText,
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -179,7 +178,6 @@ export const Basic: SidebarStory = {
               )}
               name="Артём"
               caps="9 012 000 000 CAPS"
-              tariff={<SidebarUserInfoFreeTariff />}
               updateTariff={(
                 <SidebarUserInfoUpdateTariffButton>
                   Купить пакет
@@ -804,12 +802,16 @@ export const BasicTariff: SidebarStory = {
         )}
         name="Артём"
         caps="9 000 000 CAPS"
-        tariff={(
-          <SidebarUserInfoBasicTariff />
-        )}
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton>
-            Купить пакет | Free
+            <SidebarUserInfoUpdateTariffBadge>
+              <SidebarUserInfoUpdateTariffBadgeText>
+                FREE
+              </SidebarUserInfoUpdateTariffBadgeText>
+            </SidebarUserInfoUpdateTariffBadge>
+            <SidebarUserInfoUpdateTariffButtonText>
+              Обновить тариф
+            </SidebarUserInfoUpdateTariffButtonText>
           </SidebarUserInfoUpdateTariffButton>
         )}
         logout={<SidebarUserInfoLogoutButton />}
@@ -831,9 +833,6 @@ export const PremiumTariff: SidebarStory = {
         )}
         name="Артём"
         caps="2 000 000 000 000 000 CAPS"
-        tariff={(
-          <SidebarUserInfoPremiumTariff />
-        )}
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton>
             Купить пакет
@@ -857,9 +856,6 @@ export const EliteTariff: SidebarStory = {
         )}
         name="Артём"
         caps="9 012 CAPS"
-        tariff={(
-          <SidebarUserInfoEliteTariff />
-        )}
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton>
             Купить пакет

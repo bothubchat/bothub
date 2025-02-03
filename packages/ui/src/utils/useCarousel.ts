@@ -30,6 +30,7 @@ export const useCarousel = ({
   const dragStartXRef = useRef(0);
   const dragStartTimeRef = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isDraggingNow, setIsDraggingNow] = useState(false);
 
   const [activeSlideIndex, setActiveSlideIndex] = useState(defaultIndex ?? 0);
 
@@ -124,6 +125,7 @@ export const useCarousel = ({
   useEffect(() => {
     if (!enableSwipes) {
       setIsDragging(false);
+      setIsDraggingNow(false);
     }
   }, [enableSwipes]);
 
@@ -168,6 +170,7 @@ export const useCarousel = ({
     (e: React.PointerEvent) => {
       if (!isDragging) return;
 
+      setIsDraggingNow(true);
       const delta = e.clientX - dragStartXRef.current;
 
       updateTransform(activeSlideIndex, delta);
@@ -206,6 +209,7 @@ export const useCarousel = ({
       }
 
       setIsDragging(false);
+      setIsDraggingNow(false);
     },
     [
       isDragging,
@@ -237,6 +241,7 @@ export const useCarousel = ({
     goNext,
     goToSlide,
     isDragging,
+    isDraggingNow,
     carouselProps: {
       ref,
       onPointerDown: enableSwipes ? onPointerDown : undefined,

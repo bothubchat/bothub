@@ -58,8 +58,8 @@ export const HeaderLangDropdownToggler = styled.button<{ $open: boolean }>`
   `}
 `;
 
-export const HeaderLangDropdownContent: React.FC<AnimatedProps<React.ComponentProps<'div'>>> = styled(animated.div)`
-  display: flex;
+export const HeaderLangDropdownContent: React.FC<AnimatedProps<React.ComponentProps<'div'>> & { $open: boolean }> = styled(animated.div)`
+  ${({ $open }) => (!$open ? 'display: none;' : 'display: flex;')}
   position: absolute;
   transform-origin: top center;
 `;

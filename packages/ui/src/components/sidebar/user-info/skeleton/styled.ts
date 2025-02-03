@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 
 export const SidebarUserInfoSkeletonText = styled(Typography)`

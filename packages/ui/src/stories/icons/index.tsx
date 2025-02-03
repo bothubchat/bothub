@@ -193,7 +193,12 @@ import {
   HideUiIcon,
   ShowUiIcon,
   SortUserIcon,
-  HappyRobotIcon
+  HappyRobotIcon,
+  ManageChatIcon,
+  IncludeContextIcon,
+  WebSearchIcon,
+  AnalyzeUrlsIcon,
+  QueueIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -244,6 +249,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="FreeIcon">{FreeIcon}</IconItem>
         <IconItem name="MinimizeIcon">{MinimizeIcon}</IconItem>
         <IconItem name="EditIcon">{EditIcon}</IconItem>
+        <IconItem name="ManageChatIcon">{ManageChatIcon}</IconItem>
         <IconItem name="CopyIcon">{CopyIcon}</IconItem>
         <IconItem name="TrashIcon">{TrashIcon}</IconItem>
         <IconItem name="ChatsIcon">{ChatsIcon}</IconItem>
@@ -413,6 +419,10 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="URLCircleIcon">{URLCircleIcon}</IconItem>
         <IconItem name="ShowUiIcon">{ShowUiIcon}</IconItem>
         <IconItem name="HideUiIcon">{HideUiIcon}</IconItem>
+        <IconItem name="IncludeContextIcon">{IncludeContextIcon}</IconItem>
+        <IconItem name="WebSearchIcon">{WebSearchIcon}</IconItem>
+        <IconItem name="AnalyzeUrlsIcon">{AnalyzeUrlsIcon}</IconItem>
+        <IconItem name="QueueIcon">{QueueIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

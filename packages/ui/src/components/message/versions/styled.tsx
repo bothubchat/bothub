@@ -1,12 +1,16 @@
 import { styled } from 'styled-components';
 import { Typography } from '../../typography';
+import { MessageVariant } from '../types';
 
-export const MessageVersionsStyled = styled.div`
+export const MessageVersionsStyled = styled.div<{
+  $variant?: MessageVariant;
+}>`
   display: flex;
   align-items: center;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+  ${({ $variant }) => ($variant === 'assistant' ? 'margin-left: auto;' : '')}
 `;
 
 export const MessageVersionsPagination = styled.div`

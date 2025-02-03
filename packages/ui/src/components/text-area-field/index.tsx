@@ -28,6 +28,7 @@ export interface TextAreaFieldProps extends React.ComponentProps<'textarea'> {
   error?: string | boolean;
   disabled?: boolean;
   skeleton?: boolean;
+  glow?: boolean;
   renderTextAreaBlock?: (props: TextAreaFieldBlockProps) => React.ReactNode;
 }
 
@@ -38,6 +39,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
   error,
   disabled = false,
   skeleton = false,
+  glow,
   onFocus,
   onBlur,
   renderTextAreaBlock,
@@ -95,6 +97,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
             $error={!!error}
             $disabled={disabled}
             $skeleton={false}
+            $glow={glow}
           >
             <TextAreaFieldTextArea
               {...props}

@@ -85,6 +85,7 @@ export interface InputMessageProps
   onSend?: InputMessageSendEventHandler;
   emitError?(event: InputMessageErrorEvent): void;
   onVoice?: InputMessageVoiceEventHandler;
+  rightActions?: React.ReactNode;
 }
 
 export const InputMessage: React.FC<InputMessageProps> = ({
@@ -113,6 +114,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   onBlur,
   onVoice,
   emitError,
+  rightActions,
   ...props
 }) => {
   const theme = useTheme();
@@ -280,39 +282,40 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     (event: KeyboardEvent) => {
       event.stopPropagation();
 
+      const newLineKey = useAlternativeKey ? 'enter' : 'ctrl/shift+enter';
+
+      let keyboardEvent = '';
+      if (event.key === 'Enter' && (event.shiftKey || event.ctrlKey)) {
+        keyboardEvent = 'ctrl/shift+enter';
+      } else if (event.key === 'Enter') {
+        keyboardEvent = 'enter';
+      } else {
+        return;
+      }
+
       if (isFocus && event.key === 'Enter') {
-        switch (useAlternativeKey) {
-          case true:
-            if (event.shiftKey || event.ctrlKey) {
-              event.preventDefault();
+        if (keyboardEvent === newLineKey) {
+          // handle only ctrlKey, other cases are handled by browsers
+          if (event.ctrlKey) {
+            event.preventDefault();
 
-              onSend?.(message, files);
-              setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
-              break;
-            } else {
-              if (message.trim() === '') {
-                event.preventDefault();
-              } else {
-                setMessage?.(message);
-              }
-              break;
-            }
-          case false:
-            if (event.shiftKey || event.ctrlKey) {
-              if (message.trim() === '') {
-                event.preventDefault();
-              }
-              if (event.ctrlKey) {
-                setMessage?.(`${message}\n`);
-              }
-              break;
-            } else {
-              event.preventDefault();
+            const el = textareaRef.current;
+            if (!el) return;
 
-              onSend?.(message, files);
-              setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
-              break;
-            }
+            const allText = el.value;
+            const currentPos = el.selectionStart;
+            const beforeText = allText.slice(0, currentPos);
+            const afterText = allText.slice(currentPos);
+
+            setMessage?.(`${beforeText}\n${afterText}`);
+            setCursorPosition(el, currentPos + 1);
+          }
+        }
+        // Message is submitted
+        if (newLineKey !== keyboardEvent && keyboardEvent !== '') {
+          event.preventDefault();
+          onSend?.(message, files);
+          setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
         }
       }
     },
@@ -665,6 +668,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             )}
           </InputMessageToggleSendStyled>
         )}
+        {rightActions}
         {!voice || message || files.length > 0 ? (
           <InputMessageSendButton
             disabled={disabled || sendDisabled}
@@ -699,3 +703,13 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 };
 
 export * from './types';
+
+function setCursorPosition(
+  input: HTMLTextAreaElement,
+  start: number,
+) {
+  setTimeout(() => {
+    input.selectionStart = start;
+    input.selectionEnd = start;
+  }, 1);
+}

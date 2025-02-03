@@ -5,9 +5,9 @@ import { Skeleton } from '@/ui/components/skeleton';
 import { ArrowDownIcon, DragDotIcon } from '@/ui/icons';
 import { FolderIcon } from '@/ui/icons/folder';
 import { Checkbox } from '@/ui/components/checkbox';
-import { SidebarDropdownStyled } from '../dropdown';
 import { SidebarChatIconContainer } from '../chat';
 import { adaptive } from '@/ui/adaptive';
+import { SidebarDropdownStyled } from '../dropdown';
 
 export const SidebarGroupsStyled = styled.div`
   display: flex;
@@ -56,25 +56,11 @@ export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medi
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
-      & > ${SidebarDropdownStyled} {
-        overflow: hidden;
-        width: 0;
-        margin-left: 0;
-        transition: width 0.3s ease, margin-left 0.3s ease;
-      }
-      &:hover {
-        & > ${SidebarDropdownStyled} {
-          display: flex;
-          width: 38px;
-          margin-left: 16px;
-        }
-      }
-    `,
-  })}
-
+  & > ${SidebarDropdownStyled} {
+    display: flex;
+    width: 28px;
+    margin-left: 16px;
+  }
   & > ${SidebarGroupArrowDown} {
     transform: ${({ $open }) => ($open ? 'rotate(180deg)' : 'rotate(0deg)')};
   }

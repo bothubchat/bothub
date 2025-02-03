@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { adaptive } from '@/ui/adaptive';
 import { Variant } from '../styled';
 

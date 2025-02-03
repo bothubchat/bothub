@@ -25,7 +25,6 @@ export const MessageVersions = ({
     typeof version !== 'number'
     || typeof totalVersions !== 'number'
     || editing
-    || variant === 'user'
   ) {
     return null;
   }
@@ -43,7 +42,7 @@ export const MessageVersions = ({
   };
 
   return (
-    <S.MessageVersionsStyled>
+    <S.MessageVersionsStyled $variant={variant}>
       <S.MessageVersionsSwitchButton onClick={handlePrev}>
         {'<'}
       </S.MessageVersionsSwitchButton>
