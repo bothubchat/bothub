@@ -377,6 +377,7 @@ export const Message: React.FC<MessageProps> = ({
               onNextVersion={onNextVersion}
               onPrevVersion={onPrevVersion}
               editing={isEditing}
+              variant={variant}
             />
           </MessageBlockBottomPanel>
           {transaction && (
