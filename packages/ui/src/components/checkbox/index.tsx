@@ -15,6 +15,7 @@ export type CheckboxValueChangeEventHandler = (checked: boolean) => unknown;
 export interface CheckboxProps extends Omit<React.ComponentProps<'input'>, 'onPointerLeave'> {
   className?: string;
   label?: string | boolean | React.ReactNode;
+  rowReverse?: boolean;
   skeleton?: boolean;
   fullWidth?: boolean;
   onValueChange?: CheckboxValueChangeEventHandler;
@@ -22,7 +23,14 @@ export interface CheckboxProps extends Omit<React.ComponentProps<'input'>, 'onPo
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({ 
-  className, label, skeleton = false, fullWidth = false, onValueChange, onPointerLeave, ...props 
+  className, 
+  label, 
+  skeleton = false, 
+  rowReverse, 
+  fullWidth = false, 
+  onValueChange, 
+  onPointerLeave, 
+  ...props 
 }) => {
   const {
     handleTooltipMouseEnter,
@@ -38,6 +46,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     <CheckboxStyled
       $disabled={props.disabled ?? false}
       $fullWidth={fullWidth}
+      $rowReverse={rowReverse}
       className={className}
       onMouseEnter={handleTooltipMouseEnter}
       onMouseLeave={handleTooltipMouseLeave}

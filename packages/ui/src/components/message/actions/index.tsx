@@ -1,5 +1,9 @@
 import {
-  MutableRefObject, useCallback, useEffect, useRef, useState 
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
 } from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
@@ -10,12 +14,18 @@ import { EditIcon } from '@/ui/icons/edit';
 import { TrashIcon } from '@/ui/icons/trash';
 
 import * as S from './styled';
-import { MessageActionEditEventHandler, MessageActionEventHandler, MessageVariant } from '../types';
+import {
+  MessageActionEditEventHandler,
+  MessageActionEventHandler,
+  MessagePlainTextCopyEventHandler,
+  MessageVariant,
+} from '../types';
 import { MenuOption } from './menu-option';
 import { CopyButton } from './copy-button';
 import { ActionButton } from './action-button';
 import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { CloseIcon } from '@/ui/icons/close';
+import { CopyIcon } from '@/ui/icons/copy';
 import { useScrollbarRef } from '../list';
 import { ModalOption } from './types';
 
@@ -30,6 +40,7 @@ type MessageActionsProps = {
   disableUpdate?: boolean;
   disableCopy?: boolean;
   editText?: string | null;
+  copyPlainText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
   submitEditTooltipLabel?: string | null;
@@ -45,6 +56,7 @@ type MessageActionsProps = {
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
+  onPlainTextCopy?: MessagePlainTextCopyEventHandler;
   onCopy?: MessageActionEventHandler;
 };
 
@@ -59,6 +71,7 @@ export const MessageActions = ({
   disableUpdate,
   disableCopy,
   editText,
+  copyPlainText,
   resendText,
   deleteText,
   submitEditTooltipLabel,
@@ -74,6 +87,7 @@ export const MessageActions = ({
   onResend,
   onDelete,
   onUpdate,
+  onPlainTextCopy,
   onCopy,
 }: MessageActionsProps) => {
   const [menuShown, setMenuShown] = useState(false);
@@ -102,7 +116,7 @@ export const MessageActions = ({
     const scrollWidth = messageRef?.current?.scrollWidth ?? 0;
     const offsetTop = messageActionsRef.current?.offsetTop ?? 0;
     const offsetLeft = messageActionsRef.current?.offsetLeft ?? 0;
-    setInvertedY(scrollHeight - offsetTop <= 180);
+    setInvertedY(scrollHeight - offsetTop <= 210);
     setInvertedX(
       (variant === 'assistant' && scrollWidth - offsetLeft <= 160)
         || (variant === 'user' && offsetLeft <= 160)
@@ -161,6 +175,11 @@ export const MessageActions = ({
     onEditedText?.(message ?? '');
   }, [message]);
 
+  const handlePlainTextCopy = useCallback(() => {
+    onPlainTextCopy?.();
+    setMenuShown(false);
+  }, []);
+
   const modalTransition = useTransition(menuShown, {
     from: {
       opacity: 0,
@@ -215,6 +234,16 @@ export const MessageActions = ({
                     $invertedX={invertedX}
                     $invertedY={invertedY}
                   >
+                    {!disableCopy && (
+                      <MenuOption onClick={handlePlainTextCopy}>
+                        <S.MessageActionsMenuModalOptionContent>
+                          <CopyIcon fill="#616D8D" />
+                          <S.MessageActionsButtonText>
+                            {copyPlainText}
+                          </S.MessageActionsButtonText>
+                        </S.MessageActionsMenuModalOptionContent>
+                      </MenuOption>
+                    )}
                     {!disableResend && variant === 'user' && (
                       <MenuOption
                         onClick={() => {
@@ -283,7 +312,10 @@ export const MessageActions = ({
             </ActionButton>
           )}
           {!disableCopy && (
-            <CopyButton onCopy={onCopy} tooltipLabel={copyTooltipLabel} />
+            <CopyButton
+              onCopy={onCopy}
+              tooltipLabel={copyTooltipLabel}
+            />
           )}
         </>
       ) : (

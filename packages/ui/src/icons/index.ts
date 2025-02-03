@@ -200,4 +200,8 @@ export * from './happy-robot';
 export * from './happy-robot-gradient';
 export * from './min-window';
 export * from './max-window';
+export * from './manage-chat';
+export * from './analyze-urls';
+export * from './web-search';
+export * from './include-context';
 export * from './queue';

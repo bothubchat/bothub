@@ -56,6 +56,7 @@ export interface MessageProps {
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
+  copyPlainText?: string | null;
   editText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
@@ -98,6 +99,7 @@ export const Message: React.FC<MessageProps> = ({
   disableDelete = false,
   disableUpdate = false,
   disableCopy = false,
+  copyPlainText,
   editText,
   resendText,
   deleteText,
@@ -138,9 +140,9 @@ export const Message: React.FC<MessageProps> = ({
     []
   );
 
-  const getRichText = useCallback((content: HTMLElement) => {
+  const getRichText = useCallback((html: HTMLElement) => {
     const htmlStr = new DOMParser().parseFromString(
-      content.innerHTML,
+      html.innerHTML,
       'text/html'
     );
     const codeNodes = htmlStr.getElementsByTagName('code');
@@ -150,17 +152,30 @@ export const Message: React.FC<MessageProps> = ({
       codeNode.replaceWith(el);
     }
     const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([content.innerText], { type: 'text/plain' }),
-      'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' }),
+      'text/plain': new Blob([content!], { type: 'text/plain' }),
+      'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' })
+    });
+    return [clipboardItem];
+  }, [content]);
+
+  const getPlainText = useCallback((html: HTMLElement) => {
+    const clipboardItem = new ClipboardItem({
+      'text/plain': new Blob([html.innerText], { type: 'text/plain' }),
     });
     return [clipboardItem];
   }, []);
 
-  const handleCopy = useCallback(() => {
+  const handlePlainTextCopy = useCallback(() => {
     if (messageBlockContentRef.current) {
-      return onCopy?.(getRichText(messageBlockContentRef.current));
+      return onCopy?.(getPlainText(messageBlockContentRef.current));
     }
   }, [messageBlockContentRef.current]);
+
+  const handleRichTextCopy = useCallback(() => {
+    if (messageBlockContentRef.current && content) {
+      return onCopy?.(getRichText(messageBlockContentRef.current));
+    }
+  }, [messageBlockContentRef.current, content]);
 
   if (
     !(
@@ -228,7 +243,7 @@ export const Message: React.FC<MessageProps> = ({
       variant={variant}
       color={color}
       typing={typing}
-      onCopy={handleCopy}
+      onCopy={handlePlainTextCopy}
       onCodeCopy={onCodeCopy}
     >
       <MessageStyledWrapper $variant={variant} ref={messageRef}>
@@ -327,6 +342,7 @@ export const Message: React.FC<MessageProps> = ({
                 disableDelete={disableDelete}
                 disableUpdate={disableUpdate}
                 disableCopy={disableCopy}
+                copyPlainText={copyPlainText}
                 editText={editText}
                 resendText={resendText}
                 deleteText={deleteText}
@@ -343,7 +359,8 @@ export const Message: React.FC<MessageProps> = ({
                 onResend={onResend}
                 onDelete={onDelete}
                 onUpdate={onUpdate}
-                onCopy={handleCopy}
+                onPlainTextCopy={handlePlainTextCopy}
+                onCopy={handleRichTextCopy}
               />
             )}
           </MessageStyled>

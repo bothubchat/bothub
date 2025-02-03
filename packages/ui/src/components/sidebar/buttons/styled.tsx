@@ -4,8 +4,8 @@ import { TrashIcon } from '@/ui/icons/trash';
 import { adaptive } from '@/ui/adaptive';
 import { AddChatIcon } from '@/ui/icons/add-chat';
 import { AddGroupIcon } from '@/ui/icons/add-group';
-import { EditIcon } from '@/ui/icons/edit';
-import { SearchSimpleIcon } from '@/ui/icons';
+import { ManageChatIcon } from '@/ui/icons/manage-chat';
+import { SearchSimpleIcon } from '@/ui/icons/search-simple';
 
 export interface SidebarButtonsStyledProps {
   $open: boolean;
@@ -48,11 +48,10 @@ export const SidebarAddGroupButton = styled(Button).attrs({
 `;
 
 export const SidebarEditButton = styled(Button).attrs({
-  children: <EditIcon />,
+  children: <ManageChatIcon />,
 }) <{ variant: ButtonVariant, $active?: boolean }>`
   ${({ variant, theme }) => variant === 'secondary' && css`
     svg path {
-      fill: ${theme.colors.grayScale.gray1};
       stroke: ${theme.colors.grayScale.gray1};
     }
   `}
@@ -60,7 +59,6 @@ export const SidebarEditButton = styled(Button).attrs({
   ${({ $active, theme }) => $active && css`
     background: ${theme.mode === 'dark' ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
     svg path {
-      fill: ${theme.colors.accent.primary};
       stroke: ${theme.colors.accent.primary};
     }
   `}

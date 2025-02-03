@@ -38,6 +38,7 @@ export interface TextAreaFieldBlockProps {
   $error: boolean;
   $disabled: boolean;
   $skeleton: boolean;
+  $glow?: boolean;
 }
 
 export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
@@ -67,6 +68,11 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
 
     return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
   }};
+  ${({ $glow, theme }) => $glow && css`
+    background: ${theme.colors.grayScale.gray2};
+    border-color: ${theme.colors.accent.primary};
+  `}
+  transition: background-color .5s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color .2s ease-in-out;
   cursor: ${({ $disabled, $skeleton }) => {
     if ($skeleton) {
       return 'progress';

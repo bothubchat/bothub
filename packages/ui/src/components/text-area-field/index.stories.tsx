@@ -11,7 +11,8 @@ export type TextAreaFieldStory = StoryObj<typeof TextAreaField>;
 export const Basic: TextAreaFieldStory = {
   args: {
     label: 'Label',
-    placeholder: 'Placeholder'
+    placeholder: 'Placeholder',
+    glow: false,
   }
 };
 

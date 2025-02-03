@@ -12,12 +12,6 @@ export const SidebarUserInfoBottom = styled.div`
   display: flex;
   align-items: center;
   overflow: hidden;
-  & > *:first-child {
-    width: 0;
-    overflow: hidden;
-    transform: translateX(-100%);
-    transition: all 0.3s;
-  }
 `;
 
 export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
@@ -27,36 +21,6 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
   width: 100%;
   transition: padding 0.3s;
 
-
-  ${({ theme, $open }) => adaptive({
-    variant: 'dashboard',
-    desktop: `
-    &:hover {
-      ${$open && `background: ${theme.colors.grayScale.gray3};`}
-      ${SidebarUserInfoBottom} {
-        gap: 10px;
-        transition: width 0.3s;
-        & > *:first-child {
-          overflow: visible;
-          transform: translateX(0);
-          width: fit-content;
-        }
-      }
-    }
-    `,
-    tablet: `
-      background: ${theme.colors.grayScale.gray3};
-      ${SidebarUserInfoBottom} {
-        gap: 10px;
-        transition: width 0.3s;
-        & > *:first-child {
-          overflow: visible;
-          transform: translateX(0);
-          width: fit-content;
-        }
-      }
-    `,
-  })}
   ${({ $open }) => $open
     && adaptive({
       variant: 'dashboard',
@@ -279,37 +243,70 @@ export const SidebarUserInfoTariff = styled(Typography).attrs({
   cursor: default;
 `;
 
-export const SidebarUserInfoFreeTariff = styled(SidebarUserInfoTariff).attrs({
-  children: 'Free',
+export const SidebarUserInfoUpdateTariffButton = styled.button`
+  all: unset;
+  margin-top: 4px;
+  width: 100%;
+  display: flex;
+  justify-content: start;
+  flex-shrink: 1;
+  align-items: center;
+  border-radius: 8px;
+  padding: 6px 18px 6px 6px;
+  box-shadow: inset 0 1px 1px 0 #ffffff60;
+  background: linear-gradient(90deg, #00247D 15%, #1c64f2 100%);
+  font-weight: 500;
+  &:hover {
+    filter: brightness(0.8);
+    cursor: pointer;
+  }
+  &:active {
+    filter: brightness(0.7);
+    transform: translateY(1px);
+  }
+  transition: all .2s ease-out;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+`;
+
+export const SidebarUserInfoUpdateTariffButtonText = styled(Typography).attrs({
+  variant: 'body-m-medium'
 })`
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => theme.default.colors.base.white};
+  margin-inline: auto;
 `;
 
-export const SidebarUserInfoBasicTariff = styled(SidebarUserInfoTariff).attrs({
-  children: 'Basic',
-})`
-  background: ${({ theme }) => theme.colors.accent.primary};
+export const SidebarUserInfoUpdateTariffBadge = styled.div`
+  padding: 2px 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.default.colors.base.white};
 `;
 
-export const SidebarUserInfoPremiumTariff = styled(SidebarUserInfoTariff).attrs(
-  { children: 'Premium' }
-)`
-  background: ${({ theme }) => theme.colors.premiumGradient};
+export interface SidebarUserInfoUpdateTariffBadgeTextProps {
+  children?: string;
+}
+
+export const SidebarUserInfoUpdateTariffBadgeText = styled(Typography).attrs({
+  variant: 'body-m-semibold'
+})<SidebarUserInfoUpdateTariffBadgeTextProps>`
+  color: transparent;
+  background: ${({ children, theme }) => {
+    switch (children?.toUpperCase()) {
+      case 'FREE':
+        return theme.default.colors.grayScale.gray1;
+      case 'BASIC':
+        return theme.default.colors.accent.primary;
+      case 'PREMIUM':
+      default:
+        return theme.default.colors.premiumGradient;
+    }
+  }};
+  background-clip: text;
 `;
-
-export const SidebarUserInfoDeluxeTariff = styled(SidebarUserInfoTariff).attrs({
-  children: 'Deluxe',
-})`
-  background: ${({ theme }) => theme.colors.premiumGradient};
-`;
-
-export const SidebarUserInfoEliteTariff = styled(
-  SidebarUserInfoPremiumTariff
-).attrs({ children: 'Elite' })``;
-
-export const SidebarUserInfoUpdateTariffButton = styled(Button).attrs({
-  fullWidth: true, size: 'small',
-})``;
 
 export interface SidebarUserInfoLogoutButtonContainerProps {
   $open: boolean;
