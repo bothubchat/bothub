@@ -121,7 +121,7 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
         opacity: 0.7;
       `;
     }
-  }}
+  }};
   ${({ $active }) => {
     if ($active) {
       return css`
