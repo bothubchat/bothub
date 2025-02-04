@@ -131,11 +131,11 @@ export const Message: React.FC<MessageProps> = ({
   const messageBlockContentRef = useRef<HTMLDivElement | null>(null);
 
   const editFieldRef = useRef<HTMLSpanElement | null>(null);
-  const [isEditing, onEditing] = useState<boolean>(false);
-  const [editedText, onEditedText] = useState<string>(content ?? '');
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editedText, setEditedText] = useState<string>(content ?? '');
   const handleEditText = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onEditedText(e.target.innerText);
+      setEditedText(e.target.textContent ?? '');
     },
     []
   );
@@ -321,7 +321,7 @@ export const Message: React.FC<MessageProps> = ({
                             onInput={handleEditText}
                             ref={editFieldRef}
                           >
-                            {children}
+                            {content}
                           </MessageBlockTextArea>
                         </MessageParagraph>
                       )}
@@ -353,8 +353,8 @@ export const Message: React.FC<MessageProps> = ({
                 editing={isEditing}
                 editedText={editedText}
                 messageRef={messageRef}
-                onEditing={onEditing}
-                onEditedText={onEditedText}
+                onEditing={setIsEditing}
+                onEditedText={setEditedText}
                 onEdit={onEdit}
                 onResend={onResend}
                 onDelete={onDelete}
@@ -377,6 +377,7 @@ export const Message: React.FC<MessageProps> = ({
               onNextVersion={onNextVersion}
               onPrevVersion={onPrevVersion}
               editing={isEditing}
+              variant={variant}
             />
           </MessageBlockBottomPanel>
           {transaction && (
