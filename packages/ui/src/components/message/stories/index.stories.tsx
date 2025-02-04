@@ -187,7 +187,7 @@ export const Image: MessageStory = {
   args: {
     ...Assistant.args,
     children:
-      'Конечно! Вот пример изображения для чата:\n\n' + `![Image](${image})`,
+      `Конечно! Вот пример изображения для чата:\n\n![Image](${image})`,
   },
 };
 
@@ -597,30 +597,36 @@ export const MarkdownImage: MessageStory = {
   },
 };
 
-export const NewDesignFeatures: MessageStory = {
-  args: {
-    id: 'test-id',
-    timestamp: 'Date Mon Oct 07 2024 21:20:03 GMT+0400 (Samara Standard Time)',
-    variant: 'assistant',
-    name: 'ChatGPT',
-    children: 'Hi! How can I help you?',
-    avatar: <MessageAvatar />,
-    copyPlainText: 'Копировать без форматирования',
-    editText: 'Редактировать',
-    resendText: 'Переотправить',
-    deleteText: 'Удалить',
-    copyTooltipLabel: 'Копировать',
-    updateTooltipLabel: 'Повторная генерация',
-    content: 'Hi! How can I help you?',
-    version: 2,
-    totalVersions: 5,
-    transaction: <MessageTransaction>-1571 CAPS</MessageTransaction>,
-    buttons: (
-      <MessageButtons>
-        <MessageButton startIcon={<StopIcon />}>Button</MessageButton>
-      </MessageButtons>
-    ),
-  },
+export const NewDesignFeatures = () => {
+  const [content, setContent] = useState('Hi! How can I help you?');
+
+  return (
+    <Message
+      id="test-id"
+      timestamp="Date Mon Oct 07 2024 21:20:03 GMT+0400 (Samara Standard Time)"
+      variant="assistant"
+      name="ChatGPT"
+      avatar={<MessageAvatar />}
+      copyPlainText="Копировать без форматирования"
+      editText="Редактировать"
+      resendText="Переотправить"
+      deleteText="Удалить"
+      copyTooltipLabel="Копировать"
+      updateTooltipLabel="Повторная генерация"
+      version={2}
+      totalVersions={5}
+      transaction={<MessageTransaction>-1571 CAPS</MessageTransaction>}
+      buttons={(
+        <MessageButtons>
+          <MessageButton startIcon={<StopIcon />}>Button</MessageButton>
+        </MessageButtons>
+      )}
+      content={content}
+      onEdit={({ message }) => setContent(message ?? '')}
+    >
+      {content}
+    </Message>
+  );
 };
 
 export default {
