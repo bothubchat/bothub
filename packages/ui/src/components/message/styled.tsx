@@ -280,6 +280,8 @@ export const MessageBlockTextArea = styled.span.attrs({
   contentEditable: true,
   suppressContentEditableWarning: true,
 })`
+  min-width: 10ch;
+  min-height: 1ch;
   width: 100%;
   max-width: 100%;
   height: auto;
