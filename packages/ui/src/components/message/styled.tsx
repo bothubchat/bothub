@@ -222,11 +222,11 @@ export const MessageBlock = styled.div<MessageBlockProps>`
     `}
 `;
 
-export const MessageBlockBottomPanel = styled.div`
+export const MessageBlockBottomPanel = styled.div<{ $variant: MessageVariant }>`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-left: 48px;
+  gap: 10px;
+  margin-left: ${({ $variant }) => ($variant === 'user' ? '0px' : '48px')};
   margin-right: 95px;
   @media (width <= ${({ theme }) => theme.mobile.maxWidth}) {
     margin-right: 28px;

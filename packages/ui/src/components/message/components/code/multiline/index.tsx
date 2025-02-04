@@ -1,8 +1,8 @@
 import React from 'react';
-import { 
+import {
   MessageMultilineCodeBody,
-  MessageMultilineCodeHead, 
-  MessageMultilineCodeLanguage, 
+  MessageMultilineCodeHead,
+  MessageMultilineCodeLanguage,
   MessageMultilineCodeStyled
 } from './styled';
 import { Tooltip } from '@/ui/components/tooltip';
@@ -16,7 +16,7 @@ export interface MessageMultilineCodeProps {
   children: string;
 }
 
-export const MessageMultilineCode: React.FC<MessageMultilineCodeProps> = ({ 
+export const MessageMultilineCode: React.FC<MessageMultilineCodeProps> = ({
   className,
   copyLabel,
   children
@@ -40,7 +40,7 @@ export const MessageMultilineCode: React.FC<MessageMultilineCodeProps> = ({
         >
           {languageName}
         </MessageMultilineCodeLanguage>
-        <Tooltip 
+        <Tooltip
           variant="secondary"
           label={copyLabel}
         >
