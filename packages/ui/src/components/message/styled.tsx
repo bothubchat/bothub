@@ -128,7 +128,7 @@ export interface MessageNameProps {
 
 export const MessageName = styled(Typography).attrs({
   variant: 'body-m-regular',
-})<MessageNameProps>`
+}) <MessageNameProps>`
   color: ${({ theme, $color }) => {
     switch ($color) {
       case 'green':
@@ -192,10 +192,10 @@ export const MessageBlock = styled.div<MessageBlockProps>`
         `;
     }
   }}
-  background: ${({ $hexColor }) => $hexColor};
+  ${({ $hexColor, $variant }) => $variant === 'user' && `background: ${$hexColor};`}
 
-  ${({ $hasTimestamp, $timestampPosition }) => ($hasTimestamp
-    ? adaptive({
+  ${({ $hasTimestamp, $timestampPosition, $variant }) => ($hasTimestamp
+    ? $variant === 'user' && adaptive({
       variant: 'dashboard',
       merge: true,
       desktop: css`
@@ -205,7 +205,7 @@ export const MessageBlock = styled.div<MessageBlockProps>`
             padding: ${$timestampPosition === 'right' ? '8px' : '8px 8px 5px 8px'};
             `,
     })
-    : adaptive({
+    : $variant === 'user' && adaptive({
       variant: 'dashboard',
       merge: true,
       desktop: css`
@@ -293,16 +293,16 @@ export const MessageBlockTextArea = styled.span.attrs({
   outline: none;
   background-color: transparent;
   ${adaptive({
-    desktop: css`
+  desktop: css`
       font-size: 16px;
     `,
-    tablet: css`
+  tablet: css`
       font-size: 14px;
     `,
-    mobile: css`
+  mobile: css`
       font-size: 14px;
     `,
-  })}
+})}
 `;
 
 export const MessageButtonsStyled = styled.div`

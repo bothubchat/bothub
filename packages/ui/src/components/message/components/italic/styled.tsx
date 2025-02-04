@@ -7,8 +7,8 @@ export interface MessageItalicStyledProps {
 }
 
 export const MessageItalicStyled = styled(Typography).attrs({
-  variant: 'body-m-regular'
-})<MessageItalicStyledProps>`
+  variant: 'body-l-regular'
+}) <MessageItalicStyledProps>`
   color: ${({ theme, $messageColor }) => {
     if ($messageColor !== 'default') {
       return theme.default.colors.base.white;

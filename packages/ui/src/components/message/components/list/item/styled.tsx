@@ -7,12 +7,12 @@ export interface MessageListItemStyledProps {
   $messageColor: string;
 }
 
-export const MessageListItemStyled = styled(Typography).attrs({ component: 'li', variant: 'body-m-regular' })<MessageListItemStyledProps>`
+export const MessageListItemStyled = styled(Typography).attrs({ component: 'li', variant: 'body-l-regular' }) <MessageListItemStyledProps>`
   display: block;
   position: relative;
   color: ${({ theme, $messageColor }) => {
     if ($messageColor !== 'default') {
-      return theme.default.colors.base.white;
+      return theme.colors.base.white;
     }
 
     return theme.colors.base.white;
@@ -47,7 +47,7 @@ export const MessageListItemStyled = styled(Typography).attrs({ component: 'li',
       case 'number': {
         let numberColor: string;
         if ($messageColor !== 'default') {
-          numberColor = theme.default.colors.base.white;
+          numberColor = theme.colors.base.white;
         } else {
           numberColor = theme.mode === 'dark' ? theme.default.colors.grayScale.gray6 : theme.default.colors.base.black;
         }

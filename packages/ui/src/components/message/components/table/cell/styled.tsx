@@ -16,7 +16,7 @@ export interface MessageTableCellTextProps {
   $messageColor: string;
 }
 
-export const MessageTableCellText = styled(Typography).attrs({ variant: 'body-s-medium' })<MessageTableCellTextProps>`
+export const MessageTableCellText = styled(Typography).attrs({ variant: 'body-m-medium' }) <MessageTableCellTextProps>`
   ${({ theme, $head }) => $head && css`
     color: ${theme.default.colors.grayScale.gray6};
   `}
