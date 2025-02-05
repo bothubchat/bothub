@@ -178,7 +178,14 @@ export const Basic: SidebarStory = {
               caps="9 012 000 000 CAPS"
               updateTariff={(
                 <SidebarUserInfoUpdateTariffButton>
-                  Купить пакет
+                  <SidebarUserInfoUpdateTariffBadge>
+                    <SidebarUserInfoUpdateTariffBadgeText>
+                      FREE
+                    </SidebarUserInfoUpdateTariffBadgeText>
+                  </SidebarUserInfoUpdateTariffBadge>
+                  <SidebarUserInfoUpdateTariffButtonText>
+                    Обновить тариф
+                  </SidebarUserInfoUpdateTariffButtonText>
                 </SidebarUserInfoUpdateTariffButton>
               )}
               logout={<SidebarUserInfoLogoutButton />}
@@ -189,12 +196,13 @@ export const Basic: SidebarStory = {
     ),
     children: (
       <SidebarGroups>
-        <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Шабажка">
+        <SidebarGroup edit checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Шабажка">
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Кто прочитал, тот молодец"
             caps="36.7K"
+            edit
             checkbox={(
               <SidebarChatCheckbox
                 checked
@@ -825,7 +833,7 @@ export const BasicTariff: SidebarStory = {
           <SidebarUserInfoUpdateTariffButton>
             <SidebarUserInfoUpdateTariffBadge>
               <SidebarUserInfoUpdateTariffBadgeText>
-                FREE
+                BASIC
               </SidebarUserInfoUpdateTariffBadgeText>
             </SidebarUserInfoUpdateTariffBadge>
             <SidebarUserInfoUpdateTariffButtonText>
@@ -854,7 +862,14 @@ export const PremiumTariff: SidebarStory = {
         caps="2 000 000 000 000 000 CAPS"
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton>
-            Купить пакет
+            <SidebarUserInfoUpdateTariffBadge>
+              <SidebarUserInfoUpdateTariffBadgeText>
+                PREMIUM
+              </SidebarUserInfoUpdateTariffBadgeText>
+            </SidebarUserInfoUpdateTariffBadge>
+            <SidebarUserInfoUpdateTariffButtonText>
+              Обновить тариф
+            </SidebarUserInfoUpdateTariffButtonText>
           </SidebarUserInfoUpdateTariffButton>
         )}
       />
@@ -877,7 +892,14 @@ export const EliteTariff: SidebarStory = {
         caps="9 012 CAPS"
         updateTariff={(
           <SidebarUserInfoUpdateTariffButton>
-            Купить пакет
+            <SidebarUserInfoUpdateTariffBadge>
+              <SidebarUserInfoUpdateTariffBadgeText>
+                ELITE
+              </SidebarUserInfoUpdateTariffBadgeText>
+            </SidebarUserInfoUpdateTariffBadge>
+            <SidebarUserInfoUpdateTariffButtonText>
+              Обновить тариф
+            </SidebarUserInfoUpdateTariffButtonText>
           </SidebarUserInfoUpdateTariffButton>
         )}
         logout={<SidebarUserInfoLogoutButton />}
