@@ -36,10 +36,11 @@ export interface SidebarChatSkeletonProps {
 
 export type SidebarChatProps = (SidebarChatDefaultProps | SidebarChatSkeletonProps) & {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onToggleCheckbox?: () => unknown;
 };
 
 export const SidebarChat: React.FC<SidebarChatProps> = ({
-  onClick, ...props
+  onClick, onToggleCheckbox, ...props
 }) => {
   const {
     attributes, listeners, setNodeRef
@@ -64,7 +65,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
       $active={(!props.skeleton && props.active) ?? false}
       $skeleton={!!props.skeleton}
       ref={!props.skeleton && props.edit ? setNodeRef : undefined}
-      onClick={onClick}
+      onClick={!props.skeleton ? (!props.edit ? onClick : onToggleCheckbox) : undefined}
     >
       {!props.skeleton && props.edit
         ? <SidebarChatDragHandle {...draggable} />
@@ -86,7 +87,6 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
               handleTooltipMouseLeave
             }) => (
               <SidebarChatIconStyled
-                onClick={onClick as any}
                 onMouseEnter={handleTooltipMouseEnter}
                 onMouseLeave={handleTooltipMouseLeave}
               />
@@ -95,7 +95,9 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
         </SidebarChatTooltip>
       )}
       {props.skeleton && <SidebarChatIconStyled />}
-      <SidebarChatLeft onClick={onClick}>
+      <SidebarChatLeft 
+        {...draggable}
+      >
         <SidebarChatNameTooltip
           {...(!props.skeleton && {
             label: props.name
