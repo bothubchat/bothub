@@ -23,13 +23,12 @@ export interface MessageFileNameProps {
   $color: MessageColor;
 }
 
-export const MessageFileName = styled(Typography).attrs({ variant: 'body-m-medium' })<MessageFileNameProps>`
+export const MessageFileName = styled(Typography).attrs({ variant: 'body-m-medium' }) <MessageFileNameProps>`
   color: ${({ theme, $variant, $color }) => {
     if ($variant === 'assistant') {
       if ($color !== 'default') {
         return theme.default.colors.base.white;
       }
-
       return theme.colors.base.white;
     }
 
@@ -42,7 +41,7 @@ export interface MessageFileSizeProps {
   $color: MessageColor;
 }
 
-export const MessageFileSize = styled(Typography).attrs({ variant: 'body-m-regular' })<MessageFileSizeProps>`
+export const MessageFileSize = styled(Typography).attrs({ variant: 'body-m-regular' }) <MessageFileSizeProps>`
   color: ${({ theme, $variant, $color }) => {
     if ($variant === 'assistant') {
       if ($color !== 'default') {

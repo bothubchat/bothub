@@ -25,7 +25,7 @@ export const MessageMultilineCodeHead = styled.div<MessageMultilineCodeHeadProps
         return theme.default.colors.base.white;
       case 'assistant':
         if ($messageColor !== 'default') {
-          return theme.default.colors.base.white;
+          return theme.mode === 'light' ? theme.colors.accent.primary : theme.colors.base.white;
         }
 
         return theme.colors.accent.primary;
@@ -39,7 +39,7 @@ export interface MessageMultilineCodeLanguageProps {
   $messageColor: string;
 }
 
-export const MessageMultilineCodeLanguage = styled(Typography).attrs({ variant: 'body-s-medium' })<MessageMultilineCodeLanguageProps>`
+export const MessageMultilineCodeLanguage = styled(Typography).attrs({ variant: 'body-l-medium' }) <MessageMultilineCodeLanguageProps>`
   color: ${({ theme, $messageVariant, $messageColor }) => {
     switch ($messageVariant) {
       case 'user':
@@ -49,9 +49,9 @@ export const MessageMultilineCodeLanguage = styled(Typography).attrs({ variant: 
           case 'default':
             return theme.default.colors.base.white;
           case 'green':
-            return theme.colors.gpt3;
+            return theme.mode === 'dark' ? theme.colors.gpt3 : theme.default.colors.base.white;
           case 'purple':
-            return theme.colors.gpt4;
+            return theme.mode === 'dark' ? theme.colors.gpt4 : theme.default.colors.base.white;
           default:
             return $messageColor;
         }

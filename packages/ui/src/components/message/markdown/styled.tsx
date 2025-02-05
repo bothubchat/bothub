@@ -3,14 +3,14 @@ import { css, keyframes, styled } from 'styled-components';
 import React from 'react';
 import { MessageColor } from '@/ui/components/message/types';
 import {
-  MessageBoldStyled, 
+  MessageBoldStyled,
   MessageInlineCodeStyled,
   MessageItalicStyled,
-  MessageLinkStyled, 
-  MessageListItemStyled, 
-  MessageListStyled, 
-  MessageMultilineCodeStyled, 
-  MessageParagraphStyled, 
+  MessageLinkStyled,
+  MessageListItemStyled,
+  MessageListStyled,
+  MessageMultilineCodeStyled,
+  MessageParagraphStyled,
   MessagePre,
   MessageTableCellStyled,
   MessageTableRow,
@@ -33,7 +33,7 @@ export interface MessageMarkdownStyledProps {
   $singleDollarTextMath: boolean;
 }
 
-export const MessageMarkdownLine = React.memo(styled(ReactMarkdown)<MessageMarkdownStyledProps>`
+export const MessageMarkdownLine = React.memo(styled(ReactMarkdown) <MessageMarkdownStyledProps>`
   display: block;
   width: 100%;
   color: ${({ theme }) => theme.colors.base.white};
@@ -56,7 +56,7 @@ export const MessageMarkdownLine = React.memo(styled(ReactMarkdown)<MessageMarkd
       margin-bottom: 0px;
     }
   }
-  ${({ $typing, $color }) => $typing && css`
+  ${({ $typing, $color, theme }) => $typing && css`
     &:last-child > ${MessageParagraphStyled}:last-child,
     &:last-child > ${MessageBoldStyled}:last-child,
     &:last-child > ${MessageItalicStyled}:last-child,
@@ -73,13 +73,7 @@ export const MessageMarkdownLine = React.memo(styled(ReactMarkdown)<MessageMarkd
         height: var(--bothub-typing-cursor-size, 21px);
         border-radius: calc(var(--bothub-typing-cursor-size, 21px) / 7);
         flex-shrink: 0;
-        background: ${({ theme }) => {
-    if ($color !== 'default') {
-      return theme.default.colors.base.white;
-    }
-
-    return theme.colors.base.white;
-  }};
+        background: ${$color !== 'default' ? theme.default.colors.base.white : theme.colors.base.white};
         vertical-align: text-top;
         animation: ${messageTextCursorOpacity} 0.9s infinite;
         content: '';

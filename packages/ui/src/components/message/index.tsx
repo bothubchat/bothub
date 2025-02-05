@@ -331,6 +331,8 @@ export const Message: React.FC<MessageProps> = ({
                 </MessageBlock>
               </MessageBlockWrapper>
             </MessageContent>
+          </MessageStyled>
+          <MessageBlockBottomPanel $variant={variant}>
             {!skeleton && (
               <MessageActions
                 id={id}
@@ -363,12 +365,8 @@ export const Message: React.FC<MessageProps> = ({
                 onCopy={handleRichTextCopy}
               />
             )}
-          </MessageStyled>
-          <MessageBlockBottomPanel>
-            {transaction ? (
+            {transaction && (
               <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
-            ) : (
-              buttons ?? <div />
             )}
             <MessageVersions
               id={id}
@@ -380,9 +378,7 @@ export const Message: React.FC<MessageProps> = ({
               variant={variant}
             />
           </MessageBlockBottomPanel>
-          {transaction && (
-            <MessageButtonsStyled>{buttons}</MessageButtonsStyled>
-          )}
+          <MessageButtonsStyled>{buttons}</MessageButtonsStyled>
         </MessageStyledWithBottomPanel>
       </MessageStyledWrapper>
     </MessageProvider>

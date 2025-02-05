@@ -4,16 +4,14 @@ import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '../types';
 
 export const MessageActionsStyled = styled.div<{ $variant?: MessageVariant }>`
-  margin-top: auto;
   display: flex;
   flex-direction: ${({ $variant }) => ($variant === 'assistant' ? 'row' : 'row-reverse')};
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
   @media (width <= ${({ theme }) => theme.mobile.maxWidth}) {
-    flex-direction: column;
     gap: 8px;
   }
 `;
@@ -48,7 +46,7 @@ const getModalStylesX = (variant?: MessageVariant, inverted?: boolean) => {
   }
 };
 
-export const MessageActionsMenuModal = styled(animated.div)<{
+export const MessageActionsMenuModal = styled(animated.div) <{
   $variant?: MessageVariant;
   $invertedX?: boolean;
   $invertedY?: boolean;

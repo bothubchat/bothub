@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  SidebarUserInfoTariffContainer,
   SidebarUserInfoContent,
   SidebarUserInfoName,
   SidebarUserInfoStyled,

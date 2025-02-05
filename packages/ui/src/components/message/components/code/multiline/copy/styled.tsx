@@ -8,7 +8,7 @@ export interface MessageMultilineCodeCopyButtonStyledProps {
   $messageColor: string;
 }
 
-export const MessageMultilineCodeCopyButtonStyled = styled(Button).attrs({ variant: 'text' })<MessageMultilineCodeCopyButtonStyledProps>`
+export const MessageMultilineCodeCopyButtonStyled = styled(Button).attrs({ variant: 'text' }) <MessageMultilineCodeCopyButtonStyledProps>`
   ${({ $focus }) => $focus && css`
     cursor: default;
   `}
@@ -22,9 +22,9 @@ export const MessageMultilineCodeCopyButtonStyled = styled(Button).attrs({ varia
           case 'default':
             return theme.default.colors.base.white;
           case 'green':
-            return theme.colors.gpt3;
+            return theme.mode === 'dark' ? theme.colors.gpt3 : theme.default.colors.base.white;
           case 'purple':
-            return theme.colors.gpt4;
+            return theme.mode === 'dark' ? theme.colors.gpt4 : theme.default.colors.base.white;
           default:
             return $messageColor;
         }
@@ -42,9 +42,9 @@ export const MessageMultilineCodeCopyButtonStyled = styled(Button).attrs({ varia
           case 'default':
             return theme.default.colors.base.white;
           case 'green':
-            return theme.colors.gpt3;
+            return theme.mode === 'dark' ? theme.colors.gpt3 : theme.default.colors.base.white;
           case 'purple':
-            return theme.colors.gpt4;
+            return theme.mode === 'dark' ? theme.colors.gpt4 : theme.default.colors.base.white;
           default:
             return $messageColor;
         }

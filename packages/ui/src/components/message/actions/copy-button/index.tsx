@@ -53,9 +53,9 @@ export const CopyButton = ({
       tooltipLabel={tooltipLabel}
     >
       {!copied ? (
-        <MessageActionsButtonIconStyled style={copySpring}>          
-          <CopyIcon size={18} />
-        </MessageActionsButtonIconStyled>  
+        <MessageActionsButtonIconStyled style={copySpring}>
+          <CopyIcon size={20} />
+        </MessageActionsButtonIconStyled>
       ) : (
         <MessageActionsButtonIconStyled style={markSpring}>
           <CheckSmallIcon fill="#4785FF" />
