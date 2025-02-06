@@ -19,7 +19,11 @@ async function publish(): Promise<void> {
       continue;
     }
 
-    const packageJsonPath = path.resolve('./packages/', packageFolderName, './package.json');
+    const packageJsonPath = path.resolve(
+      './packages/',
+      packageFolderName,
+      './package.json'
+    );
     // eslint-disable-next-line
     const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf-8'));
 
@@ -27,12 +31,15 @@ async function publish(): Promise<void> {
 
     let packageTag: string;
     if (currentBranch === 'main') {
-      packageTag = 'latest'; 
+      packageTag = 'latest';
     } else {
       packageTag = currentBranch.replace(/\//g, '-');
     }
 
-    let packageVersion: string = (packageJson.version as string).match(/^([0-9]+\.[0-9]+\.[0-9]+)/g)?.[0] ?? packageJson.version;
+    let packageVersion: string =
+      (packageJson.version as string).match(
+        /^([0-9]+\.[0-9]+\.[0-9]+)/g
+      )?.[0] ?? packageJson.version;
     if (currentBranch !== 'main') {
       packageVersion += `-${packageTag}-${randomUUID()}`;
     }
@@ -42,7 +49,7 @@ async function publish(): Promise<void> {
       const process = spawn(
         'yarn',
         ['publish', '--tag', packageTag, '--new-version', packageVersion],
-        { 
+        {
           cwd: path.resolve('./packages', packageFolderName),
           stdio: 'inherit',
           shell: true

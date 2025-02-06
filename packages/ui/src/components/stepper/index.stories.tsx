@@ -9,8 +9,8 @@ export type StepperStory = StoryObj<typeof Stepper>;
 export const Basic: StepperStory = {
   args: {
     activeStep: 1,
-    stepLabels: ['01', '02', '03'],
-  },
+    stepLabels: ['01', '02', '03']
+  }
 };
 
 export default {

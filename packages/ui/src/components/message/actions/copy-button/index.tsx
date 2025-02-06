@@ -11,7 +11,7 @@ import { MessageActionsButtonIconStyled } from './styled';
 
 export const CopyButton = ({
   onCopy,
-  tooltipLabel,
+  tooltipLabel
 }: {
   onCopy?: MessageActionEventHandler;
   tooltipLabel?: string | null;
@@ -31,21 +31,24 @@ export const CopyButton = ({
   const copySpring = useSpring({
     opacity: copied ? 0 : 1,
     config: {
-      duration: 250,
+      duration: 250
     }
   });
   const markSpring = useSpring({
     opacity: copied ? 1 : 0,
     config: {
-      duration: 250,
+      duration: 250
     }
   });
 
-  useEffect(() => () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-  }, []);
+  useEffect(
+    () => () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    },
+    []
+  );
 
   return (
     <ActionButton

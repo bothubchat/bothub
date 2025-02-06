@@ -20,7 +20,10 @@
   "ignorePatterns": [
     ".eslintrc.json",
     "postcss.config.js",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "**/*.svg",
+    "**/*.webp",
+    "**/*.png"
   ],
   "plugins": [
     "react",

@@ -14,7 +14,8 @@ export const Basic: BookmarkStory = {
 
 export const LongName: BookmarkStory = {
   args: {
-    children: 'Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark'
+    children:
+      'Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark'
   }
 };
 

@@ -28,12 +28,8 @@ export const Help: TextFieldStory = {
     label: (
       <TextFieldLabel>
         Label
-        <Tooltip
-          label="Help"
-        >
-          <Button
-            variant="help"
-          />
+        <Tooltip label="Help">
+          <Button variant="help" />
         </Tooltip>
       </TextFieldLabel>
     )
@@ -44,9 +40,7 @@ export const StartIcon: TextFieldStory = {
   args: {
     label: 'Label',
     placeholder: 'Placeholder',
-    startIcon: (
-      <EmailCircleIcon />
-    )
+    startIcon: <EmailCircleIcon />
   }
 };
 
@@ -54,9 +48,7 @@ export const EndIcon: TextFieldStory = {
   args: {
     label: 'Label',
     placeholder: 'Placeholder',
-    endIcon: (
-      <EmailCircleIcon />
-    )
+    endIcon: <EmailCircleIcon />
   }
 };
 

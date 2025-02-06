@@ -1,11 +1,21 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const TelegramLogoGradient = icon(({ ...props }) => (
-  <Icon size={108} viewBox="0 0 108 108" fill="none" {...props}>
+  <Icon
+    size={108}
+    viewBox="0 0 108 108"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {() => (
         <>
-          <circle cx="54" cy="54" r="54" fill="url(#paint0_linear_2015_61687)" />
+          <circle
+            cx="54"
+            cy="54"
+            r="54"
+            fill="url(#paint0_linear_2015_61687)"
+          />
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -22,11 +32,13 @@ export const TelegramLogoGradient = icon(({ ...props }) => (
               gradientUnits="userSpaceOnUse"
             >
               <stop stopColor="#4584FF" />
-              <stop offset="1" stopColor="#185CE3" />
+              <stop
+                offset="1"
+                stopColor="#185CE3"
+              />
             </linearGradient>
           </defs>
         </>
-
       )}
     </IconConsumer>
   </Icon>

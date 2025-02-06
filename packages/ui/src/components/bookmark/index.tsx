@@ -18,13 +18,11 @@ export type BookmarkProps = (BookmarkDefaultProps | BookmarkSkeletonProps) & {
   onClose?: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-export const Bookmark: React.FC<BookmarkProps> = ({
-  className, ...props
-}) => {
+export const Bookmark: React.FC<BookmarkProps> = ({ className, ...props }) => {
   const isActive = (props.skeleton ? false : props.active) ?? false;
 
   return (
-    <BookmarkStyled 
+    <BookmarkStyled
       $active={isActive}
       $skeleton={props.skeleton}
       className={className}
@@ -32,11 +30,9 @@ export const Bookmark: React.FC<BookmarkProps> = ({
     >
       <BookmarkName>
         {!props.skeleton && props.children}
-        {props.skeleton && (
-          <Skeleton width={80} />
-        )}
+        {props.skeleton && <Skeleton width={80} />}
       </BookmarkName>
-      {(!props.skeleton && !props.disableClose) && (
+      {!props.skeleton && !props.disableClose && (
         <BookmarkCloseButton onClick={props.onClose} />
       )}
       {props.skeleton && (

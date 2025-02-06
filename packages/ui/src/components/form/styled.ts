@@ -11,7 +11,10 @@ export const Form = styled.form`
   padding-bottom: 1px;
 `;
 
-export const FormText = styled(Typography).attrs({ variant: 'body-m-medium', component: 'p' })`
+export const FormText = styled(Typography).attrs({
+  variant: 'body-m-medium',
+  component: 'p'
+})`
   color: ${({ theme }) => theme.default.colors.grayScale.gray1};
   width: 100%;
   margin-bottom: 10px;

@@ -1,6 +1,4 @@
-import React, {
-  useCallback, useEffect, useRef, useState
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   SidebarMenuBlock,
@@ -19,7 +17,9 @@ export type SidebarMenuProps = React.ComponentProps<'div'> & {
 };
 
 export const SidebarMenu: React.FC<SidebarMenuProps> = ({
-  children, disabled = false, ...props
+  children,
+  disabled = false,
+  ...props
 }) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -54,11 +54,11 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
   const menuTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      scale: 0.85,
+      scale: 0.85
     },
     enter: {
       opacity: 1,
-      scale: 1,
+      scale: 1
     },
     leave: {
       opacity: 0,
@@ -83,15 +83,19 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
           {isOpen && <CloseIcon />}
           {!isOpen && <MenuIcon />}
         </SidebarMenuToggleButton>
-        {menuTransition((style, item) => item && (
-          <SidebarMenuBlock style={style} $sidebarOpen={sidebarOpen}>
-            <SidebarMenuBlockScrollbarWrapper>
-              <SidebarMenuBlockContent>
-                {children}
-              </SidebarMenuBlockContent>
-            </SidebarMenuBlockScrollbarWrapper>
-          </SidebarMenuBlock>
-        ))}
+        {menuTransition(
+          (style, item) =>
+            item && (
+              <SidebarMenuBlock
+                style={style}
+                $sidebarOpen={sidebarOpen}
+              >
+                <SidebarMenuBlockScrollbarWrapper>
+                  <SidebarMenuBlockContent>{children}</SidebarMenuBlockContent>
+                </SidebarMenuBlockScrollbarWrapper>
+              </SidebarMenuBlock>
+            )
+        )}
       </SidebarMenuStyled>
     </SidebarMenuProvider>
   );

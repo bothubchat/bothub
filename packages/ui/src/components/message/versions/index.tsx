@@ -19,12 +19,12 @@ export const MessageVersions = ({
   totalVersions,
   editing,
   onNextVersion,
-  onPrevVersion,
+  onPrevVersion
 }: MessageVersionsType) => {
   if (
-    typeof version !== 'number'
-    || typeof totalVersions !== 'number'
-    || editing
+    typeof version !== 'number' ||
+    typeof totalVersions !== 'number' ||
+    editing
   ) {
     return null;
   }

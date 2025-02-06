@@ -29,7 +29,7 @@ export const Basic: NotificationsStory = {
         >
           Это сообщение в системном уведомлении для юзеров.
         </Notification>
-        <Notification 
+        <Notification
           variant="success"
           title="Уведомление об успехе"
           autoClose={6000}
@@ -41,9 +41,7 @@ export const Basic: NotificationsStory = {
         >
           Это сообщение в системном уведомлении для юзеров с лоадером.
         </Notification>
-        <Notification
-          title="Буфер обмена"
-        >
+        <Notification title="Буфер обмена">
           Скопировано в буфер обмена
         </Notification>
       </>

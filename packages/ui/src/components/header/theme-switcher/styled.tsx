@@ -68,9 +68,11 @@ export const HeaderThemeSwitcherList = styled.span<HeaderThemeSwitcherListProps>
   display: flex;
   align-items: center;
   gap: 6px;
-  ${({ $inMenu }) => $inMenu && css`
-    width: 100%;
-  `}
+  ${({ $inMenu }) =>
+    $inMenu &&
+    css`
+      width: 100%;
+    `}
   position: relative;
 `;
 
@@ -82,13 +84,17 @@ export const HeaderThemeSwitcherItem = styled.span<HeaderThemeSwitcherItemProps>
   display: inline-flex;
   position: relative;
   border-radius: 12px;
-  ${({ $inMenu }) => !$inMenu && css`
-    padding: 8px;
-  `}
-  ${({ $inMenu }) => $inMenu && css`
-    width: 100%;
-    padding: 6px;
-  `}
+  ${({ $inMenu }) =>
+    !$inMenu &&
+    css`
+      padding: 8px;
+    `}
+  ${({ $inMenu }) =>
+    $inMenu &&
+    css`
+      width: 100%;
+      padding: 6px;
+    `}
 `;
 
 export const HeaderThemeSwitcherItemBackground = styled.span<{
@@ -104,8 +110,11 @@ export const HeaderThemeSwitcherItemBackground = styled.span<{
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
-  transition: transform 0.2s ease-out, background 0.2s ease-out;
-  transform: ${({ $isLight }) => ($isLight ? 'translateX(0%)' : 'translateX(calc(100% + 6px))')};
+  transition:
+    transform 0.2s ease-out,
+    background 0.2s ease-out;
+  transform: ${({ $isLight }) =>
+    $isLight ? 'translateX(0%)' : 'translateX(calc(100% + 6px))'};
 `;
 
 export interface HeaderThemeSwitcherItemContentProps {

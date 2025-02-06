@@ -1,15 +1,24 @@
 import React from 'react';
-import { MessageImageButtonContent, MessageImageButtonStyled, MessageImageButtonZoneWrapper } from './styled';
+import {
+  MessageImageButtonContent,
+  MessageImageButtonStyled,
+  MessageImageButtonZoneWrapper
+} from './styled';
 import { ButtonProps } from '@/ui/components/button';
 
-export type MessageImageButtonProps = ButtonProps & React.PropsWithChildren & {
-  className?: string;
-  zone?: boolean;
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-};
+export type MessageImageButtonProps = ButtonProps &
+  React.PropsWithChildren & {
+    className?: string;
+    zone?: boolean;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  };
 
 export const MessageImageButton: React.FC<MessageImageButtonProps> = ({
-  className, zone = false, children, onClick, ...props
+  className,
+  zone = false,
+  children,
+  onClick,
+  ...props
 }) => {
   const contentNode = (
     <MessageImageButtonContent
@@ -32,9 +41,7 @@ export const MessageImageButton: React.FC<MessageImageButtonProps> = ({
   }
 
   return (
-    <MessageImageButtonStyled 
-      className={className}
-    >
+    <MessageImageButtonStyled className={className}>
       {zoneNode}
     </MessageImageButtonStyled>
   );

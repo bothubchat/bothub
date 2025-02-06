@@ -1,9 +1,13 @@
-import {
-  Icon, IconConsumer, IconProps, icon 
-} from '@/ui/components/icon';
+import { Icon, IconConsumer, IconProps, icon } from '@/ui/components/icon';
 
 export const ManageChatIcon = icon(({ ...props }: IconProps) => (
-  <Icon width={18} height={16} viewBox="0 0 18 16" fill="none" {...props}>
+  <Icon
+    width={18}
+    height={16}
+    viewBox="0 0 18 16"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {({ fill = props.fill ?? '#616D8D' } = { fill: '#616D8D' }) => (
         <>

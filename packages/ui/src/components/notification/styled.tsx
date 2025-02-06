@@ -12,20 +12,24 @@ export interface NotificationStyledProps {
 
 export const NotificationStyled = styled(animated.div)<NotificationStyledProps>`
   display: flex;
-  background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray2)};
-  border: 1px solid ${({ theme, $variant }) => {
-    switch ($variant) {
-      case 'info':
-      case 'loading':
-        return theme.colors.accent.primary;
-      case 'warn':
-        return theme.colors.orange;
-      case 'error':
-        return theme.colors.critic;
-      case 'success':
-        return theme.colors.green;
-    }
-  }};
+  background: ${({ theme }) =>
+    theme.mode === 'light'
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray2};
+  border: 1px solid
+    ${({ theme, $variant }) => {
+      switch ($variant) {
+        case 'info':
+        case 'loading':
+          return theme.colors.accent.primary;
+        case 'warn':
+          return theme.colors.orange;
+        case 'error':
+          return theme.colors.critic;
+        case 'success':
+          return theme.colors.green;
+      }
+    }};
   border-radius: 14px;
   overflow: hidden;
   box-sizing: border-box;
@@ -71,11 +75,23 @@ export const NotificationInfo = styled.div`
   align-items: flex-start;
 `;
 
-export const NotificationTitle = styled(Typography).attrs({ component: 'h3', variant: 'body-m-semibold' })``;
+export const NotificationTitle = styled(Typography).attrs({
+  component: 'h3',
+  variant: 'body-m-semibold'
+})``;
 
-export const NotificationText = styled(Typography).attrs({ component: 'p', variant: 'body-m-regular' })`
+export const NotificationText = styled(Typography).attrs({
+  component: 'p',
+  variant: 'body-m-regular'
+})`
   margin-top: 10px;
-  color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.black : theme.colors.grayScale.gray6)};
+  color: ${({ theme }) =>
+    theme.mode === 'light'
+      ? theme.default.colors.base.black
+      : theme.colors.grayScale.gray6};
 `;
 
-export const NotificationCloseButton = styled(Button).attrs({ variant: 'text', children: <CloseIcon /> })``;
+export const NotificationCloseButton = styled(Button).attrs({
+  variant: 'text',
+  children: <CloseIcon />
+})``;

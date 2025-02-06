@@ -1,21 +1,25 @@
 import React from 'react';
 import { BackgroundVariant } from './types';
-import { BackgroundBluePurpleBottomLeftImage, BackgroundBluePurpleCenterImage, BackgroundStyled } from './styled';
+import {
+  BackgroundBluePurpleBottomLeftImage,
+  BackgroundBluePurpleCenterImage,
+  BackgroundStyled
+} from './styled';
 
 export interface BackgroundProps extends React.ComponentProps<'div'> {
   variant?: BackgroundVariant;
   disableRepeat?: boolean;
 }
 
-export const Background: React.FC<BackgroundProps> = ({ 
-  variant = 'grid', 
+export const Background: React.FC<BackgroundProps> = ({
+  variant = 'grid',
   disableRepeat = false,
-  ...props 
+  ...props
 }) => {
   let imageNode: React.ReactNode;
   switch (variant) {
     case 'blue-purple':
-      imageNode = <BackgroundBluePurpleCenterImage />; 
+      imageNode = <BackgroundBluePurpleCenterImage />;
       break;
     case 'blue-purple-bottom-left':
       imageNode = <BackgroundBluePurpleBottomLeftImage />;
@@ -26,9 +30,9 @@ export const Background: React.FC<BackgroundProps> = ({
   }
 
   return (
-    <BackgroundStyled 
-      $variant={variant} 
-      $disableRepeat={disableRepeat}  
+    <BackgroundStyled
+      $variant={variant}
+      $disableRepeat={disableRepeat}
       {...props}
     >
       {imageNode}

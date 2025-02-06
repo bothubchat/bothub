@@ -31,7 +31,11 @@ export const MessageVoiceMain = styled.div<MessageVoiceMainProps>`
   cursor: ${({ $loading }) => ($loading ? 'progress' : 'pointer')};
 `;
 
-export const MessageVoiceToggleButton = styled(Button).attrs({ variant: 'text', iconSize: 36, disableHoverColor: true })`
+export const MessageVoiceToggleButton = styled(Button).attrs({
+  variant: 'text',
+  iconSize: 36,
+  disableHoverColor: true
+})`
   cursor: inherit;
 `;
 
@@ -46,12 +50,18 @@ export const MessageVoiceWaves = styled.svg`
   height: 36px;
 `;
 
-export const MessageVoiceDurationText = styled(Typography).attrs({ variant: 'body-s-medium' })`
+export const MessageVoiceDurationText = styled(Typography).attrs({
+  variant: 'body-s-medium'
+})`
   color: ${({ theme }) => theme.default.colors.base.white};
   user-select: none;
 `;
 
-export const MessageVoiceToggleTextButton = styled(Button).attrs({ variant: 'text', iconSize: 30, disableHoverColor: true })``;
+export const MessageVoiceToggleTextButton = styled(Button).attrs({
+  variant: 'text',
+  iconSize: 30,
+  disableHoverColor: true
+})``;
 
 export const MessageVoiceShowTextIcon = styled(TextReadIcon)``;
 
@@ -61,34 +71,42 @@ export interface MessageVoiceTextProps {
   $messageColor: string;
 }
 
-export const MessageVoiceText = styled(Typography).attrs({ variant: 'body-m-regular' })<MessageVoiceTextProps>`
+export const MessageVoiceText = styled(Typography).attrs({
+  variant: 'body-m-regular'
+})<MessageVoiceTextProps>`
   width: 100%;
   color: ${({ theme }) => theme.default.colors.base.white};
   &::selection {
     ${({ $messageColor }) => {
-    switch ($messageColor) {
-      case 'default':
-        return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
-        `;
-      case 'green':
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${({ theme }) => theme.colors.gpt3};
-        `;
-      case 'purple':
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${({ theme }) => theme.colors.gpt4};
-        `;
-      default:
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${$messageColor};
-        `;
-    }
-  }}
+      switch ($messageColor) {
+        case 'default':
+          return css`
+            background: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.accent.primary
+                : theme.colors.base.white};
+            color: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.base.white
+                : theme.colors.accent.primary};
+          `;
+        case 'green':
+          return css`
+            background: ${({ theme }) => theme.default.colors.base.white};
+            color: ${({ theme }) => theme.colors.gpt3};
+          `;
+        case 'purple':
+          return css`
+            background: ${({ theme }) => theme.default.colors.base.white};
+            color: ${({ theme }) => theme.colors.gpt4};
+          `;
+        default:
+          return css`
+            background: ${({ theme }) => theme.default.colors.base.white};
+            color: ${$messageColor};
+          `;
+      }
+    }}
   }
 `;
 

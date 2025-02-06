@@ -26,8 +26,8 @@ export const BackgroundStyled = styled.div<BackgroundStyledProps>`
           background: url(${JSON.stringify(grid)});
           background-size: contain;
           background-position: center;
-          ${!$disableRepeat
-          && css`
+          ${!$disableRepeat &&
+          css`
             background-repeat: repeat;
           `}
           opacity: 0.35;
@@ -46,7 +46,7 @@ export const BackgroundImage = styled.img``;
 export const BackgroundBluePurpleCenterImage = styled(BackgroundImage).attrs({
   src: bluePurpleCenter,
   width: 773,
-  height: 576,
+  height: 576
 })`
   width: 773px;
   height: 576px;

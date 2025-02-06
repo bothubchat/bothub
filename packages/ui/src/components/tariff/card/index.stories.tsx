@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
-  TariffCard, 
-  TariffCardGiveCaps, 
-  TariffCardGiveCapsBadge, 
-  TariffCardGiveCapsText, 
-  TariffCardModel, 
-  TariffCardModels 
+  TariffCard,
+  TariffCardGiveCaps,
+  TariffCardGiveCapsBadge,
+  TariffCardGiveCapsText,
+  TariffCardModel,
+  TariffCardModels
 } from '.';
 
 export type TariffCardMeta = Meta<typeof TariffCard>;
@@ -18,12 +18,8 @@ export const Basic: TariffCardStory = {
     name: 'Premium',
     giveCaps: (
       <TariffCardGiveCaps>
-        <TariffCardGiveCapsText>
-          Вы получаете
-        </TariffCardGiveCapsText>
-        <TariffCardGiveCapsBadge>
-          3 000 000 Caps
-        </TariffCardGiveCapsBadge>
+        <TariffCardGiveCapsText>Вы получаете</TariffCardGiveCapsText>
+        <TariffCardGiveCapsBadge>3 000 000 Caps</TariffCardGiveCapsBadge>
       </TariffCardGiveCaps>
     ),
     price: '600',

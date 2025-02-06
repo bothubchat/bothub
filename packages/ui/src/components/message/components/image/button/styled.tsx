@@ -4,7 +4,6 @@ import { Button } from '@/ui/components/button';
 export const MessageImageButtonStyled = styled.div`
   display: inline-flex;
   pointer-events: none;
-
 `;
 
 export const MessageImageButtonZoneWrapper = styled.div`

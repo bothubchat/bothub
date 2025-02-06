@@ -13,7 +13,12 @@ export interface ChipProps extends React.ComponentProps<'div'> {
 }
 
 export const Chip: React.FC<ChipProps> = ({
-  variant = 'default', start, image, children, onDelete, ...props
+  variant = 'default',
+  start,
+  image,
+  children,
+  onDelete,
+  ...props
 }) => (
   <ChipStyled
     $variant={variant}
@@ -41,9 +46,7 @@ export const Chip: React.FC<ChipProps> = ({
       </Tooltip>
     )}
     {typeof children !== 'string' && children}
-    <ChipDeleteButton
-      onClick={onDelete}
-    />
+    <ChipDeleteButton onClick={onDelete} />
   </ChipStyled>
 );
 

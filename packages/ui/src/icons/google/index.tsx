@@ -1,7 +1,12 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const GoogleIcon = icon(({ ...props }) => (
-  <Icon size={20} viewBox="0 0 20 20" fill="none" {...props}>
+  <Icon
+    size={20}
+    viewBox="0 0 20 20"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {() => (
         <>
@@ -29,7 +34,11 @@ export const GoogleIcon = icon(({ ...props }) => (
           </g>
           <defs>
             <clipPath id="clip0_3518_13861">
-              <rect width="20" height="20" fill="white" />
+              <rect
+                width="20"
+                height="20"
+                fill="white"
+              />
             </clipPath>
           </defs>
         </>

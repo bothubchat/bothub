@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
-  TariffCard, 
-  TariffCardGiveCaps, 
-  TariffCardGiveCapsBadge, 
-  TariffCardGiveCapsText, 
-  TariffCardModel, 
-  TariffCardModels 
+  TariffCard,
+  TariffCardGiveCaps,
+  TariffCardGiveCapsBadge,
+  TariffCardGiveCapsText,
+  TariffCardModel,
+  TariffCardModels
 } from '@/ui/components/tariff';
 import { Tariffs } from '.';
 
@@ -20,16 +20,12 @@ export const Basic: TariffsStory = {
       <TariffCard
         key="free"
         name="Free"
-        giveCaps={(
+        giveCaps={
           <TariffCardGiveCaps>
-            <TariffCardGiveCapsText>
-              Вы получаете
-            </TariffCardGiveCapsText>
-            <TariffCardGiveCapsBadge>
-              10 000 Caps
-            </TariffCardGiveCapsBadge>
+            <TariffCardGiveCapsText>Вы получаете</TariffCardGiveCapsText>
+            <TariffCardGiveCapsBadge>10 000 Caps</TariffCardGiveCapsBadge>
           </TariffCardGiveCaps>
-        )}
+        }
         price="0"
         currency="₽"
         details="Подробнее о стоимости токенов"
@@ -47,16 +43,12 @@ export const Basic: TariffsStory = {
         key="basic"
         color="blue"
         name="Basic"
-        giveCaps={(
+        giveCaps={
           <TariffCardGiveCaps>
-            <TariffCardGiveCapsText>
-              Вы получаете
-            </TariffCardGiveCapsText>
-            <TariffCardGiveCapsBadge>
-              1 000 000 Caps
-            </TariffCardGiveCapsBadge>
+            <TariffCardGiveCapsText>Вы получаете</TariffCardGiveCapsText>
+            <TariffCardGiveCapsBadge>1 000 000 Caps</TariffCardGiveCapsBadge>
           </TariffCardGiveCaps>
-        )}
+        }
         price="200"
         currency="₽"
         details="Подробнее о стоимости токенов"
@@ -78,16 +70,12 @@ export const Basic: TariffsStory = {
         key="premium"
         color="blue-lilac"
         name="Premium"
-        giveCaps={(
+        giveCaps={
           <TariffCardGiveCaps>
-            <TariffCardGiveCapsText>
-              Вы получаете
-            </TariffCardGiveCapsText>
-            <TariffCardGiveCapsBadge>
-              3 000 000 Caps
-            </TariffCardGiveCapsBadge>
+            <TariffCardGiveCapsText>Вы получаете</TariffCardGiveCapsText>
+            <TariffCardGiveCapsBadge>3 000 000 Caps</TariffCardGiveCapsBadge>
           </TariffCardGiveCaps>
-        )}
+        }
         price="600"
         currency="₽"
         details="Подробнее о стоимости токенов"
@@ -117,16 +105,12 @@ export const Basic: TariffsStory = {
         key="elite"
         color="blue-lilac"
         name="Elite"
-        giveCaps={(
+        giveCaps={
           <TariffCardGiveCaps>
-            <TariffCardGiveCapsText>
-              Вы получаете
-            </TariffCardGiveCapsText>
-            <TariffCardGiveCapsBadge>
-              30 000 000 Caps
-            </TariffCardGiveCapsBadge>
+            <TariffCardGiveCapsText>Вы получаете</TariffCardGiveCapsText>
+            <TariffCardGiveCapsBadge>30 000 000 Caps</TariffCardGiveCapsBadge>
           </TariffCardGiveCaps>
-        )}
+        }
         price="6 000"
         currency="₽"
         details="Подробнее о стоимости токенов"

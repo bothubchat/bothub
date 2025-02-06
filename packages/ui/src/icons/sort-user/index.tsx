@@ -1,7 +1,12 @@
 import { Icon, icon } from '@/ui/components/icon';
 
 export const SortUserIcon = icon(({ ...props }) => (
-  <Icon size={24} viewBox="0 0 16 10" fill="none" {...props}>
+  <Icon
+    size={24}
+    viewBox="0 0 16 10"
+    fill="none"
+    {...props}
+  >
     <path
       fillRule="evenodd"
       clipRule="evenodd"

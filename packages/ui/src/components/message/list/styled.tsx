@@ -7,7 +7,9 @@ export const MessagesStyled = styled.div`
   width: 100%;
 `;
 
-export const MessagesScrollbarWrapper = styled(Scrollbar).attrs({ variant: 'secondary' })`
+export const MessagesScrollbarWrapper = styled(Scrollbar).attrs({
+  variant: 'secondary'
+})`
   overflow: auto;
   height: 100%;
   ${adaptive({

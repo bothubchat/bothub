@@ -1,12 +1,12 @@
 import React, { useCallback } from 'react';
 import {
-  BadgeProgressBackground, 
-  BadgeProgressContent, 
-  BadgeProgressLine, 
-  BadgeProgressLineFilled, 
-  BadgeProgressLoader, 
-  BadgeProgressStyled, 
-  BadgeProgressText 
+  BadgeProgressBackground,
+  BadgeProgressContent,
+  BadgeProgressLine,
+  BadgeProgressLineFilled,
+  BadgeProgressLoader,
+  BadgeProgressStyled,
+  BadgeProgressText
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { BadgeProgressColor } from './types';
@@ -22,7 +22,12 @@ export interface BadgeProgressProps extends React.ComponentProps<'div'> {
 }
 
 export const BadgeProgress: React.FC<BadgeProgressProps> = ({
-  className, value = null, min = 0, max = 100, color = 'primary', children,
+  className,
+  value = null,
+  min = 0,
+  max = 100,
+  color = 'primary',
+  children,
   ...props
 }) => {
   const theme = useTheme();
@@ -55,19 +60,22 @@ export const BadgeProgress: React.FC<BadgeProgressProps> = ({
       break;
   }
 
-  const {
-    handleTooltipMouseEnter,
-    handleTooltipMouseLeave
-  } = useTooltip();
+  const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
 
-  const handleMouseEnter = useCallback<React.MouseEventHandler<HTMLDivElement>>((event) => {
-    props.onMouseEnter?.(event);
-    handleTooltipMouseEnter(event);
-  }, [props.onMouseEnter, handleTooltipMouseEnter]);
-  const handleMouseLeave = useCallback<React.MouseEventHandler<HTMLDivElement>>((event) => {
-    props.onMouseLeave?.(event);
-    handleTooltipMouseLeave(event);
-  }, [props.onMouseLeave, handleTooltipMouseLeave]);
+  const handleMouseEnter = useCallback<React.MouseEventHandler<HTMLDivElement>>(
+    (event) => {
+      props.onMouseEnter?.(event);
+      handleTooltipMouseEnter(event);
+    },
+    [props.onMouseEnter, handleTooltipMouseEnter]
+  );
+  const handleMouseLeave = useCallback<React.MouseEventHandler<HTMLDivElement>>(
+    (event) => {
+      props.onMouseLeave?.(event);
+      handleTooltipMouseLeave(event);
+    },
+    [props.onMouseLeave, handleTooltipMouseLeave]
+  );
 
   return (
     <BadgeProgressStyled
@@ -78,9 +86,7 @@ export const BadgeProgress: React.FC<BadgeProgressProps> = ({
       onMouseLeave={handleMouseLeave}
     >
       <BadgeProgressBackground>
-        <BadgeProgressLine
-          $color={color}
-        >
+        <BadgeProgressLine $color={color}>
           {percent !== null && (
             <BadgeProgressLineFilled
               style={{
@@ -91,15 +97,11 @@ export const BadgeProgress: React.FC<BadgeProgressProps> = ({
         </BadgeProgressLine>
       </BadgeProgressBackground>
       <BadgeProgressContent>
-        <IconProvider
-          fill={loaderColor}
-        >
+        <IconProvider fill={loaderColor}>
           <BadgeProgressLoader />
         </IconProvider>
         {typeof children === 'string' && (
-          <BadgeProgressText>
-            {children}
-          </BadgeProgressText>
+          <BadgeProgressText>{children}</BadgeProgressText>
         )}
         {typeof children !== 'string' && children}
       </BadgeProgressContent>

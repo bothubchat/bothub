@@ -2,7 +2,7 @@ import React, {
   forwardRef,
   useCallback,
   useImperativeHandle,
-  useRef,
+  useRef
 } from 'react';
 import {
   MessageList,
@@ -10,12 +10,12 @@ import {
   MessagesContent,
   MessagesScrollbarWrapper,
   MessagesStart,
-  MessagesStyled,
+  MessagesStyled
 } from './styled';
 import {
   SetScrollFunction,
   ScrollbarRef,
-  ScrollbarShadowsProps,
+  ScrollbarShadowsProps
 } from '@/ui/components/scrollbar';
 import { MessagesProvider, MessagesScrollProvider } from './context';
 
@@ -31,13 +31,12 @@ export interface MessagesProps extends React.PropsWithChildren {
 }
 
 export const Messages = forwardRef<MessagesRef, MessagesProps>(
-  ({
-    className, startRef, scrollShadows, children 
-  }, ref) => {
+  ({ className, startRef, scrollShadows, children }, ref) => {
     const scrollbarRef = useRef<ScrollbarRef>(null);
 
     const setScroll = useCallback<SetScrollFunction>(
-      (options) => scrollbarRef.current?.setScroll(options ?? { side: 'bottom' }),
+      (options) =>
+        scrollbarRef.current?.setScroll(options ?? { side: 'bottom' }),
       [scrollbarRef.current]
     );
 
@@ -45,7 +44,7 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(
       ref,
       () => ({
         element: scrollbarRef.current?.element ?? null,
-        setScroll,
+        setScroll
       }),
       [setScroll, scrollbarRef.current]
     );

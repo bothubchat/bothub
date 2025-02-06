@@ -8,7 +8,8 @@ export interface BothubGlobalStyleProps {
 }
 
 export const BothubGlobalStyle: React.FC<BothubGlobalStyleProps> = ({
-  margin, scale = null
+  margin,
+  scale = null
 }) => {
   useEffect(() => {
     const resizeListener = () => {
@@ -27,14 +28,8 @@ export const BothubGlobalStyle: React.FC<BothubGlobalStyleProps> = ({
 
   return (
     <>
-      <BothubGlobalStyleStyled
-        $margin={margin}
-      />
-      {scale !== null && (
-        <BothubScaleGlobalStyle
-          variant={scale}
-        />
-      )}
+      <BothubGlobalStyleStyled $margin={margin} />
+      {scale !== null && <BothubScaleGlobalStyle variant={scale} />}
     </>
   );
 };

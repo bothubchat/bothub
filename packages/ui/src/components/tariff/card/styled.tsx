@@ -34,7 +34,9 @@ export const TariffCardContent = styled.div<TariffCardContentProps>`
         `;
       case 'secondary':
         return css`
-          background: ${theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4};
+          background: ${theme.mode === 'light'
+            ? theme.default.colors.base.white
+            : theme.colors.grayScale.gray4};
         `;
     }
   }}
@@ -80,7 +82,10 @@ export const TariffCardNamePrice = styled.div`
   width: 100%;
 `;
 
-export const TariffCardName = styled(Typography).attrs({ variant: 'h3', component: 'h3' })``;
+export const TariffCardName = styled(Typography).attrs({
+  variant: 'h3',
+  component: 'h3'
+})``;
 
 export const TariffCardGiveCaps = styled.div`
   display: flex;
@@ -91,7 +96,9 @@ export const TariffCardGiveCaps = styled.div`
   margin-top: 8px;
 `;
 
-export const TariffCardGiveCapsText = styled(Typography).attrs({ variant: 'body-xs-regular' })``;
+export const TariffCardGiveCapsText = styled(Typography).attrs({
+  variant: 'body-xs-regular'
+})``;
 
 export const TariffCardGiveCapsBadge = styled(Badge)``;
 
@@ -129,7 +136,9 @@ export const TariffCardDetailsLink = styled.a`
   }
 `;
 
-export const TariffCardPurchaseButton = styled(Button).attrs({ fullWidth: true })`
+export const TariffCardPurchaseButton = styled(Button).attrs({
+  fullWidth: true
+})`
   margin-top: 20px;
 `;
 
@@ -143,9 +152,13 @@ export const TariffCardValidityPeriod = styled(Typography)`
   width: 100%;
 `;
 
-export type TariffCardStyledProps = Omit<React.ComponentProps<'div'>, 'children'> & React.PropsWithChildren & {
-  $color: TariffCardColor;
-};
+export type TariffCardStyledProps = Omit<
+  React.ComponentProps<'div'>,
+  'children'
+> &
+  React.PropsWithChildren & {
+    $color: TariffCardColor;
+  };
 
 export const TariffCardStyled: React.FC<TariffCardStyledProps> = styled.div<TariffCardStyledProps>`
   display: flex !important;
@@ -154,27 +167,27 @@ export const TariffCardStyled: React.FC<TariffCardStyledProps> = styled.div<Tari
   width: 300px;
   ${TariffCardBorderWrapper} {
     background: ${({ theme, $color }) => {
-    switch ($color) {
-      case 'blue':
-        return theme.colors.accent.primary;
-      case 'blue-lilac':
-        return theme.colors.premiumGradient;
-      default:
-        return theme.colors.grayScale.gray2;
-    }
-  }}
+      switch ($color) {
+        case 'blue':
+          return theme.colors.accent.primary;
+        case 'blue-lilac':
+          return theme.colors.premiumGradient;
+        default:
+          return theme.colors.grayScale.gray2;
+      }
+    }};
   }
   ${TariffCardName} {
     background: ${({ theme, $color }) => {
-    switch ($color) {
-      case 'blue':
-        return theme.colors.accent.primary;
-      case 'blue-lilac':
-        return theme.colors.premiumGradient;
-      default:
-        return theme.colors.base.white;
-    }
-  }};
+      switch ($color) {
+        case 'blue':
+          return theme.colors.accent.primary;
+        case 'blue-lilac':
+          return theme.colors.premiumGradient;
+        default:
+          return theme.colors.base.white;
+      }
+    }};
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

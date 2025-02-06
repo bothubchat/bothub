@@ -20,17 +20,29 @@ export const TariffCardBackgroundBlack = styled.div<{ $variant: Variant }>`
         return adaptive({
           variant: 'main',
           merge: true,
-          desktop: css`width: 270px;`,
-          tablet: css`width: 240px;`,
-          mobile: css`display: none`,
+          desktop: css`
+            width: 270px;
+          `,
+          tablet: css`
+            width: 240px;
+          `,
+          mobile: css`
+            display: none;
+          `
         });
       case 'dashboard':
         return adaptive({
           variant: 'dashboard',
           merge: true,
-          desktop: css`width: 270px;`,
-          tablet: css`width: 220px;`,
-          mobile: css`display: none`,
+          desktop: css`
+            width: 270px;
+          `,
+          tablet: css`
+            width: 220px;
+          `,
+          mobile: css`
+            display: none;
+          `
         });
     }
   }}
@@ -42,26 +54,40 @@ export const TariffCardBackgroundGradient = styled.img`
   left: 0;
   width: 100%;
   height: 100%;
-  ${({ theme }) => theme.mode === 'light' && css`opacity: 0.7;`}
+  ${({ theme }) =>
+    theme.mode === 'light' &&
+    css`
+      opacity: 0.7;
+    `}
 `;
 
-export const TariffCardBackgroundGradientBasic = styled(TariffCardBackgroundGradient).attrs({
+export const TariffCardBackgroundGradientBasic = styled(
+  TariffCardBackgroundGradient
+).attrs({
   src: basicBg
 })``;
 
-export const TariffCardBackgroundGradientPremium = styled(TariffCardBackgroundGradient).attrs({
+export const TariffCardBackgroundGradientPremium = styled(
+  TariffCardBackgroundGradient
+).attrs({
   src: premiumBg
 })``;
 
-export const TariffCardBackgroundGradientDeluxe = styled(TariffCardBackgroundGradient).attrs({
+export const TariffCardBackgroundGradientDeluxe = styled(
+  TariffCardBackgroundGradient
+).attrs({
   src: deluxeBg
 })``;
 
-export const TariffCardBackgroundGradientElite = styled(TariffCardBackgroundGradient).attrs({
+export const TariffCardBackgroundGradientElite = styled(
+  TariffCardBackgroundGradient
+).attrs({
   src: eliteBg
 })``;
 
-export const TariffCardBackgroundPercentStyled = styled.svg<{ $variant: Variant }>`
+export const TariffCardBackgroundPercentStyled = styled.svg<{
+  $variant: Variant;
+}>`
   position: absolute;
   right: 0;
   top: 0;
@@ -70,44 +96,54 @@ export const TariffCardBackgroundPercentStyled = styled.svg<{ $variant: Variant 
       case 'main':
         return adaptive({
           variant: 'main',
-          mobile: css`display: none`,
+          mobile: css`
+            display: none;
+          `
         });
       case 'dashboard':
         return adaptive({
           variant: 'dashboard',
-          mobile: css`display: none`,
+          mobile: css`
+            display: none;
+          `
         });
     }
   }}
 `;
 
-export const TariffCardBackgroundPercentMobileStyled = styled.svg<{ $variant: Variant }>`
+export const TariffCardBackgroundPercentMobileStyled = styled.svg<{
+  $variant: Variant;
+}>`
   display: none;
   position: absolute;
   right: 0;
   height: 100%;
   top: 0;
-  ${({ $variant }) => adaptive({
-    variant: $variant,
-    merge: true,
-    mobile: css`display: block`,
-  })}
+  ${({ $variant }) =>
+    adaptive({
+      variant: $variant,
+      merge: true,
+      mobile: css`
+        display: block;
+      `
+    })}
 `;
 
 export const TariffCardDiscountLabelStyled = styled.svg<{ $variant: Variant }>`
   position: absolute;
   top: 0;
-  ${({ $variant }) => adaptive({
-    variant: $variant,
-    merge: true,
-    desktop: css`
-    right: 200px;
-  `,
-    tablet: css`
-    right: clamp(5.938rem, 0.208rem + 16.667vw, 9.063rem);
-  `,
-    mobile: css`
-    display: none;
-  `
-  })}
+  ${({ $variant }) =>
+    adaptive({
+      variant: $variant,
+      merge: true,
+      desktop: css`
+        right: 200px;
+      `,
+      tablet: css`
+        right: clamp(5.938rem, 0.208rem + 16.667vw, 9.063rem);
+      `,
+      mobile: css`
+        display: none;
+      `
+    })}
 `;

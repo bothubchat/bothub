@@ -13,7 +13,7 @@ export const HeaderMenuToggleButton: React.FC = () => {
   return (
     <HeaderMenuToggleButtonStyled
       $variant={variant}
-      aria-label="Menu Toggle Button" 
+      aria-label="Menu Toggle Button"
       onClick={toggleMenu}
     >
       <HeaderMenuToggleIcon />

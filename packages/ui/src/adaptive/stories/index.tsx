@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  AdaptiveBlockDesktopText, 
-  AdaptiveBlockMiniTabletText, 
-  AdaptiveBlockMobileText, 
-  AdaptiveBlockStyled, 
-  AdaptiveBlockTabletText, 
-  AdaptiveBlockTouchText 
+  AdaptiveBlockDesktopText,
+  AdaptiveBlockMiniTabletText,
+  AdaptiveBlockMobileText,
+  AdaptiveBlockStyled,
+  AdaptiveBlockTabletText,
+  AdaptiveBlockTouchText
 } from './styled';
 import { AdaptiveVariant } from '@/ui/adaptive';
 import { useTheme } from '@/ui/theme';
@@ -17,7 +17,9 @@ export interface AdaptiveBlockProps {
 }
 
 export const AdaptiveBlock: React.FC<AdaptiveBlockProps> = ({
-  variant = 'main', merge = false, disableMiniTablet = false
+  variant = 'main',
+  merge = false,
+  disableMiniTablet = false
 }) => {
   const theme = useTheme();
 
@@ -47,35 +49,13 @@ export const AdaptiveBlock: React.FC<AdaptiveBlockProps> = ({
       $disableMiniTablet={disableMiniTablet}
       title="Adaptive"
     >
-      <AdaptiveBlockDesktopText>
-        Desktop 
-        {' '}
-        (
-        {desktop}
-        )
-      </AdaptiveBlockDesktopText>
-      <AdaptiveBlockTabletText>
-        Tablet
-        (
-        {tablet}
-        )
-      </AdaptiveBlockTabletText>
+      <AdaptiveBlockDesktopText>Desktop ({desktop})</AdaptiveBlockDesktopText>
+      <AdaptiveBlockTabletText>Tablet ({tablet})</AdaptiveBlockTabletText>
       <AdaptiveBlockMiniTabletText>
-        Mini Tablet
-        (
-        {miniTablet}
-        )
-        {disableMiniTablet && ' (Disabled)'}
+        Mini Tablet ({miniTablet}){disableMiniTablet && ' (Disabled)'}
       </AdaptiveBlockMiniTabletText>
-      <AdaptiveBlockMobileText>
-        Mobile
-        (
-        {mobile}
-        )
-      </AdaptiveBlockMobileText>
-      <AdaptiveBlockTouchText>
-        Touch Mode
-      </AdaptiveBlockTouchText>
+      <AdaptiveBlockMobileText>Mobile ({mobile})</AdaptiveBlockMobileText>
+      <AdaptiveBlockTouchText>Touch Mode</AdaptiveBlockTouchText>
     </AdaptiveBlockStyled>
   );
 };

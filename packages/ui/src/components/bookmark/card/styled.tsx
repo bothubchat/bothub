@@ -15,10 +15,15 @@ export const BookmarkCardStyled = styled.div<BookmarkCardStyledProps>`
   width: 100%;
   border-radius: 14px;
   overflow: hidden;
-  background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray3)};
-  ${({ theme }) => theme.mode === 'light' && css`
-    box-shadow: inset 0px 0px 0px 1px ${theme.colors.grayScale.gray3};
-  `}
+  background: ${({ theme }) =>
+    theme.mode === 'light'
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray3};
+  ${({ theme }) =>
+    theme.mode === 'light' &&
+    css`
+      box-shadow: inset 0px 0px 0px 1px ${theme.colors.grayScale.gray3};
+    `}
   cursor: ${({ $skeleton }) => ($skeleton ? 'progress' : 'pointer')};
   ${() => css`
     ${BookmarkCardActions} {
@@ -30,23 +35,24 @@ export const BookmarkCardStyled = styled.div<BookmarkCardStyledProps>`
       }
     }
   `}
-  ${() => adaptive({
-    variant: 'dashboard',
-    desktop: css`
-      max-width: 314px;
-    `,
-    tablet: css`
-      max-width: 341px;
-    `,
-    mobile: css`
-      max-width: 343px;
-    `,
-    touch: css`
-      ${BookmarkCardActions} {
-        visibility: visible !important;
-      }
-    `
-  })}
+  ${() =>
+    adaptive({
+      variant: 'dashboard',
+      desktop: css`
+        max-width: 314px;
+      `,
+      tablet: css`
+        max-width: 341px;
+      `,
+      mobile: css`
+        max-width: 343px;
+      `,
+      touch: css`
+        ${BookmarkCardActions} {
+          visibility: visible !important;
+        }
+      `
+    })}
 `;
 
 export const BookmarkCardContent = styled.div`
@@ -67,9 +73,9 @@ export const BookmrakCardLine = styled.div<BookmrakCardLineProps>`
   background: ${({ theme, $skeleton, $color }) => {
     if ($skeleton) {
       return theme.colors.grayScale.gray1;
-    } 
+    }
 
-    return ($color ?? theme.colors.accent.primary);
+    return $color ?? theme.colors.accent.primary;
   }};
 `;
 
@@ -93,7 +99,9 @@ export const BookmarkCardBody = styled.div`
   margin-top: 14px;
 `;
 
-export const BookmarkCardName = styled(Typography).attrs({ variant: 'body-m-semibold' })`
+export const BookmarkCardName = styled(Typography).attrs({
+  variant: 'body-m-semibold'
+})`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -104,11 +112,18 @@ export const BookmarkCardActions = styled.div`
   gap: 14px;
 `;
 
-export const BookmarkCardAction = styled(Button).attrs({ variant: 'text', iconSize: 18 })``;
+export const BookmarkCardAction = styled(Button).attrs({
+  variant: 'text',
+  iconSize: 18
+})``;
 
-export const BookmarkCardEditAction = styled(BookmarkCardAction).attrs({ children: <EditIcon /> })``;
+export const BookmarkCardEditAction = styled(BookmarkCardAction).attrs({
+  children: <EditIcon />
+})``;
 
-export const BookmarkCardDeleteAction = styled(BookmarkCardAction).attrs({ children: <CloseIcon /> })``;
+export const BookmarkCardDeleteAction = styled(BookmarkCardAction).attrs({
+  children: <CloseIcon />
+})``;
 
 export const BookmarkCardChats = styled.div`
   display: flex;

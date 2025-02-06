@@ -13,7 +13,7 @@ export interface TooltipStyledProps {
   ref: React.RefObject<HTMLDivElement>;
 }
 
-export const TooltipStyled = styled(animated.div) <TooltipStyledProps>`
+export const TooltipStyled = styled(animated.div)<TooltipStyledProps>`
   display: inline-flex;
   position: absolute;
   top: 0px;
@@ -23,23 +23,30 @@ export const TooltipStyled = styled(animated.div) <TooltipStyledProps>`
   user-select: none;
   ${({ $placement, $inverted }) => {
     switch ($placement) {
-      case 'center-left': return css`
-        ${$inverted ? css`
-          flex-direction: row-reverse;
-        ` : css`
-          flex-direction: row;
-        `}
-      `;
-      case 'center-right': return css`
-        ${$inverted ? css`
-          flex-direction: row;
-        ` : css`
-          flex-direction: row-reverse;
-        `}
-      `;
-      default: return css`
-        flex-direction: column;
-      `;
+      case 'center-left':
+        return css`
+          ${$inverted
+            ? css`
+                flex-direction: row-reverse;
+              `
+            : css`
+                flex-direction: row;
+              `}
+        `;
+      case 'center-right':
+        return css`
+          ${$inverted
+            ? css`
+                flex-direction: row;
+              `
+            : css`
+                flex-direction: row-reverse;
+              `}
+        `;
+      default:
+        return css`
+          flex-direction: column;
+        `;
     }
   }}
   z-index: ${({ theme }) => theme.zIndex.tooltip};
@@ -117,7 +124,9 @@ export const TooltipBlock = styled.span<TooltipBlockProps>`
   max-width: 260px;
 `;
 
-export const TooltipLabel = styled(Typography).attrs({ variant: 'body-s-medium' })`
+export const TooltipLabel = styled(Typography).attrs({
+  variant: 'body-s-medium'
+})`
   white-space: pre-wrap;
 `;
 
@@ -127,9 +136,14 @@ export const TooltipMarkdown = styled(ReactMarkdown)`
   align-items: flex-start;
 `;
 
-export const TooltipLabelBold = styled(Typography).attrs({ variant: 'body-s-semibold' })``;
+export const TooltipLabelBold = styled(Typography).attrs({
+  variant: 'body-s-semibold'
+})``;
 
-export const TooltipCode = styled(Typography).attrs({ component: 'code', variant: 'body-s-medium' })`
+export const TooltipCode = styled(Typography).attrs({
+  component: 'code',
+  variant: 'body-s-medium'
+})`
   display: inline-flex;
   border-radius: 4px;
   background: ${({ theme }) => theme.colors.grayScale.gray3};

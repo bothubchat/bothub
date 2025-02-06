@@ -1,11 +1,11 @@
 import React from 'react';
-import { 
+import {
   PresetCardCategories,
   PresetCardCategory,
-  PresetCardContent, 
+  PresetCardContent,
   PresetCardDescription,
-  PresetCardLine, 
-  PresetCardLoader, 
+  PresetCardLine,
+  PresetCardLoader,
   PresetCardMain,
   PresetCardName,
   PresetCardNameActions,
@@ -28,10 +28,10 @@ export interface PresetCardProps {
 }
 
 export const PresetCard: React.FC<PresetCardProps> = ({
-  className, 
+  className,
   name,
   color,
-  actions, 
+  actions,
   description,
   categories,
   skeleton = false,
@@ -42,7 +42,7 @@ export const PresetCard: React.FC<PresetCardProps> = ({
     $skeleton={skeleton}
     $loading={loading}
     className={className}
-    onClick={onClick} 
+    onClick={onClick}
   >
     <PresetCardContent>
       {!skeleton && (
@@ -52,7 +52,7 @@ export const PresetCard: React.FC<PresetCardProps> = ({
         />
       )}
       {skeleton && (
-        <PresetCardLine 
+        <PresetCardLine
           $skeleton
           as={Skeleton}
           variant="rectangular"
@@ -75,7 +75,10 @@ export const PresetCard: React.FC<PresetCardProps> = ({
                     disabled={name.length <= 84}
                   >
                     <TooltipConsumer>
-                      {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                      {({
+                        handleTooltipMouseEnter,
+                        handleTooltipMouseLeave
+                      }) => (
                         <PresetCardName
                           onMouseEnter={handleTooltipMouseEnter}
                           onMouseLeave={handleTooltipMouseLeave}
@@ -90,15 +93,11 @@ export const PresetCard: React.FC<PresetCardProps> = ({
                 {typeof name !== 'string' && name}
               </>
             )}
-            {loading && (
-              <PresetCardLoader />
-            )}
+            {loading && <PresetCardLoader />}
             {!loading && actions}
           </PresetCardNameActions>
           {skeleton && (
-            <PresetCardDescription
-              $skeleton
-            >
+            <PresetCardDescription $skeleton>
               <Skeleton width={260} />
               <Skeleton width={180} />
             </PresetCardDescription>
@@ -128,7 +127,7 @@ export const PresetCard: React.FC<PresetCardProps> = ({
             </>
           )}
         </PresetCardTop>
-        {(skeleton && categories) && (
+        {skeleton && categories && (
           <PresetCardCategories>
             <PresetCardCategory skeleton />
             <PresetCardCategory skeleton />

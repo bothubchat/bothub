@@ -17,7 +17,7 @@ import {
   ImageFullScreenSlide,
   ImageFullScreenStyled,
   ImageFullScreenTopBlock,
-  ImageFullScreenTopBlockContent,
+  ImageFullScreenTopBlockContent
 } from './styled';
 import { ImageFullScreenData, ImageFullScreenDataItem } from './types';
 import { ImageFullScreenProvider } from './context';
@@ -47,7 +47,7 @@ export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
   author,
   toolbar,
   onChange,
-  onClose,
+  onClose
 }) => {
   const [isZooming, setIsZooming] = useState(false);
 
@@ -65,7 +65,7 @@ export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
     goPrev,
     goNext,
     goToSlide,
-    carouselProps,
+    carouselProps
   } = useCarousel({
     slidesCount: data.length,
     onSlideChange: handleSlideChange,
@@ -80,7 +80,7 @@ export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
           ({ id }) => id === (typeof item === 'object' ? item.id : item)
         ) ?? 0
       );
-    },
+    }
   });
   const activeItem: ImageFullScreenDataItem = data[activeSlideIndex] ?? null;
 
@@ -106,11 +106,17 @@ export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
   }, [open, goPrev, goNext]);
 
   return (
-    <ImageFullScreenProvider data={data} activeItem={activeItem}>
+    <ImageFullScreenProvider
+      data={data}
+      activeItem={activeItem}
+    >
       {open && (
         <Portal>
           <ImageFullScreenStyled>
-            <ImageFullScreenBackdrop open={open} onClick={onClose} />
+            <ImageFullScreenBackdrop
+              open={open}
+              onClick={onClose}
+            />
             <ImageFullScreenContainer>
               <ImageFullScreenContent>
                 {(author || toolbar) && (
@@ -132,7 +138,7 @@ export const ImageFullScreen: React.FC<ImageFullScreenProps> = ({
                               alt: item.name,
                               width: item.width,
                               height: item.height,
-                              loading: 'skeleton',
+                              loading: 'skeleton'
                             }}
                             onZoomStart={setIsZooming.bind(null, true)}
                             onZoomEnd={setIsZooming.bind(null, false)}

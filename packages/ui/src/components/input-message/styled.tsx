@@ -23,13 +23,13 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
   border-radius: 10px;
   border: 1px solid
     ${({ theme, $active, $disabled }) => {
-    if ($disabled) {
-      return theme.colors.grayScale.gray2;
-    }
-    return $active
-      ? theme.colors.accent.primary
-      : theme.colors.grayScale.gray2;
-  }};
+      if ($disabled) {
+        return theme.colors.grayScale.gray2;
+      }
+      return $active
+        ? theme.colors.accent.primary
+        : theme.colors.grayScale.gray2;
+    }};
   background: ${({ theme, $disabled }) => {
     if ($disabled) {
       return theme.colors.grayScale.gray3;
@@ -55,14 +55,16 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
     return 'text';
   }};
   outline: none;
-  ${({ $disabled }) => !$disabled
-    && css`
+  ${({ $disabled }) =>
+    !$disabled &&
+    css`
       &:hover {
         border-color: ${({ theme }) => theme.colors.accent.primary};
       }
     `}
-  ${({ $dragActive }) => $dragActive
-    && `
+  ${({ $dragActive }) =>
+    $dragActive &&
+    `
     opacity: 0.85;
   `}
 `;
@@ -79,7 +81,7 @@ export const InputMessageUploadFile = styled.div`
 `;
 
 export const InputMessageUploadFileInput = styled.input.attrs({
-  id: 'inputMessageUploadFileInput',
+  id: 'inputMessageUploadFileInput'
 })`
   display: none;
 `;
@@ -88,7 +90,7 @@ export const InputMessageUploadFileButton = styled(Button).attrs({
   variant: 'secondary',
   component: 'label',
   htmlFor: 'inputMessageUploadFileInput',
-  children: <AttachIcon />,
+  children: <AttachIcon />
 })`
   flex-shrink: 0;
   user-select: none;
@@ -144,8 +146,9 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   &::-webkit-scrollbar {
     display: none;
   }
-  ${({ $disabled }) => $disabled
-    && css`
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
       cursor: not-allowed;
     `}
 `;
@@ -188,7 +191,7 @@ export const InputMessageVoiceRecordDot = styled.span`
 `;
 
 export const InputMessageVoiceRecordTimeText = styled(Typography).attrs({
-  variant: 'body-s-medium',
+  variant: 'body-s-medium'
 })`
   cursor: default;
 `;
@@ -198,26 +201,24 @@ export const InputMessageToggleSendStyled = styled.div`
   width: fit-content;
   height: fit-content;
 
-  ${
-  adaptive({
+  ${adaptive({
     tablet: css`
       display: none;
     `,
     mobile: css`
       display: none;
     `
-  })
-}
+  })}
 `;
 
 export const InputMessageToggleSendButton = styled(Button).attrs({
   variant: 'text',
   startIcon: <EnterIcon />,
-  iconSize: 24,
+  iconSize: 24
 })`
   svg {
     g path {
-      fill: ${({ theme }) => (theme.colors.grayScale.gray3)} !important;
+      fill: ${({ theme }) => theme.colors.grayScale.gray3} !important;
     }
   }
 
@@ -225,8 +226,10 @@ export const InputMessageToggleSendButton = styled(Button).attrs({
   &:hover {
     svg {
       path {
-        fill: ${({ theme }) => (theme.mode === 'dark' 
-    ? theme.colors.grayScale.gray2 : theme.colors.grayScale.gray1)} !important;
+        fill: ${({ theme }) =>
+          theme.mode === 'dark'
+            ? theme.colors.grayScale.gray2
+            : theme.colors.grayScale.gray1} !important;
       }
     }
   }
@@ -245,9 +248,10 @@ export const InputMessageToggleSendModalStyled = styled(animated.div)`
   right: 0;
   border-radius: 10px;
   border: 1px ${({ theme }) => theme.colors.grayScale.gray2} solid;
-  background-color: ${({ theme }) => (theme.mode === 'dark'
-    ? theme.colors.grayScale.gray4
-    : theme.default.colors.base.white)};
+  background-color: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? theme.colors.grayScale.gray4
+      : theme.default.colors.base.white};
   z-index: 50;
   user-select: none;
   -moz-user-select: none;
@@ -272,10 +276,13 @@ export const InputMessageToggleSendModalOption = styled.button<{
       : theme.default.colors.base.white;
   }};
   cursor: pointer;
-  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out,
+  transition:
+    opacity 0.1s ease-in-out,
+    transform 0.1s ease-in-out,
     filter 0.1s ease-in-out;
   &:hover {
-    filter: ${({ theme }) => (theme.mode === 'dark' ? 'brightness(120%)' : 'brightness(80%)')};
+    filter: ${({ theme }) =>
+      theme.mode === 'dark' ? 'brightness(120%)' : 'brightness(80%)'};
     transition: filter 100ms ease-in-out;
   }
   &:active {

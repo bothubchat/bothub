@@ -38,9 +38,7 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   const { isOpen } = useSidebar();
 
   return (
-    <SidebarUserInfoProvider
-      caps={caps}
-    >
+    <SidebarUserInfoProvider caps={caps}>
       <SidebarUserInfoStyled $open={isOpen}>
         <SidebarUserInfoContent>
           <SidebarUserInfoMain
@@ -51,28 +49,16 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
             <SidebarUserInfoLeft>
               {avatar}
               <SidebarUserInfoText>
-                {name && (
-                  <SidebarUserInfoName>
-                    {name}
-                  </SidebarUserInfoName>
-                )}
-                {caps && (
-                  <SidebarUserInfoCaps>
-                    {caps}
-                  </SidebarUserInfoCaps>
-                )}
+                {name && <SidebarUserInfoName>{name}</SidebarUserInfoName>}
+                {caps && <SidebarUserInfoCaps>{caps}</SidebarUserInfoCaps>}
               </SidebarUserInfoText>
             </SidebarUserInfoLeft>
-            <SidebarUserInfoLogoutButtonContainer
-              $open={isOpen}
-            >
+            <SidebarUserInfoLogoutButtonContainer $open={isOpen}>
               {logout}
             </SidebarUserInfoLogoutButtonContainer>
           </SidebarUserInfoMain>
           <SidebarUserInfoBottom>
-            <SidebarUserInfoUpdateTariffContainer
-              $open={isOpen}
-            >
+            <SidebarUserInfoUpdateTariffContainer $open={isOpen}>
               {updateTariff}
             </SidebarUserInfoUpdateTariffContainer>
           </SidebarUserInfoBottom>

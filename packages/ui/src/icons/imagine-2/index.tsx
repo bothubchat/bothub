@@ -1,7 +1,12 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const Imagine2Icon = icon(({ ...props }) => (
-  <Icon size={16} viewBox="0 0 18 18" fill="none" {...props}>
+  <Icon
+    size={16}
+    viewBox="0 0 18 18"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {({ fill = '#F29C1C' } = { fill: '#F29C1C' }) => (
         <>
@@ -13,7 +18,11 @@ export const Imagine2Icon = icon(({ ...props }) => (
           </g>
           <defs>
             <clipPath id="clip0_2772_15622">
-              <rect width="18" height="18" fill="white" />
+              <rect
+                width="18"
+                height="18"
+                fill="white"
+              />
             </clipPath>
           </defs>
         </>

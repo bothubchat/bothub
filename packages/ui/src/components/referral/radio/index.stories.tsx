@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
-import { 
-  ReferralRadio, 
-  ReferralRadioTable, 
-  ReferralRadioTableCell, 
-  ReferralRadioTableHeadCell, 
-  ReferralRadioTableRow, 
+import {
+  ReferralRadio,
+  ReferralRadioTable,
+  ReferralRadioTableCell,
+  ReferralRadioTableHeadCell,
+  ReferralRadioTableRow,
   ReferralRadioTableSelectedCell
 } from '.';
 
@@ -20,36 +20,26 @@ export const Basic: ReferralRadioStory = {
     children: (
       <ReferralRadioTable>
         <ReferralRadioTableRow>
-          <ReferralRadioTableHeadCell>
-            Валюта:
-          </ReferralRadioTableHeadCell>
-          <ReferralRadioTableCell>
-            RUB
-          </ReferralRadioTableCell>
+          <ReferralRadioTableHeadCell>Валюта:</ReferralRadioTableHeadCell>
+          <ReferralRadioTableCell>RUB</ReferralRadioTableCell>
         </ReferralRadioTableRow>
         <ReferralRadioTableRow>
           <ReferralRadioTableHeadCell>
             Процент вознаграждения:
           </ReferralRadioTableHeadCell>
-          <ReferralRadioTableCell>
-            5%
-          </ReferralRadioTableCell>
+          <ReferralRadioTableCell>5%</ReferralRadioTableCell>
         </ReferralRadioTableRow>
         <ReferralRadioTableRow>
           <ReferralRadioTableHeadCell>
             Минимальная сумма вывода:
           </ReferralRadioTableHeadCell>
-          <ReferralRadioTableCell>
-            3000 RUB
-          </ReferralRadioTableCell>
+          <ReferralRadioTableCell>3000 RUB</ReferralRadioTableCell>
         </ReferralRadioTableRow>
         <ReferralRadioTableRow>
           <ReferralRadioTableHeadCell>
             Подарочная подписка:
           </ReferralRadioTableHeadCell>
-          <ReferralRadioTableSelectedCell>
-            FREE
-          </ReferralRadioTableSelectedCell>
+          <ReferralRadioTableSelectedCell>FREE</ReferralRadioTableSelectedCell>
         </ReferralRadioTableRow>
         <ReferralRadioTableRow>
           <ReferralRadioTableHeadCell>

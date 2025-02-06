@@ -7,5 +7,11 @@ export type AlriIconProps = Omit<ImageProps, 'src' | 'alt' | 'loading'> & {
 };
 
 export const AlriIcon: React.FC<AlriIconProps> = ({ alt, ...props }) => (
-  <img {...props} width={87} height={53} src={alri} alt={alt} />
+  <img
+    {...props}
+    width={87}
+    height={53}
+    src={alri}
+    alt={alt}
+  />
 );

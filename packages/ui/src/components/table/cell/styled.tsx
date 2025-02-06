@@ -28,7 +28,9 @@ export const TableCellStyled = styled.td<TableCellStyledProps>`
   }}
 `;
 
-export const TableCellText = styled(Typography).attrs({ variant: 'body-s-medium' })`
+export const TableCellText = styled(Typography).attrs({
+  variant: 'body-s-medium'
+})`
   display: inline-flex;
   align-items: center;
   white-space: pre-wrap;

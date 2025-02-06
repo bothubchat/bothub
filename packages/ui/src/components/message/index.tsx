@@ -3,7 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useRef,
-  useState,
+  useState
 } from 'react';
 import {
   MessageBlock,
@@ -21,7 +21,7 @@ import {
   MessageTop,
   MessageAvatar,
   MessageStyledWithBottomPanel,
-  MessageButtonsStyled,
+  MessageButtonsStyled
 } from './styled';
 import {
   MessageActionEventHandler,
@@ -29,7 +29,7 @@ import {
   MessageCopyEventHandler,
   MessageTimestampPosition,
   MessageVariant,
-  MessageVersionEventHandler,
+  MessageVersionEventHandler
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
@@ -124,7 +124,7 @@ export const Message: React.FC<MessageProps> = ({
   onDelete,
   onUpdate,
   onNextVersion,
-  onPrevVersion,
+  onPrevVersion
 }) => {
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
@@ -140,27 +140,30 @@ export const Message: React.FC<MessageProps> = ({
     []
   );
 
-  const getRichText = useCallback((html: HTMLElement) => {
-    const htmlStr = new DOMParser().parseFromString(
-      html.innerHTML,
-      'text/html'
-    );
-    const codeNodes = htmlStr.getElementsByTagName('code');
-    for (const codeNode of codeNodes) {
-      const el = htmlStr.createElement('span');
-      el.innerText = codeNode.innerText;
-      codeNode.replaceWith(el);
-    }
-    const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([content!], { type: 'text/plain' }),
-      'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' })
-    });
-    return [clipboardItem];
-  }, [content]);
+  const getRichText = useCallback(
+    (html: HTMLElement) => {
+      const htmlStr = new DOMParser().parseFromString(
+        html.innerHTML,
+        'text/html'
+      );
+      const codeNodes = htmlStr.getElementsByTagName('code');
+      for (const codeNode of codeNodes) {
+        const el = htmlStr.createElement('span');
+        el.innerText = codeNode.innerText;
+        codeNode.replaceWith(el);
+      }
+      const clipboardItem = new ClipboardItem({
+        'text/plain': new Blob([content!], { type: 'text/plain' }),
+        'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' })
+      });
+      return [clipboardItem];
+    },
+    [content]
+  );
 
   const getPlainText = useCallback((html: HTMLElement) => {
     const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([html.innerText], { type: 'text/plain' }),
+      'text/plain': new Blob([html.innerText], { type: 'text/plain' })
     });
     return [clipboardItem];
   }, []);
@@ -179,10 +182,10 @@ export const Message: React.FC<MessageProps> = ({
 
   if (
     !(
-      color
-      && typeof CSS === 'object'
-      && typeof CSS.supports === 'function'
-      && CSS.supports('background', color ?? '#000')
+      color &&
+      typeof CSS === 'object' &&
+      typeof CSS.supports === 'function' &&
+      CSS.supports('background', color ?? '#000')
     )
   ) {
     color = 'default';
@@ -209,9 +212,10 @@ export const Message: React.FC<MessageProps> = ({
     case 'assistant':
       switch (color) {
         case 'default':
-          hexColor = theme.mode === 'dark'
-            ? theme.colors.grayScale.gray2
-            : theme.colors.grayScale.gray3;
+          hexColor =
+            theme.mode === 'dark'
+              ? theme.colors.grayScale.gray2
+              : theme.colors.grayScale.gray3;
           break;
         case 'green':
           hexColor = theme.colors.gpt3;
@@ -246,9 +250,15 @@ export const Message: React.FC<MessageProps> = ({
       onCopy={handlePlainTextCopy}
       onCodeCopy={onCodeCopy}
     >
-      <MessageStyledWrapper $variant={variant} ref={messageRef}>
+      <MessageStyledWrapper
+        $variant={variant}
+        ref={messageRef}
+      >
         <MessageStyledWithBottomPanel>
-          <MessageStyled $variant={variant} className={className}>
+          <MessageStyled
+            $variant={variant}
+            className={className}
+          >
             <MessageContent $variant={variant}>
               {(name || transaction) && (
                 <MessageTop>
@@ -279,7 +289,7 @@ export const Message: React.FC<MessageProps> = ({
                       color: hexColor,
                       size: 60,
                       left: <ScrollbarShadow side="left" />,
-                      right: <ScrollbarShadow side="right" />,
+                      right: <ScrollbarShadow side="right" />
                     }}
                   >
                     <MessageBlockContent ref={messageBlockContentRef}>
@@ -301,14 +311,14 @@ export const Message: React.FC<MessageProps> = ({
                                 width={260}
                                 opacity={[
                                   theme.mode === 'light' ? 0.1 : 0.15,
-                                  theme.mode === 'light' ? 0.225 : 0.45,
+                                  theme.mode === 'light' ? 0.225 : 0.45
                                 ]}
                                 colors={[
                                   variant === 'user'
                                     ? theme.colors.base.white
                                     : theme.mode === 'light'
                                       ? theme.default.colors.base.black
-                                      : theme.colors.grayScale.gray6,
+                                      : theme.colors.grayScale.gray6
                                 ]}
                               />
                             </MessageParagraph>
@@ -327,7 +337,12 @@ export const Message: React.FC<MessageProps> = ({
                       )}
                     </MessageBlockContent>
                   </MessageBlockScrollbarWrapper>
-                  {timestamp && <MessageTimestamp time={timestamp} position={timestampPosition} />}
+                  {timestamp && (
+                    <MessageTimestamp
+                      time={timestamp}
+                      position={timestampPosition}
+                    />
+                  )}
                 </MessageBlock>
               </MessageBlockWrapper>
             </MessageContent>

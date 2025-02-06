@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  BookmarkList, 
-  BookmarkListContent, 
-  BookmarkListScrollbarWrapper, 
-  BookmarksContent, 
-  BookmarksStyled 
+  BookmarkList,
+  BookmarkListContent,
+  BookmarkListScrollbarWrapper,
+  BookmarksContent,
+  BookmarksStyled
 } from './styled';
 
 export interface BookmarksProps extends React.PropsWithChildren {
@@ -13,18 +13,16 @@ export interface BookmarksProps extends React.PropsWithChildren {
 }
 
 export const Bookmarks: React.FC<BookmarksProps> = ({
-  className, add, children 
+  className,
+  add,
+  children
 }) => (
-  <BookmarksStyled
-    className={className}
-  >
+  <BookmarksStyled className={className}>
     <BookmarksContent>
       {React.Children.toArray(children).length !== 0 && (
         <BookmarkList>
           <BookmarkListScrollbarWrapper>
-            <BookmarkListContent>
-              {children}
-            </BookmarkListContent>
+            <BookmarkListContent>{children}</BookmarkListContent>
           </BookmarkListScrollbarWrapper>
         </BookmarkList>
       )}

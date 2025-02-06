@@ -5,7 +5,9 @@ export type IconComponent = React.FC<IconProps> & {
   bothubType?: 'Icon';
 };
 
-export function icon<Component extends React.FC>(component: Component): IconComponent {
+export function icon<Component extends React.FC>(
+  component: Component
+): IconComponent {
   (component as IconComponent).bothubType = 'Icon';
 
   return component;

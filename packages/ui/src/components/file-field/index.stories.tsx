@@ -33,8 +33,8 @@ export const Help: FileFieldStory = {
           <Button variant="help" />
         </Tooltip>
       </FileFieldLabel>
-    ),
-  },
+    )
+  }
 };
 
 export const Error: FileFieldStory = {
@@ -61,7 +61,7 @@ export const CustomIcon: FileFieldStory = {
 export const Closed: FileFieldStory = {
   args: {
     ...Basic.args,
-    open: false,
+    open: false
   }
 };
 

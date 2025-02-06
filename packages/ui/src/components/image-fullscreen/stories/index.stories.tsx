@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
-  ImageFullScreen, 
-  ImageFullScreenAuthor, 
-  ImageFullScreenAuthorAvatar, 
+  ImageFullScreen,
+  ImageFullScreenAuthor,
+  ImageFullScreenAuthorAvatar,
   ImageFullScreenAuthorName,
-  ImageFullScreenAuthorTag, 
+  ImageFullScreenAuthorTag,
   ImageFullScreenToolbar
 } from '@/ui/components/image-fullscreen';
 import image from './assets/image.png';
@@ -41,19 +41,13 @@ export const Toolbar: ImageFullScreenStory = {
         <ImageFullScreenAuthorAvatar>
           <MjWhiteIcon />
         </ImageFullScreenAuthorAvatar>
-        <ImageFullScreenAuthorName>
-          Midjourney
-        </ImageFullScreenAuthorName>
-        <ImageFullScreenAuthorTag>
-          6.0
-        </ImageFullScreenAuthorTag>
+        <ImageFullScreenAuthorName>Midjourney</ImageFullScreenAuthorName>
+        <ImageFullScreenAuthorTag>6.0</ImageFullScreenAuthorTag>
       </ImageFullScreenAuthor>
     ),
     toolbar: (
       <ImageFullScreenToolbar>
-        <AdaptiveButton
-          startIcon={<DownloadImgIcon />}
-        >
+        <AdaptiveButton startIcon={<DownloadImgIcon />}>
           Скачать изображение
         </AdaptiveButton>
       </ImageFullScreenToolbar>
@@ -116,7 +110,7 @@ export const Images2: ImageFullScreenStory = {
         url: image3,
         width: 1024,
         height: 1024
-      },
+      }
     ]
   }
 };

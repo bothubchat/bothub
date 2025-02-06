@@ -6,9 +6,11 @@ export interface ImageImgProps {
 }
 
 export const ImageImg = styled.img<ImageImgProps>`
-  ${({ $hidden }) => $hidden && css`
-    display: none !important;
-  `}
+  ${({ $hidden }) =>
+    $hidden &&
+    css`
+      display: none !important;
+    `}
   ${({ width }) => {
     if (typeof width === 'undefined') {
       return css``;
@@ -44,9 +46,11 @@ export interface ImagePictureProps {
 }
 
 export const ImagePicture = styled.picture<ImagePictureProps>`
-  ${({ $hidden }) => $hidden && css`
-    display: none;
-  `}
+  ${({ $hidden }) =>
+    $hidden &&
+    css`
+      display: none;
+    `}
 `;
 
 export const ImageSource = styled.source``;

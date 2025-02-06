@@ -12,7 +12,7 @@ export const PaginatorItem = styled.button.attrs<{
   $active?: boolean;
   $disabled?: boolean;
 }>({
-  type: 'button',
+  type: 'button'
 })`
   background: none;
   outline: none;
@@ -22,12 +22,14 @@ export const PaginatorItem = styled.button.attrs<{
   padding: 6px 14px;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.base.white};
-  ${({ $active }) => $active
-    && css`
+  ${({ $active }) =>
+    $active &&
+    css`
       background-color: ${({ theme }) => theme.colors.accent.primary};
     `}
-  ${({ $disabled }) => $disabled
-    && css`
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
       pointer-events: none;
     `})}
 `;
@@ -40,8 +42,9 @@ export const ControlButton = styled.button.attrs<{
   border: none;
   cursor: pointer;
   padding: 6px 10px;
-  ${({ $disabled }) => $disabled
-    && css`
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
       pointer-events: none;
     `}
 `;

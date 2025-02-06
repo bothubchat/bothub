@@ -3,4 +3,6 @@ import { BadgeProgress } from '@/ui/components/badge';
 
 export type MessageBadgeProgressStyledProps = {}; // eslint-disable-line
 
-export const MessageBadgeProgressStyled = styled(BadgeProgress)<MessageBadgeProgressStyledProps>``;
+export const MessageBadgeProgressStyled = styled(
+  BadgeProgress
+)<MessageBadgeProgressStyledProps>``;

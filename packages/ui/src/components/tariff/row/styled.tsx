@@ -21,16 +21,17 @@ export const TariffCardStyled = styled.div<TariffCardProps>`
   width: 100%;
   overflow: hidden;
   padding: 16px 34px;
-  ${({ $variant }) => adaptive({
-    variant: $variant,
-    merge: true,
-    tablet: css`
-      padding: 16px 16px;
-    `,
-    mobile: css`
-      padding: 14px;
-    `,
-  })}
+  ${({ $variant }) =>
+    adaptive({
+      variant: $variant,
+      merge: true,
+      tablet: css`
+        padding: 16px 16px;
+      `,
+      mobile: css`
+        padding: 14px;
+      `
+    })}
   box-sizing: border-box;
   opacity: 0.9;
   background: ${({ theme }) => theme.colors.grayScale.gray7};
@@ -38,20 +39,23 @@ export const TariffCardStyled = styled.div<TariffCardProps>`
   & > input:[type="radio"]:checked ~ & {
     outline: 1px solid ${({ theme }) => theme.default.colors.accent.primary};
   }
-  ${({ selected, theme }) => selected
-    && theme.mode === 'light'
-    && css`
+  ${({ selected, theme }) =>
+    selected &&
+    theme.mode === 'light' &&
+    css`
       outline: 1px solid ${theme.default.colors.accent.primary};
       background-color: ${theme.colors.grayScale.gray3};
     `}
-  ${({ selected, theme }) => selected
-    && theme.mode === 'dark'
-    && css`
+  ${({ selected, theme }) =>
+    selected &&
+    theme.mode === 'dark' &&
+    css`
       outline: 1px solid ${theme.default.colors.accent.primary};
       background-color: ${theme.colors.grayScale.gray3};
     `}
-  ${({ theme }) => theme.mode === 'dark'
-    && css`
+  ${({ theme }) =>
+    theme.mode === 'dark' &&
+    css`
       &:after {
         display: block;
         content: '';
@@ -117,17 +121,18 @@ export const TariffCardStyledContent = styled.div<{ $variant: Variant }>`
   justify-content: space-between;
   align-items: center;
   gap: 34px;
-  ${({ $variant }) => adaptive({
-    variant: $variant,
-    merge: true,
-    tablet: css`
-      gap: 32px;
-    `,
-    mobile: css`
-      flex-wrap: wrap;
-      gap: 10px;
-    `,
-  })}
+  ${({ $variant }) =>
+    adaptive({
+      variant: $variant,
+      merge: true,
+      tablet: css`
+        gap: 32px;
+      `,
+      mobile: css`
+        flex-wrap: wrap;
+        gap: 10px;
+      `
+    })}
 `;
 
 export const TarrifCardStyledLeft = styled.div<{ $variant: Variant }>`
@@ -135,12 +140,13 @@ export const TarrifCardStyledLeft = styled.div<{ $variant: Variant }>`
   display: flex;
   align-items: center;
   gap: 14px;
-  ${({ $variant }) => adaptive({
-    variant: $variant,
-    mobile: css`
-      flex-wrap: wrap;
-    `,
-  })}
+  ${({ $variant }) =>
+    adaptive({
+      variant: $variant,
+      mobile: css`
+        flex-wrap: wrap;
+      `
+    })}
 `;
 
 export const TariffCardStyledName: React.FC<{
@@ -148,8 +154,8 @@ export const TariffCardStyledName: React.FC<{
   children?: React.ReactNode;
 }> = styled(Typography).attrs({
   variant: 'body-xl-semibold',
-  component: 'h3',
-}) <{ $color: TariffCardColor }>`
+  component: 'h3'
+})<{ $color: TariffCardColor }>`
   background-clip: text;
   -webkit-background-clip: text;
   width: fit-content;
@@ -185,7 +191,7 @@ export const TariffCardStyledMiddle = styled.div`
 `;
 
 export const TariffCardStyledDescription = styled(Typography).attrs({
-  variant: 'body-s-semibold',
+  variant: 'body-s-semibold'
 })`
   width: 100%;
   max-width: 518px;
@@ -205,63 +211,74 @@ export const TarrifCardStyledRight = styled.div<{ $variant: Variant }>`
   gap: 5px;
   width: 200px;
   margin-right: clamp(0rem, -6.366rem + 18.519vw, 3.125rem);
-  ${({ $variant }) => adaptive({
-    variant: $variant,
-    mobile: css`
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding: 6px 0;
-    `,
-  })}
+  ${({ $variant }) =>
+    adaptive({
+      variant: $variant,
+      mobile: css`
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 6px 0;
+      `
+    })}
 `;
 
 export const TariffCardStyledPrice = styled(Typography).attrs({
-  variant: 'h2',
-}) <{ $isDefault?: boolean, $variant: Variant }>`
-  color: ${({ theme, $isDefault }) => ($isDefault ? theme.colors.base.white : theme.default.colors.base.white)};
-  ${({ $variant }) => adaptive({
-    variant: $variant,
-    mobile: css`
-    color: ${({ theme }) => theme.colors.base.white};
-  `,
-  })}
+  variant: 'h2'
+})<{ $isDefault?: boolean; $variant: Variant }>`
+  color: ${({ theme, $isDefault }) =>
+    $isDefault ? theme.colors.base.white : theme.default.colors.base.white};
+  ${({ $variant }) =>
+    adaptive({
+      variant: $variant,
+      mobile: css`
+        color: ${({ theme }) => theme.colors.base.white};
+      `
+    })}
 `;
 
 export const TariffCardStyledCurrency = styled(Typography).attrs({
-  variant: 'body-l-medium',
-}) <{ $isDefault?: boolean, $variant: Variant }>`
+  variant: 'body-l-medium'
+})<{ $isDefault?: boolean; $variant: Variant }>`
   padding-bottom: 4px;
-  color: ${({ theme, $isDefault }) => ($isDefault ? theme.colors.base.white : theme.default.colors.base.white)};
-  ${({ $variant }) => adaptive({
-    variant: $variant,
-    mobile: css`
-    color: ${({ theme }) => theme.colors.base.white};
-  `,
-  })}
+  color: ${({ theme, $isDefault }) =>
+    $isDefault ? theme.colors.base.white : theme.default.colors.base.white};
+  ${({ $variant }) =>
+    adaptive({
+      variant: $variant,
+      mobile: css`
+        color: ${({ theme }) => theme.colors.base.white};
+      `
+    })}
 `;
-export const TariffCardStyledOldPriceWrapper = styled.div<{ $variant: Variant }>`
+export const TariffCardStyledOldPriceWrapper = styled.div<{
+  $variant: Variant;
+}>`
   position: absolute;
   display: flex;
   top: -10px;
   right: 0;
-  ${({ $variant }) => adaptive({
-    variant: $variant,
-    mobile: css`
-    top: -4px;
-    right: 0;
-    `,
-  })}
+  ${({ $variant }) =>
+    adaptive({
+      variant: $variant,
+      mobile: css`
+        top: -4px;
+        right: 0;
+      `
+    })}
 `;
 
-export const TariffCardStyledOldPrice = styled(Typography) <{ $variant: Variant }>`
+export const TariffCardStyledOldPrice = styled(Typography)<{
+  $variant: Variant;
+}>`
   color: ${({ theme }) => theme.default.colors.grayScale.gray6};
-  ${({ $variant }) => adaptive({
-    variant: $variant,
-    mobile: css`
-      color: ${({ theme }) => theme.colors.base.white};
-    `,
-  })}
+  ${({ $variant }) =>
+    adaptive({
+      variant: $variant,
+      mobile: css`
+        color: ${({ theme }) => theme.colors.base.white};
+      `
+    })}
   width: 100px;
   z-index: 1;
   font-size: 14px;
@@ -273,8 +290,7 @@ export const TariffCardStyledOldPrice = styled(Typography) <{ $variant: Variant 
   text-decoration-skip-ink: none;
 `;
 
-export const TarrifCardStyledRadio = styled(Radio)`
-`;
+export const TarrifCardStyledRadio = styled(Radio)``;
 
 export const TariffCardStyledGiveCaps = styled.div`
   display: flex;
@@ -284,15 +300,17 @@ export const TariffCardStyledGiveCaps = styled.div`
 
 export const TariffCardGiveCapsBadge = styled(Badge).attrs({ variant: 'info' })`
   ${({ theme }) => `
-    background-color: ${theme.mode === 'dark'
-    ? theme.colors.grayScale.gray2
-    : theme.colors.grayScale.gray5};
+    background-color: ${
+      theme.mode === 'dark'
+        ? theme.colors.grayScale.gray2
+        : theme.colors.grayScale.gray5
+    };
     color: ${theme.default.colors.base.white};
   `}
 `;
 
 export const TariffCardGiveCapsBadgeText = styled(Typography).attrs({
-  variant: 'body-s-medium',
+  variant: 'body-s-medium'
 })`
   white-space: nowrap;
   ${({ theme }) => `
@@ -301,17 +319,18 @@ export const TariffCardGiveCapsBadgeText = styled(Typography).attrs({
 `;
 
 export const TariffCardStyledDescriptionIcon = styled(CheckCircleIcon).attrs({
-  size: 18,
-}) <{ $variant: Variant }>`
-  ${({ $variant }) => adaptive({
-    variant: $variant,
-    mobile: css`
-    display: none;
-  `,
-  })}
+  size: 18
+})<{ $variant: Variant }>`
+  ${({ $variant }) =>
+    adaptive({
+      variant: $variant,
+      mobile: css`
+        display: none;
+      `
+    })}
 `;
 export const TariffCardGiveCapsText = styled(Typography).attrs({
-  variant: 'body-xs-regular',
+  variant: 'body-xs-regular'
 })`
   white-space: nowrap;
 `;

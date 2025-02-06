@@ -7,9 +7,7 @@ export interface SidebarThemeSwitcherStyledProps {
 }
 
 export const SidebarThemeSwitcherStyled = styled.button<SidebarThemeSwitcherStyledProps>`
-  display: ${({ $open }) => (
-    $open ? 'inline-flex' : 'none'
-  )};
+  display: ${({ $open }) => ($open ? 'inline-flex' : 'none')};
   width: fit-content;
   overflow: hidden;
   align-items: center;
@@ -44,10 +42,11 @@ export const SidebarThemeSwitcherItem = styled.span`
   border-radius: 12px;
   width: 100%;
   padding: 6px;
-  
 `;
 
-export const SidebarThemeSwitcherItemBackground = styled.span<{ $isLight: boolean }>`
+export const SidebarThemeSwitcherItemBackground = styled.span<{
+  $isLight: boolean;
+}>`
   display: inline-flex;
   position: absolute;
   top: 0px;
@@ -58,8 +57,11 @@ export const SidebarThemeSwitcherItemBackground = styled.span<{ $isLight: boolea
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
-  transition: transform 0.2s ease-out, background 0.2s ease-out;
-  transform: ${({ $isLight }) => ($isLight ? 'translateX(0%)' : 'translateX(calc(100% + 6px))')};
+  transition:
+    transform 0.2s ease-out,
+    background 0.2s ease-out;
+  transform: ${({ $isLight }) =>
+    $isLight ? 'translateX(0%)' : 'translateX(calc(100% + 6px))'};
 `;
 
 export const SidebarThemeSwitcherItemContent = styled.span`

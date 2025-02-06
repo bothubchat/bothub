@@ -14,14 +14,10 @@ export const TooltipContext = React.createContext<TooltipContextValue>({
   handleTooltipMouseDown: () => {}
 });
 
-export const TooltipProvider: React.FC<TooltipContextValue & React.PropsWithChildren
-> = ({
-  children,
-  ...value
-}) => (
-  <TooltipContext.Provider value={value}>
-    {children}
-  </TooltipContext.Provider>
+export const TooltipProvider: React.FC<
+  TooltipContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
+  <TooltipContext.Provider value={value}>{children}</TooltipContext.Provider>
 );
 
 export const TooltipConsumer = TooltipContext.Consumer;

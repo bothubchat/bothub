@@ -9,9 +9,7 @@ export type BookmarksStory = StoryObj<typeof Bookmarks>;
 
 export const Basic: BookmarksStory = {
   args: {
-    add: (
-      <AddBookmarkButton />
-    ),
+    add: <AddBookmarkButton />,
     children: (
       <>
         <Bookmark active>Работа</Bookmark>
@@ -26,9 +24,7 @@ export const Basic: BookmarksStory = {
 
 export const Skeleton: BookmarksStory = {
   args: {
-    add: (
-      <AddBookmarkButton disabled />
-    ),
+    add: <AddBookmarkButton disabled />,
     children: (
       <>
         <Bookmark skeleton />

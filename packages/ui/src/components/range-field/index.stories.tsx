@@ -12,15 +12,15 @@ export const Basic: RangeFieldStory = {
   args: {
     step: 0.1,
     min: 0,
-    max: 100,
-  },
+    max: 100
+  }
 };
 
 export const Label: RangeFieldStory = {
   args: {
     ...Basic.args,
-    label: 'Label',
-  },
+    label: 'Label'
+  }
 };
 
 export const FormattedValue: RangeFieldStory = {
@@ -33,15 +33,14 @@ export const FormattedValue: RangeFieldStory = {
     fullWidth: true,
     formatValue: (value) => {
       const v = typeof value === 'number' ? value : value[0];
-      return (
-        `${v} - ${v * 2} символов / ${Math.round(
-          v / 6
-        )} - ${Math.round(v / 3)} слов (${Math.max(Math.round(
-          v / 3600
-        ), 1)} - ${Math.max(Math.round(v / 1800), 1)} страниц)`
-      );
-    },
-  },
+      return `${v} - ${v * 2} символов / ${Math.round(
+        v / 6
+      )} - ${Math.round(v / 3)} слов (${Math.max(
+        Math.round(v / 3600),
+        1
+      )} - ${Math.max(Math.round(v / 1800), 1)} страниц)`;
+    }
+  }
 };
 
 export const Help: RangeFieldStory = {
@@ -54,34 +53,34 @@ export const Help: RangeFieldStory = {
           <Button variant="help" />
         </Tooltip>
       </RangeFieldLabel>
-    ),
-  },
+    )
+  }
 };
 
 export const Error: RangeFieldStory = {
   args: {
     ...Label.args,
-    error: 'Error message',
-  },
+    error: 'Error message'
+  }
 };
 
 export const Disabled: RangeFieldStory = {
   args: {
     ...Label.args,
     value: 50,
-    disabled: true,
-  },
+    disabled: true
+  }
 };
 
 export const Skeleton: RangeFieldStory = {
   args: {
     ...Label.args,
-    skeleton: true,
-  },
+    skeleton: true
+  }
 };
 
 export default {
   title: 'UI Components/Fields/Range',
   component: RangeField,
-  decorators: [StoryDecorator({ margin: '50px 0px' })],
+  decorators: [StoryDecorator({ margin: '50px 0px' })]
 } as RangeFieldMeta;

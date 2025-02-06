@@ -14,7 +14,8 @@ import { HeaderProvider } from './context';
 
 export type HeaderOpenEventHandler = (open: boolean) => unknown;
 
-export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang' | '$variant'> {
+export interface HeaderProps
+  extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang' | '$variant'> {
   id?: string;
   variant?: HeaderVariant;
   logo?: React.ReactNode;
@@ -28,10 +29,22 @@ export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyl
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  id, variant = 'main', logo, nav, lang, user, themeSwitcher, open, onOpen, isPreset = false, ...props
+  id,
+  variant = 'main',
+  logo,
+  nav,
+  lang,
+  user,
+  themeSwitcher,
+  open,
+  onOpen,
+  isPreset = false,
+  ...props
 }) => {
   const initialIsMenuOpen = open;
-  const setInitialIsMenuOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>(
+  const setInitialIsMenuOpen = useCallback<
+    React.Dispatch<React.SetStateAction<boolean>>
+  >(
     (open) => {
       if (typeof open === 'boolean') {
         onOpen?.(open);
@@ -40,7 +53,10 @@ export const Header: React.FC<HeaderProps> = ({
     [onOpen]
   );
 
-  const [isMenuOpen, setIsMenuOpen] = typeof initialIsMenuOpen === 'boolean' ? [initialIsMenuOpen, setInitialIsMenuOpen] : useState(false);
+  const [isMenuOpen, setIsMenuOpen] =
+    typeof initialIsMenuOpen === 'boolean'
+      ? [initialIsMenuOpen, setInitialIsMenuOpen]
+      : useState(false);
 
   const menuNode: React.ReactNode = (
     <HeaderMenu isPreset={isPreset}>
@@ -61,12 +77,8 @@ export const Header: React.FC<HeaderProps> = ({
         $variant={variant}
         id={id}
       >
-        <HeaderContent
-          $variant={variant}
-        >
-          <HeaderContainer
-            disabled={variant === 'dashboard'}
-          >
+        <HeaderContent $variant={variant}>
+          <HeaderContainer disabled={variant === 'dashboard'}>
             <HeaderContainerContent>
               <HeaderLeft>
                 {logo}

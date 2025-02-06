@@ -10,25 +10,24 @@ import { BothubUIProvider } from '@/ui/provider';
 
 export interface StoryDecoratorOptions extends BothubGlobalStyleProps {}
 
-export const StoryDecorator = ({ 
-  ...props 
-}: StoryDecoratorOptions = {}) => (Story: StoryFn, context: StoryContext)
-: React.ReactElement => {
-  const isLightMode = context.globals.backgrounds?.value === '#FFFFFF';
-  const themeMode: ThemeMode = isLightMode ? 'light' : 'dark';
+export const StoryDecorator =
+  ({ ...props }: StoryDecoratorOptions = {}) =>
+  (Story: StoryFn, context: StoryContext): React.ReactElement => {
+    const isLightMode = context.globals.backgrounds?.value === '#FFFFFF';
+    const themeMode: ThemeMode = isLightMode ? 'light' : 'dark';
 
-  return (
-    <BothubUIProvider
-      theme={{
-        mode: themeMode
-      }}
-      globalStyle={{
-        ...props,
-        scale: props.scale ?? 'main'
-      }}
-    >
-      <Story />
-      <PortalElement />
-    </BothubUIProvider>
-  );
-};
+    return (
+      <BothubUIProvider
+        theme={{
+          mode: themeMode
+        }}
+        globalStyle={{
+          ...props,
+          scale: props.scale ?? 'main'
+        }}
+      >
+        <Story />
+        <PortalElement />
+      </BothubUIProvider>
+    );
+  };

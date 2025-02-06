@@ -8,7 +8,9 @@ export const TariffCardModelsStyled = styled.div`
   width: 100%;
 `;
 
-export const TariffCardModelsLabel = styled(Typography).attrs({ variant: 'body-xs-regular' })`
+export const TariffCardModelsLabel = styled(Typography).attrs({
+  variant: 'body-xs-regular'
+})`
   margin-bottom: 16px;
 `;
 
