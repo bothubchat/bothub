@@ -7,7 +7,8 @@
     "airbnb",
     "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
-    "plugin:storybook/recommended"
+    "plugin:storybook/recommended",
+    "prettier"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -23,7 +24,8 @@
   ],
   "plugins": [
     "react",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "prettier"
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
@@ -40,10 +42,7 @@
     "no-unused-vars": "error",
     "react/jsx-props-no-spreading": "off",
     "@typescript-eslint/no-throw-literal": "off",
-    "@typescript-eslint/indent": [
-      "error",
-      2
-    ],
+    "@typescript-eslint/indent": "off",
     "no-trailing-spaces": "off",
     "consistent-return": "off",
     "@typescript-eslint/ban-ts-comment": "off",
@@ -76,6 +75,11 @@
     "no-nested-ternary": "off",
     "global-require": "off",
     "no-plusplus": "off",
-    "no-mixed-operators": "off"
+    "no-mixed-operators": "off",
+    "implicit-arrow-linebreak": "off",
+    "prettier/prettier": "error",
+    "@typescript-eslint/no-unused-vars": [2, { 
+      "vars": "all", "argsIgnorePattern": "^_$" 
+    }]
   }
 }
