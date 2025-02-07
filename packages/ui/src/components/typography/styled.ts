@@ -263,7 +263,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
         return `
           font-weight: 400;
           font-size: 18px;
-          line-height: 24px;
+          line-height: 23.4px;
           --skeleton-height: 24px;
           @media (max-width: ${theme.mobile.maxWidth}) {
             font-size: 16px;

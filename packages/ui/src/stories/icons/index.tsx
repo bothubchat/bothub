@@ -198,7 +198,8 @@ import {
   IncludeContextIcon,
   WebSearchIcon,
   AnalyzeUrlsIcon,
-  QueueIcon
+  QueueIcon,
+  COTR1Icon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -432,6 +433,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="WebSearchIcon">{WebSearchIcon}</IconItem>
         <IconItem name="AnalyzeUrlsIcon">{AnalyzeUrlsIcon}</IconItem>
         <IconItem name="QueueIcon">{QueueIcon}</IconItem>
+        <IconItem name="COTR1Icon">{COTR1Icon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
