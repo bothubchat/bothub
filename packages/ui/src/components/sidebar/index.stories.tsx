@@ -153,6 +153,7 @@ export const Basic: SidebarStory = {
           variant="secondary"
           $active
         />
+        <SidebarSortButton />
       </SidebarButtons>
     ),
     search: (
@@ -407,7 +408,11 @@ export const Basic: SidebarStory = {
             }
           />
         </SidebarGroup>
-        <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Как разблокировать дискорд">
+        <SidebarGroup
+          checkbox={<SidebarGroupCheckbox checked />}
+          id="chat-group-1"
+          name="Как разблокировать дискорд"
+        >
           <SidebarGroupEmpty>Чатов нет идите отсюда</SidebarGroupEmpty>
         </SidebarGroup>
         <SidebarGroup

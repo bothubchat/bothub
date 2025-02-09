@@ -132,21 +132,23 @@ export const SidebarChatWithOutlineStyled = styled.div<SidebarChatWithOutlineSty
   margin-left: 3px;
   height: 100%;
   position: relative;
-  ${({ $active }) => $active && css`
-    border-radius: 10px;
-    &:before {
-      content: '';
-      width: 20px;
-      height: 100%;
+  ${({ $active }) =>
+    $active &&
+    css`
       border-radius: 10px;
-      position: absolute;
-      top: 0;
-      left: 0px;
-      background-color: ${({ theme }) => theme.colors.accent.primary};
-      z-index: 0;
-      animation: ${SidebarChatOutlineAnimation} .3s ease-in-out 1 forwards;
-    }
-  `};
+      &:before {
+        content: '';
+        width: 20px;
+        height: 100%;
+        border-radius: 10px;
+        position: absolute;
+        top: 0;
+        left: 0px;
+        background-color: ${({ theme }) => theme.colors.accent.primary};
+        z-index: 0;
+        animation: ${SidebarChatOutlineAnimation} 0.3s ease-in-out 1 forwards;
+      }
+    `};
 `;
 
 export interface SidebarChatWithBackgroundStyledProps {
@@ -190,8 +192,9 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
     if ($active) {
       return css`
         border-radius: 10px;
-        background-color: ${({ theme }) => `${theme.colors.accent.primaryLight}80`};
-        transition: background-color .3s ease-out;
+        background-color: ${({ theme }) =>
+          `${theme.colors.accent.primaryLight}80`};
+        transition: background-color 0.3s ease-out;
         ${SidebarChatIconStyled} {
           path {
             stroke: ${({ theme }) => theme.colors.base.white};
@@ -202,21 +205,23 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
     }
     if (!$active && !$skeleton) {
       return css`
-      &:hover {
-        border-radius: 10px;
-        background-color: ${({ theme }) => `${theme.colors.accent.primaryLight}80`};
-        transition: background-color .3s ease-out;
-      }
-    `;
+        &:hover {
+          border-radius: 10px;
+          background-color: ${({ theme }) =>
+            `${theme.colors.accent.primaryLight}80`};
+          transition: background-color 0.3s ease-out;
+        }
+      `;
     }
     if (!$active && !$skeleton) {
       return css`
         &:hover {
           border-radius: 10px;
-          background-color: ${({ theme }) => `${theme.colors.accent.primaryLight}80`};
-          transition: background-color .3s ease-out;
+          background-color: ${({ theme }) =>
+            `${theme.colors.accent.primaryLight}80`};
+          transition: background-color 0.3s ease-out;
         }
-    `;
+      `;
     }
   }}
   ${({ $skeleton, $active }) => {

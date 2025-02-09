@@ -33,7 +33,7 @@ export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
 
 export const SidebarDeleteButton = styled(Button).attrs({
   fullWidth: true,
-  startIcon: <TrashIcon />,
+  startIcon: <TrashIcon />
 })``;
 
 export const SidebarCreateChatButton = styled(Button).attrs({
@@ -105,16 +105,17 @@ export interface SidebarSortButtonProps {
 }
 
 export const SidebarSortButton = styled(Button)<SidebarSortButtonProps>`
-  ${({ $active }) => ($active
-    ? css`
+  ${({ $active }) =>
+    $active
+      ? css`
           svg path {
             fill: ${({ theme }) => theme.default.colors.base.white};
           }
         `
-    : css`
+      : css`
           svg path {
             fill: ${({ theme }) => theme.colors.grayScale.gray1};
             stroke: none;
           }
-        `)}
+        `}
 `;

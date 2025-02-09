@@ -71,8 +71,12 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
       : {};
 
   return (
-    <SidebarChatWithOutlineStyled $active={(!props.skeleton && props.active) ?? false}>
-      <SidebarChatWithBackgroundStyled $active={(!props.skeleton && props.active) ?? false}>
+    <SidebarChatWithOutlineStyled
+      $active={(!props.skeleton && props.active) ?? false}
+    >
+      <SidebarChatWithBackgroundStyled
+        $active={(!props.skeleton && props.active) ?? false}
+      >
         <SidebarChatStyled
           style={style}
           $draggble={(!props.skeleton && props.isDndOverflow) || false}
@@ -80,16 +84,24 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
           $skeleton={!!props.skeleton}
           ref={!props.skeleton && props.edit ? setNodeRef : undefined}
           onClick={
-            !props.skeleton ? (!props.edit ? onClick : onToggleCheckbox) : undefined
+            !props.skeleton
+              ? !props.edit
+                ? onClick
+                : onToggleCheckbox
+              : undefined
           }
         >
-          {!props.skeleton && props.edit
-            ? <SidebarChatDragHandle {...draggable} />
-            : (
-              <SidebarChatIconContainer $isDefault={props.isDefault}>
-                {!props.skeleton && props.icon ? props.icon : <SidebarChatIconStyled />}
-              </SidebarChatIconContainer>
-            )}
+          {!props.skeleton && props.edit ? (
+            <SidebarChatDragHandle {...draggable} />
+          ) : (
+            <SidebarChatIconContainer $isDefault={props.isDefault}>
+              {!props.skeleton && props.icon ? (
+                props.icon
+              ) : (
+                <SidebarChatIconStyled />
+              )}
+            </SidebarChatIconContainer>
+          )}
           {!props.skeleton && (
             <SidebarChatTooltip
               label={props.name}
@@ -98,12 +110,9 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
               disabled={props.name.length <= 0}
             >
               <TooltipConsumer>
-                {({
-                  handleTooltipMouseEnter,
-                  handleTooltipMouseLeave
-                }) => (
+                {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                   <SidebarChatIconStyled
-                    onClick={onClick as any}
+                    onClick={onClick as React.MouseEventHandler<Element>}
                     onMouseEnter={handleTooltipMouseEnter}
                     onMouseLeave={handleTooltipMouseLeave}
                   />
@@ -121,10 +130,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
               disabled={props.skeleton || props.name.length <= 24}
             >
               <TooltipConsumer>
-                {({
-                  handleTooltipMouseEnter,
-                  handleTooltipMouseLeave
-                }) => (
+                {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                   <SidebarChatName
                     onMouseEnter={handleTooltipMouseEnter}
                     onMouseLeave={handleTooltipMouseLeave}
@@ -141,13 +147,11 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
               </TooltipConsumer>
             </SidebarChatNameTooltip>
           </SidebarChatLeft>
-          {(!props.skeleton && props.caps) && (
-            <SidebarChatCaps>
-              {props.caps}
-            </SidebarChatCaps>
+          {!props.skeleton && props.caps && (
+            <SidebarChatCaps>{props.caps}</SidebarChatCaps>
           )}
           {!props.skeleton && !props.edit && props.actions}
-          {(!props.skeleton && props.edit) && props.checkbox}
+          {!props.skeleton && props.edit && props.checkbox}
         </SidebarChatStyled>
       </SidebarChatWithBackgroundStyled>
     </SidebarChatWithOutlineStyled>

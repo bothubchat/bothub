@@ -46,46 +46,71 @@ export interface SidebarProps extends React.PropsWithChildren {
   themeSwitcher?: React.ReactNode;
 }
 
-export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
-  open, defaultOpen = true,
-  className, id, user, logo, menu, buttons, buttonsModal, toggle,
-  deleteButton,
-  search, lang,
-  themeSwitcher,
-  isHide = false,
-  children, onOpen
-}, ref) => {
-  const initialIsOpen = open;
-  const setInitialIsOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
-    if (typeof open === 'boolean') {
-      onOpen?.(open);
-    }
-  }, [onOpen]);
-  const [isOpen, setIsOpen] = typeof initialIsOpen === 'boolean' ? [initialIsOpen, setInitialIsOpen] : useState(defaultOpen);
-  const [isBottom, setIsBottom] = useState<boolean>(false);
-  const handleOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
-    setIsOpen(open);
-    if (typeof open === 'boolean' && !initialIsOpen && onOpen) {
-        onOpen(open);
-    }
-  },
-    [setIsOpen, initialIsOpen, onOpen]
-  );
-
-  const handleScroll = useCallback<ScrollbarScrollEventHandler>(
-    ({ isBottom }) => {
-      setIsBottom(isBottom);
+export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
+  (
+    {
+      open,
+      defaultOpen = true,
+      className,
+      id,
+      user,
+      logo,
+      menu,
+      buttons,
+      buttonsModal,
+      toggle,
+      deleteButton,
+      search,
+      lang,
+      themeSwitcher,
+      isHide = false,
+      children,
+      onOpen
     },
-    [setIsBottom]
-  );
-  const handleScrollTop = useCallback(() => {
-    if (ref && typeof ref !== 'function' && ref.current?.element) {
-      ref.current.element.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
-  }, [ref]);
+    ref
+  ) => {
+    const initialIsOpen = open;
+    const setInitialIsOpen = useCallback<
+      React.Dispatch<React.SetStateAction<boolean>>
+    >(
+      (open) => {
+        if (typeof open === 'boolean') {
+          onOpen?.(open);
+        }
+      },
+      [onOpen]
+    );
+    const [isOpen, setIsOpen] =
+      typeof initialIsOpen === 'boolean'
+        ? [initialIsOpen, setInitialIsOpen]
+        : useState(defaultOpen);
+    const [isBottom, setIsBottom] = useState<boolean>(false);
+    const handleOpen = useCallback<
+      React.Dispatch<React.SetStateAction<boolean>>
+    >(
+      (open) => {
+        setIsOpen(open);
+        if (typeof open === 'boolean' && !initialIsOpen && onOpen) {
+          onOpen(open);
+        }
+      },
+      [setIsOpen, initialIsOpen, onOpen]
+    );
+
+    const handleScroll = useCallback<ScrollbarScrollEventHandler>(
+      ({ isBottom }) => {
+        setIsBottom(isBottom);
+      },
+      [setIsBottom]
+    );
+    const handleScrollTop = useCallback(() => {
+      if (ref && typeof ref !== 'function' && ref.current?.element) {
+        ref.current.element.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+    }, [ref]);
     const handleScrollBottom = useCallback(() => {
       if (ref && typeof ref !== 'function' && ref.current?.element) {
         ref.current.element.scrollTo({

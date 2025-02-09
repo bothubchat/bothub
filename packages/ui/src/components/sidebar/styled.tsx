@@ -5,7 +5,7 @@ import { Logo } from '@/ui/components/logo';
 import {
   SidebarChatIconStyled,
   SidebarChatTooltip,
-  SidebarChatWithOutlineStyled,
+  SidebarChatWithOutlineStyled
 } from './chat';
 import {
   SidebarChatList,
@@ -31,70 +31,73 @@ export interface SidebarStyledProps {
 }
 
 export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
-  ${({ $open }) => !$open && css`
-  @media (min-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
-    ${SidebarEmptyGroupStyled} {
-      margin-top: 10px;
-      border-radius: 8px;
-      width: 38px;
-      aspect-ratio: 1;
-      display: flex;
-      border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
-      span {
-        display: none;
-      }
-    }
-    ${SidebarGroupsStyled} {
-      gap: 10px;
-      ${SidebarGroupStyled} {
-        ${SidebarGroupName} {
-          padding: 9px;
-          width: fit-content;
-          border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  ${({ $open }) =>
+    !$open &&
+    css`
+      @media (min-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
+        ${SidebarEmptyGroupStyled} {
+          margin-top: 10px;
           border-radius: 8px;
-          & > * {
+          width: 38px;
+          aspect-ratio: 1;
+          display: flex;
+          border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+          span {
             display: none;
           }
-          ${SidebarGroupDragFolder} {
-            display: inline-flex;
-            margin: 0;
-          }
-          ${SidebarGroupSkeletonIcon} {
-            display: inline-flex;
-            margin: 0;
-            width: 18px;
-            height: 18px;
-          }
         }
-        ${SidebarChatList} {
+        ${SidebarGroupsStyled} {
           gap: 10px;
-          ${SidebarChatWithOutlineStyled} {
-            padding: 9px;
-            width: fit-content;
-            border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
-            border-radius: 8px;
-            &:first-child {
-              margin-top: 20px;
-            }
-            &:last-child {
-              margin-bottom: 10px;
-            }
-            & > * {
-              display: none;
-            }
-            ${SidebarChatTooltip} {
+          ${SidebarGroupStyled} {
+            ${SidebarGroupName} {
+              padding: 9px;
+              width: fit-content;
+              border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+              border-radius: 8px;
               & > * {
-                display: block;
+                display: none;
+              }
+              ${SidebarGroupDragFolder} {
+                display: inline-flex;
+                margin: 0;
+              }
+              ${SidebarGroupSkeletonIcon} {
+                display: inline-flex;
+                margin: 0;
+                width: 18px;
+                height: 18px;
               }
             }
-            ${SidebarChatIconStyled} {
-              display: inline-flex;
+            ${SidebarChatList} {
+              gap: 10px;
+              ${SidebarChatWithOutlineStyled} {
+                padding: 9px;
+                width: fit-content;
+                border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+                border-radius: 8px;
+                &:first-child {
+                  margin-top: 20px;
+                }
+                &:last-child {
+                  margin-bottom: 10px;
+                }
+                & > * {
+                  display: none;
+                }
+                ${SidebarChatTooltip} {
+                  & > * {
+                    display: block;
+                  }
+                }
+                ${SidebarChatIconStyled} {
+                  display: inline-flex;
+                }
+              }
             }
           }
         }
       }
-    }
-  }`}
+    `}
 `;
 
 export const SidebarStyled = styled.aside<SidebarStyledProps>`
@@ -112,10 +115,12 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
   transition: all 0.3s;
   padding: 20px;
   padding-right: 0px;
-  ${({ $open }) => $open && css`
-    min-width: 342px;
-    max-width: 342px;
-  `}
+  ${({ $open }) =>
+    $open &&
+    css`
+      min-width: 342px;
+      max-width: 342px;
+    `}
   @media (min-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
     ${({ $open, theme }) =>
       !$open &&
@@ -192,15 +197,15 @@ export const SidebarContent = styled.div<{ $open?: boolean }>`
   ${adaptive({
     variant: 'dashboard',
     tablet: css`
-    min-width: 342px;
-    max-width: none;
-    width: 100%;
-    ${SidebarUserInfoStyled} {
-      display: none;
-    }
-    ${SidebarMenuStyled} {
-      display: none;
-    }
+      min-width: 342px;
+      max-width: none;
+      width: 100%;
+      ${SidebarUserInfoStyled} {
+        display: none;
+      }
+      ${SidebarMenuStyled} {
+        display: none;
+      }
     `,
     mobile: css`
       min-width: none;
@@ -214,16 +219,18 @@ export const SidebarContent = styled.div<{ $open?: boolean }>`
       }
     `
   })}
-  ${({ $open }) => !$open && adaptive({
-    variant: 'dashboard',
-    tablet: css`
-      max-width: 342px;
-    `,
-    mobile: css`
-      opacity: 0;
-      visibility: hidden;
-    `
-  })}
+  ${({ $open }) =>
+    !$open &&
+    adaptive({
+      variant: 'dashboard',
+      tablet: css`
+        max-width: 342px;
+      `,
+      mobile: css`
+        opacity: 0;
+        visibility: hidden;
+      `
+    })}
 `;
 
 export const SidebarContentNav = styled.div<{ $open?: boolean }>`

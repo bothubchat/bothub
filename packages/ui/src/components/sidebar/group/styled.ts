@@ -55,7 +55,7 @@ export const SidebarGroupNameWithOutline = styled.div<SidebarGroupNameWithOutlin
   margin-left: 3px;
   position: relative;
   &:before {
-    content: "";
+    content: '';
     width: 100%;
     height: 100%;
     position: absolute;
@@ -68,13 +68,15 @@ export const SidebarGroupNameWithOutline = styled.div<SidebarGroupNameWithOutlin
     &:before {
       background-color: ${({ theme }) => theme.colors.accent.primary};
     }
-  } 
-  ${({ $active }) => $active && css`
-  &:before {
-    background-color: ${({ theme }) => theme.colors.accent.primary};
-    animation: ${SidebarGroupNameOutlineAnimation} .3s ease-out 1 forwards;
   }
-  `}
+  ${({ $active }) =>
+    $active &&
+    css`
+      &:before {
+        background-color: ${({ theme }) => theme.colors.accent.primary};
+        animation: ${SidebarGroupNameOutlineAnimation} 0.3s ease-out 1 forwards;
+      }
+    `}
 `;
 
 export const SidebarGroupNameWithBg = styled.div`
@@ -89,7 +91,10 @@ export interface SidebarGroupNameProps {
   $skeleton?: boolean;
 }
 
-export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medium', component: 'div' }) <SidebarGroupNameProps>`
+export const SidebarGroupName = styled(Typography).attrs({
+  variant: 'body-l-medium',
+  component: 'div'
+})<SidebarGroupNameProps>`
   color: ${({ theme }) => theme.colors.base.white};
   display: flex;
   cursor: ${({ $skeleton }) => {
@@ -105,10 +110,10 @@ export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medi
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  &:hover{
+  &:hover {
     background-color: ${({ theme }) => `${theme.colors.accent.primaryLight}80`};
     border-radius: 10px;
-    transition: background-color .3s ease-out;
+    transition: background-color 0.3s ease-out;
   }
   & > ${SidebarDropdownStyled} {
     display: flex;

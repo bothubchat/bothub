@@ -13,7 +13,7 @@ import {
   SidebarGroupSkeletonIcon,
   SidebarGroupTooltip,
   SidebarGroupNameWithOutline,
-  SidebarGroupNameWithBg,
+  SidebarGroupNameWithBg
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { useSidebar } from '../context';
@@ -70,7 +70,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
       ref={!props.skeleton && props.edit ? setNodeRef : undefined}
     >
       {!props.isDefault && (
-        <SidebarGroupNameWithOutline 
+        <SidebarGroupNameWithOutline
           $active={!props.skeleton && props.active}
           $open={open}
         >
@@ -90,7 +90,10 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
                     disabled={props.name.length <= 0 || sidebarOpen}
                   >
                     <TooltipConsumer>
-                      {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                      {({
+                        handleTooltipMouseEnter,
+                        handleTooltipMouseLeave
+                      }) => (
                         <SidebarGroupDragFolder
                           onMouseEnter={handleTooltipMouseEnter}
                           onMouseLeave={handleTooltipMouseLeave}
@@ -101,9 +104,18 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
                   </SidebarGroupTooltip>
                 </>
               )}
-              {props.skeleton && <SidebarGroupSkeletonIcon width={24} height={24} />}
+              {props.skeleton && (
+                <SidebarGroupSkeletonIcon
+                  width={24}
+                  height={24}
+                />
+              )}
               {!props.skeleton && (
-                <Tooltip label={props.name} placement="top-left" disabled={props.name.length <= 24}>
+                <Tooltip
+                  label={props.name}
+                  placement="top-left"
+                  disabled={props.name.length <= 24}
+                >
                   <TooltipConsumer>
                     {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                       <SidebarGroupNameBox
