@@ -4,7 +4,6 @@ import { adaptive } from '@/ui/adaptive';
 import { Logo } from '@/ui/components/logo';
 import {
   SidebarChatIconStyled,
-  SidebarChatStyled,
   SidebarChatTooltip,
   SidebarChatWithOutlineStyled,
 } from './chat';
@@ -14,12 +13,9 @@ import {
   SidebarGroupName,
   SidebarGroupSkeletonIcon,
   SidebarGroupsStyled,
-  SidebarGroupStyled,
+  SidebarGroupStyled
 } from './group';
-import {
-  ArrowDownIcon,
-  ArrowUpIcon
-} from '@/ui/icons';
+import { ArrowDownIcon, ArrowUpIcon } from '@/ui/icons';
 import {
   SidebarMenuBlockScrollbarWrapper,
   SidebarMenuNav,
@@ -73,18 +69,16 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
         ${SidebarChatList} {
           gap: 10px;
           ${SidebarChatWithOutlineStyled} {
+            padding: 9px;
+            width: fit-content;
+            border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+            border-radius: 8px;
             &:first-child {
               margin-top: 20px;
             }
             &:last-child {
               margin-bottom: 10px;
             }
-          }
-          ${SidebarChatStyled} {
-            padding: 9px;
-            width: fit-content;
-            border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
-            border-radius: 8px;
             & > * {
               display: none;
             }
@@ -123,28 +117,30 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
     max-width: 342px;
   `}
   @media (min-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
-    ${({ $open, theme }) => !$open && css`
-    min-width: 80px;
-    max-width: 80px;
-    ${SidebarMenuStyled} {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      border-bottom: 1px solid ${theme.colors.grayScale.gray3};
-      padding: 20px 0px;
-      border-radius: 0px;
-      width: 100%;
-      margin-bottom: 10px;
-      ${SidebarMenuNav} {
-        gap: 10px;
-        background: none;
-      }
-      ${SidebarMenuBlockScrollbarWrapper} {
-        padding-right: 0px;
-      }
-    }
-  `}
+    ${({ $open, theme }) =>
+      !$open &&
+      css`
+        min-width: 80px;
+        max-width: 80px;
+        ${SidebarMenuStyled} {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          border-bottom: 1px solid ${theme.colors.grayScale.gray3};
+          padding: 20px 0px;
+          border-radius: 0px;
+          width: 100%;
+          margin-bottom: 10px;
+          ${SidebarMenuNav} {
+            gap: 10px;
+            background: none;
+          }
+          ${SidebarMenuBlockScrollbarWrapper} {
+            padding-right: 0px;
+          }
+        }
+      `}
   }
   @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
     padding: 18px;
@@ -156,20 +152,24 @@ export const SidebarStyled = styled.aside<SidebarStyledProps>`
     min-width: 100%;
   }
   max-height: 100vh;
-  ${({ $isHide }) => !$isHide && adaptive({
-    variant: 'dashboard',
-    tablet: css`
-      border-radius: 18px;
-    `,
-    mobile: css`
-      border-radius: 18px;
-    `
-  })}
-  ${({ $isHide }) => $isHide && css`
-    max-width: 0px;
-    min-width: 0px;
-    padding: 0px;
-  `}
+  ${({ $isHide }) =>
+    !$isHide &&
+    adaptive({
+      variant: 'dashboard',
+      tablet: css`
+        border-radius: 18px;
+      `,
+      mobile: css`
+        border-radius: 18px;
+      `
+    })}
+  ${({ $isHide }) =>
+    $isHide &&
+    css`
+      max-width: 0px;
+      min-width: 0px;
+      padding: 0px;
+    `}
 `;
 
 export const SidebarTextField = styled(TextField)`
@@ -203,15 +203,15 @@ export const SidebarContent = styled.div<{ $open?: boolean }>`
     }
     `,
     mobile: css`
-    min-width: none;
-    max-width: none;
-    display: flex;
-    ${SidebarUserInfoStyled} {
-      display: none;
-    }
-    ${SidebarMenuStyled} {
-      display: none;
-    }
+      min-width: none;
+      max-width: none;
+      display: flex;
+      ${SidebarUserInfoStyled} {
+        display: none;
+      }
+      ${SidebarMenuStyled} {
+        display: none;
+      }
     `
   })}
   ${({ $open }) => !$open && adaptive({
@@ -238,40 +238,46 @@ export const SidebarContentNav = styled.div<{ $open?: boolean }>`
   border-radius: 20px;
   background: ${({ theme }) => theme.colors.grayScale.gray7};
   padding: 16px;
-  ${({ $open }) => ($open
-    ? adaptive({
-      variant: 'dashboard',
-      merge: true,
-      desktop: css`display: none;`,
-      tablet: css`
-        max-width: 72px;
-        display: flex;
-      `,
-      mobile: css`display: none;`,
-    })
-    : adaptive({
-      variant: 'dashboard',
-      merge: true,
-      desktop: css`display: none;`,
-      tablet: css`
-        max-width: none; 
-        display: flex;
-        width: 100%;
-        height: 100%;
-        background: ${({ theme }) => theme.colors.grayScale.gray7};
-        padding: 16px;
-        border-radius: 20px;
-        flex-direction: column;
-      `,
-      mobile: css`
-        display: flex;
-        position: absolute;
-        width: calc(100% - 36px);
-        height: calc(100% - 36px);
-        margin: 0 auto;
-
-      `,
-    }))}
+  ${({ $open }) =>
+    $open
+      ? adaptive({
+          variant: 'dashboard',
+          merge: true,
+          desktop: css`
+            display: none;
+          `,
+          tablet: css`
+            max-width: 72px;
+            display: flex;
+          `,
+          mobile: css`
+            display: none;
+          `
+        })
+      : adaptive({
+          variant: 'dashboard',
+          merge: true,
+          desktop: css`
+            display: none;
+          `,
+          tablet: css`
+            max-width: none;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background: ${({ theme }) => theme.colors.grayScale.gray7};
+            padding: 16px;
+            border-radius: 20px;
+            flex-direction: column;
+          `,
+          mobile: css`
+            display: flex;
+            position: absolute;
+            width: calc(100% - 36px);
+            height: calc(100% - 36px);
+            margin: 0 auto;
+          `
+        })}
 `;
 
 export const SidebarContentNavMenuWrapper = styled.div`
@@ -309,11 +315,11 @@ export const SidebarMobileToggle = styled.div`
     variant: 'dashboard',
     merge: true,
     mobile: css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-  `,
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    `
   })}
 `;
 export const SidebarHead = styled.div<SidebarHeadProps>`
@@ -343,9 +349,7 @@ export interface SidebarHeaderMainProps {
 }
 
 export const SidebarHeaderMain = styled.div<SidebarHeaderMainProps>`
-  display: ${({ $open }) => (
-    $open ? 'flex' : 'none'
-  )};
+  display: ${({ $open }) => ($open ? 'flex' : 'none')};
   justify-content: space-between;
   width: 100%;
   align-items: center;
@@ -368,16 +372,18 @@ export const SidebarToolbar = styled.div<{
     variant: 'dashboard',
     merge: true,
     tablet: css`
-    flex-direction: row;
-    `,
+      flex-direction: row;
+    `
   })}
-  ${({ $open }) => !$open && adaptive({
-    variant: 'dashboard',
-    merge: true,
-    desktop: css`
-    flex-direction: column-reverse;
-    `,
-  })}
+  ${({ $open }) =>
+    !$open &&
+    adaptive({
+      variant: 'dashboard',
+      merge: true,
+      desktop: css`
+        flex-direction: column-reverse;
+      `
+    })}
 `;
 
 export const SidebarSearchContainer = styled.div`
@@ -414,9 +420,7 @@ export const SidebarLogoLink = styled.a`
 `;
 
 export const SidebarHeader = styled.div<SidebarHeaderProps>`
-  display: ${({ $open }) => (
-    $open ? 'grid' : 'none'
-  )};
+  display: ${({ $open }) => ($open ? 'grid' : 'none')};
   grid-template-columns: 1fr auto auto;
   align-items: center;
   position: relative;
@@ -453,8 +457,12 @@ export const SidebarBottom = styled.div`
   padding-right: 20px;
   ${adaptive({
     variant: 'dashboard',
-    tablet: css`display: none;`,
-    mobile: css`display:none;`,
+    tablet: css`
+      display: none;
+    `,
+    mobile: css`
+      display: none;
+    `
   })}
 `;
 
@@ -498,7 +506,7 @@ export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
   overflow-x: hidden;
 `;
 
-export const SidebarArrowUpButton = styled(ArrowUpIcon) <{ $hidden: boolean }>`
+export const SidebarArrowUpButton = styled(ArrowUpIcon)<{ $hidden: boolean }>`
   position: sticky;
   margin-bottom: 10px;
   top: 0px;
@@ -518,20 +526,26 @@ export const SidebarArrowUpButton = styled(ArrowUpIcon) <{ $hidden: boolean }>`
   & path {
     stroke: ${({ theme }) => theme.colors.base.white};
   }
-  ${({ $hidden }) => $hidden && css` display: none;`}
+  ${({ $hidden }) =>
+    $hidden &&
+    css`
+      display: none;
+    `}
   ${adaptive({
     variant: 'dashboard',
     merge: true,
     tablet: css`
-    display: none;
-  `,
+      display: none;
+    `,
     mobile: css`
-    display: none;
-  `,
+      display: none;
+    `
   })}
 `;
 
-export const SidebarArrowDownButton = styled(ArrowDownIcon) <{ $hidden: boolean }>`
+export const SidebarArrowDownButton = styled(ArrowDownIcon)<{
+  $hidden: boolean;
+}>`
   position: sticky;
   margin-top: 10px;
   bottom: 0px;
@@ -544,16 +558,20 @@ export const SidebarArrowDownButton = styled(ArrowDownIcon) <{ $hidden: boolean 
   display: inline-flex;
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
-  ${({ $hidden }) => $hidden && css` display: none;`}
+  ${({ $hidden }) =>
+    $hidden &&
+    css`
+      display: none;
+    `}
   ${adaptive({
     variant: 'dashboard',
     merge: true,
     tablet: css`
-    display: none;
-  `,
+      display: none;
+    `,
     mobile: css`
-    display: none;
-  `,
+      display: none;
+    `
   })}
 `;
 
@@ -563,11 +581,11 @@ export const SidebarHeaderRight = styled.div`
   gap: 20px;
   &:last-child {
     ${adaptive({
-    variant: 'dashboard',
-    tablet: css`
-      display:none;
-      `,
-  })}
+      variant: 'dashboard',
+      tablet: css`
+        display: none;
+      `
+    })}
   }
 `;
 

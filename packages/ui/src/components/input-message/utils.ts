@@ -1,7 +1,11 @@
 import { IInputMessageFile } from '@/ui/components';
 
 export const getPreviewUrlForFile = async (file: File) => {
-  if (file.name.match(/.png$/i) || file.name.match(/.jpg$/i) || file.name.match(/.jpeg$/i)) {
+  if (
+    file.name.match(/.png$/i) ||
+    file.name.match(/.jpg$/i) ||
+    file.name.match(/.jpeg$/i)
+  ) {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
 
@@ -21,18 +25,20 @@ export const getPreviewUrlForFile = async (file: File) => {
   return null;
 };
 
-export const formatUploadFiles = async (files: File[]): Promise<IInputMessageFile[]> => {
-  const previewsUrls: (string | null)[] = await Promise.all(files.map(getPreviewUrlForFile));
+export const formatUploadFiles = async (
+  files: File[]
+): Promise<IInputMessageFile[]> => {
+  const previewsUrls: (string | null)[] = await Promise.all(
+    files.map(getPreviewUrlForFile)
+  );
   const newFiles: IInputMessageFile[] = files.map((nativeFile, index) => ({
     name: nativeFile.name,
     previewUrl: previewsUrls[index],
     native: nativeFile
   }));
 
-  const fileMap = new Map([
-    ...newFiles
-  ].map((file) => [file.name, file]));
-  
+  const fileMap = new Map([...newFiles].map((file) => [file.name, file]));
+
   return [...fileMap.values()];
 };
 
@@ -41,7 +47,10 @@ export const formatSeconds = (seconds: number) => {
   const remainingSeconds = seconds % 60;
 
   const formattedMinutes = String(minutes).padStart(2, '0');
-  const formattedSeconds = remainingSeconds.toFixed(1).padStart(2, '0').replace('.', ',');
-  
+  const formattedSeconds = remainingSeconds
+    .toFixed(1)
+    .padStart(2, '0')
+    .replace('.', ',');
+
   return `${formattedMinutes}:${formattedSeconds}`;
 };

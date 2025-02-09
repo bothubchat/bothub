@@ -6,30 +6,42 @@ import { HeaderUserInfoItemContent, HeaderUserInfoItemStyled } from './styled';
 import { useHeaderUserInfo } from '../context';
 import { useHeader } from '../../context';
 
-export interface HeaderUserInfoItemProps extends React.ComponentProps<'a'>, StyledProps {
+export interface HeaderUserInfoItemProps
+  extends React.ComponentProps<'a'>,
+    StyledProps {
   icon: React.ReactNode;
   to?: string;
 }
 
 export const HeaderUserInfoItem: React.FC<HeaderUserInfoItemProps> = ({
-  icon, to, children, ...props 
+  icon,
+  to,
+  children,
+  ...props
 }) => {
   const theme = useTheme();
   const { setIsMenuOpen } = useHeader();
   const { setIsOpen } = useHeaderUserInfo();
 
-  const handleClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
-    props.onClick?.(event);
-    setIsOpen(false);
-    setIsMenuOpen(false);
-  }, [props.onClick]);
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      props.onClick?.(event);
+      setIsOpen(false);
+      setIsMenuOpen(false);
+    },
+    [props.onClick]
+  );
 
   return (
-    <HeaderUserInfoItemStyled {...props} to={to} onClick={handleClick}>
+    <HeaderUserInfoItemStyled
+      {...props}
+      to={to}
+      onClick={handleClick}
+    >
       <HeaderUserInfoItemContent>
-        <IconProvider 
+        <IconProvider
           size={18}
-          fill={theme.colors.base.white}  
+          fill={theme.colors.base.white}
         >
           {icon}
         </IconProvider>

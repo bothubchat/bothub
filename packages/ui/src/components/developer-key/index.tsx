@@ -7,7 +7,7 @@ import {
   DeveloperKeyLabel,
   DeveloperKeyStyled,
   DeveloperKeyValue,
-  DeveloperKeyWrapper,
+  DeveloperKeyWrapper
 } from './styled';
 import { useTheme } from '@/ui/theme';
 import { IconProvider } from '@/ui/components/icon';
@@ -37,7 +37,7 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
   label,
   children,
   onCopy,
-  onDelete,
+  onDelete
 }) => {
   const theme = useTheme();
 
@@ -106,7 +106,10 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
               }
             />
           </DeveloperKeyStyled>
-          <DeveloperKeyDeleteButton onClick={handleDelete} $skeleton={skeleton}>
+          <DeveloperKeyDeleteButton
+            onClick={handleDelete}
+            $skeleton={skeleton}
+          >
             <DeveloperKeyDeleteIcon size={20} />
           </DeveloperKeyDeleteButton>
         </DeveloperKeyContent>

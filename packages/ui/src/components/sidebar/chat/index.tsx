@@ -37,39 +37,51 @@ export interface SidebarChatSkeletonProps {
   isDefault?: boolean;
 }
 
-export type SidebarChatProps = (SidebarChatDefaultProps | SidebarChatSkeletonProps) & {
+export type SidebarChatProps = (
+  | SidebarChatDefaultProps
+  | SidebarChatSkeletonProps
+) & {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onToggleCheckbox?: () => unknown;
 };
 
 export const SidebarChat: React.FC<SidebarChatProps> = ({
-  onClick, ...props
+  onClick,
+  onToggleCheckbox,
+  ...props
 }) => {
-  const {
-    attributes, listeners, setNodeRef
-  } = useDraggable({
-    id: !props.skeleton ? props.id : 'draggable-skeleton',
+  const { attributes, listeners, setNodeRef } = useDraggable({
+    id: !props.skeleton ? props.id : 'draggable-skeleton'
   });
 
-  const draggable = !props.skeleton && props.edit ? {
-    ...listeners,
-    ...attributes
-  } : {};
+  const draggable =
+    !props.skeleton && props.edit
+      ? {
+          ...listeners,
+          ...attributes
+        }
+      : {};
 
-  const style = !props.skeleton && props.dragging ? {
-    height: 0,
-    opacity: 0,
-  } : {};
+  const style =
+    !props.skeleton && props.dragging
+      ? {
+          height: 0,
+          opacity: 0
+        }
+      : {};
 
   return (
     <SidebarChatWithOutlineStyled $active={(!props.skeleton && props.active) ?? false}>
       <SidebarChatWithBackgroundStyled $active={(!props.skeleton && props.active) ?? false}>
         <SidebarChatStyled
           style={style}
-          $draggble={!props.skeleton && props.isDndOverflow || false}
+          $draggble={(!props.skeleton && props.isDndOverflow) || false}
           $active={(!props.skeleton && props.active) ?? false}
           $skeleton={!!props.skeleton}
           ref={!props.skeleton && props.edit ? setNodeRef : undefined}
-          onClick={onClick}
+          onClick={
+            !props.skeleton ? (!props.edit ? onClick : onToggleCheckbox) : undefined
+          }
         >
           {!props.skeleton && props.edit
             ? <SidebarChatDragHandle {...draggable} />
@@ -100,7 +112,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
             </SidebarChatTooltip>
           )}
           {props.skeleton && <SidebarChatIconStyled />}
-          <SidebarChatLeft onClick={onClick}>
+          <SidebarChatLeft {...draggable}>
             <SidebarChatNameTooltip
               {...(!props.skeleton && {
                 label: props.name

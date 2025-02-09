@@ -36,13 +36,7 @@ export const Image: ChipStory = {
 export const Badge: ChipStory = {
   args: {
     ...Image.args,
-    start: (
-      <BothubBadge
-        brick
-      >
-        Source Image
-      </BothubBadge>
-    )
+    start: <BothubBadge brick>Source Image</BothubBadge>
   }
 };
 

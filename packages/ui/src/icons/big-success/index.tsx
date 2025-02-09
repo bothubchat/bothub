@@ -1,11 +1,21 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const BigSuccessIcon = icon(({ ...props }) => (
-  <Icon size={24} viewBox="0 0 24 24" fill="none" {...props}>
+  <Icon
+    size={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {({ fill = '#4785FF' } = { fill: '#4785FF' }) => (
         <>
-          <rect width="24" height="24" rx="4" fill="#313E62" />
+          <rect
+            width="24"
+            height="24"
+            rx="4"
+            fill="#313E62"
+          />
           <path
             fillRule="evenodd"
             clipRule="evenodd"

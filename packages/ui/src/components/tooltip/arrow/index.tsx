@@ -12,7 +12,7 @@ export interface TooltipArrowProps {
 export const TooltipArrow: React.FC<TooltipArrowProps> = ({
   variant,
   inverted = false,
-  placement,
+  placement
 }) => {
   const theme = useTheme();
 
@@ -38,7 +38,7 @@ export const TooltipArrow: React.FC<TooltipArrowProps> = ({
       viewBox="0 0 9 7"
       fill="none"
       style={{
-        transform: transformArrow,
+        transform: transformArrow
       }}
     >
       <path

@@ -1,8 +1,16 @@
 import React from 'react';
-import { TypographyAlign, TypographyComponent, TypographyVariant } from './types';
+import {
+  TypographyAlign,
+  TypographyComponent,
+  TypographyVariant
+} from './types';
 import { TypographyStyled, getTypographyStyles } from './styled';
 
-export interface TypographyProps extends Omit<React.ComponentProps<typeof TypographyStyled>, 'ref' | '$variant' | '$align' | '$fullWidth'> {
+export interface TypographyProps
+  extends Omit<
+    React.ComponentProps<typeof TypographyStyled>,
+    'ref' | '$variant' | '$align' | '$fullWidth'
+  > {
   variant?: TypographyVariant;
   component?: TypographyComponent;
   align?: TypographyAlign;
@@ -12,12 +20,16 @@ export interface TypographyProps extends Omit<React.ComponentProps<typeof Typogr
 }
 
 export const Typography: React.FC<TypographyProps> = ({
-  variant = 'body-m-medium', component = 'span', align = 'left', fullWidth = false, ...props 
+  variant = 'body-m-medium',
+  component = 'span',
+  align = 'left',
+  fullWidth = false,
+  ...props
 }) => (
-  <TypographyStyled 
-    {...props} 
-    as={component} 
-    $variant={variant} 
+  <TypographyStyled
+    {...props}
+    as={component}
+    $variant={variant}
     $align={align}
     $fullWidth={fullWidth}
   />

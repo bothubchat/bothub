@@ -1,11 +1,21 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const BigMjIcon = icon(({ ...props }) => (
-  <Icon size={24} viewBox="0 0 24 24" fill="none" {...props}>
+  <Icon
+    size={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {({ fill = '#4785FF' } = { fill: '#4785FF' }) => (
         <>
-          <rect width="24" height="24" rx="4" fill="#313E62" />
+          <rect
+            width="24"
+            height="24"
+            rx="4"
+            fill="#313E62"
+          />
           <g clipPath="url(#clip0_2259_65626)">
             <path
               fillRule="evenodd"
@@ -16,7 +26,12 @@ export const BigMjIcon = icon(({ ...props }) => (
           </g>
           <defs>
             <clipPath id="clip0_2259_65626">
-              <rect width="16" height="16" fill="white" transform="translate(4 4)" />
+              <rect
+                width="16"
+                height="16"
+                fill="white"
+                transform="translate(4 4)"
+              />
             </clipPath>
           </defs>
         </>

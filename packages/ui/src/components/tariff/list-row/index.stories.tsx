@@ -18,7 +18,7 @@ export const Basic: TariffListRowStory = {
         currency: '₽',
         isDefault: true,
         color: 'white',
-        description: 'Хватит, чтобы написать небольшой абзац для сочинения',
+        description: 'Хватит, чтобы написать небольшой абзац для сочинения'
       },
       {
         name: 'Basic',
@@ -30,7 +30,7 @@ export const Basic: TariffListRowStory = {
         currency: '₽',
         color: 'blue',
         description:
-          'Хватит, чтобы написать роман «Евгений Онегин» А.С. Пушкина и повесть «Старик и море» Э. Хемингуэя',
+          'Хватит, чтобы написать роман «Евгений Онегин» А.С. Пушкина и повесть «Старик и море» Э. Хемингуэя'
       },
       {
         name: 'Premium',
@@ -42,7 +42,7 @@ export const Basic: TariffListRowStory = {
         currency: '₽',
         color: 'blue-lilac',
         description:
-          'Хватит, чтобы переписать весь текст «Конституции РФ» 8 раз',
+          'Хватит, чтобы переписать весь текст «Конституции РФ» 8 раз'
       },
       {
         name: 'Deluxe',
@@ -54,7 +54,7 @@ export const Basic: TariffListRowStory = {
         currency: '₽',
         color: 'blue-lilac',
         description:
-          'Хватит, чтобы собрать полный текст «Большого толкового словаря Русского языка» под. ред. С.А Кузнецова',
+          'Хватит, чтобы собрать полный текст «Большого толкового словаря Русского языка» под. ред. С.А Кузнецова'
       },
       {
         name: 'Elite',
@@ -65,14 +65,14 @@ export const Basic: TariffListRowStory = {
         price: '5400',
         currency: '₽',
         color: 'blue-lilac',
-        description: 'Хватит, чтобы написать всю серию книг о Гарри Поттере',
-      },
-    ],
-  },
+        description: 'Хватит, чтобы написать всю серию книг о Гарри Поттере'
+      }
+    ]
+  }
 };
 
 export default {
   title: 'Components/Tariff/ListRow',
   component: TariffListRow,
-  decorators: [StoryDecorator({ scale: 'dashboard' })],
+  decorators: [StoryDecorator({ scale: 'dashboard' })]
 } as TariffListRowMeta;

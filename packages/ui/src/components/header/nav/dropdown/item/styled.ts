@@ -9,7 +9,9 @@ export const HeaderNavDropdownItemStyled = styled.a`
   }
 `;
 
-export const HeaderNavDropdownItemContent: React.FC<React.ComponentProps<'div'>> = styled.div`
+export const HeaderNavDropdownItemContent: React.FC<
+  React.ComponentProps<'div'>
+> = styled.div`
   display: flex;
   gap: 14px;
   align-items: center;
@@ -20,7 +22,9 @@ export const HeaderNavDropdownItemContent: React.FC<React.ComponentProps<'div'>>
 
   transform: scale(1);
   background: rgba(255, 255, 255, 0);
-  transition: transform 0.2s ease-out, background 0.2s ease-out;
+  transition:
+    transform 0.2s ease-out,
+    background 0.2s ease-out;
   &:hover {
     background: rgba(255, 255, 255, 0.045);
   }
@@ -38,7 +42,7 @@ export const HeaderNavDropdownInfo = styled.div`
 export const HeaderNavDropdownTitle = styled(Typography)`
   font-weight: 700;
   font-size: 16px;
-  line-height: 22px; 
+  line-height: 22px;
 `;
 
 export const HeaderNavDropdownText = styled(Typography)`

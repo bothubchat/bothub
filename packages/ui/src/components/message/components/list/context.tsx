@@ -9,10 +9,9 @@ export const MessageListContext = React.createContext<MessageListContextValue>({
   variant: 'dot'
 });
 
-export const MessageListProvider: React.FC<MessageListContextValue & React.PropsWithChildren> = ({
-  children,
-  ...value
-}) => (
+export const MessageListProvider: React.FC<
+  MessageListContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
   <MessageListContext.Provider value={value}>
     {children}
   </MessageListContext.Provider>

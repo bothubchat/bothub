@@ -1,77 +1,49 @@
 import {
   MessageBold,
-  MessageComponentsProps, 
-  MessageImage, 
-  MessageImageProps, 
-  MessageInlineCode, 
-  MessageItalic, 
-  MessageLink, 
-  MessageList, 
+  MessageComponentsProps,
+  MessageImage,
+  MessageImageProps,
+  MessageInlineCode,
+  MessageItalic,
+  MessageLink,
+  MessageList,
   MessageListItem,
-  MessageMultilineCode, 
-  MessageParagraph, 
+  MessageMultilineCode,
+  MessageParagraph,
   MessagePre,
   MessageTable,
   MessageTableBody,
   MessageTableCell,
   MessageTableHead,
   MessageTableRow,
-  MessageTitle 
+  MessageTitle
 } from '@/ui/components/message/components';
 import { MessageMarkdownLine } from './styled';
 
 export function markdownComponents(
-  components: MessageComponentsProps,
+  components: MessageComponentsProps
 ): React.ComponentProps<typeof MessageMarkdownLine>['components'] {
   return {
-    p: ({ children }) => (
-      <MessageParagraph wrap>
-        {children}
-      </MessageParagraph>
-    ),
-    b: ({ children }) => (
-      <MessageBold>
-        {children}
-      </MessageBold>
-    ),
+    p: ({ children }) => <MessageParagraph wrap>{children}</MessageParagraph>,
+    b: ({ children }) => <MessageBold>{children}</MessageBold>,
     strong: ({ children }) => (
-      <MessageBold
-        component="strong"
-      >
-        {children}
-      </MessageBold>
+      <MessageBold component="strong">{children}</MessageBold>
     ),
-    i: ({ children }) => (
-      <MessageItalic>
-        {children}
-      </MessageItalic>
-    ),
+    i: ({ children }) => <MessageItalic>{children}</MessageItalic>,
     em: ({ children }) => (
-      <MessageItalic
-        component="em"
-      >
-        {children}
-      </MessageItalic>
+      <MessageItalic component="em">{children}</MessageItalic>
     ),
-    pre: ({ children }) => (
-      <MessagePre>
-        {children}
-      </MessagePre>
-    ),
+    pre: ({ children }) => <MessagePre>{children}</MessagePre>,
     code: ({ className, inline = false, children }) => {
       const code = String(children);
       if (!code) {
         return null;
       }
-  
+
       if (inline) {
-        return (
-          <MessageInlineCode>
-            {code}
-          </MessageInlineCode>
-        );
+        return <MessageInlineCode>{code}</MessageInlineCode>;
       }
-  
+
       return (
         <MessageMultilineCode
           {...components.code}
@@ -81,43 +53,13 @@ export function markdownComponents(
         </MessageMultilineCode>
       );
     },
-    table: ({ children }) => (
-      <MessageTable>
-        {children}
-      </MessageTable>
-    ),
-    thead: ({ children }) => (
-      <MessageTableHead>
-        {children}
-      </MessageTableHead>
-    ),
-    tbody: ({ children }) => (
-      <MessageTableBody>
-        {children}
-      </MessageTableBody>
-    ),
-    tr: ({ children }) => (
-      <MessageTableRow>
-        {children}
-      </MessageTableRow>
-    ),
-    td: ({ children }) => (
-      <MessageTableCell>
-        {children}
-      </MessageTableCell>
-    ),
-    th: ({ children }) => (
-      <MessageTableCell
-        head
-      >
-        {children}
-      </MessageTableCell>
-    ),
-    ul: ({ children }) => (
-      <MessageList>
-        {children}
-      </MessageList>
-    ),
+    table: ({ children }) => <MessageTable>{children}</MessageTable>,
+    thead: ({ children }) => <MessageTableHead>{children}</MessageTableHead>,
+    tbody: ({ children }) => <MessageTableBody>{children}</MessageTableBody>,
+    tr: ({ children }) => <MessageTableRow>{children}</MessageTableRow>,
+    td: ({ children }) => <MessageTableCell>{children}</MessageTableCell>,
+    th: ({ children }) => <MessageTableCell head>{children}</MessageTableCell>,
+    ul: ({ children }) => <MessageList>{children}</MessageList>,
     ol: ({ start, children }) => (
       <MessageList
         variant="number"
@@ -126,53 +68,13 @@ export function markdownComponents(
         {children}
       </MessageList>
     ),
-    li: ({ children }) => (
-      <MessageListItem>
-        {children}
-      </MessageListItem>
-    ),
-    h1: ({ children }) => (
-      <MessageTitle
-        variant="h1"
-      >
-        {children}
-      </MessageTitle>
-    ),
-    h2: ({ children }) => (
-      <MessageTitle
-        variant="h2"
-      >
-        {children}
-      </MessageTitle>
-    ),
-    h3: ({ children }) => (
-      <MessageTitle
-        variant="h3"
-      >
-        {children}
-      </MessageTitle>
-    ),
-    h4: ({ children }) => (
-      <MessageTitle
-        variant="h4"
-      >
-        {children}
-      </MessageTitle>
-    ),
-    h5: ({ children }) => (
-      <MessageTitle
-        variant="h5"
-      >
-        {children}
-      </MessageTitle>
-    ),
-    h6: ({ children }) => (
-      <MessageTitle
-        variant="h6"
-      >
-        {children}
-      </MessageTitle>
-    ),
+    li: ({ children }) => <MessageListItem>{children}</MessageListItem>,
+    h1: ({ children }) => <MessageTitle variant="h1">{children}</MessageTitle>,
+    h2: ({ children }) => <MessageTitle variant="h2">{children}</MessageTitle>,
+    h3: ({ children }) => <MessageTitle variant="h3">{children}</MessageTitle>,
+    h4: ({ children }) => <MessageTitle variant="h4">{children}</MessageTitle>,
+    h5: ({ children }) => <MessageTitle variant="h5">{children}</MessageTitle>,
+    h6: ({ children }) => <MessageTitle variant="h6">{children}</MessageTitle>,
     a: ({ href, children }) => (
       <MessageLink
         href={href}
@@ -181,9 +83,7 @@ export function markdownComponents(
         {children}
       </MessageLink>
     ),
-    img: ({
-      src, alt 
-    }) => {
+    img: ({ src, alt }) => {
       if (!src) {
         return null;
       }
@@ -195,13 +95,14 @@ export function markdownComponents(
         disableSkeleton: true,
         buttons: null
       };
-  
+
       return (
         <MessageImage
           {...imageProps}
-          {...((components.image && components.image.buttons) && {
-            buttons: components.image.buttons(imageProps)
-          })}
+          {...(components.image &&
+            components.image.buttons && {
+              buttons: components.image.buttons(imageProps)
+            })}
         />
       );
     }

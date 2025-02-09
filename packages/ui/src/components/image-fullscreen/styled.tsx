@@ -77,11 +77,15 @@ export const ImageFullScreenAuthor = styled.div`
 
 export const ImageFullScreenAuthorAvatar = styled(Avatar).attrs({ size: 30 })``;
 
-export const ImageFullScreenAuthorName = styled(Typography).attrs({ variant: 'body-m-medium' })`
+export const ImageFullScreenAuthorName = styled(Typography).attrs({
+  variant: 'body-m-medium'
+})`
   cursor: default;
 `;
 
-export const ImageFullScreenAuthorTag = styled(Badge).attrs({ variant: 'info' })``;
+export const ImageFullScreenAuthorTag = styled(Badge).attrs({
+  variant: 'info'
+})``;
 
 export const ImageFullScreenToolbar = styled.div``;
 
@@ -106,7 +110,7 @@ export const ImageFullScreenCarouselContainer = styled.div`
   user-select: none;
   width: 100%;
   height: 100%;
-  
+
   transition: transform 0.3s ease-in-out;
 `;
 
@@ -119,7 +123,7 @@ export const ImageFullScreenSlide = styled.div`
   justify-content: center;
   & > * {
     pointer-events: all;
-  };
+  }
   &:active {
     cursor: grabbing;
   }
@@ -134,14 +138,14 @@ export const ImageFullScreenImage = styled(ZoommableImage)`
     pointer-events: none;
     user-select: none;
     ${adaptive({
-    merge: true,
-    desktop: css`
-      max-width: 512px;
-    `,
-    mobile: css`
-      max-width: 256px;
-    `
-  })}
+      merge: true,
+      desktop: css`
+        max-width: 512px;
+      `,
+      mobile: css`
+        max-width: 256px;
+      `
+    })}
     @media (max-height: 600px) {
       max-width: 256px;
       max-height: 256px;
@@ -150,14 +154,14 @@ export const ImageFullScreenImage = styled(ZoommableImage)`
   & > div > span {
     max-height: min(60vh, 512px);
     ${adaptive({
-    merge: true,
-    desktop: css`
-      max-width: 512px;
-    `,
-    mobile: css`
-      max-width: 256px;
-    `
-  })}
+      merge: true,
+      desktop: css`
+        max-width: 512px;
+      `,
+      mobile: css`
+        max-width: 256px;
+      `
+    })}
     @media (max-width: 600px) {
       max-width: 256px;
       max-height: 256px;
@@ -199,11 +203,15 @@ export const ImageFullScreenCarouselButtons = styled.div<ImageFullScreenCarousel
   }
 `;
 
-export const ImageFullScreenCarouselPrevButton = styled(Button).attrs({ children: <ArrowNarrowLeftIcon /> })`
+export const ImageFullScreenCarouselPrevButton = styled(Button).attrs({
+  children: <ArrowNarrowLeftIcon />
+})`
   pointer-events: auto;
 `;
 
-export const ImageFullScreenCarouselNextButton = styled(Button).attrs({ children: <ArrowNarrowRightIcon /> })`
+export const ImageFullScreenCarouselNextButton = styled(Button).attrs({
+  children: <ArrowNarrowRightIcon />
+})`
   pointer-events: auto;
 `;
 
@@ -235,7 +243,11 @@ export interface ImageFullScreenPreviewImageProps {
   $active: boolean;
 }
 
-export const ImageFullScreenPreviewImage = styled(Image).attrs({ width: 64, height: 64, loading: 'skeleton' })<ImageFullScreenPreviewImageProps>`
+export const ImageFullScreenPreviewImage = styled(Image).attrs({
+  width: 64,
+  height: 64,
+  loading: 'skeleton'
+})<ImageFullScreenPreviewImageProps>`
   display: inline-flex;
   width: auto;
   border-radius: 10px;

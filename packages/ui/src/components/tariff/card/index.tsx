@@ -1,16 +1,16 @@
 import React from 'react';
 import {
-  TariffCardBorderWrapper, 
-  TariffCardContent, 
-  TariffCardCurrency, 
-  TariffCardName, 
-  TariffCardPrice, 
-  TariffCardPriceValue, 
-  TariffCardPurchaseButton, 
+  TariffCardBorderWrapper,
+  TariffCardContent,
+  TariffCardCurrency,
+  TariffCardName,
+  TariffCardPrice,
+  TariffCardPriceValue,
+  TariffCardPurchaseButton,
   TariffCardStyled,
-  TariffCardValidityPeriod, 
-  TariffCardTop, 
-  TariffCardBottom, 
+  TariffCardValidityPeriod,
+  TariffCardTop,
+  TariffCardBottom,
   TariffCardNamePrice,
   TariffCardHead,
   TariffCardBody,
@@ -30,52 +30,48 @@ export interface TariffCardProps extends React.ComponentProps<'div'> {
   color?: TariffCardColor;
 }
 
-export const TariffCard: React.FC<TariffCardProps> = ({ 
-  variant = 'primary', name, giveCaps, price, currency, details, purchase, validityPeriod, color = 'gray', children, ...props
+export const TariffCard: React.FC<TariffCardProps> = ({
+  variant = 'primary',
+  name,
+  giveCaps,
+  price,
+  currency,
+  details,
+  purchase,
+  validityPeriod,
+  color = 'gray',
+  children,
+  ...props
 }) => (
   <TariffCardStyled
     $color={color}
     {...props}
   >
     <TariffCardBorderWrapper>
-      <TariffCardContent
-        $variant={variant}
-      >
+      <TariffCardContent $variant={variant}>
         <TariffCardTop>
           <TariffCardHead>
             <TariffCardNamePrice>
               <TariffCardName>{name}</TariffCardName>
               <TariffCardPrice>
-                <TariffCardPriceValue>
-                  {price}
-                </TariffCardPriceValue>
-                <TariffCardCurrency>
-                  {currency}
-                </TariffCardCurrency>
+                <TariffCardPriceValue>{price}</TariffCardPriceValue>
+                <TariffCardCurrency>{currency}</TariffCardCurrency>
               </TariffCardPrice>
             </TariffCardNamePrice>
             {giveCaps}
           </TariffCardHead>
-          <TariffCardBody>
-            {children}
-          </TariffCardBody>
+          <TariffCardBody>{children}</TariffCardBody>
         </TariffCardTop>
         <TariffCardBottom>
           {typeof details !== 'string' && details}
           {typeof details === 'string' && (
-            <TariffCardDetailsLink>
-              {details}
-            </TariffCardDetailsLink>
+            <TariffCardDetailsLink>{details}</TariffCardDetailsLink>
           )}
           {typeof purchase !== 'string' && purchase}
           {typeof purchase === 'string' && (
-            <TariffCardPurchaseButton>
-              {purchase}
-            </TariffCardPurchaseButton>
+            <TariffCardPurchaseButton>{purchase}</TariffCardPurchaseButton>
           )}
-          <TariffCardValidityPeriod>
-            {validityPeriod}
-          </TariffCardValidityPeriod>
+          <TariffCardValidityPeriod>{validityPeriod}</TariffCardValidityPeriod>
         </TariffCardBottom>
       </TariffCardContent>
     </TariffCardBorderWrapper>

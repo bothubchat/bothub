@@ -5,7 +5,7 @@ import {
   TextAreaFieldLabel,
   TextAreaFieldSkeleton,
   TextAreaFieldStyled,
-  TextAreaFieldTextArea,
+  TextAreaFieldTextArea
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 
@@ -28,6 +28,7 @@ export interface TextAreaFieldProps extends React.ComponentProps<'textarea'> {
   error?: string | boolean;
   disabled?: boolean;
   skeleton?: boolean;
+  glow?: boolean;
   renderTextAreaBlock?: (props: TextAreaFieldBlockProps) => React.ReactNode;
 }
 
@@ -38,6 +39,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
   error,
   disabled = false,
   skeleton = false,
+  glow,
   onFocus,
   onBlur,
   renderTextAreaBlock,
@@ -75,8 +77,8 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
         <TextAreaFieldLabel>{label}</TextAreaFieldLabel>
       )}
       {typeof label !== 'string' && !skeleton && label}
-      {!skeleton
-        && (renderTextAreaBlock ? (
+      {!skeleton &&
+        (renderTextAreaBlock ? (
           renderTextAreaBlock({
             focus: isFocus,
             error: !!error,
@@ -86,7 +88,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
               ...props,
               disabled,
               onFocus: handleFocus,
-              onBlur: handleBlur,
+              onBlur: handleBlur
             }
           })
         ) : (
@@ -95,6 +97,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
             $error={!!error}
             $disabled={disabled}
             $skeleton={false}
+            $glow={glow}
           >
             <TextAreaFieldTextArea
               {...props}

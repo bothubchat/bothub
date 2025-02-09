@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  SidebarUserInfoTariffContainer,
   SidebarUserInfoContent,
   SidebarUserInfoName,
   SidebarUserInfoStyled,
@@ -19,7 +18,6 @@ export interface SidebarUserInfoProps {
   avatar?: React.ReactNode;
   name?: string;
   caps?: string;
-  tariff?: React.ReactNode;
   updateTariff?: React.ReactNode;
   logout?: React.ReactNode;
   linkAs?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -31,7 +29,6 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   avatar,
   name,
   caps,
-  tariff,
   updateTariff,
   logout,
   linkAs,
@@ -41,9 +38,7 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   const { isOpen } = useSidebar();
 
   return (
-    <SidebarUserInfoProvider
-      caps={caps}
-    >
+    <SidebarUserInfoProvider caps={caps}>
       <SidebarUserInfoStyled $open={isOpen}>
         <SidebarUserInfoContent>
           <SidebarUserInfoMain
@@ -54,33 +49,16 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
             <SidebarUserInfoLeft>
               {avatar}
               <SidebarUserInfoText>
-                {name && (
-                  <SidebarUserInfoName>
-                    {name}
-                  </SidebarUserInfoName>
-                )}
-                {caps && (
-                  <SidebarUserInfoCaps>
-                    {caps}
-                  </SidebarUserInfoCaps>
-                )}
+                {name && <SidebarUserInfoName>{name}</SidebarUserInfoName>}
+                {caps && <SidebarUserInfoCaps>{caps}</SidebarUserInfoCaps>}
               </SidebarUserInfoText>
             </SidebarUserInfoLeft>
-            <SidebarUserInfoLogoutButtonContainer
-              $open={isOpen}
-            >
+            <SidebarUserInfoLogoutButtonContainer $open={isOpen}>
               {logout}
             </SidebarUserInfoLogoutButtonContainer>
           </SidebarUserInfoMain>
           <SidebarUserInfoBottom>
-            <SidebarUserInfoTariffContainer
-              $open={isOpen}
-            >
-              {tariff}
-            </SidebarUserInfoTariffContainer>
-            <SidebarUserInfoUpdateTariffContainer
-              $open={isOpen}
-            >
+            <SidebarUserInfoUpdateTariffContainer $open={isOpen}>
               {updateTariff}
             </SidebarUserInfoUpdateTariffContainer>
           </SidebarUserInfoBottom>

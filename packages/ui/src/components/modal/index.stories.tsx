@@ -7,7 +7,7 @@ import {
   BookmarksIcon,
   EmailCircleIcon,
   LockCircleIcon,
-  TrashIcon,
+  TrashIcon
 } from '@/ui/icons';
 import { Button } from '@/ui/components/button';
 import { Link } from '@/ui/components/link';
@@ -21,7 +21,7 @@ import {
   ReferralRadioTableCell,
   ReferralRadioTableHeadCell,
   ReferralRadioTableRow,
-  ReferralRadioTableSelectedCell,
+  ReferralRadioTableSelectedCell
 } from '@/ui/components/referral';
 
 export type ModalMeta = Meta<typeof Modal>;
@@ -53,21 +53,29 @@ export const Auth: ModalStory = {
           startIcon={<LockCircleIcon />}
           fullWidth
         />
-        <Button fullWidth type="submit">
+        <Button
+          fullWidth
+          type="submit"
+        >
           Войти
         </Button>
-        <Link href="#link" align="center" fullWidth>
+        <Link
+          href="#link"
+          align="center"
+          fullWidth
+        >
           Восстановление пароля
         </Link>
         <Divider />
-        <Typography align="center" fullWidth>
-          Нет аккаунта? 
-          {' '}
-          <Link href="#link">Регистрация</Link>
+        <Typography
+          align="center"
+          fullWidth
+        >
+          Нет аккаунта? <Link href="#link">Регистрация</Link>
         </Typography>
       </Form>
-    ),
-  },
+    )
+  }
 };
 
 export const AuthTelegram: ModalStory = {
@@ -83,16 +91,22 @@ export const AuthTelegram: ModalStory = {
       >
         <FormText>Вы действительно хотите объединить ваши аккаунты?</FormText>
         <FormButtons>
-          <Button fullWidth type="submit">
+          <Button
+            fullWidth
+            type="submit"
+          >
             Да
           </Button>
-          <Button variant="secondary" fullWidth>
+          <Button
+            variant="secondary"
+            fullWidth
+          >
             Нет
           </Button>
         </FormButtons>
       </Form>
-    ),
-  },
+    )
+  }
 };
 
 export const UpdateBookmark: ModalStory = {
@@ -118,41 +132,44 @@ export const UpdateBookmark: ModalStory = {
           data={[
             {
               color: '#1C64F2',
-              value: 'Синий',
+              value: 'Синий'
             },
             {
               color: '#FE4242',
-              value: 'Красный',
+              value: 'Красный'
             },
             {
               color: '#F29C1C',
-              value: 'Оранжевый',
+              value: 'Оранжевый'
             },
             {
               color: '#941CF2',
-              value: 'Фиолетовый',
+              value: 'Фиолетовый'
             },
             {
               color: '#1ABB34',
-              value: 'Зеленый',
+              value: 'Зеленый'
             },
             {
               color: '#1CB2F2',
-              value: 'Аква',
+              value: 'Аква'
             },
             {
               color: 'linear-gradient(90deg, #1C64F2 -0.39%, #D41CF2 99.61%)',
-              value: 'Сине-фиолетовый',
-            },
+              value: 'Сине-фиолетовый'
+            }
           ]}
           fullWidth
         />
-        <Button type="submit" fullWidth>
+        <Button
+          type="submit"
+          fullWidth
+        >
           Сохранить
         </Button>
       </Form>
-    ),
-  },
+    )
+  }
 };
 
 export const DeleteBookmark: ModalStory = {
@@ -168,16 +185,23 @@ export const DeleteBookmark: ModalStory = {
       >
         <FormText>Вы уверены в том, что хотите удалить закладку?</FormText>
         <FormButtons>
-          <Button startIcon={<TrashIcon />} fullWidth type="submit">
+          <Button
+            startIcon={<TrashIcon />}
+            fullWidth
+            type="submit"
+          >
             Удалить
           </Button>
-          <Button variant="secondary" fullWidth>
+          <Button
+            variant="secondary"
+            fullWidth
+          >
             Отмена
           </Button>
         </FormButtons>
       </Form>
-    ),
-  },
+    )
+  }
 };
 
 export const CreateReferral: ModalStory = {
@@ -235,8 +259,8 @@ export const CreateReferral: ModalStory = {
           ))}
         </ReferralRadioGroup>
       </Form>
-    ),
-  },
+    )
+  }
 };
 
 export default {
@@ -244,13 +268,13 @@ export default {
   component: Modal,
   decorators: [StoryDecorator()],
   args: {
-    open: true,
+    open: true
   },
   argTypes: {
     children: {
       table: {
-        disable: true,
-      },
-    },
-  },
+        disable: true
+      }
+    }
+  }
 } as ModalMeta;

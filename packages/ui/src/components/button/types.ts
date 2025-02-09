@@ -1,4 +1,11 @@
-export type ButtonVariant = 'primary' | 'primary-transparent' | 'primary-outline' | 'secondary' | 'text' | 'help' | 'success';
+export type ButtonVariant =
+  | 'primary'
+  | 'primary-transparent'
+  | 'primary-outline'
+  | 'secondary'
+  | 'text'
+  | 'help'
+  | 'success';
 
 export type ButtonSize = 'small' | 'md';
 

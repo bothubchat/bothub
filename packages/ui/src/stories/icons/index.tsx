@@ -194,6 +194,11 @@ import {
   ShowUiIcon,
   SortUserIcon,
   HappyRobotIcon,
+  ManageChatIcon,
+  IncludeContextIcon,
+  WebSearchIcon,
+  AnalyzeUrlsIcon,
+  QueueIcon,
   SortAlphabetAscendingIcon,
   SortAlphabetDescendingIcon,
   SortDateAscendingIcon,
@@ -248,6 +253,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="FreeIcon">{FreeIcon}</IconItem>
         <IconItem name="MinimizeIcon">{MinimizeIcon}</IconItem>
         <IconItem name="EditIcon">{EditIcon}</IconItem>
+        <IconItem name="ManageChatIcon">{ManageChatIcon}</IconItem>
         <IconItem name="CopyIcon">{CopyIcon}</IconItem>
         <IconItem name="TrashIcon">{TrashIcon}</IconItem>
         <IconItem name="ChatsIcon">{ChatsIcon}</IconItem>
@@ -352,13 +358,22 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="XlsIcon">{XlsIcon}</IconItem>
         <IconItem name="WordIcon">{WordIcon}</IconItem>
         <IconItem name="TxtIcon">{TxtIcon}</IconItem>
-        <IconItem name="BothubLogoGradient" size={32}>
+        <IconItem
+          name="BothubLogoGradient"
+          size={32}
+        >
           {BothubLogoGradient}
         </IconItem>
-        <IconItem name="TelegramLogoGradient" size={32}>
+        <IconItem
+          name="TelegramLogoGradient"
+          size={32}
+        >
           {TelegramLogoGradient}
         </IconItem>
-        <IconItem name="DeclineCircleIcon" size={32}>
+        <IconItem
+          name="DeclineCircleIcon"
+          size={32}
+        >
           {DeclineCircleIcon}
         </IconItem>
         <IconItem name="SimpleGearBgIcon">{SimpleGearBgIcon}</IconItem>
@@ -421,6 +436,10 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="URLCircleIcon">{URLCircleIcon}</IconItem>
         <IconItem name="ShowUiIcon">{ShowUiIcon}</IconItem>
         <IconItem name="HideUiIcon">{HideUiIcon}</IconItem>
+        <IconItem name="IncludeContextIcon">{IncludeContextIcon}</IconItem>
+        <IconItem name="WebSearchIcon">{WebSearchIcon}</IconItem>
+        <IconItem name="AnalyzeUrlsIcon">{AnalyzeUrlsIcon}</IconItem>
+        <IconItem name="QueueIcon">{QueueIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

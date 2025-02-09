@@ -5,12 +5,12 @@ export interface MessageImageContextValue {
   height?: number;
 }
 
-export const MessageImageContext = React.createContext<MessageImageContextValue>({});
+export const MessageImageContext =
+  React.createContext<MessageImageContextValue>({});
 
-export const MessageImageProvider: React.FC<MessageImageContextValue & React.PropsWithChildren> = ({
-  children,
-  ...value
-}) => (
+export const MessageImageProvider: React.FC<
+  MessageImageContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
   <MessageImageContext.Provider value={value}>
     {children}
   </MessageImageContext.Provider>

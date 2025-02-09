@@ -1,10 +1,10 @@
 import React from 'react';
 import {
-  TariffCardModelIcon, 
-  TariffCardModelInfo, 
-  TariffCardModelName, 
-  TariffCardModelStyled, 
-  TariffCardModelTokens 
+  TariffCardModelIcon,
+  TariffCardModelInfo,
+  TariffCardModelName,
+  TariffCardModelStyled,
+  TariffCardModelTokens
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 
@@ -14,19 +14,16 @@ export interface TariffCardModelProps {
 }
 
 export const TariffCardModel: React.FC<TariffCardModelProps> = ({
-  name, tokens
+  name,
+  tokens
 }) => (
   <TariffCardModelStyled>
     <IconProvider size={18}>
       <TariffCardModelIcon />
     </IconProvider>
     <TariffCardModelInfo>
-      <TariffCardModelName>
-        {name}
-      </TariffCardModelName>
-      <TariffCardModelTokens>
-        {tokens}
-      </TariffCardModelTokens>
+      <TariffCardModelName>{name}</TariffCardModelName>
+      <TariffCardModelTokens>{tokens}</TariffCardModelTokens>
     </TariffCardModelInfo>
   </TariffCardModelStyled>
 );

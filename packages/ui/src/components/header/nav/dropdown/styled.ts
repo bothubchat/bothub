@@ -6,9 +6,11 @@ import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 export const HeaderNavDropdownStyled = styled.div<{ $inMenu: boolean }>`
   display: flex;
   flex-direction: column;
-  ${({ $inMenu }) => $inMenu && css`
-    width: 100%;
-  `}
+  ${({ $inMenu }) =>
+    $inMenu &&
+    css`
+      width: 100%;
+    `}
 `;
 
 export const HeaderNavDropdownArrow = styled(ArrowDownIcon)`
@@ -16,28 +18,36 @@ export const HeaderNavDropdownArrow = styled(ArrowDownIcon)`
   transition: transform 0.2s ease-in-out;
 `;
 
-export const HeaderNavDropdownHead = styled(HeaderNavLinkStyled)<{ $active: boolean, $inMenu: boolean }>`
+export const HeaderNavDropdownHead = styled(HeaderNavLinkStyled)<{
+  $active: boolean;
+  $inMenu: boolean;
+}>`
   display: inline-flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  ${({ $active }) => ($active ? css`
-    color: ${({ theme }) => theme.colors.accent.primaryLight};
-    > ${HeaderNavDropdownArrow} path {
-      stroke: ${({ theme }) => theme.colors.accent.primaryLight};
-    }
-  ` : css`
-    &:hover {
-      color: ${({ theme }) => theme.colors.accent.primary};
-      > ${HeaderNavDropdownArrow} path {
-        stroke: ${({ theme }) => theme.colors.accent.primary};
-      }
-    }
-  `)}
-  ${({ $inMenu }) => $inMenu && css`
-    width: 100%;
-    justify-content: space-between;
-  `}
+  ${({ $active }) =>
+    $active
+      ? css`
+          color: ${({ theme }) => theme.colors.accent.primaryLight};
+          > ${HeaderNavDropdownArrow} path {
+            stroke: ${({ theme }) => theme.colors.accent.primaryLight};
+          }
+        `
+      : css`
+          &:hover {
+            color: ${({ theme }) => theme.colors.accent.primary};
+            > ${HeaderNavDropdownArrow} path {
+              stroke: ${({ theme }) => theme.colors.accent.primary};
+            }
+          }
+        `}
+  ${({ $inMenu }) =>
+    $inMenu &&
+    css`
+      width: 100%;
+      justify-content: space-between;
+    `}
 `;
 
 export const HeaderNavDropdownBody = styled(animated.div)<{ $inMenu: boolean }>`

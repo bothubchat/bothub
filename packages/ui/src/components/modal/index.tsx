@@ -26,7 +26,13 @@ export interface ModalProps extends React.PropsWithChildren {
 }
 
 export const Modal: React.FC<ModalProps> = ({
-  open, title = null, scrollbar = false, children, onClose, images, className
+  open,
+  title = null,
+  scrollbar = false,
+  children,
+  onClose,
+  images,
+  className
 }) => {
   let modalNode: React.ReactNode;
 
@@ -41,36 +47,39 @@ export const Modal: React.FC<ModalProps> = ({
   } else {
     modalNode = (
       <ModalStyled>
-        <Backdrop open={open} onClick={onClose} />
-        {modalTransition((style, item) => item && (
-          <ModalWindow style={style} className={className}>
-            {images}
-            <ModalWindowBody>
-              {title ? <ModalTitle>{title}</ModalTitle> : null}
-              <ModalCloseButton onClick={onClose}>
-                <ModalCloseButtonIcon size={24} />
-              </ModalCloseButton>
-              <ModalWindowBodyContent>
-                <ModalWindowBodyScrollbarWrapper
-                  overflow={scrollbar ? 'auto' : 'visible'}
-                  disabled={!scrollbar}
-                  disableShadows={!scrollbar}
-                >
-                  <ModalContent>
-                    {children}
-                  </ModalContent>
-                </ModalWindowBodyScrollbarWrapper>
-              </ModalWindowBodyContent>
-            </ModalWindowBody>
-          </ModalWindow>
-        ))}
+        <Backdrop
+          open={open}
+          onClick={onClose}
+        />
+        {modalTransition(
+          (style, item) =>
+            item && (
+              <ModalWindow
+                style={style}
+                className={className}
+              >
+                {images}
+                <ModalWindowBody>
+                  {title ? <ModalTitle>{title}</ModalTitle> : null}
+                  <ModalCloseButton onClick={onClose}>
+                    <ModalCloseButtonIcon size={24} />
+                  </ModalCloseButton>
+                  <ModalWindowBodyContent>
+                    <ModalWindowBodyScrollbarWrapper
+                      overflow={scrollbar ? 'auto' : 'visible'}
+                      disabled={!scrollbar}
+                      disableShadows={!scrollbar}
+                    >
+                      <ModalContent>{children}</ModalContent>
+                    </ModalWindowBodyScrollbarWrapper>
+                  </ModalWindowBodyContent>
+                </ModalWindowBody>
+              </ModalWindow>
+            )
+        )}
       </ModalStyled>
     );
   }
 
-  return (
-    <Portal>
-      {modalNode}
-    </Portal>
-  );
+  return <Portal>{modalNode}</Portal>;
 };

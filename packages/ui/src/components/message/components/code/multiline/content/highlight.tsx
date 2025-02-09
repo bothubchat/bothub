@@ -3,7 +3,7 @@ import React, {
   useRef,
   ReactNode,
   ElementType,
-  useCallback,
+  useCallback
 } from 'react';
 import hljs from 'highlight.js/lib/common';
 
@@ -18,7 +18,7 @@ export const Highlight: React.FC<HighlightProps> = ({
   children,
   className = '',
   element: Element,
-  innerHTML = false,
+  innerHTML = false
 }) => {
   const elRef = useRef<HTMLDivElement | HTMLPreElement>(null);
 
@@ -39,18 +39,26 @@ export const Highlight: React.FC<HighlightProps> = ({
     const props = {
       ref: elRef,
       className,
-      dangerouslySetInnerHTML: { __html: children as string },
+      dangerouslySetInnerHTML: { __html: children as string }
     };
     if (Element) {
       return <Element {...props} />;
     }
 
-    return <div {...props} ref={elRef as React.RefObject<HTMLDivElement>} />;
+    return (
+      <div
+        {...props}
+        ref={elRef as React.RefObject<HTMLDivElement>}
+      />
+    );
   }
 
   if (Element) {
     return (
-      <Element ref={elRef} className={className}>
+      <Element
+        ref={elRef}
+        className={className}
+      >
         {children}
       </Element>
     );

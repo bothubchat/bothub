@@ -9,12 +9,24 @@ export type MessageContextCopyEventHandler = () => unknown;
 
 export type MessageCodeCopyEventHandler = (code: string) => unknown;
 
+export type MessagePlainTextCopyEventHandler = () => unknown;
+
 export type MessageActionEventHandler = ({
   id,
-  message,
+  message
 }: {
   id?: string;
   message?: string;
+}) => unknown;
+
+export type MessageActionEditEventHandler = ({
+  id,
+  message,
+  variant
+}: {
+  id?: string;
+  message?: string;
+  variant?: MessageVariant;
 }) => unknown;
 
 export type MessageVersionEventHandler = (id?: string) => unknown;

@@ -8,7 +8,10 @@ export interface HeaderMenuProps extends React.PropsWithChildren {
   isPreset?: boolean;
 }
 
-export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children, isPreset }) => {
+export const HeaderMenu: React.FC<HeaderMenuProps> = ({
+  children,
+  isPreset
+}) => {
   const { variant, isMenuOpen } = useHeader();
 
   useEffect(() => {
@@ -29,42 +32,44 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({ children, isPreset }) =>
     };
   }, [isMenuOpen]);
 
-  const w = typeof window !== 'undefined' ? window : {
-    innerHeight: 1920,
-  };
+  const w =
+    typeof window !== 'undefined'
+      ? window
+      : {
+          innerHeight: 1920
+        };
   const menuTransition = useTransition(isMenuOpen, {
     from: {
       opacity: 0,
-      transform: `translateY(${-w.innerHeight}px)`,
+      transform: `translateY(${-w.innerHeight}px)`
     },
     enter: {
       opacity: 1,
-      transform: 'translateY(0px)',
+      transform: 'translateY(0px)'
     },
     leave: {
       opacity: 0,
-      transform: `translateY(${-w.innerHeight}px)`,
+      transform: `translateY(${-w.innerHeight}px)`
     },
     config: { duration: 150 }
   });
 
   return (
-    <HeaderMenuProvider
-      isInMenu
-    >
-      {menuTransition((style, item) => (
-        item && (
-          <HeaderMenuStyled>
-            <HeaderMenuContent
-              $isPreset={isPreset}
-              $variant={variant}
-              style={style}
-            >
-              {children}
-            </HeaderMenuContent>
-          </HeaderMenuStyled>
-        )
-      ))}
+    <HeaderMenuProvider isInMenu>
+      {menuTransition(
+        (style, item) =>
+          item && (
+            <HeaderMenuStyled>
+              <HeaderMenuContent
+                $isPreset={isPreset}
+                $variant={variant}
+                style={style}
+              >
+                {children}
+              </HeaderMenuContent>
+            </HeaderMenuStyled>
+          )
+      )}
     </HeaderMenuProvider>
   );
 };

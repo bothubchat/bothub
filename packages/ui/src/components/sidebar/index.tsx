@@ -65,120 +65,108 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(({
   const [isBottom, setIsBottom] = useState<boolean>(false);
   const handleOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>((open) => {
     setIsOpen(open);
-
     if (typeof open === 'boolean' && !initialIsOpen && onOpen) {
-      onOpen(open);
+        onOpen(open);
     }
-  }, [setIsOpen, initialIsOpen, onOpen]);
+  },
+    [setIsOpen, initialIsOpen, onOpen]
+  );
 
-  const handleScroll = useCallback<ScrollbarScrollEventHandler>(({ isBottom }) => {
-    setIsBottom(isBottom);
-  }, [setIsBottom]);
-
+  const handleScroll = useCallback<ScrollbarScrollEventHandler>(
+    ({ isBottom }) => {
+      setIsBottom(isBottom);
+    },
+    [setIsBottom]
+  );
   const handleScrollTop = useCallback(() => {
     if (ref && typeof ref !== 'function' && ref.current?.element) {
       ref.current.element.scrollTo({
         top: 0,
-        behavior: 'smooth',
+        behavior: 'smooth'
       });
     }
   }, [ref]);
-
-  const handleScrollBottom = useCallback(() => {
-    if (ref && typeof ref !== 'function' && ref.current?.element) {
-      ref.current.element.scrollTo({
-        top: ref.current.element.scrollHeight,
-        behavior: 'smooth',
-      });
-    }
-  }, [ref]);
-  return (
-    <SidebarProvider
-      isOpen={isOpen}
-      setIsOpen={handleOpen}
-    >
-      <SidebarStyled
-        id={id}
-        className={className}
-        $isHide={isHide}
-        $open={isOpen}
+    const handleScrollBottom = useCallback(() => {
+      if (ref && typeof ref !== 'function' && ref.current?.element) {
+        ref.current.element.scrollTo({
+          top: ref.current.element.scrollHeight,
+          behavior: 'smooth'
+        });
+      }
+    }, [ref]);
+    return (
+      <SidebarProvider
+        isOpen={isOpen}
+        setIsOpen={handleOpen}
       >
-        <SidebarContent $open={isOpen}>
-          <SidebarHeader $open={isOpen}>
-            {logo}
-            {lang}
-            <SidebarMenu>
-              {menu}
-            </SidebarMenu>
-          </SidebarHeader>
-          <SidebarToolbar $open={isOpen}>
-            {buttons}
-            {buttonsModal}
-            {!isOpen && (
-              <SidebarMenu>
-                {menu}
-              </SidebarMenu>
-            )}
-            {toggle}
-          </SidebarToolbar>
-          <SidebarSearchContainer>
-            {search}
-          </SidebarSearchContainer>
-          <SidebarDivider />
-          <SidebarBody>
-            {!isOpen
-              && (
+        <SidebarStyled
+          id={id}
+          className={className}
+          $isHide={isHide}
+          $open={isOpen}
+        >
+          <SidebarContent $open={isOpen}>
+            <SidebarHeader $open={isOpen}>
+              {logo}
+              {lang}
+              <SidebarMenu>{menu}</SidebarMenu>
+            </SidebarHeader>
+            <SidebarToolbar $open={isOpen}>
+              {buttons}
+              {buttonsModal}
+              {!isOpen && <SidebarMenu>{menu}</SidebarMenu>}
+              {toggle}
+            </SidebarToolbar>
+            <SidebarSearchContainer>{search}</SidebarSearchContainer>
+            <SidebarDivider />
+            <SidebarBody>
+              {!isOpen && (
                 <SidebarArrowUpButton
                   $hidden={isBottom && !isOpen}
                   onClick={handleScrollTop}
                 />
               )}
-            <SidebarWrapper>
-              <SidebarBodyScrollbarWrapper
-                ref={ref}
-                size={!isOpen ? 0 : 6}
-                onScroll={handleScroll}
-              >
-                <SidebarBodyContent>
-                  {children}
-                </SidebarBodyContent>
-              </SidebarBodyScrollbarWrapper>
-            </SidebarWrapper>
-            {!isOpen && (
-              <SidebarArrowDownButton
-                $hidden={!isBottom}
-                onClick={handleScrollBottom}
-              />
-            )}
-          </SidebarBody>
-          <SidebarDeleteButtonContainer>
-            {deleteButton}
-          </SidebarDeleteButtonContainer>
-          <SidebarBottom>
+              <SidebarWrapper>
+                <SidebarBodyScrollbarWrapper
+                  ref={ref}
+                  size={!isOpen ? 0 : 6}
+                  onScroll={handleScroll}
+                >
+                  <SidebarBodyContent>{children}</SidebarBodyContent>
+                </SidebarBodyScrollbarWrapper>
+              </SidebarWrapper>
+              {!isOpen && (
+                <SidebarArrowDownButton
+                  $hidden={!isBottom}
+                  onClick={handleScrollBottom}
+                />
+              )}
+            </SidebarBody>
+            <SidebarDeleteButtonContainer>
+              {deleteButton}
+            </SidebarDeleteButtonContainer>
+            <SidebarBottom>{user}</SidebarBottom>
+          </SidebarContent>
+          <SidebarContentNav $open={isOpen}>
+            <SidebarContentNavContainer $open={isOpen}>
+              <SidebarMobileToggle>
+                {themeSwitcher}
+                {toggle}
+              </SidebarMobileToggle>
+              <SidebarContentNavMenuWrapper>
+                <SidebarContentNavMenuScrollbarWrapper>
+                  {menu}
+                </SidebarContentNavMenuScrollbarWrapper>
+              </SidebarContentNavMenuWrapper>
+            </SidebarContentNavContainer>
             {user}
-          </SidebarBottom>
-        </SidebarContent>
-        <SidebarContentNav $open={isOpen}>
-          <SidebarContentNavContainer $open={isOpen}>
-            <SidebarMobileToggle>
-              {themeSwitcher}
-              {toggle}
-            </SidebarMobileToggle>
-            <SidebarContentNavMenuWrapper>
-              <SidebarContentNavMenuScrollbarWrapper>
-                {menu}
-              </SidebarContentNavMenuScrollbarWrapper>
-            </SidebarContentNavMenuWrapper>
-          </SidebarContentNavContainer>
-          {user}
-        </SidebarContentNav>
-      </SidebarStyled>
-      <SidebarGlobalStyle
-        $open={isOpen}
-      />
-    </SidebarProvider>
-  );
-});
+          </SidebarContentNav>
+        </SidebarStyled>
+        <SidebarGlobalStyle $open={isOpen} />
+      </SidebarProvider>
+    );
+  }
+);
 
 export * from './styled';
 export * from './context';

@@ -7,7 +7,10 @@ export interface MessageInlineCodeStyledProps {
   $messageColor: string;
 }
 
-export const MessageInlineCodeStyled = styled(Typography).attrs({ variant: 'body-m-regular', component: 'code' })<MessageInlineCodeStyledProps>`
+export const MessageInlineCodeStyled = styled(Typography).attrs({
+  variant: 'body-l-regular',
+  component: 'code'
+})<MessageInlineCodeStyledProps>`
   display: inline-flex;
   border-radius: 4px;
   ${({ theme, $messageVariant, $messageColor }) => {
@@ -15,44 +18,53 @@ export const MessageInlineCodeStyled = styled(Typography).attrs({ variant: 'body
       case 'user':
         return css`
           background: ${theme.colors.accent.primaryLight};
+          color: ${theme.default.colors.base.white};
         `;
       case 'assistant':
         if ($messageColor !== 'default') {
           return css`
-            color: ${theme.default.colors.base.white};
-            background: rgba(255, 255, 255, 0.225);
+            color: ${theme.colors.base.white};
+            background: ${theme.colors.grayScale.gray3};
           `;
-        }  
+        }
 
         return css`
-          background: ${theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray3};
+          background: ${theme.mode === 'light'
+            ? theme.default.colors.base.white
+            : theme.colors.grayScale.gray3};
         `;
     }
   }}
   &::selection {
     ${({ $messageColor }) => {
-    switch ($messageColor) {
-      case 'default':
-        return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
-        `;
-      case 'green':
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${({ theme }) => theme.colors.gpt3};
-        `;
-      case 'purple':
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${({ theme }) => theme.colors.gpt4};
-        `;
-      default:
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${$messageColor};
-        `;
-    }
-  }}
+      switch ($messageColor) {
+        case 'default':
+          return css`
+            background: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.accent.primary
+                : theme.colors.base.white};
+            color: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.base.white
+                : theme.colors.accent.primary};
+          `;
+        case 'green':
+          return css`
+            background: ${({ theme }) => theme.default.colors.base.white};
+            color: ${({ theme }) => theme.colors.gpt3};
+          `;
+        case 'purple':
+          return css`
+            background: ${({ theme }) => theme.default.colors.base.white};
+            color: ${({ theme }) => theme.colors.gpt4};
+          `;
+        default:
+          return css`
+            background: ${({ theme }) => theme.default.colors.base.white};
+            color: ${$messageColor};
+          `;
+      }
+    }}
   }
 `;

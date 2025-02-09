@@ -1,6 +1,9 @@
 import './styled.d.ts';
 import React, { useMemo } from 'react';
-import { ThemeProvider as StyledThemeProvider, createGlobalStyle } from 'styled-components';
+import {
+  ThemeProvider as StyledThemeProvider,
+  createGlobalStyle
+} from 'styled-components';
 import { DefaultTheme, Theme, ThemeMode } from './types';
 
 export const StorybookGlobalStyle = createGlobalStyle`
@@ -14,8 +17,10 @@ export interface ThemeProviderProps extends React.PropsWithChildren {
   sbMode?: boolean;
 }
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ 
-  mode = 'dark', sbMode = false, children 
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({
+  mode = 'dark',
+  sbMode = false,
+  children
 }) => {
   const theme = useMemo<Theme>(() => {
     const defaultTheme: DefaultTheme = {
@@ -40,7 +45,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
           gray6: '#9CA3AF',
           gray7: '#171E2F'
         },
-        premiumGradient: 'linear-gradient(90deg, #1C64F2 -0.39%, #D41CF2 99.61%)',
+        premiumGradient:
+          'linear-gradient(90deg, #1C64F2 -0.39%, #D41CF2 99.61%)',
         critic: '#FE4242',
         orange: '#F29C1C',
         purple: '#941CF2',
@@ -134,7 +140,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
               gray5: '#ADB5BD',
               gray6: '#DDE8F3',
               gray7: '#E6E9EC'
-            },
+            }
           }
         };
 

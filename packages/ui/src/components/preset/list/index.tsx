@@ -6,16 +6,12 @@ export interface PresetsProps extends React.ComponentProps<'div'> {
 }
 
 export const Presets: React.FC<PresetsProps> = ({
-  children, endRef, ...props
+  children,
+  endRef,
+  ...props
 }) => (
-  <PresetsStyled
-    {...props}
-  >
-    <PresetList>
-      {children}
-    </PresetList>
-    <PresetsEnd 
-      ref={endRef}
-    />
+  <PresetsStyled {...props}>
+    <PresetList>{children}</PresetList>
+    <PresetsEnd ref={endRef} />
   </PresetsStyled>
 );

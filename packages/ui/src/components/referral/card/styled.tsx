@@ -7,7 +7,10 @@ import { adaptive } from '@/ui/adaptive';
 export const ReferralCardStyled = styled.div`
   display: flex;
   width: 100%;
-  background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4)};
+  background: ${({ theme }) =>
+    theme.mode === 'light'
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray4};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 14px;
   overflow: hidden;
@@ -75,7 +78,9 @@ export const ReferralCardAI = styled.div`
   })}
 `;
 
-export const ReferralCardAIName = styled(Typography).attrs({ variant: 'body-xl-semibold' })`
+export const ReferralCardAIName = styled(Typography).attrs({
+  variant: 'body-xl-semibold'
+})`
   white-space: pre-wrap;
   text-align: center;
 `;
@@ -100,7 +105,9 @@ export const ReferralCardInfo = styled.div`
   })}
 `;
 
-export const ReferralCardName = styled(Typography).attrs({ variant: 'body-m-medium' })``;
+export const ReferralCardName = styled(Typography).attrs({
+  variant: 'body-m-medium'
+})``;
 
 export const ReferralCardPrice = styled.div`
   display: flex;
@@ -109,7 +116,9 @@ export const ReferralCardPrice = styled.div`
   margin-top: 16px;
 `;
 
-export const ReferralCardPriceProgress = styled(Progress).attrs({ fullWidth: true })``;
+export const ReferralCardPriceProgress = styled(Progress).attrs({
+  fullWidth: true
+})``;
 
 export const ReferralCardPriceRange = styled.div`
   display: flex;
@@ -118,7 +127,9 @@ export const ReferralCardPriceRange = styled.div`
   margin-top: 8px;
 `;
 
-export const ReferralCardPriceRangeText = styled(Typography).attrs({ variant: 'body-m-regular' })`
+export const ReferralCardPriceRangeText = styled(Typography).attrs({
+  variant: 'body-m-regular'
+})`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
 `;
 
@@ -163,7 +174,9 @@ export const ReferralCardTableRow = styled.div`
   }
 `;
 
-export const ReferralCardTableCell = styled(Typography).attrs({ variant: 'body-m-medium' })`
+export const ReferralCardTableCell = styled(Typography).attrs({
+  variant: 'body-m-medium'
+})`
   display: inline-flex;
   width: 100%;
   --skeleton-width: 340px;
@@ -206,6 +219,8 @@ export const ReferralCardWithdrawButton = styled(Button)`
   }
 `;
 
-export const ReferralCardDateCreated = styled(Typography).attrs({ variant: 'body-m-medium' })`
+export const ReferralCardDateCreated = styled(Typography).attrs({
+  variant: 'body-m-medium'
+})`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
 `;

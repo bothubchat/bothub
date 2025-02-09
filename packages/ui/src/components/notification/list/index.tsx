@@ -8,18 +8,13 @@ export interface NotificationsProps extends React.PropsWithChildren {
 }
 
 export const Notifications: React.FC<NotificationsProps> = ({
-  className, children
+  className,
+  children
 }) => (
-  <NotificationsProvider
-    isInNotificationList
-  >
+  <NotificationsProvider isInNotificationList>
     <Portal>
-      <NotificationsStyled
-        className={className}
-      >
-        <NotificationList>
-          {children}
-        </NotificationList>
+      <NotificationsStyled className={className}>
+        <NotificationList>{children}</NotificationList>
       </NotificationsStyled>
     </Portal>
   </NotificationsProvider>

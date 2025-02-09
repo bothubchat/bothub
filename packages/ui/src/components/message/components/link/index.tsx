@@ -3,12 +3,11 @@ import { MessageLinkStyled, MessageLinkStyledProps } from './styled';
 import { useMessage } from '../../context';
 
 export type MessageLinkProps = Omit<
-React.ComponentProps<typeof MessageLinkStyled>, keyof MessageLinkStyledProps
+  React.ComponentProps<typeof MessageLinkStyled>,
+  keyof MessageLinkStyledProps
 >;
 
-export const MessageLink: React.FC<MessageLinkProps> = ({
-  ...props
-}) => {
+export const MessageLink: React.FC<MessageLinkProps> = ({ ...props }) => {
   const { color: messageColor } = useMessage();
 
   return (

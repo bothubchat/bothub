@@ -34,14 +34,16 @@ export const TabMobileList = styled.div`
   }))}
 `;
 
-export const TabMobileListScrollbarWrapper = styled(Scrollbar).attrs(({ theme }) => ({
-  variant: 'secondary',
-  scrollShadows: {
-    color: theme.colors.base.black,
-    left: <ScrollbarShadow side="left" />,
-    right: <ScrollbarShadow side="right" />
-  }
-}))``;
+export const TabMobileListScrollbarWrapper = styled(Scrollbar).attrs(
+  ({ theme }) => ({
+    variant: 'secondary',
+    scrollShadows: {
+      color: theme.colors.base.black,
+      left: <ScrollbarShadow side="left" />,
+      right: <ScrollbarShadow side="right" />
+    }
+  })
+)``;
 
 export const TabMobileListContent = styled.div`
   display: flex;

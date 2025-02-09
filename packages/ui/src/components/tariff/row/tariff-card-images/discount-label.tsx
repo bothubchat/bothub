@@ -11,19 +11,31 @@ export const TariffCardDiscountLabel = ({
   percent,
   variant,
   color,
-  bgColor = '#0E0C15',
+  bgColor = '#0E0C15'
 }: TariffCardDiscountLabelProps) => {
   if (percent === '20') {
-    return <Discount20 color={color} bgColor={bgColor} variant={variant} />;
+    return (
+      <Discount20
+        color={color}
+        bgColor={bgColor}
+        variant={variant}
+      />
+    );
   }
 
-  return <Discount30 color={color} bgColor={bgColor} variant={variant} />;
+  return (
+    <Discount30
+      color={color}
+      bgColor={bgColor}
+      variant={variant}
+    />
+  );
 };
 
 const Discount30 = ({
   variant,
   color,
-  bgColor,
+  bgColor
 }: Omit<TariffCardDiscountLabelProps, 'percent'>) => (
   <TariffCardDiscountLabelStyled
     width="75"
@@ -56,7 +68,7 @@ const Discount30 = ({
 const Discount20 = ({
   variant,
   color,
-  bgColor,
+  bgColor
 }: Omit<TariffCardDiscountLabelProps, 'percent'>) => (
   <TariffCardDiscountLabelStyled
     width="75"

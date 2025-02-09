@@ -18,7 +18,11 @@ export const DescriptionCardBorderWrapper = styled.div<DescriptionCardBorderWrap
     switch ($variant) {
       case 'tertiary':
         return css`
-          background: radial-gradient(50% 100% at 150px -10%, ${theme.colors.accent.primary}, rgba(0, 0, 0, 0.0));
+          background: radial-gradient(
+            50% 100% at 150px -10%,
+            ${theme.colors.accent.primary},
+            rgba(0, 0, 0, 0)
+          );
         `;
       default:
         return css``;
@@ -38,7 +42,9 @@ export const DescriptionCardBackgroundWrapper = styled.div<DescriptionCardBackgr
   width: 100%;
 `;
 
-export const DescriptionCardContent = styled.div<{ $variant: DescriptionCardVariant }>`
+export const DescriptionCardContent = styled.div<{
+  $variant: DescriptionCardVariant;
+}>`
   width: 100%;
   height: 100%;
   position: relative;
@@ -47,7 +53,7 @@ export const DescriptionCardContent = styled.div<{ $variant: DescriptionCardVari
     switch ($variant) {
       case 'tertiary':
         return css`
-          display: flex; 
+          display: flex;
           flex-direction: column;
           align-items: flex-start;
           padding: 24px 20px;
@@ -88,7 +94,9 @@ export const DescriptionCardContent = styled.div<{ $variant: DescriptionCardVari
   }}
 `;
 
-export const DescriptionCardBackground = styled.div<{ $variant: DescriptionCardVariant }>`
+export const DescriptionCardBackground = styled.div<{
+  $variant: DescriptionCardVariant;
+}>`
   position: absolute;
   width: 100%;
   top: 0px;
@@ -117,14 +125,19 @@ export interface DescriptionCardTitleProps extends TypographyProps {
   $variant: DescriptionCardVariant;
 }
 
-export const DescriptionCardTitle = styled(Typography).attrs({ variant: 'body-xl-semibold', component: 'h3' })`
+export const DescriptionCardTitle = styled(Typography).attrs({
+  variant: 'body-xl-semibold',
+  component: 'h3'
+})`
   color: ${({ theme }) => theme.default.colors.base.white};
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     text-align: center;
   }
 `;
 
-export const DescriptionCardTertiaryTitle = styled(Typography).attrs({ variant: 'body-m-semibold' })`
+export const DescriptionCardTertiaryTitle = styled(Typography).attrs({
+  variant: 'body-m-semibold'
+})`
   margin-top: 16px;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     margin-top: 14px;
@@ -134,7 +147,10 @@ export const DescriptionCardTertiaryTitle = styled(Typography).attrs({ variant: 
   }
 `;
 
-export const DescriptionCardText = styled(Typography).attrs({ variant: 'body-m-regular', component: 'p' })`
+export const DescriptionCardText = styled(Typography).attrs({
+  variant: 'body-m-regular',
+  component: 'p'
+})`
   color: ${({ theme }) => theme.default.colors.base.white};
   margin-top: 16px;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
@@ -142,7 +158,10 @@ export const DescriptionCardText = styled(Typography).attrs({ variant: 'body-m-r
   }
 `;
 
-export const DescriptionCardTertiaryText = styled(Typography).attrs({ variant: 'body-m-regular', component: 'p' })`
+export const DescriptionCardTertiaryText = styled(Typography).attrs({
+  variant: 'body-m-regular',
+  component: 'p'
+})`
   margin-top: 12px;
 `;
 
@@ -157,51 +176,59 @@ export const DescriptionCardButton = styled(Button)`
   }
 `;
 
-export const DescriptionCardStyled = styled.div<{ $variant: DescriptionCardVariant }>`
+export const DescriptionCardStyled = styled.div<{
+  $variant: DescriptionCardVariant;
+}>`
   display: flex;
   width: 100%;
   min-height: 180px;
   max-width: 630px;
-  ${({ $variant, theme }) => $variant === 'main' && css`
-    height: 532px;
-    @media (max-width: ${theme.mobile.maxWidth}) {
-      height: 380px;
-    }
-    ${DescriptionCardContent} {
-      align-items: center;
-      > ${DescriptionCardTitle} {
-        text-align: center;
+  ${({ $variant, theme }) =>
+    $variant === 'main' &&
+    css`
+      height: 532px;
+      @media (max-width: ${theme.mobile.maxWidth}) {
+        height: 380px;
       }
-      > ${DescriptionCardText} {
-        text-align: center;
+      ${DescriptionCardContent} {
+        align-items: center;
+        > ${DescriptionCardTitle} {
+          text-align: center;
+        }
+        > ${DescriptionCardText} {
+          text-align: center;
+        }
+        > ${DescriptionCardButton} {
+          display: block;
+          margin: auto;
+          margin-top: 20px;
+        }
       }
-      > ${DescriptionCardButton} {
-        display: block;
-        margin: auto;
-        margin-top: 20px;
-      }
-    }
-    ${DescriptionCardBackground} {
-      background-image: url(${JSON.stringify(mainBg)});
-      background-size: 630px 512px;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: bottom right;
-    }
-  `}
-  ${({ $variant, theme }) => $variant === 'secondary' && css`
-    @media (max-width: ${theme.mobile.maxWidth}) {
-      min-height: auto;
-      height: auto;
       ${DescriptionCardBackground} {
+        background-image: url(${JSON.stringify(mainBg)});
+        background-size: 630px 512px;
         background-size: cover;
+        background-repeat: no-repeat;
+        background-position: bottom right;
       }
-    }
-  `}
-  ${({ theme, $variant }) => $variant === 'tertiary' && css`
-    max-width: 300px;
-    @media (max-width: ${theme.tablet.maxWidth}) {
-      max-width: 365px;
-    }
-  `}
+    `}
+  ${({ $variant, theme }) =>
+    $variant === 'secondary' &&
+    css`
+      @media (max-width: ${theme.mobile.maxWidth}) {
+        min-height: auto;
+        height: auto;
+        ${DescriptionCardBackground} {
+          background-size: cover;
+        }
+      }
+    `}
+  ${({ theme, $variant }) =>
+    $variant === 'tertiary' &&
+    css`
+      max-width: 300px;
+      @media (max-width: ${theme.tablet.maxWidth}) {
+        max-width: 365px;
+      }
+    `}
 `;

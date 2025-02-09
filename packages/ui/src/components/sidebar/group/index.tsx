@@ -41,16 +41,22 @@ export interface SidebarGroupSkeletonProps {
   onHandleOpen?: () => void;
 }
 
-export type SidebarGroupProps
-  = (SidebarGroupDefaultProps | SidebarGroupSkeletonProps) & React.PropsWithChildren;
+export type SidebarGroupProps = (
+  | SidebarGroupDefaultProps
+  | SidebarGroupSkeletonProps
+) &
+  React.PropsWithChildren;
 
 export const SidebarGroup: React.FC<SidebarGroupProps> = ({
-  children, ...props
+  children,
+  ...props
 }) => {
-  const [open, setOpen] = props.open !== undefined
-    ? [props.open, props.onHandleOpen] : useState<boolean>(false);
+  const [open, setOpen] =
+    props.open !== undefined
+      ? [props.open, props.onHandleOpen]
+      : useState<boolean>(false);
   const { setNodeRef } = useDroppable({
-    id: !props.skeleton ? props.id : 'draggable-skeleton',
+    id: !props.skeleton ? props.id : 'draggable-skeleton'
   });
   const sidebarOpen = useSidebar().isOpen;
   const onHandleOpen = useCallback(() => {
@@ -126,10 +132,8 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   );
 };
 
-export const SidebarGroups: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <SidebarGroupsStyled>
-    {children}
-  </SidebarGroupsStyled>
-);
+export const SidebarGroups: React.FC<{ children: React.ReactNode }> = ({
+  children
+}) => <SidebarGroupsStyled>{children}</SidebarGroupsStyled>;
 
 export * from './styled';

@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
-  PresetCard, 
-  PresetCardActions, 
-  PresetCardCategories, 
-  PresetCardCategory, 
-  PresetCardDeleteAction, 
-  PresetCardEditAction, 
+  PresetCard,
+  PresetCardActions,
+  PresetCardCategories,
+  PresetCardCategory,
+  PresetCardDeleteAction,
+  PresetCardEditAction,
   PresetCardFavoriteAction
 } from '.';
 
@@ -33,12 +33,8 @@ export const Categories: PresetCardStory = {
     ...Basic.args,
     categories: (
       <PresetCardCategories>
-        <PresetCardCategory>
-          Бизнес
-        </PresetCardCategory>
-        <PresetCardCategory>
-          Учеба
-        </PresetCardCategory>
+        <PresetCardCategory>Бизнес</PresetCardCategory>
+        <PresetCardCategory>Учеба</PresetCardCategory>
       </PresetCardCategories>
     )
   }

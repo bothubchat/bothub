@@ -16,7 +16,7 @@ export const ThreeDotsLoaderStyled = styled.div`
   }
 
   & > div:nth-child(3) {
-    animation-delay: 0.0s;
+    animation-delay: 0s;
   }
 `;
 

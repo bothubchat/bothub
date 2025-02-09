@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { Tooltip, TooltipConsumer, useTooltip } from '@/ui/components/tooltip';
 import {
-  RangeFieldErrorText, 
-  RangeFieldLabel, 
-  RangeFieldFormattedValue, 
-  RangeFieldRange, 
-  RangeFieldRangeThumb, 
-  RangeFieldRangeTrack, 
-  RangeFieldSkeleton, 
-  RangeFieldStyled 
+  RangeFieldErrorText,
+  RangeFieldLabel,
+  RangeFieldFormattedValue,
+  RangeFieldRange,
+  RangeFieldRangeThumb,
+  RangeFieldRangeTrack,
+  RangeFieldSkeleton,
+  RangeFieldStyled
 } from './styled';
 import { RangeFieldValue } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -31,44 +31,45 @@ export interface RangeFieldProps {
 
 export const RangeField: React.FC<RangeFieldProps> = ({
   label,
-  error, 
-  min, 
-  max, 
-  step, 
-  value: initialValue, 
+  error,
+  min,
+  max,
+  step,
+  value: initialValue,
   fullWidth = false,
   disabled = false,
   skeleton = false,
-  onChange, 
+  onChange,
   formatValue: preview,
   onPointerLeave,
-  ...props 
+  ...props
 }) => {
-  const {
-    handleTooltipMouseEnter,
-    handleTooltipMouseLeave
-  } = useTooltip();
+  const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
 
-  const [value, setValue] = typeof initialValue === 'number' || Array.isArray(initialValue) ? (
-    [initialValue, onChange] 
-  ) : useState<RangeFieldValue>([0]);
+  const [value, setValue] =
+    typeof initialValue === 'number' || Array.isArray(initialValue)
+      ? [initialValue, onChange]
+      : useState<RangeFieldValue>([0]);
 
-  const handleChange = useCallback((value: RangeFieldValue) => {
-    setValue?.(value);
-  }, [setValue]);
+  const handleChange = useCallback(
+    (value: RangeFieldValue) => {
+      setValue?.(value);
+    },
+    [setValue]
+  );
 
   return (
-    <RangeFieldStyled 
+    <RangeFieldStyled
       $fullWidth={fullWidth}
-      $disabled={disabled}  
+      $disabled={disabled}
       onPointerLeave={onPointerLeave}
     >
-      {(label && skeleton) && (
+      {label && skeleton && (
         <RangeFieldLabel>
           <Skeleton width={100} />
         </RangeFieldLabel>
       )}
-      {(typeof label === 'string' && !skeleton) && (
+      {typeof label === 'string' && !skeleton && (
         <RangeFieldLabel
           onMouseEnter={handleTooltipMouseEnter}
           onMouseLeave={handleTooltipMouseLeave}
@@ -76,25 +77,23 @@ export const RangeField: React.FC<RangeFieldProps> = ({
           {label}
         </RangeFieldLabel>
       )}
-      {(typeof label !== 'string' && !skeleton) && label}
+      {typeof label !== 'string' && !skeleton && label}
       {preview && (
-        <RangeFieldFormattedValue>
-          {preview(value)}
-        </RangeFieldFormattedValue>
+        <RangeFieldFormattedValue>{preview(value)}</RangeFieldFormattedValue>
       )}
       {!skeleton && (
-        <Tooltip 
+        <Tooltip
           label={String(value)}
           disabled={disabled}
         >
           <TooltipConsumer>
-            {({ 
-              handleTooltipMouseEnter, 
+            {({
+              handleTooltipMouseEnter,
               handleTooltipMouseLeave,
               handleTooltipMouseDown,
               handleTooltipMouseUp
             }) => (
-              <RangeFieldRange 
+              <RangeFieldRange
                 {...props}
                 min={min}
                 max={max}
@@ -102,15 +101,15 @@ export const RangeField: React.FC<RangeFieldProps> = ({
                 value={value}
                 disabled={disabled}
                 renderTrack={({ key, ...props }, state) => (
-                  <RangeFieldRangeTrack 
-                    {...props} 
+                  <RangeFieldRangeTrack
+                    {...props}
                     key={key}
                     $index={state.index}
                     $disabled={disabled}
                   />
                 )}
                 renderThumb={({ key, ...props }) => (
-                  <RangeFieldRangeThumb 
+                  <RangeFieldRangeThumb
                     {...props}
                     key={key}
                     $disabled={disabled}
@@ -126,14 +125,8 @@ export const RangeField: React.FC<RangeFieldProps> = ({
           </TooltipConsumer>
         </Tooltip>
       )}
-      {skeleton && (
-        <RangeFieldSkeleton />
-      )}
-      {error && (
-        <RangeFieldErrorText>
-          {error}
-        </RangeFieldErrorText>
-      )}
+      {skeleton && <RangeFieldSkeleton />}
+      {error && <RangeFieldErrorText>{error}</RangeFieldErrorText>}
     </RangeFieldStyled>
   );
 };

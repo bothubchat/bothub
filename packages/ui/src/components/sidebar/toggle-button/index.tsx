@@ -9,7 +9,9 @@ import { ButtonProps } from '@/ui/components/button';
 
 export type SidebarToggleButtonProps = ButtonProps;
 
-export const SidebarToggleButton: React.FC<SidebarToggleButtonProps> = (props) => {
+export const SidebarToggleButton: React.FC<SidebarToggleButtonProps> = (
+  props
+) => {
   const theme = useTheme();
   const { isOpen, setIsOpen } = useSidebar();
 
@@ -23,7 +25,10 @@ export const SidebarToggleButton: React.FC<SidebarToggleButtonProps> = (props) =
       $isOpen={isOpen}
       onClick={handleToggle}
     >
-      <IconProvider fill={theme.colors.grayScale.gray1} size={24}>
+      <IconProvider
+        fill={theme.colors.grayScale.gray1}
+        size={24}
+      >
         {isOpen ? <MinimizeIcon /> : <UnminimizeIcon />}
       </IconProvider>
     </SidebarToggleButtonStyled>

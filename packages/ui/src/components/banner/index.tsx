@@ -14,15 +14,17 @@ import {
   BlackFridayBannerBackgroundMainMobile,
   BlackFridayBannerBackgroundMainTablet,
   BlackFridayBannerBackgroundWave,
-  BlackFridayBannerStyledGradient,
+  BlackFridayBannerStyledGradient
 } from './styled';
 import { BlackFridayBannerProps } from './types';
 
-export const BlackFridayBanner: React.FC<BlackFridayBannerProps> = (
-  {
-    $variant = 'dashboard', backgroundText, title, text, date 
-  }
-) => {
+export const BlackFridayBanner: React.FC<BlackFridayBannerProps> = ({
+  $variant = 'dashboard',
+  backgroundText,
+  title,
+  text,
+  date
+}) => {
   const images = {
     dashboard: [
       <BlackFridayBannerBackgroundDashboardDesktop />,

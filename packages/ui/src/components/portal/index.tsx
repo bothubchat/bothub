@@ -6,9 +6,7 @@ export interface PortalProps extends React.PropsWithChildren {
   element?: Element | null;
 }
 
-export const Portal: React.FC<PortalProps> = ({
-  children, ...props
-}) => {
+export const Portal: React.FC<PortalProps> = ({ children, ...props }) => {
   const [element, setElement] = useState<Element | null>(null);
 
   useEffect(() => {
@@ -16,8 +14,8 @@ export const Portal: React.FC<PortalProps> = ({
       setElement(props.element);
     } else {
       setElement(
-        document.querySelector(String(PortalElement))
-        ?? document.getElementById(portalId)  
+        document.querySelector(String(PortalElement)) ??
+          document.getElementById(portalId)
       );
     }
   }, [props.element]);

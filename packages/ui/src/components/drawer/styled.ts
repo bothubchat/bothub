@@ -7,8 +7,8 @@ export const Overlay = styled.div`
   width: 100%;
   height: 100%;
   inset: 0;
-  background-color: rgba(0, 0, 0, .65);
-  transition: opacity .2s linear;
+  background-color: rgba(0, 0, 0, 0.65);
+  transition: opacity 0.2s linear;
   z-index: ${({ theme }) => theme.zIndex.modal - 1};
   opacity: 0;
   &._opened {
@@ -25,7 +25,7 @@ export const Component = styled.div`
   top: 0;
   width: 470px;
   right: -470px;
-  transition: transform .2s linear;
+  transition: transform 0.2s linear;
   &._opened {
     transform: translateX(-100%);
   }
@@ -52,7 +52,7 @@ export const CloseButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  &:hover { 
+  &:hover {
     path {
       fill: ${({ theme }) => theme.colors.base.white};
     }

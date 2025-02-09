@@ -25,9 +25,15 @@ export const StepperStep = styled.div<StepperStepProps>`
   gap: 10px;
 
   & > span {
-    color: ${({ theme, $status }) => ($status === 'active' || $status === 'complete' ? theme.colors.base.white : theme.colors.grayScale.gray1)};
+    color: ${({ theme, $status }) =>
+      $status === 'active' || $status === 'complete'
+        ? theme.colors.base.white
+        : theme.colors.grayScale.gray1};
     transition: color var(--transition-duration) var(--transition-function);
-    transition-delay: ${({ $status }) => ($status === 'complete' || $status === 'incomplete' ? '0s' : 'var(--transition-delay)')};
+    transition-delay: ${({ $status }) =>
+      $status === 'complete' || $status === 'incomplete'
+        ? '0s'
+        : 'var(--transition-delay)'};
   }
   position: relative;
   z-index: 1;
@@ -45,22 +51,23 @@ export const StepperStepPoint = styled.div<StepperStepPointProps>`
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: ${({ theme, $status }) => (
+  background-color: ${({ theme, $status }) =>
     $status === 'complete' || $status === 'active'
-      ? theme.colors.accent.primary 
-      : theme.colors.grayScale.gray1
-  )};
-  transition: var(--transition-duration) background-color var(--transition-function);
-  transition-delay: ${({ $status }) => (
-    $status === 'complete' || $status === 'incomplete' 
-      ? '0s' 
-      : 'var(--transition-delay)'
-  )};
+      ? theme.colors.accent.primary
+      : theme.colors.grayScale.gray1};
+  transition: var(--transition-duration) background-color
+    var(--transition-function);
+  transition-delay: ${({ $status }) =>
+    $status === 'complete' || $status === 'incomplete'
+      ? '0s'
+      : 'var(--transition-delay)'};
 
   & > * {
     transition: opacity var(--transition-duration) var(--transition-function);
-    transition-delay: ${({ $status }) => (
-    $status === 'complete' || $status === 'incomplete' ? '0s' : 'var(--transition-delay)')};
+    transition-delay: ${({ $status }) =>
+      $status === 'complete' || $status === 'incomplete'
+        ? '0s'
+        : 'var(--transition-delay)'};
     opacity: ${({ $status }) => ($status === 'complete' ? 1 : 0)};
   }
 `;
@@ -90,9 +97,10 @@ export const StepperLine = styled.div<StepperLineProps>`
     }
   }};
   background-position-y: 50%;
-  transition: background-position-x var(--transition-duration) var(--transition-function);
+  transition: background-position-x var(--transition-duration)
+    var(--transition-function);
   margin-left: -1em;
   margin-right: -1em;
-  margin-bottom: 10px;  
+  margin-bottom: 10px;
   z-index: 0;
 `;

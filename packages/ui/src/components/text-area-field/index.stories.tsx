@@ -11,7 +11,8 @@ export type TextAreaFieldStory = StoryObj<typeof TextAreaField>;
 export const Basic: TextAreaFieldStory = {
   args: {
     label: 'Label',
-    placeholder: 'Placeholder'
+    placeholder: 'Placeholder',
+    glow: false
   }
 };
 
@@ -20,12 +21,8 @@ export const Help: TextAreaFieldStory = {
     label: (
       <TextAreaFieldLabel>
         Label
-        <Tooltip
-          label="Help"
-        >
-          <Button
-            variant="help"
-          />
+        <Tooltip label="Help">
+          <Button variant="help" />
         </Tooltip>
       </TextAreaFieldLabel>
     )

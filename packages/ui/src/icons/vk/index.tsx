@@ -1,7 +1,12 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const VKIcon = icon(({ ...props }) => (
-  <Icon size={20} viewBox="0 0 20 20" fill="none" {...props}>
+  <Icon
+    size={20}
+    viewBox="0 0 20 20"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {() => (
         <>
@@ -13,7 +18,11 @@ export const VKIcon = icon(({ ...props }) => (
           </g>
           <defs>
             <clipPath id="clip0_3518_13874">
-              <rect width="20" height="20" fill="white" />
+              <rect
+                width="20"
+                height="20"
+                fill="white"
+              />
             </clipPath>
           </defs>
         </>

@@ -7,7 +7,7 @@ export interface TariffCardBackgroundPercentProps {
 
 export const TariffCardBackgroundPercent = ({
   variant,
-  color,
+  color
 }: TariffCardBackgroundPercentProps) => (
   <TariffCardBackgroundPercentStyled
     width="86"

@@ -10,20 +10,43 @@ export type MenuDropDownStory = StoryObj<typeof MenuDropdown>;
 
 export const Basic: MenuDropDownStory = {
   args: {
-    children:
-  <MenuDropdownNav>
-    <MenuDropdownNavLink icon={<MenuIcon size={28} />}>Пользователи</MenuDropdownNavLink>
-    <MenuDropdownNavLink icon={<MenuIcon size={28} />}>Пресеты</MenuDropdownNavLink>
-    <MenuDropdownNavLink icon={<MenuIcon size={28} />}>Категории пресетов</MenuDropdownNavLink>
-    <MenuDropdownNavLink icon={<MenuIcon size={28} />}>Рефералка (шаблоны)</MenuDropdownNavLink>
-    <MenuDropdownNavLink icon={<MenuIcon size={28} />}>Рефералка (активные)</MenuDropdownNavLink>
-    <MenuDropdownNavLink icon={<MenuIcon size={28} />}>Выводы</MenuDropdownNavLink>
-    <MenuDropdownNavLink icon={<MenuIcon size={28} />}>Планы</MenuDropdownNavLink>
-    <MenuDropdownNavLink icon={<MenuIcon size={28} />}>Модели</MenuDropdownNavLink>
-    <MenuDropdownNavLink icon={<MenuIcon size={28} />}>Организации</MenuDropdownNavLink>
-    <MenuDropdownNavLink icon={<MenuIcon size={28} />}>Статистика</MenuDropdownNavLink>
-    <MenuDropdownNavLink icon={<MenuIcon size={28} />}>MidJourney</MenuDropdownNavLink>
-  </MenuDropdownNav>
+    children: (
+      <MenuDropdownNav>
+        <MenuDropdownNavLink icon={<MenuIcon size={28} />}>
+          Пользователи
+        </MenuDropdownNavLink>
+        <MenuDropdownNavLink icon={<MenuIcon size={28} />}>
+          Пресеты
+        </MenuDropdownNavLink>
+        <MenuDropdownNavLink icon={<MenuIcon size={28} />}>
+          Категории пресетов
+        </MenuDropdownNavLink>
+        <MenuDropdownNavLink icon={<MenuIcon size={28} />}>
+          Рефералка (шаблоны)
+        </MenuDropdownNavLink>
+        <MenuDropdownNavLink icon={<MenuIcon size={28} />}>
+          Рефералка (активные)
+        </MenuDropdownNavLink>
+        <MenuDropdownNavLink icon={<MenuIcon size={28} />}>
+          Выводы
+        </MenuDropdownNavLink>
+        <MenuDropdownNavLink icon={<MenuIcon size={28} />}>
+          Планы
+        </MenuDropdownNavLink>
+        <MenuDropdownNavLink icon={<MenuIcon size={28} />}>
+          Модели
+        </MenuDropdownNavLink>
+        <MenuDropdownNavLink icon={<MenuIcon size={28} />}>
+          Организации
+        </MenuDropdownNavLink>
+        <MenuDropdownNavLink icon={<MenuIcon size={28} />}>
+          Статистика
+        </MenuDropdownNavLink>
+        <MenuDropdownNavLink icon={<MenuIcon size={28} />}>
+          MidJourney
+        </MenuDropdownNavLink>
+      </MenuDropdownNav>
+    )
   }
 };
 

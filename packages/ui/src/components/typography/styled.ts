@@ -259,6 +259,18 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 16px;
           }
         `;
+      case 'body-l-regular':
+        return `
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 24px;
+          --skeleton-height: 24px;
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 16px;
+            line-height: 22px;
+            --skeleton-height: 22px;
+          }
+        `;
       case 'body-l-semibold':
         return `
           font-weight: 600;
@@ -354,7 +366,9 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
   text-decoration: none;
   text-align: ${({ $align }) => $align};
   --skeleton-width: 200px;
-  ${({ $fullWidth }) => $fullWidth && `
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    `
     width: 100%;
   `}
   ${({ $variant }) => getTypographyStyles($variant)}

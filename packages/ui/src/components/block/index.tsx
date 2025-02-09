@@ -1,6 +1,11 @@
 import React from 'react';
 import {
-  BlockBody, BlockBodyContent, BlockBodyScrollbarWrapper, BlockHead, BlockStyled, BlockTitle 
+  BlockBody,
+  BlockBodyContent,
+  BlockBodyScrollbarWrapper,
+  BlockHead,
+  BlockStyled,
+  BlockTitle
 } from './styled';
 import { BlockVariant } from './types';
 
@@ -13,8 +18,14 @@ export interface BlockProps extends React.PropsWithChildren {
   variant?: BlockVariant;
 }
 
-export const Block: React.FC<BlockProps> = ({ 
-  className, title, toolbar, background, variant = 'rounded', fullHeight = false, children 
+export const Block: React.FC<BlockProps> = ({
+  className,
+  title,
+  toolbar,
+  background,
+  variant = 'rounded',
+  fullHeight = false,
+  children
 }) => {
   const isHead = !!title;
   const isToolbar = !!toolbar;
@@ -25,20 +36,12 @@ export const Block: React.FC<BlockProps> = ({
       className={className}
     >
       {isHead && (
-        <BlockHead
-          $toolbar={isToolbar}
-        >
-          {title && (
-            <BlockTitle>
-              {title}
-            </BlockTitle>
-          )}
+        <BlockHead $toolbar={isToolbar}>
+          {title && <BlockTitle>{title}</BlockTitle>}
           {toolbar}
         </BlockHead>
       )}
-      <BlockBody
-        $head={isHead}
-      >
+      <BlockBody $head={isHead}>
         {background}
         <BlockBodyScrollbarWrapper>
           <BlockBodyContent

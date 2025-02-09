@@ -1,5 +1,9 @@
 import {
-  MutableRefObject, useCallback, useEffect, useRef, useState 
+  MutableRefObject,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
 } from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
@@ -10,12 +14,18 @@ import { EditIcon } from '@/ui/icons/edit';
 import { TrashIcon } from '@/ui/icons/trash';
 
 import * as S from './styled';
-import { MessageActionEventHandler, MessageVariant } from '../types';
+import {
+  MessageActionEditEventHandler,
+  MessageActionEventHandler,
+  MessagePlainTextCopyEventHandler,
+  MessageVariant
+} from '../types';
 import { MenuOption } from './menu-option';
 import { CopyButton } from './copy-button';
 import { ActionButton } from './action-button';
 import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { CloseIcon } from '@/ui/icons/close';
+import { CopyIcon } from '@/ui/icons/copy';
 import { useScrollbarRef } from '../list';
 import { ModalOption } from './types';
 
@@ -30,6 +40,7 @@ type MessageActionsProps = {
   disableUpdate?: boolean;
   disableCopy?: boolean;
   editText?: string | null;
+  copyPlainText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
   submitEditTooltipLabel?: string | null;
@@ -41,10 +52,11 @@ type MessageActionsProps = {
   messageRef?: MutableRefObject<HTMLDivElement | null>;
   onEditing?: (value: boolean) => unknown;
   onEditedText?: (value: string) => unknown;
-  onEdit?: MessageActionEventHandler;
+  onEdit?: MessageActionEditEventHandler;
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
+  onPlainTextCopy?: MessagePlainTextCopyEventHandler;
   onCopy?: MessageActionEventHandler;
 };
 
@@ -59,6 +71,7 @@ export const MessageActions = ({
   disableUpdate,
   disableCopy,
   editText,
+  copyPlainText,
   resendText,
   deleteText,
   submitEditTooltipLabel,
@@ -74,7 +87,8 @@ export const MessageActions = ({
   onResend,
   onDelete,
   onUpdate,
-  onCopy,
+  onPlainTextCopy,
+  onCopy
 }: MessageActionsProps) => {
   const [menuShown, setMenuShown] = useState(false);
   const [timeoutId, setTimeoutId] = useState<number>();
@@ -102,10 +116,10 @@ export const MessageActions = ({
     const scrollWidth = messageRef?.current?.scrollWidth ?? 0;
     const offsetTop = messageActionsRef.current?.offsetTop ?? 0;
     const offsetLeft = messageActionsRef.current?.offsetLeft ?? 0;
-    setInvertedY(scrollHeight - offsetTop <= 180);
+    setInvertedY(scrollHeight - offsetTop <= 210);
     setInvertedX(
-      (variant === 'assistant' && scrollWidth - offsetLeft <= 160)
-        || (variant === 'user' && offsetLeft <= 160)
+      (variant === 'assistant' && scrollWidth - offsetLeft <= 160) ||
+        (variant === 'user' && offsetLeft <= 160)
     );
   };
 
@@ -130,7 +144,7 @@ export const MessageActions = ({
     (option: ModalOption) => {
       const data = {
         id,
-        message,
+        message
       };
       switch (option) {
         case 'edit':
@@ -152,7 +166,7 @@ export const MessageActions = ({
   const handleConfirmEdit = useCallback(
     ({ id, message }: { id?: string; message?: string }) => {
       onEditing?.(false);
-      onEdit?.({ id, message });
+      onEdit?.({ id, message, variant });
     },
     [id, message]
   );
@@ -161,23 +175,28 @@ export const MessageActions = ({
     onEditedText?.(message ?? '');
   }, [message]);
 
+  const handlePlainTextCopy = useCallback(() => {
+    onPlainTextCopy?.();
+    setMenuShown(false);
+  }, []);
+
   const modalTransition = useTransition(menuShown, {
     from: {
       opacity: 0,
-      y: 5,
+      y: 5
     },
     enter: {
       opacity: 1,
-      y: 0,
+      y: 0
     },
     leave: {
       opacity: 0,
-      y: 0,
+      y: 0
     },
     config: {
       duration: 250,
-      easing: easings.easeOutSine,
-    },
+      easing: easings.easeOutSine
+    }
   });
 
   useEffect(() => {
@@ -187,7 +206,10 @@ export const MessageActions = ({
   }, []);
 
   return (
-    <S.MessageActionsStyled $variant={variant} ref={messageActionsRef}>
+    <S.MessageActionsStyled
+      $variant={variant}
+      ref={messageActionsRef}
+    >
       {!editing ? (
         <>
           {modalEnabled() && (
@@ -205,60 +227,71 @@ export const MessageActions = ({
                 <MenuDotIcon size={18} />
               </ActionButton>
               {modalTransition(
-                (style, show) => show && (
-                  <S.MessageActionsMenuModal
-                    style={style}
-                    key="message-actions-modal"
-                    onMouseEnter={handleButtonHoverIn}
-                    onMouseLeave={handleButtonHoverOut}
-                    $variant={variant}
-                    $invertedX={invertedX}
-                    $invertedY={invertedY}
-                  >
-                    {!disableResend && variant === 'user' && (
-                      <MenuOption
-                        onClick={() => {
-                          handleOptionClick('resend');
-                        }}
-                      >
-                        <S.MessageActionsMenuModalOptionContent>
-                          <ResendIcon fill="#616D8D" />
-                          <S.MessageActionsButtonText>
-                            {resendText}
-                          </S.MessageActionsButtonText>
-                        </S.MessageActionsMenuModalOptionContent>
-                      </MenuOption>
-                    )}
-                    {!disableEdit && (
-                      <MenuOption
-                        onClick={() => {
-                          handleOptionClick('edit');
-                        }}
-                      >
-                        <S.MessageActionsMenuModalOptionContent>
-                          <EditIcon />
-                          <S.MessageActionsButtonText>
-                            {editText}
-                          </S.MessageActionsButtonText>
-                        </S.MessageActionsMenuModalOptionContent>
-                      </MenuOption>
-                    )}
-                    {!disableDelete && (
-                      <MenuOption
-                        onClick={() => {
-                          handleOptionClick('delete');
-                        }}
-                      >
-                        <S.MessageActionsMenuModalOptionContent>
-                          <TrashIcon />
-                          <S.MessageActionsButtonText>
-                            {deleteText}
-                          </S.MessageActionsButtonText>
-                        </S.MessageActionsMenuModalOptionContent>
-                      </MenuOption>
-                    )}
-                  </S.MessageActionsMenuModal>
-                )
+                (style, show) =>
+                  show && (
+                    <S.MessageActionsMenuModal
+                      style={style}
+                      key="message-actions-modal"
+                      onMouseEnter={handleButtonHoverIn}
+                      onMouseLeave={handleButtonHoverOut}
+                      $variant={variant}
+                      $invertedX={invertedX}
+                      $invertedY={invertedY}
+                    >
+                      {!disableCopy && (
+                        <MenuOption onClick={handlePlainTextCopy}>
+                          <S.MessageActionsMenuModalOptionContent>
+                            <CopyIcon fill="#616D8D" />
+                            <S.MessageActionsButtonText>
+                              {copyPlainText}
+                            </S.MessageActionsButtonText>
+                          </S.MessageActionsMenuModalOptionContent>
+                        </MenuOption>
+                      )}
+                      {!disableResend && variant === 'user' && (
+                        <MenuOption
+                          onClick={() => {
+                            handleOptionClick('resend');
+                          }}
+                        >
+                          <S.MessageActionsMenuModalOptionContent>
+                            <ResendIcon fill="#616D8D" />
+                            <S.MessageActionsButtonText>
+                              {resendText}
+                            </S.MessageActionsButtonText>
+                          </S.MessageActionsMenuModalOptionContent>
+                        </MenuOption>
+                      )}
+                      {!disableEdit && (
+                        <MenuOption
+                          onClick={() => {
+                            handleOptionClick('edit');
+                          }}
+                        >
+                          <S.MessageActionsMenuModalOptionContent>
+                            <EditIcon />
+                            <S.MessageActionsButtonText>
+                              {editText}
+                            </S.MessageActionsButtonText>
+                          </S.MessageActionsMenuModalOptionContent>
+                        </MenuOption>
+                      )}
+                      {!disableDelete && (
+                        <MenuOption
+                          onClick={() => {
+                            handleOptionClick('delete');
+                          }}
+                        >
+                          <S.MessageActionsMenuModalOptionContent>
+                            <TrashIcon />
+                            <S.MessageActionsButtonText>
+                              {deleteText}
+                            </S.MessageActionsButtonText>
+                          </S.MessageActionsMenuModalOptionContent>
+                        </MenuOption>
+                      )}
+                    </S.MessageActionsMenuModal>
+                  )
               )}
             </S.MessageActionsMenuStyled>
           )}
@@ -283,7 +316,10 @@ export const MessageActions = ({
             </ActionButton>
           )}
           {!disableCopy && (
-            <CopyButton onCopy={onCopy} tooltipLabel={copyTooltipLabel} />
+            <CopyButton
+              onCopy={onCopy}
+              tooltipLabel={copyTooltipLabel}
+            />
           )}
         </>
       ) : (
@@ -294,13 +330,19 @@ export const MessageActions = ({
             tooltipLabel={submitEditTooltipLabel}
             onClick={handleConfirmEdit}
           >
-            <CheckSmallIcon size={20} fill="#1c64f2" />
+            <CheckSmallIcon
+              size={20}
+              fill="#1c64f2"
+            />
           </ActionButton>
           <ActionButton
             tooltipLabel={discardEditTooltipLabel}
             onClick={handleDiscardEdit}
           >
-            <CloseIcon size={14} fill="#616D8D" />
+            <CloseIcon
+              size={14}
+              fill="#616D8D"
+            />
           </ActionButton>
         </S.MessageEditButtonsStyled>
       )}

@@ -22,11 +22,9 @@ export const ScrollbarContext = React.createContext<ScrollbarContextValue>({
   isBottom: false
 });
 
-export const ScrollbarProvider: React.FC<ScrollbarContextValue & React.PropsWithChildren
-> = ({
-  children,
-  ...value
-}) => (
+export const ScrollbarProvider: React.FC<
+  ScrollbarContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
   <ScrollbarContext.Provider value={value}>
     {children}
   </ScrollbarContext.Provider>

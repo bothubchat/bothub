@@ -5,9 +5,9 @@ import { Skeleton } from '@/ui/components/skeleton';
 import { ArrowDownIcon, DragDotIcon } from '@/ui/icons';
 import { FolderIcon } from '@/ui/icons/folder';
 import { Checkbox } from '@/ui/components/checkbox';
-import { SidebarDropdownStyled } from '../dropdown';
 import { SidebarChatIconContainer } from '../chat';
 import { adaptive } from '@/ui/adaptive';
+import { SidebarDropdownStyled } from '../dropdown';
 
 export const SidebarGroupsStyled = styled.div`
   display: flex;
@@ -16,11 +16,7 @@ export const SidebarGroupsStyled = styled.div`
   width: 100%;
 `;
 
-export interface SidebarGroupStyledProps {
-  $over?: boolean;
-}
-
-export const SidebarGroupStyled = styled.div<SidebarGroupStyledProps>`
+export const SidebarGroupStyled = styled.div<{ $over?: boolean }>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -114,25 +110,11 @@ export const SidebarGroupName = styled(Typography).attrs({ variant: 'body-l-medi
     border-radius: 10px;
     transition: background-color .3s ease-out;
   }
-  ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
-      & > ${SidebarDropdownStyled} {
-        overflow: hidden;
-        width: 0;
-        margin-left: 0;
-        transition: width 0.3s ease, margin-left 0.3s ease;
-      }
-      &:hover {
-        & > ${SidebarDropdownStyled} {
-          display: flex;
-          width: 38px;
-          margin-left: 16px;
-        }
-      }
-    `,
-  })}
-
+  & > ${SidebarDropdownStyled} {
+    display: flex;
+    width: 28px;
+    margin-left: 16px;
+  }
   & > ${SidebarGroupArrowDown} {
     transform: ${({ open }) => (open ? 'rotate(180deg)' : 'rotate(0deg)')};
   }
@@ -144,7 +126,10 @@ export const SidebarGroupNameBox = styled.div`
   align-items: center;
 `;
 
-export const SidebarChatList = styled.div<{ open?: boolean; isDefault?: boolean }>`
+export const SidebarChatList = styled.div<{
+  open?: boolean;
+  isDefault?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -159,18 +144,20 @@ export const SidebarChatList = styled.div<{ open?: boolean; isDefault?: boolean 
       margin-top: 3px;
     `;
   }}
-  ${(isDefault) => !isDefault && css`
-    min-height: 100px;
-    ${SidebarChatIconContainer} svg path {
+  ${(isDefault) =>
+    !isDefault &&
+    css`
+      min-height: 100px;
+      ${SidebarChatIconContainer} svg path {
         stroke: ${({ theme }) => theme.colors.grayScale.gray4};
         fill: ${({ theme }) => theme.colors.grayScale.gray4};
       }
-  `}
+    `}
   transition: opacity 0.3s;
 `;
 
 export const SidebarGroupCheckbox = styled(Checkbox)`
-  margin-left:10px;
+  margin-left: 10px;
 `;
 
 export const SidebarGroupDragHandle = styled(DragDotIcon)`
@@ -190,7 +177,7 @@ export const SidebarGroupTooltip = styled(Tooltip)`
     `,
     tablet: css`
       display: none;
-    `,
+    `
   })}
 `;
 
@@ -202,7 +189,7 @@ export const SidebarGroupIconContainer = styled.div`
     `,
     tablet: css`
       display: flex;
-    `,
+    `
   })}
 `;
 

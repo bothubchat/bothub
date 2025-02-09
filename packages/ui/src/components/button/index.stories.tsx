@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { LanguageIcon } from '@/ui/icons/language';
 import { Button } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
+import { Tooltip } from '../tooltip';
 
 export type ButtonMeta = Meta<typeof Button>;
 
@@ -65,6 +66,25 @@ export const Help: ButtonStory = {
   args: {
     variant: 'help'
   }
+};
+
+export const WithTooltip: ButtonStory = {
+  args: {
+    children: 'Click Me',
+    size: 'small',
+    variant: 'text'
+  },
+  decorators: [
+    (Story) => (
+      <Tooltip
+        label="Поиск в интернете при необходимости"
+        placement="top"
+        inverted
+      >
+        <Story />
+      </Tooltip>
+    )
+  ]
 };
 
 export default {

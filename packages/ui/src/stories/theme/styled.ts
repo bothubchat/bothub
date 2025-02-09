@@ -53,7 +53,9 @@ export const ThemeItemPreview = styled.span`
 
 export const ThemeItemColor = styled(ThemeItemPreview)<{ $color: string }>`
   background: ${({ $color }) => $color};
-  border: 1px solid ${({ theme, $color }) => ($color === theme.colors.base.black ? '#4F536A' : '#181F2F')};
+  border: 1px solid
+    ${({ theme, $color }) =>
+      $color === theme.colors.base.black ? '#4F536A' : '#181F2F'};
 `;
 
 export const ThemeItemFont = styled(ThemeItemPreview)<{ $font: string }>`

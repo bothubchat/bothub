@@ -16,18 +16,26 @@ export const RangeFieldStyled = styled.div<RangeFieldStyledProps>`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  ${({ $fullWidth }) => !$fullWidth && css`
-    max-width: 240px;
-  `}
-  ${({ $disabled }) => $disabled && css`
-    cursor: not-allowed;
-  `}
-  ${({ $disabled }) => !$disabled && css`
-    cursor: default;
-  `}
+  ${({ $fullWidth }) =>
+    !$fullWidth &&
+    css`
+      max-width: 240px;
+    `}
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      cursor: not-allowed;
+    `}
+  ${({ $disabled }) =>
+    !$disabled &&
+    css`
+      cursor: default;
+    `}
 `;
 
-export const RangeFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
+export const RangeFieldLabel = styled(Typography).attrs({
+  variant: 'input-sm'
+})`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -52,12 +60,13 @@ export const RangeFieldFormattedValue = styled.div`
   margin-bottom: 4px;
 `;
 
-export const RangeFieldRange: React.FC<ReactSliderProps<RangeFieldValue>> = styled(ReactSlider)`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 16px;
-`;
+export const RangeFieldRange: React.FC<ReactSliderProps<RangeFieldValue>> =
+  styled(ReactSlider)`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 16px;
+  `;
 
 export const RangeFieldSkeleton = styled(Skeleton)`
   width: 100%;
@@ -79,17 +88,21 @@ export const RangeFieldRangeTrack = styled.div<RangeFieldRangeTrackProps>`
       default:
         if (!$disabled) {
           return theme.colors.accent.primary;
-        } 
+        }
         return theme.colors.grayScale.gray1;
     }
   }};
   border-radius: 4px;
-  ${({ $disabled }) => $disabled && css`
-    cursor: not-allowed;
-  `}
-  ${({ $disabled }) => !$disabled && css`
-    cursor: pointer;
-  `}
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      cursor: not-allowed;
+    `}
+  ${({ $disabled }) =>
+    !$disabled &&
+    css`
+      cursor: pointer;
+    `}
 `;
 
 export interface RangeFieldRangeThumbProps {
@@ -103,12 +116,16 @@ export const RangeFieldRangeThumb = styled.span<RangeFieldRangeThumbProps>`
   border-radius: 50%;
   background: ${({ theme }) => theme.default.colors.base.white};
   outline: none;
-  ${({ $disabled }) => $disabled && css`
-    cursor: not-allowed;
-  `}
-  ${({ $disabled }) => !$disabled && css`
-    cursor: pointer;
-  `}
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      cursor: not-allowed;
+    `}
+  ${({ $disabled }) =>
+    !$disabled &&
+    css`
+      cursor: pointer;
+    `}
   ${adaptive({
     merge: true,
     desktop: css`
@@ -120,12 +137,16 @@ export const RangeFieldRangeThumb = styled.span<RangeFieldRangeThumbProps>`
       height: 20px;
     `
   })}
-  ${({ theme }) => theme.mode === 'light' && css`
-    box-shadow: 0px 0px 0px 1px ${theme.default.colors.grayScale.gray6};
-  `}
+  ${({ theme }) =>
+    theme.mode === 'light' &&
+    css`
+      box-shadow: 0px 0px 0px 1px ${theme.default.colors.grayScale.gray6};
+    `}
 `;
 
-export const RangeFieldErrorText = styled(Typography).attrs({ variant: 'input-sm' })`
+export const RangeFieldErrorText = styled(Typography).attrs({
+  variant: 'input-sm'
+})`
   display: inline-flex;
   margin-top: 8px;
   color: ${({ theme }) => theme.colors.critic};

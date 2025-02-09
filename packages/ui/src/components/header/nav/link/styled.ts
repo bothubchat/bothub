@@ -8,9 +8,7 @@ export interface HeaderNavLinkStyledProps {
 }
 
 export const HeaderNavLinkStyled = styled.a<HeaderNavLinkStyledProps>`
-  ${({
-    theme, $variant, $inMenu, $active 
-  }) => {
+  ${({ theme, $variant, $inMenu, $active }) => {
     if ($variant === 'main' && $inMenu) {
       return css`
         font-weight: 600;
@@ -31,28 +29,29 @@ export const HeaderNavLinkStyled = styled.a<HeaderNavLinkStyledProps>`
       cursor: pointer;
       color: ${theme.colors.base.white};
       ${() => {
-    switch ($variant) {
-      case 'main':
-        return css`
-          font-weight: 600;
-          &:hover {
-            color: ${theme.colors.accent.primaryLight};
-          }
-        `;
-      case 'dashboard':
-        return css`
-          align-items: center;
-          gap: 10px;
-          font-weight: 500;
-          opacity: ${$active ? 1 : 0.5};
-          ${!$active && css`
-            &:hover {
-              opacity: 1;
-            }
-          `}
-        `;
-    }
-  }}
+        switch ($variant) {
+          case 'main':
+            return css`
+              font-weight: 600;
+              &:hover {
+                color: ${theme.colors.accent.primaryLight};
+              }
+            `;
+          case 'dashboard':
+            return css`
+              align-items: center;
+              gap: 10px;
+              font-weight: 500;
+              opacity: ${$active ? 1 : 0.5};
+              ${!$active &&
+              css`
+                &:hover {
+                  opacity: 1;
+                }
+              `}
+            `;
+        }
+      }}
     `;
   }}
 `;

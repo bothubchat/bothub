@@ -4,19 +4,18 @@ import {
   SidebarDropdownContent,
   SidebarDropdownStyled,
   SidebarDropdownToggler,
-  SidebarDropdownTogglerIcon,
+  SidebarDropdownTogglerIcon
 } from './styled';
 import { SidebarDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
-export interface SidebarDropdownProps extends
-  React.ComponentProps<typeof SidebarDropdownStyled> {
-
-}
+export interface SidebarDropdownProps
+  extends React.ComponentProps<typeof SidebarDropdownStyled> {}
 
 export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
-  children, ...props
+  children,
+  ...props
 }) => {
   const theme = useTheme();
 
@@ -50,53 +49,63 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
     }
   }, []);
 
-  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? { right: 0, bottom: 0 };
+  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? {
+    right: 0,
+    bottom: 0
+  };
 
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      transform: 'scale(0.0)',
+      transform: 'scale(0.0)'
     },
     enter: {
       opacity: isOpen ? 1 : 0.5,
       backdropFilter: 'blur(2px)',
       transform: `scale(${isOpen ? 1 : 0.999})`,
       transition: {
-        duration: 150,
-      },
+        duration: 150
+      }
     },
     leave: {
       opacity: 0,
-      transform: 'scale(0.999)',
+      transform: 'scale(0.999)'
     },
     config: {
-      duration: 150,
-    },
+      duration: 150
+    }
   });
 
   return (
     <SidebarDropdownProvider setIsOpen={setIsOpen}>
-      <SidebarDropdownStyled {...props} ref={dropdownRef}>
-        <IconProvider
-          fill={theme.colors.base.white}
-        >
-          <SidebarDropdownToggler $open={isOpen} onClick={handleToggle}>
+      <SidebarDropdownStyled
+        {...props}
+        ref={dropdownRef}
+      >
+        <IconProvider fill={theme.colors.base.white}>
+          <SidebarDropdownToggler
+            $open={isOpen}
+            onClick={handleToggle}
+          >
             <SidebarDropdownTogglerIcon />
           </SidebarDropdownToggler>
         </IconProvider>
-        {dropdownTransition((style, item) => item && (
-          <SidebarDropdownContent
-            ref={contentRef}
-            style={{
-              ...style,
-              transform: 'translate3d(-100%, 0, 0)',
-              left: contentPosition.right,
-              top: contentPosition.bottom,
-            }}
-          >
-            {children}
-          </SidebarDropdownContent>
-        ))}
+        {dropdownTransition(
+          (style, item) =>
+            item && (
+              <SidebarDropdownContent
+                ref={contentRef}
+                style={{
+                  ...style,
+                  transform: 'translate3d(-100%, 0, 0)',
+                  left: contentPosition.right,
+                  top: contentPosition.bottom
+                }}
+              >
+                {children}
+              </SidebarDropdownContent>
+            )
+        )}
       </SidebarDropdownStyled>
     </SidebarDropdownProvider>
   );

@@ -9,7 +9,7 @@ import {
   NotificationRight,
   NotificationStyled,
   NotificationText,
-  NotificationTitle,
+  NotificationTitle
 } from './styled';
 import { ErrorBigIcon } from '@/ui/icons/error-big';
 import { InfoBigIcon } from '@/ui/icons/info-big';
@@ -38,7 +38,7 @@ export const Notification: React.FC<NotificationProps> = ({
   notificationId = 'unknown',
   title,
   children,
-  onClose,
+  onClose
 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const { isInNotificationList } = useNotifications();
@@ -90,20 +90,20 @@ export const Notification: React.FC<NotificationProps> = ({
     isOpen,
     isInNotificationList
       ? {
-        from: { opacity: 0, transform: 'translateX(412px)' },
-        enter: { opacity: 1, transform: 'translateX(0px)' },
-        leave: { opacity: 0, transform: 'translateX(412px)' },
-        config: { duration: 250 },
-        onDestroyed: handleExitComplete,
-      }
+          from: { opacity: 0, transform: 'translateX(412px)' },
+          enter: { opacity: 1, transform: 'translateX(0px)' },
+          leave: { opacity: 0, transform: 'translateX(412px)' },
+          config: { duration: 250 },
+          onDestroyed: handleExitComplete
+        }
       : {
-        onDestroyed: handleExitComplete,
-      }
+          onDestroyed: handleExitComplete
+        }
   );
 
-  return (
-    notificationTransition(
-      (style, item) => item && (
+  return notificationTransition(
+    (style, item) =>
+      item && (
         <NotificationStyled
           style={style}
           $variant={variant}
@@ -118,14 +118,11 @@ export const Notification: React.FC<NotificationProps> = ({
               </NotificationInfo>
             </NotificationLeft>
             <NotificationRight>
-              <NotificationCloseButton
-                onClick={setIsOpen.bind(null, false)}
-              />
+              <NotificationCloseButton onClick={setIsOpen.bind(null, false)} />
             </NotificationRight>
           </NotificationContent>
         </NotificationStyled>
       )
-    )
   );
 };
 
