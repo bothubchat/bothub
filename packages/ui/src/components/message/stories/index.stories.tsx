@@ -52,9 +52,11 @@ import {
   StopIcon,
   UpdateIcon,
   UpscaleIcon,
+  WebSearchIcon,
   XlsBigIcon
 } from '@/ui/icons';
 import { Typography } from '../../typography';
+import { MessageSearchResults } from '../search-results';
 
 export type MessageMeta = Meta<typeof Message>;
 
@@ -655,6 +657,38 @@ export const Reasoning = () => {
       content={content}
       onEdit={({ message }) => setContent(message ?? '')}
     >
+      <MessageReasoningBlock
+        buttonText={
+          <>
+            <WebSearchIcon size={16} />
+            <Typography variant="body-l-regular">
+              Нашел 25 результатов
+            </Typography>
+          </>
+        }
+        content={
+          <MessageSearchResults
+            results={[
+              {
+                url: 'https://www.google.com',
+                name: 'Google',
+                title: 'Google',
+                date: new Date().toISOString(),
+                content:
+                  'Google is a search engine that allows users to find information on the internet. It is one of the most popular search engines in the world, with billions of searches per day. Google is known for its advanced search algorithms and user-friendly interface, making it a popular choice for both casual and professional users.'
+              },
+              {
+                url: 'https://www.bing.com',
+                name: 'Bing',
+                title: 'Bing',
+                date: new Date().toISOString(),
+                content:
+                  'Bing is a search engine that allows users to find information on the internet. It is one of the most popular search engines in the world, with billions of searches per day. Bing is known for its advanced search algorithms and user-friendly interface, making it a popular choice for both casual and professional users.'
+              }
+            ]}
+          />
+        }
+      />
       <MessageReasoningBlock
         buttonText={
           <>

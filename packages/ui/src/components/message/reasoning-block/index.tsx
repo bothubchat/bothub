@@ -12,7 +12,7 @@ import {
 import { markdownComponents } from './markdown-components';
 
 export type ReasoningBlockProps = {
-  content?: string;
+  content?: string | ReactNode;
   buttonText: ReactNode;
   isReasoning?: boolean;
 };
@@ -71,9 +71,13 @@ export const MessageReasoningBlock = ({
           <div ref={ref}>
             <div />
             <div>
-              <MessageMarkdown componentsOverride={markdownComponents()}>
-                {content ?? ''}
-              </MessageMarkdown>
+              {typeof content === 'string' ? (
+                <MessageMarkdown componentsOverride={markdownComponents()}>
+                  {content}
+                </MessageMarkdown>
+              ) : (
+                content
+              )}
             </div>
           </div>
         </ReasoningBlockContentWrapper>
