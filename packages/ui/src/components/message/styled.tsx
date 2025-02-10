@@ -44,7 +44,7 @@ export const MessageStyledWithBottomPanel = styled.div`
   width: fit-content;
   max-width: 100%;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 `;
 
 export const MessageStyled = styled.div<MessageStyledProps>`
@@ -85,7 +85,7 @@ export interface MessageContentProps {
 export const MessageContent = styled.div<MessageContentProps>`
   position: relative;
   display: grid;
-  column-gap: 10px;
+  column-gap: 12px;
   max-width: 100%;
   ${({ $variant }) => {
     switch ($variant) {
@@ -273,14 +273,23 @@ export const MessageBlockScrollbarWrapper = styled(Scrollbar).attrs({
   variant: 'secondary'
 })``;
 
-export const MessageBlockContent = styled.div`
+export const MessageBlockContent = styled.div<{
+  $variant: MessageVariant;
+}>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
   grid-area: block;
   border-radius: 10px;
-  padding: 8px;
+  padding: ${({ $variant }) => {
+    switch ($variant) {
+      case 'user':
+        return '8px';
+      case 'assistant':
+        return '0px 8px 8px 0px';
+    }
+  }};
   max-width: 100%;
   overflow: clip;
 `;

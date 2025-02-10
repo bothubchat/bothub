@@ -1,49 +1,79 @@
 import { ReactNode, useCallback, useState } from 'react';
 import { useMeasure } from 'react-use';
-import { ArrowUpIcon } from '@/ui/icons';
 import { useDelayedVisible } from '@/ui/utils';
+import { LoaderCircularGradient2Icon } from '@/ui/icons';
 import { MessageMarkdown } from '../markdown';
-import { ReasoningBlockButton, ReasoningBlockContentWrapper } from './styled';
+import {
+  ReasoningBlockButton,
+  ReasoningBlockButtonArrow,
+  ReasoningBlockContentWrapper,
+  ReasoningBlockHeader
+} from './styled';
+import { markdownComponents } from './markdown-components';
 
 export type ReasoningBlockProps = {
   content?: string;
   buttonText: ReactNode;
+  isReasoning?: boolean;
 };
 
-export const ReasoningBlock = ({
+export const MessageReasoningBlock = ({
   content,
-  buttonText
+  buttonText,
+  isReasoning
 }: ReasoningBlockProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = useCallback(() => {
-    setIsOpen((prev) => !prev);
-  }, []);
+    if (isReasoning) {
+      return;
+    }
 
-  const { delayedVisible, mounted } = useDelayedVisible(isOpen, 0, 500);
+    setIsOpen((prev) => !prev);
+  }, [isReasoning]);
+
   const [ref, bounds] = useMeasure<HTMLDivElement>();
+  const animationDuration = Math.max(Math.min(bounds.height, 850), 300);
+  const { delayedVisible, mounted } = useDelayedVisible(
+    isOpen,
+    0,
+    animationDuration
+  );
 
   return (
     <div>
-      <ReasoningBlockButton
-        onClick={handleToggle}
-        $isOpen={isOpen}
-      >
-        {buttonText}
+      <ReasoningBlockHeader>
+        <ReasoningBlockButton
+          onClick={handleToggle}
+          disabled={isReasoning || !content}
+        >
+          {buttonText}
 
-        <ArrowUpIcon size={16} />
-      </ReasoningBlockButton>
+          {!isReasoning && !!content && (
+            <ReasoningBlockButtonArrow
+              $isOpen={isOpen}
+              size={16}
+            />
+          )}
+        </ReasoningBlockButton>
+
+        {isReasoning && <LoaderCircularGradient2Icon size={16} />}
+      </ReasoningBlockHeader>
 
       {mounted && (
         <ReasoningBlockContentWrapper
           style={{
+            // @ts-expect-error
+            '--reasoning-block-animation-duration': `${animationDuration / 1000}s`,
             height: isOpen && delayedVisible ? bounds.height : 0
           }}
         >
           <div ref={ref}>
             <div />
             <div>
-              <MessageMarkdown>{content ?? ''}</MessageMarkdown>
+              <MessageMarkdown componentsOverride={markdownComponents()}>
+                {content ?? ''}
+              </MessageMarkdown>
             </div>
           </div>
         </ReasoningBlockContentWrapper>

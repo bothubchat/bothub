@@ -21,7 +21,8 @@ import {
   MessageMarkdown,
   MessageTag,
   MessageTransaction,
-  MessageVoice
+  MessageVoice,
+  MessageReasoningBlock
 } from '@/ui/components/message';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Gpt35Icon } from '@/ui/icons/gpt-3_5';
@@ -652,22 +653,25 @@ export const Reasoning = () => {
         </MessageButtons>
       }
       content={content}
-      hasReasoning
-      reasoningButtonText={
-        <>
-          <COTR1Icon size={16} />
-          <Typography variant="body-l-regular">Думал 41 секунду</Typography>
-        </>
-      }
-      reasoning_content={`Okay, the user wants a travel plan from Moscow to Shanghai. Let me start by figuring out the main components they need. First, they probably need flight options. I should check the common airlines that operate this route, like Aeroflot or China Eastern. Maybe there are direct flights or connections through cities like Beijing or Seoul. Flight duration is important too-direct flights might take around 8–9 hours.
-Next, visa requirements. Since they're going to China, Russian citizens might need a visa. I should mention checking the latest visa regulations, maybe applying through the embassy or a consulate. Also, COVID–19 restrictions could still be a thing, so advising them to check current entry requirements is a must.
-Accommodation in Shanghai-suggest some popular areas like Pudong or the Bund. Maybe list a few hotel options in different price ranges. Transportation within Shanghai: the metro system is efficient, so highlighting that, along with taxis and Didi. Maybe mention getting a transportation card for convenience.
-Sightseeing spots. The Bund, Yu Garden, Shanghai Tower, and maybe a day trip to Zhujiajiao. I should structure a day-by-day itinerary, like Day 1 for arrival and exploring Pudong, Day 2 for the Bund and Nanjing Road, etc. Including tips on local cuisine would be nice-soup dumplings, Peking duck. Maybe recommend some popular restaurants.
-Communication tips: downloading a translation app, getting a local SIM card. Currency exchange-using ATMs or exchanging rubles to yuan. Also, cultural etiquette like not tipping and learning basic Mandarin phrases.
-Health and safety: travel insurance, emergency numbers, being cautious in crowded areas. Additional tips like the best time to visit, maybe spring or autumn, and packing according to the season.`}
       onEdit={({ message }) => setContent(message ?? '')}
     >
-      {`**План поездки из Москвы в Шанхай**  
+      <MessageReasoningBlock
+        buttonText={
+          <>
+            <COTR1Icon size={16} />
+            <Typography variant="body-l-regular">Думал 41 секунду</Typography>
+          </>
+        }
+        content={`Okay, the user wants a travel plan from Moscow to Shanghai. Let me start by figuring out the main components they need. First, they probably need flight options. I should check the common airlines that operate this route, like Aeroflot or China Eastern. Maybe there are direct flights or connections through cities like Beijing or Seoul. Flight duration is important too-direct flights might take around 8–9 hours.
+  Next, visa requirements. Since they're going to China, Russian citizens might need a visa. I should mention checking the latest visa regulations, maybe applying through the embassy or a consulate. Also, COVID–19 restrictions could still be a thing, so advising them to check current entry requirements is a must.
+  Accommodation in Shanghai-suggest some popular areas like Pudong or the Bund. Maybe list a few hotel options in different price ranges. Transportation within Shanghai: the metro system is efficient, so highlighting that, along with taxis and Didi. Maybe mention getting a transportation card for convenience.
+  Sightseeing spots. The Bund, Yu Garden, Shanghai Tower, and maybe a day trip to Zhujiajiao. I should structure a day-by-day itinerary, like Day 1 for arrival and exploring Pudong, Day 2 for the Bund and Nanjing Road, etc. Including tips on local cuisine would be nice-soup dumplings, Peking duck. Maybe recommend some popular restaurants.
+  Communication tips: downloading a translation app, getting a local SIM card. Currency exchange-using ATMs or exchanging rubles to yuan. Also, cultural etiquette like not tipping and learning basic Mandarin phrases.
+  Health and safety: travel insurance, emergency numbers, being cautious in crowded areas. Additional tips like the best time to visit, maybe spring or autumn, and packing according to the season.`}
+      />
+
+      <MessageMarkdown>
+        {`**План поездки из Москвы в Шанхай**  
 
 ### 1. **Подготовка перед поездкой**  
 - **Авиабилеты**:  
@@ -757,6 +761,43 @@ Health and safety: travel insurance, emergency numbers, being cautious in crowde
 ---
 
 **Bon voyage!** Если нужна помощь с бронированием или деталями, пишите 😊`}
+      </MessageMarkdown>
+    </Message>
+  );
+};
+
+export const ReasoningPending = () => {
+  const [content, setContent] = useState('Hi! How can I help you?');
+
+  return (
+    <Message
+      id="test-id"
+      variant="assistant"
+      name="ChatGPT"
+      avatar={<MessageAvatar />}
+      copyPlainText="Копировать без форматирования"
+      editText="Редактировать"
+      resendText="Переотправить"
+      deleteText="Удалить"
+      copyTooltipLabel="Копировать"
+      updateTooltipLabel="Повторная генерация"
+      disableEdit
+      disableResend
+      disableDelete
+      disableUpdate
+      disableCopy
+      content={content}
+      onEdit={({ message }) => setContent(message ?? '')}
+    >
+      <MessageReasoningBlock
+        isReasoning
+        buttonText={
+          <>
+            <COTR1Icon size={16} />
+            <Typography variant="body-l-regular">Думаю...</Typography>
+          </>
+        }
+      />
     </Message>
   );
 };

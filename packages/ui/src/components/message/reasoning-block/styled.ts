@@ -1,12 +1,20 @@
 import { styled } from 'styled-components';
 import { TypographyStyled } from '../../typography/styled';
 import { defaultTheme } from '@/ui/theme';
+import { ArrowUpIcon } from '@/ui/icons';
+
+export const ReasoningBlockHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
 
 export const ReasoningBlockContentWrapper = styled.div`
   overflow: hidden;
+  --reasoning-block-animation-duration: 0.5s;
   transition:
-    height 0.5s ease-in-out,
-    padding-top 0.5s ease-in-out;
+    height var(--reasoning-block-animation-duration) ease-in-out,
+    padding-top var(--reasoning-block-animation-duration) ease-in-out;
 
   & > div > div:nth-child(1) {
     padding-top: 10px;
@@ -23,9 +31,7 @@ export const ReasoningBlockContentWrapper = styled.div`
   }
 `;
 
-export const ReasoningBlockButton = styled.button<{
-  $isOpen: boolean;
-}>`
+export const ReasoningBlockButton = styled.button`
   width: fit-content;
   display: flex;
   align-items: center;
@@ -37,8 +43,8 @@ export const ReasoningBlockButton = styled.button<{
   cursor: pointer;
   outline: none;
   transition:
-    background-color 0.2s ease-in-out,
-    border-color 0.2s ease-in-out;
+    background-color 0.3s ease-out,
+    border-color 0.3s ease-in-out;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayScale.gray5};
@@ -52,19 +58,21 @@ export const ReasoningBlockButton = styled.button<{
   &:disabled:hover,
   &:disabled:active {
     cursor: default;
-    background-color: ${({ theme }) => theme.colors.grayScale.gray6};
+    background-color: ${({ theme }) => theme.colors.grayScale.gray3};
   }
 
   &:focus-visible {
-    border: 1px solid ${({ theme }) => theme.colors.base.white};
+    border: 1px solid ${({ theme }) => theme.colors.accent.primary};
   }
+`;
 
-  & > *:last-child {
-    transition: transform 0.2s ease-in-out;
-    transform: ${({ $isOpen }) =>
-      $isOpen ? 'rotate(0deg)' : 'rotate(180deg)'};
-    & path {
-      stroke: ${({ theme }) => theme.colors.base.white};
-    }
+export const ReasoningBlockButtonArrow = styled(ArrowUpIcon)<{
+  $isOpen: boolean;
+}>`
+  transition: transform 0.2s ease-in-out;
+  transform: ${({ $isOpen }) => ($isOpen ? 'rotate(0deg)' : 'rotate(180deg)')};
+
+  & path {
+    stroke: ${({ theme }) => theme.colors.base.white};
   }
 `;

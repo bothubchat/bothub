@@ -16,6 +16,7 @@ export const MessageItalic: React.FC<MessageItalicProps> = ({
   return (
     <MessageItalicStyled
       $messageColor={color}
+      variant="body-l-regular"
       {...props}
       component={component}
     />

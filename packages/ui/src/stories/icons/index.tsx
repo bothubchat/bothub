@@ -199,7 +199,8 @@ import {
   WebSearchIcon,
   AnalyzeUrlsIcon,
   QueueIcon,
-  COTR1Icon
+  COTR1Icon,
+  LoaderCircularGradient2Icon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -309,6 +310,9 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="LoaderCircularIcon">{LoaderCircularIcon}</IconItem>
         <IconItem name="LoaderCircularGradientIcon">
           {LoaderCircularGradientIcon}
+        </IconItem>
+        <IconItem name="LoaderCircularGradient2Icon">
+          {LoaderCircularGradient2Icon}
         </IconItem>
         <IconItem name="MinusIcon">{MinusIcon}</IconItem>
         <IconItem name="MjWhiteIcon">{MjWhiteIcon}</IconItem>

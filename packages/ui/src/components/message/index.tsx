@@ -40,14 +40,10 @@ import { ScrollbarShadow } from '@/ui/components/scrollbar';
 import { MessageTimestamp } from './timestamp';
 import { MessageActions } from './actions';
 import { MessageVersions } from './versions';
-import { ReasoningBlock } from './reasoning-block';
 
 export interface MessageProps {
   id?: string;
   content?: string;
-  hasReasoning?: boolean;
-  reasoning_content?: string;
-  reasoningButtonText?: ReactNode;
   className?: string;
   variant?: MessageVariant;
   color?: string;
@@ -91,9 +87,6 @@ export interface MessageProps {
 export const Message: React.FC<MessageProps> = ({
   id,
   content,
-  hasReasoning,
-  reasoning_content,
-  reasoningButtonText,
   className,
   variant = 'user',
   color = 'default',
@@ -285,13 +278,6 @@ export const Message: React.FC<MessageProps> = ({
               <MessageAvatar>{avatar}</MessageAvatar>
 
               <MessageBlockWrapper>
-                {hasReasoning && variant === 'assistant' && (
-                  <ReasoningBlock
-                    content={reasoning_content}
-                    buttonText={reasoningButtonText}
-                  />
-                )}
-
                 <MessageBlock
                   $variant={variant}
                   $hexColor={hexColor}
@@ -307,7 +293,10 @@ export const Message: React.FC<MessageProps> = ({
                       right: <ScrollbarShadow side="right" />
                     }}
                   >
-                    <MessageBlockContent ref={messageBlockContentRef}>
+                    <MessageBlockContent
+                      ref={messageBlockContentRef}
+                      $variant={variant}
+                    >
                       {!isEditing ? (
                         <>
                           {!skeleton && (
@@ -426,3 +415,4 @@ export * from './badge-progress';
 export * from './button';
 export * from './file';
 export * from './voice';
+export * from './reasoning-block';

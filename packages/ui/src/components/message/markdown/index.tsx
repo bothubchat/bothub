@@ -21,11 +21,15 @@ function formatString(string: string) {
 export interface MessageMarkdownProps {
   children: string;
   components?: MessageComponentsProps;
+  componentsOverride?: React.ComponentProps<
+    typeof MessageMarkdownLine
+  >['components'];
 }
 
 export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
   children,
-  components = {}
+  components = {},
+  componentsOverride = {}
 }) => {
   const { typing, variant, color } = useMessage();
   const isDisabled = variant === 'user';
@@ -73,7 +77,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
             remarkPlugins={remarkPlugins}
             // @ts-ignore
             rehypePlugins={rehypePlugins}
-            components={markdownComponents(components)}
+            components={markdownComponents(components, componentsOverride)}
           >
             {block}
           </MessageMarkdownLine>

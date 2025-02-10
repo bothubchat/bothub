@@ -92,6 +92,7 @@ export * from './imagine-2';
 export * from './loader';
 export * from './loader-circular';
 export * from './loader-circular-gradient';
+export * from './loader-circular-gradient-2';
 export * from './minus';
 export * from './mj-white';
 export * from './prompt';

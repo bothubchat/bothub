@@ -6,10 +6,7 @@ export interface MessageLinkStyledProps {
   $messageColor: MessageColor;
 }
 
-export const MessageLinkStyled = styled(Typography).attrs({
-  component: 'a',
-  variant: 'body-l-regular'
-})<MessageLinkStyledProps>`
+export const MessageLinkStyled = styled(Typography)<MessageLinkStyledProps>`
   color: ${({ theme, $messageColor }) => {
     if ($messageColor !== 'default') {
       return theme.default.colors.base.white;

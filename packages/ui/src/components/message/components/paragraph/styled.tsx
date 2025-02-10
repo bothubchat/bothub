@@ -9,10 +9,9 @@ export interface MessageParagraphStyledProps {
   $disableMargin: boolean;
 }
 
-export const MessageParagraphStyled = styled(Typography).attrs({
-  variant: 'body-l-regular',
-  component: 'p'
-})<MessageParagraphStyledProps>`
+export const MessageParagraphStyled = styled(
+  Typography
+)<MessageParagraphStyledProps>`
   color: ${({ theme, $variant, $color }) => {
     if ($variant === 'user') {
       return theme.default.colors.base.white;
