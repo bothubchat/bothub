@@ -1,6 +1,10 @@
 import React, { useEffect } from 'react';
 import { useTransition } from '@react-spring/web';
-import { HeaderMenuContent, HeaderMenuStyled } from './styled';
+import {
+  HeaderMenuContent,
+  HeaderMenuOpenGlobalStyle,
+  HeaderMenuStyled
+} from './styled';
 import { useHeader } from '../context';
 import { HeaderMenuProvider } from './context';
 
@@ -19,17 +23,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({
       window.scrollTo({
         top: 0
       });
-      document.body.style.overflow = 'hidden';
-      document.body.style.maxHeight = '100vh';
-    } else {
-      document.body.style.removeProperty('overflow');
-      document.body.style.removeProperty('max-height');
     }
-
-    return () => {
-      document.body.style.removeProperty('overflow');
-      document.body.style.removeProperty('max-height');
-    };
   }, [isMenuOpen]);
 
   const w =
@@ -56,6 +50,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({
 
   return (
     <HeaderMenuProvider isInMenu>
+      {isMenuOpen && <HeaderMenuOpenGlobalStyle />}
       {menuTransition(
         (style, item) =>
           item && (
