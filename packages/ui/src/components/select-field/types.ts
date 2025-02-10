@@ -13,7 +13,7 @@ export type SelectFieldOptionClickEventHandler = (item: SelectFieldDataItem) => 
 
 export type SelectFieldInputChangeEventHandler = (value: string) => unknown;
 
-export type SelectFieldItemType = 'item' | 'divider' | 'collapse' | 'empty';
+export type SelectFieldItemType = 'item' | 'divider' | 'collapse' | 'empty' | 'label';
 
 export type SelectFieldDataItem = string | {
   id?: number | string;

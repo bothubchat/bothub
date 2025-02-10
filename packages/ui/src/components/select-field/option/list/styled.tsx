@@ -200,6 +200,10 @@ export const SelectFieldOptionSide = styled.div`
   gap: 8px;
 `;
 
+export const SelectFieldOptionLabel = styled(Typography).attrs({ variant: 'body-m-medium' })`
+  padding-right: 8px;
+`;
+
 export interface SelectFieldOptionColorProps {
   $color: string;
 }
