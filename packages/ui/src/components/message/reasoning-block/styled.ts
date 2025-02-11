@@ -6,11 +6,12 @@ import { ArrowUpIcon } from '@/ui/icons';
 export const ReasoningBlockStyled = styled.div<{
   $fullWidth: boolean;
 }>`
+  max-width: 100%;
+
   ${({ $fullWidth }) =>
     $fullWidth &&
     css`
       width: 100%;
-      max-width: 100%;
     `}
 `;
 
