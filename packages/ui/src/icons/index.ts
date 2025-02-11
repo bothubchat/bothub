@@ -207,3 +207,4 @@ export * from './web-search';
 export * from './include-context';
 export * from './queue';
 export * from './cot-r1';
+export * from './news';
