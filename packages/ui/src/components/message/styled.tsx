@@ -235,11 +235,21 @@ export const MessageBlockBottomPanel = styled.div<{ $variant: MessageVariant }>`
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-left: ${({ $variant }) => ($variant === 'user' ? '0px' : '48px')};
-  margin-right: 95px;
-  @media (width <= ${({ theme }) => theme.mobile.maxWidth}) {
-    margin-right: 28px;
-  }
+  ${({ $variant }) => {
+    switch ($variant) {
+      case 'user':
+        return css`
+          margin-top: 4px;
+          margin-left: 0px;
+        `;
+      case 'assistant':
+        return css`
+          margin-left: 52px;
+        `;
+      default:
+        return css``;
+    }
+  }}
 `;
 
 export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
