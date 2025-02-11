@@ -65,7 +65,10 @@ export const MessageSearchResults = (props: MessageSearchResultsProps) => (
         </SearchResultsItemTitle>
 
         <div data-source-content>
-          <MessageMarkdown componentsOverride={markdownComponents()}>
+          <MessageMarkdown
+            componentsOverride={markdownComponents()}
+            disableTyping
+          >
             {result.content ?? ''}
           </MessageMarkdown>
         </div>

@@ -24,12 +24,14 @@ export interface MessageMarkdownProps {
   componentsOverride?: React.ComponentProps<
     typeof MessageMarkdownLine
   >['components'];
+  disableTyping?: boolean;
 }
 
 export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
   children,
   components = {},
-  componentsOverride = {}
+  componentsOverride = {},
+  disableTyping = false
 }) => {
   const { typing, variant, color } = useMessage();
   const isDisabled = variant === 'user';
@@ -69,7 +71,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
       <MessageMarkdownStyled>
         {parsedBlocks.map((block, index) => (
           <MessageMarkdownLine
-            $typing={typing}
+            $typing={disableTyping ? false : typing}
             $color={color}
             $singleDollarTextMath={singleDollarTextMath}
             key={`${rehypePlugins.length}-${remarkPlugins.length}-${index}`}

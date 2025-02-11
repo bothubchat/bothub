@@ -1,7 +1,18 @@
-import { styled } from 'styled-components';
-import { TypographyStyled } from '../../typography/styled';
+import { css, styled } from 'styled-components';
+import { TypographyStyled } from '@/ui/components/typography/styled';
 import { defaultTheme } from '@/ui/theme';
 import { ArrowUpIcon } from '@/ui/icons';
+
+export const ReasoningBlockStyled = styled.div<{
+  $fullWidth: boolean;
+}>`
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    css`
+      width: 100%;
+      max-width: 100%;
+    `}
+`;
 
 export const ReasoningBlockHeader = styled.div`
   display: flex;
@@ -9,12 +20,21 @@ export const ReasoningBlockHeader = styled.div`
   gap: 12px;
 `;
 
-export const ReasoningBlockContentWrapper = styled.div`
+export const ReasoningBlockContentWrapper = styled.div<{
+  $fullWidth: boolean;
+}>`
   overflow: hidden;
   --reasoning-block-animation-duration: 0.5s;
   transition:
     height var(--reasoning-block-animation-duration) ease-in-out,
     padding-top var(--reasoning-block-animation-duration) ease-in-out;
+
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    css`
+      width: 100%;
+      max-width: 100%;
+    `}
 
   & > div > div:nth-child(1) {
     padding-top: 10px;

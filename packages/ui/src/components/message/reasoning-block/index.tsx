@@ -7,7 +7,8 @@ import {
   ReasoningBlockButton,
   ReasoningBlockButtonArrow,
   ReasoningBlockContentWrapper,
-  ReasoningBlockHeader
+  ReasoningBlockHeader,
+  ReasoningBlockStyled
 } from './styled';
 import { markdownComponents } from './markdown-components';
 
@@ -15,12 +16,14 @@ export type ReasoningBlockProps = {
   content?: string | ReactNode;
   buttonText: ReactNode;
   isReasoning?: boolean;
+  fullWidth?: boolean;
 };
 
 export const MessageReasoningBlock = ({
   content,
   buttonText,
-  isReasoning
+  isReasoning,
+  fullWidth = false
 }: ReasoningBlockProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -41,7 +44,7 @@ export const MessageReasoningBlock = ({
   );
 
   return (
-    <div>
+    <ReasoningBlockStyled $fullWidth={fullWidth}>
       <ReasoningBlockHeader>
         <ReasoningBlockButton
           onClick={handleToggle}
@@ -62,6 +65,7 @@ export const MessageReasoningBlock = ({
 
       {mounted && (
         <ReasoningBlockContentWrapper
+          $fullWidth={fullWidth}
           style={{
             // @ts-expect-error
             '--reasoning-block-animation-duration': `${animationDuration / 1000}s`,
@@ -72,7 +76,10 @@ export const MessageReasoningBlock = ({
             <div />
             <div>
               {typeof content === 'string' ? (
-                <MessageMarkdown componentsOverride={markdownComponents()}>
+                <MessageMarkdown
+                  componentsOverride={markdownComponents()}
+                  disableTyping
+                >
                   {content}
                 </MessageMarkdown>
               ) : (
@@ -82,6 +89,6 @@ export const MessageReasoningBlock = ({
           </div>
         </ReasoningBlockContentWrapper>
       )}
-    </div>
+    </ReasoningBlockStyled>
   );
 };
