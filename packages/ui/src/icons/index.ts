@@ -205,3 +205,4 @@ export * from './analyze-urls';
 export * from './web-search';
 export * from './include-context';
 export * from './queue';
+export * from './news';
