@@ -1,6 +1,4 @@
-import React, {
-  useEffect, useRef, useState
-} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   MenuTabsStyled,
   MenuTabsList,
@@ -22,7 +20,11 @@ interface MenuTabsProps {
   onChangeValue?: (value: string) => void;
 }
 
-export const MenuTabs: React.FC<MenuTabsProps> = ({ tabs, defaultTab, onChangeValue }) => {
+export const MenuTabs: React.FC<MenuTabsProps> = ({
+  tabs,
+  defaultTab,
+  onChangeValue
+}) => {
   const [selectedTab, setTabs] = useState<string>(defaultTab || tabs[0].value);
   const refTabLine = useRef<HTMLDivElement>(null);
   const refTabs = useRef<HTMLDivElement>(null);
@@ -39,7 +41,9 @@ export const MenuTabs: React.FC<MenuTabsProps> = ({ tabs, defaultTab, onChangeVa
         const tabsContent = refTabs.current;
 
         if (tabLine && tabsContent) {
-          const childIndex = tabs.findIndex(({ value }) => value === selectedTab);
+          const childIndex = tabs.findIndex(
+            ({ value }) => value === selectedTab
+          );
           const childTab = tabsContent.children[childIndex];
           if (childTab) {
             const parentTabRect = tabsContent.getBoundingClientRect();
@@ -53,12 +57,12 @@ export const MenuTabs: React.FC<MenuTabsProps> = ({ tabs, defaultTab, onChangeVa
         }
       }
     };
-    window.addEventListener('resize', tabsAnimation);
     tabsAnimation();
+    window.addEventListener('resize', tabsAnimation);
     return () => {
       window.removeEventListener('resize', tabsAnimation);
     };
-  }, [selectedTab]);
+  }, [selectedTab, refTabs.current, refTabLine.current]);
 
   return (
     <MenuTabsStyled>
@@ -67,12 +71,11 @@ export const MenuTabs: React.FC<MenuTabsProps> = ({ tabs, defaultTab, onChangeVa
           <MenuTabsContent ref={refTabs}>
             {tabs.map(({ label, value }) => (
               <MenuTabsItem
+                $active={value === selectedTab}
                 key={value}
                 onClick={() => handleClick(value)}
               >
-                <MenuTabsText>
-                  {label}
-                </MenuTabsText>
+                <MenuTabsText>{label}</MenuTabsText>
               </MenuTabsItem>
             ))}
             <MenuTabsLine ref={refTabLine} />

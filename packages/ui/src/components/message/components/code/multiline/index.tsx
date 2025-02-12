@@ -21,7 +21,7 @@ export const MessageMultilineCode: React.FC<MessageMultilineCodeProps> = ({
   className,
   copyLabel,
   children,
-  onlyCode = false,
+  onlyCode = false
 }) => {
   const { variant, color } = useMessage();
 

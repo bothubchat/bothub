@@ -216,18 +216,18 @@ export const Sort: SelectFieldStory = {
     data: [
       {
         label: 'По цене',
-        type: 'label',
+        type: 'label'
       },
       {
         icon: <SortDescendingIcon />,
-        label: 'По возрастанию',
+        label: 'По возрастанию'
       },
       {
         label: 'По убыванию',
-        icon: <SortAscendingIcon />,
+        icon: <SortAscendingIcon />
       },
       {
-        type: 'divider',
+        type: 'divider'
       },
       {
         label: 'По длине ответа',
@@ -235,12 +235,12 @@ export const Sort: SelectFieldStory = {
       },
       {
         icon: <SortAlphabetTopBottomIcon />,
-        label: 'По возрастанию',
+        label: 'По возрастанию'
       },
       {
         label: 'По убыванию',
-        icon: <SortAlphabetBottomTopIcon />,
-      },
+        icon: <SortAlphabetBottomTopIcon />
+      }
     ]
   }
 };

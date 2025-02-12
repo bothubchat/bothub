@@ -102,7 +102,9 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
 
         if (item.type === 'label') {
           return (
-            <SelectFieldOptionLabel key={item.id ?? item.value ?? `label-${index}`}>
+            <SelectFieldOptionLabel
+              key={item.id ?? item.value ?? `label-${index}`}
+            >
               {item.label}
             </SelectFieldOptionLabel>
           );

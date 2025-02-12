@@ -434,8 +434,12 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="WebSearchIcon">{WebSearchIcon}</IconItem>
         <IconItem name="AnalyzeUrlsIcon">{AnalyzeUrlsIcon}</IconItem>
         <IconItem name="QueueIcon">{QueueIcon}</IconItem>
-        <IconItem name="SortAlphabetBottomTopIcon">{SortAlphabetBottomTopIcon}</IconItem>
-        <IconItem name="SortAlphabetTopBottomIcon">{SortAlphabetTopBottomIcon}</IconItem>
+        <IconItem name="SortAlphabetBottomTopIcon">
+          {SortAlphabetBottomTopIcon}
+        </IconItem>
+        <IconItem name="SortAlphabetTopBottomIcon">
+          {SortAlphabetTopBottomIcon}
+        </IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
