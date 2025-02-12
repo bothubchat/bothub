@@ -94,7 +94,6 @@
     "react-helmet": ">=6.1.0",
     "react-markdown": "^8.0.7",
     "react-slider": "^2.0.6",
-    "react-use": "^17.6.0",
     "rehype-katex": "^7.0.0",
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",

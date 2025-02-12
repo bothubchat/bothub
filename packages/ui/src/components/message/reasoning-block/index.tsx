@@ -1,5 +1,4 @@
 import { ReactNode, useCallback, useState } from 'react';
-import { useMeasure } from 'react-use';
 import { useDelayedVisible } from '@/ui/utils';
 import { LoaderCircularGradient2Icon } from '@/ui/icons';
 import { MessageMarkdown } from '../markdown';
@@ -11,6 +10,7 @@ import {
   ReasoningBlockStyled
 } from './styled';
 import { markdownComponents } from './markdown-components';
+import { useMeasure } from '@/ui/utils/useMeasure';
 
 export type ReasoningBlockProps = {
   content?: string | ReactNode;
