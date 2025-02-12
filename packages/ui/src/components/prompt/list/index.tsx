@@ -7,18 +7,12 @@ export interface PromptsProps extends React.PropsWithChildren {
 }
 
 export const Prompts: React.FC<PromptsProps> = ({
-  className, label, children
+  className,
+  label,
+  children
 }) => (
-  <PromptsStyled
-    className={className}
-  >
-    {label && (
-      <PromptsLabel>
-        {label}
-      </PromptsLabel>
-    )}
-    <PromptList>
-      {children}
-    </PromptList>
+  <PromptsStyled className={className}>
+    {label && <PromptsLabel>{label}</PromptsLabel>}
+    <PromptList>{children}</PromptList>
   </PromptsStyled>
 );

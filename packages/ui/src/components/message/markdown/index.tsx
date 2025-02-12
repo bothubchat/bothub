@@ -1,29 +1,37 @@
 import React, { useMemo } from 'react';
 import { useMessage } from '@/ui/components/message/context';
 import {
-  MessageComponentsProps, 
-  MessageParagraph, 
+  MessageComponentsProps,
+  MessageParagraph
 } from '@/ui/components/message/components';
 import { MessageMarkdownLine, MessageMarkdownStyled } from './styled';
 import { markdownComponents } from './markdown-components';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
 
 function formatString(string: string) {
-  return string
-    // math formulas
-    .replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
-    .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$$${content}$$`)
-    .replace(/<!--.*-->/g, '');
+  return (
+    string
+      // math formulas
+      .replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
+      .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$$${content}$$`)
+      .replace(/<!--.*-->/g, '')
+  );
 }
 
 export interface MessageMarkdownProps {
   children: string;
   components?: MessageComponentsProps;
+  componentsOverride?: React.ComponentProps<
+    typeof MessageMarkdownLine
+  >['components'];
+  disableTyping?: boolean;
 }
 
-export const MessageMarkdown: React.FC<MessageMarkdownProps> = (({
+export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
   children,
-  components = {}
+  components = {},
+  componentsOverride = {},
+  disableTyping = false
 }) => {
   const { typing, variant, color } = useMessage();
   const isDisabled = variant === 'user';
@@ -35,13 +43,10 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = (({
     return children;
   }, [children, isDisabled]);
 
-  const { 
-    remarkPlugins, 
-    rehypePlugins, 
-    singleDollarTextMath 
-  } = useMarkdownPlugins({
-    children: formattedChildren,
-  });
+  const { remarkPlugins, rehypePlugins, singleDollarTextMath } =
+    useMarkdownPlugins({
+      children: formattedChildren
+    });
 
   const markdownNode = useMemo(() => {
     const blocks = formattedChildren.split('\n\n');
@@ -66,7 +71,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = (({
       <MessageMarkdownStyled>
         {parsedBlocks.map((block, index) => (
           <MessageMarkdownLine
-            $typing={typing}
+            $typing={disableTyping ? false : typing}
             $color={color}
             $singleDollarTextMath={singleDollarTextMath}
             key={`${rehypePlugins.length}-${remarkPlugins.length}-${index}`}
@@ -74,7 +79,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = (({
             remarkPlugins={remarkPlugins}
             // @ts-ignore
             rehypePlugins={rehypePlugins}
-            components={markdownComponents(components)}
+            components={markdownComponents(components, componentsOverride)}
           >
             {block}
           </MessageMarkdownLine>
@@ -82,12 +87,16 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = (({
       </MessageMarkdownStyled>
     );
   }, [
-    typing, 
-    formattedChildren, singleDollarTextMath, remarkPlugins, rehypePlugins]);
+    typing,
+    formattedChildren,
+    singleDollarTextMath,
+    remarkPlugins,
+    rehypePlugins
+  ]);
 
   return (
     <>
-      {(isDisabled && typeof children === 'string') && (
+      {isDisabled && typeof children === 'string' && (
         <MessageParagraph
           wrap
           disableMargin
@@ -95,7 +104,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = (({
           {formattedChildren}
         </MessageParagraph>
       )}
-      {(!isDisabled && typeof children === 'string') && markdownNode}
+      {!isDisabled && typeof children === 'string' && markdownNode}
     </>
   );
-});
+};

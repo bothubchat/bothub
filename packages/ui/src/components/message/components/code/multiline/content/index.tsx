@@ -1,22 +1,27 @@
 import { lazy, Suspense } from 'react';
 import { MessageMultilineCodeContentProps } from './types';
-import { MessageMultilineCodeContentContainer, MessageMultilineCodeContentStyled, MessageMultilineCodeLastLine } from './styled';
+import {
+  MessageMultilineCodeContentContainer,
+  MessageMultilineCodeContentStyled,
+  MessageMultilineCodeLastLine
+} from './styled';
 
-const MessageMultilineCodeContentHighlighted = lazy(() => import('./highlighted')
-  .then((module) => ({
-    default: module.MessageMultilineCodeContentHighlighted,
-  })));
+const MessageMultilineCodeContentHighlighted = lazy(() =>
+  import('./highlighted').then((module) => ({
+    default: module.MessageMultilineCodeContentHighlighted
+  }))
+);
 
 export const MessageMultilineCodeContent = ({
   children,
   $messageColor,
-  className,
+  className
 }: MessageMultilineCodeContentProps) => {
   const message = children?.toString().split('\n') ?? [];
   return (
     <MessageMultilineCodeContentContainer>
       <Suspense
-        fallback={(
+        fallback={
           <MessageMultilineCodeContentStyled
             $messageColor={$messageColor}
             className={className}
@@ -26,7 +31,7 @@ export const MessageMultilineCodeContent = ({
               {message.slice(-2)}
             </MessageMultilineCodeLastLine>
           </MessageMultilineCodeContentStyled>
-        )}
+        }
       >
         <MessageMultilineCodeContentHighlighted
           $messageColor={$messageColor}

@@ -1,14 +1,18 @@
 import React, { useCallback } from 'react';
 import {
-  HeaderNavDropdownInfo, 
-  HeaderNavDropdownItemContent, 
-  HeaderNavDropdownItemStyled, 
-  HeaderNavDropdownText, 
-  HeaderNavDropdownTitle 
+  HeaderNavDropdownInfo,
+  HeaderNavDropdownItemContent,
+  HeaderNavDropdownItemStyled,
+  HeaderNavDropdownText,
+  HeaderNavDropdownTitle
 } from './styled';
 import { useHeaderNavDropdown } from '../context';
 
-export interface HeaderNavDropdownItemProps extends Omit<React.ComponentProps<typeof HeaderNavDropdownItemStyled>, 'title'> {
+export interface HeaderNavDropdownItemProps
+  extends Omit<
+    React.ComponentProps<typeof HeaderNavDropdownItemStyled>,
+    'title'
+  > {
   icon: React.ReactNode;
   title: string;
   text: string;
@@ -16,20 +20,28 @@ export interface HeaderNavDropdownItemProps extends Omit<React.ComponentProps<ty
   to?: string;
 }
 
-export const HeaderNavDropdownItem: React.FC<HeaderNavDropdownItemProps> = ({ 
-  icon, title, text, as, to, ...props
+export const HeaderNavDropdownItem: React.FC<HeaderNavDropdownItemProps> = ({
+  icon,
+  title,
+  text,
+  as,
+  to,
+  ...props
 }) => {
   const { setIsOpen } = useHeaderNavDropdown();
 
-  const handleClick = useCallback((event: React.MouseEvent<HTMLAnchorElement>) => {
-    props.onClick?.(event);
-    setIsOpen(false);
-  }, [props.onClick]);
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLAnchorElement>) => {
+      props.onClick?.(event);
+      setIsOpen(false);
+    },
+    [props.onClick]
+  );
 
   return (
-    <HeaderNavDropdownItemStyled 
-      {...props} 
-      as={as} 
+    <HeaderNavDropdownItemStyled
+      {...props}
+      as={as}
       to={to}
       onClick={handleClick}
     >

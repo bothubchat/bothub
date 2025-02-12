@@ -41,20 +41,23 @@ export const Backdrop: React.FC<BackdropProps> = ({
   const backdropTransition = useTransition(open, {
     from: { background: 'rgba(0, 0, 0, 0)', backdropFilter: 'blur(0px)' },
     enter: { background: 'rgba(0, 0, 0, 0.55)', backdropFilter: 'blur(5px)' },
-    leave: { background: 'rgba(0, 0, 0, 0)', backdropFilter: 'blur(0px)' },
+    leave: { background: 'rgba(0, 0, 0, 0)', backdropFilter: 'blur(0px)' }
   });
 
-  return backdropTransition((style, item) => item && (
-    <BackdropStyled
-      {...props}
-      ref={backdropRef}
-      onClick={handleClick}
-      style={{
-        ...style,
-        ...(props.style || {}),
-      }}
-    >
-      {children}
-    </BackdropStyled>
-  ));
+  return backdropTransition(
+    (style, item) =>
+      item && (
+        <BackdropStyled
+          {...props}
+          ref={backdropRef}
+          onClick={handleClick}
+          style={{
+            ...style,
+            ...(props.style || {})
+          }}
+        >
+          {children}
+        </BackdropStyled>
+      )
+  );
 };

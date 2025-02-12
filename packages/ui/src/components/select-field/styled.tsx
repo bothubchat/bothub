@@ -20,18 +20,26 @@ export const SelectFieldStyled = styled.div<SelectFieldStyledProps>`
   align-items: flex-start;
   width: 100%;
   box-sizing: border-box;
-  ${({ $fullWidth }) => !$fullWidth && css`
-    max-width: 259px;
-  `}
-  ${({ $disabled }) => $disabled && css`
-    cursor: not-allowed; 
-  `}
-  ${({ $disabled }) => !$disabled && css`
-    cursor: default;
-  `}
+  ${({ $fullWidth }) =>
+    !$fullWidth &&
+    css`
+      max-width: 259px;
+    `}
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      cursor: not-allowed;
+    `}
+  ${({ $disabled }) =>
+    !$disabled &&
+    css`
+      cursor: default;
+    `}
 `;
 
-export const SelectFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
+export const SelectFieldLabel = styled(Typography).attrs({
+  variant: 'input-sm'
+})`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -57,21 +65,20 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
   justify-content: space-between;
   gap: 12px;
   user-select: none;
-  border: 1px solid ${({
-    theme, $disabled, $error, $open, $skeleton 
-  }) => {
-    if ($disabled || $skeleton) {
-      return theme.colors.grayScale.gray5;
-    }
-    if ($error) {
-      return theme.colors.critic;
-    }
-    if ($open) {
-      return theme.colors.accent.primary;
-    }
+  border: 1px solid
+    ${({ theme, $disabled, $error, $open, $skeleton }) => {
+      if ($disabled || $skeleton) {
+        return theme.colors.grayScale.gray5;
+      }
+      if ($error) {
+        return theme.colors.critic;
+      }
+      if ($open) {
+        return theme.colors.accent.primary;
+      }
 
-    return theme.colors.grayScale.gray2;
-  }};
+      return theme.colors.grayScale.gray2;
+    }};
   border-radius: 10px;
   ${({ $multiple }) => {
     if ($multiple) {
@@ -86,17 +93,19 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
     `;
   }}
   box-sizing: border-box;
-  background: ${({
-    theme, $disabled, $skeleton, $blur 
-  }) => {
+  background: ${({ theme, $disabled, $skeleton, $blur }) => {
     if ($disabled || $skeleton) {
       return theme.colors.grayScale.gray3;
     }
     if ($blur) {
-      return theme.mode === 'light' ? 'rgba(255, 255, 255, 0.65)' : 'rgba(18, 24, 37, 0.75)';
+      return theme.mode === 'light'
+        ? 'rgba(255, 255, 255, 0.65)'
+        : 'rgba(18, 24, 37, 0.75)';
     }
 
-    return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
+    return theme.mode === 'light'
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray4;
   }};
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -110,13 +119,15 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
 
     return 'pointer';
   }};
-  ${({
-    theme, $error, $disabled, $skeleton 
-  }) => (!$error && !$disabled && !$skeleton) && css`
-    &:hover {
-      border-color: ${theme.colors.accent.primary};
-    }
-  `}
+  ${({ theme, $error, $disabled, $skeleton }) =>
+    !$error &&
+    !$disabled &&
+    !$skeleton &&
+    css`
+      &:hover {
+        border-color: ${theme.colors.accent.primary};
+      }
+    `}
   ${({ $disabled, $open }) => {
     if ($disabled) {
       return css`
@@ -153,15 +164,17 @@ export interface SelectFieldSearchIconProps {
   $focus: boolean;
 }
 
-export const SelectFieldSearchIcon = styled(SearchCircleIcon).attrs({ size: 16 })<SelectFieldSearchIconProps>`
+export const SelectFieldSearchIcon = styled(SearchCircleIcon).attrs({
+  size: 16
+})<SelectFieldSearchIconProps>`
   path {
     fill: ${({ theme, $focus }) => {
-    if ($focus) {
-      return theme.colors.base.white;
-    }
+      if ($focus) {
+        return theme.colors.base.white;
+      }
 
-    return theme.colors.grayScale.gray1;
-  }};
+      return theme.colors.grayScale.gray1;
+    }};
   }
 `;
 
@@ -180,7 +193,10 @@ export const SelectFieldInputNative = styled.input`
     color: ${({ theme }) => theme.colors.grayScale.gray1};
   }
   &:focus::placeholder {
-    color: ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray1 : theme.colors.grayScale.gray6)};
+    color: ${({ theme }) =>
+      theme.mode === 'light'
+        ? theme.colors.grayScale.gray1
+        : theme.colors.grayScale.gray6};
   }
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
@@ -205,12 +221,18 @@ export const SelectFieldInputNative = styled.input`
     -webkit-appearance: none;
     margin: 0;
   }
-  ${({ disabled }) => disabled && css`
-    cursor: not-allowed;
-  `}
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      cursor: not-allowed;
+    `}
 `;
 
-export const SelectFieldClearButton = styled(Button).attrs({ variant: 'text', iconSize: 12, children: <CloseIcon /> })``;
+export const SelectFieldClearButton = styled(Button).attrs({
+  variant: 'text',
+  iconSize: 12,
+  children: <CloseIcon />
+})``;
 
 export const SelectFieldValue = styled.span`
   display: inline-flex;
@@ -218,7 +240,9 @@ export const SelectFieldValue = styled.span`
   gap: 10px;
 `;
 
-export const SelectFieldValueText = styled(Typography).attrs({ variant: 'input-sm' })``;
+export const SelectFieldValueText = styled(Typography).attrs({
+  variant: 'input-sm'
+})``;
 
 export interface SelectFieldValueColorProps {
   $color: string;
@@ -233,7 +257,9 @@ export const SelectFieldValueColor = styled.span<SelectFieldValueColorProps>`
   border-radius: 4px;
 `;
 
-export const SelectFieldColorValueText = styled(Typography).attrs({ variant: 'input-sm' })`
+export const SelectFieldColorValueText = styled(Typography).attrs({
+  variant: 'input-sm'
+})`
   color: ${({ theme }) => theme.colors.base.white};
 `;
 
@@ -255,7 +281,9 @@ export interface SelectFieldPlaceholderProps {
   $open: boolean;
 }
 
-export const SelectFieldPlaceholder = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldPlaceholderProps>`
+export const SelectFieldPlaceholder = styled(Typography).attrs({
+  variant: 'input-sm'
+})<SelectFieldPlaceholderProps>`
   color: ${({ $open, theme }) => {
     if ($open) {
       return theme.colors.grayScale.gray6;
@@ -301,10 +329,14 @@ export const SelectFieldBlockPositionWrapper = styled.div<SelectFieldBlockPositi
   border-radius: 10px;
   background: ${({ theme, $blur }) => {
     if ($blur) {
-      return theme.mode === 'light' ? 'rgba(255, 255, 255, 0.65)' : 'rgba(18, 24, 37, 0.75)';
+      return theme.mode === 'light'
+        ? 'rgba(255, 255, 255, 0.65)'
+        : 'rgba(18, 24, 37, 0.75)';
     }
 
-    return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
+    return theme.mode === 'light'
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray4;
   }};
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -330,7 +362,9 @@ export const SelectFieldBlockContent = styled.div`
   width: 100%;
 `;
 
-export const SelectFieldErrorText = styled(Typography).attrs({ variant: 'input-sm' })`
+export const SelectFieldErrorText = styled(Typography).attrs({
+  variant: 'input-sm'
+})`
   display: inline-flex;
   margin-top: 8px;
   color: ${({ theme }) => theme.colors.critic};
@@ -372,24 +406,26 @@ export const SelectFieldGroup = styled.div<SelectFieldGroupProps>`
   overflow-y: auto;
   padding-right: 4px;
   width: 100%;
-  ${({ $disableScrollbar, $size }) => !$disableScrollbar && css`
-    &::-webkit-scrollbar {
-      width: 4px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background: ${({ theme }) => theme.colors.accent.primary};
-      border-radius: 2px;
-    }
-    &::-webkit-scrollbar-corner {
-      display: none;
-    }
-    max-height: ${() => {
-    switch ($size) {
-      case 'small':
-        return 186;
-      case 'md':
-        return 186;
-    }
-  }}px;
-  `}
+  ${({ $disableScrollbar, $size }) =>
+    !$disableScrollbar &&
+    css`
+      &::-webkit-scrollbar {
+        width: 4px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: ${({ theme }) => theme.colors.accent.primary};
+        border-radius: 2px;
+      }
+      &::-webkit-scrollbar-corner {
+        display: none;
+      }
+      max-height: ${() => {
+        switch ($size) {
+          case 'small':
+            return 186;
+          case 'md':
+            return 186;
+        }
+      }}px;
+    `}
 `;

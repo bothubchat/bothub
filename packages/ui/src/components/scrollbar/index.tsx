@@ -4,7 +4,7 @@ import React, {
   useState,
   useEffect,
   forwardRef,
-  useImperativeHandle,
+  useImperativeHandle
 } from 'react';
 import { ScrollbarContent, ScrollbarShadows, ScrollbarStyled } from './styled';
 import {
@@ -13,7 +13,7 @@ import {
   ScrollbarOverflow,
   ScrollbarRef,
   ScrollbarShadowsProps,
-  ScrollbarVariant,
+  ScrollbarVariant
 } from './types';
 import { ScrollbarProvider } from './context';
 
@@ -54,7 +54,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
       onScroll,
       defaultStickyBottom = false,
       withStickyBottom = false,
-      isHorizontalScrollbar = false,
+      isHorizontalScrollbar = false
     },
     ref
   ) => {
@@ -78,29 +78,31 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
           clientHeight,
           scrollLeft,
           scrollWidth,
-          clientWidth,
+          clientWidth
         } = scrollbarEl;
 
         const isBiggerThanContentHeight = scrollShadowsSize > clientHeight;
         const isBiggerThanContentWidth = scrollShadowsSize > clientWidth;
         const isTop = !isBiggerThanContentHeight && scrollTop !== 0;
-        const isBottom = !isBiggerThanContentHeight
-          && Math.round(scrollTop) + 1 < scrollHeight - clientHeight;
+        const isBottom =
+          !isBiggerThanContentHeight &&
+          Math.round(scrollTop) + 1 < scrollHeight - clientHeight;
 
         setIsTop(isTop);
         setIsBottom(isBottom);
         setIsLeft(!isBiggerThanContentWidth && scrollLeft !== 0);
         setIsRight(
-          !isBiggerThanContentWidth
-            && Math.round(scrollLeft) + 1 < scrollWidth - clientWidth
+          !isBiggerThanContentWidth &&
+            Math.round(scrollLeft) + 1 < scrollWidth - clientWidth
         );
 
         const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
         setPreviousScrollTop(scrollbarEl.scrollTop);
 
         if (withStickyBottom) {
-          const scrollBottom = scrollbarEl.clientHeight
-            - Math.ceil(scrollbarEl.scrollHeight - scrollbarEl.scrollTop);
+          const scrollBottom =
+            scrollbarEl.clientHeight -
+            Math.ceil(scrollbarEl.scrollHeight - scrollbarEl.scrollTop);
           if (Math.abs(scrollBottom) < 20 && !isUpScroll) {
             setSticky(true);
           } else if (isUpScroll) {
@@ -119,7 +121,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         previousScrollTop,
         withStickyBottom,
         scrollShadowsSize,
-        onScroll,
+        onScroll
       ]
     );
 
@@ -153,8 +155,8 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
           return;
         }
         if (
-          (lockedMode || typeof options !== 'undefined')
-          && scrollbarEl !== null
+          (lockedMode || typeof options !== 'undefined') &&
+          scrollbarEl !== null
         ) {
           const { side } = options ?? scrollLocked ?? { side: 'bottom' };
 
@@ -172,7 +174,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
       ref,
       () => ({
         element: scrollbarRef.current,
-        setScroll,
+        setScroll
       }),
       [scrollbarRef.current, setScroll]
     );
@@ -206,7 +208,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
 
         observer.observe(scrollbarEl, {
           childList: true,
-          subtree: true,
+          subtree: true
         });
       }
 
@@ -272,7 +274,10 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         isTop={isTop}
         isBottom={isBottom}
       >
-        <ScrollbarStyled $overflow={overflow} className={scrollbarClassName}>
+        <ScrollbarStyled
+          $overflow={overflow}
+          className={scrollbarClassName}
+        >
           {contentNode}
           {!disableShadows && (
             <ScrollbarShadows>

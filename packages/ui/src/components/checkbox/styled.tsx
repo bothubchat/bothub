@@ -26,12 +26,16 @@ export const CheckboxStyled = styled.label<CheckboxStyledProps>`
       cursor: pointer;
     `;
   }}
-  ${({ $fullWidth }) => $fullWidth && css`
-    width: 100%;
-  `}
-  ${({ $rowReverse }) => $rowReverse && css`
-    flex-direction: row-reverse;
-  `}
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    css`
+      width: 100%;
+    `}
+  ${({ $rowReverse }) =>
+    $rowReverse &&
+    css`
+      flex-direction: row-reverse;
+    `}
 `;
 
 export const CheckboxBlock = styled.span`

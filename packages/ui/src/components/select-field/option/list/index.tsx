@@ -1,5 +1,9 @@
 import React, { useCallback } from 'react';
-import { SelectFieldData, SelectFieldDataItem, SelectFieldSize } from '@/ui/components/select-field/types';
+import {
+  SelectFieldData,
+  SelectFieldDataItem,
+  SelectFieldSize
+} from '@/ui/components/select-field/types';
 import {
   SelectFieldColorOptionText,
   SelectFieldDivider,
@@ -7,6 +11,7 @@ import {
   SelectFieldEmptyText,
   SelectFieldOption,
   SelectFieldOptionColor,
+  SelectFieldOptionLabel,
   SelectFieldOptionSide,
   SelectFieldOptionText,
   SelectFieldOptionsStyled
@@ -17,7 +22,9 @@ import { useTheme } from '@/ui/theme';
 import { SelectFieldCollapseOption } from '../collapse';
 import { SearchDataIcon } from '@/ui/icons/search-data';
 
-export type SelectFieldOptionClickEventHandler = (item: SelectFieldDataItem) => unknown;
+export type SelectFieldOptionClickEventHandler = (
+  item: SelectFieldDataItem
+) => unknown;
 
 export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
   value: SelectFieldDataItem | SelectFieldDataItem[] | null;
@@ -28,13 +35,21 @@ export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
 }
 
 export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
-  value, data, size, disableSelect = false, onOptionClick, ...props
+  value,
+  data,
+  size,
+  disableSelect = false,
+  onOptionClick,
+  ...props
 }) => {
   const theme = useTheme();
 
-  const handleOptionClick = useCallback((item: SelectFieldDataItem) => {
-    onOptionClick?.(item);
-  }, [onOptionClick]);
+  const handleOptionClick = useCallback(
+    (item: SelectFieldDataItem) => {
+      onOptionClick?.(item);
+    },
+    [onOptionClick]
+  );
 
   return (
     <SelectFieldOptionsStyled
@@ -48,7 +63,8 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           if (!value || Array.isArray(value)) {
             selected = false;
           } else {
-            selected = typeof value === 'string' ? item === value : item === value.value;
+            selected =
+              typeof value === 'string' ? item === value : item === value.value;
           }
 
           return (
@@ -84,6 +100,16 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           );
         }
 
+        if (item.type === 'label') {
+          return (
+            <SelectFieldOptionLabel
+              key={item.id ?? item.value ?? `label-${index}`}
+            >
+              {item.label}
+            </SelectFieldOptionLabel>
+          );
+        }
+
         if (item.type === 'empty' && item.label) {
           return (
             <SelectFieldEmpty
@@ -96,9 +122,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               >
                 {item.icon ?? <SearchDataIcon />}
               </IconProvider>
-              <SelectFieldEmptyText>
-                {item.label}
-              </SelectFieldEmptyText>
+              <SelectFieldEmptyText>{item.label}</SelectFieldEmptyText>
             </SelectFieldEmpty>
           );
         }
@@ -127,7 +151,10 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
         if (!value || Array.isArray(value)) {
           selected = false;
         } else {
-          selected = (typeof value === 'string' ? item.value === value : item.value === value.value) && !disableSelect;
+          selected =
+            (typeof value === 'string'
+              ? item.value === value
+              : item.value === value.value) && !disableSelect;
         }
 
         return (
@@ -137,17 +164,15 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
             {...(typeof item.tooltip !== 'object' && {
               disabled: true
             })}
-            {...((item.label && item.label.length > 64) && {
-              placement: 'top-left',
-              label: item.label,
-              disabled: false
-            })}
+            {...(item.label &&
+              item.label.length > 64 && {
+                placement: 'top-left',
+                label: item.label,
+                disabled: false
+              })}
           >
             <TooltipConsumer>
-              {({
-                handleTooltipMouseEnter,
-                handleTooltipMouseLeave
-              }) => (
+              {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                 <SelectFieldOption
                   $selected={selected}
                   $disabled={disabled}
@@ -159,9 +184,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                 >
                   <SelectFieldOptionSide>
                     {item.icon && (
-                      <IconProvider size={18}>
-                        {item.icon}
-                      </IconProvider>
+                      <IconProvider size={18}>{item.icon}</IconProvider>
                     )}
                     {!item.color && (
                       <SelectFieldOptionText
@@ -186,16 +209,14 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                     {item.color && (
                       <SelectFieldOptionColor
                         $color={
-                          item.color === theme.colors.accent.primary && selected ? (
-                            theme.colors.accent.primaryLight
-                          ) : item.color
+                          item.color === theme.colors.accent.primary && selected
+                            ? theme.colors.accent.primaryLight
+                            : item.color
                         }
                       />
                     )}
                     {item.color && (
-                      <SelectFieldColorOptionText
-                        $selected={selected}
-                      >
+                      <SelectFieldColorOptionText $selected={selected}>
                         {item.label && (
                           <>
                             {item.label.slice(0, 64)}
@@ -209,11 +230,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                   </SelectFieldOptionSide>
                   {item.end && (
                     <SelectFieldOptionSide>
-                      <IconProvider
-                        size={16}
-                      >
-                        {item.end}
-                      </IconProvider>
+                      <IconProvider size={16}>{item.end}</IconProvider>
                     </SelectFieldOptionSide>
                   )}
                 </SelectFieldOption>

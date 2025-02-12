@@ -10,13 +10,17 @@ export const MenuDropdownNavLinkStyled = styled.a<MenuDropdownNavLinkStyledProps
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  ${({ $active }) => !$active && css`
-    transition: 0.25s opacity;
-    opacity: 0.5;
-    &:hover {
-      opacity: 1;
-    }
-  `}
+  ${({ $active }) =>
+    !$active &&
+    css`
+      transition: 0.25s opacity;
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
+    `}
 `;
 
-export const MenuDropdownNavLinkText = styled(Typography).attrs({ variant: 'body-m-medium' })``;
+export const MenuDropdownNavLinkText = styled(Typography).attrs({
+  variant: 'body-m-medium'
+})``;

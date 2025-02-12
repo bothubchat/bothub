@@ -10,8 +10,8 @@ type BaseSwitchProps = {
   className?: string;
 };
 
-export type SwitchProps = BaseSwitchProps
-& Omit<React.InputHTMLAttributes<HTMLInputElement>, keyof BaseSwitchProps>;
+export type SwitchProps = BaseSwitchProps &
+  Omit<React.InputHTMLAttributes<HTMLInputElement>, keyof BaseSwitchProps>;
 
 export const Switch = ({
   id,

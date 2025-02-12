@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import {
   UserTariffBadgeSkeleton,
   UserTariffBadgeStyled,
-  UserTariffBadgeText,
+  UserTariffBadgeText
 } from './styled';
 import { useTooltip } from '@/ui/components/tooltip';
 import { UserTariff } from './types';

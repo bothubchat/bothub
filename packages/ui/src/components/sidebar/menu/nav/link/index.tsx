@@ -11,8 +11,8 @@ import { useSidebar } from '../../../context';
 import { useTheme } from '@/ui/theme';
 
 export type SidebarMenuNavLinkProps = Omit<
-React.ComponentProps<typeof SidebarMenuNavLinkStyled>,
-keyof SidebarMenuNavLinkStyledProps
+  React.ComponentProps<typeof SidebarMenuNavLinkStyled>,
+  keyof SidebarMenuNavLinkStyledProps
 > & {
   as?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   to?: string;
@@ -21,16 +21,24 @@ keyof SidebarMenuNavLinkStyledProps
 };
 
 export const SidebarMenuNavLink: React.FC<SidebarMenuNavLinkProps> = ({
-  as, to, icon, active = false, children, ...props
+  as,
+  to,
+  icon,
+  active = false,
+  children,
+  ...props
 }) => {
   const { setIsOpen } = useSidebarMenu();
   const { isOpen } = useSidebar();
   const theme = useTheme();
-  const handleClick = useCallback<React.MouseEventHandler<HTMLAnchorElement>>((event) => {
-    setIsOpen(false);
+  const handleClick = useCallback<React.MouseEventHandler<HTMLAnchorElement>>(
+    (event) => {
+      setIsOpen(false);
 
-    props.onClick?.(event);
-  }, [props.onClick]);
+      props.onClick?.(event);
+    },
+    [props.onClick]
+  );
 
   return (
     <SidebarMenuNavLinkStyled
@@ -43,15 +51,17 @@ export const SidebarMenuNavLink: React.FC<SidebarMenuNavLinkProps> = ({
       <SidebarMenuNavIcon $active={active}>
         <IconProvider
           size={18}
-          fill={active ? theme.colors.accent.primary : theme.colors.grayScale.gray1}
-          stroke={active ? theme.colors.accent.primary : theme.colors.grayScale.gray1}
+          fill={
+            active ? theme.colors.accent.primary : theme.colors.grayScale.gray1
+          }
+          stroke={
+            active ? theme.colors.accent.primary : theme.colors.grayScale.gray1
+          }
         >
           {icon}
         </IconProvider>
       </SidebarMenuNavIcon>
-      <SidebarMenuNavLinkText $open={isOpen}>
-        {children}
-      </SidebarMenuNavLinkText>
+      <SidebarMenuNavLinkText $open={isOpen}>{children}</SidebarMenuNavLinkText>
     </SidebarMenuNavLinkStyled>
   );
 };

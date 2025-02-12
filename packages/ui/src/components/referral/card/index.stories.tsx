@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
-import { 
-  ReferralCard, 
-  ReferralCardLink, 
-  ReferralCardTable, 
-  ReferralCardTableCell, 
-  ReferralCardTableHeadCell, 
-  ReferralCardTableRow, 
-  ReferralCardWithdrawButton 
+import {
+  ReferralCard,
+  ReferralCardLink,
+  ReferralCardTable,
+  ReferralCardTableCell,
+  ReferralCardTableHeadCell,
+  ReferralCardTableRow,
+  ReferralCardWithdrawButton
 } from '.';
 
 export type ReferralCardMeta = Meta<typeof ReferralCard>;
@@ -26,9 +26,7 @@ export const Basic: ReferralCardStory = {
       maxText: '20000 ₽'
     },
     withdraw: (
-      <ReferralCardWithdrawButton>
-        Вывести средства
-      </ReferralCardWithdrawButton>
+      <ReferralCardWithdrawButton>Вывести средства</ReferralCardWithdrawButton>
     ),
     dateCreated: 'Дата последнего вывода: 07.09.23, 15:33:47',
     children: (
@@ -44,22 +42,16 @@ export const Basic: ReferralCardStory = {
           </ReferralCardTableCell>
         </ReferralCardTableRow>
         <ReferralCardTableRow>
-          <ReferralCardTableHeadCell>
-            Код:
-          </ReferralCardTableHeadCell>
+          <ReferralCardTableHeadCell>Код:</ReferralCardTableHeadCell>
           <ReferralCardTableCell>
-            <ReferralCardLink>
-              T2Yasv23azILMH21
-            </ReferralCardLink>
+            <ReferralCardLink>T2Yasv23azILMH21</ReferralCardLink>
           </ReferralCardTableCell>
         </ReferralCardTableRow>
         <ReferralCardTableRow>
           <ReferralCardTableHeadCell>
             Всего пользователей:
           </ReferralCardTableHeadCell>
-          <ReferralCardTableCell>
-            24
-          </ReferralCardTableCell>
+          <ReferralCardTableCell>24</ReferralCardTableCell>
         </ReferralCardTableRow>
       </ReferralCardTable>
     )

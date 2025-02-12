@@ -7,7 +7,9 @@ export const MessageTableCellStyled = styled.td`
   padding: 10px;
 `;
 
-export const MessageTableHeadCell = styled(MessageTableCellStyled).attrs({ as: 'th' })`
+export const MessageTableHeadCell = styled(MessageTableCellStyled).attrs({
+  as: 'th'
+})`
   background: ${({ theme }) => theme.colors.grayScale.gray4};
 `;
 
@@ -16,34 +18,62 @@ export interface MessageTableCellTextProps {
   $messageColor: string;
 }
 
-export const MessageTableCellText = styled(Typography).attrs({ variant: 'body-s-medium' })<MessageTableCellTextProps>`
-  ${({ theme, $head }) => $head && css`
-    color: ${theme.default.colors.grayScale.gray6};
-  `}
+export const MessageTableCellText = styled(Typography).attrs({
+  variant: 'body-m-medium'
+})<MessageTableCellTextProps>`
+  ${({ theme, $head }) =>
+    $head &&
+    css`
+      color: ${theme.default.colors.grayScale.gray6};
+    `}
   &::selection {
     ${({ $messageColor }) => {
-    switch ($messageColor) {
-      case 'default':
-        return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
-        `;
-      case 'green':
-        return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.colors.gpt3 : theme.default.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.gpt3)};
-        `;
-      case 'purple':
-        return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.colors.gpt4 : theme.default.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.gpt4)};
-        `;
-      default:
-        return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? $messageColor : theme.default.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : $messageColor)};
-        `;
-    }
-  }}
+      switch ($messageColor) {
+        case 'default':
+          return css`
+            background: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.accent.primary
+                : theme.colors.base.white};
+            color: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.base.white
+                : theme.colors.accent.primary};
+          `;
+        case 'green':
+          return css`
+            background: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.colors.gpt3
+                : theme.default.colors.base.white};
+            color: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.base.white
+                : theme.colors.gpt3};
+          `;
+        case 'purple':
+          return css`
+            background: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.colors.gpt4
+                : theme.default.colors.base.white};
+            color: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.base.white
+                : theme.colors.gpt4};
+          `;
+        default:
+          return css`
+            background: ${({ theme }) =>
+              theme.mode === 'light'
+                ? $messageColor
+                : theme.default.colors.base.white};
+            color: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.base.white
+                : $messageColor};
+          `;
+      }
+    }}
   }
 `;

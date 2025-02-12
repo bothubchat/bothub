@@ -1,6 +1,4 @@
-import React, {
-  useCallback, useEffect, useRef, useState
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   SidebarLangDropdownContent,
@@ -8,7 +6,7 @@ import {
   SidebarLangDropdownToggler,
   SidebarLangDropdownTogglerArrow,
   SidebarLangDropdownTogglerIcon,
-  SidebarLangDropdownTogglerText,
+  SidebarLangDropdownTogglerText
 } from './styled';
 import { SidebarLangDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
@@ -57,21 +55,27 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      transform: 'scale(0)',
+      transform: 'scale(0)'
     },
     enter: {
       opacity: isOpen ? 1 : 0.5,
-      transform: `scale(${isOpen ? 1 : 0.999})`,
+      transform: `scale(${isOpen ? 1 : 0.999})`
     },
     leave: { opacity: 0, transform: 'scale(0.999)' },
-    config: { duration: 150 },
+    config: { duration: 150 }
   });
 
   return (
     <SidebarLangDropdownProvider setIsOpen={setIsOpen}>
-      <SidebarLangDropdownStyled {...props} ref={dropdownRef}>
+      <SidebarLangDropdownStyled
+        {...props}
+        ref={dropdownRef}
+      >
         <IconProvider fill={theme.colors.base.white}>
-          <SidebarLangDropdownToggler $open={isOpen} onClick={handleToggle}>
+          <SidebarLangDropdownToggler
+            $open={isOpen}
+            onClick={handleToggle}
+          >
             <SidebarLangDropdownTogglerIcon />
             <SidebarLangDropdownTogglerText>
               {lang}
@@ -83,13 +87,14 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
             />
           </SidebarLangDropdownToggler>
         </IconProvider>
-        {dropdownTransition((style, item) => (
-          item && (
-            <SidebarLangDropdownContent style={style}>
-              {children}
-            </SidebarLangDropdownContent>
-          )
-        ))}
+        {dropdownTransition(
+          (style, item) =>
+            item && (
+              <SidebarLangDropdownContent style={style}>
+                {children}
+              </SidebarLangDropdownContent>
+            )
+        )}
       </SidebarLangDropdownStyled>
     </SidebarLangDropdownProvider>
   );

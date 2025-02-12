@@ -19,7 +19,9 @@ export const BadgeProgressStyled = styled.div<BadgeProgressStyledProps>`
   ${({ theme, $color }) => css`
     ${BadgeProgressText},
     ${BadgeProgressTextBold} {
-      color: ${$color === 'primary' ? theme.default.colors.base.white : theme.default.colors.base.black};
+      color: ${$color === 'primary'
+        ? theme.default.colors.base.white
+        : theme.default.colors.base.black};
     }
   `}
 `;
@@ -71,15 +73,21 @@ export const BadgeProgressContent = styled.div`
   user-select: none;
 `;
 
-export const BadgeProgressLoader = styled(LoaderCircularIcon).attrs({ size: 16 })``;
+export const BadgeProgressLoader = styled(LoaderCircularIcon).attrs({
+  size: 16
+})``;
 
-export const BadgeProgressText = styled(Typography).attrs({ variant: 'body-s-regular' })`
+export const BadgeProgressText = styled(Typography).attrs({
+  variant: 'body-s-regular'
+})`
   cursor: inherit;
   color: ${({ theme }) => theme.default.colors.base.white};
   white-space: nowrap;
 `;
 
-export const BadgeProgressTextBold = styled(Typography).attrs({ variant: 'body-s-medium' })`
+export const BadgeProgressTextBold = styled(Typography).attrs({
+  variant: 'body-s-medium'
+})`
   cursor: inherit;
   color: ${({ theme }) => theme.default.colors.base.white};
 `;

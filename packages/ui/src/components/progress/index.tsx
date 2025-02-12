@@ -11,8 +11,13 @@ export interface ProgressProps {
   skeleton?: boolean;
 }
 
-export const Progress: React.FC<ProgressProps> = ({ 
-  className, value = 50, min = 0, max = 100, fullWidth = false, skeleton = false
+export const Progress: React.FC<ProgressProps> = ({
+  className,
+  value = 50,
+  min = 0,
+  max = 100,
+  fullWidth = false,
+  skeleton = false
 }) => {
   const range: number = max - min;
   const percent: number = ((value - min) / range) * 100;
@@ -23,16 +28,12 @@ export const Progress: React.FC<ProgressProps> = ({
       className={className}
     >
       {!skeleton && (
-        <ProgressLine
-          $skeleton={false}
-        >
-          <ProgressLineFilled 
-            style={{ width: `${percent}%` }}
-          />
+        <ProgressLine $skeleton={false}>
+          <ProgressLineFilled style={{ width: `${percent}%` }} />
         </ProgressLine>
       )}
       {skeleton && (
-        <ProgressLine 
+        <ProgressLine
           $skeleton
           as={skeleton ? Skeleton : 'div'}
         />

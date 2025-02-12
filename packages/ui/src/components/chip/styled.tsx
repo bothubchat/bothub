@@ -46,4 +46,8 @@ export const ChipText = styled(Typography).attrs({ variant: 'body-s-medium' })`
   user-select: none;
 `;
 
-export const ChipDeleteButton = styled(Button).attrs({ variant: 'text', iconSize: 12, children: <CloseIcon /> })``;
+export const ChipDeleteButton = styled(Button).attrs({
+  variant: 'text',
+  iconSize: 12,
+  children: <CloseIcon />
+})``;

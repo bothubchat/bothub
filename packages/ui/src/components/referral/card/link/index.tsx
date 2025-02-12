@@ -1,5 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import { ReferralCardLinkCopyIcon, ReferralCardLinkStyled, ReferralCardLinkText } from './styled';
+import {
+  ReferralCardLinkCopyIcon,
+  ReferralCardLinkStyled,
+  ReferralCardLinkText
+} from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { CheckSmallIcon } from '@/ui/icons/check-small';
@@ -15,7 +19,10 @@ export interface ReferralCardLinkProps {
 }
 
 export const ReferralCardLink: React.FC<ReferralCardLinkProps> = ({
-  className, tabIndex = 0, children, onCopy
+  className,
+  tabIndex = 0,
+  children,
+  onCopy
 }) => {
   const theme = useTheme();
 
@@ -51,12 +58,8 @@ export const ReferralCardLink: React.FC<ReferralCardLinkProps> = ({
         onBlur={handleBlur}
         onClick={handleClick}
       >
-        <ReferralCardLinkText>
-          {children}
-        </ReferralCardLinkText>
-        <ReferralCardLinkCopyIcon 
-          as={isFocus ? CheckSmallIcon : CopyIcon}
-        />
+        <ReferralCardLinkText>{children}</ReferralCardLinkText>
+        <ReferralCardLinkCopyIcon as={isFocus ? CheckSmallIcon : CopyIcon} />
       </ReferralCardLinkStyled>
     </IconProvider>
   );

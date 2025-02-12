@@ -8,7 +8,11 @@ export type AdaptiveButtonProps = ButtonProps & {
 };
 
 export const AdaptiveButton: React.FC<AdaptiveButtonProps> = ({
-  variant = 'primary', size = 'small', tooltip, children, ...props
+  variant = 'primary',
+  size = 'small',
+  tooltip,
+  children,
+  ...props
 }) => (
   <AdaptiveButtonTooltip
     label={children}

@@ -5,7 +5,7 @@ import {
   TextAreaFieldLabel,
   TextAreaFieldSkeleton,
   TextAreaFieldStyled,
-  TextAreaFieldTextArea,
+  TextAreaFieldTextArea
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 
@@ -77,8 +77,8 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
         <TextAreaFieldLabel>{label}</TextAreaFieldLabel>
       )}
       {typeof label !== 'string' && !skeleton && label}
-      {!skeleton
-        && (renderTextAreaBlock ? (
+      {!skeleton &&
+        (renderTextAreaBlock ? (
           renderTextAreaBlock({
             focus: isFocus,
             error: !!error,
@@ -88,7 +88,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
               ...props,
               disabled,
               onFocus: handleFocus,
-              onBlur: handleBlur,
+              onBlur: handleBlur
             }
           })
         ) : (

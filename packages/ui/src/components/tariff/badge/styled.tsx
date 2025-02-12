@@ -41,18 +41,25 @@ export const UserTariffBadgeStyled = styled.div<UserTariffBadgeStyledProps>`
         return theme.colors.premiumGradient;
     }
   }};
-  ${({ $skeleton }) => $skeleton && css`
-    cursor: progress;
-  `}
+  ${({ $skeleton }) =>
+    $skeleton &&
+    css`
+      cursor: progress;
+    `}
 `;
 
-export const UserTariffBadgeText = styled(Typography).attrs({ variant: 'body-m-medium' })`
+export const UserTariffBadgeText = styled(Typography).attrs({
+  variant: 'body-m-medium'
+})`
   color: ${({ theme }) => theme.default.colors.base.white};
   cursor: inherit;
   white-space: nowrap;
   text-transform: capitalize;
 `;
 
-export const UserTariffBadgeSkeleton = styled(Skeleton).attrs({ width: 60, height: 12 })`
+export const UserTariffBadgeSkeleton = styled(Skeleton).attrs({
+  width: 60,
+  height: 12
+})`
   border-radius: 8px;
 `;

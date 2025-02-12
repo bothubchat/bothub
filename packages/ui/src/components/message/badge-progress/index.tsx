@@ -1,10 +1,15 @@
 import React from 'react';
-import { MessageBadgeProgressStyled, MessageBadgeProgressStyledProps } from './styled';
+import {
+  MessageBadgeProgressStyled,
+  MessageBadgeProgressStyledProps
+} from './styled';
 import { useMessage } from '../context';
 import { BadgeProgressColor } from '@/ui/components/badge';
 
 export type MessageBadgeProgressProps = Omit<
-React.ComponentProps<typeof MessageBadgeProgressStyled>, keyof MessageBadgeProgressStyledProps>;
+  React.ComponentProps<typeof MessageBadgeProgressStyled>,
+  keyof MessageBadgeProgressStyledProps
+>;
 
 export const MessageBadgeProgress: React.FC<MessageBadgeProgressProps> = ({
   ...props

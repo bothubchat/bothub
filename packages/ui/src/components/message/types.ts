@@ -13,7 +13,7 @@ export type MessagePlainTextCopyEventHandler = () => unknown;
 
 export type MessageActionEventHandler = ({
   id,
-  message,
+  message
 }: {
   id?: string;
   message?: string;

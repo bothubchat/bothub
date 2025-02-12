@@ -15,7 +15,13 @@ export interface BadgeProps extends React.ComponentProps<'div'> {
 }
 
 export const Badge: React.FC<BadgeProps> = ({
-  variant = 'info', icon, brick = false, rounded = true, skeleton = false, children, ...props
+  variant = 'info',
+  icon,
+  brick = false,
+  rounded = true,
+  skeleton = false,
+  children,
+  ...props
 }) => {
   const theme = useTheme();
 
@@ -29,19 +35,22 @@ export const Badge: React.FC<BadgeProps> = ({
       break;
   }
 
-  const {
-    handleTooltipMouseEnter,
-    handleTooltipMouseLeave
-  } = useTooltip();
+  const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
 
-  const handleMouseEnter = useCallback<React.MouseEventHandler<HTMLDivElement>>((event) => {
-    props.onMouseEnter?.(event);
-    handleTooltipMouseEnter(event);
-  }, [props.onMouseEnter, handleTooltipMouseEnter]);
-  const handleMouseLeave = useCallback<React.MouseEventHandler<HTMLDivElement>>((event) => {
-    props.onMouseLeave?.(event);
-    handleTooltipMouseLeave(event);
-  }, [props.onMouseLeave, handleTooltipMouseLeave]);
+  const handleMouseEnter = useCallback<React.MouseEventHandler<HTMLDivElement>>(
+    (event) => {
+      props.onMouseEnter?.(event);
+      handleTooltipMouseEnter(event);
+    },
+    [props.onMouseEnter, handleTooltipMouseEnter]
+  );
+  const handleMouseLeave = useCallback<React.MouseEventHandler<HTMLDivElement>>(
+    (event) => {
+      props.onMouseLeave?.(event);
+      handleTooltipMouseLeave(event);
+    },
+    [props.onMouseLeave, handleTooltipMouseLeave]
+  );
 
   return (
     <BadgeStyled
@@ -57,22 +66,14 @@ export const Badge: React.FC<BadgeProps> = ({
         size={variant === 'error' ? 16 : 12}
         fill={iconFill}
       >
-        {variant === 'error' && (icon ?? (
-          <ErrorIcon />
-        ))}
+        {variant === 'error' && (icon ?? <ErrorIcon />)}
       </IconProvider>
-      {skeleton && (
-        <BadgeSkeleton />
-      )}
+      {skeleton && <BadgeSkeleton />}
       {!skeleton && (
         <>
           {typeof children !== 'string' && children}
           {typeof children === 'string' && (
-            <BadgeText
-              $variant={variant}
-            >
-              {children}
-            </BadgeText>
+            <BadgeText $variant={variant}>{children}</BadgeText>
           )}
         </>
       )}

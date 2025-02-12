@@ -40,71 +40,91 @@ export interface SidebarChatSkeletonProps {
 }
 
 export type SidebarChatProps = (
-  SidebarChatDefaultProps &
-  SidebarChatDragAndDropProps |
-  SidebarChatSkeletonProps
+  | (SidebarChatDefaultProps & SidebarChatDragAndDropProps)
+  | SidebarChatSkeletonProps
 ) & {
   onClick?: React.MouseEventHandler<HTMLDivElement | HTMLOrSVGElement>;
+  onToggleCheckbox?: () => unknown;
   isDefault?: boolean;
   id?: string;
 };
 
 export const SidebarChat: React.FC<SidebarChatProps> = ({
-  onClick, ...props
+  onClick,
+  onToggleCheckbox,
+  ...props
 }) => {
-  const {
-    attributes, listeners, setNodeRef, transform, transition
-  } = useSortable({
-    id: !props.skeleton ? props.id : 'draggable-skeleton',
-    data: {
-      type: 'chat',
-      parent: !props.skeleton && props?.parentId || '',
-      index: !props.skeleton && props?.index || 0,
-    }
-  });
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({
+      id: !props.skeleton ? props.id : 'draggable-skeleton',
+      data: {
+        type: 'chat',
+        parent: (!props.skeleton && props?.parentId) || '',
+        index: (!props.skeleton && props?.index) || 0
+      }
+    });
 
-  const draggable = !props.skeleton && props.edit ? {
-    ...listeners,
-    ...attributes,
-  } : {};
+  const draggable =
+    !props.skeleton && props.edit
+      ? {
+          ...listeners,
+          ...attributes
+        }
+      : {};
 
   const dragStyle = {
-    transform: transform ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)` : undefined,
-    transition,
+    transform: transform
+      ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)`
+      : undefined,
+    transition
   };
 
-  const style = !props.skeleton && props.edit && props.dragging ? {
-    height: (props?.countDragging !== undefined ? props.countDragging * 36 : undefined),
-    opacity: 0,
-  } : {};
+  const style =
+    !props.skeleton && props.edit && props.dragging
+      ? {
+          height:
+            props?.countDragging !== undefined
+              ? props.countDragging * 36
+              : undefined,
+          opacity: 0
+        }
+      : {};
 
-  const styleDraggingHidden = !props.skeleton && props.edit && props.draggingHidden ? {
-    display: 'none',
-  } : {};
+  const styleDraggingHidden =
+    !props.skeleton && props.edit && props.draggingHidden
+      ? {
+          display: 'none'
+        }
+      : {};
 
-  const chatStyle = useMemo(() => ({
-    ...style,
-    ...dragStyle,
-    ...styleDraggingHidden
-  }), [style, dragStyle, styleDraggingHidden]);
+  const chatStyle = useMemo(
+    () => ({
+      ...style,
+      ...dragStyle,
+      ...styleDraggingHidden
+    }),
+    [style, dragStyle, styleDraggingHidden]
+  );
 
   return (
     <SidebarChatStyled
       style={chatStyle}
       id={props.id}
-      $draggble={!props.skeleton && props.isDndOverflow || false}
+      $draggble={(!props.skeleton && props.isDndOverflow) || false}
       $active={(!props.skeleton && props.active) ?? false}
       $skeleton={!!props.skeleton}
       ref={!props.skeleton && props.edit ? setNodeRef : undefined}
-      onClick={onClick}
+      onClick={
+        !props.skeleton ? (!props.edit ? onClick : onToggleCheckbox) : undefined
+      }
     >
-      {!props.skeleton && props.edit
-        ? <SidebarChatDragHandle {...draggable} />
-        : (
-          <SidebarChatIconContainer $isDefault={props.isDefault}>
-            <SidebarChatIconStyled />
-          </SidebarChatIconContainer>
-        )}
+      {!props.skeleton && props.edit ? (
+        <SidebarChatDragHandle {...draggable} />
+      ) : (
+        <SidebarChatIconContainer $isDefault={props.isDefault}>
+          <SidebarChatIconStyled />
+        </SidebarChatIconContainer>
+      )}
       {!props.skeleton && (
         <SidebarChatTooltip
           label={props.name}
@@ -113,10 +133,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
           disabled={props.name.length <= 0}
         >
           <TooltipConsumer>
-            {({
-              handleTooltipMouseEnter,
-              handleTooltipMouseLeave
-            }) => (
+            {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
               <SidebarChatIconStyled
                 onClick={onClick}
                 onMouseEnter={handleTooltipMouseEnter}
@@ -127,7 +144,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
         </SidebarChatTooltip>
       )}
       {props.skeleton && <SidebarChatIconStyled />}
-      <SidebarChatLeft onClick={onClick}>
+      <SidebarChatLeft {...draggable}>
         <SidebarChatNameTooltip
           {...(!props.skeleton && {
             label: props.name
@@ -136,10 +153,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
           disabled={props.skeleton || props.name.length <= 24}
         >
           <TooltipConsumer>
-            {({
-              handleTooltipMouseEnter,
-              handleTooltipMouseLeave
-            }) => (
+            {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
               <SidebarChatName
                 onMouseEnter={handleTooltipMouseEnter}
                 onMouseLeave={handleTooltipMouseLeave}
@@ -156,13 +170,11 @@ export const SidebarChat: React.FC<SidebarChatProps> = ({
           </TooltipConsumer>
         </SidebarChatNameTooltip>
       </SidebarChatLeft>
-      {(!props.skeleton && props.caps) && (
-        <SidebarChatCaps>
-          {props.caps}
-        </SidebarChatCaps>
+      {!props.skeleton && props.caps && (
+        <SidebarChatCaps>{props.caps}</SidebarChatCaps>
       )}
       {!props.skeleton && !props.edit && props.actions}
-      {(!props.skeleton && props.edit) && props.checkbox}
+      {!props.skeleton && props.edit && props.checkbox}
     </SidebarChatStyled>
   );
 };

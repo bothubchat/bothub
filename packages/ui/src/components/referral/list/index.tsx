@@ -8,20 +8,17 @@ export interface ReferralsProps extends React.PropsWithChildren {
 }
 
 export const Referrals: React.FC<ReferralsProps> = ({
-  className, create, empty, children
+  className,
+  create,
+  empty,
+  children
 }) => (
-  <ReferralsStyled
-    className={className}
-  >
+  <ReferralsStyled className={className}>
     {React.Children.toArray(children).length === 0 && empty}
     {React.Children.toArray(children).length !== 0 && (
-      <ReferralList>
-        {children}
-      </ReferralList>
+      <ReferralList>{children}</ReferralList>
     )}
-    <ReferralsButtons>
-      {create}
-    </ReferralsButtons>
+    <ReferralsButtons>{create}</ReferralsButtons>
   </ReferralsStyled>
 );
 

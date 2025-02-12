@@ -1,18 +1,19 @@
 import React, { useCallback } from 'react';
 import {
-  CheckboxCheckedIcon, 
-  CheckboxLabel, 
-  CheckboxInput, 
-  CheckboxStyled, 
-  CheckboxBlock, 
-  CheckboxBlockSkeleton 
+  CheckboxCheckedIcon,
+  CheckboxLabel,
+  CheckboxInput,
+  CheckboxStyled,
+  CheckboxBlock,
+  CheckboxBlockSkeleton
 } from './styled';
 import { useTooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
 
 export type CheckboxValueChangeEventHandler = (checked: boolean) => unknown;
 
-export interface CheckboxProps extends Omit<React.ComponentProps<'input'>, 'onPointerLeave'> {
+export interface CheckboxProps
+  extends Omit<React.ComponentProps<'input'>, 'onPointerLeave'> {
   className?: string;
   label?: string | boolean | React.ReactNode;
   rowReverse?: boolean;
@@ -22,25 +23,25 @@ export interface CheckboxProps extends Omit<React.ComponentProps<'input'>, 'onPo
   onPointerLeave?: React.PointerEventHandler<HTMLLabelElement>;
 }
 
-export const Checkbox: React.FC<CheckboxProps> = ({ 
-  className, 
-  label, 
-  skeleton = false, 
-  rowReverse, 
-  fullWidth = false, 
-  onValueChange, 
-  onPointerLeave, 
-  ...props 
+export const Checkbox: React.FC<CheckboxProps> = ({
+  className,
+  label,
+  skeleton = false,
+  rowReverse,
+  fullWidth = false,
+  onValueChange,
+  onPointerLeave,
+  ...props
 }) => {
-  const {
-    handleTooltipMouseEnter,
-    handleTooltipMouseLeave
-  } = useTooltip();
+  const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
 
-  const handleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => {
-    props.onChange?.(event);
-    onValueChange?.(event.target.checked);
-  }, [props.onChange, onValueChange]);
+  const handleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
+    (event) => {
+      props.onChange?.(event);
+      onValueChange?.(event.target.checked);
+    },
+    [props.onChange, onValueChange]
+  );
 
   return (
     <CheckboxStyled
@@ -54,8 +55,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     >
       {!skeleton && (
         <>
-          <CheckboxInput 
-            {...props} 
+          <CheckboxInput
+            {...props}
             type="checkbox"
             onChange={handleChange}
           />
@@ -64,20 +65,16 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           </CheckboxBlock>
         </>
       )}
-      {skeleton && (
-        <CheckboxBlockSkeleton />
-      )}
-      {(label && skeleton) && (
+      {skeleton && <CheckboxBlockSkeleton />}
+      {label && skeleton && (
         <CheckboxLabel>
           <Skeleton width={200} />
         </CheckboxLabel>
       )}
-      {(typeof label === 'string' && !skeleton) && (
-        <CheckboxLabel>
-          {label}
-        </CheckboxLabel>
+      {typeof label === 'string' && !skeleton && (
+        <CheckboxLabel>{label}</CheckboxLabel>
       )}
-      {(typeof label !== 'string' && !skeleton) && label}
+      {typeof label !== 'string' && !skeleton && label}
     </CheckboxStyled>
   );
 };

@@ -10,10 +10,9 @@ export const SidebarMenuContext = React.createContext<SidebarMenuContextValue>({
   setIsOpen() {}
 });
 
-export const SidebarMenuProvider: React.FC<SidebarMenuContextValue & React.PropsWithChildren> = ({
-  children,
-  ...value
-}) => (
+export const SidebarMenuProvider: React.FC<
+  SidebarMenuContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
   <SidebarMenuContext.Provider value={value}>
     {children}
   </SidebarMenuContext.Provider>

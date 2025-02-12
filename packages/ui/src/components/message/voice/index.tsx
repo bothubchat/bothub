@@ -1,16 +1,14 @@
-import React, {
-  useCallback, useId, useRef, useState 
-} from 'react';
-import { 
+import React, { useCallback, useId, useRef, useState } from 'react';
+import {
   MessageVoiceAudio,
   MessageVoiceDurationText,
   MessageVoiceHideTextIcon,
-  MessageVoiceMain, 
-  MessageVoicePauseIcon, 
-  MessageVoicePlayIcon, 
-  MessageVoiceShowTextIcon, 
-  MessageVoiceStyled, 
-  MessageVoiceText, 
+  MessageVoiceMain,
+  MessageVoicePauseIcon,
+  MessageVoicePlayIcon,
+  MessageVoiceShowTextIcon,
+  MessageVoiceStyled,
+  MessageVoiceText,
   MessageVoiceToggleButton,
   MessageVoiceToggleTextButton,
   MessageVoiceWaves,
@@ -28,7 +26,12 @@ export interface MessageVoiceProps extends React.ComponentProps<'div'> {
 }
 
 export const MessageVoice: React.FC<MessageVoiceProps> = ({
-  src, waveData, duration, tabIndex = 0, children, ...props
+  src,
+  waveData,
+  duration,
+  tabIndex = 0,
+  children,
+  ...props
 }) => {
   const theme = useTheme();
   const voiceId = useId();
@@ -70,39 +73,43 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
     setCurrentTime(audioEl.currentTime);
   }, [audioRef.current]);
 
-  const handleWavesClick = useCallback<React.MouseEventHandler>((event) => {
-    event.stopPropagation();
+  const handleWavesClick = useCallback<React.MouseEventHandler>(
+    (event) => {
+      event.stopPropagation();
 
-    const audioEl = audioRef.current;
-    const wavesEl = wavesRef.current;
+      const audioEl = audioRef.current;
+      const wavesEl = wavesRef.current;
 
-    if (!audioEl || !wavesEl) {
-      return;
-    }
+      if (!audioEl || !wavesEl) {
+        return;
+      }
 
-    const rect = wavesEl.getBoundingClientRect();
-    const { width } = rect;
-    const x = event.clientX - rect.left;
-    const currentTime = (x / width) * duration;
+      const rect = wavesEl.getBoundingClientRect();
+      const { width } = rect;
+      const x = event.clientX - rect.left;
+      const currentTime = (x / width) * duration;
 
-    audioEl.play();
-    audioEl.currentTime = currentTime;
-  }, [audioRef.current, duration]);
+      audioEl.play();
+      audioEl.currentTime = currentTime;
+    },
+    [audioRef.current, duration]
+  );
 
   const handleEnded = useCallback(() => {
     setCurrentTime(null);
   }, []);
 
-  const handleTextToggle = useCallback<React.MouseEventHandler>((event) => {
-    event.stopPropagation();
-    
-    setIsTextShowed(!isTextShowed);
-  }, [isTextShowed]);
+  const handleTextToggle = useCallback<React.MouseEventHandler>(
+    (event) => {
+      event.stopPropagation();
+
+      setIsTextShowed(!isTextShowed);
+    },
+    [isTextShowed]
+  );
 
   return (
-    <MessageVoiceStyled
-      {...props}
-    >
+    <MessageVoiceStyled {...props}>
       <MessageVoiceAudio
         ref={audioRef}
         src={src}
@@ -119,7 +126,13 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       >
         <MessageVoiceToggleButton>
           <IconProvider
-            {...(color === 'default' ? {} : color === 'green' ? { fill: theme.colors.gpt3 } : color === 'purple' ? { fill: theme.colors.gpt4 } : { fill: color })}
+            {...(color === 'default'
+              ? {}
+              : color === 'green'
+                ? { fill: theme.colors.gpt3 }
+                : color === 'purple'
+                  ? { fill: theme.colors.gpt4 }
+                  : { fill: color })}
           >
             {isPlayed && <MessageVoicePauseIcon />}
             {!isPlayed && <MessageVoicePlayIcon />}
@@ -127,19 +140,19 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
         </MessageVoiceToggleButton>
         <MessageVoiceWaves
           ref={wavesRef}
-          width="145" 
-          height="36" 
-          viewBox="0 0 145 36" 
+          width="145"
+          height="36"
+          viewBox="0 0 145 36"
           fill="none"
           onClick={handleWavesClick}
         >
           <g clipPath={`url(#${voiceId}_clip)`}>
-            <rect 
-              width="145" 
+            <rect
+              width="145"
               height="36"
               opacity="0.6"
               {...(color === 'default' && {
-                fill: (isPlayed || currentTime !== null) ? '#4785FF' : '#A4C1FA'
+                fill: isPlayed || currentTime !== null ? '#4785FF' : '#A4C1FA'
               })}
               {...(color !== 'default' && {
                 fill: theme.default.colors.base.white
@@ -147,7 +160,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
             />
             {currentTime !== null && (
               <StyledRect
-                height="36" 
+                height="36"
                 fill={theme.default.colors.base.white}
                 style={{
                   width: 145 * (currentTime / duration)
@@ -158,14 +171,14 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
           <defs>
             <clipPath id={`${voiceId}_clip`}>
               {waveData.map((wave, index) => {
-                const waveHeight = Math.max(wave / 100 * 36, 2);
+                const waveHeight = Math.max((wave / 100) * 36, 2);
 
                 return (
                   <rect
                     key={index}
                     x={index * 5}
                     y={(36 - waveHeight) / 2}
-                    width="3" 
+                    width="3"
                     height={waveHeight}
                     rx="1.5"
                   />
@@ -178,23 +191,23 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
           {currentTime !== null && formatSeconds(currentTime)}
           {currentTime === null && formatSeconds(duration)}
         </MessageVoiceDurationText>
-        <MessageVoiceToggleTextButton
-          onClick={handleTextToggle}
-        >
+        <MessageVoiceToggleTextButton onClick={handleTextToggle}>
           <IconProvider
-            {...(color === 'default' ? {} : color === 'green' ? { fill: theme.colors.gpt3 } : color === 'purple' ? { fill: theme.colors.gpt4 } : { fill: color })}
+            {...(color === 'default'
+              ? {}
+              : color === 'green'
+                ? { fill: theme.colors.gpt3 }
+                : color === 'purple'
+                  ? { fill: theme.colors.gpt4 }
+                  : { fill: color })}
           >
             {isTextShowed && <MessageVoiceHideTextIcon />}
             {!isTextShowed && <MessageVoiceShowTextIcon />}
           </IconProvider>
         </MessageVoiceToggleTextButton>
       </MessageVoiceMain>
-      {(isTextShowed && children) && (
-        <MessageVoiceText
-          $messageColor={color}
-        >
-          {children}
-        </MessageVoiceText>
+      {isTextShowed && children && (
+        <MessageVoiceText $messageColor={color}>{children}</MessageVoiceText>
       )}
     </MessageVoiceStyled>
   );

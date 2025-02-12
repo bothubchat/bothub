@@ -17,7 +17,11 @@ import {
 } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Logo } from '@/ui/components/logo';
-import { HeaderLangDropdown, HeaderLangDropdownItem, HeaderLangDropdownList } from './lang-dropdown';
+import {
+  HeaderLangDropdown,
+  HeaderLangDropdownItem,
+  HeaderLangDropdownList
+} from './lang-dropdown';
 import {
   BookmarksBigIcon,
   BothubAggIcon,
@@ -98,7 +102,9 @@ export const Authorized: HeaderStory = {
     user: (
       <HeaderUser>
         <HeaderUserInfo
-          avatar={<HeaderUserInfoAvatar src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album" />}
+          avatar={
+            <HeaderUserInfoAvatar src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album" />
+          }
           name="Артём"
           tokens="2 023 CAPS"
         >
@@ -112,9 +118,7 @@ export const Authorized: HeaderStory = {
             <HeaderUserInfoItem icon={<SettingsIcon />}>
               Настройки
             </HeaderUserInfoItem>
-            <HeaderUserInfoItem icon={<LogoutIcon />}>
-              Выйти
-            </HeaderUserInfoItem>
+            <HeaderUserInfoItem icon={<LogoutIcon />}>Выйти</HeaderUserInfoItem>
           </HeaderUserInfoList>
         </HeaderUserInfo>
       </HeaderUser>
@@ -128,17 +132,45 @@ export const Dashboard: HeaderStory = {
     variant: 'dashboard',
     nav: (
       <HeaderNav>
-        <HeaderNavLink icon={<ChatsIcon />} href="#">Чаты</HeaderNavLink>
-        <HeaderNavLink icon={<BookmarksBigIcon />} href="#">Закладки</HeaderNavLink>
-        <HeaderNavLink icon={<PresetsBigIcon />} href="#">Пресеты</HeaderNavLink>
-        <HeaderNavLink icon={<ReferalIcon />} href="#">Партнерская программа</HeaderNavLink>
-        <HeaderNavLink icon={<TariffIcon />} href="#">Пакеты</HeaderNavLink>
-        <HeaderNavLink icon={<CoderIcon />} href="#">Для разработчиков</HeaderNavLink>
+        <HeaderNavLink
+          icon={<ChatsIcon />}
+          href="#"
+        >
+          Чаты
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<BookmarksBigIcon />}
+          href="#"
+        >
+          Закладки
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<PresetsBigIcon />}
+          href="#"
+        >
+          Пресеты
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<ReferalIcon />}
+          href="#"
+        >
+          Партнерская программа
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<TariffIcon />}
+          href="#"
+        >
+          Пакеты
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<CoderIcon />}
+          href="#"
+        >
+          Для разработчиков
+        </HeaderNavLink>
       </HeaderNav>
     ),
-    themeSwitcher: (
-      <HeaderThemeSwitcher />
-    )
+    themeSwitcher: <HeaderThemeSwitcher />
   }
 };
 
@@ -148,14 +180,44 @@ export const AdminDashboard: HeaderStory = {
     variant: 'dashboard',
     nav: (
       <HeaderNav>
-        <HeaderNavLink icon={<ChatsIcon />} href="#">Чаты</HeaderNavLink>
-        <HeaderNavLink icon={<BookmarksBigIcon />} href="#">Закладки</HeaderNavLink>
-        <HeaderNavLink icon={<PresetsBigIcon />} href="#">Пресеты</HeaderNavLink>
-        <HeaderNavLink icon={<ReferalIcon />} href="#">Партнерская программа</HeaderNavLink>
-        <HeaderNavLink icon={<TariffIcon />} href="#">Пакеты</HeaderNavLink>
-        <HeaderNavLink icon={<CoderIcon />} href="#">Для разработчиков</HeaderNavLink>
+        <HeaderNavLink
+          icon={<ChatsIcon />}
+          href="#"
+        >
+          Чаты
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<BookmarksBigIcon />}
+          href="#"
+        >
+          Закладки
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<PresetsBigIcon />}
+          href="#"
+        >
+          Пресеты
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<ReferalIcon />}
+          href="#"
+        >
+          Партнерская программа
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<TariffIcon />}
+          href="#"
+        >
+          Пакеты
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<CoderIcon />}
+          href="#"
+        >
+          Для разработчиков
+        </HeaderNavLink>
       </HeaderNav>
-    ),
+    )
   }
 };
 

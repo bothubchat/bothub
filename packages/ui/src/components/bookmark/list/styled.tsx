@@ -64,9 +64,11 @@ export const BookmarkListContent = styled.div`
   gap: 20px;
 `;
 
-export const AddBookmarkButton = styled(Button).attrs({ children: <Plus2Icon /> })`
+export const AddBookmarkButton = styled(Button).attrs({
+  children: <Plus2Icon />
+})`
   ${adaptive({
     variant: 'dashboard',
-    merge: true,
+    merge: true
   })}
 `;

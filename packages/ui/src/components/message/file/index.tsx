@@ -1,6 +1,9 @@
 import React from 'react';
 import {
-  MessageFileInfo, MessageFileName, MessageFileSize, MessageFileStyled 
+  MessageFileInfo,
+  MessageFileName,
+  MessageFileSize,
+  MessageFileStyled
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { PdfBigIcon } from '@/ui/icons/pdf-big';
@@ -18,7 +21,10 @@ export interface MessageFileProps extends React.ComponentProps<'a'> {
 }
 
 export const MessageFile: React.FC<MessageFileProps> = ({
-  icon, name, size, ...props
+  icon,
+  name,
+  size,
+  ...props
 }) => {
   const theme = useTheme();
   const { variant, color } = useMessage();
@@ -27,7 +33,7 @@ export const MessageFile: React.FC<MessageFileProps> = ({
 
   if (typeof name === 'string' && !icon) {
     if (name.match(/.txt$/i)) {
-      iconNode = <TxtBigIcon />;    
+      iconNode = <TxtBigIcon />;
     } else if (name.match(/.doc$/i) || name.match(/.docx$/i)) {
       iconNode = <WordBigIcon />;
     } else if (name.match(/.xls$/i) || name.match(/.xlsx$/i)) {
@@ -36,15 +42,13 @@ export const MessageFile: React.FC<MessageFileProps> = ({
       iconNode = <PdfBigIcon />;
     } else {
       iconNode = <AttachFileBigIcon />;
-    } 
+    }
   } else {
     iconNode = icon;
   }
 
   return (
-    <MessageFileStyled
-      {...props}
-    >
+    <MessageFileStyled {...props}>
       <IconProvider
         fill={theme.default.colors.base.white}
         size={46}

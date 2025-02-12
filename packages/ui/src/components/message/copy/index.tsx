@@ -38,12 +38,8 @@ export const MessageCopyAction: React.FC<MessageCopyActionProps> = ({
       onBlur={handleBlur}
       onClick={handleClick}
     >
-      {!isFocus && (
-        <CopyIcon />
-      )}
-      {isFocus && (
-        <CheckSmallIcon />
-      )}
+      {!isFocus && <CopyIcon />}
+      {isFocus && <CheckSmallIcon />}
     </MessageCopyActionStyled>
   );
 };

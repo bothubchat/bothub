@@ -3,27 +3,30 @@ import { IconProvider, useIconOrNull } from './context';
 import { IconStyled } from './styled';
 import { useTooltip } from '@/ui/components/tooltip';
 
-export interface IconProps extends Omit<React.ComponentProps<'svg'>, 'ref' | 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'> {
+export interface IconProps
+  extends Omit<
+    React.ComponentProps<'svg'>,
+    'ref' | 'onAnimationStart' | 'onDragStart' | 'onDragEnd' | 'onDrag'
+  > {
   size?: number;
   fill?: string;
   enableTooltip?: boolean;
 }
 
-export const Icon: React.FC<IconProps> = ({ 
-  size: defaultSize = 18, fill: defaultFill, enableTooltip = false,
-  ...props 
+export const Icon: React.FC<IconProps> = ({
+  size: defaultSize = 18,
+  fill: defaultFill,
+  enableTooltip = false,
+  ...props
 }) => {
-  const {
-    handleTooltipMouseEnter,
-    handleTooltipMouseLeave
-  } = useTooltip();
+  const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
 
   const { size = defaultSize } = useIconOrNull() ?? { size: defaultSize };
 
   const iconNode: React.ReactNode = (
-    <IconStyled 
-      {...props} 
-      width={size} 
+    <IconStyled
+      {...props}
+      width={size}
       height={size}
       {...(defaultFill === 'none' && {
         fill: 'none'

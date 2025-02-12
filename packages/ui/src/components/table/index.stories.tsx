@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
-  Table, TableBody, TableCell, TableCellText, TableHead, TableRow 
+  Table,
+  TableBody,
+  TableCell,
+  TableCellText,
+  TableHead,
+  TableRow
 } from '.';
 import { InfoIcon } from '@/ui/icons';
 import { Tooltip } from '@/ui/components/tooltip';
@@ -17,40 +22,41 @@ export const Basic: TableStory = {
       <>
         <TableHead>
           <TableRow>
-            <TableCell size="sm" colSpan={2} />
-            <TableCell size="sm" colSpan={2}>
+            <TableCell
+              size="sm"
+              colSpan={2}
+            />
+            <TableCell
+              size="sm"
+              colSpan={2}
+            >
               <TableCellText>
                 Стоимость в Caps
-                <Tooltip label={'Caps - это внутрення валюта БотаХаб. 1 Caps равен по стоимости цене одного токена самой дешёвой модели GPT-3.5.\n1000 Caps = 20 копеек.'}>
+                <Tooltip
+                  label={
+                    'Caps - это внутрення валюта БотаХаб. 1 Caps равен по стоимости цене одного токена самой дешёвой модели GPT-3.5.\n1000 Caps = 20 копеек.'
+                  }
+                >
                   <Button variant="text">
                     <InfoIcon />
                   </Button>
                 </Tooltip>
               </TableCellText>
             </TableCell>
-            <TableCell size="sm" colSpan={2}>
+            <TableCell
+              size="sm"
+              colSpan={2}
+            >
               Стоимость в руб
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>
-              Модель
-            </TableCell>
-            <TableCell>
-              {'Размер контекста\n(в токенах)'}
-            </TableCell>
-            <TableCell>
-              {'Стоимость промта\n(за 1 токен)'}
-            </TableCell>
-            <TableCell>
-              {'Стоимость ответа\n(за 1 токен)'}
-            </TableCell>
-            <TableCell>
-              {'Стоимость промта\n(за 1к токенов)'}
-            </TableCell>
-            <TableCell>
-              {'Стоимость ответа\n(за 1к токенов)'}
-            </TableCell>
+            <TableCell>Модель</TableCell>
+            <TableCell>{'Размер контекста\n(в токенах)'}</TableCell>
+            <TableCell>{'Стоимость промта\n(за 1 токен)'}</TableCell>
+            <TableCell>{'Стоимость ответа\n(за 1 токен)'}</TableCell>
+            <TableCell>{'Стоимость промта\n(за 1к токенов)'}</TableCell>
+            <TableCell>{'Стоимость ответа\n(за 1к токенов)'}</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

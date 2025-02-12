@@ -1,17 +1,15 @@
-import React, {
-  useCallback, useEffect, useRef, useState 
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   SelectFieldArrow,
-  SelectFieldBlock, 
-  SelectFieldBlockPositionWrapper, 
+  SelectFieldBlock,
+  SelectFieldBlockPositionWrapper,
   SelectFieldBlockContent,
-  SelectFieldColorValueText, 
-  SelectFieldErrorText, 
-  SelectFieldLabel, 
+  SelectFieldColorValueText,
+  SelectFieldErrorText,
+  SelectFieldLabel,
   SelectFieldPlaceholder,
-  SelectFieldInput, 
-  SelectFieldSkeleton, 
+  SelectFieldInput,
+  SelectFieldSkeleton,
   SelectFieldStyled,
   SelectFieldValue,
   SelectFieldValueColor,
@@ -29,17 +27,17 @@ import {
   SelectFieldClearButton
 } from './styled';
 import {
-  SelectFieldChangeEventHandler, 
-  SelectFieldData, 
-  SelectFieldDataItem, 
-  SelectFieldInputChangeEventHandler, 
-  SelectFieldInputType, 
-  SelectFieldMultiChangeEventHandler, 
-  SelectFieldMultiValueChangeEventHandler, 
-  SelectFieldOptionClickEventHandler, 
-  SelectFieldPlacement, 
-  SelectFieldSize, 
-  SelectFieldValueChangeEventHandler 
+  SelectFieldChangeEventHandler,
+  SelectFieldData,
+  SelectFieldDataItem,
+  SelectFieldInputChangeEventHandler,
+  SelectFieldInputType,
+  SelectFieldMultiChangeEventHandler,
+  SelectFieldMultiValueChangeEventHandler,
+  SelectFieldOptionClickEventHandler,
+  SelectFieldPlacement,
+  SelectFieldSize,
+  SelectFieldValueChangeEventHandler
 } from './types';
 import { useTheme } from '@/ui/theme';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -67,7 +65,10 @@ export type ValueType = SelectFieldDataItem | SelectFieldDataItem[] | null;
 
 export type ValueSetter = (value: ValueType) => void;
 
-export type SelectFieldProps = (SelectFieldDefaultProps | SelectFieldMultiProps) & {
+export type SelectFieldProps = (
+  | SelectFieldDefaultProps
+  | SelectFieldMultiProps
+) & {
   className?: string;
   label?: string | boolean | React.ReactNode;
   placeholder?: string;
@@ -99,10 +100,10 @@ export type SelectFieldProps = (SelectFieldDefaultProps | SelectFieldMultiProps)
 
 export const SelectField: React.FC<SelectFieldProps> = ({
   className,
-  label, 
-  value: initialValue, 
-  placeholder, 
-  data = [], 
+  label,
+  value: initialValue,
+  placeholder,
+  data = [],
   fullWidth = false,
   contentWidth,
   error,
@@ -132,51 +133,62 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
   const { multiple = false } = props;
 
-  const setInitialValue = useCallback((
-    item: ValueType
-  ) => {
-    if (props.multiple && Array.isArray(item)) {
-      const items = item;
+  const setInitialValue = useCallback(
+    (item: ValueType) => {
+      if (props.multiple && Array.isArray(item)) {
+        const items = item;
 
-      props.onChange?.(items);
-      props.onValueChange?.(
-        items
-          .map((item) => {
-            if (typeof item === 'string') {
-              return item;
-            } if (typeof item.value === 'string') {
-              return item.value;
-            } 
+        props.onChange?.(items);
+        props.onValueChange?.(
+          items
+            .map((item) => {
+              if (typeof item === 'string') {
+                return item;
+              }
+              if (typeof item.value === 'string') {
+                return item.value;
+              }
 
-            return '';
-          })
-          .filter((item) => !!item)
-      );
-    } else if (!props.multiple && !Array.isArray(item)) {
-      props.onChange?.(item);
+              return '';
+            })
+            .filter((item) => !!item)
+        );
+      } else if (!props.multiple && !Array.isArray(item)) {
+        props.onChange?.(item);
 
-      if (item) {
-        if (typeof item === 'string') {
-          props.onValueChange?.(item);
-        } else if (typeof item.value === 'string') {
-          props.onValueChange?.(item.value);
+        if (item) {
+          if (typeof item === 'string') {
+            props.onValueChange?.(item);
+          } else if (typeof item.value === 'string') {
+            props.onValueChange?.(item.value);
+          }
+        } else {
+          props.onValueChange?.(null);
         }
-      } else {
-        props.onValueChange?.(null);
       }
-    }
-  }, [props.multiple, props.onChange, props.onValueChange]);
+    },
+    [props.multiple, props.onChange, props.onValueChange]
+  );
 
-  const setInitialInputValue = useCallback((value: string) => {
-    onInputChange?.(value);
-  }, [onInputChange]);
+  const setInitialInputValue = useCallback(
+    (value: string) => {
+      onInputChange?.(value);
+    },
+    [onInputChange]
+  );
 
-  let [value, setValue] = useState<ValueType>(multiple ? [] : null) as [ValueType, ValueSetter];
+  let [value, setValue] = useState<ValueType>(multiple ? [] : null) as [
+    ValueType,
+    ValueSetter
+  ];
   if (typeof initialValue !== 'undefined') {
     [value, setValue] = [initialValue, setInitialValue];
   }
 
-  let [inputValue, setInputValue] = useState('') as [string, (value: string) => void];
+  let [inputValue, setInputValue] = useState('') as [
+    string,
+    (value: string) => void
+  ];
   if (typeof initialInputValue !== 'undefined') {
     [inputValue, setInputValue] = [initialInputValue, setInitialInputValue];
   }
@@ -193,121 +205,136 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     onClose?.();
   }, []);
 
-  const handleOptionClick = useCallback((item: SelectFieldDataItem) => {
-    if (typeof item === 'object' && item.disabled) {
-      return;
-    }
-
-    if (typeof item === 'object' && item.noSelect) {
-      item?.onClick?.(item);
-      return;
-    }
-
-    onOptionClick?.(item);
-
-    if (!disableSelect) {
-      if (multiple && Array.isArray(value)) {
-        setValue([...new Set([...value, item])]);
-      } else {
-        setValue(item);
+  const handleOptionClick = useCallback(
+    (item: SelectFieldDataItem) => {
+      if (typeof item === 'object' && item.disabled) {
+        return;
       }
-    }
-    handleClose();
-  }, [value, setValue, multiple, onOptionClick, disableSelect]);
 
-  const handleValueDelete = useCallback((item: SelectFieldDataItem, event: React.MouseEvent) => {
-    event.stopPropagation();
-    
-    if (Array.isArray(value)) {
-      if (typeof item === 'string') {
-        setValue(
-          value.filter((value) => {
-            if (typeof value === 'string') {
-              return value !== item;
-            }
-
-            return value.value !== item;
-          })
-        );
-      } else {
-        setValue(
-          value.filter((value) => {
-            if (typeof value === 'string') {
-              return value !== item.value;
-            }
-
-            return value.value !== item.value;
-          })
-        );
+      if (typeof item === 'object' && item.noSelect) {
+        item?.onClick?.(item);
+        return;
       }
-    }
-    
-    handleClose();
-  }, [value]);
 
-  const handleInputClick = useCallback((native: boolean, event: React.MouseEvent<HTMLElement>) => {
-    onSelectClick?.();
-    const inputEl: HTMLDivElement | null = inputRef.current;
-    
-    if (!inputEl || disabled) {
-      return;
-    }
-    if (native) {
+      onOptionClick?.(item);
+
+      if (!disableSelect) {
+        if (multiple && Array.isArray(value)) {
+          setValue([...new Set([...value, item])]);
+        } else {
+          setValue(item);
+        }
+      }
+      handleClose();
+    },
+    [value, setValue, multiple, onOptionClick, disableSelect]
+  );
+
+  const handleValueDelete = useCallback(
+    (item: SelectFieldDataItem, event: React.MouseEvent) => {
       event.stopPropagation();
-    }
 
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      if (Array.isArray(value)) {
+        if (typeof item === 'string') {
+          setValue(
+            value.filter((value) => {
+              if (typeof value === 'string') {
+                return value !== item;
+              }
 
-    const rect = inputEl.getBoundingClientRect();
-    const { width, height } = rect;
+              return value.value !== item;
+            })
+          );
+        } else {
+          setValue(
+            value.filter((value) => {
+              if (typeof value === 'string') {
+                return value !== item.value;
+              }
 
-    let newPlacement = placement;
-
-    if (rect.top - 186 < 0) {
-      newPlacement = 'bottom-left';
-    } else if (rect.bottom + 186 > windowHeight) {
-      if (initialPlacement === 'top-right') {
-        newPlacement = 'top-right';
-      } else {
-        newPlacement = 'top-left';
+              return value.value !== item.value;
+            })
+          );
+        }
       }
-    } else {
-      newPlacement = initialPlacement;
-    }
 
-    let x: number = 0;
-    let y: number = 0;
+      handleClose();
+    },
+    [value]
+  );
 
-    switch (newPlacement) {
-      case 'bottom-left':
-        x = rect.left + window.scrollX;
-        y = rect.top + window.scrollY + height;
-        break;
-      case 'top-left':
-        x = rect.left + window.scrollX;
-        y = rect.top + window.scrollY;
-        break;
-      case 'top-right':
-        x = rect.left + window.scrollX + width;
-        y = rect.top + window.scrollY;
-        break;
-    }
+  const handleInputClick = useCallback(
+    (native: boolean, event: React.MouseEvent<HTMLElement>) => {
+      onSelectClick?.();
+      const inputEl: HTMLDivElement | null = inputRef.current;
 
-    setX(x);
-    setY(y);
-    setWidth(width);
-    setPlacement(newPlacement);
-    
-    if (native) {
-      setIsOpen(true);
-    } else {
-      setIsOpen(!isOpen);
-    }
-  }, [disabled, isOpen, placement, initialPlacement, onSelectClick]);
+      if (!inputEl || disabled) {
+        return;
+      }
+      if (native) {
+        event.stopPropagation();
+      }
 
-  const handleInputChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => {
-    setInputValue(event.currentTarget.value);
-  }, [setInputValue]);
+      const windowHeight =
+        window.innerHeight || document.documentElement.clientHeight;
+
+      const rect = inputEl.getBoundingClientRect();
+      const { width, height } = rect;
+
+      let newPlacement = placement;
+
+      if (rect.top - 186 < 0) {
+        newPlacement = 'bottom-left';
+      } else if (rect.bottom + 186 > windowHeight) {
+        if (initialPlacement === 'top-right') {
+          newPlacement = 'top-right';
+        } else {
+          newPlacement = 'top-left';
+        }
+      } else {
+        newPlacement = initialPlacement;
+      }
+
+      let x: number = 0;
+      let y: number = 0;
+
+      switch (newPlacement) {
+        case 'bottom-left':
+          x = rect.left + window.scrollX;
+          y = rect.top + window.scrollY + height;
+          break;
+        case 'top-left':
+          x = rect.left + window.scrollX;
+          y = rect.top + window.scrollY;
+          break;
+        case 'top-right':
+          x = rect.left + window.scrollX + width;
+          y = rect.top + window.scrollY;
+          break;
+      }
+
+      setX(x);
+      setY(y);
+      setWidth(width);
+      setPlacement(newPlacement);
+
+      if (native) {
+        setIsOpen(true);
+      } else {
+        setIsOpen(!isOpen);
+      }
+    },
+    [disabled, isOpen, placement, initialPlacement, onSelectClick]
+  );
+
+  const handleInputChange = useCallback<
+    React.ChangeEventHandler<HTMLInputElement>
+  >(
+    (event) => {
+      setInputValue(event.currentTarget.value);
+    },
+    [setInputValue]
+  );
 
   const handleClear = useCallback(() => {
     setValue(null);
@@ -327,15 +354,15 @@ export const SelectField: React.FC<SelectFieldProps> = ({
           return;
         }
         if (
-          inputEl.contains(event.target as Element) 
-          || contentEl.contains(event.target as Element)
+          inputEl.contains(event.target as Element) ||
+          contentEl.contains(event.target as Element)
         ) {
           return;
         }
 
         handleClose();
       };
-      
+
       document.addEventListener('click', clickListener);
 
       return () => {
@@ -363,28 +390,26 @@ export const SelectField: React.FC<SelectFieldProps> = ({
       selectRef={inputRef}
       handleSelectClick={handleInputClick.bind(null, false)}
     >
-      <SelectFieldStyled 
+      <SelectFieldStyled
         $fullWidth={fullWidth}
         $disabled={disabled}
         className={className}
         onPointerLeave={onPointerLeave}
       >
-        {(label && skeleton) && (
+        {label && skeleton && (
           <SelectFieldLabel>
             <Skeleton width={100} />
           </SelectFieldLabel>
         )}
-        {(typeof label === 'string' && !skeleton) && (
-          <SelectFieldLabel>
-            {label}
-          </SelectFieldLabel>
+        {typeof label === 'string' && !skeleton && (
+          <SelectFieldLabel>{label}</SelectFieldLabel>
         )}
-        {(typeof label !== 'string' && !skeleton) && label}
+        {typeof label !== 'string' && !skeleton && label}
         {children && children}
         {!children && (
           <>
             {!skeleton && (
-              <SelectFieldInput 
+              <SelectFieldInput
                 $open={isOpen}
                 $error={!!error}
                 $disabled={disabled}
@@ -398,10 +423,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                 <SelectFieldInputLeftSide>
                   {(!value || (Array.isArray(value) && value.length === 0)) && (
                     <>
-                      {(enableInput && inputType === 'search') && (
-                        <SelectFieldSearchIcon 
-                          $focus={isInputNativeFocus}
-                        />
+                      {enableInput && inputType === 'search' && (
+                        <SelectFieldSearchIcon $focus={isInputNativeFocus} />
                       )}
                       {enableInput && (
                         <SelectFieldInputNative
@@ -416,61 +439,64 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                         />
                       )}
                       {!enableInput && (
-                        <SelectFieldPlaceholder
-                          $open={isOpen}
-                        >
+                        <SelectFieldPlaceholder $open={isOpen}>
                           {placeholder}
                         </SelectFieldPlaceholder>
                       )}
                     </>
                   )}
-                  {(typeof value === 'string' && value !== '') && (
+                  {typeof value === 'string' && value !== '' && (
                     <SelectFieldValue>
-                      <SelectFieldValueText>
-                        {value}
-                      </SelectFieldValueText>
+                      <SelectFieldValueText>{value}</SelectFieldValueText>
                     </SelectFieldValue>
                   )}
-                  {(value && typeof value === 'object' && !Array.isArray(value)) && (
-                    <SelectFieldValue>
-                      {value.icon && (
-                        <IconProvider
-                          fill={theme.colors.base.white}
-                          size={18}
-                        >
-                          {value.icon}
-                        </IconProvider>
-                      )}
-                      {value.color && (
-                        <SelectFieldValueColor $color={value.color} />
-                      )}
-                      {value.label && (
-                        <Tooltip
-                          label={value.label}
-                          placement="top-left"
-                          disabled={value.label.length <= 128}
-                        >
-                          <TooltipConsumer>
-                            {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                              <SelectFieldColorValueText
-                                onMouseEnter={handleTooltipMouseEnter}
-                                onMouseLeave={handleTooltipMouseLeave}
-                              >
-                                {value.label && value.label.slice(0, 64)}
-                                {value.label && value.label.length > 64 && '...'}
-                              </SelectFieldColorValueText>
-                            )}
-                          </TooltipConsumer>
-                        </Tooltip>
-                      )}
-                      {(!value.label && value.value) && (
-                        <SelectFieldColorValueText>
-                          {value.value}
-                        </SelectFieldColorValueText>
-                      )}
-                    </SelectFieldValue>
-                  )}
-                  {(Array.isArray(value) && value.length > 0) && (
+                  {value &&
+                    typeof value === 'object' &&
+                    !Array.isArray(value) && (
+                      <SelectFieldValue>
+                        {value.icon && (
+                          <IconProvider
+                            fill={theme.colors.base.white}
+                            size={18}
+                          >
+                            {value.icon}
+                          </IconProvider>
+                        )}
+                        {value.color && (
+                          <SelectFieldValueColor $color={value.color} />
+                        )}
+                        {value.label && (
+                          <Tooltip
+                            label={value.label}
+                            placement="top-left"
+                            disabled={value.label.length <= 128}
+                          >
+                            <TooltipConsumer>
+                              {({
+                                handleTooltipMouseEnter,
+                                handleTooltipMouseLeave
+                              }) => (
+                                <SelectFieldColorValueText
+                                  onMouseEnter={handleTooltipMouseEnter}
+                                  onMouseLeave={handleTooltipMouseLeave}
+                                >
+                                  {value.label && value.label.slice(0, 64)}
+                                  {value.label &&
+                                    value.label.length > 64 &&
+                                    '...'}
+                                </SelectFieldColorValueText>
+                              )}
+                            </TooltipConsumer>
+                          </Tooltip>
+                        )}
+                        {!value.label && value.value && (
+                          <SelectFieldColorValueText>
+                            {value.value}
+                          </SelectFieldColorValueText>
+                        )}
+                      </SelectFieldValue>
+                    )}
+                  {Array.isArray(value) && value.length > 0 && (
                     <SelectFieldValues>
                       <SelectFieldValueList>
                         {value.map((item, index) => {
@@ -499,21 +525,19 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                   )}
                 </SelectFieldInputLeftSide>
                 <SelectFieldInputSide>
-                  {(
-                    (clearable && value)
-                    || (enableInput && inputType === 'search' && !loading && inputValue)
-                    || (enableInput && value)) && (
-                    <SelectFieldClearButton 
-                      onClick={handleClear}
-                    />
+                  {((clearable && value) ||
+                    (enableInput &&
+                      inputType === 'search' &&
+                      !loading &&
+                      inputValue) ||
+                    (enableInput && value)) && (
+                    <SelectFieldClearButton onClick={handleClear} />
                   )}
-                  {loading && (
-                    <SelectFieldLoader />
-                  )}
-                  <SelectFieldArrow 
+                  {loading && <SelectFieldLoader />}
+                  <SelectFieldArrow
                     style={{
                       transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)'
-                    }} 
+                    }}
                   />
                 </SelectFieldInputSide>
               </SelectFieldInput>
@@ -546,7 +570,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                   }),
                   ...(placement === 'top-right' && {
                     ...(typeof contentWidth === 'undefined' && {
-                      left: `calc(${x}px - ${width})`,
+                      left: `calc(${x}px - ${width})`
                     }),
                     ...(typeof contentWidth === 'number' && {
                       left: `calc(${x}px - ${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`})`
@@ -569,9 +593,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                 $placement={placement}
               >
                 <SelectFieldBlockContent>
-                  <SelectFieldGroups
-                    $size={size}
-                  >
+                  <SelectFieldGroups $size={size}>
                     {before && (
                       <SelectFieldGroup
                         $size={size}
@@ -618,11 +640,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
             </SelectFieldBlock>
           </Portal>
         )}
-        {error && (
-          <SelectFieldErrorText>
-            {error}
-          </SelectFieldErrorText>
-        )}
+        {error && <SelectFieldErrorText>{error}</SelectFieldErrorText>}
       </SelectFieldStyled>
     </SelectFieldProvider>
   );

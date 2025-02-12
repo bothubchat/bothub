@@ -15,12 +15,16 @@ export const TextFieldStyled = styled.div<TextFieldStyledProps>`
   align-items: flex-start;
   width: ${({ $fullWidth }) => ($fullWidth ? '100%' : '420px')};
   box-sizing: border-box;
-  ${({ $disabled }) => $disabled && css`
-    cursor: not-allowed;
-  `}
-  ${({ $disabled }) => !$disabled && css`
-    cursor: default;
-  `}
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      cursor: not-allowed;
+    `}
+  ${({ $disabled }) =>
+    !$disabled &&
+    css`
+      cursor: default;
+    `}
 `;
 
 export const TextFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
@@ -54,12 +58,10 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
       return 'progress';
     }
 
-    return ($disabled ? 'not-allowed' : 'text');
+    return $disabled ? 'not-allowed' : 'text';
   }};
   padding: 0px 16px;
-  ${({
-    theme, $error, $hover, $focus, $disabled, $skeleton
-  }) => {
+  ${({ theme, $error, $hover, $focus, $disabled, $skeleton }) => {
     if ($disabled || $skeleton) {
       return css`
         border-color: ${({ theme }) => theme.colors.grayScale.gray2};
@@ -71,13 +73,14 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
       `;
     }
 
-    return ($hover || $focus) && css`
-      border-color: ${theme.colors.accent.primary};
-    `;
+    return (
+      ($hover || $focus) &&
+      css`
+        border-color: ${theme.colors.accent.primary};
+      `
+    );
   }}
-  ${({
-    theme, $focus, $disabled, $skeleton 
-  }) => {
+  ${({ theme, $focus, $disabled, $skeleton }) => {
     if ($disabled || $skeleton) {
       return css`
         background: ${theme.colors.grayScale.gray3};
@@ -85,15 +88,21 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
     }
     if ($focus) {
       return css`
-        background: ${theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4};
+        background: ${theme.mode === 'light'
+          ? theme.default.colors.base.white
+          : theme.colors.grayScale.gray4};
         > svg path {
-          fill: ${theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white};
+          fill: ${theme.mode === 'light'
+            ? theme.default.colors.accent.primary
+            : theme.colors.base.white};
         }
       `;
     }
 
     return css`
-      background: ${theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4};
+      background: ${theme.mode === 'light'
+        ? theme.default.colors.base.white
+        : theme.colors.grayScale.gray4};
       > svg path {
         fill: ${theme.colors.grayScale.gray1};
       }
@@ -140,7 +149,10 @@ export const TextFieldInput = styled.input`
     color: ${({ theme }) => theme.colors.grayScale.gray1};
   }
   &:focus::placeholder {
-    color: ${({ theme }) => (theme.mode === 'light' ? theme.colors.grayScale.gray1 : theme.colors.grayScale.gray6)};
+    color: ${({ theme }) =>
+      theme.mode === 'light'
+        ? theme.colors.grayScale.gray1
+        : theme.colors.grayScale.gray6};
   }
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
@@ -191,9 +203,15 @@ export const TextFieldColorPreview = styled.span<TextFieldColorPreviewProps>`
   border-radius: 4px;
 `;
 
-export const TextFieldClearButton = styled(Button).attrs({ variant: 'text', iconSize: 12, children: <CloseIcon /> })``;
+export const TextFieldClearButton = styled(Button).attrs({
+  variant: 'text',
+  iconSize: 12,
+  children: <CloseIcon />
+})``;
 
-export const TextFieldErrorText = styled(Typography).attrs({ variant: 'input-sm' })`
+export const TextFieldErrorText = styled(Typography).attrs({
+  variant: 'input-sm'
+})`
   display: inline-flex;
   margin-top: 8px;
   color: ${({ theme }) => theme.colors.critic};

@@ -8,11 +8,9 @@ export const HeaderMenuContext = React.createContext<HeaderMenuContextValue>({
   isInMenu: false
 });
 
-export const HeaderMenuProvider: React.FC<HeaderMenuContextValue & React.PropsWithChildren
-> = ({
-  children,
-  ...value
-}) => (
+export const HeaderMenuProvider: React.FC<
+  HeaderMenuContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
   <HeaderMenuContext.Provider value={value}>
     {children}
   </HeaderMenuContext.Provider>

@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
-  BookmarkCard, 
-  BookmarkCardActions, 
-  BookmarkCardChat, 
-  BookmarkCardDeleteAction, 
-  BookmarkCardEditAction 
+  BookmarkCard,
+  BookmarkCardActions,
+  BookmarkCardChat,
+  BookmarkCardDeleteAction,
+  BookmarkCardEditAction
 } from '.';
 
 export type BookmarkCardMeta = Meta<typeof BookmarkCard>;
@@ -42,7 +42,7 @@ export const Skeleton: BookmarkCardStory = {
   args: {
     skeleton: true,
     children: [...Array(3)].map((_, index) => (
-      <BookmarkCardChat 
+      <BookmarkCardChat
         key={index}
         skeleton
       />

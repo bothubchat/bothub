@@ -13,7 +13,10 @@ interface BannerMiniBlackFridayProps {
   title: string;
   text: string;
 }
-export const BannerMiniBlackFriday: React.FC<BannerMiniBlackFridayProps> = ({ title, text }) => (
+export const BannerMiniBlackFriday: React.FC<BannerMiniBlackFridayProps> = ({
+  title,
+  text
+}) => (
   <BannerMiniStyled>
     <BannerMiniBackground />
     <BannerMiniImageWave />

@@ -1,16 +1,17 @@
 import React from 'react';
-import { 
+import {
   ReferralRadioBody,
-  ReferralRadioContent, 
-  ReferralRadioHead, 
-  ReferralRadioName, 
-  ReferralRadioRadio, 
-  ReferralRadioStyled 
+  ReferralRadioContent,
+  ReferralRadioHead,
+  ReferralRadioName,
+  ReferralRadioRadio,
+  ReferralRadioStyled
 } from './styled';
 import { RadioProps } from '@/ui/components/radio';
 import { Skeleton } from '@/ui/components/skeleton';
 
-export interface ReferralRadioDefaultProps extends Omit<RadioProps, 'label' | 'ref'> {
+export interface ReferralRadioDefaultProps
+  extends Omit<RadioProps, 'label' | 'ref'> {
   name: string;
   inputName?: string;
   skeleton?: false;
@@ -20,10 +21,16 @@ export interface ReferralRadioSkeletonProps {
   skeleton: true;
 }
 
-export type ReferralRadioProps = 
-(ReferralRadioDefaultProps | ReferralRadioSkeletonProps) & React.PropsWithChildren;
+export type ReferralRadioProps = (
+  | ReferralRadioDefaultProps
+  | ReferralRadioSkeletonProps
+) &
+  React.PropsWithChildren;
 
-export const ReferralRadio: React.FC<ReferralRadioProps> = ({ children, ...props }) => {
+export const ReferralRadio: React.FC<ReferralRadioProps> = ({
+  children,
+  ...props
+}) => {
   const isChecked = (!props.skeleton ? props.checked : false) ?? false;
   const isSkeleton = props.skeleton ?? false;
 
@@ -39,27 +46,19 @@ export const ReferralRadio: React.FC<ReferralRadioProps> = ({ children, ...props
         <ReferralRadioHead>
           <ReferralRadioName>
             {!props.skeleton && props.name}
-            {props.skeleton && (
-              <Skeleton width={300} />
-            )}
+            {props.skeleton && <Skeleton width={300} />}
           </ReferralRadioName>
           {!props.skeleton && (
-            <ReferralRadioRadio 
+            <ReferralRadioRadio
               {...props}
               name={props.inputName}
             >
               {null}
             </ReferralRadioRadio>
           )}
-          {props.skeleton && (
-            <ReferralRadioRadio 
-              skeleton
-            />
-          )}
+          {props.skeleton && <ReferralRadioRadio skeleton />}
         </ReferralRadioHead>
-        <ReferralRadioBody>
-          {children}
-        </ReferralRadioBody>
+        <ReferralRadioBody>{children}</ReferralRadioBody>
       </ReferralRadioContent>
     </ReferralRadioStyled>
   );

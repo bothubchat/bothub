@@ -53,14 +53,16 @@ export const ModalWindowBody = styled.div`
   }
 `;
 
-export const ModalWindowBodyScrollbarWrapper = styled(Scrollbar).attrs(({ theme }) => ({
-  variant: 'secondary',
-  scrollShadows: {
-    color: theme.colors.grayScale.gray3,
-    top: <ScrollbarShadow side="top" />,
-    bottom: <ScrollbarShadow side="bottom" />
-  }
-}))`
+export const ModalWindowBodyScrollbarWrapper = styled(Scrollbar).attrs(
+  ({ theme }) => ({
+    variant: 'secondary',
+    scrollShadows: {
+      color: theme.colors.grayScale.gray3,
+      top: <ScrollbarShadow side="top" />,
+      bottom: <ScrollbarShadow side="bottom" />
+    }
+  })
+)`
   display: flex;
   width: 100%;
   height: 100%;
@@ -118,7 +120,10 @@ export const ModalCloseButton = styled.button`
     fill: ${({ theme }) => theme.colors.grayScale.gray1};
   }
   &:hover path {
-    fill: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
+    fill: ${({ theme }) =>
+      theme.mode === 'light'
+        ? theme.default.colors.accent.primary
+        : theme.colors.base.white};
   }
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     > svg {

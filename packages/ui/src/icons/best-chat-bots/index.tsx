@@ -1,7 +1,12 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const BestChatBots = icon(({ ...props }) => (
-  <Icon size={19} viewBox="0 0 19 18" fill="none" {...props}>
+  <Icon
+    size={19}
+    viewBox="0 0 19 18"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {() => (
         <>
@@ -26,8 +31,14 @@ export const BestChatBots = icon(({ ...props }) => (
               gradientUnits="userSpaceOnUse"
             >
               <stop stopColor="#FF7E5A" />
-              <stop offset="0.536458" stopColor="#F8643B" />
-              <stop offset="1" stopColor="#C42F06" />
+              <stop
+                offset="0.536458"
+                stopColor="#F8643B"
+              />
+              <stop
+                offset="1"
+                stopColor="#C42F06"
+              />
             </linearGradient>
           </defs>
         </>

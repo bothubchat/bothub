@@ -3,7 +3,7 @@ import {
   useCallback,
   useEffect,
   useRef,
-  useState,
+  useState
 } from 'react';
 
 const velocityThreshold = 0.4; // px/ms
@@ -24,7 +24,7 @@ export const useCarousel = ({
   enableSwipes = true,
   slidesPerScreen = 1,
   align = 'center',
-  onSlideChange,
+  onSlideChange
 }: UseCarouselProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const dragStartXRef = useRef(0);
@@ -58,8 +58,9 @@ export const useCarousel = ({
     );
 
     const containerFullWidth = container.scrollWidth;
-    const totalGap = containerFullWidth
-      - slideWidthsRef.current.reduce((sum, width) => sum + width, 0);
+    const totalGap =
+      containerFullWidth -
+      slideWidthsRef.current.reduce((sum, width) => sum + width, 0);
 
     gapRef.current = totalGap / (slideWidthsRef.current.length - 1);
   }, []);
@@ -73,7 +74,8 @@ export const useCarousel = ({
       const gap = gapRef.current;
       const windowWidth = window.innerWidth;
 
-      const groupWidth = slideWidth * slidesPerScreen + gap * (slidesPerScreen - 1);
+      const groupWidth =
+        slideWidth * slidesPerScreen + gap * (slidesPerScreen - 1);
       const currentGroup = Math.floor(slideIndex / slidesPerScreen);
       let slidePosition = currentGroup * (groupWidth + gap);
 
@@ -83,9 +85,10 @@ export const useCarousel = ({
       } else {
         // For 'left' alignment, we don't need any additional offset
         // Just ensure we don't overflow at the end
-        const maxPosition = (slideWidthsRef.current.length * slideWidth) 
-                          + ((slideWidthsRef.current.length - 1) * gap) 
-                          - containerWidth;
+        const maxPosition =
+          slideWidthsRef.current.length * slideWidth +
+          (slideWidthsRef.current.length - 1) * gap -
+          containerWidth;
         slidePosition = Math.max(0, Math.min(slidePosition, maxPosition));
       }
 
@@ -131,7 +134,8 @@ export const useCarousel = ({
 
   const goToSlide = useCallback(
     (newIndex: number) => {
-      const groupIndex = Math.floor(newIndex / slidesPerScreen) * slidesPerScreen;
+      const groupIndex =
+        Math.floor(newIndex / slidesPerScreen) * slidesPerScreen;
       const finalIndex = Math.min(Math.max(0, groupIndex), slidesCount - 1);
 
       setActiveSlideIndex(finalIndex);
@@ -192,9 +196,9 @@ export const useCarousel = ({
 
       const dragThreshold = slideWidth * dragThresholdPercent;
 
-      const shouldNavigate = absDragOffset > dragThreshold
-        || (absDragOffset > dragThreshold
-          && absVelocity > velocityThreshold);
+      const shouldNavigate =
+        absDragOffset > dragThreshold ||
+        (absDragOffset > dragThreshold && absVelocity > velocityThreshold);
 
       if (shouldNavigate) {
         if (currentOffset > 0 && isPrevAllowed) {
@@ -218,7 +222,7 @@ export const useCarousel = ({
       activeSlideIndex,
       goToSlide,
       calculateVelocity,
-      updateTransform,
+      updateTransform
     ]
   );
 
@@ -248,7 +252,7 @@ export const useCarousel = ({
       onPointerMove: enableSwipes ? onPointerMove : undefined,
       onPointerUp: enableSwipes ? onPointerUp : undefined,
       onPointerLeave: enableSwipes ? onPointerUp : undefined,
-      onPointerCancel: enableSwipes ? onPointerUp : undefined,
-    },
+      onPointerCancel: enableSwipes ? onPointerUp : undefined
+    }
   };
 };

@@ -198,7 +198,11 @@ import {
   IncludeContextIcon,
   WebSearchIcon,
   AnalyzeUrlsIcon,
-  QueueIcon
+  QueueIcon,
+  COTR1Icon,
+  LoaderCircularGradient2Icon,
+  SortAlphabetBottomTopIcon,
+  SortAlphabetTopBottomIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -309,6 +313,9 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="LoaderCircularGradientIcon">
           {LoaderCircularGradientIcon}
         </IconItem>
+        <IconItem name="LoaderCircularGradient2Icon">
+          {LoaderCircularGradient2Icon}
+        </IconItem>
         <IconItem name="MinusIcon">{MinusIcon}</IconItem>
         <IconItem name="MjWhiteIcon">{MjWhiteIcon}</IconItem>
         <IconItem name="PromptIcon">{PromptIcon}</IconItem>
@@ -354,13 +361,22 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="XlsIcon">{XlsIcon}</IconItem>
         <IconItem name="WordIcon">{WordIcon}</IconItem>
         <IconItem name="TxtIcon">{TxtIcon}</IconItem>
-        <IconItem name="BothubLogoGradient" size={32}>
+        <IconItem
+          name="BothubLogoGradient"
+          size={32}
+        >
           {BothubLogoGradient}
         </IconItem>
-        <IconItem name="TelegramLogoGradient" size={32}>
+        <IconItem
+          name="TelegramLogoGradient"
+          size={32}
+        >
           {TelegramLogoGradient}
         </IconItem>
-        <IconItem name="DeclineCircleIcon" size={32}>
+        <IconItem
+          name="DeclineCircleIcon"
+          size={32}
+        >
           {DeclineCircleIcon}
         </IconItem>
         <IconItem name="SimpleGearBgIcon">{SimpleGearBgIcon}</IconItem>
@@ -423,6 +439,13 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="WebSearchIcon">{WebSearchIcon}</IconItem>
         <IconItem name="AnalyzeUrlsIcon">{AnalyzeUrlsIcon}</IconItem>
         <IconItem name="QueueIcon">{QueueIcon}</IconItem>
+        <IconItem name="COTR1Icon">{COTR1Icon}</IconItem>
+        <IconItem name="SortAlphabetBottomTopIcon">
+          {SortAlphabetBottomTopIcon}
+        </IconItem>
+        <IconItem name="SortAlphabetTopBottomIcon">
+          {SortAlphabetTopBottomIcon}
+        </IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

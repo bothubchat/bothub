@@ -30,7 +30,10 @@ export const SidebarChatIconStyled = styled(SidebarChatIcon)`
   display: none;
 `;
 
-export const SidebarChatIconContainer = styled.span<{ $active?: boolean, $isDefault?: boolean }>`
+export const SidebarChatIconContainer = styled.span<{
+  $active?: boolean;
+  $isDefault?: boolean;
+}>`
   display: inline-flex;
   width: 18px;
   height: 18px;
@@ -38,39 +41,44 @@ export const SidebarChatIconContainer = styled.span<{ $active?: boolean, $isDefa
   flex-shrink: 0;
   ${SidebarChatIconStyled} {
     display: ${({ $isDefault }) => ($isDefault ? 'inline-flex' : 'none')};
-    ${({ $active }) => $active && css`
-      fill: ${({ theme }) => theme.colors.base.white};
-      stroke: ${({ theme }) => theme.colors.base.white};
-    `}
+    ${({ $active }) =>
+      $active &&
+      css`
+        fill: ${({ theme }) => theme.colors.base.white};
+        stroke: ${({ theme }) => theme.colors.base.white};
+      `}
   }
 `;
 
-export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-medium', component: 'span' })`
+export const SidebarChatName = styled(Typography).attrs({
+  variant: 'body-m-medium',
+  component: 'span'
+})`
   white-space: nowrap;
   width: 100%;
   transition: opacity 0.3s;
   ${adaptive({
-  tablet: css`
+    tablet: css`
       max-width: 130px;
     `,
-  mobile: css`
+    mobile: css`
       max-width: 130px;
     `
-})}
+  })}
 `;
 
 export const SidebarChatNameSkeleton = styled(Skeleton)`
   ${adaptive({
-  desktop: css`
+    desktop: css`
       width: 160px;
     `,
-  tablet: css`
+    tablet: css`
       width: 130px;
     `,
-  mobile: css`
+    mobile: css`
       width: 130px;
     `
-})}
+  })}
 `;
 
 export const SidebarChatActions = styled.div`
@@ -79,15 +87,24 @@ export const SidebarChatActions = styled.div`
   margin-left: 8px;
 `;
 
-export const SidebarChatEditAction = styled(Button).attrs({ variant: 'text', children: <MenuDotIcon /> })`
+export const SidebarChatEditAction = styled(Button).attrs({
+  variant: 'text',
+  children: <MenuDotIcon />
+})`
   transform: rotate(90deg);
 `;
 
-export const SidebarChatDeleteAction = styled(Button).attrs({ variant: 'text', children: <TrashIcon /> })``;
+export const SidebarChatDeleteAction = styled(Button).attrs({
+  variant: 'text',
+  children: <TrashIcon />
+})``;
 
 export const SidebarChatClosed = styled.div``;
 
-export const SidebarChatCaps = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })`
+export const SidebarChatCaps = styled(Typography).attrs({
+  variant: 'body-s-medium',
+  component: 'span'
+})`
   display: inline-flex;
   padding: 4px 8px;
   background: ${({ theme }) => theme.colors.grayScale.gray2};
@@ -113,11 +130,13 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  ${({ $draggble, theme }) => $draggble && css`
-    background: ${theme.colors.grayScale.gray3};
-    border-radius: 10px;
-    opacity: 0.7;
-  `}
+  ${({ $draggble, theme }) =>
+    $draggble &&
+    css`
+      background: ${theme.colors.grayScale.gray3};
+      border-radius: 10px;
+      opacity: 0.7;
+    `}
   ${({ $active }) => {
     if ($active) {
       return css`
@@ -166,4 +185,6 @@ export const SidebarChatDragHandle = styled(DragDotIcon)`
   cursor: grab;
 `;
 
-export const SidebarChatNameTooltip = styled(Tooltip)`overflow: hidden;`;
+export const SidebarChatNameTooltip = styled(Tooltip)`
+  overflow: hidden;
+`;

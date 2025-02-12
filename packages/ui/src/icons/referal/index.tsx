@@ -5,11 +5,16 @@ export const ReferalIcon = icon(({ ...props }) => {
   const theme = useTheme();
 
   return (
-    <Icon size={18} viewBox="0 0 18 18" fill="none" {...props}>
+    <Icon
+      size={18}
+      viewBox="0 0 18 18"
+      fill="none"
+      {...props}
+    >
       <IconConsumer>
         {(
           { fill = theme.colors.grayScale.gray1 } = {
-            fill: theme.colors.grayScale.gray1,
+            fill: theme.colors.grayScale.gray1
           }
         ) => (
           <path

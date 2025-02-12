@@ -12,9 +12,11 @@ export const AvatarStyled = styled.span<AvatarStyledProps>`
   width: ${({ $size }) => $size}px;
   height: ${({ $size }) => $size}px;
   overflow: hidden;
-  ${({ $children }) => !$children && css`
-    border-radius: 50%;
-  `}
+  ${({ $children }) =>
+    !$children &&
+    css`
+      border-radius: 50%;
+    `}
 `;
 
 export const AvatarObject = styled.object.attrs({ type: 'image/jpeg' })`

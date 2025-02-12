@@ -1,6 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { DndContext, useSensors } from '@dnd-kit/core';
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
   Sidebar,
@@ -39,7 +37,7 @@ import {
   SidebarUserInfoSkeleton,
   SidebarUserInfoUpdateTariffBadgeText,
   SidebarUserInfoUpdateTariffBadge,
-  SidebarUserInfoUpdateTariffButtonText,
+  SidebarUserInfoUpdateTariffButtonText
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -52,7 +50,7 @@ import {
   BigModelsIcon,
   CoderIcon,
   OrganizationIcon,
-  SimpleGearIcon,
+  SimpleGearIcon
 } from '@/ui/icons';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
@@ -150,16 +148,20 @@ export const Basic: SidebarStory = {
         <SidebarCreateChatButton variant="primary" />
         <SidebarAddGroupButton variant="secondary" />
         <SidebarSearchButton variant="secondary" />
-        <SidebarEditButton variant="secondary" $active />
+        <SidebarEditButton
+          variant="secondary"
+          $active
+        />
       </SidebarButtons>
     ),
     search: (
-      <SidebarTextField type="search" fullWidth placeholder="Поиск" />
+      <SidebarTextField
+        type="search"
+        fullWidth
+        placeholder="Поиск"
+      />
     ),
-    deleteButton: (
-      <SidebarDeleteButton>
-        Удалить выбранное
-      </SidebarDeleteButton>),
+    deleteButton: <SidebarDeleteButton>Удалить выбранное</SidebarDeleteButton>,
     user: (
       <SidebarConsumer>
         {({ isOpen }) => (
@@ -169,20 +171,27 @@ export const Basic: SidebarStory = {
             disabled={isOpen}
           >
             <SidebarUserInfo
-              avatar={(
+              avatar={
                 <SidebarUserInfoAvatar
                   src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
                   alt="Артём"
                   tariffPlan="FREE"
                 />
-              )}
+              }
               name="Артём"
               caps="9 012 000 000 CAPS"
-              updateTariff={(
+              updateTariff={
                 <SidebarUserInfoUpdateTariffButton>
-                  Купить пакет
+                  <SidebarUserInfoUpdateTariffBadge>
+                    <SidebarUserInfoUpdateTariffBadgeText>
+                      FREE
+                    </SidebarUserInfoUpdateTariffBadgeText>
+                  </SidebarUserInfoUpdateTariffBadge>
+                  <SidebarUserInfoUpdateTariffButtonText>
+                    Обновить тариф
+                  </SidebarUserInfoUpdateTariffButtonText>
                 </SidebarUserInfoUpdateTariffButton>
-              )}
+              }
               logout={<SidebarUserInfoLogoutButton />}
             />
           </Tooltip>
@@ -191,20 +200,25 @@ export const Basic: SidebarStory = {
     ),
     children: (
       <SidebarGroups>
-        <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Шабажка">
+        <SidebarGroup
+          edit
+          checkbox={<SidebarGroupCheckbox checked />}
+          id="chat-group-1"
+          name="Шабажка"
+        >
           <SidebarChat
             id="chat-24"
             edit
             color="#1C64F2"
             name="Кто прочитал, тот молодец"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -215,7 +229,7 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-2"
@@ -223,13 +237,13 @@ export const Basic: SidebarStory = {
             edit
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -240,7 +254,7 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-3"
@@ -248,13 +262,13 @@ export const Basic: SidebarStory = {
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -265,22 +279,26 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
         </SidebarGroup>
-        <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Калькулятор">
+        <SidebarGroup
+          checkbox={<SidebarGroupCheckbox checked />}
+          id="chat-group-1"
+          name="Калькулятор"
+        >
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -291,20 +309,20 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -315,20 +333,20 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -339,20 +357,20 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -363,26 +381,35 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
         </SidebarGroup>
-        <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Как разблокировать дискорд">
+        <SidebarGroup
+          checkbox={<SidebarGroupCheckbox checked />}
+          id="chat-group-1"
+          name="Как разблокировать дискорд"
+        >
           <SidebarGroupEmpty>Чатов нет идите отсюла</SidebarGroupEmpty>
         </SidebarGroup>
-        <SidebarGroup edit checkbox={<SidebarChatCheckbox checked />} id="chat-group-1" name="Бесплатный впн">
+        <SidebarGroup
+          edit
+          checkbox={<SidebarChatCheckbox checked />}
+          id="chat-group-1"
+          name="Бесплатный впн"
+        >
           <SidebarChat
             edit
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -393,20 +420,20 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -417,20 +444,20 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -441,20 +468,20 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -465,22 +492,26 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
         </SidebarGroup>
-        <SidebarGroup checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Работа">
+        <SidebarGroup
+          checkbox={<SidebarGroupCheckbox checked />}
+          id="chat-group-1"
+          name="Работа"
+        >
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -491,20 +522,20 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -515,20 +546,20 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -539,20 +570,20 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -563,16 +594,14 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
         </SidebarGroup>
         <SidebarGroup
           id="chat-group-1"
           name="Работа"
-          checkbox={
-            <SidebarGroupCheckbox checked />
-          }
-          actions={(
+          checkbox={<SidebarGroupCheckbox checked />}
+          actions={
             <SidebarDropdown>
               <SidebarDropdownList>
                 <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -583,20 +612,20 @@ export const Basic: SidebarStory = {
                 </SidebarDropdownItem>
               </SidebarDropdownList>
             </SidebarDropdown>
-          )}
+          }
         >
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -607,20 +636,20 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -631,20 +660,20 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -655,20 +684,20 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -679,23 +708,28 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
         </SidebarGroup>
-        <SidebarGroup isDefault checkbox={<SidebarGroupCheckbox checked />} id="chat-group-1" name="Работа">
+        <SidebarGroup
+          isDefault
+          checkbox={<SidebarGroupCheckbox checked />}
+          id="chat-group-1"
+          name="Работа"
+        >
           <SidebarChat
             id="chat-1"
             isDefault
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -706,7 +740,7 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
@@ -714,13 +748,13 @@ export const Basic: SidebarStory = {
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -731,7 +765,7 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
@@ -739,13 +773,13 @@ export const Basic: SidebarStory = {
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -756,7 +790,7 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
           <SidebarChat
             id="chat-1"
@@ -764,13 +798,13 @@ export const Basic: SidebarStory = {
             isDefault
             name="Your first chat"
             caps="36.7K"
-            checkbox={(
+            checkbox={
               <SidebarChatCheckbox
                 checked
-                onValueChange={() => { }}
+                onValueChange={() => {}}
               />
-            )}
-            actions={(
+            }
+            actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
                   <SidebarDropdownItem startIcon={<EditIcon />}>
@@ -781,7 +815,7 @@ export const Basic: SidebarStory = {
                   </SidebarDropdownItem>
                 </SidebarDropdownList>
               </SidebarDropdown>
-            )}
+            }
           />
         </SidebarGroup>
       </SidebarGroups>
@@ -794,26 +828,26 @@ export const BasicTariff: SidebarStory = {
     ...Basic.args,
     user: (
       <SidebarUserInfo
-        avatar={(
+        avatar={
           <SidebarUserInfoAvatar
             src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
             alt="Артём"
           />
-        )}
+        }
         name="Артём"
         caps="9 000 000 CAPS"
-        updateTariff={(
+        updateTariff={
           <SidebarUserInfoUpdateTariffButton>
             <SidebarUserInfoUpdateTariffBadge>
               <SidebarUserInfoUpdateTariffBadgeText>
-                FREE
+                BASIC
               </SidebarUserInfoUpdateTariffBadgeText>
             </SidebarUserInfoUpdateTariffBadge>
             <SidebarUserInfoUpdateTariffButtonText>
               Обновить тариф
             </SidebarUserInfoUpdateTariffButtonText>
           </SidebarUserInfoUpdateTariffButton>
-        )}
+        }
         logout={<SidebarUserInfoLogoutButton />}
       />
     )
@@ -825,19 +859,26 @@ export const PremiumTariff: SidebarStory = {
     ...Basic.args,
     user: (
       <SidebarUserInfo
-        avatar={(
+        avatar={
           <SidebarUserInfoAvatar
             src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
             alt="Артём"
           />
-        )}
+        }
         name="Артём"
         caps="2 000 000 000 000 000 CAPS"
-        updateTariff={(
+        updateTariff={
           <SidebarUserInfoUpdateTariffButton>
-            Купить пакет
+            <SidebarUserInfoUpdateTariffBadge>
+              <SidebarUserInfoUpdateTariffBadgeText>
+                PREMIUM
+              </SidebarUserInfoUpdateTariffBadgeText>
+            </SidebarUserInfoUpdateTariffBadge>
+            <SidebarUserInfoUpdateTariffButtonText>
+              Обновить тариф
+            </SidebarUserInfoUpdateTariffButtonText>
           </SidebarUserInfoUpdateTariffButton>
-        )}
+        }
       />
     )
   }
@@ -848,19 +889,26 @@ export const EliteTariff: SidebarStory = {
     ...Basic.args,
     user: (
       <SidebarUserInfo
-        avatar={(
+        avatar={
           <SidebarUserInfoAvatar
             src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album"
             alt="Артём"
           />
-        )}
+        }
         name="Артём"
         caps="9 012 CAPS"
-        updateTariff={(
+        updateTariff={
           <SidebarUserInfoUpdateTariffButton>
-            Купить пакет
+            <SidebarUserInfoUpdateTariffBadge>
+              <SidebarUserInfoUpdateTariffBadgeText>
+                ELITE
+              </SidebarUserInfoUpdateTariffBadgeText>
+            </SidebarUserInfoUpdateTariffBadge>
+            <SidebarUserInfoUpdateTariffButtonText>
+              Обновить тариф
+            </SidebarUserInfoUpdateTariffButtonText>
           </SidebarUserInfoUpdateTariffButton>
-        )}
+        }
         logout={<SidebarUserInfoLogoutButton />}
       />
     )
@@ -870,11 +918,7 @@ export const EliteTariff: SidebarStory = {
 export const Empty: SidebarStory = {
   args: {
     ...EliteTariff.args,
-    children: (
-      <SidebarEmpty>
-        На данный момент у вас нет чатов
-      </SidebarEmpty>
-    )
+    children: <SidebarEmpty>На данный момент у вас нет чатов</SidebarEmpty>
   }
 };
 
@@ -882,15 +926,9 @@ export const Skeleton: SidebarStory = {
   args: {
     logo: <SidebarLogo />,
     menu: <SidebarMenu disabled />,
-    toggle: (
-      <SidebarToggleButton disabled />
-    ),
-    buttons: (
-      <SidebarButtons />
-    ),
-    user: (
-      <SidebarUserInfoSkeleton />
-    ),
+    toggle: <SidebarToggleButton disabled />,
+    buttons: <SidebarButtons />,
+    user: <SidebarUserInfoSkeleton />,
     children: (
       <SidebarGroups>
         <SidebarGroup skeleton>

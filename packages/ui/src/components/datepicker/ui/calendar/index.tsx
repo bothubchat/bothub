@@ -1,11 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { useInfoDate } from '../../hooks';
-import { DatepickerProps, RangeDatepickerProps, SingleDatepickerProps } from '../../types';
+import {
+  DatepickerProps,
+  RangeDatepickerProps,
+  SingleDatepickerProps
+} from '../../types';
 import * as S from './styled';
 
 import {
   addMont,
-  getMonthName, isEqualDaysOfDate, resetTimeInDate,
+  getMonthName,
+  isEqualDaysOfDate,
+  resetTimeInDate,
   subMonth
 } from '../../utils';
 import { useTheme } from '../../../../theme';
@@ -30,11 +36,13 @@ const getDefaultCalendarDate = (value?: CalendarProps['value']) => {
   return resetTimeInDate(dateObj);
 };
 
-const getDefaultValue = (value?: CalendarProps['value']): Date | [Date, Date | null] | null => {
+const getDefaultValue = (
+  value?: CalendarProps['value']
+): Date | [Date, Date | null] | null => {
   if (Array.isArray(value)) {
     return [
       resetTimeInDate(new Date(value[0])),
-      value[1] ? resetTimeInDate(new Date(value[1])) : null,
+      value[1] ? resetTimeInDate(new Date(value[1])) : null
     ];
   }
   if (value && !Array.isArray(value)) {
@@ -50,17 +58,15 @@ export const DatepickerCalendar = ({
   locale = 'en-US',
   range,
   buttonSaveText = 'Save',
-  buttonCloseText = 'Close',
+  buttonCloseText = 'Close'
 }: CalendarProps) => {
   const theme = useTheme();
-  const [
-    calendarDate,
-    setCalendarDate,
-  ] = useState(getDefaultCalendarDate(value));
-  const [
-    localValue,
-    setLocalValue,
-  ] = useState<[Date, Date | null] | Date | null>(getDefaultValue(value));
+  const [calendarDate, setCalendarDate] = useState(
+    getDefaultCalendarDate(value)
+  );
+  const [localValue, setLocalValue] = useState<
+    [Date, Date | null] | Date | null
+  >(getDefaultValue(value));
 
   const [hoveredItem, setHoveredItem] = useState<Date | null>(null);
 
@@ -109,7 +115,7 @@ export const DatepickerCalendar = ({
     if (range && Array.isArray(localValue)) {
       (onChange as RangeDatepickerProps['onChange'])([
         localValue[0],
-        localValue[1] || null,
+        localValue[1] || null
       ]);
     } else if (!range && !Array.isArray(localValue) && localValue) {
       (onChange as SingleDatepickerProps['onChange'])(localValue);
@@ -153,15 +159,20 @@ export const DatepickerCalendar = ({
   return (
     <S.Wrapper ref={wrapperRef}>
       <S.Header>
-        <S.PrevMonth type="button" onClick={onPrevMonth}>
+        <S.PrevMonth
+          type="button"
+          onClick={onPrevMonth}
+        >
           <S.PreArrowIcon fill={theme.colors.base.white} />
         </S.PrevMonth>
         <S.Title>
-          {getMonthName(new Date(calendarDate).getMonth(), locale)}
-          {' '}
+          {getMonthName(new Date(calendarDate).getMonth(), locale)}{' '}
           {new Date(calendarDate).getFullYear()}
         </S.Title>
-        <S.NextMonth type="button" onClick={onNextMonth}>
+        <S.NextMonth
+          type="button"
+          onClick={onNextMonth}
+        >
           <S.NextArrowIcon fill={theme.colors.base.white} />
         </S.NextMonth>
       </S.Header>
@@ -175,10 +186,9 @@ export const DatepickerCalendar = ({
           let isActive = false;
 
           if (isArrayLocalValue) {
-            isActive = isEqualDaysOfDate(
-              localValue[0],
-              monthDay,
-            ) || isEqualDaysOfDate(localValue[1], monthDay);
+            isActive =
+              isEqualDaysOfDate(localValue[0], monthDay) ||
+              isEqualDaysOfDate(localValue[1], monthDay);
           } else if (localValue) {
             isActive = isEqualDaysOfDate(localValue, monthDay);
           }
@@ -186,9 +196,11 @@ export const DatepickerCalendar = ({
           let isBetweenSelected = false;
           if (isArrayLocalValue) {
             if (localValue[1]) {
-              isBetweenSelected = monthDay > localValue[0] && monthDay < localValue[1];
+              isBetweenSelected =
+                monthDay > localValue[0] && monthDay < localValue[1];
             } else if (hoveredItem) {
-              isBetweenSelected = monthDay > localValue[0] && monthDay < hoveredItem;
+              isBetweenSelected =
+                monthDay > localValue[0] && monthDay < hoveredItem;
             }
           }
 
@@ -200,11 +212,14 @@ export const DatepickerCalendar = ({
               $active={isActive}
               $outRange={monthDay.getMonth() !== calendarDate.getMonth()}
               $startDate={Boolean(
-                isArrayLocalValue
-                && ((hoveredItem && hoveredItem > localValue[0]) || localValue[1])
-                && isEqualDaysOfDate(localValue[0], monthDay)
+                isArrayLocalValue &&
+                  ((hoveredItem && hoveredItem > localValue[0]) ||
+                    localValue[1]) &&
+                  isEqualDaysOfDate(localValue[0], monthDay)
               )}
-              $finishDate={Boolean(isArrayLocalValue && isEqualDaysOfDate(localValue[1], monthDay))}
+              $finishDate={Boolean(
+                isArrayLocalValue && isEqualDaysOfDate(localValue[1], monthDay)
+              )}
               onMouseEnter={() => setHoveredItem(monthDay)}
               onMouseLeave={() => setHoveredItem(null)}
               onClick={() => handleSelectDate(monthDay)}
@@ -216,7 +231,12 @@ export const DatepickerCalendar = ({
       </S.DateGrid>
       <S.Footer>
         <S.SaveButton onClick={handleSave}>{buttonSaveText}</S.SaveButton>
-        <S.CancelButton variant="secondary" onClick={handleCancel}>{buttonCloseText}</S.CancelButton>
+        <S.CancelButton
+          variant="secondary"
+          onClick={handleCancel}
+        >
+          {buttonCloseText}
+        </S.CancelButton>
       </S.Footer>
     </S.Wrapper>
   );

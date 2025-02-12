@@ -1,7 +1,12 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const YandexIcon = icon(({ ...props }) => (
-  <Icon size={20} viewBox="0 0 21 20" fill="none" {...props}>
+  <Icon
+    size={20}
+    viewBox="0 0 21 20"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {() => (
         <>

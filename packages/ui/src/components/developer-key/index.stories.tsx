@@ -8,7 +8,8 @@ export type DeveloperKeyStory = StoryObj<typeof DeveloperKey>;
 
 export const Basic: DeveloperKeyStory = {
   args: {
-    children: '315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3'
+    children:
+      '315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3'
   }
 };
 

@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import {
-  AnimateLayoutChanges, defaultAnimateLayoutChanges, useSortable
+  AnimateLayoutChanges,
+  defaultAnimateLayoutChanges,
+  useSortable
 } from '@dnd-kit/sortable';
 import {
   SidebarChatList,
@@ -13,7 +15,7 @@ import {
   SidebarGroupDragFolder,
   SidebarGroupsStyled,
   SidebarGroupSkeletonIcon,
-  SidebarGroupTooltip,
+  SidebarGroupTooltip
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { useSidebar } from '../context';
@@ -45,17 +47,22 @@ export interface SidebarGroupSkeletonProps {
   onHandleOpen?: () => void;
 }
 
-export type SidebarGroupProps
-  = (SidebarGroupDefaultProps | SidebarGroupSkeletonProps)
-  & SidebarGroupDraggableProps
-  & React.PropsWithChildren;
+export type SidebarGroupProps = (
+  | SidebarGroupDefaultProps
+  | SidebarGroupSkeletonProps
+) &
+  SidebarGroupDraggableProps &
+  React.PropsWithChildren;
 
-const animateLayoutChanges: AnimateLayoutChanges = (args) => defaultAnimateLayoutChanges({
-  ...args, wasDragging: true
-});
+const animateLayoutChanges: AnimateLayoutChanges = (args) =>
+  defaultAnimateLayoutChanges({
+    ...args,
+    wasDragging: true
+  });
 
 export const SidebarGroup: React.FC<SidebarGroupProps> = ({
-  children, ...props
+  children,
+  ...props
 }) => {
   const {
     setNodeRef,
@@ -70,38 +77,45 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
     data: {
       type: 'group',
-      index: !props.skeleton && props?.index || 0,
-      items: props.itemsSortable,
+      index: (!props.skeleton && props?.index) || 0,
+      items: props.itemsSortable
     },
-    animateLayoutChanges,
+    animateLayoutChanges
   });
   const { isOpen: sidebarOpen } = useSidebar();
 
-  const [open, setOpen] = props.open !== undefined
-    ? [props.open, props.onHandleOpen]
-    : useState<boolean>(false);
+  const [open, setOpen] =
+    props.open !== undefined
+      ? [props.open, props.onHandleOpen]
+      : useState<boolean>(false);
 
   const onChangeOpen = useCallback(() => {
     setOpen?.(!open);
   }, [open, setOpen]);
 
-  const dragHandle = !props.skeleton && props.edit ? {
-    ...listeners,
-    ...attributes,
-  } : {};
+  const dragHandle =
+    !props.skeleton && props.edit
+      ? {
+          ...listeners,
+          ...attributes
+        }
+      : {};
 
-  const style = !props.skeleton && props.edit ? {
-    transform: transform ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)` : undefined,
-    transition,
-    opacity: isDragging ? 0 : 1,
-  } : {};
+  const style =
+    !props.skeleton && props.edit
+      ? {
+          transform: transform
+            ? `translate3d(${transform?.x}px, ${transform?.y}px, 0)`
+            : undefined,
+          transition,
+          opacity: isDragging ? 0 : 1
+        }
+      : {};
 
-  const isOverContainer = !props.skeleton
-    && over
-    && active?.data.current?.type !== 'group'
-    ? props.id === over.id
-    || props.itemsSortable?.includes(`${over.id}`)
-    : false;
+  const isOverContainer =
+    !props.skeleton && over && active?.data.current?.type !== 'group'
+      ? props.id === over.id || props.itemsSortable?.includes(`${over.id}`)
+      : false;
 
   return (
     <SidebarGroupStyled
@@ -140,9 +154,18 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
               </SidebarGroupTooltip>
             </>
           )}
-          {props.skeleton && <SidebarGroupSkeletonIcon width={24} height={24} />}
+          {props.skeleton && (
+            <SidebarGroupSkeletonIcon
+              width={24}
+              height={24}
+            />
+          )}
           {!props.skeleton && (
-            <Tooltip label={props.name} placement="top-left" disabled={props.name.length <= 24}>
+            <Tooltip
+              label={props.name}
+              placement="top-left"
+              disabled={props.name.length <= 24}
+            >
               <TooltipConsumer>
                 {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                   <SidebarGroupNameBox
@@ -169,10 +192,8 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   );
 };
 
-export const SidebarGroups: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <SidebarGroupsStyled>
-    {children}
-  </SidebarGroupsStyled>
-);
+export const SidebarGroups: React.FC<{ children: React.ReactNode }> = ({
+  children
+}) => <SidebarGroupsStyled>{children}</SidebarGroupsStyled>;
 
 export * from './styled';

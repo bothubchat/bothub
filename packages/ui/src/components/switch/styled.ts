@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 10px;
-    
+
   --switch-width: ${defaultSize}px;
 `;
 
@@ -49,7 +49,7 @@ export const HiddenLabel = styled.label`
     height: calc(var(--switch-width, ${defaultSize}) * 0.33);
     background: #fff;
     border-radius: 50%;
-    transition: .2s linear;
+    transition: 0.2s linear;
   }
 `;
 

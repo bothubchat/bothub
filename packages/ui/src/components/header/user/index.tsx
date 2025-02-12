@@ -10,7 +10,7 @@ export const HeaderUser: React.FC<HeaderUserProps> = ({ children }) => {
   const { isInMenu } = useHeaderMenu();
 
   return (
-    <HeaderUserStyled 
+    <HeaderUserStyled
       $variant={variant}
       $inMenu={isInMenu}
     >

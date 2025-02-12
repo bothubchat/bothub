@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import {
-  HeaderThemeSwitcherIcon, 
-  HeaderThemeSwitcherItem, 
-  HeaderThemeSwitcherItemBackground, 
-  HeaderThemeSwitcherItemContent, 
-  HeaderThemeSwitcherList, 
-  HeaderThemeSwitcherStyled 
+  HeaderThemeSwitcherIcon,
+  HeaderThemeSwitcherItem,
+  HeaderThemeSwitcherItemBackground,
+  HeaderThemeSwitcherItemContent,
+  HeaderThemeSwitcherList,
+  HeaderThemeSwitcherStyled
 } from './styled';
 import { HeaderThemeSwitcherMode, IHeaderThemeSwitcherItem } from './types';
 import { DarkIcon } from '@/ui/icons/dark';
@@ -14,7 +14,9 @@ import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { useHeaderMenu } from '../menu';
 
-export type HeaderThemeSwitcherChangeEventHandler = (mode: HeaderThemeSwitcherMode) => unknown;
+export type HeaderThemeSwitcherChangeEventHandler = (
+  mode: HeaderThemeSwitcherMode
+) => unknown;
 
 export interface HeaderThemeSwitcherProps {
   mode?: HeaderThemeSwitcherMode;
@@ -23,31 +25,41 @@ export interface HeaderThemeSwitcherProps {
 }
 
 export const HeaderThemeSwitcher: React.FC<HeaderThemeSwitcherProps> = ({
-  mode: initialMode, defaultMode = 'dark', onChange
+  mode: initialMode,
+  defaultMode = 'dark',
+  onChange
 }) => {
   const theme = useTheme();
 
   const { isInMenu } = useHeaderMenu();
 
-  const setInitialMode = useCallback<React.Dispatch<React.SetStateAction<HeaderThemeSwitcherMode>>>(
+  const setInitialMode = useCallback<
+    React.Dispatch<React.SetStateAction<HeaderThemeSwitcherMode>>
+  >(
     (mode) => {
       if (typeof mode === 'string') {
         onChange?.(mode);
       }
-    }, 
+    },
     [onChange]
   );
-  const [mode, setMode] = typeof initialMode === 'string' ? [initialMode, setInitialMode] : useState<HeaderThemeSwitcherMode>(defaultMode);
+  const [mode, setMode] =
+    typeof initialMode === 'string'
+      ? [initialMode, setInitialMode]
+      : useState<HeaderThemeSwitcherMode>(defaultMode);
   const activeMode = mode;
 
-  const items = useMemo<IHeaderThemeSwitcherItem[]>(() => ([
-    {
-      mode: 'light'
-    },
-    {
-      mode: 'dark'
-    }
-  ]), []);
+  const items = useMemo<IHeaderThemeSwitcherItem[]>(
+    () => [
+      {
+        mode: 'light'
+      },
+      {
+        mode: 'dark'
+      }
+    ],
+    []
+  );
 
   const toggleMode = useCallback(() => {
     setMode(mode === 'light' ? 'dark' : 'light');
@@ -58,9 +70,7 @@ export const HeaderThemeSwitcher: React.FC<HeaderThemeSwitcherProps> = ({
       $inMenu={isInMenu}
       onClick={toggleMode}
     >
-      <HeaderThemeSwitcherList
-        $inMenu={isInMenu}
-      >
+      <HeaderThemeSwitcherList $inMenu={isInMenu}>
         <HeaderThemeSwitcherItemBackground $isLight={mode === 'light'} />
         {items.map(({ mode }) => {
           const isActive = mode === activeMode;
@@ -83,14 +93,12 @@ export const HeaderThemeSwitcher: React.FC<HeaderThemeSwitcherProps> = ({
               $inMenu={isInMenu}
               key={mode}
             >
-              <HeaderThemeSwitcherItemContent
-                $inMenu={isInMenu}
-              >
+              <HeaderThemeSwitcherItemContent $inMenu={isInMenu}>
                 <IconProvider
                   size={20}
                   fill={fill}
                 >
-                  <HeaderThemeSwitcherIcon 
+                  <HeaderThemeSwitcherIcon
                     as={mode === 'light' ? LightIcon : DarkIcon}
                   />
                 </IconProvider>

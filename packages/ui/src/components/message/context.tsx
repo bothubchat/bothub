@@ -1,6 +1,9 @@
 import React, { useContext } from 'react';
 import {
-  MessageCodeCopyEventHandler, MessageColor, MessageContextCopyEventHandler, MessageVariant 
+  MessageCodeCopyEventHandler,
+  MessageColor,
+  MessageContextCopyEventHandler,
+  MessageVariant
 } from './types';
 
 export interface MessageContextValue {
@@ -17,13 +20,10 @@ export const MessageContext = React.createContext<MessageContextValue>({
   typing: false
 });
 
-export const MessageProvider: React.FC<MessageContextValue & React.PropsWithChildren> = ({
-  children,
-  ...value
-}) => (
-  <MessageContext.Provider value={value}>
-    {children}
-  </MessageContext.Provider>
+export const MessageProvider: React.FC<
+  MessageContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
+  <MessageContext.Provider value={value}>{children}</MessageContext.Provider>
 );
 
 export const useMessage = () => useContext(MessageContext);

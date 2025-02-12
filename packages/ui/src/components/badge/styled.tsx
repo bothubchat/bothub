@@ -40,16 +40,20 @@ export const BadgeStyled = styled.div<BadgeStyledProps>`
         return theme.colors.green;
     }
   }};
-  ${({ $skeleton }) => $skeleton && css`
-    cursor: progress;
-  `}
+  ${({ $skeleton }) =>
+    $skeleton &&
+    css`
+      cursor: progress;
+    `}
 `;
 
 export interface BadgeTextProps {
   $variant?: BadgeVariant;
 }
 
-export const BadgeText = styled(Typography).attrs({ variant: 'body-s-medium' })<BadgeTextProps>`
+export const BadgeText = styled(Typography).attrs({
+  variant: 'body-s-medium'
+})<BadgeTextProps>`
   color: ${({ theme, $variant }) => {
     switch ($variant) {
       case 'info':
