@@ -19,12 +19,8 @@ export const Help: CheckboxStory = {
     label: (
       <CheckboxLabel>
         Отправлять автоматически
-        <Tooltip
-          label="Help"
-        >
-          <Button
-            variant="help"
-          />
+        <Tooltip label="Help">
+          <Button variant="help" />
         </Tooltip>
       </CheckboxLabel>
     )

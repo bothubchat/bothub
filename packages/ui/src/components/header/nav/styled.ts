@@ -33,7 +33,8 @@ export const HeaderNavStyled = styled.nav<HeaderNavStyledProps>`
       switch ($variant) {
         case 'main':
           return css`
-            border-left: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+            border-left: 1px solid
+              ${({ theme }) => theme.colors.grayScale.gray3};
           `;
         case 'dashboard':
           return css``;

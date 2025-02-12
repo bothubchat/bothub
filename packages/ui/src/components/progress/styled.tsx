@@ -7,9 +7,11 @@ export interface ProgressStyledProps {
 export const ProgressStyled = styled.div<ProgressStyledProps>`
   display: inline-flex;
   width: 100%;
-  ${({ $fullWidth }) => !$fullWidth && css`
-    max-width: 294px;
-  `}
+  ${({ $fullWidth }) =>
+    !$fullWidth &&
+    css`
+      max-width: 294px;
+    `}
 `;
 
 export interface ProgressLineProps {
@@ -21,9 +23,11 @@ export const ProgressLine = styled.div<ProgressLineProps>`
   width: 100%;
   height: 5px;
   border-radius: 10px;
-  ${({ $skeleton }) => !$skeleton && css`
-    background: ${({ theme }) => theme.colors.grayScale.gray3};
-  `}
+  ${({ $skeleton }) =>
+    !$skeleton &&
+    css`
+      background: ${({ theme }) => theme.colors.grayScale.gray3};
+    `}
 `;
 
 export const ProgressLineFilled = styled.div`
@@ -32,4 +36,4 @@ export const ProgressLineFilled = styled.div`
   background: ${({ theme }) => theme.colors.accent.primary};
   border-radius: 10px;
   transition: width 0.3s ease-out;
-`; 
+`;

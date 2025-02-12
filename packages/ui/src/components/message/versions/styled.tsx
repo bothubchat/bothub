@@ -21,7 +21,7 @@ export const MessageVersionsPagination = styled.div`
 `;
 
 export const MessageVersionsText = styled(Typography).attrs({
-  variant: 'body-m-medium',
+  variant: 'body-m-medium'
 })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
 `;

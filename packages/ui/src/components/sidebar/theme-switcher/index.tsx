@@ -14,7 +14,9 @@ import {
 import { useTheme } from '@/ui/theme';
 import { useSidebar } from '../context';
 
-export type SidebarThemeSwitcherChangeEventHandler = (mode: SidebarThemeSwitcherMode) => unknown;
+export type SidebarThemeSwitcherChangeEventHandler = (
+  mode: SidebarThemeSwitcherMode
+) => unknown;
 
 export interface SidebarThemeSwitcherProps {
   mode?: SidebarThemeSwitcherMode;
@@ -23,13 +25,15 @@ export interface SidebarThemeSwitcherProps {
 }
 
 export const SidebarThemeSwitcher: React.FC<SidebarThemeSwitcherProps> = ({
-  mode: initialMode, defaultMode = 'dark', onChange
+  mode: initialMode,
+  defaultMode = 'dark',
+  onChange
 }) => {
   const theme = useTheme();
   const { isOpen } = useSidebar();
 
   const setInitialMode = useCallback<
-  React.Dispatch<React.SetStateAction<SidebarThemeSwitcherMode>>
+    React.Dispatch<React.SetStateAction<SidebarThemeSwitcherMode>>
   >(
     (mode) => {
       if (typeof mode === 'string') {
@@ -38,17 +42,23 @@ export const SidebarThemeSwitcher: React.FC<SidebarThemeSwitcherProps> = ({
     },
     [onChange]
   );
-  const [mode, setMode] = typeof initialMode === 'string' ? [initialMode, setInitialMode] : useState<SidebarThemeSwitcherMode>(defaultMode);
+  const [mode, setMode] =
+    typeof initialMode === 'string'
+      ? [initialMode, setInitialMode]
+      : useState<SidebarThemeSwitcherMode>(defaultMode);
   const activeMode = mode;
 
-  const items = useMemo<ISidebarThemeSwitcherItem[]>(() => ([
-    {
-      mode: 'light'
-    },
-    {
-      mode: 'dark'
-    }
-  ]), []);
+  const items = useMemo<ISidebarThemeSwitcherItem[]>(
+    () => [
+      {
+        mode: 'light'
+      },
+      {
+        mode: 'dark'
+      }
+    ],
+    []
+  );
 
   const toggleMode = useCallback(() => {
     setMode(mode === 'light' ? 'dark' : 'light');
@@ -78,9 +88,7 @@ export const SidebarThemeSwitcher: React.FC<SidebarThemeSwitcherProps> = ({
           }
 
           return (
-            <SidebarThemeSwitcherItem
-              key={mode}
-            >
+            <SidebarThemeSwitcherItem key={mode}>
               <SidebarThemeSwitcherItemContent>
                 <IconProvider
                   size={20}

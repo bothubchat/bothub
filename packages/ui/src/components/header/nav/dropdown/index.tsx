@@ -1,9 +1,10 @@
-import React, {
-  useCallback, useEffect, useRef, useState
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
-  HeaderNavDropdownArrow, HeaderNavDropdownBody, HeaderNavDropdownHead, HeaderNavDropdownStyled
+  HeaderNavDropdownArrow,
+  HeaderNavDropdownBody,
+  HeaderNavDropdownHead,
+  HeaderNavDropdownStyled
 } from './styled';
 import { HeaderNavDropdownProvider } from './context';
 import { useHeaderMenu } from '../../menu/context';
@@ -13,7 +14,10 @@ export interface HeaderNavDropdownProps extends React.PropsWithChildren {
   label: string;
 }
 
-export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, children }) => {
+export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({
+  label,
+  children
+}) => {
   const { variant } = useHeader();
   const { isInMenu } = useHeaderMenu();
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -51,7 +55,7 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      transform: 'scale(0)',
+      transform: 'scale(0)'
     },
     enter: {
       opacity: isOpen ? 1 : 0.5,
@@ -59,14 +63,17 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
     },
     leave: {
       opacity: 0,
-      transform: 'scale(0.999)',
+      transform: 'scale(0.999)'
     },
     config: { duration: 150 }
   });
 
   return (
     <HeaderNavDropdownProvider setIsOpen={setIsOpen}>
-      <HeaderNavDropdownStyled $inMenu={isInMenu} ref={dropdownRef}>
+      <HeaderNavDropdownStyled
+        $inMenu={isInMenu}
+        ref={dropdownRef}
+      >
         <HeaderNavDropdownHead
           as="span"
           $variant={variant}
@@ -81,15 +88,17 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({ label, chi
             }}
           />
         </HeaderNavDropdownHead>
-        {dropdownTransition((style, item) => (
-          item && (
-            <HeaderNavDropdownBody
-              $inMenu={isInMenu}
-              style={style}
-            >
-              {children}
-            </HeaderNavDropdownBody>
-          )))}
+        {dropdownTransition(
+          (style, item) =>
+            item && (
+              <HeaderNavDropdownBody
+                $inMenu={isInMenu}
+                style={style}
+              >
+                {children}
+              </HeaderNavDropdownBody>
+            )
+        )}
       </HeaderNavDropdownStyled>
     </HeaderNavDropdownProvider>
   );

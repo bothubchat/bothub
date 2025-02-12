@@ -10,13 +10,10 @@ export const SidebarContext = React.createContext<SidebarContextValue>({
   setIsOpen() {}
 });
 
-export const SidebarProvider: React.FC<SidebarContextValue & React.PropsWithChildren> = ({
-  children,
-  ...value
-}) => (
-  <SidebarContext.Provider value={value}>
-    {children}
-  </SidebarContext.Provider>
+export const SidebarProvider: React.FC<
+  SidebarContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
+  <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>
 );
 
 export const useSidebar = () => useContext(SidebarContext);

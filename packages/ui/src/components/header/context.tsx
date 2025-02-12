@@ -13,14 +13,10 @@ export const HeaderContext = React.createContext<HeaderContextValue>({
   setIsMenuOpen: () => {}
 });
 
-export const HeaderProvider: React.FC<HeaderContextValue & React.PropsWithChildren
-> = ({
-  children,
-  ...value
-}) => (
-  <HeaderContext.Provider value={value}>
-    {children}
-  </HeaderContext.Provider>
+export const HeaderProvider: React.FC<
+  HeaderContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
+  <HeaderContext.Provider value={value}>{children}</HeaderContext.Provider>
 );
 
 export const useHeader = () => useContext(HeaderContext);

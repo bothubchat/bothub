@@ -356,13 +356,22 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="XlsIcon">{XlsIcon}</IconItem>
         <IconItem name="WordIcon">{WordIcon}</IconItem>
         <IconItem name="TxtIcon">{TxtIcon}</IconItem>
-        <IconItem name="BothubLogoGradient" size={32}>
+        <IconItem
+          name="BothubLogoGradient"
+          size={32}
+        >
           {BothubLogoGradient}
         </IconItem>
-        <IconItem name="TelegramLogoGradient" size={32}>
+        <IconItem
+          name="TelegramLogoGradient"
+          size={32}
+        >
           {TelegramLogoGradient}
         </IconItem>
-        <IconItem name="DeclineCircleIcon" size={32}>
+        <IconItem
+          name="DeclineCircleIcon"
+          size={32}
+        >
           {DeclineCircleIcon}
         </IconItem>
         <IconItem name="SimpleGearBgIcon">{SimpleGearBgIcon}</IconItem>

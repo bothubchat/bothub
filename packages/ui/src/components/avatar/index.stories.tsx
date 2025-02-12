@@ -4,7 +4,10 @@ import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import { Avatar } from '.';
 import {
   ClaudeIcon,
-  DallEIcon, Gpt35Icon, Gpt4Icon, MjWhiteIcon 
+  DallEIcon,
+  Gpt35Icon,
+  Gpt4Icon,
+  MjWhiteIcon
 } from '@/ui/icons';
 
 export type AvatarMeta = Meta<typeof Avatar>;
@@ -33,41 +36,31 @@ export const Bot: AvatarStory = {
 
 export const GPT3: AvatarStory = {
   args: {
-    children: (
-      <Gpt35Icon />
-    )
+    children: <Gpt35Icon />
   }
 };
 
 export const GPT4: AvatarStory = {
   args: {
-    children: (
-      <Gpt4Icon />
-    )
+    children: <Gpt4Icon />
   }
 };
 
 export const Midjourney: AvatarStory = {
   args: {
-    children: (
-      <MjWhiteIcon />
-    )
+    children: <MjWhiteIcon />
   }
 };
 
 export const DallE: AvatarStory = {
   args: {
-    children: (
-      <DallEIcon />
-    )
+    children: <DallEIcon />
   }
 };
 
 export const Claude: AvatarStory = {
   args: {
-    children: (
-      <ClaudeIcon />
-    )
+    children: <ClaudeIcon />
   }
 };
 

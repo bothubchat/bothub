@@ -1,6 +1,4 @@
-import React, {
-  useCallback, useEffect, useRef, useState
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   HeaderLangDropdownContent,
@@ -8,7 +6,7 @@ import {
   HeaderLangDropdownToggler,
   HeaderLangDropdownTogglerArrow,
   HeaderLangDropdownTogglerIcon,
-  HeaderLangDropdownTogglerText,
+  HeaderLangDropdownTogglerText
 } from './styled';
 import { HeaderLangDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
@@ -57,21 +55,27 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      transform: 'scale(0)',
+      transform: 'scale(0)'
     },
     enter: {
       opacity: isOpen ? 1 : 0.5,
-      transform: `scale(${isOpen ? 1 : 0.999})`,
+      transform: `scale(${isOpen ? 1 : 0.999})`
     },
     leave: { opacity: 0, transform: 'scale(0.999)' },
-    config: { duration: 150 },
+    config: { duration: 150 }
   });
 
   return (
     <HeaderLangDropdownProvider setIsOpen={setIsOpen}>
-      <HeaderLangDropdownStyled {...props} ref={dropdownRef}>
+      <HeaderLangDropdownStyled
+        {...props}
+        ref={dropdownRef}
+      >
         <IconProvider fill={theme.colors.base.white}>
-          <HeaderLangDropdownToggler $open={isOpen} onClick={handleToggle}>
+          <HeaderLangDropdownToggler
+            $open={isOpen}
+            onClick={handleToggle}
+          >
             <HeaderLangDropdownTogglerIcon />
             <HeaderLangDropdownTogglerText>
               {lang}
@@ -84,7 +88,10 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
           </HeaderLangDropdownToggler>
         </IconProvider>
         {dropdownTransition((style, item) => (
-          <HeaderLangDropdownContent $open={isOpen && !!item} style={style}>
+          <HeaderLangDropdownContent
+            $open={isOpen && !!item}
+            style={style}
+          >
             {children}
           </HeaderLangDropdownContent>
         ))}

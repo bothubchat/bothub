@@ -70,7 +70,7 @@ export const Multiple: SelectFieldStory = {
     placeholder: 'Placeholder',
     data: [
       {
-        value: 'React',
+        value: 'React'
       },
       'Vue',
       'Svelte',
@@ -115,12 +115,8 @@ export const Help: SelectFieldStory = {
     label: (
       <SelectFieldLabel>
         Label
-        <Tooltip
-          label="Help"
-        >
-          <Button
-            variant="help"
-          />
+        <Tooltip label="Help">
+          <Button variant="help" />
         </Tooltip>
       </SelectFieldLabel>
     )
@@ -179,7 +175,8 @@ export const Icon: SelectFieldStory = {
           placement: 'top-right',
           placementX: -2,
           placementY: 0,
-          label: 'Эта модель отсутствует в вашем текущем пакете. Для доступа к ней необходимо приобрести пакет Elite.'
+          label:
+            'Эта модель отсутствует в вашем текущем пакете. Для доступа к ней необходимо приобрести пакет Elite.'
         },
         disabled: true
       }
@@ -207,7 +204,7 @@ export const Plans: SelectFieldStory = {
         icon: <LightningIcon />,
         value: 'elite',
         label: 'Elite',
-        backgroundHoverColor: 'gradient',
+        backgroundHoverColor: 'gradient'
       }
     ]
   }
@@ -284,12 +281,10 @@ export const Shortcut: SelectFieldStory = {
         value: 'text',
         label: 'Продолжи текст'
       },
-      ...(
-        [...Array(10)].map((_, index) => ({
-          value: `shortcut-${index + 1}`,
-          label: `Быстрое действие #${index + 1}`
-        }))
-      )
+      ...[...Array(10)].map((_, index) => ({
+        value: `shortcut-${index + 1}`,
+        label: `Быстрое действие #${index + 1}`
+      }))
     ],
     after: [
       {
@@ -346,7 +341,8 @@ export const Preset: SelectFieldStory = {
           },
           {
             value: '5',
-            label: 'Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет'
+            label:
+              'Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет'
           }
         ]
       },
@@ -376,7 +372,7 @@ export const Bold: SelectFieldStory = {
         data: [
           {
             label: 'По возрастанию',
-            noSelect: true,
+            noSelect: true
           },
           {
             label: 'По убыванию',

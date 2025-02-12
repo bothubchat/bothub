@@ -66,20 +66,20 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
     return 'pointer';
   }};
 
-  ${({
-    theme, $disabled, $variant, $skeleton, $color 
-  }) => {
+  ${({ theme, $disabled, $variant, $skeleton, $color }) => {
     switch ($variant) {
       case 'primary':
         return css`
-          background: ${$color
-          ?? ($disabled || $skeleton
+          background: ${$color ??
+          ($disabled || $skeleton
             ? theme.default.colors.grayScale.gray2
             : theme.colors.accent.primary)};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: 1;
 
-          ${!$disabled && !$skeleton && css`
+          ${!$disabled &&
+          !$skeleton &&
+          css`
             &:hover {
               background: ${$color ?? theme.colors.accent.strong};
             }
@@ -90,14 +90,16 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         `;
       case 'primary-transparent':
         return css`
-          background: ${$color
-          ?? ($disabled || $skeleton
+          background: ${$color ??
+          ($disabled || $skeleton
             ? theme.default.colors.grayScale.gray2
             : theme.colors.accent.primary)};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: ${$disabled || $skeleton ? 1 : 0.5};
 
-          ${!$disabled && !$skeleton && css`
+          ${!$disabled &&
+          !$skeleton &&
+          css`
             &:hover {
               opacity: 1;
             }
@@ -106,19 +108,23 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
 
       case 'primary-outline':
         return css`
-          background: ${$disabled || $skeleton ? theme.default.colors.grayScale.gray2 : 'rgba(255, 255, 255, 0)'};
-          
-          box-shadow: ${$disabled || $skeleton ? 'box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.0) inset;' : `0px 0px 0px 1px ${theme.colors.accent.primary} inset`};
-          animation: 
-            ${reverseBoxShadowAnimation(theme.colors.accent.primary)} 
+          background: ${$disabled || $skeleton
+            ? theme.default.colors.grayScale.gray2
+            : 'rgba(255, 255, 255, 0)'};
+
+          box-shadow: ${$disabled || $skeleton
+            ? 'box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.0) inset;'
+            : `0px 0px 0px 1px ${theme.colors.accent.primary} inset`};
+          animation: ${reverseBoxShadowAnimation(theme.colors.accent.primary)}
             0.3s linear forwards;
 
-          ${!$disabled && !$skeleton && css`
+          ${!$disabled &&
+          !$skeleton &&
+          css`
             &:hover {
               background: ${$color ?? theme.colors.accent.primary};
-              animation: 
-                ${boxShadowAnimation(theme.colors.accent.primary)} 
-                0.3s linear forwards;
+              animation: ${boxShadowAnimation(theme.colors.accent.primary)} 0.3s
+                linear forwards;
             }
             &:active {
               background: ${$color ?? theme.colors.accent.strongDown};
@@ -131,15 +137,15 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         return css`
           background: ${$color ?? theme.colors.grayScale.gray4};
           box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset;
-          animation: 
-            ${reverseBoxShadowAnimation(theme.colors.grayScale.gray2)} 
+          animation: ${reverseBoxShadowAnimation(theme.colors.grayScale.gray2)}
             0.3s linear forwards;
 
-          ${!$disabled && !$skeleton && css`
+          ${!$disabled &&
+          !$skeleton &&
+          css`
             &:hover {
               background: ${$color ?? theme.colors.grayScale.gray2};
-              animation: 
-                ${boxShadowAnimation(theme.colors.grayScale.gray2)}
+              animation: ${boxShadowAnimation(theme.colors.grayScale.gray2)}
                 0.3s linear forwards;
             }
             &:active {
@@ -149,11 +155,15 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         `;
       case 'success':
         return css`
-          background: ${$disabled || $skeleton ? $color ?? theme.colors.grayScale.gray2 : theme.colors.green};
+          background: ${$disabled || $skeleton
+            ? ($color ?? theme.colors.grayScale.gray2)
+            : theme.colors.green};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: 1;
 
-          ${!$disabled && !$skeleton && css`
+          ${!$disabled &&
+          !$skeleton &&
+          css`
             &:hover {
               background: ${theme.colors.accent.strong};
             }
@@ -170,11 +180,14 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         `;
     }
   }}
-  ${({ $disabled, $skeleton }) => !$disabled && !$skeleton && css`
-    &:active {
-      transform: translateY(1px);
-    }
-  `}
+  ${({ $disabled, $skeleton }) =>
+    !$disabled &&
+    !$skeleton &&
+    css`
+      &:active {
+        transform: translateY(1px);
+      }
+    `}
 
   ${({ $variant, $icon, $size }) => {
     switch ($variant) {
@@ -238,13 +251,12 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         return css``;
     }
   }}
-  ${({ $fullWidth }) => $fullWidth
-    && css`
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    css`
       width: 100%;
     `}
-  ${({
-    theme, $variant, $icon, $iconFill, $disabled, $disableHoverColor 
-  }) => {
+  ${({ theme, $variant, $icon, $iconFill, $disabled, $disableHoverColor }) => {
     if ($variant !== 'text' || $disabled || $disableHoverColor) {
       return css``;
     }
@@ -255,7 +267,9 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         }
         &:hover {
           svg path {
-            fill: ${theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white} !important;
+            fill: ${theme.mode === 'light'
+              ? theme.default.colors.accent.primary
+              : theme.colors.base.white} !important;
           }
         }
       `;
@@ -272,17 +286,19 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
       }
     `;
   }}
-  ${({ theme, $variant }) => $variant === 'help'
-    && css`
+  ${({ theme, $variant }) =>
+    $variant === 'help' &&
+    css`
       &:hover {
         svg path {
           fill: ${theme.colors.base.white} !important;
         }
       }
     `}
-  ${({ theme, $variant }) => $variant === 'primary-outline'
-    && theme.mode === 'light'
-    && css`
+  ${({ theme, $variant }) =>
+    $variant === 'primary-outline' &&
+    theme.mode === 'light' &&
+    css`
       &:hover,
       &:active {
         ${ButtonText} {

@@ -9,11 +9,11 @@ export interface MessageListProps extends React.PropsWithChildren {
 }
 
 export const MessageList: React.FC<MessageListProps> = ({
-  variant = 'dot', start, children
+  variant = 'dot',
+  start,
+  children
 }) => (
-  <MessageListProvider
-    variant={variant}
-  >
+  <MessageListProvider variant={variant}>
     <MessageListStyled
       $start={start}
       as={variant === 'number' ? 'ol' : 'ul'}

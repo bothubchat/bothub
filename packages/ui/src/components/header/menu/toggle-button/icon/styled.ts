@@ -7,7 +7,9 @@ export const StyledLine = styled.div`
   background-color: #fff;
   position: absolute;
   left: 0;
-  transition: transform 0.15s ease, opacity 0.075s ease;
+  transition:
+    transform 0.15s ease,
+    opacity 0.075s ease;
 `;
 
 export const StyledBurgerIcon = styled.div<{ $isOpen: boolean }>`
@@ -20,9 +22,8 @@ export const StyledBurgerIcon = styled.div<{ $isOpen: boolean }>`
   justify-content: center;
 
   & > ${StyledLine}:nth-child(1) {
-    transform: ${({ $isOpen }) => ($isOpen 
-    ? 'translateY(0) rotate(45deg)' 
-    : 'translateY(-4px) rotate(0)')};
+    transform: ${({ $isOpen }) =>
+      $isOpen ? 'translateY(0) rotate(45deg)' : 'translateY(-4px) rotate(0)'};
   }
 
   & > ${StyledLine}:nth-child(2) {
@@ -30,8 +31,7 @@ export const StyledBurgerIcon = styled.div<{ $isOpen: boolean }>`
   }
 
   & > ${StyledLine}:nth-child(3) {
-    transform: ${({ $isOpen }) => ($isOpen 
-    ? 'translateY(0) rotate(-45deg)' 
-    : 'translateY(4px) rotate(0)')};
+    transform: ${({ $isOpen }) =>
+      $isOpen ? 'translateY(0) rotate(-45deg)' : 'translateY(4px) rotate(0)'};
   }
 `;

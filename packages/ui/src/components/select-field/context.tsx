@@ -10,11 +10,9 @@ export const SelectFieldContext = React.createContext<SelectFieldContextValue>({
   handleSelectClick: () => {}
 });
 
-export const SelectFieldProvider: React.FC<SelectFieldContextValue & React.PropsWithChildren
-> = ({
-  children,
-  ...value
-}) => (
+export const SelectFieldProvider: React.FC<
+  SelectFieldContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
   <SelectFieldContext.Provider value={value}>
     {children}
   </SelectFieldContext.Provider>

@@ -11,7 +11,7 @@ import {
   SidebarGroupDragFolder,
   SidebarGroupsStyled,
   SidebarGroupSkeletonIcon,
-  SidebarGroupTooltip,
+  SidebarGroupTooltip
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { useSidebar } from '../context';
@@ -38,16 +38,22 @@ export interface SidebarGroupSkeletonProps {
   onHandleOpen?: () => void;
 }
 
-export type SidebarGroupProps
-  = (SidebarGroupDefaultProps | SidebarGroupSkeletonProps) & React.PropsWithChildren;
+export type SidebarGroupProps = (
+  | SidebarGroupDefaultProps
+  | SidebarGroupSkeletonProps
+) &
+  React.PropsWithChildren;
 
 export const SidebarGroup: React.FC<SidebarGroupProps> = ({
-  children, ...props
+  children,
+  ...props
 }) => {
-  const [open, setOpen] = props.open !== undefined
-    ? [props.open, props.onHandleOpen] : useState<boolean>(false);
+  const [open, setOpen] =
+    props.open !== undefined
+      ? [props.open, props.onHandleOpen]
+      : useState<boolean>(false);
   const { setNodeRef } = useDroppable({
-    id: !props.skeleton ? props.id : 'draggable-skeleton',
+    id: !props.skeleton ? props.id : 'draggable-skeleton'
   });
   const sidebarOpen = useSidebar().isOpen;
   const onHandleOpen = useCallback(() => {
@@ -87,9 +93,18 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
               </SidebarGroupTooltip>
             </>
           )}
-          {props.skeleton && <SidebarGroupSkeletonIcon width={24} height={24} />}
+          {props.skeleton && (
+            <SidebarGroupSkeletonIcon
+              width={24}
+              height={24}
+            />
+          )}
           {!props.skeleton && (
-            <Tooltip label={props.name} placement="top-left" disabled={props.name.length <= 24}>
+            <Tooltip
+              label={props.name}
+              placement="top-left"
+              disabled={props.name.length <= 24}
+            >
               <TooltipConsumer>
                 {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                   <SidebarGroupNameBox
@@ -116,10 +131,8 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   );
 };
 
-export const SidebarGroups: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <SidebarGroupsStyled>
-    {children}
-  </SidebarGroupsStyled>
-);
+export const SidebarGroups: React.FC<{ children: React.ReactNode }> = ({
+  children
+}) => <SidebarGroupsStyled>{children}</SidebarGroupsStyled>;
 
 export * from './styled';

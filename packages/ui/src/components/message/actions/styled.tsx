@@ -5,7 +5,8 @@ import { MessageVariant } from '../types';
 
 export const MessageActionsStyled = styled.div<{ $variant?: MessageVariant }>`
   display: flex;
-  flex-direction: ${({ $variant }) => ($variant === 'assistant' ? 'row' : 'row-reverse')};
+  flex-direction: ${({ $variant }) =>
+    $variant === 'assistant' ? 'row' : 'row-reverse'};
   align-items: flex-start;
   justify-content: center;
   user-select: none;
@@ -46,19 +47,20 @@ const getModalStylesX = (variant?: MessageVariant, inverted?: boolean) => {
   }
 };
 
-export const MessageActionsMenuModal = styled(animated.div) <{
+export const MessageActionsMenuModal = styled(animated.div)<{
   $variant?: MessageVariant;
   $invertedX?: boolean;
   $invertedY?: boolean;
 }>`
   position: absolute;
-  ${({ $invertedY }) => (!$invertedY
-    ? css`
+  ${({ $invertedY }) =>
+    !$invertedY
+      ? css`
           top: 36px;
         `
-    : css`
+      : css`
           bottom: 36px;
-        `)}
+        `}
   ${({ $variant, $invertedX }) => getModalStylesX($variant, $invertedX)}
   display: flex;
   flex-direction: column;
@@ -101,7 +103,10 @@ export const MessageActionsButton = styled.button`
     svg {
       path,
       circle {
-        fill: ${({ theme }) => (theme.mode === 'dark' ? theme.colors.grayScale.gray6 : theme.colors.grayScale.gray2)};
+        fill: ${({ theme }) =>
+          theme.mode === 'dark'
+            ? theme.colors.grayScale.gray6
+            : theme.colors.grayScale.gray2};
         transition: all 100ms ease-out;
       }
     }
@@ -131,7 +136,7 @@ export const MessageActionsMenuModalOptionContent = styled.div`
 `;
 
 export const MessageActionsButtonText = styled(Typography).attrs({
-  variant: 'body-m-regular',
+  variant: 'body-m-regular'
 })``;
 
 export const MessageActionsButtonWithTooltip = styled.div``;

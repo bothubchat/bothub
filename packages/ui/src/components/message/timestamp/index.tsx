@@ -14,9 +14,11 @@ export const MessageTimestamp = ({ time, position }: MessageTimestampProps) => {
 
   return (
     <TimestampStyled $timestampPosition={position}>
-      <TimestampText $variant={variant} $color={color}>
-        {hours < 10 ? `0${hours}` : hours}
-        :
+      <TimestampText
+        $variant={variant}
+        $color={color}
+      >
+        {hours < 10 ? `0${hours}` : hours}:
         {minutes < 10 ? `0${minutes}` : minutes}
       </TimestampText>
     </TimestampStyled>

@@ -207,3 +207,4 @@ export * from './include-context';
 export * from './queue';
 export * from './sort-alphabet-bottom-top';
 export * from './sort-alphabet-top-bottom';
+export * from './news';

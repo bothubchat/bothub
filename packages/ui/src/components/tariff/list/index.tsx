@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-  TariffDesktopList, 
-  TariffsStyled, 
-  TariffSlider, 
-  TariffSliderActions, 
-  TariffSlideList, 
-  TariffSliderContent, 
+  TariffDesktopList,
+  TariffsStyled,
+  TariffSlider,
+  TariffSliderActions,
+  TariffSlideList,
+  TariffSliderContent,
   TariffSliderShadows,
   TariffSliderLeftShadow,
   TariffSliderRightShadow
@@ -20,52 +20,44 @@ export interface TariffsProps extends React.PropsWithChildren {
   variant?: TariffsVariant;
 }
 
-export const Tariffs: React.FC<TariffsProps> = ({ 
-  variant = 'default', children 
+export const Tariffs: React.FC<TariffsProps> = ({
+  variant = 'default',
+  children
 }) => {
-  const {
-    goPrev,
-    goNext,
-    isPrevAllowed,
-    isNextAllowed,
-    carouselProps,
-  } = useCarousel({
-    slidesCount: React.Children.toArray(children).length,
-  });
+  const { goPrev, goNext, isPrevAllowed, isNextAllowed, carouselProps } =
+    useCarousel({
+      slidesCount: React.Children.toArray(children).length
+    });
 
   return (
     <TariffsStyled>
       <TariffSlider>
         <TariffSliderContent>
-          <TariffSlideList
-            {...carouselProps}
-          >
-            {children}
-          </TariffSlideList>
+          <TariffSlideList {...carouselProps}>{children}</TariffSlideList>
           <TariffSliderShadows>
             <TariffSliderLeftShadow
               $variant={variant}
               $hidden={!isPrevAllowed}
             />
             <TariffSliderRightShadow
-              $variant={variant} 
+              $variant={variant}
               $hidden={!isNextAllowed}
             />
           </TariffSliderShadows>
         </TariffSliderContent>
         <TariffSliderActions>
-          <Button 
+          <Button
             corner="rounded"
-            size="small" 
+            size="small"
             aria-label="Prev Slide Button"
             disabled={!isPrevAllowed}
             onClick={goPrev}
           >
             <ArrowNarrowLeftIcon />
           </Button>
-          <Button 
-            corner="rounded" 
-            size="small" 
+          <Button
+            corner="rounded"
+            size="small"
             aria-label="Next Slide Button"
             disabled={!isNextAllowed}
             onClick={goNext}
@@ -74,11 +66,7 @@ export const Tariffs: React.FC<TariffsProps> = ({
           </Button>
         </TariffSliderActions>
       </TariffSlider>
-      <TariffDesktopList
-        $variant={variant}
-      >
-        {children}
-      </TariffDesktopList>
+      <TariffDesktopList $variant={variant}>{children}</TariffDesktopList>
     </TariffsStyled>
   );
 };

@@ -4,7 +4,7 @@ import {
   StepperLine,
   StepperStep,
   StepperStepPoint,
-  StepperStyled,
+  StepperStyled
 } from './styled';
 import { CheckSmallIcon } from '@/ui/icons';
 
@@ -18,23 +18,15 @@ export const Stepper = memo((props: StepperProps) => (
   <StepperStyled className={props.className}>
     {props.stepLabels.map((label, index) => (
       <React.Fragment key={index}>
-        <StepperStep
-          $status={getStatus(props.activeStep, index)}
-        >
-          <Typography variant="body-xxl-semibold">
-            {label}
-          </Typography>
-          <StepperStepPoint
-            $status={getStatus(props.activeStep, index)}
-          >
+        <StepperStep $status={getStatus(props.activeStep, index)}>
+          <Typography variant="body-xxl-semibold">{label}</Typography>
+          <StepperStepPoint $status={getStatus(props.activeStep, index)}>
             <CheckSmallIcon />
           </StepperStepPoint>
         </StepperStep>
 
         {index < props.stepLabels.length - 1 && (
-          <StepperLine
-            $status={getStatus(props.activeStep, index)}
-          />
+          <StepperLine $status={getStatus(props.activeStep, index)} />
         )}
       </React.Fragment>
     ))}

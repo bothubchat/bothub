@@ -11,17 +11,15 @@ export type BlockStory = StoryObj<typeof Block>;
 
 export const Basic: BlockStory = {
   args: {
-    children: (
-      [...Array(50)].map((_, index) => (
-        <Typography 
-          key={index}
-          component="h1"
-          variant="h1"
-        >
-          Content
-        </Typography>
-      ))
-    )
+    children: [...Array(50)].map((_, index) => (
+      <Typography
+        key={index}
+        component="h1"
+        variant="h1"
+      >
+        Content
+      </Typography>
+    ))
   }
 };
 
@@ -38,14 +36,10 @@ export const Toolbar: BlockStory = {
     toolbar: (
       <BlockToolbar>
         <BlockToolbarButtons>
-          <Button
-            startIcon={<Plus2Icon />}
-          >
-            Button
-          </Button>
+          <Button startIcon={<Plus2Icon />}>Button</Button>
         </BlockToolbarButtons>
       </BlockToolbar>
-    ),
+    )
   }
 };
 

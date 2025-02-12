@@ -3,12 +3,11 @@ import { MessageBoldStyled, MessageBoldStyledProps } from './styled';
 import { useMessage } from '../../context';
 
 export type MessageBoldProps = Omit<
-React.ComponentProps<typeof MessageBoldStyled>, keyof MessageBoldStyledProps
+  React.ComponentProps<typeof MessageBoldStyled>,
+  keyof MessageBoldStyledProps
 >;
 
-export const MessageBold: React.FC<MessageBoldProps> = ({
-  ...props
-}) => {
+export const MessageBold: React.FC<MessageBoldProps> = ({ ...props }) => {
   const { color } = useMessage();
 
   return (

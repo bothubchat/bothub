@@ -17,22 +17,29 @@ export const FileFieldStyled = styled.div<FileFieldStyledProps>`
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
-  ${({ theme, $error, $disabled }) => (!$error && !$disabled) && css`
-    &:hover {
-      ${FileFieldBlock} {
-        border-color: ${theme.colors.accent.primary};
+  ${({ theme, $error, $disabled }) =>
+    !$error &&
+    !$disabled &&
+    css`
+      &:hover {
+        ${FileFieldBlock} {
+          border-color: ${theme.colors.accent.primary};
+        }
       }
-    }
-  `}
+    `}
   width: 100%;
-  ${({ $fullWidth }) => !$fullWidth && css`
-    max-width: 420px;
-  `}
-  ${({ $open }) => !$open && css`
-    width: fit-content;
-    aspect-ratio: 1/1;
-    overflow: hidden;
-  `}
+  ${({ $fullWidth }) =>
+    !$fullWidth &&
+    css`
+      max-width: 420px;
+    `}
+  ${({ $open }) =>
+    !$open &&
+    css`
+      width: fit-content;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+    `}
   user-select: none;
 `;
 
@@ -51,22 +58,25 @@ export interface FileFieldBlockProps {
 export const FileFieldBlock = styled.label<FileFieldBlockProps>`
   display: flex;
   align-items: center;
-  border: 1px solid ${({ theme, $error, $disabled }) => {
-    if ($disabled) {
-      return theme.colors.grayScale.gray1;
-    }
-    if ($error) {
-      return theme.colors.critic;
-    }
+  border: 1px solid
+    ${({ theme, $error, $disabled }) => {
+      if ($disabled) {
+        return theme.colors.grayScale.gray1;
+      }
+      if ($error) {
+        return theme.colors.critic;
+      }
 
-    return theme.colors.grayScale.gray2;
-  }};
+      return theme.colors.grayScale.gray2;
+    }};
   background: ${({ theme, $disabled }) => {
     if ($disabled) {
       return theme.colors.grayScale.gray3;
     }
 
-    return theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.grayScale.gray4;
+    return theme.mode === 'light'
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray4;
   }};
   border-radius: 8px;
   cursor: ${({ $disabled }) => {
@@ -79,20 +89,20 @@ export const FileFieldBlock = styled.label<FileFieldBlockProps>`
   min-height: 46px;
   padding: 8px 16px;
   gap: 10px;
-    ${({ $open }) => !$open && css`
-    padding: 10px;
-    gap: 0;
-    min-height: 36px;
-  `}
+  ${({ $open }) =>
+    !$open &&
+    css`
+      padding: 10px;
+      gap: 0;
+      min-height: 36px;
+    `}
   width: 100%;
 `;
 
-export const FileFieldIcon = styled(AttachIcon).attrs(
-  ({ theme }) => ({
-    size: 16,
-    fill: theme.colors.base.white
-  })
-)``;
+export const FileFieldIcon = styled(AttachIcon).attrs(({ theme }) => ({
+  size: 16,
+  fill: theme.colors.base.white
+}))``;
 
 export const FileFieldInput = styled.input.attrs({
   type: 'file',
@@ -101,7 +111,9 @@ export const FileFieldInput = styled.input.attrs({
   display: none;
 `;
 
-export const FileFieldPlaceholder = styled(Typography).attrs({ variant: 'input-sm' })`
+export const FileFieldPlaceholder = styled(Typography).attrs({
+  variant: 'input-sm'
+})`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
 `;
 
@@ -113,8 +125,14 @@ export const FileFieldFiles = styled.div`
 
 export const FileFieldFile = styled(Badge).attrs({ brick: true })``;
 
-export const FileFieldFileDeleteButton = styled(Button).attrs({ variant: 'text', iconSize: 12, children: <CloseIcon /> })``;
+export const FileFieldFileDeleteButton = styled(Button).attrs({
+  variant: 'text',
+  iconSize: 12,
+  children: <CloseIcon />
+})``;
 
-export const FileFieldErrorText = styled(Typography).attrs({ variant: 'input-md' })`
+export const FileFieldErrorText = styled(Typography).attrs({
+  variant: 'input-md'
+})`
   color: ${({ theme }) => theme.colors.critic};
 `;

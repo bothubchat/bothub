@@ -12,7 +12,10 @@ export const ReferralRadioStyled = styled.div<ReferralRadioStyledProps>`
   box-sizing: border-box;
   width: 100%;
   max-width: 463px;
-  background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : 'rgba(0, 0, 0, 0)')};
+  background: ${({ theme }) =>
+    theme.mode === 'light'
+      ? theme.default.colors.base.white
+      : 'rgba(0, 0, 0, 0)'};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 10px;
   overflow: hidden;
@@ -50,9 +53,9 @@ export const ReferralRadioContent = styled.label<ReferralRadioContentProps>`
     if ($skeleton) {
       return 'progress';
     }
-    
+
     return $checked ? 'default' : 'pointer';
-  }}
+  }};
 `;
 
 export const ReferralRadioHead = styled.div`
@@ -63,7 +66,9 @@ export const ReferralRadioHead = styled.div`
   margin-bottom: 12px;
 `;
 
-export const ReferralRadioName = styled(Typography).attrs({ variant: 'body-m-semibold' })``;
+export const ReferralRadioName = styled(Typography).attrs({
+  variant: 'body-m-semibold'
+})``;
 
 export const ReferralRadioRadio = styled(Radio)``;
 
@@ -85,12 +90,16 @@ export const ReferralRadioTableRow = styled.div`
   width: 100%;
 `;
 
-export const ReferralRadioTableCell = styled(Typography).attrs({ variant: 'body-m-semibold' })`
+export const ReferralRadioTableCell = styled(Typography).attrs({
+  variant: 'body-m-semibold'
+})`
   display: inline-flex;
   --skeleton-width: 100px;
 `;
 
-export const ReferralRadioTableHeadCell = styled(Typography).attrs({ variant: 'body-m-regular' })`
+export const ReferralRadioTableHeadCell = styled(Typography).attrs({
+  variant: 'body-m-regular'
+})`
   display: inline-flex;
   color: ${({ theme }) => theme.colors.grayScale.gray1};
   --skeleton-width: 240px;

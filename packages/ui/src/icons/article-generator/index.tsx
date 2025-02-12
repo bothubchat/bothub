@@ -1,7 +1,12 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const ArticleGeneratorIcon = icon(({ ...props }) => (
-  <Icon size={36} viewBox="0 0 36 36" fill="none" {...props}>
+  <Icon
+    size={36}
+    viewBox="0 0 36 36"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {() => (
         <>
@@ -25,7 +30,10 @@ export const ArticleGeneratorIcon = icon(({ ...props }) => (
               gradientUnits="userSpaceOnUse"
             >
               <stop stopColor="#1C64F2" />
-              <stop offset="1" stopColor="#D41CF2" />
+              <stop
+                offset="1"
+                stopColor="#D41CF2"
+              />
             </linearGradient>
           </defs>
         </>

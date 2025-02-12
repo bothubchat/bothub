@@ -5,17 +5,17 @@ import { SidebarUserInfoAvatarStyled } from './styled';
 import { useTooltip } from '@/ui/components/tooltip';
 import { TariffPlan } from './types';
 
-export type SidebarUserInfoAvatarProps = Omit<AvatarProps & { tariffPlan?: TariffPlan }, 'ref'>;
+export type SidebarUserInfoAvatarProps = Omit<
+  AvatarProps & { tariffPlan?: TariffPlan },
+  'ref'
+>;
 
 export const SidebarUserInfoAvatar: React.FC<SidebarUserInfoAvatarProps> = ({
   tariffPlan,
   ...props
 }) => {
   const { isOpen } = useSidebar();
-  const {
-    handleTooltipMouseEnter,
-    handleTooltipMouseLeave
-  } = useTooltip();
+  const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
 
   return (
     <SidebarUserInfoAvatarStyled

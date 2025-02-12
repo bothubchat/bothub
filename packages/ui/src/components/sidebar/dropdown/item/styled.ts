@@ -12,7 +12,7 @@ export const SidebarDropdownItemStyled = styled.button`
   border: none;
   gap: 10px;
   cursor: pointer;
-  
+
   padding: 10px;
   border-radius: 8px;
   color: ${({ theme }) => theme.colors.base.white};
@@ -21,4 +21,6 @@ export const SidebarDropdownItemStyled = styled.button`
   }
 `;
 
-export const SidebarDropdownItemText = styled(Typography).attrs({ variant: 'body-m-regular' })``;
+export const SidebarDropdownItemText = styled(Typography).attrs({
+  variant: 'body-m-regular'
+})``;

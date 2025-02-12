@@ -9,7 +9,7 @@ export type BlackFridayBannerMiniStory = StoryObj<typeof BannerMiniBlackFriday>;
 export const Basic: BlackFridayBannerMiniStory = {
   args: {
     title: 'Волна\nскидок \nДо 30%',
-    text: 'Только в эту пятницу',
+    text: 'Только в эту пятницу'
   }
 };
 

@@ -1,6 +1,4 @@
-import {
-  useState, useCallback, useRef, useEffect
-} from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useTransition } from '@react-spring/web';
 import { MenuIcon, CloseIcon } from '@/ui/icons';
 import { MenuDropdownProvider } from './context';
@@ -9,7 +7,7 @@ import {
   MenuDropdownBlockContent,
   MenuDropdownBlockScrollbarWrapper,
   MenuDropdownStyled,
-  MenuDropdownToggleButton,
+  MenuDropdownToggleButton
 } from './styled';
 
 export type MenuDropdownProps = React.ComponentProps<'div'> & {
@@ -56,25 +54,35 @@ export const MenuDropdown: React.FC<MenuDropdownProps> = ({
     from: { scale: 0.85, opacity: 0 },
     enter: { opacity: 1, scale: 1 },
     leave: { scale: 0.85, opacity: 0 },
-    config: { duration: 135 },
+    config: { duration: 135 }
   });
 
   return (
-    <MenuDropdownProvider isOpen={isOpen} setIsOpen={setIsOpen}>
-      <MenuDropdownStyled {...props} ref={menuDropdownRef}>
-        <MenuDropdownToggleButton disabled={disabled} onClick={handleToggle}>
+    <MenuDropdownProvider
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+    >
+      <MenuDropdownStyled
+        {...props}
+        ref={menuDropdownRef}
+      >
+        <MenuDropdownToggleButton
+          disabled={disabled}
+          onClick={handleToggle}
+        >
           <Icon />
         </MenuDropdownToggleButton>
         {dropdownTransition(
-          (style, item) => item && (
-            <MenuDropdownBlock style={style}>
-              <MenuDropdownBlockScrollbarWrapper>
-                <MenuDropdownBlockContent>
-                  {children}
-                </MenuDropdownBlockContent>
-              </MenuDropdownBlockScrollbarWrapper>
-            </MenuDropdownBlock>
-          )
+          (style, item) =>
+            item && (
+              <MenuDropdownBlock style={style}>
+                <MenuDropdownBlockScrollbarWrapper>
+                  <MenuDropdownBlockContent>
+                    {children}
+                  </MenuDropdownBlockContent>
+                </MenuDropdownBlockScrollbarWrapper>
+              </MenuDropdownBlock>
+            )
         )}
       </MenuDropdownStyled>
     </MenuDropdownProvider>

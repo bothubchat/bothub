@@ -5,15 +5,15 @@ export interface MenuDropdownContextValue {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const MenuDropdownContext = React.createContext<MenuDropdownContextValue>({
-  isOpen: false,
-  setIsOpen() {}
-});
+export const MenuDropdownContext =
+  React.createContext<MenuDropdownContextValue>({
+    isOpen: false,
+    setIsOpen() {}
+  });
 
-export const MenuDropdownProvider: React.FC<MenuDropdownContextValue & React.PropsWithChildren> = ({
-  children,
-  ...value
-}) => (
+export const MenuDropdownProvider: React.FC<
+  MenuDropdownContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
   <MenuDropdownContext.Provider value={value}>
     {children}
   </MenuDropdownContext.Provider>

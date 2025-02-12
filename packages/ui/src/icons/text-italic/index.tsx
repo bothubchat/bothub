@@ -1,7 +1,12 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const TextItalicIcon = icon(({ ...props }) => (
-  <Icon size={18} viewBox="0 0 18 18" fill="none" {...props}>
+  <Icon
+    size={18}
+    viewBox="0 0 18 18"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {({ fill = 'white' } = { fill: 'white' }) => (
         <path

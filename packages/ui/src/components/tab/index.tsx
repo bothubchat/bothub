@@ -8,7 +8,10 @@ export interface TabProps extends React.PropsWithChildren {
 }
 
 export const Tab: React.FC<TabProps> = ({
-  className, active = false, children, onClick
+  className,
+  active = false,
+  children,
+  onClick
 }) => (
   <TabStyled
     $active={active}
@@ -17,11 +20,7 @@ export const Tab: React.FC<TabProps> = ({
   >
     {typeof children !== 'string' && children}
     {typeof children === 'string' && (
-      <TabText
-        $active={active}
-      >
-        {children}
-      </TabText>
+      <TabText $active={active}>{children}</TabText>
     )}
   </TabStyled>
 );

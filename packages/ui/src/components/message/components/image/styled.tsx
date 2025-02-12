@@ -14,10 +14,10 @@ export const MessageImageStyled = styled.div`
     transition: 0.225s opacity;
     opacity: 0;
     ${adaptive({
-    touch: css`
-      opacity: 1;
-    `
-  })}
+      touch: css`
+        opacity: 1;
+      `
+    })}
   }
   &:hover {
     ${MessageImageButtonsStyled} {
@@ -45,9 +45,11 @@ export interface MessageImageNativeProps {
 }
 
 export const MessageImageNative = styled(Image)<MessageImageNativeProps>`
-  ${({ $loading }) => $loading && css`
-    display: none;
-  `}
+  ${({ $loading }) =>
+    $loading &&
+    css`
+      display: none;
+    `}
   max-width: inherit;
   cursor: ${({ $progress, $clickable }) => {
     if ($progress) {

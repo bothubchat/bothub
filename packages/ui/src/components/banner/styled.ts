@@ -39,7 +39,7 @@ export const BlackFridayBannerStyled = styled.div<BlackFridayBannerStyledProps>`
             height: 350px;
             align-items: flex-start;
             padding: 40px 34px;
-          `,
+          `
         });
       case 'main':
         return adaptive({
@@ -65,12 +65,18 @@ export const BlackFridayBannerStyledGradient = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(90deg, rgba(16, 19, 38, 0.5) 0%, rgba(28, 100, 242, 0.5) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(16, 19, 38, 0.5) 0%,
+    rgba(28, 100, 242, 0.5) 100%
+  );
   width: 100%;
   height: 100%;
 `;
 
-export const BlackFridayBannerBackgroundText = styled.div<{ $variant?: 'dashboard' | 'main' }>`
+export const BlackFridayBannerBackgroundText = styled.div<{
+  $variant?: 'dashboard' | 'main';
+}>`
   position: absolute;
   display: flex;
   white-space: pre-wrap;
@@ -119,13 +125,13 @@ export const BlackFridayBannerBackgroundText = styled.div<{ $variant?: 'dashboar
           `,
           mobile: css`
             display: none;
-          `,
+          `
         });
     }
   }}
 `;
 
-export const BlackFridayBannerBackgroundWave = styled.img.attrs({ 
+export const BlackFridayBannerBackgroundWave = styled.img.attrs({
   src: wave
 })<{ $variant?: 'dashboard' | 'main' }>`
   position: absolute;
@@ -142,14 +148,14 @@ export const BlackFridayBannerBackgroundWave = styled.img.attrs({
           mobile: css`
             height: 100%;
             display: block;
-          `,
+          `
         });
       case 'main':
         return adaptive({
           variant: 'main',
           mobile: css`
             display: block;
-          `,
+          `
         });
     }
   }}
@@ -166,36 +172,39 @@ export const BlackFridayBannerBackground = styled.img<{
   z-index: 0;
 `;
 
-export const BlackFridayBannerBackgroundDashboardDesktop = styled(BlackFridayBannerBackground)
-  .attrs({
-    src: dashboardDesktop
-  })`
+export const BlackFridayBannerBackgroundDashboardDesktop = styled(
+  BlackFridayBannerBackground
+).attrs({
+  src: dashboardDesktop
+})`
   ${adaptive({
     variant: 'dashboard',
     desktop: css`
       display: block;
       right: clamp(-13.75rem, -80rem + 100vw, 0rem);
-    `,
+    `
   })}
 `;
 
-export const BlackFridayBannerBackgroundDashboardTablet = styled(BlackFridayBannerBackground)
-  .attrs({
-    src: dashboardTablet
-  })`
-    ${adaptive({
+export const BlackFridayBannerBackgroundDashboardTablet = styled(
+  BlackFridayBannerBackground
+).attrs({
+  src: dashboardTablet
+})`
+  ${adaptive({
     variant: 'dashboard',
     tablet: css`
       right: clamp(-18.75rem, -53.125rem + 100vw, 0rem);
       display: block;
-    `,
+    `
   })}
 `;
 
-export const BlackFridayBannerBackgroundDashboardMobile = styled(BlackFridayBannerBackground)
-  .attrs({
-    src: dashboardMobile
-  })`
+export const BlackFridayBannerBackgroundDashboardMobile = styled(
+  BlackFridayBannerBackground
+).attrs({
+  src: dashboardMobile
+})`
   ${adaptive({
     variant: 'dashboard',
     mobile: css`
@@ -204,11 +213,13 @@ export const BlackFridayBannerBackgroundDashboardMobile = styled(BlackFridayBann
       right: auto;
       left: 20px;
       scale: 1.5;
-    `,
+    `
   })}
 `;
 
-export const BlackFridayBannerBackgroundMainDesktop = styled(BlackFridayBannerBackground).attrs({
+export const BlackFridayBannerBackgroundMainDesktop = styled(
+  BlackFridayBannerBackground
+).attrs({
   src: mainDesktop
 })`
   ${adaptive({
@@ -216,35 +227,41 @@ export const BlackFridayBannerBackgroundMainDesktop = styled(BlackFridayBannerBa
     desktop: css`
       display: block;
       right: clamp(-13.75rem, -80rem + 100vw, 0rem);
-    `,
+    `
   })}
 `;
 
-export const BlackFridayBannerBackgroundMainTablet = styled(BlackFridayBannerBackground).attrs({
+export const BlackFridayBannerBackgroundMainTablet = styled(
+  BlackFridayBannerBackground
+).attrs({
   src: mainTablet
 })`
-    ${adaptive({
+  ${adaptive({
     variant: 'main',
     tablet: css`
       display: block;
       right: clamp(-18.75rem, -53.125rem + 100vw, 0rem);
-    `,
+    `
   })}
 `;
 
-export const BlackFridayBannerBackgroundMainMobile = styled(BlackFridayBannerBackground).attrs({
+export const BlackFridayBannerBackgroundMainMobile = styled(
+  BlackFridayBannerBackground
+).attrs({
   src: mainMobile
 })`
-    ${adaptive({
+  ${adaptive({
     variant: 'main',
     mobile: css`
       display: block;
       right: clamp(-7.813rem, -24.554rem + 71.429vw, 0rem);
-    `,
+    `
   })}
 `;
 
-export const BlackFridayContainer = styled.div<{ $variant?: 'dashboard' | 'main' }>`
+export const BlackFridayContainer = styled.div<{
+  $variant?: 'dashboard' | 'main';
+}>`
   display: flex;
   position: relative;
   z-index: 1;
@@ -263,24 +280,24 @@ export const BlackFridayContainer = styled.div<{ $variant?: 'dashboard' | 'main'
           `,
           tablet: css`
             gap: 10px;
-          `,
+          `
         });
       case 'main':
         return adaptive({
           variant: 'main',
-          tablet: css`
-            
-          `,
+          tablet: css``,
           mobile: css`
             flex-direction: column-reverse;
             gap: 10px;
-          `,
+          `
         });
     }
   }}
-  `;
+`;
 
-export const BlackFridayBannerTitle = styled.span<{ $variant: 'dashboard' | 'main' }>`
+export const BlackFridayBannerTitle = styled.span<{
+  $variant: 'dashboard' | 'main';
+}>`
   font-family: inherit;
   font-size: 44px;
   text-transform: uppercase;
@@ -295,7 +312,7 @@ export const BlackFridayBannerTitle = styled.span<{ $variant: 'dashboard' | 'mai
           desktop: css`
             font-size: 64px;
             line-height: 60px;
-          `,
+          `
         });
       case 'main':
         return null;
@@ -303,7 +320,9 @@ export const BlackFridayBannerTitle = styled.span<{ $variant: 'dashboard' | 'mai
   }}
 `;
 
-export const BlackFridayDescription = styled.div<{ $variant: 'dashboard' | 'main' }>`
+export const BlackFridayDescription = styled.div<{
+  $variant: 'dashboard' | 'main';
+}>`
   font-family: inherit;
   font-size: 20px;
   ${({ $variant }) => {
@@ -311,12 +330,11 @@ export const BlackFridayDescription = styled.div<{ $variant: 'dashboard' | 'main
       case 'dashboard':
         return adaptive({
           variant: 'dashboard',
-          desktop: css`
-          `,
+          desktop: css``,
           tablet: css`
             font-size: 16px;
             line-height: 20px;
-          `,
+          `
         });
       case 'main':
         return adaptive({
@@ -328,11 +346,11 @@ export const BlackFridayDescription = styled.div<{ $variant: 'dashboard' | 'main
             max-width: 171px;
             font-size: 16px;
             line-height: 20px;
-          `,
+          `
         });
     }
   }}
-  
+
   font-weight: 600;
   line-height: 24.2px;
   text-transform: uppercase;
@@ -342,19 +360,21 @@ export const BlackFridayDescription = styled.div<{ $variant: 'dashboard' | 'main
   text-decoration-skip-ink: none;
 `;
 
-export const BlackFridayBannerText = styled.div<{ $variant: 'dashboard' | 'main' }>`
+export const BlackFridayBannerText = styled.div<{
+  $variant: 'dashboard' | 'main';
+}>`
   ${({ $variant }) => {
     switch ($variant) {
       case 'dashboard':
         return adaptive({
-          variant: 'dashboard',
+          variant: 'dashboard'
         });
       case 'main':
         return adaptive({
           variant: 'main',
           mobile: css`
             display: none;
-          `,
+          `
         });
     }
   }}

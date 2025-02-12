@@ -98,18 +98,18 @@ export const BothubDashboardScaleStyle = css`
 `;
 
 export interface BothubScaleGlobalStyleStyledProps {
-  $variant: BothubScaleVariant; 
+  $variant: BothubScaleVariant;
 }
 
 export const BothubScaleGlobalStyleStyled = createGlobalStyle<BothubScaleGlobalStyleStyledProps>`
   html {
     ${({ $variant }) => {
-    switch ($variant) {
-      case 'main':
-        return BothubMainScaleStyle;
-      case 'dashboard':
-        return BothubDashboardScaleStyle;
-    }
-  }}
+      switch ($variant) {
+        case 'main':
+          return BothubMainScaleStyle;
+        case 'dashboard':
+          return BothubDashboardScaleStyle;
+      }
+    }}
   }
 `;

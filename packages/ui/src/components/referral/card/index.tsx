@@ -1,19 +1,19 @@
 import React from 'react';
 import {
-  ReferralCardAI, 
-  ReferralCardAIName, 
-  ReferralCardBottom, 
-  ReferralCardContent, 
-  ReferralCardDateCreated, 
-  ReferralCardInfo, 
-  ReferralCardMain, 
-  ReferralCardName, 
+  ReferralCardAI,
+  ReferralCardAIName,
+  ReferralCardBottom,
+  ReferralCardContent,
+  ReferralCardDateCreated,
+  ReferralCardInfo,
+  ReferralCardMain,
+  ReferralCardName,
   ReferralCardPrice,
-  ReferralCardPriceProgress, 
-  ReferralCardPriceRange, 
-  ReferralCardPriceRangeText, 
+  ReferralCardPriceProgress,
+  ReferralCardPriceRange,
+  ReferralCardPriceRangeText,
   ReferralCardStyled,
-  ReferralCardTop 
+  ReferralCardTop
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 
@@ -40,55 +40,47 @@ export interface ReferralCardSkeletonProps {
   skeleton: true;
 }
 
-export type ReferralCardProps = (ReferralCardDefaultProps | ReferralCardSkeletonProps) & {
+export type ReferralCardProps = (
+  | ReferralCardDefaultProps
+  | ReferralCardSkeletonProps
+) & {
   className?: string;
   withdraw: React.ReactNode;
 } & React.PropsWithChildren;
 
 export const ReferralCard: React.FC<ReferralCardProps> = ({
-  className, withdraw, children, ...props
+  className,
+  withdraw,
+  children,
+  ...props
 }) => (
-  <ReferralCardStyled
-    className={className}
-  >
+  <ReferralCardStyled className={className}>
     <ReferralCardContent>
       <ReferralCardTop>
         <ReferralCardMain>
-          {(!props.skeleton && props.aiName) && (
+          {!props.skeleton && props.aiName && (
             <ReferralCardAI>
-              <ReferralCardAIName>
-                {props.aiName}
-              </ReferralCardAIName>
+              <ReferralCardAIName>{props.aiName}</ReferralCardAIName>
             </ReferralCardAI>
           )}
           <ReferralCardInfo>
             <ReferralCardName>
               {!props.skeleton && props.name}
-              {props.skeleton && (
-                <Skeleton width={265} />
-              )}
+              {props.skeleton && <Skeleton width={265} />}
             </ReferralCardName>
             <ReferralCardPrice>
               {!props.skeleton && (
-                <ReferralCardPriceProgress
-                  {...props.price}
-                />
+                <ReferralCardPriceProgress {...props.price} />
               )}
-              {props.skeleton && (
-                <ReferralCardPriceProgress skeleton />
-              )}
+              {props.skeleton && <ReferralCardPriceProgress skeleton />}
               <ReferralCardPriceRange>
                 <ReferralCardPriceRangeText>
                   {!props.skeleton && props.price.minText}
-                  {props.skeleton && (
-                    <Skeleton width={60} />
-                  )}
+                  {props.skeleton && <Skeleton width={60} />}
                 </ReferralCardPriceRangeText>
                 <ReferralCardPriceRangeText>
                   {!props.skeleton && props.price.maxText}
-                  {props.skeleton && (
-                    <Skeleton width={60} />
-                  )}
+                  {props.skeleton && <Skeleton width={60} />}
                 </ReferralCardPriceRangeText>
               </ReferralCardPriceRange>
             </ReferralCardPrice>
@@ -100,9 +92,7 @@ export const ReferralCard: React.FC<ReferralCardProps> = ({
         {withdraw}
         <ReferralCardDateCreated>
           {!props.skeleton && props.dateCreated}
-          {props.skeleton && (
-            <Skeleton width={330} />
-          )}
+          {props.skeleton && <Skeleton width={330} />}
         </ReferralCardDateCreated>
       </ReferralCardBottom>
     </ReferralCardContent>

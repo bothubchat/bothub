@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { MessageImageNative, MessageImageSkeleton, MessageImageStyled } from './styled';
+import {
+  MessageImageNative,
+  MessageImageSkeleton,
+  MessageImageStyled
+} from './styled';
 import { ImageProps } from '@/ui/components/image';
 import { MessageImageProvider } from './context';
 import { useTheme } from '@/ui/theme';
@@ -17,8 +21,15 @@ export interface MessageImageProps extends Omit<ImageProps, 'ref'> {
 }
 
 export const MessageImage: React.FC<MessageImageProps> = ({
-  className, src, width, height, buttons, 
-  clickable = false, progress = false, fetchImage = false, disableSkeleton = false,
+  className,
+  src,
+  width,
+  height,
+  buttons,
+  clickable = false,
+  progress = false,
+  fetchImage = false,
+  disableSkeleton = false,
   ...props
 }) => {
   const theme = useTheme();
@@ -31,9 +42,7 @@ export const MessageImage: React.FC<MessageImageProps> = ({
     if (fetchImage) {
       fetch(src)
         .then((response) => response.blob())
-        .then((image) => (
-          setImageUrl(URL.createObjectURL(image))
-        ));
+        .then((image) => setImageUrl(URL.createObjectURL(image)));
     }
   }, [src]);
 
@@ -42,10 +51,8 @@ export const MessageImage: React.FC<MessageImageProps> = ({
       width={width}
       height={height}
     >
-      <MessageImageStyled
-        className={className}
-      >
-        {(isLoading && !disableSkeleton) && (
+      <MessageImageStyled className={className}>
+        {isLoading && !disableSkeleton && (
           <MessageImageSkeleton
             $width={width ?? 300}
             $height={height ?? 300}
@@ -54,9 +61,11 @@ export const MessageImage: React.FC<MessageImageProps> = ({
               theme.mode === 'light' ? 0.225 : 0.35
             ]}
             colors={[
-              variant === 'user' ? theme.colors.base.white : (
-                theme.mode === 'light' ? theme.default.colors.base.black : theme.colors.grayScale.gray6
-              )
+              variant === 'user'
+                ? theme.colors.base.white
+                : theme.mode === 'light'
+                  ? theme.default.colors.base.black
+                  : theme.colors.grayScale.gray6
             ]}
           />
         )}
@@ -65,9 +74,10 @@ export const MessageImage: React.FC<MessageImageProps> = ({
           $progress={progress}
           $loading={isLoading && !disableSkeleton}
           {...props}
-          {...((fetchImage && imageUrl) && {
-            src: imageUrl
-          })}
+          {...(fetchImage &&
+            imageUrl && {
+              src: imageUrl
+            })}
           {...(!fetchImage && { src })}
           width={width ?? 300}
           height={height ?? 300}

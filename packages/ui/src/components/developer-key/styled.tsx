@@ -9,8 +9,10 @@ export interface DeveloperKeyStyledProps {
 
 export const DeveloperKeyWrapper = styled.div<{ $skeleton?: boolean }>`
   display: flex;
-  ${({ $skeleton }) => $skeleton && css`
-    width: 100%;
+  ${({ $skeleton }) =>
+    $skeleton &&
+    css`
+      width: 100%;
     `}
   max-width: 100%;
   flex-direction: column;
@@ -57,11 +59,11 @@ export const DeveloperKeyContent = styled.div`
 `;
 
 export const DeveloperKeyLabel = styled(Typography).attrs({
-  variant: 'body-m-regular',
+  variant: 'body-m-regular'
 })``;
 
 export const DeveloperKeyValue = styled(Typography).attrs({
-  variant: 'body-m-medium',
+  variant: 'body-m-medium'
 })`
   text-overflow: ellipsis;
   width: 100%;
@@ -80,8 +82,9 @@ export const DeveloperKeyDeleteButton = styled.button<{ $skeleton?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  ${({ $skeleton }) => (!$skeleton
-    ? css`
+  ${({ $skeleton }) =>
+    !$skeleton
+      ? css`
           &:hover {
             cursor: pointer;
             filter: brightness(1.2);
@@ -91,11 +94,11 @@ export const DeveloperKeyDeleteButton = styled.button<{ $skeleton?: boolean }>`
             transform: translateY(1px);
           }
         `
-    : css`
+      : css`
           &:hover {
             cursor: progress;
           }
-        `)}
+        `}
   transition: 0.05s ease-in-out;
 `;
 

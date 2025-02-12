@@ -1,6 +1,4 @@
-import React, {
-  useCallback, useEffect, useRef, useState
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import { Portal } from '@/ui/components/portal';
 import {
@@ -9,7 +7,7 @@ import {
   TooltipLabel,
   TooltipLabelBold,
   TooltipMarkdown,
-  TooltipStyled,
+  TooltipStyled
 } from './styled';
 import { TooltipArrow } from './arrow';
 import { TooltipProvider } from './context';
@@ -41,7 +39,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   disabled = false,
   disableHiddenAnimation = false,
   markdown = false,
-  children,
+  children
 }) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [hoveredElement, sethoveredElement] = useState<Element | null>();
@@ -57,7 +55,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
     if (!(el instanceof Element)) {
       return [0, 0];
     }
-    const { width: tooltipWidth, height: tooltipHeight } = tooltipEl.getBoundingClientRect();
+    const { width: tooltipWidth, height: tooltipHeight } =
+      tooltipEl.getBoundingClientRect();
     const rect = el.getBoundingClientRect();
     const { width: elWidth } = rect;
     const elX = rect.left + window.scrollX;
@@ -201,64 +200,67 @@ export const Tooltip: React.FC<TooltipProps> = ({
     config: { duration: 150 }
   });
 
-  const tooltipNode: React.ReactNode = tooltipTransition((style, item) => item && (
-    <TooltipStyled
-      $placement={placement}
-      $align={align}
-      $inverted={inverted}
-      ref={tooltipRef}
-      className={className}
-      style={{
-        ...style,
-        top: top.length <= 1 ? top[0] : `calc(${top.join(' + ')})`,
-        left: left.length <= 1 ? left[0] : `calc(${left.join(' + ')})`,
-      }}
-    >
-      {inverted && (
-        <TooltipArrow
-          placement={placement}
-          variant={variant}
-          inverted={inverted}
-        />
-      )}
-      <TooltipBlock $variant={variant}>
-        {typeof label === 'string' && !markdown && (
-          <TooltipLabel>
-            {label.slice(0, 272)}
-            {label.length > 272 && '...'}
-          </TooltipLabel>
-        )}
-        {typeof label === 'string' && markdown && (
-          <TooltipMarkdown
-            components={{
-              p: ({ children }) => (
-                <TooltipLabel component="p">{children}</TooltipLabel>
-              ),
-              b: ({ children }) => (
-                <TooltipLabelBold>{children}</TooltipLabelBold>
-              ),
-              strong: ({ children }) => (
-                <TooltipLabelBold component="strong">
-                  {children}
-                </TooltipLabelBold>
-              ),
-              code: ({ children }) => <TooltipCode>{children}</TooltipCode>,
-            }}
-          >
-            {label}
-          </TooltipMarkdown>
-        )}
-        {typeof label !== 'string' && label}
-      </TooltipBlock>
-      {!inverted && (
-        <TooltipArrow
-          placement={placement}
-          variant={variant}
-          inverted={inverted}
-        />
-      )}
-    </TooltipStyled>
-  ));
+  const tooltipNode: React.ReactNode = tooltipTransition(
+    (style, item) =>
+      item && (
+        <TooltipStyled
+          $placement={placement}
+          $align={align}
+          $inverted={inverted}
+          ref={tooltipRef}
+          className={className}
+          style={{
+            ...style,
+            top: top.length <= 1 ? top[0] : `calc(${top.join(' + ')})`,
+            left: left.length <= 1 ? left[0] : `calc(${left.join(' + ')})`
+          }}
+        >
+          {inverted && (
+            <TooltipArrow
+              placement={placement}
+              variant={variant}
+              inverted={inverted}
+            />
+          )}
+          <TooltipBlock $variant={variant}>
+            {typeof label === 'string' && !markdown && (
+              <TooltipLabel>
+                {label.slice(0, 272)}
+                {label.length > 272 && '...'}
+              </TooltipLabel>
+            )}
+            {typeof label === 'string' && markdown && (
+              <TooltipMarkdown
+                components={{
+                  p: ({ children }) => (
+                    <TooltipLabel component="p">{children}</TooltipLabel>
+                  ),
+                  b: ({ children }) => (
+                    <TooltipLabelBold>{children}</TooltipLabelBold>
+                  ),
+                  strong: ({ children }) => (
+                    <TooltipLabelBold component="strong">
+                      {children}
+                    </TooltipLabelBold>
+                  ),
+                  code: ({ children }) => <TooltipCode>{children}</TooltipCode>
+                }}
+              >
+                {label}
+              </TooltipMarkdown>
+            )}
+            {typeof label !== 'string' && label}
+          </TooltipBlock>
+          {!inverted && (
+            <TooltipArrow
+              placement={placement}
+              variant={variant}
+              inverted={inverted}
+            />
+          )}
+        </TooltipStyled>
+      )
+  );
 
   const handleMouseEnter = (e: React.MouseEvent<Element, MouseEvent>): void => {
     if (!isDisabled && e.currentTarget instanceof Element) {
@@ -295,9 +297,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       handleTooltipMouseUp={handleMouseUp}
       handleTooltipMouseDown={handleMouseDown}
     >
-      <Portal>
-        {tooltipNode}
-      </Portal>
+      <Portal>{tooltipNode}</Portal>
       {children}
     </TooltipProvider>
   );

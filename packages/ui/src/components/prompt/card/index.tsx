@@ -1,6 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import {
-  PromptCardContent, PromptCardCopyIcon, PromptCardStyled, PromptCardText 
+  PromptCardContent,
+  PromptCardCopyIcon,
+  PromptCardStyled,
+  PromptCardText
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
@@ -17,7 +20,10 @@ export interface PromptCardProps {
 }
 
 export const PromptCard: React.FC<PromptCardProps> = ({
-  className, tabIndex = 0, children, onCopy
+  className,
+  tabIndex = 0,
+  children,
+  onCopy
 }) => {
   const [isCopied, setIsCopied] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
@@ -26,12 +32,12 @@ export const PromptCard: React.FC<PromptCardProps> = ({
   const handleFocus = useCallback(() => {
     setIsFocus(true);
   }, []);
-  
+
   const handleBlur = useCallback(() => {
     setIsFocus(false);
     setIsCopied(false);
   }, []);
-  
+
   const handleClick = useCallback(() => {
     if (isCopied) {
       return;
@@ -52,15 +58,13 @@ export const PromptCard: React.FC<PromptCardProps> = ({
       <PromptCardContent>
         <IconProvider
           size={24}
-          fill={isFocus ? theme.colors.accent.primaryLight : theme.colors.base.white}
+          fill={
+            isFocus ? theme.colors.accent.primaryLight : theme.colors.base.white
+          }
         >
-          <PromptCardCopyIcon 
-            as={isFocus ? CheckSmallIcon : CopyIcon}
-          />
+          <PromptCardCopyIcon as={isFocus ? CheckSmallIcon : CopyIcon} />
         </IconProvider>
-        <PromptCardText>
-          {children}
-        </PromptCardText>
+        <PromptCardText>{children}</PromptCardText>
       </PromptCardContent>
     </PromptCardStyled>
   );

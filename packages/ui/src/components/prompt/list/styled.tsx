@@ -7,7 +7,10 @@ export const PromptsStyled = styled.div`
   flex-direction: column;
 `;
 
-export const PromptsLabel = styled(Typography).attrs({ component: 'h2', variant: 'h3' })`
+export const PromptsLabel = styled(Typography).attrs({
+  component: 'h2',
+  variant: 'h3'
+})`
   ${adaptive(() => ({
     desktop: css`
       margin-bottom: 34px;

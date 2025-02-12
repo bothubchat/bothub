@@ -1,7 +1,12 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const Ratio21x9Icon = icon(({ ...props }) => (
-  <Icon size={16} viewBox="0 0 16 16" fill="none" {...props}>
+  <Icon
+    size={16}
+    viewBox="0 0 16 16"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {({ fill = '#4785FF' } = { fill: '#4785FF' }) => (
         <>

@@ -14,16 +14,17 @@ export const TableScrollbarWrapper = styled(Scrollbar).attrs(
       color: theme.colors.base.black,
       left: <ScrollbarShadow side="left" />,
       right: <ScrollbarShadow side="right" />,
-      ...scrollShadows,
-    },
+      ...scrollShadows
+    }
   })
 )``;
 
 export const TableContent = styled.table<{ $fullWidth?: boolean }>`
   border-collapse: separate;
   border-spacing: 0;
-  ${({ $fullWidth }) => $fullWidth
-    && css`
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    css`
       width: 100%;
     `}
   ${() => css`

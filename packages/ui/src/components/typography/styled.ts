@@ -366,7 +366,9 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
   text-decoration: none;
   text-align: ${({ $align }) => $align};
   --skeleton-width: 200px;
-  ${({ $fullWidth }) => $fullWidth && `
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    `
     width: 100%;
   `}
   ${({ $variant }) => getTypographyStyles($variant)}

@@ -2,10 +2,19 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Logo } from '@/ui/components/logo';
 import {
-  Footer, FooterColumn, FooterColumnLabel, FooterLogoLink, FooterNav, FooterNavLink, FooterText 
+  Footer,
+  FooterColumn,
+  FooterColumnLabel,
+  FooterLogoLink,
+  FooterNav,
+  FooterNavLink,
+  FooterText
 } from '.';
 import {
-  BotCircleIcon, EmailCircleIcon, MediumCircleIcon, TgCircleIcon 
+  BotCircleIcon,
+  EmailCircleIcon,
+  MediumCircleIcon,
+  TgCircleIcon
 } from '@/ui/icons';
 
 export type FooterMeta = Meta<typeof Footer>;
@@ -23,12 +32,9 @@ export const Basic: FooterStory = {
       <FooterNav>
         <FooterText>
           ООО «Ботхаб» ОГРН 1236300016259
-          <br />
-          © @BotHub 2023  
+          <br />© @BotHub 2023
         </FooterText>
-        <FooterNavLink href="#">
-          Пользовательское соглашение
-        </FooterNavLink>
+        <FooterNavLink href="#">Пользовательское соглашение</FooterNavLink>
       </FooterNav>
     ),
     children: (
@@ -67,7 +73,7 @@ export const Basic: FooterStory = {
               email@bothub.chat
             </FooterNavLink>
             <FooterNavLink href="#">
-              <MediumCircleIcon />   
+              <MediumCircleIcon />
               Blog
             </FooterNavLink>
           </FooterNav>

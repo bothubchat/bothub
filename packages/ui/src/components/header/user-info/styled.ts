@@ -9,7 +9,9 @@ export interface HeaderUserInfoHeadProps {
   $inMenu: boolean;
 }
 
-export const HeaderUserInfoHead: React.FC<React.ComponentProps<'div'> & HeaderUserInfoHeadProps> = styled(animated.div)`
+export const HeaderUserInfoHead: React.FC<
+  React.ComponentProps<'div'> & HeaderUserInfoHeadProps
+> = styled(animated.div)`
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -17,14 +19,17 @@ export const HeaderUserInfoHead: React.FC<React.ComponentProps<'div'> & HeaderUs
   padding: 8px 14px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 6px;
-  background: ${({ theme }) => (theme.mode === 'light' 
-    ? theme.default.colors.base.white 
-    : theme.colors.grayScale.gray4)};
+  background: ${({ theme }) =>
+    theme.mode === 'light'
+      ? theme.default.colors.base.white
+      : theme.colors.grayScale.gray4};
   transition: background 0.3s ease-out;
-  ${({ $inMenu }) => $inMenu && css`
-    width: 100%;
-    justify-content: space-between;
-  `}
+  ${({ $inMenu }) =>
+    $inMenu &&
+    css`
+      width: 100%;
+      justify-content: space-between;
+    `}
   &:hover {
     background: ${({ theme }) => theme.colors.grayScale.gray3};
   }
@@ -32,9 +37,11 @@ export const HeaderUserInfoHead: React.FC<React.ComponentProps<'div'> & HeaderUs
 
 export const HeaderUserInfoStyled = styled.div<{ $inMenu: boolean }>`
   user-select: none;
-  ${({ $inMenu }) => $inMenu && css`
-    width: 100%;
-  `}
+  ${({ $inMenu }) =>
+    $inMenu &&
+    css`
+      width: 100%;
+    `}
 `;
 
 export const HeaderUserInfoInfo = styled.div`
@@ -51,9 +58,13 @@ export const HeaderUserInfoInfoText = styled.span`
   align-items: flex-start;
 `;
 
-export const HeaderUserInfoName = styled(Typography).attrs({ variant: 'body-s-medium' })``;
+export const HeaderUserInfoName = styled(Typography).attrs({
+  variant: 'body-s-medium'
+})``;
 
-export const HeaderUserInfoTokens = styled(Typography).attrs({ variant: 'body-xs-regular' })``;
+export const HeaderUserInfoTokens = styled(Typography).attrs({
+  variant: 'body-xs-regular'
+})``;
 
 export const HeaderUserInfoArrow = styled(ArrowDownIcon)`
   pointer-events: none;
@@ -73,9 +84,11 @@ export const HeaderUserInfoBody = styled(animated.div)<HeaderUserInfoBodyProps>`
   padding: 14px 0px;
   width: 170px;
   transform-origin: top center;
-  ${({ $inMenu }) => !$inMenu && css`
-    position: absolute;
-  `}
+  ${({ $inMenu }) =>
+    !$inMenu &&
+    css`
+      position: absolute;
+    `}
 `;
 
 export const HeaderUserInfoList = styled.div`

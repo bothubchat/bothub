@@ -23,17 +23,23 @@ export const Basic: DeveloperKeysStory = {
           315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd
           3315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3
         </DeveloperKey>
-        <DeveloperKey id="1" label="Ключ №2">
+        <DeveloperKey
+          id="1"
+          label="Ключ №2"
+        >
           315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd
           3315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3
         </DeveloperKey>
-        <DeveloperKey id="2" label="Ключ №3">
+        <DeveloperKey
+          id="2"
+          label="Ключ №3"
+        >
           315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd
           3315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3
         </DeveloperKey>
       </>
-    ),
-  },
+    )
+  }
 };
 
 export const Skeleton: DeveloperKeysStory = {
@@ -41,13 +47,17 @@ export const Skeleton: DeveloperKeysStory = {
     title: 'Ключи API',
     add: <AddDeveloperKeyButton disabled>Добавить ключ</AddDeveloperKeyButton>,
     children: [...Array(8)].map((_, index) => (
-      <DeveloperKey id={`${index}`} key={index} skeleton />
-    )),
-  },
+      <DeveloperKey
+        id={`${index}`}
+        key={index}
+        skeleton
+      />
+    ))
+  }
 };
 
 export default {
   title: 'Components/DeveloperKey/List',
   component: DeveloperKeys,
-  decorators: [StoryDecorator()],
+  decorators: [StoryDecorator()]
 } as DeveloperKeysMeta;

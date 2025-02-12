@@ -1,11 +1,21 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const BlackForestLabsIcon = icon(({ ...props }) => (
-  <Icon size={24} viewBox="0 0 24 24" fill="none" {...props}>
+  <Icon
+    size={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {({ fill = '#ffffff' } = { fill: '#ffffff' }) => (
         <>
-          <rect width="24" height="24" rx="5" fill={fill} />
+          <rect
+            width="24"
+            height="24"
+            rx="5"
+            fill={fill}
+          />
           <path
             d="M8.67334 15.8942L10.438 13.215L12.2028 15.8942H8.67334Z"
             fill="black"

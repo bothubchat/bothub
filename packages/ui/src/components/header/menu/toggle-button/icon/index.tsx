@@ -6,16 +6,14 @@ export type HeaderMenuToggleIconProps = {
   isMenuOpen: boolean;
 };
 
-export const HeaderMenuToggleIcon = icon((
-  () => {
-    const { isMenuOpen } = useHeader();
+export const HeaderMenuToggleIcon = icon(() => {
+  const { isMenuOpen } = useHeader();
 
-    return ((
-      <StyledBurgerIcon $isOpen={isMenuOpen}>
-        <StyledLine />
-        <StyledLine />
-        <StyledLine />
-      </StyledBurgerIcon>
-    ));
-  }
-));
+  return (
+    <StyledBurgerIcon $isOpen={isMenuOpen}>
+      <StyledLine />
+      <StyledLine />
+      <StyledLine />
+    </StyledBurgerIcon>
+  );
+});

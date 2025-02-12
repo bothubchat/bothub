@@ -39,9 +39,7 @@ export const ScrollbarContent = styled.div<ScrollbarContentProps>`
         return 'visible';
     }
   }};
-  ${({
-    theme, $disabled, $size, $variant 
-  }) => {
+  ${({ theme, $disabled, $size, $variant }) => {
     if ($disabled) {
       return css`
         &::-webkit-scrollbar {
@@ -55,19 +53,22 @@ export const ScrollbarContent = styled.div<ScrollbarContentProps>`
         width: ${`${$size}px`};
         height: ${`${$size}px`};
         background: ${theme.colors.grayScale.gray4};
-        ${$variant === 'secondary' && css`
+        ${$variant === 'secondary' &&
+        css`
           border-radius: ${`${$size / 2}px`};
         `}
       }
       &::-webkit-scrollbar-thumb {
         background: ${theme.colors.accent.primaryLight};
-        ${$variant === 'secondary' && css`
+        ${$variant === 'secondary' &&
+        css`
           border-radius: ${`${$size / 2}px`};
         `}
       }
       &::-webkit-scrollbar-track {
         background: ${({ theme }) => theme.colors.grayScale.gray5};
-        ${$variant === 'secondary' && css`
+        ${$variant === 'secondary' &&
+        css`
           border-radius: ${`${$size / 2}px`};
         `}
       }
@@ -75,12 +76,12 @@ export const ScrollbarContent = styled.div<ScrollbarContentProps>`
         display: none;
       }
       ${adaptive(() => ({
-    touch: css`
+        touch: css`
           &::-webkit-scrollbar {
-            display: none; 
+            display: none;
           }
         `
-  }))}
+      }))}
     `;
   }}
 `;

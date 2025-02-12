@@ -33,19 +33,20 @@ export const PresetCardStyled = styled.div<PresetCardStyledProps>`
     ${PresetCardActions} {
       visibility: hidden;
     }
-    ${!$skeleton && css`
+    ${!$skeleton &&
+    css`
       &:hover {
         ${PresetCardActions} {
           visibility: visible;
         }
       }
       ${adaptive({
-    touch: css`
-      ${PresetCardActions} {
-        visibility: visible;
-      }
-    `
-  })}
+        touch: css`
+          ${PresetCardActions} {
+            visibility: visible;
+          }
+        `
+      })}
     `}
   `}
 `;
@@ -69,7 +70,7 @@ export const PresetCardLine = styled.div<PresetCardLineProps>`
   background: ${({ theme, $skeleton, $color }) => {
     if ($skeleton) {
       return theme.colors.grayScale.gray1;
-    } 
+    }
 
     return $color ?? theme.colors.accent.primary;
   }};
@@ -98,32 +99,48 @@ export const PresetCardNameActions = styled.div`
   width: 100%;
 `;
 
-export const PresetCardName = styled(Typography).attrs({ variant: 'body-m-semibold', component: 'span' })``;
+export const PresetCardName = styled(Typography).attrs({
+  variant: 'body-m-semibold',
+  component: 'span'
+})``;
 
 export const PresetCardActions = styled.div`
   display: flex;
   gap: 14px;
 `;
 
-export const PresetCardAction = styled(Button).attrs({ variant: 'text', iconSize: 18 })``;
+export const PresetCardAction = styled(Button).attrs({
+  variant: 'text',
+  iconSize: 18
+})``;
 
-export const PresetCardFavoriteAction = styled(PresetCardAction).attrs({ children: <StarIcon /> })``;
+export const PresetCardFavoriteAction = styled(PresetCardAction).attrs({
+  children: <StarIcon />
+})``;
 
-export const PresetCardEditAction = styled(PresetCardAction).attrs({ children: <EditIcon /> })``;
+export const PresetCardEditAction = styled(PresetCardAction).attrs({
+  children: <EditIcon />
+})``;
 
-export const PresetCardDeleteAction = styled(PresetCardAction).attrs({ children: <CloseIcon /> })``;
+export const PresetCardDeleteAction = styled(PresetCardAction).attrs({
+  children: <CloseIcon />
+})``;
 
 export interface PresetCardDescriptionProps {
   $skeleton?: boolean;
 }
 
-export const PresetCardDescription = styled(Typography).attrs({ variant: 'body-m-regular' })<PresetCardDescriptionProps>`
+export const PresetCardDescription = styled(Typography).attrs({
+  variant: 'body-m-regular'
+})<PresetCardDescriptionProps>`
   margin-top: 14px;
-  ${({ $skeleton }) => $skeleton && css`
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  `}
+  ${({ $skeleton }) =>
+    $skeleton &&
+    css`
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    `}
 `;
 
 export const PresetCardCategories = styled.div`
@@ -140,4 +157,6 @@ export const PresetCardCategory = styled(Badge).attrs({ variant: 'blue' })`
   cursor: inherit;
 `;
 
-export const PresetCardLoader = styled(LoaderCircularGradientIcon).attrs({ size: 18 })``;
+export const PresetCardLoader = styled(LoaderCircularGradientIcon).attrs({
+  size: 18
+})``;

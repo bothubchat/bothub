@@ -1,6 +1,4 @@
-import {
-  useCallback, useEffect, useMemo, useState 
-} from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import remarkGfm from 'remark-gfm';
 import { useTheme } from '@/ui/theme';
 
@@ -43,7 +41,8 @@ export const useMarkdownPlugins = ({ children }: UseMarkdownPluginsProps) => {
   const [plugins, setPlugins] = useState<Plugins>(null);
 
   const handleKatexStrict = useCallback(() => {
-    if (singleDollarTextMath) queueMicrotask(() => setSingleDollarTextMath(false));
+    if (singleDollarTextMath)
+      queueMicrotask(() => setSingleDollarTextMath(false));
   }, [singleDollarTextMath]);
 
   useEffect(() => {
@@ -78,9 +77,9 @@ export const useMarkdownPlugins = ({ children }: UseMarkdownPluginsProps) => {
             displayMode: true,
             output: 'html',
             errorColor: theme.colors.orange,
-            strict: handleKatexStrict,
-          },
-        ],
+            strict: handleKatexStrict
+          }
+        ]
       ];
     }
 

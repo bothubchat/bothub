@@ -7,7 +7,10 @@ export interface MessageListItemStyledProps {
   $messageColor: string;
 }
 
-export const MessageListItemStyled = styled(Typography).attrs({ component: 'li', variant: 'body-l-regular' }) <MessageListItemStyledProps>`
+export const MessageListItemStyled = styled(Typography).attrs({
+  component: 'li',
+  variant: 'body-l-regular'
+})<MessageListItemStyledProps>`
   display: block;
   position: relative;
   color: ${({ theme, $messageColor }) => {
@@ -39,9 +42,8 @@ export const MessageListItemStyled = styled(Typography).attrs({ component: 'li',
             font-weight: 700;
             color: ${dotColor};
             padding-right: 8px;
-            content: "•";
+            content: '•';
           }
-
         `;
       }
       case 'number': {
@@ -49,7 +51,10 @@ export const MessageListItemStyled = styled(Typography).attrs({ component: 'li',
         if ($messageColor !== 'default') {
           numberColor = theme.colors.base.white;
         } else {
-          numberColor = theme.mode === 'dark' ? theme.default.colors.grayScale.gray6 : theme.default.colors.base.black;
+          numberColor =
+            theme.mode === 'dark'
+              ? theme.default.colors.grayScale.gray6
+              : theme.default.colors.base.black;
         }
 
         return css`
@@ -60,7 +65,7 @@ export const MessageListItemStyled = styled(Typography).attrs({ component: 'li',
             padding-right: 8px;
             color: ${numberColor};
             counter-increment: item;
-            content: counter(item) ".";
+            content: counter(item) '.';
           }
           & > ol {
             padding-left: 22px;
@@ -71,28 +76,34 @@ export const MessageListItemStyled = styled(Typography).attrs({ component: 'li',
   }}
   &::selection {
     ${({ $messageColor }) => {
-    switch ($messageColor) {
-      case 'default':
-        return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
-        `;
-      case 'green':
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${({ theme }) => theme.colors.gpt3};
-        `;
-      case 'purple':
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${({ theme }) => theme.colors.gpt4};
-        `;
-      default:
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${$messageColor};
-        `;
-    }
-  }}
+      switch ($messageColor) {
+        case 'default':
+          return css`
+            background: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.accent.primary
+                : theme.colors.base.white};
+            color: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.base.white
+                : theme.colors.accent.primary};
+          `;
+        case 'green':
+          return css`
+            background: ${({ theme }) => theme.default.colors.base.white};
+            color: ${({ theme }) => theme.colors.gpt3};
+          `;
+        case 'purple':
+          return css`
+            background: ${({ theme }) => theme.default.colors.base.white};
+            color: ${({ theme }) => theme.colors.gpt4};
+          `;
+        default:
+          return css`
+            background: ${({ theme }) => theme.default.colors.base.white};
+            color: ${$messageColor};
+          `;
+      }
+    }}
   }
 `;

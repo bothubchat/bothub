@@ -34,7 +34,11 @@ export const ActionButton = ({
     onMouseLeave={onMouseLeave}
     {...props}
   >
-    <Tooltip label={tooltipLabel} placement="top" align="center">
+    <Tooltip
+      label={tooltipLabel}
+      placement="top"
+      align="center"
+    >
       <TooltipConsumer>
         {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
           <S.MessageActionsButtonWithTooltip

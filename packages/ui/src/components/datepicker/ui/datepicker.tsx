@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import {
-  autoUpdate, flip, offset, shift, useFloating 
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useFloating
 } from '@floating-ui/react';
 import { createPortal } from 'react-dom';
 import { DatepickerCalendar } from './calendar';
@@ -14,7 +18,7 @@ export const Datepicker = ({
   const [open, setOpen] = useState(defaultOpen);
   const { refs, floatingStyles } = useFloating({
     whileElementsMounted: autoUpdate,
-    middleware: [offset(10), flip(), shift()],
+    middleware: [offset(10), flip(), shift()]
   });
 
   return (
@@ -24,18 +28,21 @@ export const Datepicker = ({
           {children(refs.setReference, setOpen)}
         </div>
       )}
-      {open && createPortal(
-        (
-          <div ref={refs.setFloating} style={floatingStyles}>
+      {open &&
+        createPortal(
+          <div
+            ref={refs.setFloating}
+            style={floatingStyles}
+          >
             <DatepickerCalendar
               {...datepickerProps}
               closeFn={() => {
                 setOpen(false);
               }}
             />
-          </div>
-        ), document.body
-      )}
+          </div>,
+          document.body
+        )}
     </>
   );
 };
