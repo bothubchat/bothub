@@ -11,6 +11,7 @@ import {
   SelectFieldEmptyText,
   SelectFieldOption,
   SelectFieldOptionColor,
+  SelectFieldOptionLabel,
   SelectFieldOptionSide,
   SelectFieldOptionText,
   SelectFieldOptionsStyled
@@ -96,6 +97,16 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
             <SelectFieldDivider
               key={item.id ?? item.value ?? `divider-${index}`}
             />
+          );
+        }
+
+        if (item.type === 'label') {
+          return (
+            <SelectFieldOptionLabel
+              key={item.id ?? item.value ?? `label-${index}`}
+            >
+              {item.label}
+            </SelectFieldOptionLabel>
           );
         }
 

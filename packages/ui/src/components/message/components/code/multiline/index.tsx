@@ -14,12 +14,14 @@ export interface MessageMultilineCodeProps {
   className?: string;
   copyLabel?: string;
   children: string;
+  onlyCode?: boolean;
 }
 
 export const MessageMultilineCode: React.FC<MessageMultilineCodeProps> = ({
   className,
   copyLabel,
-  children
+  children,
+  onlyCode = false
 }) => {
   const { variant, color } = useMessage();
 
@@ -31,27 +33,29 @@ export const MessageMultilineCode: React.FC<MessageMultilineCodeProps> = ({
 
   return (
     <MessageMultilineCodeStyled>
-      <MessageMultilineCodeHead
-        $messageVariant={variant}
-        $messageColor={color}
-      >
-        <MessageMultilineCodeLanguage
+      {!onlyCode && (
+        <MessageMultilineCodeHead
           $messageVariant={variant}
           $messageColor={color}
         >
-          {languageName}
-        </MessageMultilineCodeLanguage>
-        <Tooltip
-          variant="secondary"
-          label={copyLabel}
-        >
-          <MessageMultilineCodeCopyButton
-            code={children}
-            messageVariant={variant}
-            messageColor={color}
-          />
-        </Tooltip>
-      </MessageMultilineCodeHead>
+          <MessageMultilineCodeLanguage
+            $messageVariant={variant}
+            $messageColor={color}
+          >
+            {languageName}
+          </MessageMultilineCodeLanguage>
+          <Tooltip
+            variant="secondary"
+            label={copyLabel}
+          >
+            <MessageMultilineCodeCopyButton
+              code={children}
+              messageVariant={variant}
+              messageColor={color}
+            />
+          </Tooltip>
+        </MessageMultilineCodeHead>
+      )}
       <MessageMultilineCodeBody>
         <MessageMultilineCodeContent
           $messageColor={color}

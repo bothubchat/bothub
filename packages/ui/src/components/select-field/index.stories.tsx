@@ -13,6 +13,10 @@ import {
   MjWhiteIcon,
   Plus2Icon,
   PublicIcon,
+  SortAlphabetBottomTopIcon,
+  SortAlphabetTopBottomIcon,
+  SortAscendingIcon,
+  SortDescendingIcon,
   StarIcon
 } from '@/ui/icons';
 
@@ -201,6 +205,41 @@ export const Plans: SelectFieldStory = {
         value: 'elite',
         label: 'Elite',
         backgroundHoverColor: 'gradient'
+      }
+    ]
+  }
+};
+
+export const Sort: SelectFieldStory = {
+  args: {
+    ...Basic.args,
+    data: [
+      {
+        label: 'По цене',
+        type: 'label'
+      },
+      {
+        icon: <SortDescendingIcon />,
+        label: 'По возрастанию'
+      },
+      {
+        label: 'По убыванию',
+        icon: <SortAscendingIcon />
+      },
+      {
+        type: 'divider'
+      },
+      {
+        label: 'По длине ответа',
+        type: 'label'
+      },
+      {
+        icon: <SortAlphabetTopBottomIcon />,
+        label: 'По возрастанию'
+      },
+      {
+        label: 'По убыванию',
+        icon: <SortAlphabetBottomTopIcon />
       }
     ]
   }

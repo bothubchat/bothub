@@ -58,3 +58,4 @@ export * from './menu-dropdown';
 export * from './logo-halloween';
 export * from './banner';
 export * from './logo-new-year';
+export * from './menu-tabs';
