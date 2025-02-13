@@ -13,6 +13,8 @@ export const MessageBold: React.FC<MessageBoldProps> = ({ ...props }) => {
   return (
     <MessageBoldStyled
       $messageColor={color}
+      component="b"
+      variant="body-l-regular"
       {...props}
     />
   );

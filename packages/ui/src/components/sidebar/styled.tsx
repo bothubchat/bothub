@@ -217,6 +217,15 @@ export const SidebarContent = styled.div<{ $open?: boolean }>`
       ${SidebarMenuStyled} {
         display: none;
       }
+      min-width: none;
+      max-width: none;
+      display: flex;
+      ${SidebarUserInfoStyled} {
+        display: none;
+      }
+      ${SidebarMenuStyled} {
+        display: none;
+      }
     `
   })}
   ${({ $open }) =>

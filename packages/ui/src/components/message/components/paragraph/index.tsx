@@ -23,6 +23,8 @@ export const MessageParagraph: React.FC<MessageParagraphProps> = ({
       $color={color}
       $wrap={wrap}
       $disableMargin={disableMargin}
+      variant="body-l-regular"
+      component="p"
       {...props}
     />
   );

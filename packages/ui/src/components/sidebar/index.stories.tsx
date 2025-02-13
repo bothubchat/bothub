@@ -37,8 +37,7 @@ import {
   SidebarUserInfoSkeleton,
   SidebarUserInfoUpdateTariffBadgeText,
   SidebarUserInfoUpdateTariffBadge,
-  SidebarUserInfoUpdateTariffButtonText,
-  SidebarSortButton
+  SidebarUserInfoUpdateTariffButtonText
 } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
@@ -153,7 +152,6 @@ export const Basic: SidebarStory = {
           variant="secondary"
           $active
         />
-        <SidebarSortButton />
       </SidebarButtons>
     ),
     search: (
@@ -413,7 +411,7 @@ export const Basic: SidebarStory = {
           id="chat-group-1"
           name="Как разблокировать дискорд"
         >
-          <SidebarGroupEmpty>Чатов нет идите отсюда</SidebarGroupEmpty>
+          <SidebarGroupEmpty>Чатов нет идите отсюла</SidebarGroupEmpty>
         </SidebarGroup>
         <SidebarGroup
           edit

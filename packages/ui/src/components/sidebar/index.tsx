@@ -90,6 +90,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
     >(
       (open) => {
         setIsOpen(open);
+
         if (typeof open === 'boolean' && !initialIsOpen && onOpen) {
           onOpen(open);
         }
@@ -103,6 +104,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
       },
       [setIsBottom]
     );
+
     const handleScrollTop = useCallback(() => {
       if (ref && typeof ref !== 'function' && ref.current?.element) {
         ref.current.element.scrollTo({
@@ -111,6 +113,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
         });
       }
     }, [ref]);
+
     const handleScrollBottom = useCallback(() => {
       if (ref && typeof ref !== 'function' && ref.current?.element) {
         ref.current.element.scrollTo({

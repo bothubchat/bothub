@@ -13,6 +13,8 @@ export const MessageLink: React.FC<MessageLinkProps> = ({ ...props }) => {
   return (
     <MessageLinkStyled
       $messageColor={messageColor}
+      component="a"
+      variant="body-l-regular"
       {...props}
     />
   );

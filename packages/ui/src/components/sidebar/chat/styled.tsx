@@ -47,6 +47,12 @@ export const SidebarChatIconContainer = styled.span<{
         fill: ${({ theme }) => theme.colors.base.white};
         stroke: ${({ theme }) => theme.colors.base.white};
       `}
+    ${({ $active }) =>
+      $active &&
+      css`
+        fill: ${({ theme }) => theme.colors.base.white};
+        stroke: ${({ theme }) => theme.colors.base.white};
+      `}
   }
 `;
 

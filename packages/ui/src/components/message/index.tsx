@@ -276,6 +276,7 @@ export const Message: React.FC<MessageProps> = ({
               )}
               {typeof name !== 'string' && name}
               <MessageAvatar>{avatar}</MessageAvatar>
+
               <MessageBlockWrapper>
                 <MessageBlock
                   $variant={variant}
@@ -292,7 +293,10 @@ export const Message: React.FC<MessageProps> = ({
                       right: <ScrollbarShadow side="right" />
                     }}
                   >
-                    <MessageBlockContent ref={messageBlockContentRef}>
+                    <MessageBlockContent
+                      ref={messageBlockContentRef}
+                      $variant={variant}
+                    >
                       {!isEditing ? (
                         <>
                           {!skeleton && (
@@ -411,3 +415,5 @@ export * from './badge-progress';
 export * from './button';
 export * from './file';
 export * from './voice';
+export * from './reasoning-block';
+export * from './search-results';

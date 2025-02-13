@@ -199,18 +199,6 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 18px;
           }
         `;
-      case 'body-m-regular':
-        return `
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 22px;
-          --skeleton-height: 22px;
-          @media (max-width: ${theme.tablet.maxWidth}) {
-            font-size: 14px;
-            line-height: 18px;
-            --skeleton-height: 18px;
-          }
-        `;
       case 'body-s-medium':
         return `
           font-weight: 500;
@@ -259,11 +247,23 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 16px;
           }
         `;
+      case 'body-m-regular':
+        return `
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 22px;
+          --skeleton-height: 22px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 14px;
+            line-height: 18px;
+            --skeleton-height: 18px;
+          }
+        `;
       case 'body-l-regular':
         return `
           font-weight: 400;
           font-size: 18px;
-          line-height: 24px;
+          line-height: 23.4px;
           --skeleton-height: 24px;
           @media (max-width: ${theme.mobile.maxWidth}) {
             font-size: 16px;

@@ -21,11 +21,17 @@ function formatString(string: string) {
 export interface MessageMarkdownProps {
   children: string;
   components?: MessageComponentsProps;
+  componentsOverride?: React.ComponentProps<
+    typeof MessageMarkdownLine
+  >['components'];
+  disableTyping?: boolean;
 }
 
 export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
   children,
-  components = {}
+  components = {},
+  componentsOverride = {},
+  disableTyping = false
 }) => {
   const { typing, variant, color } = useMessage();
   const isDisabled = variant === 'user';
@@ -65,7 +71,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
       <MessageMarkdownStyled>
         {parsedBlocks.map((block, index) => (
           <MessageMarkdownLine
-            $typing={typing}
+            $typing={disableTyping ? false : typing}
             $color={color}
             $singleDollarTextMath={singleDollarTextMath}
             key={`${rehypePlugins.length}-${remarkPlugins.length}-${index}`}
@@ -73,7 +79,7 @@ export const MessageMarkdown: React.FC<MessageMarkdownProps> = ({
             remarkPlugins={remarkPlugins}
             // @ts-ignore
             rehypePlugins={rehypePlugins}
-            components={markdownComponents(components)}
+            components={markdownComponents(components, componentsOverride)}
           >
             {block}
           </MessageMarkdownLine>

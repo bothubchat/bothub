@@ -1,4 +1,4 @@
-import { css, styled } from 'styled-components';
+import { createGlobalStyle, css, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { HeaderVariant } from '../types';
 import { adaptive } from '@/ui/adaptive';
@@ -63,4 +63,12 @@ export const HeaderMenuContent = styled(animated.div)<HeaderMenuStyledProps>`
         });
     }
   }}
+`;
+
+export const HeaderMenuOpenGlobalStyle = createGlobalStyle`
+  body {
+    overflow: hidden;
+    max-height: 100vh;
+    max-height: 100lvh;
+  }
 `;

@@ -199,6 +199,8 @@ import {
   WebSearchIcon,
   AnalyzeUrlsIcon,
   QueueIcon,
+  COTR1Icon,
+  LoaderCircularGradient2Icon,
   SortAlphabetAscendingIcon,
   SortAlphabetDescendingIcon,
   SortDateAscendingIcon,
@@ -312,6 +314,9 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="LoaderCircularIcon">{LoaderCircularIcon}</IconItem>
         <IconItem name="LoaderCircularGradientIcon">
           {LoaderCircularGradientIcon}
+        </IconItem>
+        <IconItem name="LoaderCircularGradient2Icon">
+          {LoaderCircularGradient2Icon}
         </IconItem>
         <IconItem name="MinusIcon">{MinusIcon}</IconItem>
         <IconItem name="MjWhiteIcon">{MjWhiteIcon}</IconItem>
@@ -448,6 +453,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="WebSearchIcon">{WebSearchIcon}</IconItem>
         <IconItem name="AnalyzeUrlsIcon">{AnalyzeUrlsIcon}</IconItem>
         <IconItem name="QueueIcon">{QueueIcon}</IconItem>
+        <IconItem name="COTR1Icon">{COTR1Icon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

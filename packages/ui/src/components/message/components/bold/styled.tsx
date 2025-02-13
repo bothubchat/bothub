@@ -5,10 +5,7 @@ export interface MessageBoldStyledProps {
   $messageColor: string;
 }
 
-export const MessageBoldStyled = styled(Typography).attrs({
-  component: 'b',
-  variant: 'body-l-regular'
-})<MessageBoldStyledProps>`
+export const MessageBoldStyled = styled(Typography)<MessageBoldStyledProps>`
   color: ${({ theme, $messageColor }) => {
     if ($messageColor !== 'default') {
       return theme.colors.base.white;

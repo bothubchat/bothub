@@ -21,7 +21,10 @@ import {
 import { MessageMarkdownLine } from './styled';
 
 export function markdownComponents(
-  components: MessageComponentsProps
+  components: MessageComponentsProps,
+  componentsOverride?: React.ComponentProps<
+    typeof MessageMarkdownLine
+  >['components']
 ): React.ComponentProps<typeof MessageMarkdownLine>['components'] {
   return {
     p: ({ children }) => <MessageParagraph wrap>{children}</MessageParagraph>,
@@ -105,6 +108,7 @@ export function markdownComponents(
             })}
         />
       );
-    }
+    },
+    ...componentsOverride
   };
 }
