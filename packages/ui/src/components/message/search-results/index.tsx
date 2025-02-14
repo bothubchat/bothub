@@ -2,7 +2,8 @@ import { memo } from 'react';
 import { AnalyzeUrlsIcon } from '@/ui/icons';
 import { Typography } from '../../typography';
 import {
-  SearchResultsItem,
+  SearchResultsItemStyled,
+  SearchResultsItemContent,
   SearchResultsItemHeader,
   SearchResultsItemLink,
   SearchResultsItemName,
@@ -12,21 +13,50 @@ import {
 } from './styled';
 import { MessageMarkdown } from '../markdown';
 import { markdownComponents } from '../reasoning-block/markdown-components';
+import { useMeasure } from '@/ui/utils';
+
+export type MessageSearchResultsItemType = {
+  url: string;
+  name: string;
+  title: string;
+  date: string;
+  content: string;
+};
 
 export type MessageSearchResultsProps = {
-  results: {
-    url: string;
-    name: string;
-    title: string;
-    date: string;
-    content: string;
-  }[];
+  results: MessageSearchResultsItemType[];
 };
 
 export const MessageSearchResults = (props: MessageSearchResultsProps) => (
   <SearchResultsList>
     {props.results.map((result, index) => (
-      <SearchResultsItem>
+      <MessageSearchResultsItem
+        result={result}
+        index={index}
+        key={index}
+      />
+    ))}
+  </SearchResultsList>
+);
+
+const MessageSearchResultsItem = memo(
+  ({
+    result,
+    index
+  }: {
+    result: MessageSearchResultsItemType;
+    index: number;
+  }) => {
+    const [wrapperRef, wrapperDimensions] = useMeasure<HTMLDivElement>();
+    const [contentRef, contentDimensions] = useMeasure<HTMLDivElement>();
+
+    const hasOverflow =
+      contentDimensions.height > wrapperDimensions.height &&
+      contentDimensions.height !== 0 &&
+      wrapperDimensions.height !== 0;
+
+    return (
+      <SearchResultsItemStyled>
         <SearchResultsItemLink
           target="_blank"
           href={result.url}
@@ -64,17 +94,22 @@ export const MessageSearchResults = (props: MessageSearchResultsProps) => (
           {result.title}
         </SearchResultsItemTitle>
 
-        <div data-source-content>
+        <SearchResultsItemContent
+          data-source-content
+          ref={wrapperRef}
+          data-has-overflow={hasOverflow}
+        >
           <MessageMarkdown
             componentsOverride={markdownComponents()}
             disableTyping
+            ref={contentRef}
           >
             {result.content ?? ''}
           </MessageMarkdown>
-        </div>
-      </SearchResultsItem>
-    ))}
-  </SearchResultsList>
+        </SearchResultsItemContent>
+      </SearchResultsItemStyled>
+    );
+  }
 );
 
 const SearchResultsItemDate = memo(({ date }: { date: string }) => {

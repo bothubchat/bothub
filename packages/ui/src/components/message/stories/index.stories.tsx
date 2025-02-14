@@ -679,11 +679,11 @@ export const Reasoning = () => {
               },
               {
                 url: 'https://www.bing.com',
-                name: 'Bing',
+                name: 'www.techempowerup.com',
                 title: 'Bing',
                 date: new Date().toISOString(),
                 content:
-                  'Bing is a search engine that allows users to find information on the internet. It is one of the most popular search engines in the world, with billions of searches per day. Bing is known for its advanced search algorithms and user-friendly interface, making it a popular choice for both casual and professional users.'
+                  'Bing is a search engine that allows users to find information on the internet. It is one of the most popular search engines in the world, with billions of searches per day. Bing is known for its advanced search algorithms and user-friendly interface, making it a popular choice for both casual and professional users.\n\nBing is a search engine that allows users to find information on the internet. It is one of the most popular search engines in the world, with billions of searches per day. Bing is known for its advanced search algorithms and user-friendly interface, making it a popular choice for both casual and professional users.'
               }
             ]}
           />
