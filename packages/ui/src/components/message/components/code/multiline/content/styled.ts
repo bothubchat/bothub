@@ -67,12 +67,13 @@ export const contentStyles = css<MessageMultilineCodeContentProps>`
       }
     `
   })}
+  padding: 1em;
 `;
 
 export const MessageMultilineCodeContentStyled = styled.div<MessageMultilineCodeContentProps>`
   ${contentStyles}
-  padding: 1em;
   background-color: #002635;
+  color: #fff;
 `;
 
 export const MessageMultilineCodeLastLine = styled.div``;
