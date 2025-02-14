@@ -3,7 +3,9 @@ import { ScrollbarStyle } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 import { MessageMultilineCodeContentProps } from './types';
 
-export const MessageMultilineCodeContentContainer = styled.div``;
+export const MessageMultilineCodeContentContainer = styled.div`
+  background-color: #002635;
+`;
 
 export const contentStyles = css<MessageMultilineCodeContentProps>`
   ${ScrollbarStyle}
