@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
 
+export const UseDelayedVisibleDefaultProps = {
+  showDelay: 150,
+  hideDelay: 150
+};
+
 export const useDelayedVisible = (
   visible: boolean,
   showDelay = 150,
