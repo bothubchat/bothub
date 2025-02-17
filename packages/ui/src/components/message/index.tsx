@@ -57,6 +57,7 @@ export interface MessageProps {
   disableUpdate?: boolean;
   disableCopy?: boolean;
   copyPlainText?: string | null;
+  copyTgText?: string | null;
   editText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
@@ -100,6 +101,7 @@ export const Message: React.FC<MessageProps> = ({
   disableUpdate = false,
   disableCopy = false,
   copyPlainText,
+  copyTgText,
   editText,
   resendText,
   deleteText,
@@ -168,9 +170,48 @@ export const Message: React.FC<MessageProps> = ({
     return [clipboardItem];
   }, []);
 
+  const getTgText = useCallback((html: HTMLElement) => {
+    const tgMarkdown = html.innerText
+      // --- => ''
+      .replace(/^\s*[-*_]{3,}\s*$/gm, '')
+      // # Header -> **Bold**
+      .replace(/^#{1,6}\s+(.+)$/gm, '**$1**')
+      // __Bold__ OR **Bold** -> **Bold**
+      .replace(/__(.*?)__/g, '**$1**')
+      // *Italic* OR _Italic_ -> __Italic__
+      .replace(/\*(.*?)\*/g, '__$1__')
+      .replace(/_(.*?)_/g, '__$1__')
+      // > Quote -> __Italic__
+      .replace(/^\s*>\s*(.+)$/gm, '__$1__')
+      // List -> Text w/ dashes
+      .replace(/^\s*[*+-]\s+(.+)$/gm, '- $1')
+      .replace(/^\s*\d+\.\s+(.+)$/gm, '- $1')
+      // [link](uri) -> link
+      .replace(/$$([^$$]+)\]$$([^)]+)$$/g, '$1')
+      // ![Image](uri) -> ''
+      .replace(/!$$([^$$]+)\]$$([^)]+)$$/g, '')
+      // Tables -> Text
+      .replace(/^\|(.+)\|$/gm, '$1')
+      .replace(/^[-|:\s]+$/gm, '')
+      // Remove extra lines
+      .replace(/\n\s*\n\s*\n/g, '\n\n')
+      .trim();
+
+    const clipboardItem = new ClipboardItem({
+      'text/plain': new Blob([tgMarkdown], { type: 'text/plain' })
+    });
+    return [clipboardItem];
+  }, []);
+
   const handlePlainTextCopy = useCallback(() => {
     if (messageBlockContentRef.current) {
       return onCopy?.(getPlainText(messageBlockContentRef.current));
+    }
+  }, [messageBlockContentRef.current]);
+
+  const handleTgTextCopy = useCallback(() => {
+    if (messageBlockContentRef.current) {
+      return onCopy?.(getTgText(messageBlockContentRef.current));
     }
   }, [messageBlockContentRef.current]);
 
@@ -364,6 +405,7 @@ export const Message: React.FC<MessageProps> = ({
                 disableUpdate={disableUpdate}
                 disableCopy={disableCopy}
                 copyPlainText={copyPlainText}
+                copyTgText={copyTgText}
                 editText={editText}
                 resendText={resendText}
                 deleteText={deleteText}
@@ -381,6 +423,7 @@ export const Message: React.FC<MessageProps> = ({
                 onDelete={onDelete}
                 onUpdate={onUpdate}
                 onPlainTextCopy={handlePlainTextCopy}
+                onTgCopy={handleTgTextCopy}
                 onCopy={handleRichTextCopy}
               />
             )}
