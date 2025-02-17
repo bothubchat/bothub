@@ -37,6 +37,8 @@ import {
   TgColoredIcon,
   UserProfileIcon
 } from '@/ui/icons';
+import { Button } from '../button';
+import { MenuDropdown } from '../menu-dropdown';
 
 export type HeaderMeta = Meta<typeof Header>;
 
@@ -168,6 +170,36 @@ export const Dashboard: HeaderStory = {
         >
           Для разработчиков
         </HeaderNavLink>
+      </HeaderNav>
+    ),
+    themeSwitcher: <HeaderThemeSwitcher />
+  }
+};
+
+export const DashboardTablet: HeaderStory = {
+  args: {
+    ...Authorized.args,
+    variant: 'dashboard',
+    nav: (
+      <HeaderNav>
+        <MenuDropdown>
+          <div
+            style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
+          >
+            <Button variant="text">Item 1</Button>
+            <Button variant="text">Item 2</Button>
+            <Button variant="text">Item 3</Button>
+            <Button variant="text">Item 4</Button>
+            <Button variant="text">Item 5</Button>
+            <Button variant="text">Item 6</Button>
+          </div>
+        </MenuDropdown>
+        <Button variant="secondary">
+          <ChatsIcon />
+        </Button>
+        <Button variant="secondary">
+          <SettingsIcon />
+        </Button>
       </HeaderNav>
     ),
     themeSwitcher: <HeaderThemeSwitcher />

@@ -6,7 +6,8 @@ import {
   HeaderOffset,
   HeaderRight,
   HeaderStyled,
-  HeaderContainerContent
+  HeaderContainerContent,
+  HeaderCenter
 } from './styled';
 import { HeaderMenu, HeaderMenuToggleButton } from './menu';
 import { HeaderVariant } from './types';
@@ -20,6 +21,7 @@ export interface HeaderProps
   variant?: HeaderVariant;
   logo?: React.ReactNode;
   nav?: React.ReactNode;
+  buttonsTablet?: React.ReactNode;
   lang?: React.ReactNode;
   user?: React.ReactNode;
   themeSwitcher?: React.ReactNode;
@@ -33,6 +35,7 @@ export const Header: React.FC<HeaderProps> = ({
   variant = 'main',
   logo,
   nav,
+  buttonsTablet,
   lang,
   user,
   themeSwitcher,
@@ -79,7 +82,7 @@ export const Header: React.FC<HeaderProps> = ({
       >
         <HeaderContent $variant={variant}>
           <HeaderContainer disabled={variant === 'dashboard'}>
-            <HeaderContainerContent>
+            <HeaderContainerContent $variant="desktop">
               <HeaderLeft>
                 {logo}
                 {nav}
@@ -90,6 +93,19 @@ export const Header: React.FC<HeaderProps> = ({
                 {user}
                 <HeaderMenuToggleButton />
               </HeaderRight>
+            </HeaderContainerContent>
+            <HeaderContainerContent $variant="tablet">
+              <HeaderMenuToggleButton />
+              <HeaderLeft>{buttonsTablet}</HeaderLeft>
+              <HeaderCenter>{logo}</HeaderCenter>
+              <HeaderRight>
+                {lang}
+                {user}
+              </HeaderRight>
+            </HeaderContainerContent>
+            <HeaderContainerContent $variant="mobile">
+              <HeaderCenter>{logo}</HeaderCenter>
+              <HeaderRight>{lang}</HeaderRight>
             </HeaderContainerContent>
           </HeaderContainer>
         </HeaderContent>

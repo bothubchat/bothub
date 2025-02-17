@@ -82,7 +82,7 @@ export const HeaderContent = styled.div<HeaderContentProps>`
           border-bottom: 1px solid ${theme.colors.grayScale.gray3};
           backdrop-filter: blur(9px);
           -webkit-backdrop-filter: blur(9px);
-          background: rgba(18, 24, 37, 0.4);
+          background-color: rgba(18, 24, 37, 0.4);
         `;
       case 'dashboard': {
         const adaptiveStyle = adaptive({
@@ -102,8 +102,8 @@ export const HeaderContent = styled.div<HeaderContentProps>`
         });
 
         return css`
-          transition: background 0.3s;
-          background: ${theme.colors.grayScale.gray4};
+          transition: background-color 0.3s;
+          background-color: ${theme.colors.grayScale.gray4};
           ${adaptiveStyle}
         `;
       }
@@ -119,17 +119,38 @@ export const HeaderContainer = styled(Container)`
   position: relative;
 `;
 
-export const HeaderContainerContent = styled.div`
-  display: flex;
+export interface HeaderContainerContentProps {
+  $variant: 'desktop' | 'tablet' | 'mobile';
+}
+
+export const HeaderContainerContent = styled.div<HeaderContainerContentProps>`
+  display: none;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   height: inherit;
   box-sizing: border-box;
   position: relative;
+  ${({ $variant }) =>
+    adaptive({
+      desktop: css`
+        display: ${$variant === 'desktop' ? 'flex' : 'none'};
+      `,
+      tablet: css`
+        display: ${$variant === 'tablet' ? 'flex' : 'none'};
+      `,
+      mobile: css`
+        display: ${$variant === 'mobile' ? 'flex' : 'none'};
+      `
+    })}
 `;
 
 export const HeaderLeft = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const HeaderCenter = styled.div`
   display: flex;
   align-items: center;
 `;
