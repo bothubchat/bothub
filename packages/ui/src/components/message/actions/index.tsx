@@ -258,7 +258,7 @@ export const MessageActions = ({
                       $invertedX={invertedX}
                       $invertedY={invertedY}
                     >
-                      {!disableCopy && (
+                      {!disableCopy && copyPlainText && onPlainTextCopy && (
                         <MenuOption onClick={handlePlainTextCopy}>
                           <S.MessageActionsMenuModalOptionContent>
                             <CopyIcon fill="#616D8D" />
@@ -268,7 +268,7 @@ export const MessageActions = ({
                           </S.MessageActionsMenuModalOptionContent>
                         </MenuOption>
                       )}
-                      {!disableCopy && (
+                      {!disableCopy && copyTgText && onTgCopy && (
                         <MenuOption onClick={handleTgCopy}>
                           <S.MessageActionsMenuModalOptionContent>
                             <CopyIcon fill="#616D8D" />
@@ -278,21 +278,24 @@ export const MessageActions = ({
                           </S.MessageActionsMenuModalOptionContent>
                         </MenuOption>
                       )}
-                      {!disableResend && variant === 'user' && (
-                        <MenuOption
-                          onClick={() => {
-                            handleOptionClick('resend');
-                          }}
-                        >
-                          <S.MessageActionsMenuModalOptionContent>
-                            <ResendIcon fill="#616D8D" />
-                            <S.MessageActionsButtonText>
-                              {resendText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
-                      {!disableEdit && (
+                      {!disableResend &&
+                        variant === 'user' &&
+                        resendText &&
+                        onResend && (
+                          <MenuOption
+                            onClick={() => {
+                              handleOptionClick('resend');
+                            }}
+                          >
+                            <S.MessageActionsMenuModalOptionContent>
+                              <ResendIcon fill="#616D8D" />
+                              <S.MessageActionsButtonText>
+                                {resendText}
+                              </S.MessageActionsButtonText>
+                            </S.MessageActionsMenuModalOptionContent>
+                          </MenuOption>
+                        )}
+                      {!disableEdit && editText && onEdit && (
                         <MenuOption
                           onClick={() => {
                             handleOptionClick('edit');
@@ -306,7 +309,7 @@ export const MessageActions = ({
                           </S.MessageActionsMenuModalOptionContent>
                         </MenuOption>
                       )}
-                      {!disableDelete && (
+                      {!disableDelete && deleteText && onDelete && (
                         <MenuOption
                           onClick={() => {
                             handleOptionClick('delete');
@@ -320,17 +323,19 @@ export const MessageActions = ({
                           </S.MessageActionsMenuModalOptionContent>
                         </MenuOption>
                       )}
-                      <MenuOption onClick={handleReportClick}>
-                        <S.MessageActionsMenuModalOptionContent>
-                          <ThumbDownIcon
-                            fill="#616D8D"
-                            size={18}
-                          />
-                          <S.MessageActionsButtonText>
-                            {onReportText}
-                          </S.MessageActionsButtonText>
-                        </S.MessageActionsMenuModalOptionContent>
-                      </MenuOption>
+                      {onReportText && onReport && (
+                        <MenuOption onClick={handleReportClick}>
+                          <S.MessageActionsMenuModalOptionContent>
+                            <ThumbDownIcon
+                              fill="#616D8D"
+                              size={18}
+                            />
+                            <S.MessageActionsButtonText>
+                              {onReportText}
+                            </S.MessageActionsButtonText>
+                          </S.MessageActionsMenuModalOptionContent>
+                        </MenuOption>
+                      )}
                     </S.MessageActionsMenuModal>
                   )
               )}
