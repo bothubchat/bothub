@@ -406,9 +406,12 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
   useEffect(() => {
     const textareaEl: HTMLElement | null = textareaRef.current;
+    const focused = document.activeElement === textareaEl;
 
     if (textareaEl && autoFocus) {
       textareaEl.focus();
+    } else if (!focused) {
+      setIsFocus(false);
     }
   }, [disabled]);
 
@@ -441,9 +444,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       }
 
       textareaEl.style.height = `${textareaEl.scrollHeight}px`;
-      textareaEl.focus();
       textareaEl.scrollTop = textareaEl.scrollHeight;
-    }, [message]);
+      if (autoFocus) {
+        textareaEl.focus();
+      }
+    }, [message, autoFocus]);
   }
 
   useEffect(() => {
@@ -628,7 +633,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                     ...props.style,
                     height: textareaHeight
                   }}
-                  autoFocus={!disabled && autoFocus}
                   onFocus={handleFocus}
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -642,7 +646,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         {!!defaultKeySendText && !!alternativeKeySendText && (
           <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
             <InputMessageToggleSendButton
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setAlternativeKeyModalShown(!alternativeKeyModalShown);
               }}
               disabled={disabled}

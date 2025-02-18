@@ -25,9 +25,4 @@
     "./src",
     "./dist"
   ],
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs"
-    }
-  }
 }
