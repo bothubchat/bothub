@@ -60,6 +60,7 @@ export interface MessageProps {
   editText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
+  onReportText?: string | null;
   submitEditTooltipLabel?: string | null;
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
@@ -80,6 +81,7 @@ export interface MessageProps {
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
+  onReport?: MessageActionEventHandler;
   onNextVersion?: MessageVersionEventHandler;
   onPrevVersion?: MessageVersionEventHandler;
 }
@@ -103,6 +105,7 @@ export const Message: React.FC<MessageProps> = ({
   editText,
   resendText,
   deleteText,
+  onReportText,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
   updateTooltipLabel,
@@ -123,6 +126,7 @@ export const Message: React.FC<MessageProps> = ({
   onResend,
   onDelete,
   onUpdate,
+  onReport,
   onNextVersion,
   onPrevVersion
 }) => {
@@ -367,6 +371,7 @@ export const Message: React.FC<MessageProps> = ({
                 editText={editText}
                 resendText={resendText}
                 deleteText={deleteText}
+                onReportText={onReportText}
                 submitEditTooltipLabel={submitEditTooltipLabel}
                 discardEditTooltipLabel={discardEditTooltipLabel}
                 updateTooltipLabel={updateTooltipLabel}
@@ -380,6 +385,7 @@ export const Message: React.FC<MessageProps> = ({
                 onResend={onResend}
                 onDelete={onDelete}
                 onUpdate={onUpdate}
+                onReport={onReport}
                 onPlainTextCopy={handlePlainTextCopy}
                 onCopy={handleRichTextCopy}
               />

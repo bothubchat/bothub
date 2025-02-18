@@ -37,11 +37,11 @@ export const ActionButton = ({
           onClick={() => {
             onClick?.({ id, message });
           }}
-          onMouseEnter={(e) => {
+          onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
             handleTooltipMouseEnter(e);
             onMouseEnter?.();
           }}
-          onMouseLeave={(e) => {
+          onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
             handleTooltipMouseLeave(e);
             onMouseLeave?.();
           }}

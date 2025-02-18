@@ -28,6 +28,7 @@ import { CloseIcon } from '@/ui/icons/close';
 import { CopyIcon } from '@/ui/icons/copy';
 import { useScrollbarRef } from '../list';
 import { ModalOption } from './types';
+import { ThumbDownIcon } from '@/ui/icons';
 
 type MessageActionsProps = {
   id?: string;
@@ -43,6 +44,7 @@ type MessageActionsProps = {
   copyPlainText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
+  onReportText?: string | null;
   submitEditTooltipLabel?: string | null;
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
@@ -56,6 +58,7 @@ type MessageActionsProps = {
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
+  onReport?: MessageActionEventHandler;
   onPlainTextCopy?: MessagePlainTextCopyEventHandler;
   onCopy?: MessageActionEventHandler;
 };
@@ -74,6 +77,7 @@ export const MessageActions = ({
   copyPlainText,
   resendText,
   deleteText,
+  onReportText,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
   updateTooltipLabel,
@@ -87,6 +91,7 @@ export const MessageActions = ({
   onResend,
   onDelete,
   onUpdate,
+  onReport,
   onPlainTextCopy,
   onCopy
 }: MessageActionsProps) => {
@@ -179,6 +184,11 @@ export const MessageActions = ({
     onPlainTextCopy?.();
     setMenuShown(false);
   }, []);
+
+  const handleReportClick = useCallback(() => {
+    onReport?.({ id, message });
+    setMenuShown(false);
+  }, [id, message]);
 
   const modalTransition = useTransition(menuShown, {
     from: {
@@ -290,6 +300,17 @@ export const MessageActions = ({
                           </S.MessageActionsMenuModalOptionContent>
                         </MenuOption>
                       )}
+                      <MenuOption onClick={handleReportClick}>
+                        <S.MessageActionsMenuModalOptionContent>
+                          <ThumbDownIcon
+                            fill="#616D8D"
+                            size={18}
+                          />
+                          <S.MessageActionsButtonText>
+                            {onReportText}
+                          </S.MessageActionsButtonText>
+                        </S.MessageActionsMenuModalOptionContent>
+                      </MenuOption>
                     </S.MessageActionsMenuModal>
                   )
               )}
