@@ -98,6 +98,7 @@
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
+    "@uidotdev/usehooks": "^2.4.1",
     "highlight.js": "^11.9.0",
     "katex": "^0.16.10",
     "normalize.css": "^8.0.1",

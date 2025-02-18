@@ -642,7 +642,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         {!!defaultKeySendText && !!alternativeKeySendText && (
           <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
             <InputMessageToggleSendButton
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 setAlternativeKeyModalShown(!alternativeKeyModalShown);
               }}
               disabled={disabled}
