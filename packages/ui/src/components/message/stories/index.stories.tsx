@@ -609,6 +609,7 @@ export const NewDesignFeatures = () => {
       name="ChatGPT"
       avatar={<MessageAvatar />}
       copyPlainText="Копировать без форматирования"
+      copyTgText="Копировать в TG"
       editText="Редактировать"
       resendText="Переотправить"
       deleteText="Удалить"

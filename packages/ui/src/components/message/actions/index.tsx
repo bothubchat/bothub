@@ -18,6 +18,7 @@ import {
   MessageActionEditEventHandler,
   MessageActionEventHandler,
   MessagePlainTextCopyEventHandler,
+  MessageTgCopyEventHandler,
   MessageVariant
 } from '../types';
 import { MenuOption } from './menu-option';
@@ -40,6 +41,7 @@ type MessageActionsProps = {
   disableUpdate?: boolean;
   disableCopy?: boolean;
   editText?: string | null;
+  copyTgText?: string | null;
   copyPlainText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
@@ -57,6 +59,7 @@ type MessageActionsProps = {
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
   onPlainTextCopy?: MessagePlainTextCopyEventHandler;
+  onTgCopy?: MessageTgCopyEventHandler;
   onCopy?: MessageActionEventHandler;
 };
 
@@ -71,6 +74,7 @@ export const MessageActions = ({
   disableUpdate,
   disableCopy,
   editText,
+  copyTgText,
   copyPlainText,
   resendText,
   deleteText,
@@ -88,6 +92,7 @@ export const MessageActions = ({
   onDelete,
   onUpdate,
   onPlainTextCopy,
+  onTgCopy,
   onCopy
 }: MessageActionsProps) => {
   const [menuShown, setMenuShown] = useState(false);
@@ -116,7 +121,7 @@ export const MessageActions = ({
     const scrollWidth = messageRef?.current?.scrollWidth ?? 0;
     const offsetTop = messageActionsRef.current?.offsetTop ?? 0;
     const offsetLeft = messageActionsRef.current?.offsetLeft ?? 0;
-    setInvertedY(scrollHeight - offsetTop <= 210);
+    setInvertedY(scrollHeight - offsetTop <= 260);
     setInvertedX(
       (variant === 'assistant' && scrollWidth - offsetLeft <= 160) ||
         (variant === 'user' && offsetLeft <= 160)
@@ -174,6 +179,11 @@ export const MessageActions = ({
     onEditing?.(false);
     onEditedText?.(message ?? '');
   }, [message]);
+
+  const handleTgCopy = useCallback(() => {
+    onTgCopy?.();
+    setMenuShown(false);
+  }, []);
 
   const handlePlainTextCopy = useCallback(() => {
     onPlainTextCopy?.();
@@ -244,6 +254,16 @@ export const MessageActions = ({
                             <CopyIcon fill="#616D8D" />
                             <S.MessageActionsButtonText>
                               {copyPlainText}
+                            </S.MessageActionsButtonText>
+                          </S.MessageActionsMenuModalOptionContent>
+                        </MenuOption>
+                      )}
+                      {!disableCopy && (
+                        <MenuOption onClick={handleTgCopy}>
+                          <S.MessageActionsMenuModalOptionContent>
+                            <CopyIcon fill="#616D8D" />
+                            <S.MessageActionsButtonText>
+                              {copyTgText}
                             </S.MessageActionsButtonText>
                           </S.MessageActionsMenuModalOptionContent>
                         </MenuOption>
