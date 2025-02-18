@@ -34,9 +34,4 @@
     "tests.setup.ts"
   ],
   "exclude": ["./packages/*/dist"],
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs"
-    }
-  }
 }

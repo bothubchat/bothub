@@ -19,7 +19,7 @@
     "lint:fix": "yarn lint --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
-    "publish": "ts-node ./scripts/publish.ts",
+    "publish": "tsx ./scripts/publish.ts",
     "prepare": "husky",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -92,7 +92,7 @@
     "storybook": "7.4.0",
     "string-width": "4.2.0",
     "strip-ansi": "6.0.0",
-    "ts-node": "^10.9.1",
+    "tsx": "^4.19.2",
     "typescript": "5.7.2",
     "vitest": "^3.0.5"
   },
