@@ -26,7 +26,7 @@ export const Skeleton: BookmarkStory = {
 };
 
 export default {
-  title: 'Components/Bookmark/Item',
+  title: 'UI Components/Bookmark/Item',
   component: Bookmark,
   decorators: [StoryDecorator()]
 } as BookmarkMeta;
