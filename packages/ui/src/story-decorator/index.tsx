@@ -4,7 +4,7 @@ import './style.css';
 import React from 'react';
 import { StoryContext, StoryFn } from '@storybook/react';
 import { ThemeMode } from '@/ui/theme';
-import { BothubGlobalStyleProps } from '@/ui/styles';
+import { BothubGlobalStyleProps, BothubStyleSheetManager } from '@/ui/styles';
 import { PortalElement } from '@/ui/components/portal';
 import { BothubUIProvider } from '@/ui/provider';
 
@@ -17,17 +17,19 @@ export const StoryDecorator =
     const themeMode: ThemeMode = isLightMode ? 'light' : 'dark';
 
     return (
-      <BothubUIProvider
-        theme={{
-          mode: themeMode
-        }}
-        globalStyle={{
-          ...props,
-          scale: props.scale ?? 'main'
-        }}
-      >
-        <Story />
-        <PortalElement />
-      </BothubUIProvider>
+      <BothubStyleSheetManager variant={props.scale ?? 'main'}>
+        <BothubUIProvider
+          theme={{
+            mode: themeMode
+          }}
+          globalStyle={{
+            ...props,
+            scale: props.scale ?? 'main'
+          }}
+        >
+          <Story />
+          <PortalElement />
+        </BothubUIProvider>
+      </BothubStyleSheetManager>
     );
   };

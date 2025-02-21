@@ -75,7 +75,7 @@ export const Skeleton: MessagesStory = {
 export default {
   title: 'Components/Message/List',
   component: Messages,
-  decorators: [StoryDecorator()],
+  decorators: [StoryDecorator({ scale: 'main' })],
   argTypes: {
     children: {
       table: {
