@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.20.3-feat-dnd-sortable-41c3dec1-fdeb-4a30-bcfa-2e072dccf0ef",
+  "version": "2.22.9-develop-5d3f0b16-b271-429e-a64b-bf52c31444a1",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -42,10 +42,10 @@
   },
   "sideEffects": false,
   "peerDependencies": {
+    "@uidotdev/usehooks": "^2.4.1",
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0",
     "react-helmet": ">=6.1.0",
-    "react-use": "^17.0.0",
     "styled-components": "^6.0.7"
   },
   "dependencies": {

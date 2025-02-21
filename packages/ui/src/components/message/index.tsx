@@ -57,9 +57,11 @@ export interface MessageProps {
   disableUpdate?: boolean;
   disableCopy?: boolean;
   copyPlainText?: string | null;
+  copyTgText?: string | null;
   editText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
+  onReportText?: string | null;
   submitEditTooltipLabel?: string | null;
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
@@ -80,6 +82,7 @@ export interface MessageProps {
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
+  onReport?: MessageActionEventHandler;
   onNextVersion?: MessageVersionEventHandler;
   onPrevVersion?: MessageVersionEventHandler;
 }
@@ -100,9 +103,11 @@ export const Message: React.FC<MessageProps> = ({
   disableUpdate = false,
   disableCopy = false,
   copyPlainText,
+  copyTgText,
   editText,
   resendText,
   deleteText,
+  onReportText,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
   updateTooltipLabel,
@@ -123,6 +128,7 @@ export const Message: React.FC<MessageProps> = ({
   onResend,
   onDelete,
   onUpdate,
+  onReport,
   onNextVersion,
   onPrevVersion
 }) => {
@@ -168,9 +174,48 @@ export const Message: React.FC<MessageProps> = ({
     return [clipboardItem];
   }, []);
 
+  const getTgText = useCallback((string: string) => {
+    const tgMarkdown = string
+      // --- => ''
+      .replace(/^\s*[-*_]{3,}\s*$/gm, '')
+      // # Header -> **Bold**
+      .replace(/#{1,6} *(.*)/gm, '**$1**')
+      // **_BoldItalic_** -> **Bold**
+      .replace(/\*\*_(.*?)_\*\*/g, '**$1**')
+      // __Bold__ OR **Bold** -> **Bold**
+      .replace(/_{2}(.*)_{2}/g, '**$1**')
+      // *Italic* OR _Italic_ -> __Italic__
+      .replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '__$1__')
+      .replace(/(?<!_)_([^_]+)_(?!_)/g, '__$1__')
+      // > Quote -> __Italic__
+      .replace(/^\s*>\s*(.+)$/gm, '__$1__')
+      // List -> Text w/ dashes
+      .replace(/^\s*[*+-]\s+(.+)$/gm, '- $1')
+      .replace(/^\s*\d+\.\s+(.+)$/gm, '- $1')
+      // [link](uri) OR ![image](uri) -> text
+      .replace(/!?\[(.*)\]\(.*\)/g, '$1')
+      // Tables -> Text
+      .replace(/^\|(.+)\|$/gm, '$1')
+      .replace(/^[-|:\s]+$/gm, '')
+      // Remove extra lines
+      .replace(/\n\s*\n\s*\n/g, '\n\n')
+      .trim();
+
+    const clipboardItem = new ClipboardItem({
+      'text/plain': new Blob([tgMarkdown], { type: 'text/plain' })
+    });
+    return [clipboardItem];
+  }, []);
+
   const handlePlainTextCopy = useCallback(() => {
     if (messageBlockContentRef.current) {
       return onCopy?.(getPlainText(messageBlockContentRef.current));
+    }
+  }, [messageBlockContentRef.current]);
+
+  const handleTgTextCopy = useCallback(() => {
+    if (content) {
+      return onCopy?.(getTgText(content));
     }
   }, [messageBlockContentRef.current]);
 
@@ -364,9 +409,11 @@ export const Message: React.FC<MessageProps> = ({
                 disableUpdate={disableUpdate}
                 disableCopy={disableCopy}
                 copyPlainText={copyPlainText}
+                copyTgText={copyTgText}
                 editText={editText}
                 resendText={resendText}
                 deleteText={deleteText}
+                onReportText={onReportText}
                 submitEditTooltipLabel={submitEditTooltipLabel}
                 discardEditTooltipLabel={discardEditTooltipLabel}
                 updateTooltipLabel={updateTooltipLabel}
@@ -380,7 +427,9 @@ export const Message: React.FC<MessageProps> = ({
                 onResend={onResend}
                 onDelete={onDelete}
                 onUpdate={onUpdate}
+                onReport={onReport}
                 onPlainTextCopy={handlePlainTextCopy}
+                onTgCopy={handleTgTextCopy}
                 onCopy={handleRichTextCopy}
               />
             )}

@@ -18,6 +18,7 @@ import {
   MessageActionEditEventHandler,
   MessageActionEventHandler,
   MessagePlainTextCopyEventHandler,
+  MessageTgCopyEventHandler,
   MessageVariant
 } from '../types';
 import { MenuOption } from './menu-option';
@@ -28,6 +29,7 @@ import { CloseIcon } from '@/ui/icons/close';
 import { CopyIcon } from '@/ui/icons/copy';
 import { useScrollbarRef } from '../list';
 import { ModalOption } from './types';
+import { ThumbDownIcon } from '@/ui/icons';
 
 type MessageActionsProps = {
   id?: string;
@@ -40,9 +42,11 @@ type MessageActionsProps = {
   disableUpdate?: boolean;
   disableCopy?: boolean;
   editText?: string | null;
+  copyTgText?: string | null;
   copyPlainText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
+  onReportText?: string | null;
   submitEditTooltipLabel?: string | null;
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
@@ -56,7 +60,9 @@ type MessageActionsProps = {
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
+  onReport?: MessageActionEventHandler;
   onPlainTextCopy?: MessagePlainTextCopyEventHandler;
+  onTgCopy?: MessageTgCopyEventHandler;
   onCopy?: MessageActionEventHandler;
 };
 
@@ -71,9 +77,11 @@ export const MessageActions = ({
   disableUpdate,
   disableCopy,
   editText,
+  copyTgText,
   copyPlainText,
   resendText,
   deleteText,
+  onReportText,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
   updateTooltipLabel,
@@ -87,7 +95,9 @@ export const MessageActions = ({
   onResend,
   onDelete,
   onUpdate,
+  onReport,
   onPlainTextCopy,
+  onTgCopy,
   onCopy
 }: MessageActionsProps) => {
   const [menuShown, setMenuShown] = useState(false);
@@ -116,7 +126,7 @@ export const MessageActions = ({
     const scrollWidth = messageRef?.current?.scrollWidth ?? 0;
     const offsetTop = messageActionsRef.current?.offsetTop ?? 0;
     const offsetLeft = messageActionsRef.current?.offsetLeft ?? 0;
-    setInvertedY(scrollHeight - offsetTop <= 210);
+    setInvertedY(scrollHeight - offsetTop <= 260);
     setInvertedX(
       (variant === 'assistant' && scrollWidth - offsetLeft <= 160) ||
         (variant === 'user' && offsetLeft <= 160)
@@ -175,10 +185,20 @@ export const MessageActions = ({
     onEditedText?.(message ?? '');
   }, [message]);
 
+  const handleTgCopy = useCallback(() => {
+    onTgCopy?.();
+    setMenuShown(false);
+  }, []);
+
   const handlePlainTextCopy = useCallback(() => {
     onPlainTextCopy?.();
     setMenuShown(false);
   }, []);
+
+  const handleReportClick = useCallback(() => {
+    onReport?.({ id, message });
+    setMenuShown(false);
+  }, [id, message]);
 
   const modalTransition = useTransition(menuShown, {
     from: {
@@ -238,7 +258,7 @@ export const MessageActions = ({
                       $invertedX={invertedX}
                       $invertedY={invertedY}
                     >
-                      {!disableCopy && (
+                      {!disableCopy && copyPlainText && onPlainTextCopy && (
                         <MenuOption onClick={handlePlainTextCopy}>
                           <S.MessageActionsMenuModalOptionContent>
                             <CopyIcon fill="#616D8D" />
@@ -248,21 +268,34 @@ export const MessageActions = ({
                           </S.MessageActionsMenuModalOptionContent>
                         </MenuOption>
                       )}
-                      {!disableResend && variant === 'user' && (
-                        <MenuOption
-                          onClick={() => {
-                            handleOptionClick('resend');
-                          }}
-                        >
+                      {!disableCopy && copyTgText && onTgCopy && (
+                        <MenuOption onClick={handleTgCopy}>
                           <S.MessageActionsMenuModalOptionContent>
-                            <ResendIcon fill="#616D8D" />
+                            <CopyIcon fill="#616D8D" />
                             <S.MessageActionsButtonText>
-                              {resendText}
+                              {copyTgText}
                             </S.MessageActionsButtonText>
                           </S.MessageActionsMenuModalOptionContent>
                         </MenuOption>
                       )}
-                      {!disableEdit && (
+                      {!disableResend &&
+                        variant === 'user' &&
+                        resendText &&
+                        onResend && (
+                          <MenuOption
+                            onClick={() => {
+                              handleOptionClick('resend');
+                            }}
+                          >
+                            <S.MessageActionsMenuModalOptionContent>
+                              <ResendIcon fill="#616D8D" />
+                              <S.MessageActionsButtonText>
+                                {resendText}
+                              </S.MessageActionsButtonText>
+                            </S.MessageActionsMenuModalOptionContent>
+                          </MenuOption>
+                        )}
+                      {!disableEdit && editText && onEdit && (
                         <MenuOption
                           onClick={() => {
                             handleOptionClick('edit');
@@ -276,7 +309,7 @@ export const MessageActions = ({
                           </S.MessageActionsMenuModalOptionContent>
                         </MenuOption>
                       )}
-                      {!disableDelete && (
+                      {!disableDelete && deleteText && onDelete && (
                         <MenuOption
                           onClick={() => {
                             handleOptionClick('delete');
@@ -286,6 +319,19 @@ export const MessageActions = ({
                             <TrashIcon />
                             <S.MessageActionsButtonText>
                               {deleteText}
+                            </S.MessageActionsButtonText>
+                          </S.MessageActionsMenuModalOptionContent>
+                        </MenuOption>
+                      )}
+                      {onReportText && onReport && (
+                        <MenuOption onClick={handleReportClick}>
+                          <S.MessageActionsMenuModalOptionContent>
+                            <ThumbDownIcon
+                              fill="#616D8D"
+                              size={18}
+                            />
+                            <S.MessageActionsButtonText>
+                              {onReportText}
                             </S.MessageActionsButtonText>
                           </S.MessageActionsMenuModalOptionContent>
                         </MenuOption>

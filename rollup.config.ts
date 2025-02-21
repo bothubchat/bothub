@@ -99,7 +99,13 @@ export function createConfig({
           rootDir: srcPath,
           declaration: true,
           declarationDir: distPath,
-          exclude: ['./**/*.stories.ts', './**/*.stories.tsx']
+          exclude: [
+            './**/*.stories.ts',
+            './**/*.stories.tsx',
+            './packages/*/tests',
+            './**/*.test.ts',
+            './**/*.test.tsx'
+          ]
         }),
         eslint({})
       ],
