@@ -3,7 +3,12 @@
     "target": "ES2015",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["vite/client", "node"],
+    "types": [
+      "vite/client",
+      "node",
+      "vitest/globals",
+      "@testing-library/jest-dom"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -20,14 +25,13 @@
     }
   },
   "include": [
-    "./packages/*/src", 
+    "./packages/*/src",
     "./rollup.config.ts",
-    "./scripts/publish.ts"
+    "./vitest.config.ts",
+    "./scripts/publish.ts",
+    "./packages/*/tests",
+    "./packages/*/vitest.config.ts",
+    "tests.setup.ts"
   ],
   "exclude": ["./packages/*/dist"],
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs"
-    }
-  }
 }

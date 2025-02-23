@@ -13,6 +13,12 @@ import { TooltipArrow } from './arrow';
 import { TooltipProvider } from './context';
 import { TooltipAlign, TooltipPlacement, TooltipVariant } from './types';
 
+export const TooltipAnimationDuration = {
+  enter: 150,
+  exit: 150,
+  leaveDisabledHiddenAnimation: 0
+};
+
 export interface TooltipProps extends React.PropsWithChildren {
   className?: string;
   variant?: TooltipVariant;
@@ -197,7 +203,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
         duration: disableHiddenAnimation ? 0 : 0.3
       }
     },
-    config: { duration: 150 }
+    config: { duration: TooltipAnimationDuration.enter }
   });
 
   const tooltipNode: React.ReactNode = tooltipTransition(

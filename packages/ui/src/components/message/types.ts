@@ -11,6 +11,8 @@ export type MessageCodeCopyEventHandler = (code: string) => unknown;
 
 export type MessagePlainTextCopyEventHandler = () => unknown;
 
+export type MessageTgCopyEventHandler = () => unknown;
+
 export type MessageActionEventHandler = ({
   id,
   message

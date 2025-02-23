@@ -8,9 +8,10 @@ export const SearchResultsList = styled.ul`
   flex-direction: column;
   gap: 10px;
   padding-left: 0;
+  margin: 0;
 `;
 
-export const SearchResultsItem = styled.li`
+export const SearchResultsItemStyled = styled.li`
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -39,9 +40,11 @@ export const SearchResultsItem = styled.li`
 
 export const SearchResultsItemLink = styled.a`
   position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
   width: 100%;
   height: 100%;
-  z-index: 2;
   cursor: pointer;
 `;
 
@@ -56,6 +59,9 @@ export const SearchResultsItemName = styled(Typography)`
   &[data-source-name] {
     color: ${({ theme }) => theme.colors.base.white};
   }
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const SearchResultsItemNumber = styled.div`
@@ -77,5 +83,15 @@ export const SearchResultsItemNumber = styled.div`
 export const SearchResultsItemTitle = styled(Typography)`
   &[data-source-title] {
     color: ${({ theme }) => theme.colors.base.white};
+  }
+`;
+
+export const SearchResultsItemContent = styled.div`
+  max-height: 80px;
+  overflow: hidden;
+
+  &[data-has-overflow='true'] {
+    -webkit-mask: linear-gradient(to bottom, black 80%, transparent 100%);
+    mask: linear-gradient(to bottom, black 80%, transparent 100%);
   }
 `;

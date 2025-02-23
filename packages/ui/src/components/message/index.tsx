@@ -33,6 +33,7 @@ import {
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
+import { getTgMarkdown } from '@/ui/utils';
 import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
@@ -57,9 +58,11 @@ export interface MessageProps {
   disableUpdate?: boolean;
   disableCopy?: boolean;
   copyPlainText?: string | null;
+  copyTgText?: string | null;
   editText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
+  onReportText?: string | null;
   submitEditTooltipLabel?: string | null;
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
@@ -80,6 +83,7 @@ export interface MessageProps {
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
+  onReport?: MessageActionEventHandler;
   onNextVersion?: MessageVersionEventHandler;
   onPrevVersion?: MessageVersionEventHandler;
 }
@@ -100,9 +104,11 @@ export const Message: React.FC<MessageProps> = ({
   disableUpdate = false,
   disableCopy = false,
   copyPlainText,
+  copyTgText,
   editText,
   resendText,
   deleteText,
+  onReportText,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
   updateTooltipLabel,
@@ -123,6 +129,7 @@ export const Message: React.FC<MessageProps> = ({
   onResend,
   onDelete,
   onUpdate,
+  onReport,
   onNextVersion,
   onPrevVersion
 }) => {
@@ -168,9 +175,24 @@ export const Message: React.FC<MessageProps> = ({
     return [clipboardItem];
   }, []);
 
+  const getTgText = useCallback((string: string) => {
+    const tgMarkdown = getTgMarkdown(string);
+
+    const clipboardItem = new ClipboardItem({
+      'text/plain': new Blob([tgMarkdown], { type: 'text/plain' })
+    });
+    return [clipboardItem];
+  }, []);
+
   const handlePlainTextCopy = useCallback(() => {
     if (messageBlockContentRef.current) {
       return onCopy?.(getPlainText(messageBlockContentRef.current));
+    }
+  }, [messageBlockContentRef.current]);
+
+  const handleTgTextCopy = useCallback(() => {
+    if (content) {
+      return onCopy?.(getTgText(content));
     }
   }, [messageBlockContentRef.current]);
 
@@ -364,9 +386,11 @@ export const Message: React.FC<MessageProps> = ({
                 disableUpdate={disableUpdate}
                 disableCopy={disableCopy}
                 copyPlainText={copyPlainText}
+                copyTgText={copyTgText}
                 editText={editText}
                 resendText={resendText}
                 deleteText={deleteText}
+                onReportText={onReportText}
                 submitEditTooltipLabel={submitEditTooltipLabel}
                 discardEditTooltipLabel={discardEditTooltipLabel}
                 updateTooltipLabel={updateTooltipLabel}
@@ -380,7 +404,9 @@ export const Message: React.FC<MessageProps> = ({
                 onResend={onResend}
                 onDelete={onDelete}
                 onUpdate={onUpdate}
+                onReport={onReport}
                 onPlainTextCopy={handlePlainTextCopy}
+                onTgCopy={handleTgTextCopy}
                 onCopy={handleRichTextCopy}
               />
             )}
