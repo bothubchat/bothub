@@ -17,8 +17,27 @@ export const BothubAppBannerBackgroundGradient = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  transition: opacity 0.3s ease-in-out;
-  background: ${({ theme }) => theme.colors.premiumGradient};
+  transition: all 0.3s ease-in-out;
+  background: linear-gradient(
+    90deg,
+    #1c64f2 -0.39%,
+    rgba(212, 28, 242, 0.5) 99.61%
+  );
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.05) 40%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+  }
   &::before {
     content: '';
     position: absolute;
@@ -68,14 +87,19 @@ export const BothubAppBannerStyled = styled.a`
   border-radius: 24px;
   width: 100%;
   height: 222px;
+
   max-width: 1290px;
   &:hover {
     ${BothubAppBannerImage} {
       transform: scale(1.05);
     }
-    ${BothubAppBannerBackgroundGradient}:before {
-      opacity: 0.2;
-      @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    ${BothubAppBannerBackgroundGradient} {
+      $:before {
+        @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+          opacity: 1;
+        }
+      }
+      &:after {
         opacity: 1;
       }
     }
