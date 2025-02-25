@@ -2,6 +2,7 @@ import React, { forwardRef, useCallback, useState } from 'react';
 import {
   SidebarArrowDownButton,
   SidebarArrowUpButton,
+  SidebarBanner,
   SidebarBody,
   SidebarBodyContent,
   SidebarBodyScrollbarWrapper,
@@ -43,6 +44,7 @@ export interface SidebarProps extends React.PropsWithChildren {
   deleteButton?: React.ReactNode;
   isHide?: boolean;
   themeSwitcher?: React.ReactNode;
+  banner?: React.ReactNode;
 }
 
 export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
@@ -63,6 +65,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
       themeSwitcher,
       isHide = false,
       children,
+      banner,
       onOpen
     },
     ref
@@ -170,6 +173,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
             <SidebarDeleteButtonContainer>
               {deleteButton}
             </SidebarDeleteButtonContainer>
+            {banner && <SidebarBanner $open={isOpen}>{banner}</SidebarBanner>}
             <SidebarBottom>{user}</SidebarBottom>
           </SidebarContent>
           <SidebarContentNav $open={isOpen}>
