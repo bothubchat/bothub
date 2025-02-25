@@ -110,12 +110,13 @@ export const SidebarSortButton = styled(Button)<SidebarSortButtonProps>`
       ? css`
           svg path {
             fill: ${({ theme }) => theme.default.colors.base.white};
+            stroke: white;
           }
         `
       : css`
           svg path {
             fill: ${({ theme }) => theme.colors.grayScale.gray1};
-            stroke: none;
+            stroke: white;
           }
         `}
 `;

@@ -219,16 +219,6 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
         }
       `;
     }
-    if (!$active && !$skeleton) {
-      return css`
-        &:hover {
-          border-radius: 10px;
-          background-color: ${({ theme }) =>
-            `${theme.colors.accent.primaryLight}80`};
-          transition: background-color 0.3s ease-out;
-        }
-      `;
-    }
   }}
   ${({ $skeleton, $active }) => {
     if ($skeleton || $active) {
