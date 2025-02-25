@@ -6,6 +6,7 @@ export const BothubAppBannerMiniStyled = styled.a`
   position: relative;
   background: ${({ theme }) => theme.colors.premiumGradient};
   border-radius: 14px;
+  overflow: hidden;
   padding: 16px;
   display: flex;
   flex-direction: column;

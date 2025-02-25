@@ -34,3 +34,5 @@ export const BothubAppBanner: React.FC<BothubAppBannerProps> = ({
     </BothubAppBannerContainer>
   </BothubAppBannerStyled>
 );
+
+export * from './mini';
