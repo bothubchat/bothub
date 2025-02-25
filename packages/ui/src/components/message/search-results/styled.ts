@@ -91,7 +91,15 @@ export const SearchResultsItemContent = styled.div`
   overflow: hidden;
 
   &[data-has-overflow='true'] {
-    -webkit-mask: linear-gradient(to bottom, black 80%, transparent 100%);
-    mask: linear-gradient(to bottom, black 80%, transparent 100%);
+    -webkit-mask: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 80%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    mask: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 80%,
+      rgba(0, 0, 0, 0) 100%
+    );
   }
 `;
