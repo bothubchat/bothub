@@ -87,8 +87,6 @@ export const BothubAppBannerStyled = styled.a`
   border-radius: 24px;
   width: 100%;
   height: 222px;
-
-  max-width: 1290px;
   &:hover {
     ${BothubAppBannerImage} {
       transform: scale(1.05);
