@@ -188,13 +188,13 @@ export const Message: React.FC<MessageProps> = ({
     if (messageBlockContentRef.current) {
       return onCopy?.(getPlainText(messageBlockContentRef.current));
     }
-  }, [messageBlockContentRef.current]);
+  }, [messageBlockContentRef.current, content]);
 
   const handleTgTextCopy = useCallback(() => {
     if (content) {
       return onCopy?.(getTgText(content));
     }
-  }, [messageBlockContentRef.current]);
+  }, [content]);
 
   const handleRichTextCopy = useCallback(() => {
     if (messageBlockContentRef.current && content) {
