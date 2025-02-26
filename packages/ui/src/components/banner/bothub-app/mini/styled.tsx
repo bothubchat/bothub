@@ -4,8 +4,6 @@ import { Typography } from '@/ui/components/typography';
 
 export const BothubAppBannerMiniStyled = styled.a`
   position: relative;
-  ${({ theme }) =>
-    theme.mode === 'dark' && `background: ${theme.colors.premiumGradient};`}
   border-radius: 14px;
   padding: 16px;
   display: flex;
@@ -24,10 +22,7 @@ export const BothubAppBannerMiniStyled = styled.a`
     opacity: 0.2;
     outline: 2px solid rgba(0, 0, 0, 0.3);
     outline-offset: -2px;
-    background: ${({ theme }) =>
-      theme.mode === 'dark'
-        ? theme.colors.base.black
-        : theme.colors.premiumGradient};
+    background: ${({ theme }) => theme.colors.premiumGradient};
   }
   &:hover {
     &:before {
