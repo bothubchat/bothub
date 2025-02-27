@@ -95,8 +95,10 @@ export const Header: React.FC<HeaderProps> = ({
               </HeaderRight>
             </HeaderContainerContent>
             <HeaderContainerContent $variant="tablet">
-              <HeaderMenuToggleButton />
-              <HeaderLeft>{buttonsTablet}</HeaderLeft>
+              <HeaderLeft>
+                <HeaderMenuToggleButton />
+                {buttonsTablet}
+              </HeaderLeft>
               <HeaderCenter>{logo}</HeaderCenter>
               <HeaderRight>
                 {lang}

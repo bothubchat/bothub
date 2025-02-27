@@ -7,7 +7,7 @@ export const FooterMobileStyled = styled.div`
   display: none;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 16px;
+  padding: 16px;
   border-top: 2px solid ${({ theme }) => theme.colors.grayScale.gray2};
   ${adaptive({
     mobile: css`
@@ -25,8 +25,8 @@ export const FooterMobileButton = styled.button<FooterMobileButtonProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 52px;
-  height: 52px;
+  width: 48px;
+  height: 48px;
   &:hover {
     opacity: 0.8;
     cursor: pointer;
@@ -38,8 +38,8 @@ export const FooterMobileButton = styled.button<FooterMobileButtonProps>`
   transition: all 0.2s ease-out;
   ${({ $iconSize }) => css`
     svg {
-      width: ${$iconSize ?? 28}px;
-      height: ${$iconSize ?? 28}px;
+      width: ${$iconSize ?? 26}px;
+      height: ${$iconSize ?? 26}px;
       * {
         transition: all 0.2s ease-out;
       }

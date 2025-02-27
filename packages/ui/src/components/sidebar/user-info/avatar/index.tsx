@@ -3,7 +3,7 @@ import { AvatarProps } from '@/ui/components/avatar';
 import { useSidebar } from '../../context';
 import { SidebarUserInfoAvatarStyled } from './styled';
 import { useTooltip } from '@/ui/components/tooltip';
-import { TariffPlan } from './types';
+import { TariffPlan } from '@/ui/components/types';
 
 export type SidebarUserInfoAvatarProps = Omit<
   AvatarProps & { tariffPlan?: TariffPlan },

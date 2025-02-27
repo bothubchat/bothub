@@ -18,6 +18,7 @@ import {
   SidebarMobileToggle,
   SidebarSearchContainer,
   SidebarStyled,
+  SidebarToggle,
   SidebarToolbar,
   SidebarWrapper
 } from './styled';
@@ -143,7 +144,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
               {buttons}
               {buttonsModal}
               {!isOpen && <SidebarMenu>{menu}</SidebarMenu>}
-              {toggle}
+              <SidebarToggle>{toggle}</SidebarToggle>
             </SidebarToolbar>
             <SidebarSearchContainer>{search}</SidebarSearchContainer>
             <SidebarDivider />

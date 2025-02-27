@@ -402,6 +402,15 @@ export const SidebarToolbar = styled.div<{
     })}
 `;
 
+export const SidebarToggle = styled.div`
+  display: flex;
+  ${adaptive({
+    mobile: css`
+      display: none;
+    `
+  })}
+`;
+
 export const SidebarSearchContainer = styled.div`
   width: 100%;
   padding-right: 20px;

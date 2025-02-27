@@ -1,16 +1,19 @@
-import { ChatsIcon, MenuIcon, SettingsIcon, UserProfileIcon } from '@/ui/icons';
+import { ChatsIcon, MenuIcon, SettingsIcon } from '@/ui/icons';
 import {
   FooterMobileStyled,
   FooterMobileButton,
   FooterMobileNewChatButton
 } from './styled';
 import { useTheme } from '@/ui/theme';
+import { SidebarUserInfoAvatar } from '@/ui/components/sidebar';
+import { TariffPlan } from '@/ui/components/types';
 
 export type FooterMobileButtonClickHandler = () => unknown;
 
 export type FooterMobileButtonActiveProp = 'menu' | 'chats' | 'settings' | null;
 
 export interface FooterMobileProps {
+  tariffPlan?: TariffPlan;
   activeButton?: FooterMobileButtonActiveProp;
   onMenuClick: FooterMobileButtonClickHandler;
   onChatsClick: FooterMobileButtonClickHandler;
@@ -20,6 +23,7 @@ export interface FooterMobileProps {
 }
 
 export const FooterMobile: React.FC<FooterMobileProps> = ({
+  tariffPlan,
   activeButton,
   onMenuClick,
   onChatsClick,
@@ -63,7 +67,7 @@ export const FooterMobile: React.FC<FooterMobileProps> = ({
         $iconSize={44}
         onClick={onUserClick}
       >
-        <UserProfileIcon />
+        <SidebarUserInfoAvatar tariffPlan={tariffPlan} />
       </FooterMobileButton>
     </FooterMobileStyled>
   );
