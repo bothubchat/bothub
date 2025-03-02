@@ -1,4 +1,9 @@
-import React, { forwardRef, useCallback, useState } from 'react';
+import React, {
+  forwardRef,
+  StyleHTMLAttributes,
+  useCallback,
+  useState
+} from 'react';
 import {
   SidebarArrowDownButton,
   SidebarArrowUpButton,
@@ -15,9 +20,9 @@ import {
   SidebarDivider,
   SidebarGlobalStyle,
   SidebarHeader,
-  SidebarMobileToggle,
   SidebarSearchContainer,
   SidebarStyled,
+  SidebarTabletThemeSwitcher,
   SidebarToggle,
   SidebarToolbar,
   SidebarWrapper
@@ -25,11 +30,13 @@ import {
 import { SidebarProvider } from './context';
 import { SidebarMenu } from './menu';
 import { ScrollbarRef, ScrollbarScrollEventHandler } from '../scrollbar';
+import { SidebarSectionProp } from './types';
 
 export type SidebarOpenEventHandler = (open: boolean) => unknown;
 
 export interface SidebarProps extends React.PropsWithChildren {
   open?: boolean;
+  section?: SidebarSectionProp;
   defaultOpen?: boolean;
   className?: string;
   id?: string;
@@ -41,16 +48,18 @@ export interface SidebarProps extends React.PropsWithChildren {
   toggle?: React.ReactNode;
   user?: React.ReactNode;
   search?: React.ReactNode;
-  onOpen?: SidebarOpenEventHandler;
   deleteButton?: React.ReactNode;
   isHide?: boolean;
   themeSwitcher?: React.ReactNode;
+  style?: StyleHTMLAttributes<HTMLElement>;
+  onOpen?: SidebarOpenEventHandler;
 }
 
 export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
   (
     {
       open,
+      section,
       defaultOpen = true,
       className,
       id,
@@ -66,6 +75,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
       themeSwitcher,
       isHide = false,
       children,
+      style,
       onOpen
     },
     ref
@@ -123,6 +133,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
         });
       }
     }, [ref]);
+
     return (
       <SidebarProvider
         isOpen={isOpen}
@@ -133,8 +144,12 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
           className={className}
           $isHide={isHide}
           $open={isOpen}
+          style={style}
         >
-          <SidebarContent $open={isOpen}>
+          <SidebarContent
+            $open={isOpen}
+            $section={section}
+          >
             <SidebarHeader $open={isOpen}>
               {logo}
               {lang}
@@ -176,12 +191,14 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
             </SidebarDeleteButtonContainer>
             <SidebarBottom>{user}</SidebarBottom>
           </SidebarContent>
-          <SidebarContentNav $open={isOpen}>
-            <SidebarContentNavContainer $open={isOpen}>
-              <SidebarMobileToggle>
+          <SidebarContentNav
+            $open={isOpen}
+            $section={section}
+          >
+            <SidebarContentNavContainer>
+              <SidebarTabletThemeSwitcher>
                 {themeSwitcher}
-                {toggle}
-              </SidebarMobileToggle>
+              </SidebarTabletThemeSwitcher>
               <SidebarContentNavMenuWrapper>
                 <SidebarContentNavMenuScrollbarWrapper>
                   {menu}
@@ -210,3 +227,4 @@ export * from './menu';
 export * from './dropdown';
 export * from './group-empty';
 export * from './lang';
+export * from './types';

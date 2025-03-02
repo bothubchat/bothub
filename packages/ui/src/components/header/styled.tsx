@@ -45,11 +45,13 @@ export const HeaderStyled = styled.header<HeaderStyledProps>`
       case 'dashboard': {
         const adaptiveStyle = adaptive({
           variant: 'dashboard',
+          merge: true,
           desktop: css`
             height: ${theme.dashboard.header.height};
           `,
           tablet: css`
             height: ${theme.dashboard.header.tablet.height};
+            z-index: ${theme.zIndex.modal};
           `,
           mobile: css`
             height: ${theme.dashboard.header.mobile.height};
@@ -138,14 +140,15 @@ export const HeaderContainerContent = styled.div<HeaderContainerContentProps>`
         display: ${$variant === 'tablet' ? 'flex' : 'none'};
         border-radius: 0;
         padding: 8px;
-        > * {
-          width: 25%;
-        }
+        justify-content: space-between;
+        z-index: ${({ theme }) => theme.zIndex.modal};
       `,
       mobile: css`
         display: ${$variant === 'mobile' ? 'flex' : 'none'};
         border-radius: 0;
         padding: 8px;
+        justify-content: space-between;
+        z-index: ${({ theme }) => theme.zIndex.modal};
       `
     })}
 `;
@@ -154,14 +157,21 @@ export const HeaderLeft = styled.div`
   display: flex;
   align-items: center;
   gap: 18px;
-  margin-right: auto;
+  ${adaptive({
+    variant: 'dashboard',
+    tablet: css`
+      flex: 1;
+    `
+  })}
 `;
 
 export const HeaderCenter = styled.div`
   display: flex;
   align-items: center;
   ${adaptive({
+    variant: 'dashboard',
     tablet: css`
+      flex: 1;
       justify-content: center;
     `
   })}
@@ -172,11 +182,13 @@ export const HeaderRight = styled.div`
   align-items: center;
   gap: 24px;
   ${adaptive({
+    variant: 'dashboard',
     tablet: css`
       gap: 8px;
+      flex: 1;
+      justify-content: end;
     `
   })}
-  margin-left: auto;
 `;
 
 export const HeaderLogoLink = styled.a`

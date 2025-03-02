@@ -12,6 +12,7 @@ export type SidebarUserInfoAvatarProps = Omit<
 
 export const SidebarUserInfoAvatar: React.FC<SidebarUserInfoAvatarProps> = ({
   tariffPlan,
+  size,
   ...props
 }) => {
   const { isOpen } = useSidebar();
@@ -21,7 +22,7 @@ export const SidebarUserInfoAvatar: React.FC<SidebarUserInfoAvatarProps> = ({
     <SidebarUserInfoAvatarStyled
       {...props}
       $tariffPlan={tariffPlan}
-      size={isOpen ? 40 : 34}
+      size={!size ? (isOpen ? 40 : 34) : size}
       onMouseEnter={handleTooltipMouseEnter}
       onMouseLeave={handleTooltipMouseLeave}
     />

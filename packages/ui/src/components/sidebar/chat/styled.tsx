@@ -10,7 +10,11 @@ import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { Checkbox } from '@/ui/components/checkbox';
 import { Tooltip } from '../../tooltip';
 
-export const SidebarChatLeft = styled.div`
+export interface SidebarChatLeftProps {
+  $sidebarOpen?: boolean;
+}
+
+export const SidebarChatLeft = styled.div<SidebarChatLeftProps>`
   display: flex;
   width: 100%;
   align-items: center;
@@ -30,14 +34,16 @@ export const SidebarChatIconStyled = styled(SidebarChatIcon)`
   display: none;
 `;
 
-export const SidebarChatIconContainer = styled.span<{
+export interface SidebarChatIconContainerProps {
   $active?: boolean;
   $isDefault?: boolean;
-}>`
+}
+
+export const SidebarChatIconContainer = styled.span<SidebarChatIconContainerProps>`
   display: inline-flex;
   width: 18px;
   height: 18px;
-  margin-right: 10px;
+  margin-bottom: 10px;
   flex-shrink: 0;
   ${SidebarChatIconStyled} {
     display: ${({ $isDefault }) => ($isDefault ? 'inline-flex' : 'none')};

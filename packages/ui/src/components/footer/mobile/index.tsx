@@ -67,7 +67,10 @@ export const FooterMobile: React.FC<FooterMobileProps> = ({
         $iconSize={44}
         onClick={onUserClick}
       >
-        <SidebarUserInfoAvatar tariffPlan={tariffPlan} />
+        <SidebarUserInfoAvatar
+          tariffPlan={tariffPlan}
+          size={44}
+        />
       </FooterMobileButton>
     </FooterMobileStyled>
   );

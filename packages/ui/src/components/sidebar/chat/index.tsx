@@ -30,6 +30,7 @@ export interface SidebarChatDefaultProps {
   checkbox?: React.ReactNode;
   dragging?: boolean;
   isDefault?: boolean;
+  sidebarOpen?: boolean;
 }
 
 export interface SidebarChatSkeletonProps {

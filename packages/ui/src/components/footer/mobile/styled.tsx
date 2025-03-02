@@ -8,12 +8,15 @@ export const FooterMobileStyled = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 16px;
+  background-color: ${({ theme }) => theme.colors.base.black};
   border-top: 2px solid ${({ theme }) => theme.colors.grayScale.gray2};
   ${adaptive({
+    variant: 'dashboard',
     mobile: css`
       display: flex;
     `
   })}
+  z-index: ${({ theme }) => theme.zIndex.menu};
 `;
 
 export interface FooterMobileButtonProps {

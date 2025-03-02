@@ -12,8 +12,10 @@ import {
 import { HeaderMenu, HeaderMenuToggleButton } from './menu';
 import { HeaderVariant } from './types';
 import { HeaderProvider } from './context';
+import { SidebarSectionProp } from '../sidebar';
 
 export type HeaderOpenEventHandler = (open: boolean) => unknown;
+export type HeaderTabletToggleEventHandler = () => unknown;
 
 export interface HeaderProps
   extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang' | '$variant'> {
@@ -27,7 +29,9 @@ export interface HeaderProps
   themeSwitcher?: React.ReactNode;
   open?: boolean;
   isPreset?: boolean;
+  section?: SidebarSectionProp;
   onOpen?: HeaderOpenEventHandler;
+  onTabletOpen?: HeaderTabletToggleEventHandler;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -40,7 +44,9 @@ export const Header: React.FC<HeaderProps> = ({
   user,
   themeSwitcher,
   open,
+  section,
   onOpen,
+  onTabletOpen,
   isPreset = false,
   ...props
 }) => {
@@ -96,7 +102,10 @@ export const Header: React.FC<HeaderProps> = ({
             </HeaderContainerContent>
             <HeaderContainerContent $variant="tablet">
               <HeaderLeft>
-                <HeaderMenuToggleButton />
+                <HeaderMenuToggleButton
+                  onTabletOpen={onTabletOpen}
+                  headerTabletSection={section}
+                />
                 {buttonsTablet}
               </HeaderLeft>
               <HeaderCenter>{logo}</HeaderCenter>
