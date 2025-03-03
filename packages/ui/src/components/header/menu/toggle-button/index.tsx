@@ -3,15 +3,14 @@ import { HeaderMenuToggleIcon } from './icon';
 import { HeaderMenuToggleButtonStyled } from './styled';
 import { useHeader } from '../../context';
 import { HeaderTabletToggleEventHandler } from '../..';
-import { SidebarSectionProp } from '@/ui/components/sidebar';
 
 export interface HeaderMenuToggleButtonProps {
-  headerTabletSection?: SidebarSectionProp;
+  isOpen?: boolean;
   onTabletOpen?: HeaderTabletToggleEventHandler;
 }
 
 export const HeaderMenuToggleButton: React.FC<HeaderMenuToggleButtonProps> = ({
-  headerTabletSection,
+  isOpen,
   onTabletOpen
 }) => {
   const { variant, isMenuOpen, setIsMenuOpen } = useHeader();
@@ -30,9 +29,7 @@ export const HeaderMenuToggleButton: React.FC<HeaderMenuToggleButtonProps> = ({
       aria-label="Menu Toggle Button"
       onClick={toggleMenu}
     >
-      <HeaderMenuToggleIcon
-        isTabletNavSectionOpen={headerTabletSection === 'nav'}
-      />
+      <HeaderMenuToggleIcon isOpen={isOpen} />
     </HeaderMenuToggleButtonStyled>
   );
 };

@@ -43,7 +43,7 @@ export const SidebarChatIconContainer = styled.span<SidebarChatIconContainerProp
   display: inline-flex;
   width: 18px;
   height: 18px;
-  margin-bottom: 10px;
+  margin-right: 10px;
   flex-shrink: 0;
   ${SidebarChatIconStyled} {
     display: ${({ $isDefault }) => ($isDefault ? 'inline-flex' : 'none')};

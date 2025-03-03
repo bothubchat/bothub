@@ -3,20 +3,17 @@ import { useHeader } from '../../../context';
 import { StyledBurgerIcon, StyledLine } from './styled';
 
 export type HeaderMenuToggleIconProps = {
-  isTabletNavSectionOpen?: boolean;
+  isOpen?: boolean;
 };
 
 export const HeaderMenuToggleIcon: React.FC<HeaderMenuToggleIconProps> =
-  React.memo(({ isTabletNavSectionOpen }) => {
+  React.memo(({ isOpen }) => {
     const { isMenuOpen } = useHeader();
 
-    const isOpen =
-      typeof isTabletNavSectionOpen !== 'undefined'
-        ? isTabletNavSectionOpen
-        : isMenuOpen;
+    const resultIsOpen = typeof isOpen !== 'undefined' ? isOpen : isMenuOpen;
 
     return (
-      <StyledBurgerIcon $isOpen={isOpen}>
+      <StyledBurgerIcon $isOpen={resultIsOpen}>
         <StyledLine />
         <StyledLine />
         <StyledLine />

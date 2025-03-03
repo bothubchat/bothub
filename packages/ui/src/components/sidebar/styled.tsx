@@ -4,7 +4,8 @@ import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 import { Logo } from '@/ui/components/logo';
 import {
-  SidebarChatIconStyled,
+  SidebarChatIconContainer,
+  SidebarChatStyled,
   SidebarChatTooltip,
   SidebarChatWithOutlineStyled
 } from './chat';
@@ -73,7 +74,6 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
             ${SidebarChatList} {
               gap: 10px;
               ${SidebarChatWithOutlineStyled} {
-                padding: 9px;
                 width: fit-content;
                 border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
                 border-radius: 8px;
@@ -83,16 +83,10 @@ export const SidebarGlobalStyle = createGlobalStyle<SidebarGlobalStyleProps>`
                 &:last-child {
                   margin-bottom: 10px;
                 }
-                & > * {
-                  display: none;
-                }
                 ${SidebarChatTooltip} {
                   & > * {
                     display: block;
                   }
-                }
-                ${SidebarChatIconStyled} {
-                  display: inline-flex;
                 }
               }
             }
@@ -145,6 +139,22 @@ export const SidebarStyled = styled(animated.aside)<SidebarStyledProps>`
           }
           ${SidebarMenuBlockScrollbarWrapper} {
             padding-right: 0px;
+          }
+        }
+        ${SidebarChatWithOutlineStyled} {
+          margin-left: 2px;
+        }
+        ${SidebarChatStyled} {
+          > * {
+            display: none;
+          }
+          ${SidebarChatIconContainer} {
+            display: inline-flex;
+            width: 26px;
+            height: 26px;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
           }
         }
       `}
