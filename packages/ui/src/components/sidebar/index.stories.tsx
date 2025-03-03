@@ -52,6 +52,7 @@ import {
   OrganizationIcon,
   SimpleGearIcon
 } from '@/ui/icons';
+import { BothubAppBannerMini } from '@/ui/components/banner';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
 
@@ -194,6 +195,13 @@ export const Basic: SidebarStory = {
           </Tooltip>
         )}
       </SidebarConsumer>
+    ),
+    banner: (
+      <BothubAppBannerMini
+        title="Скачать приложение"
+        text="Теперь доступно для Android, iOS и ПК"
+        href="https://bothubq.com"
+      />
     ),
     children: (
       <SidebarGroups>

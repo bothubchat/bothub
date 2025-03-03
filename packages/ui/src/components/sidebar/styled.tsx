@@ -536,6 +536,16 @@ export const SidebarBottom = styled.div`
   })}
 `;
 
+export const SidebarBanner = styled.div<{ $open: boolean }>`
+  display: ${({ $open }) => ($open ? 'block' : 'none')};
+  width: 100%;
+  margin-top: 14px;
+  padding-right: 20px;
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    display: block;
+  }
+`;
+
 export const SidebarBody = styled.div`
   display: flex;
   flex-direction: column;

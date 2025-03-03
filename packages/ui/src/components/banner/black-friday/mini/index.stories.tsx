@@ -14,7 +14,7 @@ export const Basic: BlackFridayBannerMiniStory = {
 };
 
 export default {
-  title: 'Components/Banner/Mini',
+  title: 'Components/Banner/BlackFriday/Mini',
   component: BannerMiniBlackFriday,
   decorators: [StoryDecorator({ scale: 'dashboard' })]
 } as BlackFridayBannerMiniMeta;

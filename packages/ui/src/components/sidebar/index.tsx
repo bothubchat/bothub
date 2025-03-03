@@ -7,6 +7,7 @@ import React, {
 import {
   SidebarArrowDownButton,
   SidebarArrowUpButton,
+  SidebarBanner,
   SidebarBody,
   SidebarBodyContent,
   SidebarBodyScrollbarWrapper,
@@ -53,6 +54,7 @@ export interface SidebarProps extends React.PropsWithChildren {
   themeSwitcher?: React.ReactNode;
   style?: StyleHTMLAttributes<HTMLElement>;
   onOpen?: SidebarOpenEventHandler;
+  banner?: React.ReactNode;
 }
 
 export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
@@ -76,6 +78,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
       isHide = false,
       children,
       style,
+      banner,
       onOpen
     },
     ref
@@ -189,6 +192,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
             <SidebarDeleteButtonContainer>
               {deleteButton}
             </SidebarDeleteButtonContainer>
+            {banner && <SidebarBanner $open={isOpen}>{banner}</SidebarBanner>}
             <SidebarBottom>{user}</SidebarBottom>
           </SidebarContent>
           <SidebarContentNav

@@ -36,7 +36,7 @@ export const MessageReasoningBlock = ({
   }, [isReasoning]);
 
   const [ref, bounds] = useMeasure<HTMLDivElement>();
-  const animationDuration = Math.max(Math.min(bounds.height, 850), 300);
+  const animationDuration = Math.max(Math.min(bounds.height, 650), 300);
   const { delayedVisible, mounted } = useDelayedVisible(
     isOpen,
     0,

@@ -136,7 +136,7 @@ export const Message: React.FC<MessageProps> = ({
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
   const messageBlockContentRef = useRef<HTMLDivElement | null>(null);
-
+  const messageText = useRef<string | null>(null);
   const editFieldRef = useRef<HTMLSpanElement | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [editedText, setEditedText] = useState<string>(content ?? '');
@@ -188,13 +188,13 @@ export const Message: React.FC<MessageProps> = ({
     if (messageBlockContentRef.current) {
       return onCopy?.(getPlainText(messageBlockContentRef.current));
     }
-  }, [messageBlockContentRef.current]);
+  }, [messageBlockContentRef.current, content]);
 
   const handleTgTextCopy = useCallback(() => {
-    if (content) {
-      return onCopy?.(getTgText(content));
+    if (messageText.current) {
+      return onCopy?.(getTgText(messageText.current));
     }
-  }, [messageBlockContentRef.current]);
+  }, [messageText.current]);
 
   const handleRichTextCopy = useCallback(() => {
     if (messageBlockContentRef.current && content) {
@@ -263,6 +263,11 @@ export const Message: React.FC<MessageProps> = ({
       selection?.addRange(range);
     }
   }, [editFieldRef, isEditing]);
+
+  useEffect(() => {
+    if (!content) return;
+    messageText.current = content;
+  }, [content]);
 
   return (
     <MessageProvider
