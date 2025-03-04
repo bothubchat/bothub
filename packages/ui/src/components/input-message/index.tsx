@@ -42,6 +42,7 @@ import {
 } from './utils';
 import { AttachFileIcon } from '@/ui/icons/attach-file';
 import { useTheme } from '@/ui/theme';
+import { getSupportedAudioMimeType } from '@/ui/utils/getSupportedAudioMimeType';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
@@ -351,7 +352,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         audio: true
       });
       const mediaRecorder = new MediaRecorder(mediaStream, {
-        mimeType: 'audio/webm'
+        mimeType: getSupportedAudioMimeType()
       });
 
       if (!voicePressedRef.current) {
@@ -460,7 +461,9 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       }
     };
     const stopListener = async () => {
-      const blob = new Blob(voiceChunksRef.current, { type: 'audio/webm' });
+      const blob = new Blob(voiceChunksRef.current, {
+        type: getSupportedAudioMimeType()
+      });
 
       await onVoice?.(blob);
 
