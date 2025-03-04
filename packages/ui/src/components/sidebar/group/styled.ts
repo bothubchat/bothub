@@ -8,6 +8,7 @@ import { Checkbox } from '@/ui/components/checkbox';
 import { SidebarChatIconContainer } from '../chat';
 import { adaptive } from '@/ui/adaptive';
 import { SidebarDropdownStyled } from '../dropdown';
+import { colorToRgba } from '@/ui/utils/colorToRgba';
 
 export const SidebarGroupsStyled = styled.div`
   display: flex;
@@ -87,7 +88,7 @@ export const SidebarGroupNameWithBg = styled.div`
 `;
 
 export interface SidebarGroupNameProps {
-  open?: boolean;
+  $open?: boolean;
   $skeleton?: boolean;
 }
 
@@ -111,7 +112,8 @@ export const SidebarGroupName = styled(Typography).attrs({
   text-overflow: ellipsis;
   width: 100%;
   &:hover {
-    background-color: ${({ theme }) => `${theme.colors.accent.primaryLight}80`};
+    background-color: ${({ theme }) =>
+      colorToRgba(theme.colors.accent.primaryLight, 0.5)};
     border-radius: 10px;
     transition: background-color 0.3s ease-out;
   }
@@ -121,7 +123,7 @@ export const SidebarGroupName = styled(Typography).attrs({
     margin-left: 16px;
   }
   & > ${SidebarGroupArrowDown} {
-    transform: ${({ open }) => (open ? 'rotate(180deg)' : 'rotate(0deg)')};
+    transform: ${({ $open }) => ($open ? 'rotate(180deg)' : 'rotate(0deg)')};
   }
 `;
 

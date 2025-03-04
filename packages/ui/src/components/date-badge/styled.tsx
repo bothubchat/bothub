@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
+import { colorToRgba } from '@/ui/utils/colorToRgba';
 
 export const DateBadgeStyled = styled.div`
   display: flex;
@@ -7,7 +8,8 @@ export const DateBadgeStyled = styled.div`
   padding: 4px 34px;
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background-color: ${({ theme }) => `${theme.colors.grayScale.gray4}C0`};
+  background-color: ${({ theme }) =>
+    colorToRgba(theme.colors.grayScale.gray4, 0.75)};
 `;
 
 export const DateBadgeText = styled(Typography).attrs({

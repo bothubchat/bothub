@@ -9,6 +9,7 @@ import { SidebarChatIcon } from '@/ui/icons/sidebar-chat';
 import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { Checkbox } from '@/ui/components/checkbox';
 import { Tooltip } from '../../tooltip';
+import { colorToRgba } from '@/ui/utils/colorToRgba';
 
 export interface SidebarChatLeftProps {
   $sidebarOpen?: boolean;
@@ -205,7 +206,7 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
       return css`
         border-radius: 10px;
         background-color: ${({ theme }) =>
-          `${theme.colors.accent.primaryLight}80`};
+          colorToRgba(theme.colors.accent.primaryLight, 0.5)};
         transition: background-color 0.3s ease-out;
         ${SidebarChatIconStyled} {
           path {
@@ -220,7 +221,7 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
         &:hover {
           border-radius: 10px;
           background-color: ${({ theme }) =>
-            `${theme.colors.accent.primaryLight}80`};
+            colorToRgba(theme.colors.accent.primaryLight, 0.5)};
           transition: background-color 0.3s ease-out;
         }
       `;

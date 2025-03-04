@@ -76,7 +76,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
         >
           <SidebarGroupNameWithBg>
             <SidebarGroupName
-              open={open}
+              $open={open}
               $skeleton={!!props.skeleton}
               onClick={!props.skeleton ? onHandleOpen : undefined}
             >
