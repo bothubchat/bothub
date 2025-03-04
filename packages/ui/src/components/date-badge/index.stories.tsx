@@ -8,20 +8,7 @@ export type DateBadgeStory = StoryObj<typeof DateBadge>;
 export const Basic: DateBadgeStory = {
   args: {
     date: 'Mon Mar 03 2025 23:23:35 GMT+0400 (Samara Standard Time)',
-    months: [
-      'Января',
-      'Февраля',
-      'Марта',
-      'Апреля',
-      'Мая',
-      'Июня',
-      'Июля',
-      'Августа',
-      'Сентября',
-      'Октября',
-      'Ноября',
-      'Декабря'
-    ]
+    locale: 'ru'
   }
 };
 
