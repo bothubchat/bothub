@@ -1,6 +1,6 @@
 import { css, styled } from 'styled-components';
 import { Avatar } from '@/ui/components/avatar';
-import { TariffPlan } from './types';
+import { TariffPlan } from '@/ui/components/types';
 
 export const SidebarUserInfoAvatarStyled = styled(Avatar)<{
   $tariffPlan?: TariffPlan;

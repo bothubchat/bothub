@@ -57,51 +57,44 @@ export const SidebarAddGroupButton = styled(Button).attrs({
 
 export const SidebarEditButton = styled(Button).attrs({
   children: <ManageChatIcon />
-})<{ variant: ButtonVariant; $active?: boolean }>`
-  ${({ variant, theme }) =>
-    variant === 'secondary' &&
-    css`
-      svg path {
-        stroke: ${theme.colors.grayScale.gray1};
-      }
-    `}
-
-  ${({ $active, theme }) =>
-    $active &&
-    css`
-      background: ${theme.mode === 'dark'
-        ? theme.colors.grayScale.gray3
-        : theme.colors.grayScale.gray4};
-      svg path {
-        stroke: ${theme.colors.accent.primary};
-      }
-    `}
+})<{ variant: ButtonVariant }>`
+  ${({ variant, theme }) => {
+    switch (variant) {
+      case 'secondary':
+        return css`
+          svg path {
+            stroke: ${theme.colors.grayScale.gray1};
+          }
+        `;
+      case 'primary':
+        return css`
+          svg path {
+            stroke: ${theme.default.colors.base.white};
+          }
+        `;
+    }
+  }}
 `;
 
 export const SidebarSearchButton = styled(Button).attrs({
   children: <SearchSimpleIcon size={16} />
-})<{ variant: ButtonVariant; $active?: boolean }>`
-  ${({ variant }) =>
-    variant === 'secondary' &&
-    css`
-      svg path {
-        fill: ${({ theme }) => theme.colors.grayScale.gray1};
-      }
-    `}
-  ${({ $active, theme }) =>
-    $active &&
-    css`
-      background: ${theme.mode === 'dark'
-        ? theme.colors.grayScale.gray3
-        : theme.colors.grayScale.gray4};
-      svg path {
-        fill: ${theme.colors.accent.primary};
-      }
-    `}
+})<{ variant: ButtonVariant }>`
+  ${({ variant, theme }) => {
+    switch (variant) {
+      case 'secondary':
+        return css`
+          svg path {
+            fill: ${theme.colors.grayScale.gray1};
+          }
+        `;
+      case 'primary':
+        return css`
+          svg path {
+            fill: ${theme.default.colors.base.white};
+          }
+        `;
+    }
+  }}
 `;
 
-export const SidebarSortButton: React.FC<{ $variant: ButtonVariant }> = styled(
-  Button
-).attrs({
-  children: <TrashIcon />
-})``;
+export const SidebarSortButton = styled(Button)``;

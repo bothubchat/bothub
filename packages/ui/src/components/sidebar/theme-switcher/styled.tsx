@@ -22,7 +22,7 @@ export const SidebarThemeSwitcherStyled = styled.button<SidebarThemeSwitcherStyl
     desktop: css`
       display: none;
     `,
-    mobile: css`
+    tablet: css`
       display: inline-flex;
     `
   })}
