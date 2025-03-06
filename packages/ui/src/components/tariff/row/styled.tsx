@@ -10,7 +10,7 @@ export type Variant = 'main' | 'dashboard';
 
 export interface TariffCardProps {
   $color?: TariffCardColor;
-  selected?: boolean;
+  $selected?: boolean;
   $variant: Variant;
 }
 
@@ -39,15 +39,15 @@ export const TariffCardStyled = styled.div<TariffCardProps>`
   & > input:[type="radio"]:checked ~ & {
     outline: 1px solid ${({ theme }) => theme.default.colors.accent.primary};
   }
-  ${({ selected, theme }) =>
-    selected &&
+  ${({ $selected, theme }) =>
+    $selected &&
     theme.mode === 'light' &&
     css`
       outline: 1px solid ${theme.default.colors.accent.primary};
       background-color: ${theme.colors.grayScale.gray3};
     `}
-  ${({ selected, theme }) =>
-    selected &&
+  ${({ $selected, theme }) =>
+    $selected &&
     theme.mode === 'dark' &&
     css`
       outline: 1px solid ${theme.default.colors.accent.primary};
@@ -77,6 +77,16 @@ export const TariffCardStyled = styled.div<TariffCardProps>`
         z-index: -1;
       }
     `};
+  &:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+    left: 0;
+    top: 0;
+    ${({ theme, $selected }) => $selected && `background: ${theme.colors.premiumGradient}`};
+  }
 `;
 
 export const TariffCardContainer = styled.div<{ $variant: Variant }>`
@@ -224,7 +234,7 @@ export const TarrifCardStyledRight = styled.div<{ $variant: Variant }>`
 `;
 
 export const TariffCardStyledPrice = styled(Typography).attrs({
-  variant: 'h2'
+  variant: 'body-xxl-semibold'
 })<{ $isDefault?: boolean; $variant: Variant }>`
   color: ${({ theme, $isDefault }) =>
     $isDefault ? theme.colors.base.white : theme.default.colors.base.white};
@@ -333,4 +343,38 @@ export const TariffCardGiveCapsText = styled(Typography).attrs({
   variant: 'body-xs-regular'
 })`
   white-space: nowrap;
+`;
+
+export const TariffCardDiscountBadge = styled.div<{ $active: boolean }>`
+  position: absolute;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  top: 0;
+  right: 0;
+  border-bottom-left-radius: 14px;
+  padding: 2px 16px;
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: ${({ theme }) => theme.colors.premiumGradient};
+    opacity: ${({ $active }) => ($active ? 0.5 : 0.2)};
+  }
+`;
+
+export const TariffCardDiscountBadgeText = styled(Typography).attrs({
+  variant: 'body-s-medium'
+})<{ $active: boolean }>`
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  white-space: nowrap;
+  ${({ theme, $active }) => `
+    color: ${$active ? theme.default.colors.base.white : theme.default.colors.accent.primaryLight};
+    
+  `}
 `;
