@@ -329,14 +329,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     event.stopPropagation();
   }, []);
 
-  const handleVoiceRecordClick = useCallback<React.MouseEventHandler>(
-    (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-    },
-    []
-  );
-
   const handleVoiceRecordStart = useCallback<React.ReactEventHandler>(
     async (event) => {
       voicePressedRef.current = true;
@@ -420,6 +412,21 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       textareaEl.removeEventListener('keydown', handleKeyDown);
     };
   }, [handleKeyDown]);
+
+  const handleVoiceRecordClick = useCallback<React.MouseEventHandler>(
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (isVoiceRecording) {
+        handleVoiceRecordEnd();
+      } else {
+        handleVoiceRecordStart(event);
+      }
+    },
+    [handleVoiceRecordEnd, handleVoiceRecordStart, isVoiceRecording]
+  );
+
 
   useEffect(() => {
     if (setFiles && initialFiles) {
@@ -678,12 +685,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               color: theme.colors.critic,
             })}
             disabled={disabled || sendDisabled}
-            onMouseLeave={handleVoiceRecordEnd}
-            onMouseDown={handleVoiceRecordStart}
-            onMouseUp={handleVoiceRecordEnd}
-            onTouchStart={handleVoiceRecordStart}
-            onTouchEnd={handleVoiceRecordEnd}
-            onTouchCancel={handleVoiceRecordEnd}
             onClick={handleVoiceRecordClick}
           >
             {isVoiceRecording ? (
