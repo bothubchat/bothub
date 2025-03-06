@@ -20,6 +20,7 @@ export type TypographyVariant =
   | 'body-l-medium-italic'
   | 'body-s-regular'
   | 'body-xs-regular'
+  | 'body-xs-medium'
   | 'body-l-semibold'
   | 'button-sm'
   | 'button-md'
