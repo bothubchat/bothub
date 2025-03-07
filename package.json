@@ -17,6 +17,7 @@
     "build:sb": "storybook build",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "yarn lint --fix",
+    "commitlint": "commitlint --edit",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx}\"",
     "publish": "tsx ./scripts/publish.ts",
@@ -27,6 +28,8 @@
   },
   "devDependencies": {
     "@babel/preset-react": "^7.23.3",
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
     "@rollup/plugin-alias": "^5.0.1",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.7",
