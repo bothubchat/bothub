@@ -14,7 +14,6 @@ export const Basic: TariffListRowStory = {
         giveCapsText: 'Вы получаете',
         giveCaps: '10 000 Caps',
         price: '0',
-        variant: 'main',
         currency: '₽',
         isDefault: true,
         color: 'white',
@@ -77,5 +76,5 @@ export const Basic: TariffListRowStory = {
 export default {
   title: 'Components/Tariff/ListRow',
   component: TariffListRow,
-  decorators: [StoryDecorator({ scale: 'dashboard' })]
+  decorators: [StoryDecorator({ scale: 'main' })]
 } as TariffListRowMeta;
