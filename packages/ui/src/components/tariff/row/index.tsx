@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useRef } from 'react';
+import React, { useRef } from 'react';
 import {
   TariffCardStyled,
   TariffCardStyledContent,
@@ -16,18 +16,10 @@ import {
   TariffCardGiveCapsBadgeText,
   TariffCardStyledGiveCaps,
   TariffCardContainer,
-  TariffCardStyledOldPrice,
-  TariffCardStyledOldPriceWrapper,
   TariffCardDiscountBadge,
   TariffCardDiscountBadgeText
 } from './styled';
 import { TariffType } from './types';
-
-const TariffCardImages = lazy(() =>
-  import('./tariff-card-images').then((module) => ({
-    default: module.TariffCardImages
-  }))
-);
 
 export interface TariffCardRowProps extends React.ComponentProps<'div'> {
   name: TariffType;
@@ -53,7 +45,6 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
   giveCapsText,
   selected,
   isDefault = true,
-  oldPrice,
   children: _,
   description,
   textDiscount,
@@ -75,14 +66,6 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
       $selected={selected}
       {...props}
     >
-      {!isDefault && (
-        <Suspense>
-          <TariffCardImages
-            variant={variant}
-            name={name}
-          />
-        </Suspense>
-      )}
       <TariffCardStyledContent $variant={variant}>
         <TarrifCardStyledLeft $variant={variant}>
           <TarrifCardStyledRadio
@@ -102,13 +85,13 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
               </TariffCardGiveCapsBadge>
             </TariffCardStyledGiveCaps>
           </TariffCardContainer>
-          <TariffCardStyledMiddle>
-            <TariffCardStyledDescriptionIcon $variant={variant} />
-            <TariffCardStyledDescription>
-              {description}
-            </TariffCardStyledDescription>
-          </TariffCardStyledMiddle>
         </TarrifCardStyledLeft>
+        <TariffCardStyledMiddle>
+          <TariffCardStyledDescriptionIcon $variant={variant} />
+          <TariffCardStyledDescription>
+            {description}
+          </TariffCardStyledDescription>
+        </TariffCardStyledMiddle>
         <TarrifCardStyledRight $variant={variant}>
           <TariffCardStyledPrice
             $isDefault={isDefault}
@@ -122,13 +105,6 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
           >
             {currency}
           </TariffCardStyledCurrency>
-          {!isDefault && oldPrice && (
-            <TariffCardStyledOldPriceWrapper $variant={variant}>
-              <TariffCardStyledOldPrice $variant={variant}>
-                {`${oldPrice} ${currency}`}
-              </TariffCardStyledOldPrice>
-            </TariffCardStyledOldPriceWrapper>
-          )}
         </TarrifCardStyledRight>
       </TariffCardStyledContent>
       {textDiscount && (
