@@ -17,9 +17,11 @@ import {
   TariffCardStyledGiveCaps,
   TariffCardContainer,
   TariffCardStyledOldPrice,
-  TariffCardStyledOldPriceWrapper
+  TariffCardStyledOldPriceWrapper,
+  TariffCardDiscountBadge,
+  TariffCardDiscountBadgeText
 } from './styled';
-import { TariffCardColor, TariffType } from './types';
+import { TariffType } from './types';
 
 const TariffCardImages = lazy(() =>
   import('./tariff-card-images').then((module) => ({
@@ -28,7 +30,7 @@ const TariffCardImages = lazy(() =>
 );
 
 export interface TariffCardRowProps extends React.ComponentProps<'div'> {
-  name: string;
+  name: TariffType;
   description?: string;
   giveCaps?: string;
   giveCapsText?: string;
@@ -37,8 +39,8 @@ export interface TariffCardRowProps extends React.ComponentProps<'div'> {
   oldPrice?: string;
   selected?: boolean;
   variant?: 'main' | 'dashboard';
-  color?: TariffCardColor;
   isDefault?: boolean;
+  textDiscount?: string;
 }
 
 export const TariffCardRow: React.FC<TariffCardRowProps> = ({
@@ -51,10 +53,10 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
   giveCapsText,
   selected,
   isDefault = true,
-  color = 'white',
   oldPrice,
   children: _,
   description,
+  textDiscount,
   ...props
 }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -70,14 +72,14 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
       $variant={variant}
       onClick={handleClick}
       ref={ref}
-      selected={selected}
+      $selected={selected}
       {...props}
     >
       {!isDefault && (
         <Suspense>
           <TariffCardImages
             variant={variant}
-            name={name as TariffType}
+            name={name}
           />
         </Suspense>
       )}
@@ -90,7 +92,7 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
             value={name}
           />
           <TariffCardContainer $variant={variant}>
-            <TariffCardStyledName $color={color}>{name}</TariffCardStyledName>
+            <TariffCardStyledName $color={name}>{name}</TariffCardStyledName>
             <TariffCardStyledGiveCaps>
               <TariffCardGiveCapsText>{giveCapsText}</TariffCardGiveCapsText>
               <TariffCardGiveCapsBadge>
@@ -129,6 +131,13 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
           )}
         </TarrifCardStyledRight>
       </TariffCardStyledContent>
+      {textDiscount && (
+        <TariffCardDiscountBadge $active={!!selected}>
+          <TariffCardDiscountBadgeText $active={!!selected}>
+            {textDiscount}
+          </TariffCardDiscountBadgeText>
+        </TariffCardDiscountBadge>
+      )}
     </TariffCardStyled>
   );
 };

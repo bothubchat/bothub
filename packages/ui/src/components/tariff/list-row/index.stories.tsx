@@ -22,7 +22,7 @@ export const Basic: TariffListRowStory = {
       },
       {
         name: 'Basic',
-        isDefault: false,
+        isDefault: true,
         giveCapsText: 'Вы получаете',
         giveCaps: '1 000 000 Caps',
         price: '200',
@@ -42,7 +42,8 @@ export const Basic: TariffListRowStory = {
         currency: '₽',
         color: 'blue-lilac',
         description:
-          'Хватит, чтобы переписать весь текст «Конституции РФ» 8 раз'
+          'Хватит, чтобы переписать весь текст «Конституции РФ» 8 раз',
+        textDiscount: 'Вы экономите 15%'
       },
       {
         name: 'Deluxe',
@@ -54,7 +55,8 @@ export const Basic: TariffListRowStory = {
         currency: '₽',
         color: 'blue-lilac',
         description:
-          'Хватит, чтобы собрать полный текст «Большого толкового словаря Русского языка» под. ред. С.А Кузнецова'
+          'Хватит, чтобы собрать полный текст «Большого толкового словаря Русского языка» под. ред. С.А Кузнецова',
+        textDiscount: 'вы экономите 20%'
       },
       {
         name: 'Elite',
@@ -65,7 +67,8 @@ export const Basic: TariffListRowStory = {
         price: '5400',
         currency: '₽',
         color: 'blue-lilac',
-        description: 'Хватит, чтобы написать всю серию книг о Гарри Поттере'
+        description: 'Хватит, чтобы написать всю серию книг о Гарри Поттере',
+        textDiscount: 'Вы экономите 30%'
       }
     ]
   }
