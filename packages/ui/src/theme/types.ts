@@ -44,11 +44,21 @@ export interface ThemeGrayScaleColors {
   gray7: string;
 }
 
+export interface ThemeGradientColors {
+  basic: string;
+  light: string;
+  premium: string;
+  deluxe: string;
+  elite: string;
+  elite20: string;
+}
+
 export interface ThemeColors {
   base: ThemeBaseColors;
   accent: ThemeAccentColors;
   grayScale: ThemeGrayScaleColors;
   premiumGradient: string;
+  gradient: ThemeGradientColors;
   critic: string;
   orange: string;
   purple: string;

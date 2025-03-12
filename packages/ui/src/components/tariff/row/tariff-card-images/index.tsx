@@ -17,6 +17,7 @@ export interface TariffCardImagesProps {
 
 export const TariffCardImages = ({ variant, name }: TariffCardImagesProps) => {
   const tariffImages = {
+    Free: [],
     Basic: [
       <TariffCardBackgroundGradientBasic />,
       <TariffCardBackgroundBlack $variant={variant} />,
