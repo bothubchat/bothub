@@ -152,4 +152,10 @@ describe('getTgMarkdown', () => {
       ':calendar: Заказчик 1'
     );
   });
+
+  test('preserves inline code', () => {
+    expect(
+      getTgMarkdown('`containerElement` would be the `span.string` element')
+    ).toBe('`containerElement` would be the `span.string` element');
+  });
 });
