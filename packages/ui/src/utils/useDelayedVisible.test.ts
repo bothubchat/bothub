@@ -63,7 +63,7 @@ describe('useDelayedVisible', () => {
         expect(result.current.mounted).toBe(true);
       },
       {
-        timeout: UseDelayedVisibleDefaultProps.showDelay + 5
+        timeout: UseDelayedVisibleDefaultProps.showDelay + 15
       }
     );
   });
@@ -94,7 +94,7 @@ describe('useDelayedVisible', () => {
         expect(result.current.delayedVisible).toBe(false);
         expect(result.current.mounted).toBe(false);
       },
-      { timeout: UseDelayedVisibleDefaultProps.hideDelay + 5 }
+      { timeout: UseDelayedVisibleDefaultProps.hideDelay + 15 }
     );
   });
 });

@@ -10,7 +10,8 @@ import type {
   Strong,
   Emphasis,
   List,
-  Table
+  Table,
+  Text
 } from 'mdast';
 import {
   toMarkdown,
@@ -155,7 +156,10 @@ const mdastToTgMarkdown = (ast: Node) => {
       const content = state.containerPhrasing(node, info);
 
       return `~~${content}~~`;
-    }
+    },
+
+    // Disables unnecessary symbol escaping
+    text: (node: Text) => node.value
   };
 
   const tgMarkdown = toMarkdown(ast, {
@@ -172,5 +176,5 @@ const mdastToTgMarkdown = (ast: Node) => {
     ]
   });
 
-  return tgMarkdown.replace(/\n\s*\n\s*\n/g, '\n\n').trim();
+  return tgMarkdown.replace(/\n$/, '');
 };
