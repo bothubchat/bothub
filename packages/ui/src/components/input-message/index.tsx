@@ -359,7 +359,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         return;
       }
 
-      mediaRecorder.start();
+      mediaRecorder.start(1000);
 
       voiceMediaRecorderRef.current = mediaRecorder;
       voiceMediaStreamRef.current = mediaStream;
