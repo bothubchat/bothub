@@ -335,6 +335,19 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     event.stopPropagation();
   }, []);
 
+  const handleVoiceRecordClick = useCallback<React.MouseEventHandler>(
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (isVoiceRecording) {
+        handleVoiceRecordEnd();
+      } else {
+        handleVoiceRecordStart(event);
+      }
+    },
+    [isVoiceRecording]
+  );
+
   const handleVoiceRecordStart = useCallback<React.ReactEventHandler>(
     async (event) => {
       voicePressedRef.current = true;
@@ -396,19 +409,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
     stopVoiceRecording();
   }, [isVoiceRecording, stopVoiceRecording]);
-
-  const handleVoiceRecordClick = useCallback<React.MouseEventHandler>(
-    (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      if (isVoiceRecording) {
-        handleVoiceRecordEnd();
-      } else {
-        handleVoiceRecordStart(event);
-      }
-    },
-    [isVoiceRecording, handleVoiceRecordEnd, handleVoiceRecordStart]
-  );
 
   useEffect(() => {
     const textareaEl: HTMLElement | null = textareaRef.current;
