@@ -339,13 +339,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     (event) => {
       event.preventDefault();
       event.stopPropagation();
-      if (isVoiceRecording) {
-        handleVoiceRecordEnd();
-      } else {
-        handleVoiceRecordStart(event);
-      }
     },
-    [isVoiceRecording]
+    []
   );
 
   const handleVoiceRecordStart = useCallback<React.ReactEventHandler>(
@@ -698,6 +693,12 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               color: theme.colors.critic
             })}
             disabled={disabled || sendDisabled}
+            onMouseLeave={handleVoiceRecordEnd}
+            onMouseDown={handleVoiceRecordStart}
+            onMouseUp={handleVoiceRecordEnd}
+            onTouchStart={handleVoiceRecordStart}
+            onTouchEnd={handleVoiceRecordEnd}
+            onTouchCancel={handleVoiceRecordEnd}
             onClick={handleVoiceRecordClick}
           >
             {isVoiceRecording ? (
