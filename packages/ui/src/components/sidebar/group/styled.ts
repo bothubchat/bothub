@@ -52,8 +52,6 @@ export interface SidebarGroupNameWithOutlineProps {
 }
 
 export const SidebarGroupNameWithOutline = styled.div<SidebarGroupNameWithOutlineProps>`
-  width: calc(100% - 3px);
-  margin-left: 3px;
   position: relative;
   &:before {
     content: '';
@@ -70,9 +68,16 @@ export const SidebarGroupNameWithOutline = styled.div<SidebarGroupNameWithOutlin
       background-color: ${({ theme }) => theme.colors.accent.primary};
     }
   }
+  ${({ $open }) =>
+    $open &&
+    css`
+      width: 100%;
+    `}
   ${({ $active }) =>
     $active &&
     css`
+      width: calc(100% - 3px);
+      margin-left: 3px;
       &:before {
         background-color: ${({ theme }) => theme.colors.accent.primary};
         animation: ${SidebarGroupNameOutlineAnimation} 0.3s ease-out 1 forwards;

@@ -145,6 +145,7 @@ export const SidebarStyled = styled(animated.aside)<SidebarStyledProps>`
           margin-left: 2px;
         }
         ${SidebarChatStyled} {
+          padding: 5px 5px 5px 4px;
           > * {
             display: none;
           }
@@ -345,6 +346,7 @@ export const SidebarContentNavMenuWrapper = styled.div`
   width: 100%;
   overflow: hidden;
   margin-top: 16px;
+  height: calc(100% - 30px);
 `;
 
 export const SidebarContentNavMenuScrollbarWrapper = styled(Scrollbar).attrs({
