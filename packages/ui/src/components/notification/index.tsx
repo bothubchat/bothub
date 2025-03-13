@@ -27,7 +27,7 @@ export interface NotificationProps {
   autoClose?: number | false;
   notificationId?: string;
   title?: string;
-  children?: string;
+  children?: React.ReactNode;
   onClose?: NotificationCloseEventHandler;
 }
 
@@ -114,7 +114,11 @@ export const Notification: React.FC<NotificationProps> = ({
               <NotificationIcon as={iconComponent} />
               <NotificationInfo>
                 <NotificationTitle>{title ?? children}</NotificationTitle>
-                {isText && <NotificationText>{children}</NotificationText>}
+                {isText && typeof children === 'string' ? (
+                  <NotificationText>{children}</NotificationText>
+                ) : (
+                  children
+                )}
               </NotificationInfo>
             </NotificationLeft>
             <NotificationRight>
@@ -128,3 +132,4 @@ export const Notification: React.FC<NotificationProps> = ({
 
 export * from './types';
 export * from './list';
+export { NotificationText } from './styled';
