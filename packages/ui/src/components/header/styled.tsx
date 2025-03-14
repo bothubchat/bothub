@@ -135,6 +135,7 @@ export const HeaderContainerContent = styled.div<HeaderContainerContentProps>`
     adaptive({
       desktop: css`
         display: ${$variant === 'desktop' ? 'flex' : 'none'};
+        justify-content: space-between;
       `,
       tablet: css`
         display: ${$variant === 'tablet' ? 'flex' : 'none'};
