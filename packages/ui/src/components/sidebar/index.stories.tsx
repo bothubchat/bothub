@@ -149,10 +149,7 @@ export const Basic: SidebarStory = {
         <SidebarCreateChatButton variant="primary" />
         <SidebarAddGroupButton variant="secondary" />
         <SidebarSearchButton variant="secondary" />
-        <SidebarEditButton
-          variant="secondary"
-          $active
-        />
+        <SidebarEditButton variant="secondary" />
       </SidebarButtons>
     ),
     search: (
@@ -532,6 +529,7 @@ export const Basic: SidebarStory = {
         >
           <SidebarChat
             id="chat-1"
+            active
             color="#1C64F2"
             name="Your first chat"
             caps="36.7K"
@@ -751,7 +749,7 @@ export const Basic: SidebarStory = {
             id="chat-1"
             isDefault
             color="#1C64F2"
-            name="Your first chat"
+            name="Active chat"
             caps="36.7K"
             checkbox={
               <SidebarChatCheckbox

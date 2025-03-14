@@ -5,3 +5,4 @@ export * from './useMeasure';
 export * from './getTgMarkdown';
 export * from './getSupportedAudioMimeType';
 export * from './useMessageCopyHandler';
+export * from './colorToRgba';

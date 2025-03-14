@@ -46,31 +46,31 @@ describe('getTgMarkdown', () => {
   test('converts unordered lists', () => {
     const input = `- Item 1\n- Item 2`;
     const expected = `- Item 1\n- Item 2`;
-    expect(getTgMarkdown(input).trim()).toBe(expected);
+    expect(getTgMarkdown(input)).toBe(expected);
   });
 
   test('converts ordered lists', () => {
     const inputOrdered = `1. First\n2. Second`;
     const expectedOrdered = `- First\n- Second`;
-    expect(getTgMarkdown(inputOrdered).trim()).toBe(expectedOrdered);
+    expect(getTgMarkdown(inputOrdered)).toBe(expectedOrdered);
   });
 
   test('converts nested lists', () => {
     const input = `- Item 1\n  - Nested 1\n- Item 2`;
     const expected = `- Item 1\n  - Nested 1\n- Item 2`;
-    expect(getTgMarkdown(input).trim()).toBe(expected);
+    expect(getTgMarkdown(input)).toBe(expected);
   });
 
   test('converts deeply nested lists', () => {
     const input = `- Level 1\n  - Level 2\n    - Level 3`;
     const expected = `- Level 1\n  - Level 2\n    - Level 3`;
-    expect(getTgMarkdown(input).trim()).toBe(expected);
+    expect(getTgMarkdown(input)).toBe(expected);
   });
 
   test('converts mixed nested lists', () => {
     const input = `1. First\n   - Bullet\n2. Second\n   1. Nested`;
     const expected = `- First\n  - Bullet\n- Second\n  - Nested`;
-    expect(getTgMarkdown(input).trim()).toBe(expected);
+    expect(getTgMarkdown(input)).toBe(expected);
   });
 
   test('handles empty input', () => {
@@ -81,33 +81,33 @@ describe('getTgMarkdown', () => {
     const input = `# Heading\n\nParagraph\n\n- List\n- Item\n\n## Subheading\n\n### Subsubheading\n\nCode block\n\`\`\`javascript\nconsole.log('Hello, world!');\n\`\`\`\n\n> Blockquote\n\n[Link](https://example.com)\n\n![Image](https://example.com/image.jpg)`;
 
     const expected = `**Heading**\n\nParagraph\n\n- List\n- Item\n\n**Subheading**\n\n**Subsubheading**\n\nCode block\n\n\`\`\`javascript\nconsole.log('Hello, world!');\n\`\`\`\n\n__Blockquote__\n\nhttps://example.com\n\nhttps://example.com/image.jpg`;
-    expect(getTgMarkdown(input).trim()).toBe(expected);
+    expect(getTgMarkdown(input)).toBe(expected);
   });
 
   test('converts basic table to text', () => {
     const input = '| A | B |\n| - | - |\n| 1 | 2 |';
     const expected = 'A B\n1 2';
-    expect(getTgMarkdown(input).trim()).toBe(expected);
+    expect(getTgMarkdown(input)).toBe(expected);
   });
 
   test('converts table with formatting', () => {
     const input =
       '| **Bold** | *Italic* |\n| -------- | -------- |\n| `Code` | [Link](https://example.com) |';
     const expected = '**Bold** __Italic__\n`Code` https://example.com';
-    expect(getTgMarkdown(input).trim()).toBe(expected);
+    expect(getTgMarkdown(input)).toBe(expected);
   });
 
   test('handles table with empty cells', () => {
     const input = '| A | B |\n| - | - |\n| 1 |   |\n|   | 2 |';
     const expected = 'A B\n1 \n 2';
-    expect(getTgMarkdown(input).trim()).toBe(expected);
+    expect(getTgMarkdown(input)).toBe(expected);
   });
 
   test('converts table within content', () => {
     const input =
       'Text before\n\n| A | B |\n| - | - |\n| 1 | 2 |\n\nText after';
     const expected = 'Text before\n\nA B\n1 2\n\nText after';
-    expect(getTgMarkdown(input).trim()).toBe(expected);
+    expect(getTgMarkdown(input)).toBe(expected);
   });
 
   test('converts multiline quotes', () => {
@@ -157,5 +157,34 @@ describe('getTgMarkdown', () => {
     expect(
       getTgMarkdown('`containerElement` would be the `span.string` element')
     ).toBe('`containerElement` would be the `span.string` element');
+  });
+
+  test('preserves checkboxes', () => {
+    expect(
+      getTgMarkdown('- [ ] Checkbox 1\n- [ ] Checkbox 2\n- [x] Checkbox 3')
+    ).toBe('- [ ] Checkbox 1\n- [ ] Checkbox 2\n- [x] Checkbox 3');
+  });
+
+  test('bold formatting in headings', () => {
+    expect(getTgMarkdown('## **Heading**')).toBe('**Heading**');
+  });
+
+  test('bold italic formatting in headings', () => {
+    expect(getTgMarkdown('#### ***Проблемы***')).toBe('**Проблемы**');
+  });
+
+  test('italic formatting in headings', () => {
+    expect(getTgMarkdown('## __Heading__')).toBe('**Heading**');
+    expect(getTgMarkdown('#### *Проблемы*')).toBe('**Проблемы**');
+  });
+
+  test('inline code formatting in headings', () => {
+    expect(getTgMarkdown('#### `Проблемы`')).toBe('**Проблемы**');
+  });
+
+  test('bold text in list', () => {
+    expect(
+      getTgMarkdown('- **Обработка запросов** пользователей по всему миру 🌍')
+    ).toBe('- **Обработка запросов** пользователей по всему миру 🌍');
   });
 });

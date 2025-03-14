@@ -1,5 +1,6 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { Button } from '@/ui/components/button';
+import { adaptive } from '@/ui/adaptive';
 
 export const SidebarToggleButtonStyled = styled(Button).attrs({
   variant: 'text'
@@ -12,4 +13,9 @@ export const SidebarToggleButtonStyled = styled(Button).attrs({
           : theme.colors.base.white} !important;
     }
   }
+  ${adaptive({
+    mobile: css`
+      display: none;
+    `
+  })}
 `;

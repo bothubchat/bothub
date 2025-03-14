@@ -285,6 +285,7 @@ export const Message: React.FC<MessageProps> = ({
           <MessageStyled
             $variant={variant}
             className={className}
+            data-date={timestamp}
           >
             <MessageContent $variant={variant}>
               {(name || transaction) && (
