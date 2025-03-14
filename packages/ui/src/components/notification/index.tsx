@@ -117,7 +117,9 @@ export const Notification: React.FC<NotificationProps> = ({
                 {hasTitleAndChildren && typeof children === 'string' ? (
                   <NotificationText>{children}</NotificationText>
                 ) : null}
-                {hasTitleAndChildren && children}
+                {hasTitleAndChildren && typeof children !== 'string'
+                  ? children
+                  : null}
               </NotificationInfo>
             </NotificationLeft>
             <NotificationRight>
