@@ -223,5 +223,5 @@ const mdastToTgMarkdown = (ast: Node) => {
     ]
   });
 
-  return tgMarkdown.replace(/\n$/, '');
+  return tgMarkdown.replaceAll(/\n{3,*}/g, '\n\n').replace(/\n$/, '');
 };
