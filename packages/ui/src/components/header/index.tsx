@@ -6,13 +6,15 @@ import {
   HeaderOffset,
   HeaderRight,
   HeaderStyled,
-  HeaderContainerContent
+  HeaderContainerContent,
+  HeaderCenter
 } from './styled';
 import { HeaderMenu, HeaderMenuToggleButton } from './menu';
 import { HeaderVariant } from './types';
 import { HeaderProvider } from './context';
 
 export type HeaderOpenEventHandler = (open: boolean) => unknown;
+export type HeaderTabletToggleEventHandler = () => unknown;
 
 export interface HeaderProps
   extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang' | '$variant'> {
@@ -20,12 +22,15 @@ export interface HeaderProps
   variant?: HeaderVariant;
   logo?: React.ReactNode;
   nav?: React.ReactNode;
+  buttonsTablet?: React.ReactNode;
   lang?: React.ReactNode;
   user?: React.ReactNode;
   themeSwitcher?: React.ReactNode;
   open?: boolean;
   isPreset?: boolean;
+  tabletMenuOpen?: boolean;
   onOpen?: HeaderOpenEventHandler;
+  onTabletOpen?: HeaderTabletToggleEventHandler;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -33,11 +38,14 @@ export const Header: React.FC<HeaderProps> = ({
   variant = 'main',
   logo,
   nav,
+  buttonsTablet,
   lang,
   user,
   themeSwitcher,
   open,
+  tabletMenuOpen,
   onOpen,
+  onTabletOpen,
   isPreset = false,
   ...props
 }) => {
@@ -79,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
       >
         <HeaderContent $variant={variant}>
           <HeaderContainer disabled={variant === 'dashboard'}>
-            <HeaderContainerContent>
+            <HeaderContainerContent $variant="desktop">
               <HeaderLeft>
                 {logo}
                 {nav}
@@ -90,6 +98,24 @@ export const Header: React.FC<HeaderProps> = ({
                 {user}
                 <HeaderMenuToggleButton />
               </HeaderRight>
+            </HeaderContainerContent>
+            <HeaderContainerContent $variant="tablet">
+              <HeaderLeft>
+                <HeaderMenuToggleButton
+                  isOpen={tabletMenuOpen}
+                  onTabletOpen={onTabletOpen}
+                />
+                {buttonsTablet}
+              </HeaderLeft>
+              <HeaderCenter>{logo}</HeaderCenter>
+              <HeaderRight>
+                {lang}
+                {user}
+              </HeaderRight>
+            </HeaderContainerContent>
+            <HeaderContainerContent $variant="mobile">
+              <HeaderCenter>{logo}</HeaderCenter>
+              <HeaderRight>{lang}</HeaderRight>
             </HeaderContainerContent>
           </HeaderContainer>
         </HeaderContent>

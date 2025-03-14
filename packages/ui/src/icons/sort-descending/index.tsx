@@ -1,21 +1,25 @@
-import { Icon, IconConsumer, icon } from '@/ui/components/icon';
+import { Icon, icon } from '@/ui/components/icon';
+import { useTheme } from '@/ui/theme';
 
-export const SortDescendingIcon = icon(({ ...props }) => (
-  <Icon
-    size={18}
-    viewBox="0 0 18 18"
-    fill="none"
-    {...props}
-  >
-    <IconConsumer>
-      {({ fill = 'white' } = { fill: 'white' }) => (
+export const SortDescendingIcon = icon(
+  ({ fill, ...props }: { fill?: string }) => {
+    const theme = useTheme();
+    const fillColor = fill ?? theme.colors.base.white;
+    return (
+      <Icon
+        size={18}
+        viewBox="0 0 18 18"
+        fill="none"
+        {...props}
+      >
         <path
           fillRule="evenodd"
           clipRule="evenodd"
           d="M12.75 2.4375C13.0607 2.4375 13.3125 2.68934 13.3125 3V13.3125L14.55 11.6625C14.7364 11.4139 15.089 11.3636 15.3375 11.55C15.5861 11.7364 15.6364 12.0889 15.45 12.3375L13.2 15.3375C13.0547 15.5312 12.8018 15.6102 12.5721 15.5336C12.3425 15.457 12.1875 15.2421 12.1875 15V3C12.1875 2.68934 12.4394 2.4375 12.75 2.4375ZM5.4375 4.5C5.4375 4.18934 5.68934 3.9375 6 3.9375H9.75C10.0607 3.9375 10.3125 4.18934 10.3125 4.5C10.3125 4.81066 10.0607 5.0625 9.75 5.0625H6C5.68934 5.0625 5.4375 4.81066 5.4375 4.5ZM3.9375 8.25C3.9375 7.93935 4.18934 7.6875 4.5 7.6875H9.75C10.0607 7.6875 10.3125 7.93935 10.3125 8.25C10.3125 8.56065 10.0607 8.8125 9.75 8.8125H4.5C4.18934 8.8125 3.9375 8.56065 3.9375 8.25ZM2.4375 12C2.4375 11.6893 2.68934 11.4375 3 11.4375H9.75C10.0607 11.4375 10.3125 11.6893 10.3125 12C10.3125 12.3106 10.0607 12.5625 9.75 12.5625H3C2.68934 12.5625 2.4375 12.3106 2.4375 12Z"
-          fill={fill}
+          fill={fillColor}
+          stroke={fillColor}
         />
-      )}
-    </IconConsumer>
-  </Icon>
-));
+      </Icon>
+    );
+  }
+);

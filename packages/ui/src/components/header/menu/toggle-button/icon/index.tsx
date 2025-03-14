@@ -1,19 +1,22 @@
-import { icon } from '@/ui/components/icon';
+import React from 'react';
 import { useHeader } from '../../../context';
 import { StyledBurgerIcon, StyledLine } from './styled';
 
 export type HeaderMenuToggleIconProps = {
-  isMenuOpen: boolean;
+  isOpen?: boolean;
 };
 
-export const HeaderMenuToggleIcon = icon(() => {
-  const { isMenuOpen } = useHeader();
+export const HeaderMenuToggleIcon: React.FC<HeaderMenuToggleIconProps> =
+  React.memo(({ isOpen }) => {
+    const { isMenuOpen } = useHeader();
 
-  return (
-    <StyledBurgerIcon $isOpen={isMenuOpen}>
-      <StyledLine />
-      <StyledLine />
-      <StyledLine />
-    </StyledBurgerIcon>
-  );
-});
+    const resultIsOpen = typeof isOpen !== 'undefined' ? isOpen : isMenuOpen;
+
+    return (
+      <StyledBurgerIcon $isOpen={resultIsOpen}>
+        <StyledLine />
+        <StyledLine />
+        <StyledLine />
+      </StyledBurgerIcon>
+    );
+  });
