@@ -164,4 +164,27 @@ describe('getTgMarkdown', () => {
       getTgMarkdown('- [ ] Checkbox 1\n- [ ] Checkbox 2\n- [x] Checkbox 3')
     ).toBe('- [ ] Checkbox 1\n- [ ] Checkbox 2\n- [x] Checkbox 3');
   });
+
+  test('bold formatting in headings', () => {
+    expect(getTgMarkdown('## **Heading**')).toBe('**Heading**');
+  });
+
+  test('bold italic formatting in headings', () => {
+    expect(getTgMarkdown('#### ***Проблемы***')).toBe('**Проблемы**');
+  });
+
+  test('italic formatting in headings', () => {
+    expect(getTgMarkdown('## __Heading__')).toBe('**Heading**');
+    expect(getTgMarkdown('#### *Проблемы*')).toBe('**Проблемы**');
+  });
+
+  test('inline code formatting in headings', () => {
+    expect(getTgMarkdown('#### `Проблемы`')).toBe('**Проблемы**');
+  });
+
+  test('bold text in list', () => {
+    expect(
+      getTgMarkdown('- **Обработка запросов** пользователей по всему миру 🌍')
+    ).toBe('- **Обработка запросов** пользователей по всему миру 🌍');
+  });
 });

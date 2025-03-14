@@ -11,15 +11,19 @@ import type {
   Emphasis,
   List,
   Table,
-  Text
+  Text,
+  InlineCode
 } from 'mdast';
 import {
   toMarkdown,
   Options as ToMarkdownOptions,
-  defaultHandlers
+  defaultHandlers,
+  ConstructName
 } from 'mdast-util-to-markdown';
 import type { Node } from 'mdast-util-to-markdown/lib/types';
 import { ListItem } from 'mdast-util-to-markdown/lib/handle/list-item';
+
+type MDConstructName = ConstructName | 'heading';
 
 export const getTgMarkdown = (markdown: string): string => {
   try {
@@ -81,13 +85,35 @@ const mdastToTgMarkdown = (ast: Node) => {
 
     code: (node: Code) => `\`\`\`${node.lang || ''}\n${node.value}\n\`\`\``,
 
+    inlineCode: (node: InlineCode, parent, state) => {
+      if (
+        parent?.type === 'heading' ||
+        !!state.stack.find(
+          (nodeType: MDConstructName) => nodeType === 'heading'
+        )
+      ) {
+        return node.value;
+      }
+
+      return `\`${node.value}\``;
+    },
+
     // --- -> '
     thematicBreak: () => '',
 
     // **_BoldItalic_** -> **Bold**
     // __Bold__ OR **Bold** -> **Bold**
     strong: (node: Strong, parent, state, info) => {
-      if (parent?.type === 'emphasis' || state.stack.includes('emphasis')) {
+      if (
+        parent?.type === 'emphasis' ||
+        parent?.type === 'heading' ||
+        !!state.stack.find(
+          (nodeType: MDConstructName) =>
+            nodeType === 'emphasis' ||
+            nodeType === 'strong' ||
+            nodeType === 'heading'
+        )
+      ) {
         return node.children
           .map((child) => state.handle(child, node, state, info))
           .join('');
@@ -103,8 +129,13 @@ const mdastToTgMarkdown = (ast: Node) => {
     emphasis: (node: Emphasis, parent, state, info) => {
       if (
         parent?.type === 'strong' ||
-        state.stack.includes('strong') ||
-        state.stack.includes('emphasis')
+        parent?.type === 'heading' ||
+        !!state.stack.find(
+          (nodeType: MDConstructName) =>
+            nodeType === 'emphasis' ||
+            nodeType === 'strong' ||
+            nodeType === 'heading'
+        )
       ) {
         return node.children
           .map((child) => state.handle(child, node, state, info))
