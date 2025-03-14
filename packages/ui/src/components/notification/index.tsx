@@ -42,7 +42,7 @@ export const Notification: React.FC<NotificationProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const { isInNotificationList } = useNotifications();
-  const isText = !!children && !!title;
+  const hasTitleAndChildren = !!children && !!title;
 
   let iconComponent: React.FC;
   switch (variant) {
@@ -109,16 +109,15 @@ export const Notification: React.FC<NotificationProps> = ({
           $variant={variant}
           className={className}
         >
-          <NotificationContent $text={isText}>
-            <NotificationLeft $text={isText}>
+          <NotificationContent $text={hasTitleAndChildren}>
+            <NotificationLeft $text={hasTitleAndChildren}>
               <NotificationIcon as={iconComponent} />
               <NotificationInfo>
                 <NotificationTitle>{title ?? children}</NotificationTitle>
-                {isText && typeof children === 'string' ? (
+                {hasTitleAndChildren && typeof children === 'string' ? (
                   <NotificationText>{children}</NotificationText>
-                ) : (
-                  children
-                )}
+                ) : null}
+                {hasTitleAndChildren && children}
               </NotificationInfo>
             </NotificationLeft>
             <NotificationRight>
