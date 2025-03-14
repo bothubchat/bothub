@@ -158,4 +158,10 @@ describe('getTgMarkdown', () => {
       getTgMarkdown('`containerElement` would be the `span.string` element')
     ).toBe('`containerElement` would be the `span.string` element');
   });
+
+  test('preserves checkboxes', () => {
+    expect(
+      getTgMarkdown('- [ ] Checkbox 1\n- [ ] Checkbox 2\n- [x] Checkbox 3')
+    ).toBe('- [ ] Checkbox 1\n- [ ] Checkbox 2\n- [x] Checkbox 3');
+  });
 });

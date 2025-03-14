@@ -127,8 +127,23 @@ const mdastToTgMarkdown = (ast: Node) => {
         info
       ),
 
-    listItem: (node: ListItem, parent, state, info) =>
-      defaultHandlers.listItem(
+    listItem: (node: ListItem, parent, state, info) => {
+      if (node.checked === true || node.checked === false) {
+        const childrenContent = node.children
+          .map((child) => state.handle(child, node, state, info))
+          .join('');
+
+        const lines = childrenContent.split('\n');
+        const checkbox = node.checked ? '[x] ' : '[ ] ';
+        const bullet = state.bulletCurrent || '-';
+        const firstLine = `${bullet} ${checkbox}${lines[0]}`;
+        const indent = ' '.repeat(bullet.length + 1 + checkbox.length);
+        const nestedLines = lines.slice(1).map((line) => indent + line);
+        return [firstLine, ...nestedLines].join('\n');
+      }
+
+      // Fallback to default behavior for non-task items.
+      return defaultHandlers.listItem(
         node,
         parent,
         {
@@ -136,7 +151,8 @@ const mdastToTgMarkdown = (ast: Node) => {
           bulletCurrent: '-'
         },
         info
-      ),
+      );
+    },
 
     table: (node: Table, _, state, info) => {
       const rows = node.children || [];
