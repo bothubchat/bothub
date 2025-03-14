@@ -202,7 +202,8 @@ import {
   COTR1Icon,
   LoaderCircularGradient2Icon,
   SortAlphabetBottomTopIcon,
-  SortAlphabetTopBottomIcon
+  SortAlphabetTopBottomIcon,
+  VolumeIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -446,6 +447,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="SortAlphabetTopBottomIcon">
           {SortAlphabetTopBottomIcon}
         </IconItem>
+        <IconItem name="VolumeIcon">{VolumeIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

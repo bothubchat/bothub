@@ -40,6 +40,7 @@ import image3 from './assets/image-3.png';
 import image4 from './assets/image-4.png';
 import imageProgress from './assets/image-progress.png';
 import sound from './assets/sound.wav';
+import videoWebm from './assets/sample-5s.webm';
 import {
   AIIcon,
   COTR1Icon,
@@ -57,6 +58,7 @@ import {
 } from '@/ui/icons';
 import { Typography } from '../../typography';
 import { MessageSearchResults } from '../search-results';
+import { MessageVideo } from '../video';
 
 export type MessageMeta = Meta<typeof Message>;
 
@@ -588,6 +590,12 @@ export const VoiceProcessing: MessageStory = {
         </BadgeProgressText>
       </MessageBadgeProgress>
     )
+  }
+};
+export const Video: MessageStory = {
+  args: {
+    ...User.args,
+    children: <MessageVideo src={videoWebm} />
   }
 };
 
