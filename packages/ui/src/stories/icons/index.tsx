@@ -204,12 +204,9 @@ import {
   SortAlphabetBottomTopIcon,
   SortAlphabetTopBottomIcon,
   PrintIcon,
-  RightUpArrowIcon,
   Pc1Icon,
   Pc2Icon,
-  Pc3Icon,
-  ArrowNarrowRightWhiteIcon,
-  TgWhiteCircleIcon
+  Pc3Icon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -454,11 +451,6 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
           {SortAlphabetTopBottomIcon}
         </IconItem>
         <IconItem name="PrintIcon">{PrintIcon}</IconItem>
-        <IconItem name="RightUpArrowIcon">{RightUpArrowIcon}</IconItem>
-        <IconItem name="ArrowNarrowRightWhiteIcon">
-          {ArrowNarrowRightWhiteIcon}
-        </IconItem>
-        <IconItem name="TgWhiteCircleIcon">{TgWhiteCircleIcon}</IconItem>
         <IconItem name="Pc1Icon">{Pc1Icon}</IconItem>
         <IconItem name="Pc2Icon">{Pc2Icon}</IconItem>
         <IconItem name="Pc3Icon">{Pc3Icon}</IconItem>
