@@ -1,4 +1,4 @@
-import { css, styled } from 'styled-components';
+import { css, styled, keyframes } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { TrashIcon } from '@/ui/icons/trash';
@@ -9,8 +9,13 @@ import { SidebarChatIcon } from '@/ui/icons/sidebar-chat';
 import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { Checkbox } from '@/ui/components/checkbox';
 import { Tooltip } from '../../tooltip';
+import { colorToRgba } from '@/ui/utils/colorToRgba';
 
-export const SidebarChatLeft = styled.div`
+export interface SidebarChatLeftProps {
+  $sidebarOpen?: boolean;
+}
+
+export const SidebarChatLeft = styled.div<SidebarChatLeftProps>`
   display: flex;
   width: 100%;
   align-items: center;
@@ -30,10 +35,12 @@ export const SidebarChatIconStyled = styled(SidebarChatIcon)`
   display: none;
 `;
 
-export const SidebarChatIconContainer = styled.span<{
+export interface SidebarChatIconContainerProps {
   $active?: boolean;
   $isDefault?: boolean;
-}>`
+}
+
+export const SidebarChatIconContainer = styled.span<SidebarChatIconContainerProps>`
   display: inline-flex;
   width: 18px;
   height: 18px;
@@ -41,6 +48,12 @@ export const SidebarChatIconContainer = styled.span<{
   flex-shrink: 0;
   ${SidebarChatIconStyled} {
     display: ${({ $isDefault }) => ($isDefault ? 'inline-flex' : 'none')};
+    ${({ $active }) =>
+      $active &&
+      css`
+        fill: ${({ theme }) => theme.colors.base.white};
+        stroke: ${({ theme }) => theme.colors.base.white};
+      `}
     ${({ $active }) =>
       $active &&
       css`
@@ -113,6 +126,55 @@ export const SidebarChatCaps = styled(Typography).attrs({
   transition: opacity 0.3s;
 `;
 
+const SidebarChatOutlineAnimation = keyframes`
+  from {
+    opacity: 0;
+    left: 0px;
+  }
+  to {
+    opacity: 1;
+    left: -3px;
+  }
+`;
+
+export interface SidebarChatWithOutlineStyledProps {
+  $active: boolean;
+}
+
+export const SidebarChatWithOutlineStyled = styled.div<SidebarChatWithOutlineStyledProps>`
+  margin-left: 3px;
+  height: 100%;
+  position: relative;
+  ${({ $active }) =>
+    $active &&
+    css`
+      border-radius: 10px;
+      &:before {
+        content: '';
+        width: 20px;
+        height: 100%;
+        border-radius: 10px;
+        position: absolute;
+        top: 0;
+        left: 0px;
+        background-color: ${({ theme }) => theme.colors.accent.primary};
+        z-index: 0;
+        animation: ${SidebarChatOutlineAnimation} 0.3s ease-in-out 1 forwards;
+      }
+    `};
+`;
+
+export interface SidebarChatWithBackgroundStyledProps {
+  $active: boolean;
+}
+
+export const SidebarChatWithBackgroundStyled = styled.div<SidebarChatWithBackgroundStyledProps>`
+  height: 100%;
+  border-radius: 10px;
+  position: relative;
+  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+`;
+
 export interface SidebarChatStyledProps {
   $active: boolean;
   $skeleton: boolean;
@@ -139,14 +201,28 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
       `;
     }
   }};
-  ${({ $active }) => {
+  ${({ $active, $skeleton }) => {
     if ($active) {
       return css`
+        border-radius: 10px;
+        background-color: ${({ theme }) =>
+          colorToRgba(theme.colors.accent.primaryLight, 0.5)};
+        transition: background-color 0.3s ease-out;
         ${SidebarChatIconStyled} {
           path {
             stroke: ${({ theme }) => theme.colors.base.white};
           }
           border-radius: 10px;
+        }
+      `;
+    }
+    if (!$active && !$skeleton) {
+      return css`
+        &:hover {
+          border-radius: 10px;
+          background-color: ${({ theme }) =>
+            colorToRgba(theme.colors.accent.primaryLight, 0.5)};
+          transition: background-color 0.3s ease-out;
         }
       `;
     }

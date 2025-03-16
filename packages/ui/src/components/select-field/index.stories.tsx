@@ -13,8 +13,8 @@ import {
   MjWhiteIcon,
   Plus2Icon,
   PublicIcon,
-  SortAlphabetBottomTopIcon,
-  SortAlphabetTopBottomIcon,
+  SortAlphabetAscendingIcon,
+  SortAlphabetDescendingIcon,
   SortAscendingIcon,
   SortDescendingIcon,
   StarIcon
@@ -234,12 +234,12 @@ export const Sort: SelectFieldStory = {
         type: 'label'
       },
       {
-        icon: <SortAlphabetTopBottomIcon />,
+        icon: <SortAlphabetAscendingIcon />,
         label: 'По возрастанию'
       },
       {
         label: 'По убыванию',
-        icon: <SortAlphabetBottomTopIcon />
+        icon: <SortAlphabetDescendingIcon />
       }
     ]
   }

@@ -8,6 +8,7 @@ import { Typography } from '../../typography';
 export const SidebarDropdownStyled = styled.div`
   width: 38px;
   margin-left: 16px;
+  position: relative;
 `;
 
 export const SidebarDropdownTogglerIcon = styled(MenuDotIcon).attrs({
