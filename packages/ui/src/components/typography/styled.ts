@@ -56,6 +56,13 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 30px;
           }
         `;
+      case 'h6':
+        return `
+          font-weight: 600;
+          font-size: 18px;
+          line-height: 24px;
+          --skeleton-height: 24px;
+        `;
       case 'body-xxxl-regular':
         return `
           font-size: 46px;
