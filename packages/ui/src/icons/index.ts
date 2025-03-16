@@ -212,7 +212,3 @@ export * from './sort-date-ascending';
 export * from './sort-date-descending';
 export * from './cot-r1';
 export * from './news';
-export * from './print';
-export * from './pc-icon-1';
-export * from './pc-icon-2';
-export * from './pc-icon-3';
