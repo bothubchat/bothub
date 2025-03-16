@@ -115,7 +115,10 @@ export const Header: React.FC<HeaderProps> = ({
             </HeaderContainerContent>
             <HeaderContainerContent $variant="mobile">
               <HeaderCenter>{logo}</HeaderCenter>
-              <HeaderRight>{lang}</HeaderRight>
+              <HeaderRight>
+                {lang}
+                {variant === 'main' && <HeaderMenuToggleButton />}
+              </HeaderRight>
             </HeaderContainerContent>
           </HeaderContainer>
         </HeaderContent>
