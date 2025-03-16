@@ -2,21 +2,30 @@ import { css, styled } from 'styled-components';
 import { AddChatIcon } from '@/ui/icons';
 import { adaptive } from '@/ui/adaptive';
 
-export const FooterMobileStyled = styled.div`
+export interface FooterMobileStyledProps {
+  $isIOS?: boolean;
+}
+
+export const FooterMobileStyled = styled.div<FooterMobileStyledProps>`
   width: 100%;
   display: none;
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  background-color: ${({ theme }) => theme.colors.base.black};
+  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   border-top: 2px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  z-index: ${({ theme }) => theme.zIndex.menu};
+  ${({ $isIOS }) =>
+    $isIOS &&
+    css`
+      padding-bottom: 32px;
+    `}
   ${adaptive({
     variant: 'dashboard',
     mobile: css`
       display: flex;
     `
   })}
-  z-index: ${({ theme }) => theme.zIndex.menu};
 `;
 
 export interface FooterMobileButtonProps {

@@ -172,7 +172,11 @@ export const SidebarChatWithBackgroundStyled = styled.div<SidebarChatWithBackgro
   height: 100%;
   border-radius: 10px;
   position: relative;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+  ${({ $active }) =>
+    $active &&
+    css`
+      background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+    `}
 `;
 
 export interface SidebarChatStyledProps {

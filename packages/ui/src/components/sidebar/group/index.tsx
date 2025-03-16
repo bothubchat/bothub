@@ -78,6 +78,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
             <SidebarGroupName
               $open={open}
               $skeleton={!!props.skeleton}
+              $edit={!props.skeleton && props.edit}
               onClick={!props.skeleton ? onHandleOpen : undefined}
             >
               {!props.skeleton && props.edit && <SidebarGroupDragHandle />}
