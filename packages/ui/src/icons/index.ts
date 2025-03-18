@@ -214,3 +214,7 @@ export * from './cot-r1';
 export * from './news';
 export * from './flag-ru';
 export * from './flag-kz';
+export * from './print';
+export * from './pc-icon-1';
+export * from './pc-icon-2';
+export * from './pc-icon-3';
