@@ -205,6 +205,10 @@ import {
   SortAlphabetDescendingIcon,
   SortDateAscendingIcon,
   SortDateDescendingIcon,
+  PrintIcon,
+  Pc1Icon,
+  Pc2Icon,
+  Pc3Icon,
   FlagRUIcon,
   FlagKZIcon
 } from '@/ui/icons';
@@ -458,6 +462,10 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="COTR1Icon">{COTR1Icon}</IconItem>
         <IconItem name="FlagRUIcon">{FlagRUIcon}</IconItem>
         <IconItem name="FlagKZIcon">{FlagKZIcon}</IconItem>
+        <IconItem name="PrintIcon">{PrintIcon}</IconItem>
+        <IconItem name="Pc1Icon">{Pc1Icon}</IconItem>
+        <IconItem name="Pc2Icon">{Pc2Icon}</IconItem>
+        <IconItem name="Pc3Icon">{Pc3Icon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
