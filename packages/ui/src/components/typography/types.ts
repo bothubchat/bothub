@@ -2,6 +2,7 @@ export type TypographyVariant =
   | 'h1'
   | 'h2'
   | 'h3'
+  | 'h5'
   | 'h6'
   | 'body-xxxl-regular'
   | 'banner-h1-bold'
