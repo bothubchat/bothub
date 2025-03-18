@@ -2,11 +2,7 @@ import { css, styled } from 'styled-components';
 import { AddChatIcon } from '@/ui/icons';
 import { adaptive } from '@/ui/adaptive';
 
-export interface FooterMobileStyledProps {
-  $isIOS?: boolean;
-}
-
-export const FooterMobileStyled = styled.div<FooterMobileStyledProps>`
+export const FooterMobileStyled = styled.div<{ $isPreset?: boolean }>`
   width: 100%;
   display: none;
   justify-content: space-between;
@@ -14,12 +10,20 @@ export const FooterMobileStyled = styled.div<FooterMobileStyledProps>`
   padding: 16px;
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   border-top: 2px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  z-index: ${({ theme }) => theme.zIndex.menu};
-  ${({ $isIOS }) =>
-    $isIOS &&
+  z-index: ${({ theme }) => theme.zIndex.modal};
+  ${({ $isPreset }) =>
+    $isPreset &&
     css`
-      padding-bottom: 32px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
     `}
+  @supports (-webkit-touch-callout: none) {
+    @media (max-width: ${({ theme }) => theme.dashboard.miniTablet.maxWidth}) {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
   ${adaptive({
     variant: 'dashboard',
     mobile: css`

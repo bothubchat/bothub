@@ -8,13 +8,13 @@ import {
 import { useTheme } from '@/ui/theme';
 import { SidebarUserInfoAvatar } from '@/ui/components/sidebar';
 import { TariffPlan } from '@/ui/components/types';
-import { useIsIOS } from '@/ui/utils/useIsIOS';
 
 export type FooterMobileButtonClickHandler = () => unknown;
 
 export type FooterMobileButtonActiveProp = 'menu' | 'chats' | 'settings' | null;
 
 export interface FooterMobileProps {
+  isPreset?: boolean;
   tariffPlan?: TariffPlan;
   activeButton?: FooterMobileButtonActiveProp;
   onMenuClick: FooterMobileButtonClickHandler;
@@ -26,6 +26,7 @@ export interface FooterMobileProps {
 
 export const FooterMobile: React.FC<FooterMobileProps> = React.memo(
   ({
+    isPreset,
     tariffPlan,
     activeButton,
     onMenuClick,
@@ -35,10 +36,9 @@ export const FooterMobile: React.FC<FooterMobileProps> = React.memo(
     onUserClick
   }) => {
     const theme = useTheme();
-    const isIOS = useIsIOS();
 
     return (
-      <FooterMobileStyled $isIOS={isIOS}>
+      <FooterMobileStyled $isPreset={isPreset}>
         <FooterMobileButton onClick={onMenuClick}>
           <MenuIcon
             fill={
