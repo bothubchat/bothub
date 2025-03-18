@@ -108,11 +108,6 @@ export const SidebarGroupName = styled(Typography).attrs({
     return 'pointer';
   }};
   padding: 8px;
-  ${({ $edit }) =>
-    !$edit &&
-    css`
-      padding-right: 11px;
-    `}
   align-items: center;
   position: relative;
   white-space: nowrap;
@@ -127,7 +122,7 @@ export const SidebarGroupName = styled(Typography).attrs({
   }
   & > ${SidebarDropdownStyled} {
     display: flex;
-    width: 28px;
+    width: 38px;
     margin-left: 16px;
   }
   & > ${SidebarGroupArrowDown} {
