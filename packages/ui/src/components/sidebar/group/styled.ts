@@ -25,7 +25,8 @@ export const SidebarGroupStyled = styled.div<{ $over?: boolean }>`
   ${({ $over }) => {
     if ($over) {
       return css`
-        background: ${({ theme }) => theme.colors.grayScale.gray7};
+        background: ${({ theme }) =>
+          colorToRgba(theme.colors.accent.primaryLight, 0.4)};
         border-radius: 10px;
       `;
     }
@@ -52,6 +53,7 @@ export interface SidebarGroupNameWithOutlineProps {
 }
 
 export const SidebarGroupNameWithOutline = styled.div<SidebarGroupNameWithOutlineProps>`
+  width: 100%;
   position: relative;
   &:before {
     content: '';
@@ -68,11 +70,6 @@ export const SidebarGroupNameWithOutline = styled.div<SidebarGroupNameWithOutlin
       background-color: ${({ theme }) => theme.colors.accent.primary};
     }
   }
-  ${({ $open }) =>
-    $open &&
-    css`
-      width: 100%;
-    `}
   ${({ $active }) =>
     $active &&
     css`
@@ -95,6 +92,7 @@ export const SidebarGroupNameWithBg = styled.div`
 export interface SidebarGroupNameProps {
   $open?: boolean;
   $skeleton?: boolean;
+  $edit?: boolean;
 }
 
 export const SidebarGroupName = styled(Typography).attrs({
@@ -110,6 +108,11 @@ export const SidebarGroupName = styled(Typography).attrs({
     return 'pointer';
   }};
   padding: 8px;
+  ${({ $edit }) =>
+    !$edit &&
+    css`
+      padding-right: 11px;
+    `}
   align-items: center;
   position: relative;
   white-space: nowrap;

@@ -15,5 +15,8 @@ export const DateBadgeStyled = styled.div`
 export const DateBadgeText = styled(Typography).attrs({
   variant: 'body-m-medium'
 })`
-  color: ${({ theme }) => theme.colors.grayScale.gray6};
+  color: ${({ theme }) =>
+    theme.mode === 'light'
+      ? theme.default.colors.base.black
+      : theme.colors.grayScale.gray6};
 `;
