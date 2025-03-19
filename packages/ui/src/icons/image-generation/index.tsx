@@ -1,4 +1,4 @@
-import { Icon, icon, IconConsumer } from '@bothub-chat/ui';
+import { Icon, icon, IconConsumer } from '@/ui/components';
 
 export const ImageGeneration = icon(({ ...props }) => (
   <Icon
