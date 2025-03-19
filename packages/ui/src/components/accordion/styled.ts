@@ -1,11 +1,11 @@
 import { css, styled } from 'styled-components';
-import React from 'react';
+import { ComponentProps } from 'react';
 import { Typography } from '../typography';
 import { ArrowDownIcon } from '@/ui/icons';
 
-export const AccordionStyled: React.FC<
-  React.ComponentProps<'div'> & { $fullWidth: boolean }
-> = styled.div`
+export const AccordionStyled = styled.div<
+  ComponentProps<'div'> & { $fullWidth: boolean }
+>`
   ${({ $fullWidth }) =>
     !$fullWidth &&
     css`
@@ -16,7 +16,7 @@ export const AccordionStyled: React.FC<
   flex-direction: column;
   flex-shrink: 0;
   box-sizing: border-box;
-  overflow: hidden;
+  position: relative;
 `;
 
 export const AccordionHead = styled.div<{ $isOpen: boolean }>`
@@ -31,7 +31,9 @@ export const AccordionHead = styled.div<{ $isOpen: boolean }>`
   );
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 20px;
-  transition: 0.3s;
+  transition:
+    border-bottom 0.3s,
+    border-radius 0.3s;
   ${({ $isOpen }) =>
     $isOpen &&
     css`
@@ -52,13 +54,28 @@ export const AccordionArrow = styled(ArrowDownIcon).attrs<{
   transition: transform 0.2s ease-in-out;
 `;
 
-export const AccordionBody = styled.div`
+export const AccordionBody = styled.div<{ $isOpen: boolean }>`
   padding: 18px;
   background-color: ${({ theme }) => theme.colors.grayScale.gray3};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-top: 0;
   border-radius: 0 0 20px 20px;
-  transition: 1s;
+  transition:
+    opacity 0.3s,
+    position 0.3s;
+  ${({ $isOpen }) =>
+    $isOpen
+      ? css`
+          position: relative;
+        `
+      : css`
+          opacity: 0;
+          pointer-events: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+        `};
 `;
 
 export const AccordionText = styled(Typography).attrs({
