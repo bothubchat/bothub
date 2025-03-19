@@ -34,7 +34,12 @@ export function createConfig({
       ...packageConfig.peerDependencies,
       ...packageConfig.devDependencies,
       ...packageConfig.dependencies
-    })
+    }),
+    'unified',
+    'remark-parse',
+    'remark-gfm',
+    'mdast',
+    'mdast-util-to-markdown'
   ];
   const aliasPlugin: Plugin = alias({
     entries: [{ find: `@/${packageName}`, replacement: srcPath }]

@@ -45,11 +45,13 @@ export const HeaderStyled = styled.header<HeaderStyledProps>`
       case 'dashboard': {
         const adaptiveStyle = adaptive({
           variant: 'dashboard',
+          merge: true,
           desktop: css`
             height: ${theme.dashboard.header.height};
           `,
           tablet: css`
             height: ${theme.dashboard.header.tablet.height};
+            z-index: ${theme.zIndex.modal};
           `,
           mobile: css`
             height: ${theme.dashboard.header.mobile.height};
@@ -82,7 +84,7 @@ export const HeaderContent = styled.div<HeaderContentProps>`
           border-bottom: 1px solid ${theme.colors.grayScale.gray3};
           backdrop-filter: blur(9px);
           -webkit-backdrop-filter: blur(9px);
-          background: rgba(18, 24, 37, 0.4);
+          background-color: rgba(18, 24, 37, 0.4);
         `;
       case 'dashboard': {
         const adaptiveStyle = adaptive({
@@ -96,14 +98,13 @@ export const HeaderContent = styled.div<HeaderContentProps>`
             padding: 0px 18px;
           `,
           mobile: css`
-            border-radius: 10px;
             padding: 0px 16px;
           `
         });
 
         return css`
-          transition: background 0.3s;
-          background: ${theme.colors.grayScale.gray4};
+          transition: background-color 0.3s;
+          background-color: ${theme.colors.grayScale.gray4};
           ${adaptiveStyle}
         `;
       }
@@ -119,28 +120,77 @@ export const HeaderContainer = styled(Container)`
   position: relative;
 `;
 
-export const HeaderContainerContent = styled.div`
+export interface HeaderContainerContentProps {
+  $variant: 'desktop' | 'tablet' | 'mobile';
+}
+
+export const HeaderContainerContent = styled.div<HeaderContainerContentProps>`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: inherit;
   box-sizing: border-box;
   position: relative;
+  ${({ $variant }) =>
+    adaptive({
+      variant: 'dashboard',
+      desktop: css`
+        display: ${$variant === 'desktop' ? 'flex' : 'none'};
+        justify-content: space-between;
+      `,
+      tablet: css`
+        display: ${$variant === 'tablet' ? 'flex' : 'none'};
+        border-radius: 0;
+        padding: 8px;
+        justify-content: space-between;
+        z-index: ${({ theme }) => theme.zIndex.modal};
+      `,
+      mobile: css`
+        display: ${$variant === 'mobile' ? 'flex' : 'none'};
+        border-radius: 0;
+        padding: 8px;
+        justify-content: space-between;
+        z-index: ${({ theme }) => theme.zIndex.modal};
+      `
+    })}
 `;
 
 export const HeaderLeft = styled.div`
   display: flex;
   align-items: center;
+  gap: 18px;
+  ${adaptive({
+    variant: 'dashboard',
+    tablet: css`
+      flex: 1;
+    `
+  })}
+`;
+
+export const HeaderCenter = styled.div`
+  display: flex;
+  align-items: center;
+  ${adaptive({
+    variant: 'dashboard',
+    tablet: css`
+      flex: 1;
+      justify-content: center;
+    `
+  })}
 `;
 
 export const HeaderRight = styled.div`
   display: flex;
   align-items: center;
-  gap: 34px;
-  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-    gap: 24px;
-  }
+  gap: 24px;
+  ${adaptive({
+    variant: 'dashboard',
+    tablet: css`
+      gap: 8px;
+      flex: 1;
+      justify-content: end;
+    `
+  })}
 `;
 
 export const HeaderLogoLink = styled.a`

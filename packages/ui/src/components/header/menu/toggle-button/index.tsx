@@ -2,13 +2,26 @@ import React, { useCallback } from 'react';
 import { HeaderMenuToggleIcon } from './icon';
 import { HeaderMenuToggleButtonStyled } from './styled';
 import { useHeader } from '../../context';
+import { HeaderTabletToggleEventHandler } from '../..';
 
-export const HeaderMenuToggleButton: React.FC = () => {
+export interface HeaderMenuToggleButtonProps {
+  isOpen?: boolean;
+  onTabletOpen?: HeaderTabletToggleEventHandler;
+}
+
+export const HeaderMenuToggleButton: React.FC<HeaderMenuToggleButtonProps> = ({
+  isOpen,
+  onTabletOpen
+}) => {
   const { variant, isMenuOpen, setIsMenuOpen } = useHeader();
 
   const toggleMenu = useCallback(() => {
+    if (onTabletOpen) {
+      onTabletOpen();
+      return;
+    }
     setIsMenuOpen(!isMenuOpen);
-  }, [isMenuOpen]);
+  }, [isMenuOpen, onTabletOpen]);
 
   return (
     <HeaderMenuToggleButtonStyled
@@ -16,7 +29,7 @@ export const HeaderMenuToggleButton: React.FC = () => {
       aria-label="Menu Toggle Button"
       onClick={toggleMenu}
     >
-      <HeaderMenuToggleIcon />
+      <HeaderMenuToggleIcon isOpen={isOpen} />
     </HeaderMenuToggleButtonStyled>
   );
 };

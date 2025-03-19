@@ -201,8 +201,16 @@ import {
   QueueIcon,
   COTR1Icon,
   LoaderCircularGradient2Icon,
-  SortAlphabetBottomTopIcon,
-  SortAlphabetTopBottomIcon
+  SortAlphabetAscendingIcon,
+  SortAlphabetDescendingIcon,
+  SortDateAscendingIcon,
+  SortDateDescendingIcon,
+  PrintIcon,
+  Pc1Icon,
+  Pc2Icon,
+  Pc3Icon,
+  FlagRUIcon,
+  FlagKZIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -431,6 +439,18 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="SortUserIcon">{SortUserIcon}</IconItem>
         <IconItem name="SortAscendingIcon">{SortAscendingIcon}</IconItem>
         <IconItem name="SortDescendingIcon">{SortDescendingIcon}</IconItem>
+        <IconItem name="SortAlphabetAscendingIcon">
+          {SortAlphabetAscendingIcon}
+        </IconItem>
+        <IconItem name="SortAlphabetDescendingIcon">
+          {SortAlphabetDescendingIcon}
+        </IconItem>
+        <IconItem name="SortDateAscendingIcon">
+          {SortDateAscendingIcon}
+        </IconItem>
+        <IconItem name="SortDateDescendingIcon">
+          {SortDateDescendingIcon}
+        </IconItem>
         <IconItem name="QuoteIcon">{QuoteIcon}</IconItem>
         <IconItem name="URLCircleIcon">{URLCircleIcon}</IconItem>
         <IconItem name="ShowUiIcon">{ShowUiIcon}</IconItem>
@@ -440,12 +460,12 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="AnalyzeUrlsIcon">{AnalyzeUrlsIcon}</IconItem>
         <IconItem name="QueueIcon">{QueueIcon}</IconItem>
         <IconItem name="COTR1Icon">{COTR1Icon}</IconItem>
-        <IconItem name="SortAlphabetBottomTopIcon">
-          {SortAlphabetBottomTopIcon}
-        </IconItem>
-        <IconItem name="SortAlphabetTopBottomIcon">
-          {SortAlphabetTopBottomIcon}
-        </IconItem>
+        <IconItem name="FlagRUIcon">{FlagRUIcon}</IconItem>
+        <IconItem name="FlagKZIcon">{FlagKZIcon}</IconItem>
+        <IconItem name="PrintIcon">{PrintIcon}</IconItem>
+        <IconItem name="Pc1Icon">{Pc1Icon}</IconItem>
+        <IconItem name="Pc2Icon">{Pc2Icon}</IconItem>
+        <IconItem name="Pc3Icon">{Pc3Icon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

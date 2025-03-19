@@ -19,4 +19,5 @@ export const Footer: React.FC<FooterProps> = ({ id, logo, nav, children }) => (
   </FooterStyled>
 );
 
+export * from './mobile';
 export * from './styled';

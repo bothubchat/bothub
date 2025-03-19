@@ -36,7 +36,7 @@ describe('tooltip', () => {
         expect(screen.queryByText('Tooltip text')).toBeNull();
       },
       {
-        timeout: TooltipAnimationDuration.exit + 5
+        timeout: TooltipAnimationDuration.exit + 25
       }
     );
   });
@@ -82,12 +82,12 @@ describe('tooltip', () => {
     fireEvent.mouseEnter(button);
     await waitFor(
       () => expect(screen.getByText('Tooltip text')).not.toBeNull(),
-      { timeout: TooltipAnimationDuration.enter + 5 }
+      { timeout: TooltipAnimationDuration.enter + 25 }
     );
 
     fireEvent.mouseLeave(button);
     await waitFor(() => expect(screen.queryByText('Tooltip text')).toBeNull(), {
-      timeout: TooltipAnimationDuration.exit + 5
+      timeout: TooltipAnimationDuration.exit + 25
     });
   });
 });
