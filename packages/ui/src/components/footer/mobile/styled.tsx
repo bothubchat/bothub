@@ -21,7 +21,7 @@ export const FooterMobileStyled = styled.div<{ $isPreset?: boolean }>`
     `}
   @supports (-webkit-touch-callout: none) {
     @media (max-width: ${({ theme }) => theme.dashboard.miniTablet.maxWidth}) {
-      padding-bottom: env(safe-area-inset-bottom);
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
     }
   }
   ${adaptive({
