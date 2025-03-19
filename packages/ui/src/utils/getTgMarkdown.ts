@@ -27,11 +27,16 @@ type MDConstructName = ConstructName | 'heading';
 
 export const getTgMarkdown = (markdown: string): string => {
   try {
-    if (!markdown.trim()) {
+    const normalizedMarkdown = markdown.trim();
+
+    if (!normalizedMarkdown) {
       return '';
     }
 
-    const ast = unified().use(remarkParse).use(remarkGfm).parse(markdown);
+    const ast = unified()
+      .use(remarkParse)
+      .use(remarkGfm)
+      .parse(normalizedMarkdown);
 
     return mdastToTgMarkdown(ast);
   } catch (error) {
@@ -206,7 +211,10 @@ const mdastToTgMarkdown = (ast: Node) => {
     },
 
     // Disables unnecessary symbol escaping
-    text: (node: Text) => node.value
+    text: (node: Text) => node.value,
+
+    // Just output a newline instead of '  \' or '\n'
+    break: () => '\n'
   };
 
   const tgMarkdown = toMarkdown(ast, {
