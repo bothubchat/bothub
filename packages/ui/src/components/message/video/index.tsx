@@ -1,5 +1,6 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  MessageSourceStyled,
   MessageVideoContainer,
   MessageVideoControls,
   MessageVideoControlsButton,
@@ -28,7 +29,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
   const [videoProgress, setVideoProgress] = useState(0);
   const [videoFullScreen, setVideoFullScreen] = useState(false);
   const [timeLineMouseMove, setTimeLineMouseMove] = useState(false);
-
+  const videoContainer = useRef<HTMLDivElement>(null);
   const iconSize = videoFullScreen ? 28 : 24;
 
   const handleStart = useCallback(() => {
@@ -94,8 +95,14 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
   }, []);
 
   const handleFullscreen = useCallback(() => {
+    if (!videoContainer.current) return;
+    if (videoFullScreen) {
+      document.exitFullscreen();
+    } else {
+      videoContainer.current.requestFullscreen();
+    }
     setVideoFullScreen(!videoFullScreen);
-  }, [videoFullScreen]);
+  }, [videoFullScreen, setVideoFullScreen]);
 
   const handleChangeVolume = useCallback(
     (volume: number) => {
@@ -107,22 +114,52 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
     [videoRef.current]
   );
 
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === ' ') {
+        if (videoPlayed) {
+          handlePause();
+        } else {
+          handleStart();
+        }
+      }
+    };
+    window.addEventListener('fullscreenchange', () => {
+      setVideoFullScreen(document.fullscreenElement !== null);
+    });
+
+    window.addEventListener('keyup', handleKeyPress);
+
+    return () => {
+      window.removeEventListener('fullscreenchange', () => {});
+      window.removeEventListener('keyup', handleKeyPress);
+    };
+  }, [videoPlayed]);
+
   return (
     <MessageVideoContainer
+      ref={videoContainer}
       onMouseLeave={handleStartMouseLeave}
       onMouseMove={handleMouseMove}
       onMouseUp={handleStartMouseLeave}
     >
       <MessageVideoStyled
         ref={videoRef}
-        src={src}
         onClick={videoPlayed ? handlePause : handleStart}
         onLoadedData={handleVideoLoaded}
         onTimeUpdate={handleTimeUpdate}
         onEnded={handlePause}
         $isFullScreen={videoFullScreen}
-      />
-      <MessageVideoControls $isVisible={!videoPlayed}>
+      >
+        <MessageSourceStyled
+          src={src}
+          type="video/mp4"
+        />
+      </MessageVideoStyled>
+      <MessageVideoControls
+        $isFullScreen={videoFullScreen}
+        $isVisible={!videoPlayed}
+      >
         <MessageVideoTimeLine
           onClick={handleTimeUpdateClick}
           onMouseDown={handleStartMouseMove}

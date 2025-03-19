@@ -1,7 +1,10 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 
-export const MessageVideoControls = styled.div<{ $isVisible?: boolean }>`
+export const MessageVideoControls = styled.div<{
+  $isVisible?: boolean;
+  $isFullScreen?: boolean;
+}>`
   transform: ${({ $isVisible }) =>
     $isVisible ? 'translateY(0)' : 'translateY(100%)'};
   opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
@@ -20,12 +23,18 @@ export const MessageVideoControls = styled.div<{ $isVisible?: boolean }>`
     rgba(0, 0, 0, 1) 100%
   );
   width: 100%;
+  ${({ $isFullScreen }) =>
+    $isFullScreen &&
+    css`
+      padding: 24px;
+      gap: 24px;
+    `}
 `;
 
 export const MessageVideoContainer = styled.div`
   position: relative;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   overflow: hidden;
   border-radius: inherit;
   &:hover {
@@ -37,8 +46,24 @@ export const MessageVideoContainer = styled.div`
 `;
 
 export const MessageVideoStyled = styled.video<{ $isFullScreen?: boolean }>`
-  max-width: ${({ $isFullScreen }) => ($isFullScreen ? '100%' : '600px')};
   width: 100%;
+  max-width: ${({ $isFullScreen }) => ($isFullScreen ? '100%' : '640px')};
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    max-width: none;
+  }
+`;
+
+export const MessageSourceStyled = styled.source<{ $isFullScreen?: boolean }>`
+  ${({ $isFullScreen }) =>
+    $isFullScreen &&
+    css`
+      width: 100%;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -3;
+    `}
 `;
 
 export const MessageVideoControlsButton = styled.button`
@@ -69,20 +94,22 @@ export const MessageVideoControlsButtons = styled.div<{
 
 export const MessageVideoTimeLine = styled.div<{ $progress: number }>`
   position: relative;
-  height: 4px;
+  height: 6px;
   border-radius: 4px;
   width: 100%;
   background: rgba(255, 255, 255, 0.5);
   cursor: pointer;
+  transition: all 100ms ease-out;
   &:hover {
     opacity: 0.8;
+    height: 16px;
   }
   &:after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
-    height: 4px;
+    height: inherit;
     width: ${({ $progress }) => $progress}%;
     right: 0;
     bottom: 0;
