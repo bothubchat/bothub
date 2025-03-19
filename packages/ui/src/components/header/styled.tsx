@@ -133,6 +133,7 @@ export const HeaderContainerContent = styled.div<HeaderContainerContentProps>`
   position: relative;
   ${({ $variant }) =>
     adaptive({
+      variant: 'dashboard',
       desktop: css`
         display: ${$variant === 'desktop' ? 'flex' : 'none'};
         justify-content: space-between;

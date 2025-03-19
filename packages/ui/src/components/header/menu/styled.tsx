@@ -58,7 +58,12 @@ export const HeaderMenuContent = styled(animated.div)<HeaderMenuStyledProps>`
           mobile: css`
             ${$isPreset ? '' : 'display: none;'}
             padding: 32px 16px;
-            height: calc(100vh - ${theme.dashboard.header.mobile.height});
+            height: calc(
+              100vh -
+                ${!$isPreset
+                  ? theme.dashboard.header.mobile.height
+                  : parseInt(theme.dashboard.header.mobile.height) - 80}
+            );
           `
         });
     }

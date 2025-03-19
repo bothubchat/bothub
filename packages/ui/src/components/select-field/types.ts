@@ -30,25 +30,27 @@ export type SelectFieldItemType =
   | 'empty'
   | 'label';
 
-export type SelectFieldDataItem =
-  | string
-  | {
-      id?: number | string;
-      type?: SelectFieldItemType;
-      color?: string;
-      value?: string;
-      icon?: React.ReactNode;
-      label?: string | null;
-      bold?: boolean;
-      disabled?: boolean;
-      end?: React.ReactNode;
-      tooltip?: TooltipProps;
-      open?: boolean;
-      backgroundHoverColor?: 'gradient' | 'primary';
-      data?: SelectFieldDataItem[];
-      noSelect?: boolean;
-      onClick?: SelectFieldOptionClickEventHandler;
-    };
+export type SelectFieldDataItemSimple = string;
+
+export type SelectFieldDataItemComplex = {
+  id?: number | string;
+  type?: SelectFieldItemType;
+  color?: string;
+  value?: string;
+  icon?: React.ReactNode;
+  label?: string | null;
+  bold?: boolean;
+  disabled?: boolean;
+  end?: React.ReactNode;
+  tooltip?: TooltipProps;
+  open?: boolean;
+  backgroundHoverColor?: 'gradient' | 'primary';
+  data?: SelectFieldDataItem[];
+  noSelect?: boolean;
+  onClick?: SelectFieldOptionClickEventHandler;
+};
+
+export type SelectFieldDataItem = string | SelectFieldDataItemComplex;
 
 export type SelectFieldData = SelectFieldDataItem[];
 

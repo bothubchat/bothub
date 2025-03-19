@@ -22,6 +22,7 @@ export const HeaderThemeSwitcherStyled = styled.button<HeaderThemeSwitcherStyled
 
       return css`
         width: fit-content;
+        min-height: 36px;
         overflow: hidden;
         align-items: center;
         cursor: pointer;
