@@ -210,7 +210,14 @@ import {
   Pc2Icon,
   Pc3Icon,
   FlagRUIcon,
-  FlagKZIcon
+  FlagKZIcon,
+  CodeGeneration,
+  EssayGeneration,
+  ImageGeneration,
+  SpeechSynthesys,
+  Spelling,
+  TrafficAnalisys,
+  TextGeneration
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -466,6 +473,13 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="Pc1Icon">{Pc1Icon}</IconItem>
         <IconItem name="Pc2Icon">{Pc2Icon}</IconItem>
         <IconItem name="Pc3Icon">{Pc3Icon}</IconItem>
+        <IconItem name="CodeGeneration">{CodeGeneration}</IconItem>
+        <IconItem name="EssayGeneration">{EssayGeneration}</IconItem>
+        <IconItem name="ImageGeneration">{ImageGeneration}</IconItem>
+        <IconItem name="SpeechSynthesys">{SpeechSynthesys}</IconItem>
+        <IconItem name="Spelling">{Spelling}</IconItem>
+        <IconItem name="TextGeneration">{TextGeneration}</IconItem>
+        <IconItem name="TrafficAnalisys">{TrafficAnalisys}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
