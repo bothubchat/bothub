@@ -21,11 +21,17 @@ export type MessageVideoProps = {
   src: string;
 };
 
+const formatTime = (time: number) => {
+  const minutes = Math.floor(time / 60);
+  const seconds = Math.floor(time % 60);
+  return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+};
+
 export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoPlayed, setVideoPlayed] = useState(false);
-  const [videoCurrentTime, setVideoCurrentTime] = useState('0:00');
-  const [videoDuration, setVideoDuration] = useState('0:00');
+  const [videoCurrentTime, setVideoCurrentTime] = useState('00:00');
+  const [videoDuration, setVideoDuration] = useState('00:00');
   const [videoProgress, setVideoProgress] = useState(0);
   const [videoFullScreen, setVideoFullScreen] = useState(false);
   const [timeLineMouseMove, setTimeLineMouseMove] = useState(false);
@@ -37,32 +43,37 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
       videoRef.current.play();
       setVideoPlayed(true);
     }
-  }, [videoRef.current, setVideoPlayed]);
+  }, []);
 
   const handlePause = useCallback(() => {
     if (videoRef.current) {
       videoRef.current.pause();
       setVideoPlayed(false);
     }
-  }, [videoRef.current, setVideoPlayed]);
+  }, []);
 
-  const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
-    const { currentTime, duration } = e.currentTarget;
-    const seconds = Math.floor(currentTime % 60);
-    const minutes = Math.floor(currentTime / 60);
-    const progress = (currentTime / duration) * 100;
-    setVideoProgress(progress);
-    setVideoCurrentTime(`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);
-  };
+  const handleTimeUpdate = useCallback(
+    (e: React.SyntheticEvent<HTMLVideoElement>) => {
+      const { currentTime, duration } = e.currentTarget;
 
-  const handleVideoLoaded = (e: React.SyntheticEvent<HTMLVideoElement>) => {
-    const { duration } = e.currentTarget;
-    const secondsDuration = Math.floor(duration % 60);
-    const minutesDuration = Math.floor(duration / 60);
-    setVideoDuration(
-      `${minutesDuration}:${secondsDuration < 10 ? `0${secondsDuration}` : secondsDuration}`
-    );
-  };
+      const time = formatTime(currentTime);
+      setVideoCurrentTime(time);
+
+      const progress = (currentTime / duration) * 100;
+      setVideoProgress(progress);
+    },
+    []
+  );
+
+  const handleVideoLoaded = useCallback(
+    (e: React.SyntheticEvent<HTMLVideoElement>) => {
+      const { duration } = e.currentTarget;
+
+      const time = formatTime(duration);
+      setVideoDuration(time);
+    },
+    []
+  );
 
   const handleTimeUpdateClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
@@ -75,7 +86,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
       videoRef.current.currentTime =
         (progress / 100) * videoRef.current.duration;
     },
-    [videoRef.current]
+    []
   );
 
   const handleStartMouseMove = useCallback(() => {
@@ -102,36 +113,30 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
       videoContainer.current.requestFullscreen();
     }
     setVideoFullScreen(!videoFullScreen);
-  }, [videoFullScreen, setVideoFullScreen]);
+  }, [videoFullScreen]);
 
-  const handleChangeVolume = useCallback(
-    (volume: number) => {
-      if (videoRef.current) {
-        const newVolume = Math.floor(volume) / 100;
-        videoRef.current.volume = newVolume;
-      }
-    },
-    [videoRef.current]
-  );
+  const handleChangeVolume = useCallback((volume: number) => {
+    if (videoRef.current) {
+      const newVolume = Math.floor(volume) / 100;
+      videoRef.current.volume = newVolume;
+    }
+  }, []);
 
   useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) => {
-      if (e.key === ' ') {
-        if (videoPlayed) {
-          handlePause();
-        } else {
-          handleStart();
-        }
-      }
-    };
-    window.addEventListener('fullscreenchange', () => {
+    const handleKeyPress = (e: KeyboardEvent) =>
+      e.key === ' ' && (videoPlayed ? handlePause : handleStart)();
+
+    const handleDocumentFullscreenChange = () => {
       setVideoFullScreen(document.fullscreenElement !== null);
-    });
+    };
 
+    window.addEventListener('fullscreenchange', handleDocumentFullscreenChange);
     window.addEventListener('keyup', handleKeyPress);
-
     return () => {
-      window.removeEventListener('fullscreenchange', () => {});
+      window.removeEventListener(
+        'fullscreenchange',
+        handleDocumentFullscreenChange
+      );
       window.removeEventListener('keyup', handleKeyPress);
     };
   }, [videoPlayed]);
