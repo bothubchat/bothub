@@ -68,7 +68,7 @@ export const AccordionBody = styled.div<{ $isOpen: boolean }>`
     $isOpen
       ? css`
           padding: 18px;
-          max-height: 58px;
+          max-height: auto;
         `
       : css`
           padding: 0 18px;
