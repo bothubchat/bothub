@@ -26,14 +26,14 @@ export const AccordionHead = styled.div<{ $isOpen: boolean }>`
   gap: 10px;
   padding: 18px;
   cursor: pointer;
-  background-color: rgba(
-    from ${({ theme }) => theme.colors.grayScale.gray4} r g b / 0.5
-  );
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 20px;
   transition:
     border-bottom 0.3s,
     border-radius 0.3s;
+  position: relative;
+  overflow: hidden;
+
   ${({ $isOpen }) =>
     $isOpen &&
     css`
@@ -41,11 +41,26 @@ export const AccordionHead = styled.div<{ $isOpen: boolean }>`
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
     `};
+
+  &::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+    opacity: 0.5;
+  }
 `;
 
 export const AccordionLabel = styled(Typography).attrs({
   variant: 'body-m-semibold'
-})``;
+})`
+  position: relative;
+  z-index: 1;
+`;
 
 export const AccordionArrow = styled(ArrowDownIcon).attrs<{
   $isOpen: boolean;
@@ -59,7 +74,6 @@ export const AccordionBody = styled.div<{ $isOpen: boolean }>`
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-top: 0;
   border-radius: 0 0 20px 20px;
-  position: relative;
   transition:
     max-height 0.3s,
     padding 0.3s,
