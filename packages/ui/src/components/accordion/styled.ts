@@ -55,26 +55,26 @@ export const AccordionArrow = styled(ArrowDownIcon).attrs<{
 `;
 
 export const AccordionBody = styled.div<{ $isOpen: boolean }>`
-  padding: 18px;
   background-color: ${({ theme }) => theme.colors.grayScale.gray3};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-top: 0;
   border-radius: 0 0 20px 20px;
+  position: relative;
   transition:
-    opacity 0.3s,
-    position 0.3s;
+    max-height 0.3s,
+    padding 0.3s,
+    opacity 0.3s;
   ${({ $isOpen }) =>
     $isOpen
       ? css`
-          position: relative;
+          padding: 18px;
+          max-height: 58px;
         `
       : css`
+          padding: 0 18px;
+          max-height: 0px;
           opacity: 0;
           pointer-events: none;
-          position: absolute;
-          top: 100%;
-          left: 0;
-          right: 0;
         `};
 `;
 
