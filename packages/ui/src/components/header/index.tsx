@@ -19,6 +19,7 @@ export type HeaderTabletToggleEventHandler = () => unknown;
 export interface HeaderProps
   extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang' | '$variant'> {
   id?: string;
+  isAdmin?: boolean;
   variant?: HeaderVariant;
   logo?: React.ReactNode;
   nav?: React.ReactNode;
@@ -35,6 +36,7 @@ export interface HeaderProps
 
 export const Header: React.FC<HeaderProps> = ({
   id,
+  isAdmin = false,
   variant = 'main',
   logo,
   nav,
@@ -83,9 +85,13 @@ export const Header: React.FC<HeaderProps> = ({
       <HeaderStyled
         {...props}
         $variant={variant}
+        $isAdmin={isAdmin}
         id={id}
       >
-        <HeaderContent $variant={variant}>
+        <HeaderContent
+          $variant={variant}
+          $isAdmin={isAdmin}
+        >
           <HeaderContainer disabled={variant === 'dashboard'}>
             <HeaderContainerContent $variant="desktop">
               <HeaderLeft>
@@ -99,7 +105,10 @@ export const Header: React.FC<HeaderProps> = ({
                 <HeaderMenuToggleButton />
               </HeaderRight>
             </HeaderContainerContent>
-            <HeaderContainerContent $variant="tablet">
+            <HeaderContainerContent
+              $variant="tablet"
+              $isAdmin={isAdmin}
+            >
               <HeaderLeft>
                 <HeaderMenuToggleButton
                   isOpen={tabletMenuOpen}
@@ -113,7 +122,10 @@ export const Header: React.FC<HeaderProps> = ({
                 {user}
               </HeaderRight>
             </HeaderContainerContent>
-            <HeaderContainerContent $variant="mobile">
+            <HeaderContainerContent
+              $variant="mobile"
+              $isAdmin={isAdmin}
+            >
               <HeaderCenter>{logo}</HeaderCenter>
               <HeaderRight>
                 {lang}
