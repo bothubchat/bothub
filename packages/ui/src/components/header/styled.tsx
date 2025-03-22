@@ -16,6 +16,7 @@ export const HeaderOffset = styled.div`
 
 export interface HeaderStyledProps {
   $variant: HeaderVariant;
+  $isAdmin?: boolean;
 }
 
 export const HeaderStyled = styled.header<HeaderStyledProps>`
@@ -65,10 +66,19 @@ export const HeaderStyled = styled.header<HeaderStyledProps>`
       }
     }
   }}
+  ${({ $isAdmin }) =>
+    $isAdmin &&
+    adaptive({
+      variant: 'dashboard',
+      mobile: css`
+        padding: 0;
+      `
+    })}
 `;
 
 export interface HeaderContentProps {
   $variant: HeaderVariant;
+  $isAdmin?: boolean;
 }
 
 export const HeaderContent = styled.div<HeaderContentProps>`
@@ -110,6 +120,14 @@ export const HeaderContent = styled.div<HeaderContentProps>`
       }
     }
   }}
+  ${({ $isAdmin }) =>
+    $isAdmin &&
+    adaptive({
+      variant: 'dashboard',
+      mobile: css`
+        border-radius: 18px;
+      `
+    })}
 `;
 
 export const HeaderContainer = styled(Container)`
@@ -122,6 +140,7 @@ export const HeaderContainer = styled(Container)`
 
 export interface HeaderContainerContentProps {
   $variant: 'desktop' | 'tablet' | 'mobile';
+  $isAdmin?: boolean;
 }
 
 export const HeaderContainerContent = styled.div<HeaderContainerContentProps>`
@@ -131,7 +150,7 @@ export const HeaderContainerContent = styled.div<HeaderContainerContentProps>`
   height: inherit;
   box-sizing: border-box;
   position: relative;
-  ${({ $variant }) =>
+  ${({ $variant, $isAdmin }) =>
     adaptive({
       variant: 'dashboard',
       desktop: css`
@@ -146,7 +165,10 @@ export const HeaderContainerContent = styled.div<HeaderContainerContentProps>`
         z-index: ${({ theme }) => theme.zIndex.modal};
       `,
       mobile: css`
-        display: ${$variant === 'mobile' ? 'flex' : 'none'};
+        display: ${(!$isAdmin && $variant === 'mobile') ||
+        ($isAdmin && $variant === 'tablet')
+          ? 'flex'
+          : 'none'};
         border-radius: 0;
         padding: 8px;
         justify-content: space-between;
