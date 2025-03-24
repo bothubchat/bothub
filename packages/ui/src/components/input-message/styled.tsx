@@ -110,6 +110,8 @@ export const InputMessageFiles = styled.div`
   flex-wrap: wrap;
   gap: 10px 14px;
   cursor: default;
+  max-height: 200px;
+  overflow-y: auto;
 `;
 
 export const InputMessageFile = styled(Chip).attrs({ variant: 'input' })``;
