@@ -1,16 +1,8 @@
 import { css, styled } from 'styled-components';
-import { ComponentProps } from 'react';
 import { Typography } from '../typography';
 import { ArrowDownIcon } from '@/ui/icons';
 
-export const AccordionStyled = styled.div<
-  ComponentProps<'div'> & { $fullWidth: boolean }
->`
-  ${({ $fullWidth }) =>
-    !$fullWidth &&
-    css`
-      max-width: 638px;
-    `}
+export const AccordionStyled = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;

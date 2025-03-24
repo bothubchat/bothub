@@ -16,7 +16,6 @@ export interface AccordionProps extends React.ComponentProps<'div'> {
 export const Accordion: React.FC<AccordionProps> = ({
   label,
   children,
-  fullWidth = false,
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,10 +25,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   }, [isOpen]);
 
   return (
-    <AccordionStyled
-      {...props}
-      $fullWidth={fullWidth}
-    >
+    <AccordionStyled {...props}>
       <AccordionHead
         $isOpen={isOpen}
         onClick={toggle}
