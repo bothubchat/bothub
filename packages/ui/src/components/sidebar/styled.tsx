@@ -17,7 +17,8 @@ import {
   SidebarGroupsStyled,
   SidebarGroupStyled
 } from './group';
-import { ArrowDownIcon, ArrowUpIcon } from '@/ui/icons';
+import { ArrowDownIcon } from '@/ui/icons/arrow-down';
+import { ArrowUpIcon } from '@/ui/icons/arrow-up';
 import {
   SidebarMenuBlockScrollbarWrapper,
   SidebarMenuNav,

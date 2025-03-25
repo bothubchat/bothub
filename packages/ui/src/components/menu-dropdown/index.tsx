@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useTransition } from '@react-spring/web';
-import { MenuIcon, CloseIcon } from '@/ui/icons';
+import { MenuIcon } from '@/ui/icons/menu';
+import { CloseIcon } from '@/ui/icons/close';
 import { MenuDropdownProvider } from './context';
 import {
   MenuDropdownBlock,
