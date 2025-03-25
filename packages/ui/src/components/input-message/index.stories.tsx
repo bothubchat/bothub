@@ -6,7 +6,11 @@ export type InputMessageMeta = Meta<typeof InputMessage>;
 
 export type InputMessageStory = StoryObj<typeof InputMessage>;
 
-export const Basic: InputMessageStory = {};
+export const Basic: InputMessageStory = {
+  args: {
+    uploadFileLimit: 100
+  }
+};
 
 export const Voice: InputMessageStory = {
   args: {

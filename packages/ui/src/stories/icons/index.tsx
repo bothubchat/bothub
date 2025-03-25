@@ -211,6 +211,7 @@ import {
   Pc3Icon,
   FlagRUIcon,
   FlagKZIcon,
+  VolumeIcon,
   CodeGeneration,
   EssayGeneration,
   ImageGeneration,
@@ -480,6 +481,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="Spelling">{Spelling}</IconItem>
         <IconItem name="TextGeneration">{TextGeneration}</IconItem>
         <IconItem name="TrafficAnalisys">{TrafficAnalisys}</IconItem>
+        <IconItem name="VolumeIcon">{VolumeIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
