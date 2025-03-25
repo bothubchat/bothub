@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { AnalyzeUrlsIcon } from '@/ui/icons';
+import { AnalyzeUrlsIcon } from '@/ui/icons/analyze-urls';
 import { Typography } from '../../typography';
 import {
   SearchResultsItemStyled,

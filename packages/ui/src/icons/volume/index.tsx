@@ -1,4 +1,4 @@
-import { icon, Icon } from '@/ui/components';
+import { icon, Icon } from '@/ui/components/icon';
 
 export const VolumeIcon = icon(({ ...props }) => (
   <Icon

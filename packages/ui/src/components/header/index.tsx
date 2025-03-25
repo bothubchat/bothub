@@ -19,8 +19,7 @@ export type HeaderTabletToggleEventHandler = () => unknown;
 export interface HeaderProps
   extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang' | '$variant'> {
   id?: string;
-  isAdmin?: boolean;
-  variant?: HeaderVariant;
+  variant?: HeaderVariant | 'admin';
   logo?: React.ReactNode;
   nav?: React.ReactNode;
   buttonsTablet?: React.ReactNode;
@@ -36,7 +35,6 @@ export interface HeaderProps
 
 export const Header: React.FC<HeaderProps> = ({
   id,
-  isAdmin = false,
   variant = 'main',
   logo,
   nav,
@@ -78,22 +76,21 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <HeaderProvider
-      variant={variant}
+      variant={variant === 'admin' ? 'dashboard' : 'main'}
       isMenuOpen={isMenuOpen}
       setIsMenuOpen={setIsMenuOpen}
     >
       <HeaderStyled
         {...props}
         $variant={variant}
-        $isAdmin={isAdmin}
         id={id}
       >
-        <HeaderContent
-          $variant={variant}
-          $isAdmin={isAdmin}
-        >
+        <HeaderContent $variant={variant}>
           <HeaderContainer disabled={variant === 'dashboard'}>
-            <HeaderContainerContent $variant="desktop">
+            <HeaderContainerContent
+              $screenSize="desktop"
+              $variant={variant}
+            >
               <HeaderLeft>
                 {logo}
                 {nav}
@@ -106,8 +103,8 @@ export const Header: React.FC<HeaderProps> = ({
               </HeaderRight>
             </HeaderContainerContent>
             <HeaderContainerContent
-              $variant="tablet"
-              $isAdmin={isAdmin}
+              $screenSize="tablet"
+              $variant={variant}
             >
               <HeaderLeft>
                 <HeaderMenuToggleButton
@@ -123,8 +120,8 @@ export const Header: React.FC<HeaderProps> = ({
               </HeaderRight>
             </HeaderContainerContent>
             <HeaderContainerContent
-              $variant="mobile"
-              $isAdmin={isAdmin}
+              $screenSize="mobile"
+              $variant={variant}
             >
               <HeaderCenter>{logo}</HeaderCenter>
               <HeaderRight>

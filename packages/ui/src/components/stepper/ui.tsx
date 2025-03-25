@@ -6,7 +6,7 @@ import {
   StepperStepPoint,
   StepperStyled
 } from './styled';
-import { CheckSmallIcon } from '@/ui/icons';
+import { CheckSmallIcon } from '@/ui/icons/check-small';
 
 export interface StepperProps {
   activeStep: number;
