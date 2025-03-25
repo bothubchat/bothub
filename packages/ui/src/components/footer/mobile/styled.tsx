@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import { AddChatIcon } from '@/ui/icons';
+import { AddChatIcon } from '@/ui/icons/add-chat';
 import { adaptive } from '@/ui/adaptive';
 
 export const FooterMobileStyled = styled.div<{ $isPreset?: boolean }>`

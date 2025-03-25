@@ -1,6 +1,6 @@
 import { ReactNode, useCallback, useState } from 'react';
 import { useDelayedVisible } from '@/ui/utils';
-import { LoaderCircularGradient2Icon } from '@/ui/icons';
+import { LoaderCircularGradient2Icon } from '@/ui/icons/loader-circular-gradient-2';
 import { MessageMarkdown } from '../markdown';
 import {
   ReasoningBlockButton,

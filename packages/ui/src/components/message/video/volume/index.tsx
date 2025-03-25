@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { VolumeIcon } from '@/ui/icons';
+import { VolumeIcon } from '@/ui/icons/volume';
 import {
   MessageVideoControlsButton,
   MessageVideoVolumeContainer,

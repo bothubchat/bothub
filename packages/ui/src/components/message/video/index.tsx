@@ -9,12 +9,10 @@ import {
   MessageVideoTimeLine,
   MessageVideoTimeText
 } from './styled';
-import {
-  MaxWindowIcon,
-  MinWindowIcon,
-  PauseButtonIcon,
-  PlayButtonIcon
-} from '@/ui/icons';
+import { MaxWindowIcon } from '@/ui/icons/max-window';
+import { MinWindowIcon } from '@/ui/icons/min-window';
+import { PauseButtonIcon } from '@/ui/icons/pause-button';
+import { PlayButtonIcon } from '@/ui/icons/play-button';
 import { MessageVideoVolume } from './volume';
 
 export type MessageVideoProps = {

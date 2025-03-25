@@ -1,5 +1,7 @@
 import React from 'react';
-import { ChatsIcon, MenuIcon, SettingsIcon } from '@/ui/icons';
+import { ChatsIcon } from '@/ui/icons/chats';
+import { MenuIcon } from '@/ui/icons/menu';
+import { SettingsIcon } from '@/ui/icons/settings';
 import {
   FooterMobileStyled,
   FooterMobileButton,

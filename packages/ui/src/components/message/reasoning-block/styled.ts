@@ -1,7 +1,7 @@
 import { css, styled } from 'styled-components';
 import { TypographyStyled } from '@/ui/components/typography/styled';
 import { defaultTheme } from '@/ui/theme';
-import { ArrowUpIcon } from '@/ui/icons';
+import { ArrowUpIcon } from '@/ui/icons/arrow-up';
 
 export const ReasoningBlockStyled = styled.div<{
   $fullWidth: boolean;

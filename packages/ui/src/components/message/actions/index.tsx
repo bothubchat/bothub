@@ -29,7 +29,7 @@ import { CloseIcon } from '@/ui/icons/close';
 import { CopyIcon } from '@/ui/icons/copy';
 import { useScrollbarRef } from '../list';
 import { ModalOption } from './types';
-import { ThumbDownIcon } from '@/ui/icons';
+import { ThumbDownIcon } from '@/ui/icons/thumb-down';
 
 type MessageActionsProps = {
   id?: string;
