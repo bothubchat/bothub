@@ -76,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <HeaderProvider
-      variant={variant === 'admin' ? 'dashboard' : 'main'}
+      variant={variant === 'admin' ? 'dashboard' : variant}
       isMenuOpen={isMenuOpen}
       setIsMenuOpen={setIsMenuOpen}
     >
