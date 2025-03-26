@@ -212,6 +212,7 @@ export * from './sort-date-ascending';
 export * from './sort-date-descending';
 export * from './cot-r1';
 export * from './news';
+export * from './volume';
 export * from './flag-ru';
 export * from './flag-kz';
 export * from './print';

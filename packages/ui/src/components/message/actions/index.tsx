@@ -29,7 +29,7 @@ import { CloseIcon } from '@/ui/icons/close';
 import { CopyIcon } from '@/ui/icons/copy';
 import { useScrollbarRef } from '../list';
 import { ModalOption } from './types';
-import { ThumbDownIcon } from '@/ui/icons';
+import { ThumbDownIcon } from '@/ui/icons/thumb-down';
 
 type MessageActionsProps = {
   id?: string;
@@ -323,19 +323,22 @@ export const MessageActions = ({
                           </S.MessageActionsMenuModalOptionContent>
                         </MenuOption>
                       )}
-                      {onReportText && onReport && (
-                        <MenuOption onClick={handleReportClick}>
-                          <S.MessageActionsMenuModalOptionContent>
-                            <ThumbDownIcon
-                              fill="#616D8D"
-                              size={18}
-                            />
-                            <S.MessageActionsButtonText>
-                              {onReportText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
+                      {!disableDelete &&
+                        onReportText &&
+                        onReport &&
+                        variant !== 'user' && (
+                          <MenuOption onClick={handleReportClick}>
+                            <S.MessageActionsMenuModalOptionContent>
+                              <ThumbDownIcon
+                                fill="#616D8D"
+                                size={18}
+                              />
+                              <S.MessageActionsButtonText>
+                                {onReportText}
+                              </S.MessageActionsButtonText>
+                            </S.MessageActionsMenuModalOptionContent>
+                          </MenuOption>
+                        )}
                     </S.MessageActionsMenuModal>
                   )
               )}
@@ -367,6 +370,21 @@ export const MessageActions = ({
               tooltipLabel={copyTooltipLabel}
             />
           )}
+          {!modalEnabled() &&
+            !disableDelete &&
+            onReportText &&
+            onReport &&
+            variant !== 'user' && (
+              <ActionButton
+                tooltipLabel={onReportText}
+                onClick={handleReportClick}
+              >
+                <ThumbDownIcon
+                  fill="#616D8D"
+                  size={18}
+                />
+              </ActionButton>
+            )}
         </>
       ) : (
         <S.MessageEditButtonsStyled>

@@ -19,7 +19,7 @@ export type HeaderTabletToggleEventHandler = () => unknown;
 export interface HeaderProps
   extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang' | '$variant'> {
   id?: string;
-  variant?: HeaderVariant;
+  variant?: HeaderVariant | 'admin';
   logo?: React.ReactNode;
   nav?: React.ReactNode;
   buttonsTablet?: React.ReactNode;
@@ -76,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <HeaderProvider
-      variant={variant}
+      variant={variant === 'admin' ? 'dashboard' : 'main'}
       isMenuOpen={isMenuOpen}
       setIsMenuOpen={setIsMenuOpen}
     >
@@ -87,7 +87,10 @@ export const Header: React.FC<HeaderProps> = ({
       >
         <HeaderContent $variant={variant}>
           <HeaderContainer disabled={variant === 'dashboard'}>
-            <HeaderContainerContent $variant="desktop">
+            <HeaderContainerContent
+              $screenSize="desktop"
+              $variant={variant}
+            >
               <HeaderLeft>
                 {logo}
                 {nav}
@@ -99,7 +102,10 @@ export const Header: React.FC<HeaderProps> = ({
                 <HeaderMenuToggleButton />
               </HeaderRight>
             </HeaderContainerContent>
-            <HeaderContainerContent $variant="tablet">
+            <HeaderContainerContent
+              $screenSize="tablet"
+              $variant={variant}
+            >
               <HeaderLeft>
                 <HeaderMenuToggleButton
                   isOpen={tabletMenuOpen}
@@ -113,7 +119,10 @@ export const Header: React.FC<HeaderProps> = ({
                 {user}
               </HeaderRight>
             </HeaderContainerContent>
-            <HeaderContainerContent $variant="mobile">
+            <HeaderContainerContent
+              $screenSize="mobile"
+              $variant={variant}
+            >
               <HeaderCenter>{logo}</HeaderCenter>
               <HeaderRight>
                 {lang}

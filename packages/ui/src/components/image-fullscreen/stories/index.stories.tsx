@@ -13,7 +13,8 @@ import image1 from './assets/image-1.png';
 import image2 from './assets/image-2.png';
 import image3 from './assets/image-3.png';
 import image4 from './assets/image-4.png';
-import { DownloadImgIcon, MjWhiteIcon } from '@/ui/icons';
+import { DownloadImgIcon } from '@/ui/icons/download-img';
+import { MjWhiteIcon } from '@/ui/icons/mj-white';
 import { AdaptiveButton } from '@/ui/components/adaptive-button';
 
 export type ImageFullScreenMeta = Meta<typeof ImageFullScreen>;

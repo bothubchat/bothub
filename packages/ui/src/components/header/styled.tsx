@@ -15,7 +15,7 @@ export const HeaderOffset = styled.div`
 `;
 
 export interface HeaderStyledProps {
-  $variant: HeaderVariant;
+  $variant: HeaderVariant | 'admin';
 }
 
 export const HeaderStyled = styled.header<HeaderStyledProps>`
@@ -42,6 +42,7 @@ export const HeaderStyled = styled.header<HeaderStyledProps>`
           ${adaptiveStyle}
         `;
       }
+      case 'admin':
       case 'dashboard': {
         const adaptiveStyle = adaptive({
           variant: 'dashboard',
@@ -65,10 +66,18 @@ export const HeaderStyled = styled.header<HeaderStyledProps>`
       }
     }
   }}
+  ${({ $variant }) =>
+    $variant === 'admin' &&
+    adaptive({
+      variant: 'dashboard',
+      mobile: css`
+        padding: 0;
+      `
+    })}
 `;
 
 export interface HeaderContentProps {
-  $variant: HeaderVariant;
+  $variant: HeaderVariant | 'admin';
 }
 
 export const HeaderContent = styled.div<HeaderContentProps>`
@@ -86,6 +95,7 @@ export const HeaderContent = styled.div<HeaderContentProps>`
           -webkit-backdrop-filter: blur(9px);
           background-color: rgba(18, 24, 37, 0.4);
         `;
+      case 'admin':
       case 'dashboard': {
         const adaptiveStyle = adaptive({
           variant: 'dashboard',
@@ -110,6 +120,14 @@ export const HeaderContent = styled.div<HeaderContentProps>`
       }
     }
   }}
+  ${({ $variant }) =>
+    $variant === 'admin' &&
+    adaptive({
+      variant: 'dashboard',
+      mobile: css`
+        border-radius: 18px;
+      `
+    })}
 `;
 
 export const HeaderContainer = styled(Container)`
@@ -121,7 +139,8 @@ export const HeaderContainer = styled(Container)`
 `;
 
 export interface HeaderContainerContentProps {
-  $variant: 'desktop' | 'tablet' | 'mobile';
+  $screenSize: 'desktop' | 'tablet' | 'mobile';
+  $variant: HeaderVariant | 'admin';
 }
 
 export const HeaderContainerContent = styled.div<HeaderContainerContentProps>`
@@ -131,22 +150,25 @@ export const HeaderContainerContent = styled.div<HeaderContainerContentProps>`
   height: inherit;
   box-sizing: border-box;
   position: relative;
-  ${({ $variant }) =>
+  ${({ $screenSize, $variant }) =>
     adaptive({
       variant: 'dashboard',
       desktop: css`
-        display: ${$variant === 'desktop' ? 'flex' : 'none'};
+        display: ${$screenSize === 'desktop' ? 'flex' : 'none'};
         justify-content: space-between;
       `,
       tablet: css`
-        display: ${$variant === 'tablet' ? 'flex' : 'none'};
+        display: ${$screenSize === 'tablet' ? 'flex' : 'none'};
         border-radius: 0;
         padding: 8px;
         justify-content: space-between;
         z-index: ${({ theme }) => theme.zIndex.modal};
       `,
       mobile: css`
-        display: ${$variant === 'mobile' ? 'flex' : 'none'};
+        display: ${($variant !== 'admin' && $screenSize === 'mobile') ||
+        ($variant === 'admin' && $screenSize === 'tablet')
+          ? 'flex'
+          : 'none'};
         border-radius: 0;
         padding: 8px;
         justify-content: space-between;
