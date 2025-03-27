@@ -219,3 +219,4 @@ export * from './print';
 export * from './pc-icon-1';
 export * from './pc-icon-2';
 export * from './pc-icon-3';
+export * from './fav-profile';
