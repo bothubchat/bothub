@@ -345,6 +345,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
   const handleVoiceRecordStart = useCallback<React.ReactEventHandler>(
     async (event) => {
+      if (isVoiceRecording) return;
+
       voicePressedRef.current = true;
       event.stopPropagation();
 
@@ -370,7 +372,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       setIsVoiceRecording(true);
       setVoiceRecordingTime(0);
     },
-    [voicePressedRef.current, voiceChunksRef.current]
+    [voicePressedRef.current, voiceChunksRef.current, isVoiceRecording]
   );
 
   const stopVoiceRecording = useCallback(() => {
@@ -693,12 +695,9 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               color: theme.colors.critic
             })}
             disabled={disabled || sendDisabled}
-            onMouseLeave={handleVoiceRecordEnd}
-            onMouseDown={handleVoiceRecordStart}
-            onMouseUp={handleVoiceRecordEnd}
-            onTouchStart={handleVoiceRecordStart}
-            onTouchEnd={handleVoiceRecordEnd}
-            onTouchCancel={handleVoiceRecordEnd}
+            onPointerDown={handleVoiceRecordStart}
+            onPointerUp={handleVoiceRecordEnd}
+            onPointerCancel={handleVoiceRecordEnd}
             onClick={handleVoiceRecordClick}
           >
             {isVoiceRecording ? (
