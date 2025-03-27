@@ -10,6 +10,7 @@ import {
 
 export interface AccordionProps extends React.ComponentProps<'div'> {
   label: string;
+  fullWidth?: boolean;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
@@ -18,28 +19,27 @@ export const Accordion: React.FC<AccordionProps> = ({
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+
   const toggle = useCallback(() => {
     setIsOpen(!isOpen);
   }, [isOpen]);
 
   return (
-    <AccordionStyled
-      {...props}
-      $isOpen={isOpen}
-    >
-      <AccordionHead onClick={toggle}>
+    <AccordionStyled {...props}>
+      <AccordionHead
+        $isOpen={isOpen}
+        onClick={toggle}
+      >
         <AccordionLabel>{label}</AccordionLabel>
-        <AccordionArrow
-          style={{
-            transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)'
-          }}
-        />
+        <AccordionArrow $isOpen={isOpen} />
       </AccordionHead>
-      <AccordionBody hidden={!isOpen}>
-        {typeof children === 'string' && (
+
+      <AccordionBody $isOpen={isOpen}>
+        {typeof children === 'string' ? (
           <AccordionText>{children}</AccordionText>
+        ) : (
+          children
         )}
-        {typeof children !== 'string' && children}
       </AccordionBody>
     </AccordionStyled>
   );
