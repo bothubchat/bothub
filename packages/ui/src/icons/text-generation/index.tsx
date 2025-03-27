@@ -8,14 +8,8 @@ export const TextGeneration = icon(({ ...props }) => (
     {...props}
   >
     <IconConsumer>
-      {({ fill = 'white' } = { fill: 'white' }) => (
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+      {({ fill = '#fff' } = { fill: '#fff' }) => (
+        <>
           <path
             d="M4 18H20M4 14H20M4 10H14M4 6H10.6667"
             stroke={fill}
@@ -30,7 +24,7 @@ export const TextGeneration = icon(({ ...props }) => (
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-        </svg>
+        </>
       )}
     </IconConsumer>
   </Icon>
