@@ -214,7 +214,8 @@ import {
   VolumeIcon,
   ImageGenerationIcon,
   SpeechSynthesysIcon,
-  StarUnfilledIcon
+  StarUnfilledIcon,
+  TranscriptionIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -474,6 +475,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="ImageGenerationIcon">{ImageGenerationIcon}</IconItem>
         <IconItem name="SpeechSynthesysIcon">{SpeechSynthesysIcon}</IconItem>
         <IconItem name="StarUnfilledIcon">{StarUnfilledIcon}</IconItem>
+        <IconItem name="TranscriptionIcon">{TranscriptionIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

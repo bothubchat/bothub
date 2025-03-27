@@ -222,3 +222,4 @@ export * from './pc-icon-3';
 export * from './star-unfilled';
 export * from './image-generation';
 export * from './speech-synthesys';
+export * from './transcription';
