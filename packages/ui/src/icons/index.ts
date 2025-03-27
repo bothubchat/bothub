@@ -223,3 +223,4 @@ export * from './star-unfilled';
 export * from './image-generation';
 export * from './speech-synthesys';
 export * from './transcription';
+export * from './text-rewrite';
