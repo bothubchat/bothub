@@ -1,5 +1,3 @@
-'use client';
-
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import * as S from './styled';
 import { ArrowDownIcon } from '@/ui/icons';

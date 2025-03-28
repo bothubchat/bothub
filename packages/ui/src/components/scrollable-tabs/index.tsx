@@ -1,5 +1,3 @@
-'use client';
-
 import { ReactNode } from 'react';
 import * as S from './styled';
 import { Scroll } from '../scroll';
