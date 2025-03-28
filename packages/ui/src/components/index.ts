@@ -61,3 +61,4 @@ export * from './logo-new-year';
 export * from './menu-tabs';
 export * from './breadcrumbs';
 export * from './date-badge';
+export * from './scrollable-tabs';
