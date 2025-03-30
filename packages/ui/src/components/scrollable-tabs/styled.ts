@@ -1,12 +1,6 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '../typography';
 
-export const ScrollableTabsContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  padding-bottom: 3px;
-`;
-
 export const ScrollableTabsTab = styled.a<{ $selected?: boolean }>`
   all: unset;
   cursor: pointer;
@@ -16,6 +10,7 @@ export const ScrollableTabsTab = styled.a<{ $selected?: boolean }>`
   gap: 16px;
   flex-shrink: 0;
   position: relative;
+  margin-bottom: 3px;
 
   &:before {
     content: '';

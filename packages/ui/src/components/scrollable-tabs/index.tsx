@@ -11,18 +11,16 @@ export const ScrollableTabs = ({
   tabs,
   selectedTabId
 }: ScrollableTabsProps) => (
-  <Slider sliderMultiplier={2}>
-    <S.ScrollableTabsContainer>
-      {tabs.map((tab) => (
-        <S.ScrollableTabsTab
-          key={tab.id}
-          href={tab.href}
-          $selected={tab.id === selectedTabId}
-        >
-          {tab.icon}
-          <S.ScrollableTabsTabLabel>{tab.label}</S.ScrollableTabsTabLabel>
-        </S.ScrollableTabsTab>
-      ))}
-    </S.ScrollableTabsContainer>
+  <Slider gap={20}>
+    {tabs.map((tab) => (
+      <S.ScrollableTabsTab
+        key={tab.id}
+        href={tab.href}
+        $selected={tab.id === selectedTabId}
+      >
+        {tab.icon}
+        <S.ScrollableTabsTabLabel>{tab.label}</S.ScrollableTabsTabLabel>
+      </S.ScrollableTabsTab>
+    ))}
   </Slider>
 );

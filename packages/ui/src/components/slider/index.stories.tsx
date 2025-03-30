@@ -8,16 +8,73 @@ export type SliderStory = StoryObj<typeof Slider>;
 
 export const Basic: SliderStory = {
   args: {
-    sliderMultiplier: 3,
     children: (
-      <div
-        style={{
-          width: 3000,
-          height: 100,
-          background:
-            'linear-gradient(90deg, #FF0000, #0000FF, #FFFF00, #FF00FF, #00FFFF, #800000, #008000, #000080)'
-        }}
-      />
+      <>
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#FF0000',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#0000FF',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#FFFF00',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#FF00FF',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#00FFFF',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#800000',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#008000',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#000080',
+            flexShrink: 0
+          }}
+        />
+      </>
     )
   }
 };

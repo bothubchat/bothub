@@ -1,12 +1,14 @@
 import { styled, css } from 'styled-components';
+import { Scrollbar } from '../scrollbar';
 
 export const SliderContainer = styled.div`
   width: 100%;
   position: relative;
 `;
 
-export const SliderWrapper = styled.div`
-  overflow: auto;
+export const SliderWrapper = styled(Scrollbar)<{ $gap?: number }>`
+  display: flex;
+  gap: ${({ $gap }) => $gap || 0}px;
   scrollbar-width: none;
 `;
 
