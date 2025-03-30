@@ -1,6 +1,6 @@
 import { Icon, icon, IconConsumer } from '@/ui/components';
 
-export const TextGeneration = icon(({ ...props }) => (
+export const TextGenerationIcon = icon(({ ...props }) => (
   <Icon
     size={24}
     viewBox="0 0 24 24"

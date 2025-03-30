@@ -1,6 +1,6 @@
 import { Icon, icon, IconConsumer } from '@/ui/components';
 
-export const CodeGeneration = icon(({ ...props }) => (
+export const CodeGenerationIcon = icon(({ ...props }) => (
   <Icon
     size={24}
     viewBox="0 0 24 24"

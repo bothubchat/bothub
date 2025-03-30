@@ -1,6 +1,6 @@
 import { Icon, icon, IconConsumer } from '@/ui/components';
 
-export const TrafficAnalisys = icon(({ ...props }) => (
+export const TrafficAnalisysIcon = icon(({ ...props }) => (
   <Icon
     size={24}
     viewBox="0 0 24 24"

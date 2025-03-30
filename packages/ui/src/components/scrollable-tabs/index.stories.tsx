@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { ScrollableTabs } from '.';
 import {
-  CodeGeneration,
-  ImageGeneration,
-  SpeechSynthesys,
-  Spelling,
-  TextGeneration,
-  TrafficAnalisys
+  CodeGenerationIcon,
+  ImageGenerationIcon,
+  SpeechSynthesysIcon,
+  SpellingIcon,
+  TextGenerationIcon,
+  TrafficAnalisysIcon
 } from '@/ui/icons';
 
 export type ScrollableTabsMeta = Meta<typeof ScrollableTabs>;
@@ -21,33 +21,33 @@ export const Basic: ScrollableTabsStory = {
         id: 'text',
         label: 'Генерация текста',
         href: '/',
-        icon: <TextGeneration />
+        icon: <TextGenerationIcon />
       },
       {
         id: 'image',
         label: 'Генерация изображений',
         href: '/',
-        icon: <ImageGeneration />
+        icon: <ImageGenerationIcon />
       },
       {
         id: 'code',
         label: 'Генерация кода',
         href: '/',
-        icon: <CodeGeneration />
+        icon: <CodeGenerationIcon />
       },
       {
         id: 'table',
         label: 'Анализ таблиц',
         href: '/',
-        icon: <TrafficAnalisys />
+        icon: <TrafficAnalisysIcon />
       },
       {
         id: 'speech',
         label: 'Синтез речи',
         href: '/',
-        icon: <SpeechSynthesys />
+        icon: <SpeechSynthesysIcon />
       },
-      { id: 'spell', label: 'Орфография', href: '/', icon: <Spelling /> }
+      { id: 'spell', label: 'Орфография', href: '/', icon: <SpellingIcon /> }
     ],
     selectedTabId: 'code'
   }

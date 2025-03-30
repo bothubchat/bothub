@@ -1,6 +1,6 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
-export const FavProfile = icon(({ ...props }) => (
+export const FavoriteProfileIcon = icon(({ ...props }) => (
   <Icon
     size={36}
     viewBox="0 0 36 36"
