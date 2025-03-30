@@ -1,16 +1,16 @@
 import { styled, css } from 'styled-components';
 
-export const ScrollContainer = styled.div`
+export const SliderContainer = styled.div`
   width: 100%;
   position: relative;
 `;
 
-export const ScrollWrapper = styled.div`
+export const SliderWrapper = styled.div`
   overflow: auto;
   scrollbar-width: none;
 `;
 
-export const ScrollLeftArrow = styled.div<{ $hidden: boolean }>`
+export const SliderLeftArrow = styled.div<{ $hidden: boolean }>`
   width: 80px;
   height: 100%;
   background: linear-gradient(
@@ -41,13 +41,13 @@ export const ScrollLeftArrow = styled.div<{ $hidden: boolean }>`
   }
 `;
 
-export const ScrollRightArrow = styled(ScrollLeftArrow)`
+export const SliderRightArrow = styled(SliderLeftArrow)`
   left: unset;
   right: 0;
   transform: rotate(180deg);
 `;
 
-export const ScrollIconContainer = styled.button`
+export const SliderIconContainer = styled.button`
   all: unset;
   cursor: pointer;
 `;

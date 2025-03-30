@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
-import { Scroll } from '.';
+import { Slider } from '.';
 
-export type ScrollMeta = Meta<typeof Scroll>;
+export type SliderMeta = Meta<typeof Slider>;
 
-export type ScrollStory = StoryObj<typeof Scroll>;
+export type SliderStory = StoryObj<typeof Slider>;
 
-export const Basic: ScrollStory = {
+export const Basic: SliderStory = {
   args: {
-    scrollMultiplier: 3,
+    sliderMultiplier: 3,
     children: (
       <div
         style={{
@@ -23,7 +23,7 @@ export const Basic: ScrollStory = {
 };
 
 export default {
-  title: 'UI Components/Scroll',
-  component: Scroll,
+  title: 'UI Components/Slider',
+  component: Slider,
   decorators: [StoryDecorator()]
-} as ScrollMeta;
+} as SliderMeta;

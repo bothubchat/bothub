@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import * as S from './styled';
-import { Scroll } from '../scroll';
+import { Slider } from '../slider';
 
 type ScrollableTabsProps = {
   tabs: { id: string; label: string; href: string; icon?: ReactNode }[];
@@ -11,7 +11,7 @@ export const ScrollableTabs = ({
   tabs,
   selectedTabId
 }: ScrollableTabsProps) => (
-  <Scroll scrollMultiplier={2}>
+  <Slider sliderMultiplier={2}>
     <S.ScrollableTabsContainer>
       {tabs.map((tab) => (
         <S.ScrollableTabsTab
@@ -24,5 +24,5 @@ export const ScrollableTabs = ({
         </S.ScrollableTabsTab>
       ))}
     </S.ScrollableTabsContainer>
-  </Scroll>
+  </Slider>
 );

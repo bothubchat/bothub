@@ -2,11 +2,11 @@ import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import * as S from './styled';
 import { ArrowDownIcon } from '@/ui/icons';
 
-type ScrollProps = {
-  scrollMultiplier?: number;
+type SliderProps = {
+  sliderMultiplier?: number;
 } & PropsWithChildren;
 
-export const Scroll = ({ scrollMultiplier = 1, children }: ScrollProps) => {
+export const Slider = ({ sliderMultiplier = 1, children }: SliderProps) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const [showLeftArrow, setShowLeftArrow] = useState(false);
@@ -35,28 +35,28 @@ export const Scroll = ({ scrollMultiplier = 1, children }: ScrollProps) => {
     return () => el.removeEventListener('scroll', checkArrowsVisibility);
   }, []);
 
-  const onArrowClick = (scrollToRight: boolean) => {
+  const onArrowClick = (slideToRight: boolean) => {
     wrapperRef.current?.scrollBy({
       behavior: 'smooth',
-      left: (scrollToRight ? 100 : -100) * scrollMultiplier
+      left: (slideToRight ? 100 : -100) * sliderMultiplier
     });
   };
 
   return (
-    <S.ScrollContainer>
-      <S.ScrollLeftArrow $hidden={!showLeftArrow}>
-        <S.ScrollIconContainer onClick={() => onArrowClick(false)}>
+    <S.SliderContainer>
+      <S.SliderLeftArrow $hidden={!showLeftArrow}>
+        <S.SliderIconContainer onClick={() => onArrowClick(false)}>
           <ArrowDownIcon />
-        </S.ScrollIconContainer>
-      </S.ScrollLeftArrow>
+        </S.SliderIconContainer>
+      </S.SliderLeftArrow>
 
-      <S.ScrollWrapper ref={wrapperRef}>{children}</S.ScrollWrapper>
+      <S.SliderWrapper ref={wrapperRef}>{children}</S.SliderWrapper>
 
-      <S.ScrollRightArrow $hidden={!showRightArrow}>
-        <S.ScrollIconContainer onClick={() => onArrowClick(true)}>
+      <S.SliderRightArrow $hidden={!showRightArrow}>
+        <S.SliderIconContainer onClick={() => onArrowClick(true)}>
           <ArrowDownIcon />
-        </S.ScrollIconContainer>
-      </S.ScrollRightArrow>
-    </S.ScrollContainer>
+        </S.SliderIconContainer>
+      </S.SliderRightArrow>
+    </S.SliderContainer>
   );
 };
