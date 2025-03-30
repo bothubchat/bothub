@@ -4,6 +4,7 @@ import { ScrollbarRef } from '../scrollbar';
 export const useSlider = () => {
   const [isLeftDisabled, setIsLeftDisabled] = useState(true);
   const [isRightDisabled, setIsRightDisabled] = useState(false);
+
   const scrollbarRef = useRef<ScrollbarRef>(null);
 
   const onScrollLeft = () => {
@@ -51,7 +52,6 @@ export const useSlider = () => {
 
       if (rect.right - 1 > isMaxWidth && rect.right < isMaxPlusX) {
         isMaxPlusX = Math.floor(rect.right);
-
         isNearFirstPosition = i;
       }
     }
@@ -73,6 +73,14 @@ export const useSlider = () => {
 
       if (!target) return;
 
+      const isContentOverflowing = target.scrollWidth > target.clientWidth;
+
+      if (!isContentOverflowing) {
+        setIsLeftDisabled(true);
+        setIsRightDisabled(true);
+        return;
+      }
+
       if (target.scrollWidth - target.scrollLeft <= target.clientWidth + 1) {
         setIsRightDisabled(true);
       } else {
@@ -89,6 +97,7 @@ export const useSlider = () => {
     if (!scrollbar || !scrollbar.element) return;
 
     scrollbar.element.addEventListener('scroll', onScroll);
+    onScroll();
 
     return () => {
       if (!scrollbar || !scrollbar.element) return;
