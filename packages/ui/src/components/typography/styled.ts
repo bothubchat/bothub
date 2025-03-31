@@ -56,6 +56,23 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 30px;
           }
         `;
+      case 'h4':
+        return `
+          font-weight: 600;
+          font-size: 26px;
+          line-height: 34px;
+          --skeleton-height: 34px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 22px;
+            line-height: 30px;
+            --skeleton-height: 30px;
+          }
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 20px;
+            line-height: 26px;
+            --skeleton-height: 26px;
+          }
+        `;
       case 'h5':
         return `
           font-weight: 600;
