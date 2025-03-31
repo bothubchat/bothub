@@ -123,8 +123,8 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
                         onMouseEnter={handleTooltipMouseEnter}
                         onMouseLeave={handleTooltipMouseLeave}
                       >
-                        {props.name.slice(0, 22)}
-                        {props.name.length > 22 && '...'}
+                        {props.name.slice(0, 16)}
+                        {props.name.length > 16 && '...'}
                       </SidebarGroupNameBox>
                     )}
                   </TooltipConsumer>
