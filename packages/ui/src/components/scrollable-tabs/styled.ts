@@ -4,11 +4,11 @@ import { Variant } from './types';
 
 type VariantProps = { $variant: Variant };
 
-export const ScrollableTabsTab = styled.a<
-  {
-    $selected?: boolean;
-  } & VariantProps
->`
+type ScrollableTabsTabProps = {
+  $selected?: boolean;
+} & VariantProps;
+
+export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
   all: unset;
   cursor: pointer;
   display: flex;
