@@ -15,7 +15,10 @@ export const ScrollableTabs = ({
   component = 'a',
   selectedTabId
 }: ScrollableTabsProps) => (
-  <Slider gap={variant === 'primary' ? 20 : 8}>
+  <Slider
+    arrowsSize={variant === 'primary' ? 'md' : 'sm'}
+    gap={variant === 'primary' ? 20 : 8}
+  >
     {tabs.map(({ id, label, icon, ...rest }) => {
       const props = {
         as: component,
