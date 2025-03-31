@@ -46,7 +46,7 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
     ${({ $variant, $selected }) => {
       if ($selected) {
         return css`
-          border-radius: 16px;
+          border-radius: ${() => ($variant === 'primary' ? 16 : 8)}px;
           background: linear-gradient(90deg, #1c64f2 0%, #d41cf2 100%);
           opacity: 0.2;
         `;
