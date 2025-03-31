@@ -464,7 +464,7 @@ export const WithTabs: SelectFieldStory = {
       },
       {
         icon: <Gpt35Icon />,
-        value: 'gpt',
+        value: 'gpt1',
         label: 'ChatGPT',
         type: 'collapse',
         data: [
@@ -480,7 +480,7 @@ export const WithTabs: SelectFieldStory = {
       },
       {
         icon: <DallEIcon />,
-        value: 'dall-e',
+        value: 'dall-e1',
         label: 'DALL-E',
         type: 'collapse',
         data: [
@@ -496,7 +496,7 @@ export const WithTabs: SelectFieldStory = {
       },
       {
         icon: <MjWhiteIcon />,
-        value: 'mj',
+        value: 'mj1',
         label: 'Midjourney',
         type: 'collapse',
         data: [
