@@ -54,7 +54,7 @@ export type SelectFieldDataItem = string | SelectFieldDataItemComplex;
 
 export type SelectFieldData = SelectFieldDataItem[];
 
-export type SelectFieldSize = 'small' | 'md';
+export type SelectFieldSize = 'small' | 'md' | 'large';
 
 export type SelectFieldPlacement = 'bottom-left' | 'top-left' | 'top-right';
 

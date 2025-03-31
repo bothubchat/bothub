@@ -46,6 +46,8 @@ import { IconProvider } from '../icon';
 import { SelectFieldProvider } from './context';
 import { SelectFieldOptions } from './option';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
+import { ITab } from '../scrollable-tabs/types';
+import { ScrollableTabs } from '../scrollable-tabs';
 
 export interface SelectFieldDefaultProps {
   multiple?: false;
@@ -91,6 +93,7 @@ export type SelectFieldProps = (
   clearable?: boolean;
   loading?: boolean;
   padding?: [number, number];
+  tabs?: ITab[];
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;
@@ -121,6 +124,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   inputType = 'text',
   inputValue: initialInputValue,
   clearable = false,
+  tabs,
   onOptionClick,
   onInputChange,
   onSelectClick,
@@ -594,6 +598,13 @@ export const SelectField: React.FC<SelectFieldProps> = ({
               >
                 <SelectFieldBlockContent>
                   <SelectFieldGroups $size={size}>
+                    {!!tabs && (
+                      <ScrollableTabs
+                        tabs={tabs}
+                        variant="secondary"
+                        component="button"
+                      />
+                    )}
                     {before && (
                       <SelectFieldGroup
                         $size={size}

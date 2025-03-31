@@ -390,6 +390,8 @@ export const SelectFieldGroups = styled.div<SelectFieldGroupsProps>`
         return 4;
       case 'md':
         return 6;
+      case 'large':
+        return 8;
     }
   }}px;
 `;
@@ -425,6 +427,8 @@ export const SelectFieldGroup = styled.div<SelectFieldGroupProps>`
             return 186;
           case 'md':
             return 186;
+          case 'large':
+            return 500;
         }
       }}px;
     `}

@@ -16,6 +16,8 @@ export const SelectFieldOptionsStyled = styled.div<SelectFieldOptionsStyledProps
         return 4;
       case 'md':
         return 6;
+      case 'large':
+        return 8;
     }
   }}px;
 `;
@@ -43,6 +45,8 @@ export const SelectFieldEmpty = styled.div<SelectFieldEmptyProps>`
       case 'small':
         return 8;
       case 'md':
+        return 12;
+      case 'large':
         return 12;
     }
   }}px;
@@ -99,6 +103,8 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
         return 8;
       case 'md':
         return 12;
+      case 'large':
+        return 12;
     }
   }}px;
   border-radius: 6px;
@@ -107,6 +113,8 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
       case 'small':
         return 8;
       case 'md':
+        return 10;
+      case 'large':
         return 10;
     }
   }}px;

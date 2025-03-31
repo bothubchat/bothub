@@ -6,8 +6,10 @@ import { Tooltip } from '@/ui/components/tooltip';
 import { Button } from '@/ui/components/button';
 import {
   ClaudeIcon,
+  CodeGenerationIcon,
   DallEIcon,
   Gpt35Icon,
+  ImageGenerationIcon,
   LightningIcon,
   LockCircleIcon,
   MjWhiteIcon,
@@ -17,7 +19,11 @@ import {
   SortAlphabetDescendingIcon,
   SortAscendingIcon,
   SortDescendingIcon,
-  StarIcon
+  SpeechSynthesysIcon,
+  SpellingIcon,
+  StarIcon,
+  TextGenerationIcon,
+  TrafficAnalisysIcon
 } from '@/ui/icons';
 
 export type SelectFieldMeta = Meta<typeof SelectField>;
@@ -402,6 +408,161 @@ export const Bold: SelectFieldStory = {
         noSelect: true
       }
     ]
+  }
+};
+
+export const WithTabs: SelectFieldStory = {
+  args: {
+    data: [
+      {
+        icon: <Gpt35Icon />,
+        value: 'gpt',
+        label: 'ChatGPT',
+        type: 'collapse',
+        data: [
+          {
+            label: 'По возрастанию',
+            noSelect: true
+          },
+          {
+            label: 'По убыванию',
+            noSelect: true
+          }
+        ]
+      },
+      {
+        icon: <DallEIcon />,
+        value: 'dall-e',
+        label: 'DALL-E',
+        type: 'collapse',
+        data: [
+          {
+            label: 'По возрастанию',
+            noSelect: true
+          },
+          {
+            label: 'По убыванию',
+            noSelect: true
+          }
+        ]
+      },
+      {
+        icon: <MjWhiteIcon />,
+        value: 'mj',
+        label: 'Midjourney',
+        type: 'collapse',
+        data: [
+          {
+            label: 'По возрастанию',
+            noSelect: true
+          },
+          {
+            label: 'По убыванию',
+            noSelect: true
+          }
+        ]
+      },
+      {
+        icon: <Gpt35Icon />,
+        value: 'gpt',
+        label: 'ChatGPT',
+        type: 'collapse',
+        data: [
+          {
+            label: 'По возрастанию',
+            noSelect: true
+          },
+          {
+            label: 'По убыванию',
+            noSelect: true
+          }
+        ]
+      },
+      {
+        icon: <DallEIcon />,
+        value: 'dall-e',
+        label: 'DALL-E',
+        type: 'collapse',
+        data: [
+          {
+            label: 'По возрастанию',
+            noSelect: true
+          },
+          {
+            label: 'По убыванию',
+            noSelect: true
+          }
+        ]
+      },
+      {
+        icon: <MjWhiteIcon />,
+        value: 'mj',
+        label: 'Midjourney',
+        type: 'collapse',
+        data: [
+          {
+            label: 'По возрастанию',
+            noSelect: true
+          },
+          {
+            label: 'По убыванию',
+            noSelect: true
+          }
+        ]
+      }
+    ],
+    tabs: [
+      {
+        id: 'text',
+        label: 'Текст',
+        onClick(id: string) {
+          alert(id);
+        },
+        icon: <TextGenerationIcon />
+      },
+      {
+        id: 'image',
+        label: 'Изображение',
+        onClick(id: string) {
+          alert(id);
+        },
+        icon: <ImageGenerationIcon />
+      },
+      {
+        id: 'code',
+        label: 'Код',
+        onClick(id: string) {
+          alert(id);
+        },
+        icon: <CodeGenerationIcon />
+      },
+      {
+        id: 'table',
+        label: 'Анализ таблиц',
+        onClick(id: string) {
+          alert(id);
+        },
+        icon: <TrafficAnalisysIcon />
+      },
+      {
+        id: 'speech',
+        label: 'Синтез речи',
+        onClick(id: string) {
+          alert(id);
+        },
+        icon: <SpeechSynthesysIcon />
+      },
+      {
+        id: 'spell',
+        label: 'Орфография',
+        onClick(id: string) {
+          alert(id);
+        },
+        icon: <SpellingIcon />
+      }
+    ],
+    contentWidth: 350,
+    size: 'large'
   }
 };
 
