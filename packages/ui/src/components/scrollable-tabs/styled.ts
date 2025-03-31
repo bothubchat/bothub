@@ -15,7 +15,6 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
   align-items: center;
   flex-shrink: 0;
   position: relative;
-  margin-bottom: 3px;
 
   ${({ $variant }) =>
     $variant === 'primary'
@@ -42,10 +41,7 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
     content: '';
     display: block;
     position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
+    inset: 0;
 
     ${({ $variant, $selected }) => {
       if ($selected) {
