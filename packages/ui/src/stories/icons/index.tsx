@@ -212,8 +212,14 @@ import {
   FlagRUIcon,
   FlagKZIcon,
   VolumeIcon,
+  FavoriteProfileIcon,
+  CodeGenerationIcon,
+  EssayGenerationIcon,
   ImageGenerationIcon,
   SpeechSynthesysIcon,
+  SpellingIcon,
+  TrafficAnalisysIcon,
+  TextGenerationIcon,
   StarUnfilledIcon,
   TranscriptionIcon,
   TextRewriteIcon
@@ -472,12 +478,20 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="Pc1Icon">{Pc1Icon}</IconItem>
         <IconItem name="Pc2Icon">{Pc2Icon}</IconItem>
         <IconItem name="Pc3Icon">{Pc3Icon}</IconItem>
+        <IconItem name="CodeGenerationIcon">{CodeGenerationIcon}</IconItem>
+        <IconItem name="EssayGenerationIcon">{EssayGenerationIcon}</IconItem>
+        <IconItem name="ImageGenerationIcon">{ImageGenerationIcon}</IconItem>
+        <IconItem name="SpeechSynthesysIcon">{SpeechSynthesysIcon}</IconItem>
+        <IconItem name="SpellingIcon">{SpellingIcon}</IconItem>
+        <IconItem name="TextGenerationIcon">{TextGenerationIcon}</IconItem>
+        <IconItem name="TrafficAnalisysIcon">{TrafficAnalisysIcon}</IconItem>
         <IconItem name="VolumeIcon">{VolumeIcon}</IconItem>
         <IconItem name="ImageGenerationIcon">{ImageGenerationIcon}</IconItem>
         <IconItem name="SpeechSynthesysIcon">{SpeechSynthesysIcon}</IconItem>
         <IconItem name="StarUnfilledIcon">{StarUnfilledIcon}</IconItem>
         <IconItem name="TranscriptionIcon">{TranscriptionIcon}</IconItem>
         <IconItem name="TextRewriteIcon">{TextRewriteIcon}</IconItem>
+        <IconItem name="FavoriteProfileIcon">{FavoriteProfileIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
