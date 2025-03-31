@@ -1,25 +1,30 @@
-import { ReactNode } from 'react';
 import * as S from './styled';
 import { Slider } from '../slider';
+import { ITab, Variant } from './types';
 
 type ScrollableTabsProps = {
-  tabs: { id: string; label: string; href: string; icon?: ReactNode }[];
+  tabs: ITab[];
+  variant?: Variant;
   selectedTabId?: string;
 };
 
 export const ScrollableTabs = ({
   tabs,
+  variant = 'primary',
   selectedTabId
 }: ScrollableTabsProps) => (
-  <Slider gap={20}>
+  <Slider gap={variant === 'primary' ? 20 : 8}>
     {tabs.map((tab) => (
       <S.ScrollableTabsTab
         key={tab.id}
         href={tab.href}
+        $variant={variant}
         $selected={tab.id === selectedTabId}
       >
         {tab.icon}
-        <S.ScrollableTabsTabLabel>{tab.label}</S.ScrollableTabsTabLabel>
+        <S.ScrollableTabsTabLabel $variant={variant}>
+          {tab.label}
+        </S.ScrollableTabsTabLabel>
       </S.ScrollableTabsTab>
     ))}
   </Slider>

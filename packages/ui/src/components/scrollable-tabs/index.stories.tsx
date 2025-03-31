@@ -14,42 +14,51 @@ export type ScrollableTabsMeta = Meta<typeof ScrollableTabs>;
 
 export type ScrollableTabsStory = StoryObj<typeof ScrollableTabs>;
 
-export const Basic: ScrollableTabsStory = {
+const TabsData = [
+  {
+    id: 'text',
+    label: 'Генерация текста',
+    href: '/',
+    icon: <TextGenerationIcon />
+  },
+  {
+    id: 'image',
+    label: 'Генерация изображений',
+    href: '/',
+    icon: <ImageGenerationIcon />
+  },
+  {
+    id: 'code',
+    label: 'Генерация кода',
+    href: '/',
+    icon: <CodeGenerationIcon />
+  },
+  {
+    id: 'table',
+    label: 'Анализ таблиц',
+    href: '/',
+    icon: <TrafficAnalisysIcon />
+  },
+  {
+    id: 'speech',
+    label: 'Синтез речи',
+    href: '/',
+    icon: <SpeechSynthesysIcon />
+  },
+  { id: 'spell', label: 'Орфография', href: '/', icon: <SpellingIcon /> }
+];
+
+export const Primary: ScrollableTabsStory = {
   args: {
-    tabs: [
-      {
-        id: 'text',
-        label: 'Генерация текста',
-        href: '/',
-        icon: <TextGenerationIcon />
-      },
-      {
-        id: 'image',
-        label: 'Генерация изображений',
-        href: '/',
-        icon: <ImageGenerationIcon />
-      },
-      {
-        id: 'code',
-        label: 'Генерация кода',
-        href: '/',
-        icon: <CodeGenerationIcon />
-      },
-      {
-        id: 'table',
-        label: 'Анализ таблиц',
-        href: '/',
-        icon: <TrafficAnalisysIcon />
-      },
-      {
-        id: 'speech',
-        label: 'Синтез речи',
-        href: '/',
-        icon: <SpeechSynthesysIcon />
-      },
-      { id: 'spell', label: 'Орфография', href: '/', icon: <SpellingIcon /> }
-    ],
+    tabs: TabsData,
     selectedTabId: 'code'
+  }
+};
+
+export const Secondary: ScrollableTabsStory = {
+  args: {
+    tabs: TabsData,
+    variant: 'secondary'
   }
 };
 
