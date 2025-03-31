@@ -58,7 +58,17 @@ export const Primary: ScrollableTabsStory = {
 export const Secondary: ScrollableTabsStory = {
   args: {
     tabs: TabsData,
-    variant: 'secondary'
+    variant: 'secondary',
+    selectedTabId: 'code'
+  }
+};
+
+export const TabsAsButtons: ScrollableTabsStory = {
+  args: {
+    tabs: TabsData,
+    variant: 'secondary',
+    selectedTabId: 'code',
+    component: 'button'
   }
 };
 
