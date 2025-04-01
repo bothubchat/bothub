@@ -94,6 +94,7 @@ export type SelectFieldProps = (
   loading?: boolean;
   padding?: [number, number];
   tabs?: ITab[];
+  onTabClick?: (id: string) => void;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;
@@ -125,6 +126,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   inputValue: initialInputValue,
   clearable = false,
   tabs,
+  onTabClick,
   onOptionClick,
   onInputChange,
   onSelectClick,
@@ -603,6 +605,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                         tabs={tabs}
                         variant="secondary"
                         component="button"
+                        onClick={onTabClick}
                       />
                     )}
                     {before && (

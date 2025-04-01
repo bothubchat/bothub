@@ -515,52 +515,37 @@ export const WithTabs: SelectFieldStory = {
       {
         id: 'text',
         label: 'Текст',
-        onClick(id: string) {
-          alert(id);
-        },
         icon: <TextGenerationIcon />
       },
       {
         id: 'image',
         label: 'Изображение',
-        onClick(id: string) {
-          alert(id);
-        },
         icon: <ImageGenerationIcon />
       },
       {
         id: 'code',
         label: 'Код',
-        onClick(id: string) {
-          alert(id);
-        },
         icon: <CodeGenerationIcon />
       },
       {
         id: 'table',
         label: 'Анализ таблиц',
-        onClick(id: string) {
-          alert(id);
-        },
         icon: <TrafficAnalisysIcon />
       },
       {
         id: 'speech',
         label: 'Синтез речи',
-        onClick(id: string) {
-          alert(id);
-        },
         icon: <SpeechSynthesysIcon />
       },
       {
         id: 'spell',
         label: 'Орфография',
-        onClick(id: string) {
-          alert(id);
-        },
         icon: <SpellingIcon />
       }
     ],
+    onTabClick(id) {
+      alert(id);
+    },
     contentWidth: 350,
     size: 'large'
   }

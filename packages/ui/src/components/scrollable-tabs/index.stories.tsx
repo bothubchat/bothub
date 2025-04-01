@@ -68,7 +68,10 @@ export const TabsAsButtons: ScrollableTabsStory = {
     tabs: TabsData,
     variant: 'secondary',
     selectedTabId: 'code',
-    component: 'button'
+    component: 'button',
+    onClick(id) {
+      alert(id);
+    }
   }
 };
 
