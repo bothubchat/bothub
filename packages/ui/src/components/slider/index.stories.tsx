@@ -91,5 +91,5 @@ export const SliderWithSmallArrows: SliderStory = {
 export default {
   title: 'UI Components/Slider',
   component: Slider,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator({ margin: '300px' })]
 } as SliderMeta;
