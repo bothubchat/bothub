@@ -28,7 +28,8 @@ export type SelectFieldItemType =
   | 'divider'
   | 'collapse'
   | 'empty'
-  | 'label';
+  | 'label'
+  | 'radio';
 
 export type SelectFieldDataItemSimple = string;
 
@@ -47,6 +48,8 @@ export type SelectFieldDataItemComplex = {
   backgroundHoverColor?: 'gradient' | 'primary';
   data?: SelectFieldDataItem[];
   noSelect?: boolean;
+  description?: string;
+  selected?: boolean;
   onClick?: SelectFieldOptionClickEventHandler;
 };
 

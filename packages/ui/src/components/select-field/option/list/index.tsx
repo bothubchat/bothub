@@ -14,13 +14,18 @@ import {
   SelectFieldOptionLabel,
   SelectFieldOptionSide,
   SelectFieldOptionText,
-  SelectFieldOptionsStyled
+  SelectFieldOptionsStyled,
+  SelectFieldRadio,
+  SelectFieldRadioDescription,
+  SelectFieldRadioLabel,
+  SelectFieldRadioTitleAndRadio
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { SelectFieldCollapseOption } from '../collapse';
 import { SearchDataIcon } from '@/ui/icons/search-data';
+import { Radio } from '@/ui/components/radio';
 
 export type SelectFieldOptionClickEventHandler = (
   item: SelectFieldDataItem
@@ -31,6 +36,7 @@ export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
   data: SelectFieldData;
   size: SelectFieldSize;
   disableSelect?: boolean;
+  radioName?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 }
 
@@ -39,6 +45,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
   data,
   size,
   disableSelect = false,
+  radioName,
   onOptionClick,
   ...props
 }) => {
@@ -127,6 +134,33 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           );
         }
 
+        if (item.type === 'radio') {
+          return (
+            <SelectFieldRadio
+              key={item.id ?? item.value ?? `radio-${index}`}
+              $selected={item.selected}
+              onClick={() => item.onClick?.(item)}
+            >
+              <SelectFieldRadioTitleAndRadio>
+                {item.label && (
+                  <SelectFieldRadioLabel>{item.label}</SelectFieldRadioLabel>
+                )}
+                <Radio
+                  type="radio"
+                  checked={item.selected}
+                  name={radioName}
+                />
+              </SelectFieldRadioTitleAndRadio>
+
+              {item.description && (
+                <SelectFieldRadioDescription>
+                  {item.description}
+                </SelectFieldRadioDescription>
+              )}
+            </SelectFieldRadio>
+          );
+        }
+
         if (item.type === 'collapse' && item.data) {
           return (
             <SelectFieldCollapseOption
@@ -138,6 +172,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                 value={value}
                 data={item.data}
                 size={size}
+                radioName={radioName}
                 disableSelect={disableSelect}
                 onOptionClick={onOptionClick}
               />

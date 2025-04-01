@@ -94,6 +94,7 @@ export type SelectFieldProps = (
   loading?: boolean;
   padding?: [number, number];
   tabs?: ITab[];
+  radioName?: string;
   onTabClick?: (id: string) => void;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
@@ -126,6 +127,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   inputValue: initialInputValue,
   clearable = false,
   tabs,
+  radioName,
   onTabClick,
   onOptionClick,
   onInputChange,
@@ -617,6 +619,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                           value={value}
                           data={before}
                           size={size}
+                          radioName={radioName}
                           disableSelect={disableSelect}
                           onOptionClick={handleOptionClick}
                         />
@@ -630,6 +633,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                         value={value}
                         data={data}
                         size={size}
+                        radioName={radioName}
                         disableSelect={disableSelect}
                         onOptionClick={handleOptionClick}
                       />
@@ -643,6 +647,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                           value={value}
                           data={after}
                           size={size}
+                          radioName={radioName}
                           disableSelect={disableSelect}
                           onOptionClick={handleOptionClick}
                         />

@@ -413,6 +413,7 @@ export const Bold: SelectFieldStory = {
 
 export const WithTabs: SelectFieldStory = {
   args: {
+    radioName: 'models',
     data: [
       {
         icon: <Gpt35Icon />,
@@ -421,12 +422,23 @@ export const WithTabs: SelectFieldStory = {
         type: 'collapse',
         data: [
           {
-            label: 'По возрастанию',
-            noSelect: true
+            type: 'radio',
+            label: 'o1-mini',
+            description:
+              'Уменьшенная и более дешевая версия самой лучшей модели OpenAi',
+            selected: true
           },
           {
-            label: 'По убыванию',
-            noSelect: true
+            type: 'radio',
+            label: 'GPT-4o',
+            description:
+              'Модель c высоким уровнем креативности, адаптированная для  написания человечных текстов'
+          },
+          {
+            type: 'radio',
+            label: 'GPT-4-turbo',
+            description:
+              'Модель хорошо справляется с кодом, обработкой неструктурированых и визуальных данных.'
           }
         ]
       },
@@ -437,11 +449,11 @@ export const WithTabs: SelectFieldStory = {
         type: 'collapse',
         data: [
           {
-            label: 'По возрастанию',
+            label: 'Опция 1',
             noSelect: true
           },
           {
-            label: 'По убыванию',
+            label: 'Опция 2',
             noSelect: true
           }
         ]
@@ -453,11 +465,11 @@ export const WithTabs: SelectFieldStory = {
         type: 'collapse',
         data: [
           {
-            label: 'По возрастанию',
+            label: 'Опция 1',
             noSelect: true
           },
           {
-            label: 'По убыванию',
+            label: 'Опция 2',
             noSelect: true
           }
         ]
@@ -469,11 +481,11 @@ export const WithTabs: SelectFieldStory = {
         type: 'collapse',
         data: [
           {
-            label: 'По возрастанию',
+            label: 'Опция 1',
             noSelect: true
           },
           {
-            label: 'По убыванию',
+            label: 'Опция 2',
             noSelect: true
           }
         ]
@@ -485,11 +497,11 @@ export const WithTabs: SelectFieldStory = {
         type: 'collapse',
         data: [
           {
-            label: 'По возрастанию',
+            label: 'Опция 1',
             noSelect: true
           },
           {
-            label: 'По убыванию',
+            label: 'Опция 2',
             noSelect: true
           }
         ]
@@ -501,11 +513,11 @@ export const WithTabs: SelectFieldStory = {
         type: 'collapse',
         data: [
           {
-            label: 'По возрастанию',
+            label: 'Опция 1',
             noSelect: true
           },
           {
-            label: 'По убыванию',
+            label: 'Опция 2',
             noSelect: true
           }
         ]
