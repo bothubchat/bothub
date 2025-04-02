@@ -209,7 +209,7 @@ export const Basic: SidebarStory = {
           edit
           checkbox={<SidebarGroupCheckbox checked />}
           id="chat-group-1"
-          name="Шабажка"
+          name="ыыыыыыыыыыыыыыыыыыыыыыыыыы"
         >
           <SidebarChat
             id="chat-1"
