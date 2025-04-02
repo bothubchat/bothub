@@ -133,9 +133,6 @@ export const SidebarGroupNameBox = styled.div`
   white-space: nowrap;
   display: block;
   margin-right: 8px;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
@@ -202,8 +199,3 @@ export const SidebarGroupSkeleton = styled(Skeleton)`
 `;
 
 export const SidebarGroupSkeletonIcon = styled(Skeleton)``;
-
-export const SidebarGroupNameText = styled.p`
-  margin: 0;
-  padding: 0;
-`;

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import {
   SidebarChatList,
@@ -13,8 +13,7 @@ import {
   SidebarGroupSkeletonIcon,
   SidebarGroupTooltip,
   SidebarGroupNameWithOutline,
-  SidebarGroupNameWithBg,
-  SidebarGroupNameText
+  SidebarGroupNameWithBg
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { useSidebar } from '../context';
@@ -60,13 +59,19 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
     id: !props.skeleton ? props.id : 'draggable-skeleton'
   });
   const { isOpen: sidebarOpen } = useSidebar();
-  const ref = React.useRef<HTMLParagraphElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const onHandleOpen = useCallback(() => {
     setOpen?.(!open);
   }, [open, setOpen]);
-  const disableTooltip = ref.current
-    ? ref.current.offsetWidth < ref.current.scrollWidth
-    : false;
+
+  const [disableTooltip, setDisableTooltip] = useState(true);
+
+  useEffect(() => {
+    if (ref.current) {
+      const { scrollWidth, offsetWidth } = ref.current!;
+      setDisableTooltip(scrollWidth <= offsetWidth);
+    }
+  }, [!props.skeleton && props.name]);
 
   const over = !props.skeleton && props.edit && props.over;
   return (
@@ -120,18 +125,16 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
                 <Tooltip
                   label={props.name}
                   placement="top-left"
-                  disabled={!disableTooltip}
+                  disabled={disableTooltip}
                 >
                   <TooltipConsumer>
                     {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                       <SidebarGroupNameBox
+                        ref={ref}
                         onMouseEnter={handleTooltipMouseEnter}
                         onMouseLeave={handleTooltipMouseLeave}
                       >
-                        <SidebarGroupNameText ref={ref}>
-                          {props.name}
-                        </SidebarGroupNameText>
-                        {disableTooltip && '...'}
+                        {props.name}
                       </SidebarGroupNameBox>
                     )}
                   </TooltipConsumer>
