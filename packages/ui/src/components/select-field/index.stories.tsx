@@ -411,117 +411,48 @@ export const Bold: SelectFieldStory = {
   }
 };
 
-export const WithTabs: SelectFieldStory = {
+export const Radio: SelectFieldStory = {
   args: {
     radioName: 'models',
     data: [
       {
-        icon: <Gpt35Icon />,
-        value: 'gpt',
-        label: 'ChatGPT',
-        type: 'collapse',
-        data: [
-          {
-            type: 'radio',
-            label: 'o1-mini',
-            description:
-              'Уменьшенная и более дешевая версия самой лучшей модели OpenAi',
-            selected: true
-          },
-          {
-            type: 'radio',
-            label: 'GPT-4o',
-            description:
-              'Модель c высоким уровнем креативности, адаптированная для  написания человечных текстов'
-          },
-          {
-            type: 'radio',
-            label: 'GPT-4-turbo',
-            description:
-              'Модель хорошо справляется с кодом, обработкой неструктурированых и визуальных данных.'
-          }
-        ]
+        type: 'radio',
+        label: 'o1-mini',
+        description:
+          'Уменьшенная и более дешевая версия самой лучшей модели OpenAi',
+        selected: true
       },
       {
-        icon: <DallEIcon />,
-        value: 'dall-e',
-        label: 'DALL-E',
-        type: 'collapse',
-        data: [
-          {
-            label: 'Опция 1',
-            noSelect: true
-          },
-          {
-            label: 'Опция 2',
-            noSelect: true
-          }
-        ]
+        type: 'radio',
+        label: 'GPT-4o',
+        description:
+          'Модель c высоким уровнем креативности, адаптированная для  написания человечных текстов'
       },
       {
-        icon: <MjWhiteIcon />,
-        value: 'mj',
-        label: 'Midjourney',
-        type: 'collapse',
-        data: [
-          {
-            label: 'Опция 1',
-            noSelect: true
-          },
-          {
-            label: 'Опция 2',
-            noSelect: true
-          }
-        ]
-      },
-      {
-        icon: <Gpt35Icon />,
-        value: 'gpt1',
-        label: 'ChatGPT',
-        type: 'collapse',
-        data: [
-          {
-            label: 'Опция 1',
-            noSelect: true
-          },
-          {
-            label: 'Опция 2',
-            noSelect: true
-          }
-        ]
-      },
-      {
-        icon: <DallEIcon />,
-        value: 'dall-e1',
-        label: 'DALL-E',
-        type: 'collapse',
-        data: [
-          {
-            label: 'Опция 1',
-            noSelect: true
-          },
-          {
-            label: 'Опция 2',
-            noSelect: true
-          }
-        ]
-      },
-      {
-        icon: <MjWhiteIcon />,
-        value: 'mj1',
-        label: 'Midjourney',
-        type: 'collapse',
-        data: [
-          {
-            label: 'Опция 1',
-            noSelect: true
-          },
-          {
-            label: 'Опция 2',
-            noSelect: true
-          }
-        ]
+        type: 'radio',
+        label: 'GPT-4-turbo',
+        description:
+          'Модель хорошо справляется с кодом, обработкой неструктурированых и визуальных данных.'
       }
+    ]
+  }
+};
+
+export const WithTabs: SelectFieldStory = {
+  args: {
+    data: [
+      'React',
+      'Vue',
+      'Svelte',
+      'Node.js',
+      'Yarn',
+      'Storybook',
+      'styled-components',
+      'framer motion',
+      'Vite',
+      'Bothub',
+      'ChatGPT',
+      'Midjourney'
     ],
     tabs: [
       {
@@ -560,6 +491,15 @@ export const WithTabs: SelectFieldStory = {
     },
     contentWidth: 350,
     size: 'large'
+  }
+};
+
+export const WithSearch: SelectFieldStory = {
+  args: {
+    before: ['React', 'Vue', 'Svelte', 'Node.js'],
+    data: ['Yarn', 'Storybook', 'styled-components', 'framer motion'],
+    after: ['Vite', 'Bothub', 'ChatGPT', 'Midjourney'],
+    search: true
   }
 };
 

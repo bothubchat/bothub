@@ -324,7 +324,6 @@ export const SelectFieldBlockPositionWrapper = styled.div<SelectFieldBlockPositi
   width: 100%;
   box-sizing: border-box;
   padding: 6px 8px;
-  padding-right: 4px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 10px;
   background: ${({ theme, $blur }) => {

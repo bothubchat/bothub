@@ -48,6 +48,9 @@ import { SelectFieldOptions } from './option';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { ITab } from '../scrollable-tabs/types';
 import { ScrollableTabs } from '../scrollable-tabs';
+import { TextField } from '../text-field';
+import { SearchSimpleIcon } from '@/ui/icons';
+import { filterData } from './filterData';
 
 export interface SelectFieldDefaultProps {
   multiple?: false;
@@ -95,6 +98,7 @@ export type SelectFieldProps = (
   padding?: [number, number];
   tabs?: ITab[];
   radioName?: string;
+  search?: boolean;
   onTabClick?: (id: string) => void;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
@@ -128,6 +132,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   clearable = false,
   tabs,
   radioName,
+  search,
   onTabClick,
   onOptionClick,
   onInputChange,
@@ -207,6 +212,17 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const [y, setY] = useState(0);
   const [width, setWidth] = useState(0);
   const [placement, setPlacement] = useState(initialPlacement);
+
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSearchChange = useCallback<
+    React.ChangeEventHandler<HTMLInputElement>
+  >(
+    (event) => {
+      setSearchValue(event.currentTarget.value);
+    },
+    [setSearchValue]
+  );
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
@@ -610,6 +626,15 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                         onClick={onTabClick}
                       />
                     )}
+                    {search && (
+                      <TextField
+                        fullWidth
+                        startIcon={<SearchSimpleIcon />}
+                        placeholder="Поиск..."
+                        value={searchValue}
+                        onChange={handleSearchChange}
+                      />
+                    )}
                     {before && (
                       <SelectFieldGroup
                         $size={size}
@@ -617,7 +642,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                       >
                         <SelectFieldOptions
                           value={value}
-                          data={before}
+                          data={filterData(before, searchValue)}
                           size={size}
                           radioName={radioName}
                           disableSelect={disableSelect}
@@ -631,7 +656,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                     >
                       <SelectFieldOptions
                         value={value}
-                        data={data}
+                        data={filterData(data, searchValue)}
                         size={size}
                         radioName={radioName}
                         disableSelect={disableSelect}
@@ -645,7 +670,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                       >
                         <SelectFieldOptions
                           value={value}
-                          data={after}
+                          data={filterData(after, searchValue)}
                           size={size}
                           radioName={radioName}
                           disableSelect={disableSelect}
