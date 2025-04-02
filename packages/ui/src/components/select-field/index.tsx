@@ -96,10 +96,13 @@ export type SelectFieldProps = (
   clearable?: boolean;
   loading?: boolean;
   padding?: [number, number];
-  tabs?: ITab[];
+  tabs?: {
+    tabs: ITab[];
+    onTabClick?: (id: string) => void;
+    selectedTabId?: string;
+  };
   radioName?: string;
   search?: boolean;
-  onTabClick?: (id: string) => void;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;
@@ -133,7 +136,6 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   tabs,
   radioName,
   search,
-  onTabClick,
   onOptionClick,
   onInputChange,
   onSelectClick,
@@ -620,10 +622,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                   <SelectFieldGroups $size={size}>
                     {!!tabs && (
                       <ScrollableTabs
-                        tabs={tabs}
+                        tabs={tabs.tabs}
                         variant="secondary"
                         component="button"
-                        onClick={onTabClick}
+                        onClick={tabs.onTabClick}
+                        selectedTabId={tabs.selectedTabId}
                       />
                     )}
                     {search && (

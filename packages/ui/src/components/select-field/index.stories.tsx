@@ -454,40 +454,43 @@ export const WithTabs: SelectFieldStory = {
       'ChatGPT',
       'Midjourney'
     ],
-    tabs: [
-      {
-        id: 'text',
-        label: 'Текст',
-        icon: <TextGenerationIcon />
+    tabs: {
+      tabs: [
+        {
+          id: 'text',
+          label: 'Текст',
+          icon: <TextGenerationIcon />
+        },
+        {
+          id: 'image',
+          label: 'Изображение',
+          icon: <ImageGenerationIcon />
+        },
+        {
+          id: 'code',
+          label: 'Код',
+          icon: <CodeGenerationIcon />
+        },
+        {
+          id: 'table',
+          label: 'Анализ таблиц',
+          icon: <TrafficAnalisysIcon />
+        },
+        {
+          id: 'speech',
+          label: 'Синтез речи',
+          icon: <SpeechSynthesysIcon />
+        },
+        {
+          id: 'spell',
+          label: 'Орфография',
+          icon: <SpellingIcon />
+        }
+      ],
+      onTabClick(id) {
+        alert(id);
       },
-      {
-        id: 'image',
-        label: 'Изображение',
-        icon: <ImageGenerationIcon />
-      },
-      {
-        id: 'code',
-        label: 'Код',
-        icon: <CodeGenerationIcon />
-      },
-      {
-        id: 'table',
-        label: 'Анализ таблиц',
-        icon: <TrafficAnalisysIcon />
-      },
-      {
-        id: 'speech',
-        label: 'Синтез речи',
-        icon: <SpeechSynthesysIcon />
-      },
-      {
-        id: 'spell',
-        label: 'Орфография',
-        icon: <SpellingIcon />
-      }
-    ],
-    onTabClick(id) {
-      alert(id);
+      selectedTabId: 'code'
     },
     contentWidth: 350,
     size: 'large'
