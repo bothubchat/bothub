@@ -502,7 +502,8 @@ export const WithSearch: SelectFieldStory = {
     before: ['React', 'Vue', 'Svelte', 'Node.js'],
     data: ['Yarn', 'Storybook', 'styled-components', 'framer motion'],
     after: ['Vite', 'Bothub', 'ChatGPT', 'Midjourney'],
-    search: true
+    search: true,
+    searchPlaceholder: 'Поиск...'
   }
 };
 

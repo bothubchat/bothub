@@ -103,6 +103,7 @@ export type SelectFieldProps = (
   };
   radioName?: string;
   search?: boolean;
+  searchPlaceholder?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;
@@ -136,6 +137,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   tabs,
   radioName,
   search,
+  searchPlaceholder,
   onOptionClick,
   onInputChange,
   onSelectClick,
@@ -633,7 +635,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                       <TextField
                         fullWidth
                         startIcon={<SearchSimpleIcon />}
-                        placeholder="Поиск..."
+                        placeholder={searchPlaceholder}
                         value={searchValue}
                         onChange={handleSearchChange}
                       />
