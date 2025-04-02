@@ -6,3 +6,4 @@ export * from './getTgMarkdown';
 export * from './getSupportedAudioMimeType';
 export * from './useMessageCopyHandler';
 export * from './colorToRgba';
+export * from './hasSubstring';
