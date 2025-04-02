@@ -36,7 +36,6 @@ export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
   data: SelectFieldData;
   size: SelectFieldSize;
   disableSelect?: boolean;
-  radioName?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 }
 
@@ -45,7 +44,6 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
   data,
   size,
   disableSelect = false,
-  radioName,
   onOptionClick,
   ...props
 }) => {
@@ -148,7 +146,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                 <Radio
                   type="radio"
                   checked={item.selected}
-                  name={radioName}
+                  name={item.radioName}
                 />
               </SelectFieldRadioTitleAndRadio>
 
@@ -172,7 +170,6 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                 value={value}
                 data={item.data}
                 size={size}
-                radioName={radioName}
                 disableSelect={disableSelect}
                 onOptionClick={onOptionClick}
               />

@@ -413,26 +413,28 @@ export const Bold: SelectFieldStory = {
 
 export const Radio: SelectFieldStory = {
   args: {
-    radioName: 'models',
     data: [
       {
         type: 'radio',
         label: 'o1-mini',
         description:
           'Уменьшенная и более дешевая версия самой лучшей модели OpenAi',
-        selected: true
+        selected: true,
+        radioName: 'models'
       },
       {
         type: 'radio',
         label: 'GPT-4o',
         description:
-          'Модель c высоким уровнем креативности, адаптированная для  написания человечных текстов'
+          'Модель c высоким уровнем креативности, адаптированная для  написания человечных текстов',
+        radioName: 'models'
       },
       {
         type: 'radio',
         label: 'GPT-4-turbo',
         description:
-          'Модель хорошо справляется с кодом, обработкой неструктурированых и визуальных данных.'
+          'Модель хорошо справляется с кодом, обработкой неструктурированых и визуальных данных.',
+        radioName: 'models'
       }
     ]
   }

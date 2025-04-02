@@ -101,7 +101,6 @@ export type SelectFieldProps = (
     onTabClick?: (id: string) => void;
     selectedTabId?: string;
   };
-  radioName?: string;
   search?: boolean;
   searchPlaceholder?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
@@ -135,7 +134,6 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   inputValue: initialInputValue,
   clearable = false,
   tabs,
-  radioName,
   search,
   searchPlaceholder,
   onOptionClick,
@@ -649,7 +647,6 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                           value={value}
                           data={filterData(before, searchValue)}
                           size={size}
-                          radioName={radioName}
                           disableSelect={disableSelect}
                           onOptionClick={handleOptionClick}
                         />
@@ -663,7 +660,6 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                         value={value}
                         data={filterData(data, searchValue)}
                         size={size}
-                        radioName={radioName}
                         disableSelect={disableSelect}
                         onOptionClick={handleOptionClick}
                       />
@@ -677,7 +673,6 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                           value={value}
                           data={filterData(after, searchValue)}
                           size={size}
-                          radioName={radioName}
                           disableSelect={disableSelect}
                           onOptionClick={handleOptionClick}
                         />

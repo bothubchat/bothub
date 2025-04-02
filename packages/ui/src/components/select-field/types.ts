@@ -50,6 +50,7 @@ export type SelectFieldDataItemComplex = {
   noSelect?: boolean;
   description?: string;
   selected?: boolean;
+  radioName?: string;
   onClick?: SelectFieldOptionClickEventHandler;
 };
 
