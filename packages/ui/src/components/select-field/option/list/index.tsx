@@ -137,7 +137,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
             <SelectFieldRadio
               key={item.id ?? item.value ?? `radio-${index}`}
               $selected={item.selected}
-              onClick={() => item.onClick?.(item)}
+              onClick={handleOptionClick.bind(null, item)}
             >
               <SelectFieldRadioTitleAndRadio>
                 {item.label && (

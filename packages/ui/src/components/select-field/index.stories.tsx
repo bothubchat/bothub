@@ -1,6 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { SelectField, SelectFieldConsumer, SelectFieldLabel } from '.';
+import React, { useState } from 'react';
+import {
+  SelectField,
+  SelectFieldConsumer,
+  SelectFieldDataItem,
+  SelectFieldDataItemComplex,
+  SelectFieldItemType,
+  SelectFieldLabel
+} from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Tooltip } from '@/ui/components/tooltip';
 import { Button } from '@/ui/components/button';
@@ -412,31 +419,49 @@ export const Bold: SelectFieldStory = {
 };
 
 export const Radio: SelectFieldStory = {
-  args: {
-    data: [
+  render() {
+    const [data, setData] = useState([
       {
-        type: 'radio',
+        id: 'o1-mini',
+        type: 'radio' as SelectFieldItemType,
         label: 'o1-mini',
         description:
           'Уменьшенная и более дешевая версия самой лучшей модели OpenAi',
-        selected: true,
-        radioName: 'models'
+        radioName: 'models',
+        selected: true
       },
       {
-        type: 'radio',
+        id: 'GPT-4o',
+        type: 'radio' as SelectFieldItemType,
         label: 'GPT-4o',
         description:
           'Модель c высоким уровнем креативности, адаптированная для  написания человечных текстов',
         radioName: 'models'
       },
       {
-        type: 'radio',
+        id: 'GPT-4-turbo',
+        type: 'radio' as SelectFieldItemType,
         label: 'GPT-4-turbo',
         description:
           'Модель хорошо справляется с кодом, обработкой неструктурированых и визуальных данных.',
         radioName: 'models'
       }
-    ]
+    ]);
+
+    const onOptionClick = (item: SelectFieldDataItem) => {
+      const selectedItem = item as SelectFieldDataItemComplex;
+
+      setData(
+        data.map((item) => ({ ...item, selected: selectedItem.id === item.id }))
+      );
+    };
+
+    return (
+      <SelectField
+        data={data}
+        onOptionClick={onOptionClick}
+      />
+    );
   }
 };
 
