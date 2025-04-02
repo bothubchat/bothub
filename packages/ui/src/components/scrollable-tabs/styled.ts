@@ -42,6 +42,7 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
     display: block;
     position: absolute;
     inset: 0;
+    transition: background 0.2s;
 
     ${({ $variant, $selected }) => {
       if ($selected) {
@@ -67,6 +68,11 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
         `;
       }
     }};
+  }
+
+  &:hover:before {
+    /* opacity: 0.2; */
+    background-color: ${({ theme }) => theme.colors.accent.primary}33;
   }
 
   & > * {

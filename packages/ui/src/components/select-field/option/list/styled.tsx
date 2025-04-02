@@ -72,6 +72,7 @@ export const SelectFieldRadio = styled.div<{ $selected?: boolean }>`
     border-radius: 8px;
     inset: 0;
     opacity: 0.2;
+    transition: background 0.2s;
 
     ${({ $selected }) =>
       $selected &&
@@ -82,6 +83,10 @@ export const SelectFieldRadio = styled.div<{ $selected?: boolean }>`
           rgba(212, 28, 242, 1) 100%
         );
       `};
+  }
+
+  &:hover:before {
+    background-color: ${({ theme }) => theme.colors.accent.primary};
   }
 `;
 

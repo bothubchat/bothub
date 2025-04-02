@@ -71,7 +71,7 @@ export const SelectFieldCollapseOptionHead = styled.div<SelectFieldCollapseOptio
       &:hover {
         background: ${theme.mode === 'light'
           ? 'rgba(0, 0, 0, 0.05)'
-          : 'rgba(255, 255, 255, 0.05)'};
+          : `${theme.colors.accent.primary}33`};
       }
     `;
   }}
