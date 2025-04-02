@@ -22,11 +22,10 @@ export const SidebarGroupStyled = styled.div<{ $over?: boolean }>`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  ${({ $over }) => {
+  ${({ $over, theme }) => {
     if ($over) {
       return css`
-        background: ${({ theme }) =>
-          colorToRgba(theme.colors.accent.primaryLight, 0.4)};
+        background: ${colorToRgba(theme.colors.accent.primaryLight, 0.4)};
         border-radius: 10px;
       `;
     }
@@ -70,13 +69,13 @@ export const SidebarGroupNameWithOutline = styled.div<SidebarGroupNameWithOutlin
       background-color: ${({ theme }) => theme.colors.accent.primary};
     }
   }
-  ${({ $active }) =>
+  ${({ $active, theme }) =>
     $active &&
     css`
       width: calc(100% - 3px);
       margin-left: 3px;
       &:before {
-        background-color: ${({ theme }) => theme.colors.accent.primary};
+        background-color: ${theme.colors.accent.primary};
         animation: ${SidebarGroupNameOutlineAnimation} 0.3s ease-out 1 forwards;
       }
     `}
@@ -101,12 +100,7 @@ export const SidebarGroupName = styled(Typography).attrs({
 })<SidebarGroupNameProps>`
   color: ${({ theme }) => theme.colors.base.white};
   display: flex;
-  cursor: ${({ $skeleton }) => {
-    if ($skeleton) {
-      return 'not-allowed';
-    }
-    return 'pointer';
-  }};
+  cursor: ${({ $skeleton }) => ($skeleton ? 'not-allowed' : 'pointer')};
   padding: 8px;
   align-items: center;
   position: relative;
@@ -129,7 +123,6 @@ export const SidebarGroupName = styled(Typography).attrs({
 
 export const SidebarGroupNameBox = styled.div`
   width: 100%;
-  align-items: center;
   white-space: nowrap;
   display: block;
   margin-right: 8px;
