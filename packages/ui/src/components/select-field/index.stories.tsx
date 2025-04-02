@@ -423,15 +423,16 @@ export const Radio: SelectFieldStory = {
     const [data, setData] = useState([
       {
         id: 'o1-mini',
+        icon: <Gpt35Icon />,
         type: 'radio' as SelectFieldItemType,
         label: 'o1-mini',
         description:
           'Уменьшенная и более дешевая версия самой лучшей модели OpenAi',
-        radioName: 'models',
-        selected: true
+        radioName: 'models'
       },
       {
         id: 'GPT-4o',
+        icon: <Gpt35Icon />,
         type: 'radio' as SelectFieldItemType,
         label: 'GPT-4o',
         description:
@@ -440,6 +441,7 @@ export const Radio: SelectFieldStory = {
       },
       {
         id: 'GPT-4-turbo',
+        icon: <Gpt35Icon />,
         type: 'radio' as SelectFieldItemType,
         label: 'GPT-4-turbo',
         description:
