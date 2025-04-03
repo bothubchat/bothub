@@ -30,16 +30,19 @@ export const SliderLeftArrow = styled.div<{
       case 'sm':
         return css`
           width: 40px;
-          background: linear-gradient(-90deg, #12182500 0%, #121825 100%);
+
+          background: ${({ theme }) =>
+            theme.mode === 'light'
+              ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
+              : 'linear-gradient(-90deg, #12182500 0%, #121825 100%)'};
         `;
       case 'md':
         return css`
-          width: 80px;
-          background: linear-gradient(
-            -90deg,
-            rgba(14, 12, 21, 0) 0%,
-            rgba(14, 12, 21, 1) 100%
-          );
+          width: 48px;
+          background: ${({ theme }) =>
+            theme.mode === 'light'
+              ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
+              : 'linear-gradient(-90deg, #0e0c1500 0%, #0e0c15 100%)'};
         `;
     }
   }};
@@ -71,12 +74,20 @@ export const SliderLeftArrow = styled.div<{
           `;
       }
     }};
+
+    ${({ theme }) =>
+      theme.mode === 'light' &&
+      css`
+        path {
+          stroke: ${({ theme }) => theme.colors.grayScale.gray1};
+        }
+      `};
   }
 `;
 
 export const SliderRightArrow = styled(SliderLeftArrow)`
   left: unset;
-  right: 0;
+  right: -0.5px;
   transform: rotate(180deg);
 `;
 

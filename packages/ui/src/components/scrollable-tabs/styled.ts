@@ -71,8 +71,14 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
   }
 
   &:hover:before {
-    /* opacity: 0.2; */
     background-color: ${({ theme }) => theme.colors.accent.primary}33;
+  }
+
+  svg path {
+    stroke: ${({ theme }) =>
+      theme.mode === 'light'
+        ? theme.default.colors.base.black
+        : theme.default.colors.base.white};
   }
 
   & > * {
