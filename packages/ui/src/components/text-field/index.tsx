@@ -14,7 +14,7 @@ import {
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { SearchCircleIcon } from '@/ui/icons/search-circle';
-import { TextFieldType } from './types';
+import { TextFieldType, Variant } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 
 export type TextFieldValueChangeEventHandler = (value: string) => unknown;
@@ -43,6 +43,7 @@ export interface TextFieldProps
   disabled?: boolean;
   skeleton?: boolean;
   readonly?: boolean;
+  variant?: Variant;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -71,6 +72,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   onMouseLeave,
   onValueChange,
   readonly = false,
+  variant = 'primary',
   ...props
 }) => {
   const theme = useTheme();
@@ -161,6 +163,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           $focus={isFocus}
           $disabled={disabled}
           $skeleton={false}
+          $variant={variant}
         >
           {(type === 'search' || startIcon) && (
             <IconProvider {...iconProps}>
@@ -197,6 +200,7 @@ export const TextField: React.FC<TextFieldProps> = ({
             onBlur={handleBlur}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            $variant={variant}
           />
           {type === 'search' && value && (
             <TextFieldClearButton onClick={handleClear} />
@@ -213,6 +217,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           $focus={false}
           $disabled={false}
           $skeleton
+          $variant={variant}
         >
           <TextFieldSkeleton />
         </TextFieldBlock>
