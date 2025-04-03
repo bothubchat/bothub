@@ -222,12 +222,13 @@ import {
   TextGenerationIcon,
   StarUnfilledIcon,
   TranscriptionIcon,
-  TextRewriteIcon
+  TextRewriteIcon,
+  ExclamationIcon,
+  OrganizationIcon,
+  SimpleGearIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
-import { OrganizationIcon } from '@/ui/icons/organization';
-import { SimpleGearIcon } from '@/ui/icons/simple-gear';
 
 export type IconsProps = IconProviderProps;
 
@@ -492,6 +493,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TranscriptionIcon">{TranscriptionIcon}</IconItem>
         <IconItem name="TextRewriteIcon">{TextRewriteIcon}</IconItem>
         <IconItem name="FavoriteProfileIcon">{FavoriteProfileIcon}</IconItem>
+        <IconItem name="ExclamationIcon">{ExclamationIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
