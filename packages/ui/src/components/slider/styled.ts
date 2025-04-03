@@ -13,17 +13,27 @@ export const SliderWrapper = styled(Scrollbar)<{ $gap: number }>`
   scrollbar-width: none;
 `;
 
-export const SliderLeftArrow = styled.div<{
+export const SliderArrow = styled.div<{
   $hidden: boolean;
   $arrowsSize: ArrowsSize;
+  $isLeftArrow?: boolean;
 }>`
   height: 100%;
 
   position: absolute;
   z-index: 2;
   top: 0;
-  left: 0;
   transition: opacity 0.2s;
+
+  ${({ $isLeftArrow = true }) =>
+    $isLeftArrow
+      ? css`
+          left: 0;
+        `
+      : css`
+          right: -0.5px;
+          transform: rotate(180deg);
+        `};
 
   ${({ $arrowsSize }) => {
     switch ($arrowsSize) {
@@ -83,12 +93,6 @@ export const SliderLeftArrow = styled.div<{
         }
       `};
   }
-`;
-
-export const SliderRightArrow = styled(SliderLeftArrow)`
-  left: unset;
-  right: -0.5px;
-  transform: rotate(180deg);
 `;
 
 export const SliderIconContainer = styled.button`

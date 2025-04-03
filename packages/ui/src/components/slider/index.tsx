@@ -24,14 +24,14 @@ export const Slider = ({
 
   return (
     <S.SliderContainer>
-      <S.SliderLeftArrow
+      <S.SliderArrow
         $hidden={isLeftDisabled}
         $arrowsSize={arrowsSize}
       >
         <S.SliderIconContainer onClick={onScrollLeft}>
           <ArrowDownIcon />
         </S.SliderIconContainer>
-      </S.SliderLeftArrow>
+      </S.SliderArrow>
 
       <S.SliderWrapper
         ref={scrollbarRef}
@@ -40,14 +40,15 @@ export const Slider = ({
         {children}
       </S.SliderWrapper>
 
-      <S.SliderRightArrow
+      <S.SliderArrow
         $hidden={isRightDisabled}
         $arrowsSize={arrowsSize}
+        $isLeftArrow={false}
       >
         <S.SliderIconContainer onClick={onScrollRight}>
           <ArrowDownIcon />
         </S.SliderIconContainer>
-      </S.SliderRightArrow>
+      </S.SliderArrow>
     </S.SliderContainer>
   );
 };
