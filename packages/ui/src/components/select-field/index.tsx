@@ -636,6 +636,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                         placeholder={searchPlaceholder}
                         value={searchValue}
                         onChange={handleSearchChange}
+                        variant="secondary"
                       />
                     )}
                     {before && (
