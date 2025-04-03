@@ -6,84 +6,82 @@ export type SliderMeta = Meta<typeof Slider>;
 
 export type SliderStory = StoryObj<typeof Slider>;
 
-const sliderChildren = (
-  <>
-    <div
-      style={{
-        width: 300,
-        height: 100,
-        background: '#FF0000',
-        flexShrink: 0
-      }}
-    />
-    <div
-      style={{
-        width: 300,
-        height: 100,
-        background: '#0000FF',
-        flexShrink: 0
-      }}
-    />
-    <div
-      style={{
-        width: 300,
-        height: 100,
-        background: '#FFFF00',
-        flexShrink: 0
-      }}
-    />
-    <div
-      style={{
-        width: 300,
-        height: 100,
-        background: '#FF00FF',
-        flexShrink: 0
-      }}
-    />
-    <div
-      style={{
-        width: 300,
-        height: 100,
-        background: '#00FFFF',
-        flexShrink: 0
-      }}
-    />
-    <div
-      style={{
-        width: 300,
-        height: 100,
-        background: '#800000',
-        flexShrink: 0
-      }}
-    />
-    <div
-      style={{
-        width: 300,
-        height: 100,
-        background: '#008000',
-        flexShrink: 0
-      }}
-    />
-    <div
-      style={{
-        width: 300,
-        height: 100,
-        background: '#000080',
-        flexShrink: 0
-      }}
-    />
-  </>
-);
-
 export const SliderWithMediumArrows: SliderStory = {
   args: {
-    children: sliderChildren
+    children: (
+      <>
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#FF0000',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#0000FF',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#FFFF00',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#FF00FF',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#00FFFF',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#800000',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#008000',
+            flexShrink: 0
+          }}
+        />
+        <div
+          style={{
+            width: 300,
+            height: 100,
+            background: '#000080',
+            flexShrink: 0
+          }}
+        />
+      </>
+    )
   }
 };
 
 export const SliderWithSmallArrows: SliderStory = {
   args: {
-    children: sliderChildren,
+    ...SliderWithMediumArrows.args,
     arrowsSize: 'sm'
   }
 };

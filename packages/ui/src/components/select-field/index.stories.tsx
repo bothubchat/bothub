@@ -469,20 +469,7 @@ export const Radio: SelectFieldStory = {
 
 export const WithTabs: SelectFieldStory = {
   args: {
-    data: [
-      'React',
-      'Vue',
-      'Svelte',
-      'Node.js',
-      'Yarn',
-      'Storybook',
-      'styled-components',
-      'framer motion',
-      'Vite',
-      'Bothub',
-      'ChatGPT',
-      'Midjourney'
-    ],
+    ...Basic.args,
     tabs: {
       tabs: [
         {
