@@ -179,7 +179,7 @@ export const SidebarStyled = styled(animated.aside)<SidebarStyledProps>`
         border-radius: 18px;
       `,
       mobile: css`
-        border-radius: 18px;
+        border-radius: 0;
       `
     })}
   ${({ $isHide }) =>

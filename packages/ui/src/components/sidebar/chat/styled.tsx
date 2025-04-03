@@ -21,9 +21,6 @@ export const SidebarChatLeft = styled.div<SidebarChatLeftProps>`
   margin-right: 8px;
   width: 100%;
   overflow: hidden;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `;
 
 export const SidebarChatRight = styled.div`
@@ -67,6 +64,10 @@ export const SidebarChatName = styled(Typography).attrs({
   variant: 'body-m-medium',
   component: 'div'
 })`
+  overflow: hidden;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transition: opacity 0.3s;
   ${adaptive({
     tablet: css`

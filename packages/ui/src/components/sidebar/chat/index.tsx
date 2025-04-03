@@ -126,10 +126,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
                 </TooltipConsumer>
               </SidebarChatTooltip>
             )}
-            <SidebarChatLeft
-              {...draggable}
-              ref={ref}
-            >
+            <SidebarChatLeft {...draggable}>
               {!props.skeleton && (
                 <SidebarChatNameTooltip
                   label={props.name}
@@ -139,6 +136,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
                   <TooltipConsumer>
                     {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                       <SidebarChatName
+                        ref={ref}
                         onMouseEnter={handleTooltipMouseEnter}
                         onMouseLeave={handleTooltipMouseLeave}
                       >
