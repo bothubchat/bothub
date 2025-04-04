@@ -1,4 +1,4 @@
-import { Icon, icon, IconConsumer } from '@/ui/components';
+import { Icon, icon, IconConsumer } from '@/ui/components/icon';
 
 export const TextGenerationIcon = icon(({ ...props }) => (
   <Icon

@@ -1,4 +1,4 @@
-import { Icon, icon } from '@/ui/components';
+import { Icon, icon } from '@/ui/components/icon';
 
 export const StarUnfilledIcon = icon(({ ...props }) => (
   <Icon
