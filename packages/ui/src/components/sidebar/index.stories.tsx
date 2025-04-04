@@ -971,6 +971,13 @@ export const Skeleton: SidebarStory = {
           <SidebarChat skeleton />
           <SidebarChat skeleton />
         </SidebarGroup>
+        <SidebarGroup
+          isDefault
+          skeleton
+        >
+          <SidebarChat skeleton />
+          <SidebarChat skeleton />
+        </SidebarGroup>
       </SidebarGroups>
     )
   }
