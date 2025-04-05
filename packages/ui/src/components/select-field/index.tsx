@@ -637,6 +637,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                         value={searchValue}
                         onChange={handleSearchChange}
                         variant="secondary"
+                        autoFocus
                       />
                     )}
                     {before && (

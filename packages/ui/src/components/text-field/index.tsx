@@ -29,6 +29,7 @@ export interface TextFieldProps
     | 'onMouseLeave'
     | '$fullWidth'
     | '$disabled'
+    | 'autoFocus'
   > {
   label?: string | boolean | React.ReactNode;
   placeholder?: string;
@@ -44,6 +45,7 @@ export interface TextFieldProps
   skeleton?: boolean;
   readonly?: boolean;
   variant?: Variant;
+  autoFocus?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -73,6 +75,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   onValueChange,
   readonly = false,
   variant = 'primary',
+  autoFocus,
   ...props
 }) => {
   const theme = useTheme();
@@ -201,6 +204,7 @@ export const TextField: React.FC<TextFieldProps> = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             $variant={variant}
+            autoFocus={autoFocus}
           />
           {type === 'search' && value && (
             <TextFieldClearButton onClick={handleClear} />
