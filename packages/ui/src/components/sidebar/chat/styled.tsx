@@ -8,7 +8,7 @@ import { MenuDotIcon } from '@/ui/icons/menu-dot';
 import { SidebarChatIcon } from '@/ui/icons/sidebar-chat';
 import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { Checkbox } from '@/ui/components/checkbox';
-import { Tooltip } from '../../tooltip';
+import { Tooltip } from '@/ui/components/tooltip';
 import { colorToRgba } from '@/ui/utils/colorToRgba';
 
 export interface SidebarChatLeftProps {
@@ -16,10 +16,11 @@ export interface SidebarChatLeftProps {
 }
 
 export const SidebarChatLeft = styled.div<SidebarChatLeftProps>`
-  display: flex;
-  width: 100%;
-  align-items: center;
   cursor: pointer;
+  display: block;
+  margin-right: 8px;
+  width: 100%;
+  overflow: hidden;
 `;
 
 export const SidebarChatRight = styled.div`
@@ -48,27 +49,25 @@ export const SidebarChatIconContainer = styled.span<SidebarChatIconContainerProp
   flex-shrink: 0;
   ${SidebarChatIconStyled} {
     display: ${({ $isDefault }) => ($isDefault ? 'inline-flex' : 'none')};
-    ${({ $active }) =>
+    ${({ $active, theme }) =>
       $active &&
       css`
-        fill: ${({ theme }) => theme.colors.base.white};
-        stroke: ${({ theme }) => theme.colors.base.white};
-      `}
-    ${({ $active }) =>
-      $active &&
-      css`
-        fill: ${({ theme }) => theme.colors.base.white};
-        stroke: ${({ theme }) => theme.colors.base.white};
+        fill: ${theme.colors.base.white};
+        stroke: ${theme.colors.base.white};
       `}
   }
 `;
 
+export const SidebarChatNameBox = styled.div``;
+
 export const SidebarChatName = styled(Typography).attrs({
   variant: 'body-m-medium',
-  component: 'span'
+  component: 'div'
 })`
+  overflow: hidden;
   white-space: nowrap;
-  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transition: opacity 0.3s;
   ${adaptive({
     tablet: css`
@@ -145,7 +144,7 @@ export const SidebarChatWithOutlineStyled = styled.div<SidebarChatWithOutlineSty
   margin-left: 3px;
   height: 100%;
   position: relative;
-  ${({ $active }) =>
+  ${({ $active, theme }) =>
     $active &&
     css`
       border-radius: 10px;
@@ -157,7 +156,7 @@ export const SidebarChatWithOutlineStyled = styled.div<SidebarChatWithOutlineSty
         position: absolute;
         top: 0;
         left: 0px;
-        background-color: ${({ theme }) => theme.colors.accent.primary};
+        background-color: ${theme.colors.accent.primary};
         z-index: 0;
         animation: ${SidebarChatOutlineAnimation} 0.3s ease-in-out 1 forwards;
       }
@@ -172,10 +171,10 @@ export const SidebarChatWithBackgroundStyled = styled.div<SidebarChatWithBackgro
   height: 100%;
   border-radius: 10px;
   position: relative;
-  ${({ $active }) =>
+  ${({ $active, theme }) =>
     $active &&
     css`
-      background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+      background-color: ${theme.colors.grayScale.gray4};
     `}
 `;
 
@@ -196,25 +195,24 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  ${({ $draggble }) => {
+  ${({ $draggble, theme }) => {
     if ($draggble) {
       return css`
-        background: ${({ theme }) => theme.colors.grayScale.gray3};
+        background: ${theme.colors.grayScale.gray3};
         border-radius: 10px;
         opacity: 0.7;
       `;
     }
   }};
-  ${({ $active, $skeleton }) => {
+  ${({ $active, $skeleton, theme }) => {
     if ($active) {
       return css`
         border-radius: 10px;
-        background-color: ${({ theme }) =>
-          colorToRgba(theme.colors.accent.primaryLight, 0.5)};
+        background-color: ${colorToRgba(theme.colors.accent.primaryLight, 0.5)};
         transition: background-color 0.3s ease-out;
         ${SidebarChatIconStyled} {
           path {
-            stroke: ${({ theme }) => theme.colors.base.white};
+            stroke: ${theme.colors.base.white};
           }
           border-radius: 10px;
         }
@@ -224,8 +222,10 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
       return css`
         &:hover {
           border-radius: 10px;
-          background-color: ${({ theme }) =>
-            colorToRgba(theme.colors.accent.primaryLight, 0.5)};
+          background-color: ${colorToRgba(
+            theme.colors.accent.primaryLight,
+            0.5
+          )};
           transition: background-color 0.3s ease-out;
         }
       `;
@@ -267,6 +267,4 @@ export const SidebarChatDragHandle = styled(DragDotIcon)`
   cursor: grab;
 `;
 
-export const SidebarChatNameTooltip = styled(Tooltip)`
-  overflow: hidden;
-`;
+export const SidebarChatNameTooltip = styled(Tooltip)``;

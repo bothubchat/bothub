@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import {
   SidebarChatList,
@@ -58,10 +58,20 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   const { setNodeRef } = useDroppable({
     id: !props.skeleton ? props.id : 'draggable-skeleton'
   });
-  const sidebarOpen = useSidebar().isOpen;
+  const { isOpen: sidebarOpen } = useSidebar();
+  const ref = useRef<HTMLDivElement>(null);
   const onHandleOpen = useCallback(() => {
     setOpen?.(!open);
   }, [open, setOpen]);
+
+  const [disableTooltip, setDisableTooltip] = useState(true);
+
+  useEffect(() => {
+    if (ref.current) {
+      const { scrollWidth, offsetWidth } = ref.current!;
+      setDisableTooltip(scrollWidth <= offsetWidth);
+    }
+  }, [!props.skeleton && props.name]);
 
   const over = !props.skeleton && props.edit && props.over;
   return (
@@ -115,16 +125,16 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
                 <Tooltip
                   label={props.name}
                   placement="top-left"
-                  disabled={props.name.length <= 24}
+                  disabled={disableTooltip}
                 >
                   <TooltipConsumer>
                     {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                       <SidebarGroupNameBox
+                        ref={ref}
                         onMouseEnter={handleTooltipMouseEnter}
                         onMouseLeave={handleTooltipMouseLeave}
                       >
-                        {props.name.slice(0, 16)}
-                        {props.name.length > 16 && '...'}
+                        {props.name}
                       </SidebarGroupNameBox>
                     )}
                   </TooltipConsumer>
@@ -138,7 +148,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
           </SidebarGroupNameWithBg>
         </SidebarGroupNameWithOutline>
       )}
-      <SidebarChatList open={props.isDefault || open}>
+      <SidebarChatList $open={props.isDefault || open}>
         {children}
       </SidebarChatList>
     </SidebarGroupStyled>

@@ -1,6 +1,6 @@
 import { css, styled } from 'styled-components';
-import { Typography } from '../typography';
-import { ArrowDownIcon } from '@/ui/icons';
+import { Typography } from '@/ui/components/typography';
+import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 
 export const AccordionStyled = styled.div`
   width: 100%;
