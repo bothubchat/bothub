@@ -99,7 +99,7 @@ export type SelectFieldProps = (
   tabs?: {
     tabs: ITab[];
     onTabClick?: (id: string) => void;
-    selectedTabId?: string;
+    defaultTabId?: string;
   };
   search?: boolean;
   searchPlaceholder?: string;
@@ -626,7 +626,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                         variant="secondary"
                         component="button"
                         onClick={tabs.onTabClick}
-                        selectedTabId={tabs.selectedTabId}
+                        defaultTabId={tabs.defaultTabId}
                       />
                     )}
                     {search && (
