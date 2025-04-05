@@ -515,9 +515,7 @@ export const WithTabs: SelectFieldStory = {
 
 export const WithSearch: SelectFieldStory = {
   args: {
-    before: ['React', 'Vue', 'Svelte', 'Node.js'],
-    data: ['Yarn', 'Storybook', 'styled-components', 'framer motion'],
-    after: ['Vite', 'Bothub', 'ChatGPT', 'Midjourney'],
+    ...Basic.args,
     search: true,
     searchPlaceholder: 'Поиск...'
   }

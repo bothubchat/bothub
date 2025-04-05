@@ -370,6 +370,13 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const inputRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  const [modalHeight, setModalHeight] = useState<number | null>(null);
+
+  if (contentRef.current && !modalHeight) {
+    const { height } = getComputedStyle(contentRef.current.children[0]);
+    setModalHeight(parseInt(height));
+  }
+
   useEffect(() => {
     if (isOpen) {
       const clickListener = (event: Event) => {
@@ -617,6 +624,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
               <SelectFieldBlockPositionWrapper
                 $blur={blur}
                 $placement={placement}
+                style={modalHeight ? { height: `${modalHeight}px` } : undefined}
               >
                 <SelectFieldBlockContent>
                   <SelectFieldGroups $size={size}>
