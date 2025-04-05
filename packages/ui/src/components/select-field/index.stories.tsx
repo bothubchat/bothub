@@ -506,7 +506,7 @@ export const WithTabs: SelectFieldStory = {
       onTabClick(id) {
         alert(id);
       },
-      selectedTabId: 'code'
+      defaultTabId: 'code'
     },
     contentWidth: 350,
     size: 'large'
