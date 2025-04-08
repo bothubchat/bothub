@@ -17,6 +17,7 @@ export const MessageListItem: React.FC<MessageListItemProps> = ({
       $variant={variant}
       $messageColor={color}
       {...props}
+      ref={null}
     >
       {children}
     </MessageListItemStyled>

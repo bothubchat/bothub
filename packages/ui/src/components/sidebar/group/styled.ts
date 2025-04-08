@@ -6,7 +6,6 @@ import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { FolderIcon } from '@/ui/icons/folder';
 import { Checkbox } from '@/ui/components/checkbox';
-import { SidebarChatIconContainer } from '../chat';
 import { adaptive } from '@/ui/adaptive';
 import { SidebarDropdownStyled } from '../dropdown';
 import { colorToRgba } from '@/ui/utils/colorToRgba';
@@ -23,11 +22,10 @@ export const SidebarGroupStyled = styled.div<{ $over?: boolean }>`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  ${({ $over }) => {
+  ${({ $over, theme }) => {
     if ($over) {
       return css`
-        background: ${({ theme }) =>
-          colorToRgba(theme.colors.accent.primaryLight, 0.4)};
+        background: ${colorToRgba(theme.colors.accent.primaryLight, 0.4)};
         border-radius: 10px;
       `;
     }
@@ -71,13 +69,13 @@ export const SidebarGroupNameWithOutline = styled.div<SidebarGroupNameWithOutlin
       background-color: ${({ theme }) => theme.colors.accent.primary};
     }
   }
-  ${({ $active }) =>
+  ${({ $active, theme }) =>
     $active &&
     css`
       width: calc(100% - 3px);
       margin-left: 3px;
       &:before {
-        background-color: ${({ theme }) => theme.colors.accent.primary};
+        background-color: ${theme.colors.accent.primary};
         animation: ${SidebarGroupNameOutlineAnimation} 0.3s ease-out 1 forwards;
       }
     `}
@@ -102,18 +100,10 @@ export const SidebarGroupName = styled(Typography).attrs({
 })<SidebarGroupNameProps>`
   color: ${({ theme }) => theme.colors.base.white};
   display: flex;
-  cursor: ${({ $skeleton }) => {
-    if ($skeleton) {
-      return 'not-allowed';
-    }
-    return 'pointer';
-  }};
+  cursor: ${({ $skeleton }) => ($skeleton ? 'not-allowed' : 'pointer')};
   padding: 8px;
   align-items: center;
   position: relative;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   width: 100%;
   &:hover {
     background-color: ${({ theme }) =>
@@ -123,7 +113,7 @@ export const SidebarGroupName = styled(Typography).attrs({
   }
   & > ${SidebarDropdownStyled} {
     display: flex;
-    width: 38px;
+    width: 24px;
     margin-left: 16px;
   }
   & > ${SidebarGroupArrowDown} {
@@ -132,21 +122,23 @@ export const SidebarGroupName = styled(Typography).attrs({
 `;
 
 export const SidebarGroupNameBox = styled.div`
-  display: flex;
   width: 100%;
-  align-items: center;
+  white-space: nowrap;
+  display: block;
+  margin-right: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const SidebarChatList = styled.div<{
-  open?: boolean;
-  isDefault?: boolean;
+  $open?: boolean;
 }>`
   display: flex;
   flex-direction: column;
   width: 100%;
   min-height: 40px;
-  ${({ open }) => {
-    if (!open) {
+  ${({ $open }) => {
+    if (!$open) {
       return css`
         display: none;
       `;
@@ -155,20 +147,11 @@ export const SidebarChatList = styled.div<{
       margin-top: 3px;
     `;
   }}
-  ${(isDefault) =>
-    !isDefault &&
-    css`
-      min-height: 100px;
-      ${SidebarChatIconContainer} svg path {
-        stroke: ${({ theme }) => theme.colors.grayScale.gray4};
-        fill: ${({ theme }) => theme.colors.grayScale.gray4};
-      }
-    `}
   transition: opacity 0.3s;
 `;
 
 export const SidebarGroupCheckbox = styled(Checkbox)`
-  margin-left: 10px;
+  margin-left: 16px !important;
 `;
 
 export const SidebarGroupDragHandle = styled(DragDotIcon)`
