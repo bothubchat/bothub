@@ -53,4 +53,4 @@ export const ScrollableTabs = ({
   );
 };
 
-export * from './types';
+export type { ITab } from './types';
