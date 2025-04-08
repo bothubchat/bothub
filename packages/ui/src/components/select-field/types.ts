@@ -28,7 +28,8 @@ export type SelectFieldItemType =
   | 'divider'
   | 'collapse'
   | 'empty'
-  | 'label';
+  | 'label'
+  | 'radio';
 
 export type SelectFieldDataItemSimple = string;
 
@@ -47,6 +48,9 @@ export type SelectFieldDataItemComplex = {
   backgroundHoverColor?: 'gradient' | 'primary';
   data?: SelectFieldDataItem[];
   noSelect?: boolean;
+  description?: string;
+  selected?: boolean;
+  radioName?: string;
   onClick?: SelectFieldOptionClickEventHandler;
 };
 
@@ -54,7 +58,7 @@ export type SelectFieldDataItem = string | SelectFieldDataItemComplex;
 
 export type SelectFieldData = SelectFieldDataItem[];
 
-export type SelectFieldSize = 'small' | 'md';
+export type SelectFieldSize = 'small' | 'md' | 'large';
 
 export type SelectFieldPlacement = 'bottom-left' | 'top-left' | 'top-right';
 

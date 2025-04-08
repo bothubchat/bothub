@@ -14,13 +14,18 @@ import {
   SelectFieldOptionLabel,
   SelectFieldOptionSide,
   SelectFieldOptionText,
-  SelectFieldOptionsStyled
+  SelectFieldOptionsStyled,
+  SelectFieldRadio,
+  SelectFieldRadioDescription,
+  SelectFieldRadioLabel,
+  SelectFieldRadioTitleAndRadio
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { SelectFieldCollapseOption } from '../collapse';
 import { SearchDataIcon } from '@/ui/icons/search-data';
+import { Radio } from '@/ui/components/radio';
 
 export type SelectFieldOptionClickEventHandler = (
   item: SelectFieldDataItem
@@ -124,6 +129,33 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               </IconProvider>
               <SelectFieldEmptyText>{item.label}</SelectFieldEmptyText>
             </SelectFieldEmpty>
+          );
+        }
+
+        if (item.type === 'radio') {
+          return (
+            <SelectFieldRadio
+              key={item.id ?? item.value ?? `radio-${index}`}
+              $selected={item.selected}
+              onClick={handleOptionClick.bind(null, item)}
+            >
+              <SelectFieldRadioTitleAndRadio>
+                {item.label && (
+                  <SelectFieldRadioLabel>{item.label}</SelectFieldRadioLabel>
+                )}
+                <Radio
+                  type="radio"
+                  checked={item.selected}
+                  name={item.radioName}
+                />
+              </SelectFieldRadioTitleAndRadio>
+
+              {item.description && (
+                <SelectFieldRadioDescription>
+                  {item.description}
+                </SelectFieldRadioDescription>
+              )}
+            </SelectFieldRadio>
           );
         }
 

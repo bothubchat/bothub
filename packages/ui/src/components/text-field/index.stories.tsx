@@ -16,6 +16,13 @@ export const Basic: TextFieldStory = {
   }
 };
 
+export const Secondary: TextFieldStory = {
+  args: {
+    ...Basic.args,
+    variant: 'secondary'
+  }
+};
+
 export const Number: TextFieldStory = {
   args: {
     ...Basic.args,

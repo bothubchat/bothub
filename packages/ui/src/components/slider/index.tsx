@@ -2,12 +2,18 @@ import { PropsWithChildren } from 'react';
 import * as S from './styled';
 import { ArrowDownIcon } from '@/ui/icons';
 import { useSlider } from './useSlider';
+import { ArrowsSize } from './types';
 
 type SliderProps = {
+  arrowsSize?: ArrowsSize;
   gap?: number;
 } & PropsWithChildren;
 
-export const Slider = ({ gap, children }: SliderProps) => {
+export const Slider = ({
+  arrowsSize = 'md',
+  gap = 10,
+  children
+}: SliderProps) => {
   const {
     isLeftDisabled,
     isRightDisabled,
@@ -18,11 +24,14 @@ export const Slider = ({ gap, children }: SliderProps) => {
 
   return (
     <S.SliderContainer>
-      <S.SliderLeftArrow $hidden={isLeftDisabled}>
+      <S.SliderArrow
+        $hidden={isLeftDisabled}
+        $arrowsSize={arrowsSize}
+      >
         <S.SliderIconContainer onClick={onScrollLeft}>
           <ArrowDownIcon />
         </S.SliderIconContainer>
-      </S.SliderLeftArrow>
+      </S.SliderArrow>
 
       <S.SliderWrapper
         ref={scrollbarRef}
@@ -31,11 +40,15 @@ export const Slider = ({ gap, children }: SliderProps) => {
         {children}
       </S.SliderWrapper>
 
-      <S.SliderRightArrow $hidden={isRightDisabled}>
+      <S.SliderArrow
+        $hidden={isRightDisabled}
+        $arrowsSize={arrowsSize}
+        $isLeftArrow={false}
+      >
         <S.SliderIconContainer onClick={onScrollRight}>
           <ArrowDownIcon />
         </S.SliderIconContainer>
-      </S.SliderRightArrow>
+      </S.SliderArrow>
     </S.SliderContainer>
   );
 };

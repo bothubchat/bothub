@@ -1,13 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import React from 'react';
-import { SelectField, SelectFieldConsumer, SelectFieldLabel } from '.';
+import React, { useState } from 'react';
+import {
+  SelectField,
+  SelectFieldConsumer,
+  SelectFieldDataItem,
+  SelectFieldDataItemComplex,
+  SelectFieldItemType,
+  SelectFieldLabel
+} from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Tooltip } from '@/ui/components/tooltip';
 import { Button } from '@/ui/components/button';
 import {
   ClaudeIcon,
+  CodeGenerationIcon,
   DallEIcon,
   Gpt35Icon,
+  ImageGenerationIcon,
   LightningIcon,
   LockCircleIcon,
   MjWhiteIcon,
@@ -17,7 +26,11 @@ import {
   SortAlphabetDescendingIcon,
   SortAscendingIcon,
   SortDescendingIcon,
-  StarIcon
+  SpeechSynthesysIcon,
+  SpellingIcon,
+  StarIcon,
+  TextGenerationIcon,
+  TrafficAnalisysIcon
 } from '@/ui/icons';
 
 export type SelectFieldMeta = Meta<typeof SelectField>;
@@ -402,6 +415,109 @@ export const Bold: SelectFieldStory = {
         noSelect: true
       }
     ]
+  }
+};
+
+export const Radio: SelectFieldStory = {
+  render() {
+    const [data, setData] = useState([
+      {
+        id: 'o1-mini',
+        icon: <Gpt35Icon />,
+        type: 'radio' as SelectFieldItemType,
+        label: 'o1-mini',
+        description:
+          'Уменьшенная и более дешевая версия самой лучшей модели OpenAi',
+        radioName: 'models'
+      },
+      {
+        id: 'GPT-4o',
+        icon: <Gpt35Icon />,
+        type: 'radio' as SelectFieldItemType,
+        label: 'GPT-4o',
+        description:
+          'Модель c высоким уровнем креативности, адаптированная для  написания человечных текстов',
+        radioName: 'models'
+      },
+      {
+        id: 'GPT-4-turbo',
+        icon: <Gpt35Icon />,
+        type: 'radio' as SelectFieldItemType,
+        label: 'GPT-4-turbo',
+        description:
+          'Модель хорошо справляется с кодом, обработкой неструктурированых и визуальных данных.',
+        radioName: 'models'
+      }
+    ]);
+
+    const onOptionClick = (item: SelectFieldDataItem) => {
+      const selectedItem = item as SelectFieldDataItemComplex;
+
+      setData(
+        data.map((item) => ({ ...item, selected: selectedItem.id === item.id }))
+      );
+    };
+
+    return (
+      <SelectField
+        data={data}
+        onOptionClick={onOptionClick}
+      />
+    );
+  }
+};
+
+export const WithTabs: SelectFieldStory = {
+  args: {
+    ...Basic.args,
+    tabs: {
+      tabs: [
+        {
+          id: 'text',
+          label: 'Текст',
+          icon: <TextGenerationIcon />
+        },
+        {
+          id: 'image',
+          label: 'Изображение',
+          icon: <ImageGenerationIcon />
+        },
+        {
+          id: 'code',
+          label: 'Код',
+          icon: <CodeGenerationIcon />
+        },
+        {
+          id: 'table',
+          label: 'Анализ таблиц',
+          icon: <TrafficAnalisysIcon />
+        },
+        {
+          id: 'speech',
+          label: 'Синтез речи',
+          icon: <SpeechSynthesysIcon />
+        },
+        {
+          id: 'spell',
+          label: 'Орфография',
+          icon: <SpellingIcon />
+        }
+      ],
+      onTabClick(id) {
+        alert(id);
+      },
+      defaultTabId: 'code'
+    },
+    contentWidth: 350,
+    size: 'large'
+  }
+};
+
+export const WithSearch: SelectFieldStory = {
+  args: {
+    ...Basic.args,
+    search: true,
+    searchPlaceholder: 'Поиск...'
   }
 };
 

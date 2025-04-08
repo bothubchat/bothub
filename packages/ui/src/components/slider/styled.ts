@@ -1,30 +1,61 @@
 import { styled, css } from 'styled-components';
 import { Scrollbar } from '../scrollbar';
+import { ArrowsSize } from './types';
 
 export const SliderContainer = styled.div`
   width: 100%;
   position: relative;
 `;
 
-export const SliderWrapper = styled(Scrollbar)<{ $gap?: number }>`
+export const SliderWrapper = styled(Scrollbar)<{ $gap: number }>`
   display: flex;
-  gap: ${({ $gap }) => $gap || 0}px;
+  gap: ${({ $gap }) => $gap}px;
   scrollbar-width: none;
 `;
 
-export const SliderLeftArrow = styled.div<{ $hidden: boolean }>`
-  width: 80px;
+export const SliderArrow = styled.div<{
+  $hidden: boolean;
+  $arrowsSize: ArrowsSize;
+  $isLeftArrow?: boolean;
+}>`
   height: 100%;
-  background: linear-gradient(
-    -90deg,
-    rgba(14, 12, 21, 0) 0%,
-    rgba(14, 12, 21, 1) 100%
-  );
+
   position: absolute;
   z-index: 2;
   top: 0;
-  left: 0;
   transition: opacity 0.2s;
+
+  ${({ $isLeftArrow = true }) =>
+    $isLeftArrow
+      ? css`
+          left: 0;
+        `
+      : css`
+          right: -0.5px;
+          transform: rotate(180deg);
+        `};
+
+  ${({ $arrowsSize }) => {
+    switch ($arrowsSize) {
+      case 'sm':
+        return css`
+          width: 40px;
+
+          background: ${({ theme }) =>
+            theme.mode === 'light'
+              ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
+              : 'linear-gradient(-90deg, #12182500 0%, #121825 100%)'};
+        `;
+      case 'md':
+        return css`
+          width: 48px;
+          background: ${({ theme }) =>
+            theme.mode === 'light'
+              ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
+              : 'linear-gradient(-90deg, #0e0c1500 0%, #0e0c15 100%)'};
+        `;
+    }
+  }};
 
   ${({ $hidden }) =>
     $hidden &&
@@ -34,19 +65,34 @@ export const SliderLeftArrow = styled.div<{ $hidden: boolean }>`
     `};
 
   svg {
-    width: 24px;
-    height: 24px;
     position: absolute;
     top: 50%;
     left: 0;
     transform: translateY(-50%) rotate(90deg);
-  }
-`;
 
-export const SliderRightArrow = styled(SliderLeftArrow)`
-  left: unset;
-  right: 0;
-  transform: rotate(180deg);
+    ${({ $arrowsSize }) => {
+      switch ($arrowsSize) {
+        case 'sm':
+          return css`
+            width: 18px;
+            height: 18px;
+          `;
+        case 'md':
+          return css`
+            width: 24px;
+            height: 24px;
+          `;
+      }
+    }};
+
+    ${({ theme }) =>
+      theme.mode === 'light' &&
+      css`
+        path {
+          stroke: ${({ theme }) => theme.colors.grayScale.gray1};
+        }
+      `};
+  }
 `;
 
 export const SliderIconContainer = styled.button`
