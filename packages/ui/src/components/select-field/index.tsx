@@ -406,14 +406,16 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      const scrollListener = () => {
+      const listener = () => {
         handleClose();
       };
 
-      document.addEventListener('scroll', scrollListener);
+      document.addEventListener('scroll', listener);
+      window.addEventListener('resize', listener);
 
       return () => {
-        document.removeEventListener('scroll', scrollListener);
+        document.removeEventListener('scroll', listener);
+        window.removeEventListener('resize', listener);
       };
     }
   }, [isOpen]);
