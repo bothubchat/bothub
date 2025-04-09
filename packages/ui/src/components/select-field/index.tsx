@@ -103,6 +103,7 @@ export type SelectFieldProps = (
   };
   search?: boolean;
   searchPlaceholder?: string;
+  followContentHeight?: boolean;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;
@@ -136,6 +137,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   tabs,
   search,
   searchPlaceholder,
+  followContentHeight = false,
   onOptionClick,
   onInputChange,
   onSelectClick,
@@ -370,11 +372,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const inputRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const [modalHeight, setModalHeight] = useState<number | null>(null);
+  const [blockHeight, setBlockHeight] = useState<number | null>(null);
 
-  if (contentRef.current && !modalHeight) {
+  if (contentRef.current && !blockHeight) {
     const { height } = getComputedStyle(contentRef.current.children[0]);
-    setModalHeight(parseInt(height));
+    setBlockHeight(parseInt(height));
   }
 
   useEffect(() => {
@@ -624,7 +626,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
               <SelectFieldBlockPositionWrapper
                 $blur={blur}
                 $placement={placement}
-                style={modalHeight ? { height: `${modalHeight}px` } : undefined}
+                style={
+                  followContentHeight && blockHeight
+                    ? { height: `${blockHeight}px` }
+                    : undefined
+                }
               >
                 <SelectFieldBlockContent>
                   <SelectFieldGroups $size={size}>
