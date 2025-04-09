@@ -396,10 +396,10 @@ export const SelectField: React.FC<SelectFieldProps> = ({
         handleClose();
       };
 
-      document.addEventListener('click', clickListener);
+      document.addEventListener('mousedown', clickListener);
 
       return () => {
-        document.removeEventListener('click', clickListener);
+        document.removeEventListener('mousedown', clickListener);
       };
     }
   }, [isOpen]);
