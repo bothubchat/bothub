@@ -383,22 +383,6 @@ export const SelectField: React.FC<SelectFieldProps> = ({
         const inputEl: HTMLDivElement | null = inputRef.current;
         const contentEl: HTMLDivElement | null = contentRef.current;
 
-        console.log('inputEl', inputEl);
-        console.log('contentEl', contentEl);
-        console.log('event.target', event.target);
-        if (inputEl) {
-          console.log(
-            'inputEl contains:',
-            inputEl.contains(event.target as Element)
-          );
-        }
-        if (contentEl) {
-          console.log(
-            'contentEl contains:',
-            contentEl.contains(event.target as Element)
-          );
-        }
-
         if (inputEl === null || contentEl === null) {
           return;
         }
