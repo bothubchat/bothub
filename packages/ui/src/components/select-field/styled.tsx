@@ -430,5 +430,9 @@ export const SelectFieldGroup = styled.div<SelectFieldGroupProps>`
             return 400;
         }
       }}px;
+
+      @media (max-height: 560px) {
+        max-height: 186px;
+      }
     `}
 `;
