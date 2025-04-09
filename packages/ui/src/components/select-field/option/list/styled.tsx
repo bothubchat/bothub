@@ -95,7 +95,6 @@ export const SelectFieldRadioTitleAndRadio = styled.label`
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
   cursor: inherit;
 `;
 
