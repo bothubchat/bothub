@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { useState } from 'react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { ScrollableTabs } from '.';
 import {
@@ -14,7 +15,7 @@ export type ScrollableTabsMeta = Meta<typeof ScrollableTabs>;
 
 export type ScrollableTabsStory = StoryObj<typeof ScrollableTabs>;
 
-export const Basic: ScrollableTabsStory = {
+export const Primary: ScrollableTabsStory = {
   args: {
     tabs: [
       {
@@ -49,7 +50,32 @@ export const Basic: ScrollableTabsStory = {
       },
       { id: 'spell', label: 'Орфография', href: '/', icon: <SpellingIcon /> }
     ],
-    selectedTabId: 'code'
+    defaultTabId: 'code'
+  }
+};
+
+export const Secondary: ScrollableTabsStory = {
+  args: {
+    ...Primary.args,
+    variant: 'secondary'
+  }
+};
+
+export const TabsAsButtons: ScrollableTabsStory = {
+  render() {
+    const [selectedTab, setSelectedTab] = useState('code');
+
+    const onSelectedTabChange = (id: string) => setSelectedTab(id);
+
+    return (
+      <ScrollableTabs
+        tabs={Primary.args!.tabs!}
+        defaultTabId={selectedTab}
+        variant="secondary"
+        component="button"
+        onClick={onSelectedTabChange}
+      />
+    );
   }
 };
 

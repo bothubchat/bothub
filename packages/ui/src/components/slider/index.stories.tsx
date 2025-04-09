@@ -6,7 +6,7 @@ export type SliderMeta = Meta<typeof Slider>;
 
 export type SliderStory = StoryObj<typeof Slider>;
 
-export const Basic: SliderStory = {
+export const SliderWithMediumArrows: SliderStory = {
   args: {
     children: (
       <>
@@ -79,8 +79,15 @@ export const Basic: SliderStory = {
   }
 };
 
+export const SliderWithSmallArrows: SliderStory = {
+  args: {
+    ...SliderWithMediumArrows.args,
+    arrowsSize: 'sm'
+  }
+};
+
 export default {
   title: 'UI Components/Slider',
   component: Slider,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator({ margin: '300px' })]
 } as SliderMeta;

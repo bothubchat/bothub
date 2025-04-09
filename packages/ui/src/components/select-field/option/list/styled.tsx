@@ -16,6 +16,8 @@ export const SelectFieldOptionsStyled = styled.div<SelectFieldOptionsStyledProps
         return 4;
       case 'md':
         return 6;
+      case 'large':
+        return 8;
     }
   }}px;
 `;
@@ -44,9 +46,66 @@ export const SelectFieldEmpty = styled.div<SelectFieldEmptyProps>`
         return 8;
       case 'md':
         return 12;
+      case 'large':
+        return 12;
     }
   }}px;
 `;
+
+export const SelectFieldRadio = styled.div<{ $selected?: boolean }>`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    border-radius: 8px;
+    inset: 0;
+    opacity: 0.2;
+    transition: background 0.2s;
+
+    ${({ $selected }) =>
+      $selected &&
+      css`
+        background: linear-gradient(
+          90deg,
+          rgba(28, 100, 242, 1) 0%,
+          rgba(212, 28, 242, 1) 100%
+        );
+      `};
+  }
+
+  &:hover:before {
+    background-color: ${({ theme }) => theme.colors.accent.primary};
+  }
+`;
+
+export const SelectFieldRadioTitleAndRadio = styled.label`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  cursor: inherit;
+`;
+
+export const SelectFieldRadioLabel = styled(Typography).attrs({
+  variant: 'body-m-semibold'
+})``;
+
+export const SelectFieldRadioDescription = styled(Typography).attrs({
+  variant: 'body-m-regular'
+})``;
 
 export const SelectFieldEmptyText = styled(Typography).attrs({
   variant: 'input-sm'
@@ -99,6 +158,8 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
         return 8;
       case 'md':
         return 12;
+      case 'large':
+        return 12;
     }
   }}px;
   border-radius: 6px;
@@ -107,6 +168,8 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
       case 'small':
         return 8;
       case 'md':
+        return 10;
+      case 'large':
         return 10;
     }
   }}px;

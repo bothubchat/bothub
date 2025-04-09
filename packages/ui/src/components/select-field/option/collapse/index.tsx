@@ -54,13 +54,14 @@ export const SelectFieldCollapseOption: React.FC<
         <SelectFieldCollapseOptionHeadSide $size={size}>
           {typeof item === 'object' && item.icon && (
             <IconProvider
-              size={16}
+              size={size === 'large' ? 24 : 16}
               fill={theme.colors.base.white}
             >
               {item.icon}
             </IconProvider>
           )}
           <SelectFieldCollapseOptionText
+            $size={size}
             $bold={typeof item === 'object' && item.bold}
           >
             {typeof item === 'string' && item}

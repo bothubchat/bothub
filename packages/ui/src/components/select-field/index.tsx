@@ -46,6 +46,11 @@ import { IconProvider } from '../icon';
 import { SelectFieldProvider } from './context';
 import { SelectFieldOptions } from './option';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
+import { ITab } from '../scrollable-tabs/types';
+import { ScrollableTabs } from '../scrollable-tabs';
+import { TextField } from '../text-field';
+import { SearchSimpleIcon } from '@/ui/icons';
+import { filterData } from './filterData';
 
 export interface SelectFieldDefaultProps {
   multiple?: false;
@@ -91,6 +96,13 @@ export type SelectFieldProps = (
   clearable?: boolean;
   loading?: boolean;
   padding?: [number, number];
+  tabs?: {
+    tabs: ITab[];
+    onTabClick?: (id: string) => void;
+    defaultTabId?: string;
+  };
+  search?: boolean;
+  searchPlaceholder?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;
@@ -121,6 +133,9 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   inputType = 'text',
   inputValue: initialInputValue,
   clearable = false,
+  tabs,
+  search,
+  searchPlaceholder,
   onOptionClick,
   onInputChange,
   onSelectClick,
@@ -199,6 +214,17 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const [y, setY] = useState(0);
   const [width, setWidth] = useState(0);
   const [placement, setPlacement] = useState(initialPlacement);
+
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSearchChange = useCallback<
+    React.ChangeEventHandler<HTMLInputElement>
+  >(
+    (event) => {
+      setSearchValue(event.currentTarget.value);
+    },
+    [setSearchValue]
+  );
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
@@ -343,6 +369,13 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
   const inputRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  const [modalHeight, setModalHeight] = useState<number | null>(null);
+
+  if (contentRef.current && !modalHeight) {
+    const { height } = getComputedStyle(contentRef.current.children[0]);
+    setModalHeight(parseInt(height));
+  }
 
   useEffect(() => {
     if (isOpen) {
@@ -591,9 +624,30 @@ export const SelectField: React.FC<SelectFieldProps> = ({
               <SelectFieldBlockPositionWrapper
                 $blur={blur}
                 $placement={placement}
+                style={modalHeight ? { height: `${modalHeight}px` } : undefined}
               >
                 <SelectFieldBlockContent>
                   <SelectFieldGroups $size={size}>
+                    {!!tabs && (
+                      <ScrollableTabs
+                        tabs={tabs.tabs}
+                        variant="secondary"
+                        component="button"
+                        onClick={tabs.onTabClick}
+                        defaultTabId={tabs.defaultTabId}
+                      />
+                    )}
+                    {search && (
+                      <TextField
+                        fullWidth
+                        startIcon={<SearchSimpleIcon />}
+                        placeholder={searchPlaceholder}
+                        value={searchValue}
+                        onChange={handleSearchChange}
+                        variant="secondary"
+                        autoFocus
+                      />
+                    )}
                     {before && (
                       <SelectFieldGroup
                         $size={size}
@@ -601,7 +655,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                       >
                         <SelectFieldOptions
                           value={value}
-                          data={before}
+                          data={filterData(before, searchValue)}
                           size={size}
                           disableSelect={disableSelect}
                           onOptionClick={handleOptionClick}
@@ -614,7 +668,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                     >
                       <SelectFieldOptions
                         value={value}
-                        data={data}
+                        data={filterData(data, searchValue)}
                         size={size}
                         disableSelect={disableSelect}
                         onOptionClick={handleOptionClick}
@@ -627,7 +681,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                       >
                         <SelectFieldOptions
                           value={value}
-                          data={after}
+                          data={filterData(after, searchValue)}
                           size={size}
                           disableSelect={disableSelect}
                           onOptionClick={handleOptionClick}

@@ -3,6 +3,11 @@ import { Typography } from '@/ui/components/typography';
 import { Skeleton } from '@/ui/components/skeleton';
 import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
+import { Variant } from './types';
+
+export interface VariantProps {
+  $variant: Variant;
+}
 
 export interface TextFieldStyledProps {
   $fullWidth: boolean;
@@ -36,7 +41,7 @@ export const TextFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
   cursor: inherit;
 `;
 
-export interface TextFieldBlockProps {
+export interface TextFieldBlockProps extends VariantProps {
   $error: boolean;
   $focus: boolean;
   $hover: boolean;
@@ -50,7 +55,6 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
   gap: 10px;
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 8px;
   overflow: hidden;
   cursor: ${({ $disabled, $skeleton }) => {
@@ -60,7 +64,13 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
 
     return $disabled ? 'not-allowed' : 'text';
   }};
-  padding: 0px 16px;
+  padding: 0px ${({ $variant }) => ($variant === 'primary' ? 16 : 10)}px;
+  ${({ $variant }) =>
+    $variant === 'primary' &&
+    css`
+      border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+    `};
+
   ${({ theme, $error, $hover, $focus, $disabled, $skeleton }) => {
     if ($disabled || $skeleton) {
       return css`
@@ -80,7 +90,7 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
       `
     );
   }}
-  ${({ theme, $focus, $disabled, $skeleton }) => {
+  ${({ theme, $focus, $disabled, $skeleton, $variant }) => {
     if ($disabled || $skeleton) {
       return css`
         background: ${theme.colors.grayScale.gray3};
@@ -89,8 +99,12 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
     if ($focus) {
       return css`
         background: ${theme.mode === 'light'
-          ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray4};
+          ? $variant === 'primary'
+            ? theme.default.colors.base.white
+            : theme.colors.grayScale.gray7
+          : $variant === 'primary'
+            ? theme.colors.grayScale.gray4
+            : theme.colors.grayScale.gray7};
         > svg path {
           fill: ${theme.mode === 'light'
             ? theme.default.colors.accent.primary
@@ -101,8 +115,12 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
 
     return css`
       background: ${theme.mode === 'light'
-        ? theme.default.colors.base.white
-        : theme.colors.grayScale.gray4};
+        ? $variant === 'primary'
+          ? theme.default.colors.base.white
+          : theme.colors.grayScale.gray7
+        : $variant === 'primary'
+          ? theme.colors.grayScale.gray4
+          : theme.colors.grayScale.gray7};
       > svg path {
         fill: ${theme.colors.grayScale.gray1};
       }
@@ -130,13 +148,13 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
   }}
 `;
 
-export const TextFieldInput = styled.input`
+export const TextFieldInput = styled.input<VariantProps>`
   display: ${({ type }) => (type === 'color' ? 'none' : 'inline-flex')};
   width: 100%;
   background: none;
   border: none;
   outline: none;
-  padding: 14px 0px;
+  padding: ${({ $variant }) => ($variant === 'primary' ? 14 : 8)}px 0px;
   color: ${({ theme }) => theme.colors.base.white};
   font-size: 14px;
   font-weight: 400;

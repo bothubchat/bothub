@@ -8,19 +8,22 @@ export const useSlider = () => {
   const scrollbarRef = useRef<ScrollbarRef>(null);
 
   const onScrollLeft = () => {
-    const children = scrollbarRef.current?.element?.children;
+    const scrollbar = scrollbarRef.current?.element;
+    const children = scrollbar?.children;
 
-    if (!children) return;
+    if (!children || !scrollbar) return;
 
+    const parentRect = scrollbar.getBoundingClientRect();
     let isNearFirstPosition = 0;
     let isMinMinusX = -9999;
 
     for (let i = 0; i < children.length; i += 1) {
       const child = children[i];
       const rect = child.getBoundingClientRect();
+      const relativeX = rect.left - parentRect.left;
 
-      if (rect.x + 1 < 0 && rect.x > isMinMinusX) {
-        isMinMinusX = Math.floor(rect.x);
+      if (relativeX + 1 < 0 && relativeX > isMinMinusX) {
+        isMinMinusX = Math.floor(relativeX);
         isNearFirstPosition = i;
       }
     }
@@ -35,23 +38,25 @@ export const useSlider = () => {
   };
 
   const onScrollRight = () => {
-    const children = scrollbarRef.current?.element?.children;
+    const scrollbar = scrollbarRef.current?.element;
+    const children = scrollbar?.children;
 
-    if (!children) return;
+    if (!children || !scrollbar) return;
 
+    const parentRect = scrollbar.getBoundingClientRect();
     let isNearFirstPosition = 0;
     let isMaxPlusX = 9999;
-    const isMaxWidth =
-      scrollbarRef.current?.element?.getBoundingClientRect().width;
+    const isMaxWidth = scrollbar.clientWidth;
 
     if (!isMaxWidth) return;
 
     for (let i = 0; i < children.length; i += 1) {
       const child = children[i];
       const rect = child.getBoundingClientRect();
+      const relativeRight = rect.right - parentRect.left;
 
-      if (rect.right - 1 > isMaxWidth && rect.right < isMaxPlusX) {
-        isMaxPlusX = Math.floor(rect.right);
+      if (relativeRight - 1 > isMaxWidth && relativeRight < isMaxPlusX) {
+        isMaxPlusX = Math.floor(relativeRight);
         isNearFirstPosition = i;
       }
     }

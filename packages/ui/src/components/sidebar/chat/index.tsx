@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import {
   SidebarChatLeft,
@@ -50,6 +50,8 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
     const { attributes, listeners, setNodeRef } = useDraggable({
       id: !props.skeleton ? props.id : 'draggable-skeleton'
     });
+    const ref = useRef<HTMLDivElement>(null);
+    const [disableTooltip, setDisableTooltip] = useState(true);
 
     const draggable =
       !props.skeleton && props.edit
@@ -66,6 +68,13 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
             opacity: 0
           }
         : {};
+
+    useEffect(() => {
+      if (ref.current) {
+        const { scrollWidth, offsetWidth } = ref.current!;
+        setDisableTooltip(scrollWidth <= offsetWidth);
+      }
+    }, [!props.skeleton && props.name]);
 
     return (
       <SidebarChatWithOutlineStyled
@@ -104,7 +113,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
                 label={props.name}
                 placement="center-right"
                 placementX={15}
-                disabled={props.name.length <= 0}
+                disabled={!!props.name.length}
               >
                 <TooltipConsumer>
                   {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
@@ -119,25 +128,22 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
             )}
             <SidebarChatLeft {...draggable}>
               <SidebarChatNameTooltip
-                {...(!props.skeleton && {
-                  label: props.name
-                })}
+                label={!props.skeleton && props?.name}
                 placement="top-left"
-                disabled={props.skeleton || props.name.length <= 24}
+                disabled={disableTooltip}
               >
                 <TooltipConsumer>
                   {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                     <SidebarChatName
+                      ref={ref}
                       onMouseEnter={handleTooltipMouseEnter}
                       onMouseLeave={handleTooltipMouseLeave}
                     >
-                      {!props.skeleton && (
-                        <>
-                          {props.name.slice(0, 18)}
-                          {props.name.length > 18 && '...'}
-                        </>
+                      {!props.skeleton ? (
+                        props.name
+                      ) : (
+                        <SidebarChatNameSkeleton />
                       )}
-                      {props.skeleton && <SidebarChatNameSkeleton />}
                     </SidebarChatName>
                   )}
                 </TooltipConsumer>

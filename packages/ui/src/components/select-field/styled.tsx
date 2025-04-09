@@ -324,7 +324,6 @@ export const SelectFieldBlockPositionWrapper = styled.div<SelectFieldBlockPositi
   width: 100%;
   box-sizing: border-box;
   padding: 6px 8px;
-  padding-right: 4px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 10px;
   background: ${({ theme, $blur }) => {
@@ -390,6 +389,8 @@ export const SelectFieldGroups = styled.div<SelectFieldGroupsProps>`
         return 4;
       case 'md':
         return 6;
+      case 'large':
+        return 8;
     }
   }}px;
 `;
@@ -425,6 +426,8 @@ export const SelectFieldGroup = styled.div<SelectFieldGroupProps>`
             return 186;
           case 'md':
             return 186;
+          case 'large':
+            return 400;
         }
       }}px;
     `}

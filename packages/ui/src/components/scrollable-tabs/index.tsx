@@ -1,26 +1,56 @@
-import { ReactNode } from 'react';
+import { useState } from 'react';
 import * as S from './styled';
 import { Slider } from '../slider';
+import { ITab, Variant } from './types';
 
 type ScrollableTabsProps = {
-  tabs: { id: string; label: string; href: string; icon?: ReactNode }[];
-  selectedTabId?: string;
+  variant?: Variant;
+  component: 'a' | 'button';
+  tabs: ITab[];
+  defaultTabId?: string;
+  onClick?(id: string | null): void;
 };
 
 export const ScrollableTabs = ({
   tabs,
-  selectedTabId
-}: ScrollableTabsProps) => (
-  <Slider gap={20}>
-    {tabs.map((tab) => (
-      <S.ScrollableTabsTab
-        key={tab.id}
-        href={tab.href}
-        $selected={tab.id === selectedTabId}
-      >
-        {tab.icon}
-        <S.ScrollableTabsTabLabel>{tab.label}</S.ScrollableTabsTabLabel>
-      </S.ScrollableTabsTab>
-    ))}
-  </Slider>
-);
+  variant = 'primary',
+  component = 'a',
+  defaultTabId,
+  onClick
+}: ScrollableTabsProps) => {
+  const [selected, setSelected] = useState<string | null>(defaultTabId || null);
+
+  const onTabChange = (id: string) => {
+    const newValue = id === selected ? null : id;
+
+    setSelected(newValue);
+    if (onClick) {
+      onClick(newValue);
+    }
+  };
+
+  return (
+    <Slider
+      arrowsSize={variant === 'primary' ? 'md' : 'sm'}
+      gap={variant === 'primary' ? 20 : 8}
+    >
+      {tabs.map(({ id, label, icon, href }) => (
+        <S.ScrollableTabsTab
+          key={id}
+          as={component}
+          $variant={variant}
+          $selected={id === selected}
+          onClick={() => onTabChange(id)}
+          href={component === 'a' ? href : undefined}
+        >
+          {icon}
+          <S.ScrollableTabsTabLabel $variant={variant}>
+            {label}
+          </S.ScrollableTabsTabLabel>
+        </S.ScrollableTabsTab>
+      ))}
+    </Slider>
+  );
+};
+
+export type { ITab } from './types';

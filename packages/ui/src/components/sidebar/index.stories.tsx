@@ -209,7 +209,7 @@ export const Basic: SidebarStory = {
           edit
           checkbox={<SidebarGroupCheckbox checked />}
           id="chat-group-1"
-          name="Шабажка"
+          name="ыыыыыыыыыыыыыыыыыыыыыыыыыы"
         >
           <SidebarChat
             id="chat-1"
@@ -287,7 +287,7 @@ export const Basic: SidebarStory = {
           <SidebarChat
             id="chat-1"
             color="#1C64F2"
-            name="Your first chat"
+            name="ыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыыы"
             caps="36.7K"
             checkbox={
               <SidebarChatCheckbox
@@ -968,6 +968,13 @@ export const Skeleton: SidebarStory = {
           <SidebarChat skeleton />
         </SidebarGroup>
         <SidebarGroup skeleton>
+          <SidebarChat skeleton />
+          <SidebarChat skeleton />
+        </SidebarGroup>
+        <SidebarGroup
+          isDefault
+          skeleton
+        >
           <SidebarChat skeleton />
           <SidebarChat skeleton />
         </SidebarGroup>

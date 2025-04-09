@@ -153,6 +153,9 @@ export const MessageAvatar = styled(Avatar)`
   grid-area: avatar;
   align-self: flex-end;
   user-select: none;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    display: none;
+  }
 `;
 
 export interface MessageBlockProps {
