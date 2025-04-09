@@ -83,12 +83,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               <SelectFieldOptionSide>
                 <SelectFieldOptionText
                   $selected={selected}
-                  {...(size === 'small' && {
-                    variant: 'input-sm'
-                  })}
-                  {...(size === 'md' && {
-                    variant: 'button-sm'
-                  })}
+                  $size={size}
                 >
                   {item}
                 </SelectFieldOptionText>
@@ -218,7 +213,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                     {item.icon && (
                       <IconProvider
                         fill={theme.colors.base.white}
-                        size={18}
+                        size={size === 'large' ? 24 : 18}
                       >
                         {item.icon}
                       </IconProvider>
@@ -226,12 +221,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                     {!item.color && (
                       <SelectFieldOptionText
                         $selected={selected}
-                        {...(size === 'small' && {
-                          variant: 'input-sm'
-                        })}
-                        {...(size === 'md' && {
-                          variant: 'button-sm'
-                        })}
+                        $size={size}
                         $bold={item.bold}
                       >
                         {item.label && (
