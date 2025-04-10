@@ -14,7 +14,6 @@ import {
   SelectFieldValue,
   SelectFieldValueColor,
   SelectFieldValueText,
-  SelectFieldGroup,
   SelectFieldGroups,
   SelectFieldValues,
   SelectFieldValueList,
@@ -51,6 +50,7 @@ import { ScrollableTabs } from '../scrollable-tabs';
 import { TextField } from '../text-field';
 import { SearchSimpleIcon } from '@/ui/icons';
 import { filterData } from './filterData';
+import { SelectFieldGroup } from './select-field-group';
 
 export interface SelectFieldDefaultProps {
   multiple?: false;
