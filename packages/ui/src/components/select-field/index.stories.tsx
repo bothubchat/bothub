@@ -517,8 +517,7 @@ export const WithTabs: SelectFieldStory = {
       },
       defaultTabId: 'code'
     },
-    contentWidth: 350,
-    size: 'large'
+    contentWidth: 350
   }
 };
 
@@ -527,6 +526,40 @@ export const WithSearch: SelectFieldStory = {
     ...Basic.args,
     search: true,
     searchPlaceholder: 'Поиск...'
+  }
+};
+
+export const SmallSize: SelectFieldStory = {
+  args: {
+    data: [
+      {
+        type: 'collapse',
+        label: 'ChatGPT',
+        icon: <Gpt35Icon />,
+        data: ['gpt-4o', 'gpt-4o-mini', 'o1-mini']
+      },
+      {
+        label: 'Midjourney',
+        icon: <MjWhiteIcon />
+      },
+      'React',
+      'Vue',
+      'Svelte'
+    ]
+  }
+};
+
+export const MediumSize: SelectFieldStory = {
+  args: {
+    ...SmallSize.args,
+    size: 'md'
+  }
+};
+
+export const LargeSize: SelectFieldStory = {
+  args: {
+    ...SmallSize.args,
+    size: 'large'
   }
 };
 
