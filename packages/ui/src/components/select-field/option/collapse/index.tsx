@@ -13,31 +13,21 @@ import {
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
-import { SelectFieldOptionClickEventHandler } from '../list';
 
 export interface SelectFieldCollapseOptionProps
   extends React.PropsWithChildren {
   size: SelectFieldSize;
   item: SelectFieldDataItem;
-  onClick?: SelectFieldOptionClickEventHandler;
 }
 
 export const SelectFieldCollapseOption: React.FC<
   SelectFieldCollapseOptionProps
-> = ({ size, item, children, onClick }) => {
+> = ({ size, item, children }) => {
   const theme = useTheme();
 
   const [isOpen, setIsOpen] = useState(
     typeof item === 'string' ? false : (item.open ?? false)
   );
-
-  const onCollapseClick = () => {
-    setIsOpen((isOpen) => !isOpen);
-
-    if (onClick) {
-      onClick(item);
-    }
-  };
 
   let isDisabled: boolean;
   if (typeof item === 'string') {
@@ -58,7 +48,7 @@ export const SelectFieldCollapseOption: React.FC<
         $disabled={isDisabled}
         $size={size}
         {...(!isDisabled && {
-          onClick: onCollapseClick
+          onClick: setIsOpen.bind(null, (prev) => !prev)
         })}
       >
         <SelectFieldCollapseOptionHeadSide $size={size}>

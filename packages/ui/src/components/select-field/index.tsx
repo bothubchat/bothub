@@ -419,35 +419,6 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     }
   }, [isOpen]);
 
-  data = data.map((item) => {
-    if (
-      typeof item === 'object' &&
-      item.type === 'collapse' &&
-      item.id &&
-      !item.disabled
-    ) {
-      const { onClick, ...rest } = item;
-
-      const onOptionClick = () => {
-        if (onClick) {
-          onClick(item);
-        }
-
-        if (item.id) {
-          onOpenedOptionChange(item.id);
-        }
-      };
-
-      return {
-        ...rest,
-        open: openedOptions.includes(item.id),
-        onClick: onOptionClick
-      };
-    }
-
-    return item;
-  });
-
   return (
     <SelectFieldProvider
       selectRef={inputRef}
