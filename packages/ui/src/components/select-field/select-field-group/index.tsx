@@ -1,4 +1,10 @@
-import { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
 import * as S from './styled';
 
 type SelectFieldGroupProps = S.SelectFieldGroupContentProps & PropsWithChildren;
@@ -9,7 +15,7 @@ export const SelectFieldGroup = (props: SelectFieldGroupProps) => {
 
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const handleShadowsDisplay = () => {
+  const handleShadowsDisplay = useCallback(() => {
     if (contentRef.current) {
       const { scrollTop, clientHeight, scrollHeight } = contentRef.current;
 
@@ -25,7 +31,7 @@ export const SelectFieldGroup = (props: SelectFieldGroupProps) => {
         setShowBottomShadow(false);
       }
     }
-  };
+  }, [contentRef.current]);
 
   useEffect(() => {
     const el = contentRef.current;
