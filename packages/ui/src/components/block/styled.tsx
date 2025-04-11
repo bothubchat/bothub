@@ -82,13 +82,13 @@ export const BlockHead = styled.div<BlockHeadProps>`
     return adaptive({
       variant: 'dashboard',
       desktop: css`
-        padding: 30px 28px;
+        padding: 30px 28px 12px;
       `,
       tablet: css`
-        padding: 24px;
+        padding: 24px 24px 12px;
       `,
       mobile: css`
-        padding: 18px 16px;
+        padding: 18px 16px 12px;
       `
     });
   }}
