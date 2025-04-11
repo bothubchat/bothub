@@ -301,6 +301,7 @@ export const SelectFieldArrow = styled(ArrowDownIcon).attrs({ size: 16 })`
 
 export interface SelectFieldBlockProps {
   $contentWidth?: number;
+  $open: boolean;
 }
 
 export const SelectFieldBlock = styled.div<SelectFieldBlockProps>`
@@ -311,6 +312,13 @@ export const SelectFieldBlock = styled.div<SelectFieldBlockProps>`
   min-width: 200px;
   width: 100%;
   box-sizing: border-box;
+  transition: opacity 0.1s;
+  ${({ $open }) =>
+    !$open &&
+    css`
+      opacity: 0;
+      pointer-events: none;
+    `};
 `;
 
 export interface SelectFieldBlockPositionWrapperProps {

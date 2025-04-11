@@ -214,9 +214,6 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const [y, setY] = useState(0);
   const [width, setWidth] = useState(0);
   const [placement, setPlacement] = useState(initialPlacement);
-  const [openedOptions, setOpenedOptions] = useState<Array<string | number>>(
-    []
-  );
   const [searchValue, setSearchValue] = useState('');
 
   const handleSearchChange = useCallback<
@@ -422,17 +419,6 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     }
   }, [isOpen]);
 
-  const onOpenedOptionChange = useCallback(
-    (itemId: string | number) => {
-      if (openedOptions.includes(itemId)) {
-        setOpenedOptions(openedOptions.filter((id) => id !== itemId));
-      } else {
-        setOpenedOptions([...openedOptions, itemId]);
-      }
-    },
-    [openedOptions]
-  );
-
   data = data.map((item) => {
     if (
       typeof item === 'object' &&
@@ -635,109 +621,108 @@ export const SelectField: React.FC<SelectFieldProps> = ({
             )}
           </>
         )}
-        {isOpen && (
-          <Portal>
-            <SelectFieldBlock
-              $contentWidth={contentWidth}
-              ref={contentRef}
-              style={{
-                ...(x !== 0 && {
-                  ...(placement !== 'top-right' && {
-                    left: `${x}px`
+        <Portal>
+          <SelectFieldBlock
+            $contentWidth={contentWidth}
+            $open={isOpen}
+            ref={contentRef}
+            style={{
+              ...(x !== 0 && {
+                ...(placement !== 'top-right' && {
+                  left: `${x}px`
+                }),
+                ...(placement === 'top-right' && {
+                  ...(typeof contentWidth === 'undefined' && {
+                    left: `calc(${x}px - ${width})`
                   }),
-                  ...(placement === 'top-right' && {
-                    ...(typeof contentWidth === 'undefined' && {
-                      left: `calc(${x}px - ${width})`
-                    }),
-                    ...(typeof contentWidth === 'number' && {
-                      left: `calc(${x}px - ${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`})`
-                    })
+                  ...(typeof contentWidth === 'number' && {
+                    left: `calc(${x}px - ${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`})`
                   })
-                }),
-                ...(y !== 0 && {
-                  top: `${y}px`
-                }),
-                ...(typeof contentWidth === 'undefined' && {
-                  width: `${width}px`
-                }),
-                ...(typeof contentWidth === 'number' && {
-                  width: `${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`}`
                 })
-              }}
+              }),
+              ...(y !== 0 && {
+                top: `${y}px`
+              }),
+              ...(typeof contentWidth === 'undefined' && {
+                width: `${width}px`
+              }),
+              ...(typeof contentWidth === 'number' && {
+                width: `${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`}`
+              })
+            }}
+          >
+            <SelectFieldBlockPositionWrapper
+              $blur={blur}
+              $placement={placement}
+              style={modalHeight ? { height: `${modalHeight}px` } : undefined}
             >
-              <SelectFieldBlockPositionWrapper
-                $blur={blur}
-                $placement={placement}
-                style={modalHeight ? { height: `${modalHeight}px` } : undefined}
-              >
-                <SelectFieldBlockContent>
-                  <SelectFieldGroups $size={size}>
-                    {!!tabs && (
-                      <ScrollableTabs
-                        tabs={tabs.tabs}
-                        variant="secondary"
-                        component="button"
-                        onClick={tabs.onTabClick}
-                        defaultTabId={tabs.defaultTabId}
-                      />
-                    )}
-                    {search && (
-                      <TextField
-                        fullWidth
-                        startIcon={<SearchSimpleIcon />}
-                        placeholder={searchPlaceholder}
-                        value={searchValue}
-                        onChange={handleSearchChange}
-                        variant="secondary"
-                        autoFocus
-                      />
-                    )}
-                    {before && (
-                      <SelectFieldGroup
-                        $size={size}
-                        $disableScrollbar={disableScrollbar}
-                      >
-                        <SelectFieldOptions
-                          value={value}
-                          data={filterData(before, searchValue)}
-                          size={size}
-                          disableSelect={disableSelect}
-                          onOptionClick={handleOptionClick}
-                        />
-                      </SelectFieldGroup>
-                    )}
+              <SelectFieldBlockContent>
+                <SelectFieldGroups $size={size}>
+                  {!!tabs && (
+                    <ScrollableTabs
+                      tabs={tabs.tabs}
+                      variant="secondary"
+                      component="button"
+                      onClick={tabs.onTabClick}
+                      defaultTabId={tabs.defaultTabId}
+                    />
+                  )}
+                  {search && (
+                    <TextField
+                      fullWidth
+                      startIcon={<SearchSimpleIcon />}
+                      placeholder={searchPlaceholder}
+                      value={searchValue}
+                      onChange={handleSearchChange}
+                      variant="secondary"
+                      autoFocus
+                    />
+                  )}
+                  {before && (
                     <SelectFieldGroup
                       $size={size}
                       $disableScrollbar={disableScrollbar}
                     >
                       <SelectFieldOptions
                         value={value}
-                        data={filterData(data, searchValue)}
+                        data={filterData(before, searchValue)}
                         size={size}
                         disableSelect={disableSelect}
                         onOptionClick={handleOptionClick}
                       />
                     </SelectFieldGroup>
-                    {after && (
-                      <SelectFieldGroup
-                        $size={size}
-                        $disableScrollbar={disableScrollbar}
-                      >
-                        <SelectFieldOptions
-                          value={value}
-                          data={filterData(after, searchValue)}
-                          size={size}
-                          disableSelect={disableSelect}
-                          onOptionClick={handleOptionClick}
-                        />
-                      </SelectFieldGroup>
-                    )}
-                  </SelectFieldGroups>
-                </SelectFieldBlockContent>
-              </SelectFieldBlockPositionWrapper>
-            </SelectFieldBlock>
-          </Portal>
-        )}
+                  )}
+                  <SelectFieldGroup
+                    $size={size}
+                    $disableScrollbar={disableScrollbar}
+                  >
+                    <SelectFieldOptions
+                      value={value}
+                      data={filterData(data, searchValue)}
+                      size={size}
+                      disableSelect={disableSelect}
+                      onOptionClick={handleOptionClick}
+                    />
+                  </SelectFieldGroup>
+                  {after && (
+                    <SelectFieldGroup
+                      $size={size}
+                      $disableScrollbar={disableScrollbar}
+                    >
+                      <SelectFieldOptions
+                        value={value}
+                        data={filterData(after, searchValue)}
+                        size={size}
+                        disableSelect={disableSelect}
+                        onOptionClick={handleOptionClick}
+                      />
+                    </SelectFieldGroup>
+                  )}
+                </SelectFieldGroups>
+              </SelectFieldBlockContent>
+            </SelectFieldBlockPositionWrapper>
+          </SelectFieldBlock>
+        </Portal>
         {error && <SelectFieldErrorText>{error}</SelectFieldErrorText>}
       </SelectFieldStyled>
     </SelectFieldProvider>
