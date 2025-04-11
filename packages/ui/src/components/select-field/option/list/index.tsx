@@ -160,6 +160,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               key={item.id ?? item.value ?? `collapse-${index}`}
               size={size}
               item={item}
+              onClick={item.onClick}
             >
               <SelectFieldOptions
                 value={value}

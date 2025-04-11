@@ -214,7 +214,9 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const [y, setY] = useState(0);
   const [width, setWidth] = useState(0);
   const [placement, setPlacement] = useState(initialPlacement);
-
+  const [openedOptions, setOpenedOptions] = useState<Array<string | number>>(
+    []
+  );
   const [searchValue, setSearchValue] = useState('');
 
   const handleSearchChange = useCallback<
@@ -419,6 +421,46 @@ export const SelectField: React.FC<SelectFieldProps> = ({
       };
     }
   }, [isOpen]);
+
+  const onOpenedOptionChange = useCallback(
+    (itemId: string | number) => {
+      if (openedOptions.includes(itemId)) {
+        setOpenedOptions(openedOptions.filter((id) => id !== itemId));
+      } else {
+        setOpenedOptions([...openedOptions, itemId]);
+      }
+    },
+    [openedOptions]
+  );
+
+  data = data.map((item) => {
+    if (
+      typeof item === 'object' &&
+      item.type === 'collapse' &&
+      item.id &&
+      !item.disabled
+    ) {
+      const { onClick, ...rest } = item;
+
+      const onOptionClick = () => {
+        if (onClick) {
+          onClick(item);
+        }
+
+        if (item.id) {
+          onOpenedOptionChange(item.id);
+        }
+      };
+
+      return {
+        ...rest,
+        open: openedOptions.includes(item.id),
+        onClick: onOptionClick
+      };
+    }
+
+    return item;
+  });
 
   return (
     <SelectFieldProvider

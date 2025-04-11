@@ -332,6 +332,7 @@ export const Preset: SelectFieldStory = {
     inputType: 'search',
     data: [
       {
+        id: 'presets',
         type: 'collapse',
         icon: <StarIcon fill="#F29C1C" />,
         label: 'Избранные пресеты',
@@ -360,6 +361,7 @@ export const Preset: SelectFieldStory = {
         ]
       },
       {
+        id: 'disabled',
         type: 'collapse',
         icon: <PublicIcon fill="#4785FF" />,
         label: 'Общедоступные пресеты',
