@@ -28,12 +28,24 @@ export const SelectFieldGroup = (props: SelectFieldGroupProps) => {
   };
 
   useEffect(() => {
+    const el = contentRef.current;
+
+    if (!el) return;
+
+    const onResize = new ResizeObserver(() => {
+      handleShadowsDisplay();
+    });
+
+    onResize.observe(el);
+
     handleShadowsDisplay();
 
-    contentRef.current?.addEventListener('scroll', handleShadowsDisplay);
+    el.addEventListener('scroll', handleShadowsDisplay);
 
-    return () =>
-      contentRef.current?.removeEventListener('scroll', handleShadowsDisplay);
+    return () => {
+      onResize.disconnect();
+      el.removeEventListener('scroll', handleShadowsDisplay);
+    };
   }, [contentRef.current]);
 
   return (
