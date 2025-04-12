@@ -217,8 +217,12 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const [openedOptions, setOpenedOptions] = useState<Array<string | number>>(
     []
   );
-  const [scrollTop, setScrollTop] = useState(0);
+  const [scrollTop, setScrollTop] = useState([0, 0, 0]);
   const [searchValue, setSearchValue] = useState('');
+
+  const handleScrollTopChange = (value: number, index: number) => {
+    setScrollTop((prev) => prev.map((v, i) => (i === index ? value : v)));
+  };
 
   const handleSearchChange = useCallback<
     React.ChangeEventHandler<HTMLInputElement>
@@ -695,8 +699,10 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                     )}
                     {before && (
                       <SelectFieldGroup
-                        scrollTop={scrollTop}
-                        onScrollTopChange={setScrollTop}
+                        scrollTop={scrollTop[0]}
+                        onScrollTopChange={(val) =>
+                          handleScrollTopChange(val, 0)
+                        }
                         $size={size}
                         $disableScrollbar={disableScrollbar}
                       >
@@ -710,8 +716,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                       </SelectFieldGroup>
                     )}
                     <SelectFieldGroup
-                      scrollTop={scrollTop}
-                      onScrollTopChange={setScrollTop}
+                      scrollTop={scrollTop[1]}
+                      onScrollTopChange={(val) => handleScrollTopChange(val, 1)}
                       $size={size}
                       $disableScrollbar={disableScrollbar}
                     >
@@ -725,8 +731,10 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                     </SelectFieldGroup>
                     {after && (
                       <SelectFieldGroup
-                        scrollTop={scrollTop}
-                        onScrollTopChange={setScrollTop}
+                        scrollTop={scrollTop[2]}
+                        onScrollTopChange={(val) =>
+                          handleScrollTopChange(val, 2)
+                        }
                         $size={size}
                         $disableScrollbar={disableScrollbar}
                       >
