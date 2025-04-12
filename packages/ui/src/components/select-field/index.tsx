@@ -217,6 +217,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const [openedOptions, setOpenedOptions] = useState<Array<string | number>>(
     []
   );
+  const [scrollTop, setScrollTop] = useState(0);
   const [searchValue, setSearchValue] = useState('');
 
   const handleSearchChange = useCallback<
@@ -694,6 +695,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                     )}
                     {before && (
                       <SelectFieldGroup
+                        scrollTop={scrollTop}
+                        onScrollTopChange={setScrollTop}
                         $size={size}
                         $disableScrollbar={disableScrollbar}
                       >
@@ -707,6 +710,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                       </SelectFieldGroup>
                     )}
                     <SelectFieldGroup
+                      scrollTop={scrollTop}
+                      onScrollTopChange={setScrollTop}
                       $size={size}
                       $disableScrollbar={disableScrollbar}
                     >
@@ -720,6 +725,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                     </SelectFieldGroup>
                     {after && (
                       <SelectFieldGroup
+                        scrollTop={scrollTop}
+                        onScrollTopChange={setScrollTop}
                         $size={size}
                         $disableScrollbar={disableScrollbar}
                       >

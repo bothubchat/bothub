@@ -7,9 +7,17 @@ import {
 } from 'react';
 import * as S from './styled';
 
-type SelectFieldGroupProps = S.SelectFieldGroupContentProps & PropsWithChildren;
+type SelectFieldGroupProps = {
+  scrollTop: number;
+  onScrollTopChange: (value: number) => void;
+} & S.SelectFieldGroupContentProps &
+  PropsWithChildren;
 
-export const SelectFieldGroup = (props: SelectFieldGroupProps) => {
+export const SelectFieldGroup = ({
+  scrollTop,
+  onScrollTopChange,
+  ...rest
+}: SelectFieldGroupProps) => {
   const [showTopShadow, setShowTopShadow] = useState(false);
   const [showBottomShadow, setShowBottomShadow] = useState(false);
 
@@ -30,6 +38,8 @@ export const SelectFieldGroup = (props: SelectFieldGroupProps) => {
       } else {
         setShowBottomShadow(false);
       }
+
+      onScrollTopChange(scrollTop);
     }
   }, [contentRef.current]);
 
@@ -37,6 +47,8 @@ export const SelectFieldGroup = (props: SelectFieldGroupProps) => {
     const el = contentRef.current;
 
     if (!el) return;
+
+    el.scrollTop = scrollTop;
 
     const onResize = new ResizeObserver(() => {
       handleShadowsDisplay();
@@ -62,7 +74,7 @@ export const SelectFieldGroup = (props: SelectFieldGroupProps) => {
       />
       <S.SelectFieldGroupContent
         ref={contentRef}
-        {...props}
+        {...rest}
       />
       <S.Shadow $show={showBottomShadow} />
     </S.SelectFieldGroupStyled>
