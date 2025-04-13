@@ -88,3 +88,5 @@ export const DropDownModelItem: React.FC<IDropDownModelItem> = ({
 };
 
 export * from './item';
+export * from './styled';
+export * from './context';
