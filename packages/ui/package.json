@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.28.3-fix-block-paddings-a9fcdfaf-a76c-497f-8b0b-ad1a533e0b5a",
+  "version": "2.28.3-feat-flux-dropdown-component-5e2eef2c-5c22-4d2d-a4a6-1a129049bb1b",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
