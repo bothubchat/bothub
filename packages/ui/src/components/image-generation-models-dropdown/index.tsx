@@ -86,3 +86,5 @@ export const DropDownModelItem: React.FC<IDropDownModelItem> = ({
     </DropDownModelItemProvider>
   );
 };
+
+export * from './item';
