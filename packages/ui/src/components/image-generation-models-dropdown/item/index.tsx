@@ -1,13 +1,17 @@
 import React, { useCallback } from 'react';
 import { DropDownModelItemListItemStyled } from './styled';
 import { useDropDownModelItem } from '../context';
+import { DropDownModelItemSpanStyled } from '../styled';
 
 export type DropDownModelItemListItemProps = React.ComponentProps<
   typeof DropDownModelItemListItemStyled
->;
+> & {
+  children: React.ReactNode;
+};
+
 export const DropDownModelItemListItem: React.FC<
   DropDownModelItemListItemProps
-> = ({ onClick, ...props }) => {
+> = ({ onClick, children, ...props }) => {
   const { setIsOpen } = useDropDownModelItem();
 
   const handleClick = useCallback(
@@ -15,12 +19,15 @@ export const DropDownModelItemListItem: React.FC<
       onClick?.(event);
       setIsOpen(false);
     },
-    [onClick]
+    [onClick, setIsOpen]
   );
+
   return (
     <DropDownModelItemListItemStyled
       {...props}
       onClick={handleClick}
-    />
+    >
+      <DropDownModelItemSpanStyled>{children}</DropDownModelItemSpanStyled>
+    </DropDownModelItemListItemStyled>
   );
 };

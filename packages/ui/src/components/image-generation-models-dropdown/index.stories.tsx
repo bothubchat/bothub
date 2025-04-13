@@ -46,7 +46,7 @@ export const Basic: DropDownModelItemStory = {
 };
 
 export default {
-  title: 'ImageGeneration/DropdownModelItem',
+  title: 'UI Components/DropDownModelItem',
   component: DropDownModelItem,
   decorators: [StoryDecorator()],
   argTypes: {
