@@ -332,6 +332,7 @@ export const Preset: SelectFieldStory = {
     inputType: 'search',
     data: [
       {
+        id: 'presets',
         type: 'collapse',
         icon: <StarIcon fill="#F29C1C" />,
         label: 'Избранные пресеты',
@@ -360,6 +361,7 @@ export const Preset: SelectFieldStory = {
         ]
       },
       {
+        id: 'disabled',
         type: 'collapse',
         icon: <PublicIcon fill="#4785FF" />,
         label: 'Общедоступные пресеты',
@@ -421,6 +423,15 @@ export const Bold: SelectFieldStory = {
 export const Radio: SelectFieldStory = {
   render() {
     const [data, setData] = useState([
+      {
+        id: 'model-id',
+        icon: <Gpt35Icon />,
+        type: 'radio' as SelectFieldItemType,
+        label: 'long model name '.repeat(2),
+        description:
+          'Уменьшенная и более дешевая версия самой лучшей модели OpenAi',
+        radioName: 'models'
+      },
       {
         id: 'o1-mini',
         icon: <Gpt35Icon />,
@@ -508,8 +519,7 @@ export const WithTabs: SelectFieldStory = {
       },
       defaultTabId: 'code'
     },
-    contentWidth: 350,
-    size: 'large'
+    contentWidth: 350
   }
 };
 
@@ -518,6 +528,48 @@ export const WithSearch: SelectFieldStory = {
     ...Basic.args,
     search: true,
     searchPlaceholder: 'Поиск...'
+  }
+};
+
+export const SmallSize: SelectFieldStory = {
+  args: {
+    data: [
+      {
+        type: 'collapse',
+        label: 'ChatGPT',
+        icon: <Gpt35Icon />,
+        data: ['gpt-4o', 'gpt-4o-mini', 'o1-mini']
+      },
+      {
+        label: 'Midjourney',
+        icon: <MjWhiteIcon />
+      },
+      'React',
+      'Vue',
+      'Svelte'
+    ]
+  }
+};
+
+export const MediumSize: SelectFieldStory = {
+  args: {
+    ...SmallSize.args,
+    size: 'md'
+  }
+};
+
+export const LargeSize: SelectFieldStory = {
+  args: {
+    ...SmallSize.args,
+    size: 'large'
+  }
+};
+
+export const WithBeforeAndAfter: SelectFieldStory = {
+  args: {
+    before: Basic.args?.data,
+    data: Basic.args?.data,
+    after: Basic.args?.data
   }
 };
 

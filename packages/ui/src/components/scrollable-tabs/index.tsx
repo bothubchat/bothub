@@ -52,3 +52,5 @@ export const ScrollableTabs = ({
     </Slider>
   );
 };
+
+export type { ITab } from './types';

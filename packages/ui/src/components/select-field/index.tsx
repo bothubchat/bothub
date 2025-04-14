@@ -14,7 +14,6 @@ import {
   SelectFieldValue,
   SelectFieldValueColor,
   SelectFieldValueText,
-  SelectFieldGroup,
   SelectFieldGroups,
   SelectFieldValues,
   SelectFieldValueList,
@@ -51,6 +50,7 @@ import { ScrollableTabs } from '../scrollable-tabs';
 import { TextField } from '../text-field';
 import { SearchSimpleIcon } from '@/ui/icons';
 import { filterData } from './filterData';
+import { SelectFieldGroup } from './select-field-group';
 
 export interface SelectFieldDefaultProps {
   multiple?: false;
@@ -103,6 +103,7 @@ export type SelectFieldProps = (
   };
   search?: boolean;
   searchPlaceholder?: string;
+  followContentHeight?: boolean;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;
@@ -136,6 +137,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   tabs,
   search,
   searchPlaceholder,
+  followContentHeight = false,
   onOptionClick,
   onInputChange,
   onSelectClick,
@@ -214,8 +216,15 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const [y, setY] = useState(0);
   const [width, setWidth] = useState(0);
   const [placement, setPlacement] = useState(initialPlacement);
-
+  const [openedOptions, setOpenedOptions] = useState<Array<string | number>>(
+    []
+  );
+  const [scrollTop, setScrollTop] = useState([0, 0, 0]);
   const [searchValue, setSearchValue] = useState('');
+
+  const handleScrollTopChange = (value: number, index: number) => {
+    setScrollTop((prev) => prev.map((v, i) => (i === index ? value : v)));
+  };
 
   const handleSearchChange = useCallback<
     React.ChangeEventHandler<HTMLInputElement>
@@ -370,11 +379,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const inputRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const [modalHeight, setModalHeight] = useState<number | null>(null);
+  const [blockHeight, setBlockHeight] = useState<number | null>(null);
 
-  if (contentRef.current && !modalHeight) {
+  if (contentRef.current && !blockHeight) {
     const { height } = getComputedStyle(contentRef.current.children[0]);
-    setModalHeight(parseInt(height));
+    setBlockHeight(parseInt(height));
   }
 
   useEffect(() => {
@@ -396,27 +405,69 @@ export const SelectField: React.FC<SelectFieldProps> = ({
         handleClose();
       };
 
-      document.addEventListener('click', clickListener);
+      document.addEventListener('mousedown', clickListener);
 
       return () => {
-        document.removeEventListener('click', clickListener);
+        document.removeEventListener('mousedown', clickListener);
       };
     }
   }, [isOpen]);
 
   useEffect(() => {
     if (isOpen) {
-      const scrollListener = () => {
+      const listener = () => {
         handleClose();
       };
 
-      document.addEventListener('scroll', scrollListener);
+      document.addEventListener('scroll', listener);
+      window.addEventListener('resize', listener);
 
       return () => {
-        document.removeEventListener('scroll', scrollListener);
+        document.removeEventListener('scroll', listener);
+        window.removeEventListener('resize', listener);
       };
     }
   }, [isOpen]);
+
+  const onOpenedOptionChange = useCallback(
+    (itemId: string | number) => {
+      if (openedOptions.includes(itemId)) {
+        setOpenedOptions(openedOptions.filter((id) => id !== itemId));
+      } else {
+        setOpenedOptions([...openedOptions, itemId]);
+      }
+    },
+    [openedOptions]
+  );
+
+  data = data.map((item) => {
+    if (
+      typeof item === 'object' &&
+      item.type === 'collapse' &&
+      item.id &&
+      !item.disabled
+    ) {
+      const { onClick, ...rest } = item;
+
+      const onOptionClick = () => {
+        if (onClick) {
+          onClick(item);
+        }
+
+        if (item.id) {
+          onOpenedOptionChange(item.id);
+        }
+      };
+
+      return {
+        ...rest,
+        open: openedOptions.includes(item.id),
+        onClick: onOptionClick
+      };
+    }
+
+    return item;
+  });
 
   return (
     <SelectFieldProvider
@@ -624,7 +675,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
               <SelectFieldBlockPositionWrapper
                 $blur={blur}
                 $placement={placement}
-                style={modalHeight ? { height: `${modalHeight}px` } : undefined}
+                style={
+                  followContentHeight && blockHeight
+                    ? { height: `${blockHeight}px` }
+                    : undefined
+                }
               >
                 <SelectFieldBlockContent>
                   <SelectFieldGroups $size={size}>
@@ -650,6 +705,10 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                     )}
                     {before && (
                       <SelectFieldGroup
+                        scrollTop={scrollTop[0]}
+                        onScrollTopChange={(val) =>
+                          handleScrollTopChange(val, 0)
+                        }
                         $size={size}
                         $disableScrollbar={disableScrollbar}
                       >
@@ -663,6 +722,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                       </SelectFieldGroup>
                     )}
                     <SelectFieldGroup
+                      scrollTop={scrollTop[1]}
+                      onScrollTopChange={(val) => handleScrollTopChange(val, 1)}
                       $size={size}
                       $disableScrollbar={disableScrollbar}
                     >
@@ -676,6 +737,10 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                     </SelectFieldGroup>
                     {after && (
                       <SelectFieldGroup
+                        scrollTop={scrollTop[2]}
+                        onScrollTopChange={(val) =>
+                          handleScrollTopChange(val, 2)
+                        }
                         $size={size}
                         $disableScrollbar={disableScrollbar}
                       >
