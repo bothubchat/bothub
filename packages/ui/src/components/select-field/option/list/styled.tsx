@@ -1,6 +1,6 @@
 import { styled, css } from 'styled-components';
 import { SelectFieldSize } from '@/ui/components/select-field/types';
-import { Typography } from '@/ui/components/typography';
+import { Typography, TypographyProps } from '@/ui/components/typography';
 
 export interface SelectFieldOptionsStyledProps {
   $size: SelectFieldSize;
@@ -95,7 +95,6 @@ export const SelectFieldRadioTitleAndRadio = styled.label`
   justify-content: space-between;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
   cursor: inherit;
 `;
 
@@ -126,11 +125,21 @@ export interface SelectFieldOptionTextProps {
   $bold?: boolean;
 }
 
-export const SelectFieldOptionText = styled(Typography).attrs({
-  variant: 'input-sm'
-})<SelectFieldOptionTextProps>`
+export const SelectFieldOptionText = styled(Typography).attrs<
+  SelectFieldOptionTextProps & { $size: SelectFieldSize }
+>(({ $size }) => {
+  const variant: TypographyProps['variant'] =
+    $size === 'small'
+      ? 'input-sm'
+      : $size === 'md'
+        ? 'button-sm'
+        : 'body-m-semibold';
+
+  return { variant };
+})`
   color: ${({ theme, $selected }) =>
     $selected ? theme.default.colors.base.white : theme.colors.base.white};
+
   ${({ $bold }) =>
     $bold &&
     css`
@@ -148,6 +157,7 @@ export const SelectFieldColorOptionText = styled(Typography).attrs({
   color: ${({ theme, $selected }) =>
     $selected ? theme.default.colors.base.white : theme.colors.base.white};
 `;
+
 export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
   display: flex;
   justify-content: space-between;
@@ -155,13 +165,13 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
   padding: ${({ $size }) => {
     switch ($size) {
       case 'small':
-        return 8;
+        return '8px';
       case 'md':
-        return 12;
+        return '12px';
       case 'large':
-        return 12;
+        return '8px 10px';
     }
-  }}px;
+  }};
   border-radius: 6px;
   gap: ${({ $size }) => {
     switch ($size) {
@@ -170,7 +180,7 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
       case 'md':
         return 10;
       case 'large':
-        return 10;
+        return 8;
     }
   }}px;
 
