@@ -65,11 +65,11 @@ export const Shadow = styled.div<ShadowProps>`
   ${({ $onTop = false }) =>
     $onTop
       ? css`
-          inset: -5px 15px auto 11px;
-          box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.75);
+          inset: -5px 18px auto 10px;
+          box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.5);
         `
       : css`
-          inset: auto 15px -5px 11px;
-          box-shadow: 0px -5px 15px 0px rgba(0, 0, 0, 0.75);
+          inset: auto 18px -5px 10px;
+          box-shadow: 0px -5px 15px 0px rgba(0, 0, 0, 0.5);
         `};
 `;
