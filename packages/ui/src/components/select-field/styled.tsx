@@ -8,6 +8,9 @@ import { LoaderCircularGradientIcon } from '@/ui/icons/loader-circular-gradient'
 import { SearchCircleIcon } from '@/ui/icons/search-circle';
 import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
+import { ScrollableTabs } from '../scrollable-tabs';
+import { TextField } from '../text-field';
+import { SearchSimpleIcon } from '@/ui/icons';
 
 export interface SelectFieldStyledProps {
   $fullWidth: boolean;
@@ -323,7 +326,7 @@ export const SelectFieldBlockPositionWrapper = styled.div<SelectFieldBlockPositi
   position: absolute;
   width: 100%;
   box-sizing: border-box;
-  padding: 6px 8px;
+  padding: 6px 0 6px 8px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 10px;
   background: ${({ theme, $blur }) => {
@@ -393,4 +396,21 @@ export const SelectFieldGroups = styled.div<SelectFieldGroupsProps>`
         return 8;
     }
   }}px;
+`;
+
+export const SelectFieldTabsContainer = styled.div`
+  width: 100%;
+  padding-right: 8px;
+`;
+
+export const SelectFieldTabs = styled(ScrollableTabs).attrs({
+  variant: 'secondary'
+})``;
+
+export const SelectFieldSearch = styled(TextField).attrs({
+  fullWidth: true,
+  startIcon: <SearchSimpleIcon />,
+  variant: 'secondary'
+})`
+  padding-right: 8px;
 `;

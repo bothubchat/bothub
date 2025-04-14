@@ -23,7 +23,10 @@ import {
   SelectFieldInputSide,
   SelectFieldLoader,
   SelectFieldSearchIcon,
-  SelectFieldClearButton
+  SelectFieldClearButton,
+  SelectFieldTabs,
+  SelectFieldSearch,
+  SelectFieldTabsContainer
 } from './styled';
 import {
   SelectFieldChangeEventHandler,
@@ -46,9 +49,6 @@ import { SelectFieldProvider } from './context';
 import { SelectFieldOptions } from './option';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { ITab } from '../scrollable-tabs/types';
-import { ScrollableTabs } from '../scrollable-tabs';
-import { TextField } from '../text-field';
-import { SearchSimpleIcon } from '@/ui/icons';
 import { filterData } from './filterData';
 import { SelectFieldGroup } from './select-field-group';
 
@@ -678,22 +678,20 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                 <SelectFieldBlockContent>
                   <SelectFieldGroups $size={size}>
                     {!!tabs && (
-                      <ScrollableTabs
-                        tabs={tabs.tabs}
-                        variant="secondary"
-                        component="button"
-                        onClick={tabs.onTabClick}
-                        defaultTabId={tabs.defaultTabId}
-                      />
+                      <SelectFieldTabsContainer>
+                        <SelectFieldTabs
+                          tabs={tabs.tabs}
+                          component="button"
+                          onClick={tabs.onTabClick}
+                          defaultTabId={tabs.defaultTabId}
+                        />
+                      </SelectFieldTabsContainer>
                     )}
                     {search && (
-                      <TextField
-                        fullWidth
-                        startIcon={<SearchSimpleIcon />}
+                      <SelectFieldSearch
                         placeholder={searchPlaceholder}
                         value={searchValue}
                         onChange={handleSearchChange}
-                        variant="secondary"
                       />
                     )}
                     {before && (

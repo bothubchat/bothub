@@ -18,7 +18,7 @@ export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
   width: inherit;
   overflow-x: hidden;
   overflow-y: auto;
-  padding-right: 4px;
+  padding-right: 8px;
   width: 100%;
   ${({ $disableScrollbar, $size }) =>
     !$disableScrollbar &&
@@ -65,11 +65,11 @@ export const Shadow = styled.div<ShadowProps>`
   ${({ $onTop = false }) =>
     $onTop
       ? css`
-          inset: -5px 0 auto 0;
+          inset: -5px 15px auto 11px;
           box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.75);
         `
       : css`
-          inset: auto 0 -5px 0;
+          inset: auto 15px -5px 11px;
           box-shadow: 0px -5px 15px 0px rgba(0, 0, 0, 0.75);
         `};
 `;
