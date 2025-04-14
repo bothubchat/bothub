@@ -21,7 +21,7 @@ export const ImageFullScreenStyled = styled.div`
   left: 0px;
   right: 0px;
   padding-top: 34px;
-  z-index: ${({ theme }) => theme.zIndex.modal};
+  z-index: ${({ theme }) => theme.zIndex.modal + 1};
   pointer-events: none;
   @media (max-height: 600px) {
     --bothub-scale: 0.8;
