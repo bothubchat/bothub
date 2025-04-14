@@ -1,6 +1,8 @@
 import { styled, css } from 'styled-components';
 
-export const DropDownModelItemListItemStyled = styled.li<{ $active: boolean }>`
+export const BadgeSelectDropdownListItemStyled = styled.li<{
+  $active: boolean;
+}>`
   list-style: none;
   white-space: nowrap;
   padding: 10px;

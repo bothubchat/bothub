@@ -1,20 +1,20 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
-  DropDownModelItemWrapper,
-  DropDownModelItemTrigger,
-  DropDownModelItemSpanStyled,
-  DropDownModelItemTogglerArrow,
-  DropDownModelItemList
+  BadgeSelectDropdownWrapper,
+  BadgeSelectDropdownTrigger,
+  BadgeSelectDropdownSpanStyled,
+  BadgeSelectDropdownTogglerArrow,
+  BadgeSelectDropdownList
 } from './styled';
-import { DropDownModelItemProvider } from './context';
+import { BadgeSelectDropdownProvider } from './context';
 
-interface IDropDownModelItem {
+interface IBadgeSelectDropdown {
   activeDropDownItem: string;
   children: React.ReactNode;
 }
 
-export const DropDownModelItem: React.FC<IDropDownModelItem> = ({
+export const BadgeSelectDropdown: React.FC<IBadgeSelectDropdown> = ({
   children,
   activeDropDownItem
 }) => {
@@ -60,30 +60,30 @@ export const DropDownModelItem: React.FC<IDropDownModelItem> = ({
   });
 
   return (
-    <DropDownModelItemProvider setIsOpen={setIsOpen}>
-      <DropDownModelItemWrapper ref={dropdownRef}>
-        <DropDownModelItemTrigger
+    <BadgeSelectDropdownProvider setIsOpen={setIsOpen}>
+      <BadgeSelectDropdownWrapper ref={dropdownRef}>
+        <BadgeSelectDropdownTrigger
           onClick={handleToggle}
           type="button"
         >
-          <DropDownModelItemSpanStyled>
+          <BadgeSelectDropdownSpanStyled>
             {activeDropDownItem}
-          </DropDownModelItemSpanStyled>
-          <DropDownModelItemTogglerArrow $open={isOpen} />
-        </DropDownModelItemTrigger>
+          </BadgeSelectDropdownSpanStyled>
+          <BadgeSelectDropdownTogglerArrow $open={isOpen} />
+        </BadgeSelectDropdownTrigger>
         {dropdownTransition(
           (style, item) =>
             item && (
-              <DropDownModelItemList
+              <BadgeSelectDropdownList
                 $open={isOpen && !!item}
                 style={style}
               >
                 {children}
-              </DropDownModelItemList>
+              </BadgeSelectDropdownList>
             )
         )}
-      </DropDownModelItemWrapper>
-    </DropDownModelItemProvider>
+      </BadgeSelectDropdownWrapper>
+    </BadgeSelectDropdownProvider>
   );
 };
 

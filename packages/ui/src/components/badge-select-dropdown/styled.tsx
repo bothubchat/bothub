@@ -4,11 +4,11 @@ import { ArrowDownIcon } from '@/ui/icons';
 import { colorToRgba } from '@/ui/utils/colorToRgba';
 import { Typography } from '../typography';
 
-export const DropDownModelItemSpanStyled = styled(Typography).attrs({
+export const BadgeSelectDropdownSpanStyled = styled(Typography).attrs({
   variant: 'body-s-medium'
 })``;
 
-export const DropDownModelItemTrigger = styled.button`
+export const BadgeSelectDropdownTrigger = styled.button`
   border: none;
   display: flex;
   align-items: center;
@@ -21,7 +21,7 @@ export const DropDownModelItemTrigger = styled.button`
   color: ${({ theme }) => theme.colors.base.white};
 `;
 
-export const DropDownModelItemList: React.FC<
+export const BadgeSelectDropdownList: React.FC<
   AnimatedProps<React.ComponentProps<'ul'>> & { $open: boolean }
 > = styled(animated.ul)`
   padding: 0;
@@ -47,11 +47,11 @@ export const DropDownModelItemList: React.FC<
   gap: 1px;
 `;
 
-export const DropDownModelItemWrapper = styled.div`
+export const BadgeSelectDropdownWrapper = styled.div`
   position: relative;
 `;
 
-export const DropDownModelItemTogglerArrow = styled(ArrowDownIcon).attrs({
+export const BadgeSelectDropdownTogglerArrow = styled(ArrowDownIcon).attrs({
   size: 16
 })<{ $open: boolean }>`
   transform: ${({ $open }) =>
