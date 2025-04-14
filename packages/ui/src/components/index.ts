@@ -63,4 +63,4 @@ export * from './breadcrumbs';
 export * from './date-badge';
 export * from './slider';
 export * from './scrollable-tabs';
-export * from './image-generation-models-dropdown';
+export * from './badge-select-dropdown';
