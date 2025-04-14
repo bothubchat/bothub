@@ -216,8 +216,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const [y, setY] = useState(0);
   const [width, setWidth] = useState(0);
   const [placement, setPlacement] = useState(initialPlacement);
-  const [openedOptions, setOpenedOptions] = useState<Array<string | number>>(
-    []
+  const [openedOption, setOpenedOption] = useState<string | number | null>(
+    null
   );
   const [scrollTop, setScrollTop] = useState([0, 0, 0]);
   const [searchValue, setSearchValue] = useState('');
@@ -430,14 +430,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   }, [isOpen]);
 
   const onOpenedOptionChange = useCallback(
-    (itemId: string | number) => {
-      if (openedOptions.includes(itemId)) {
-        setOpenedOptions(openedOptions.filter((id) => id !== itemId));
-      } else {
-        setOpenedOptions([...openedOptions, itemId]);
-      }
-    },
-    [openedOptions]
+    (itemId: string | number) => setOpenedOption(itemId),
+    [openedOption]
   );
 
   data = data.map((item) => {
@@ -461,7 +455,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
       return {
         ...rest,
-        open: openedOptions.includes(item.id),
+        open: openedOption === item.id,
         onClick: onOptionClick
       };
     }
