@@ -230,7 +230,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     React.ChangeEventHandler<HTMLInputElement>
   >(
     (event) => {
-      setSearchValue(event.currentTarget.value);
+      setSearchValue(event.currentTarget.value.trim());
     },
     [setSearchValue]
   );
