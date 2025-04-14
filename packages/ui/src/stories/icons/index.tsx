@@ -225,7 +225,8 @@ import {
   TextRewriteIcon,
   ExclamationIcon,
   OrganizationIcon,
-  SimpleGearIcon
+  SimpleGearIcon,
+  ArrowRight45
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -253,6 +254,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="MenuDotIcon">{MenuDotIcon}</IconItem>
         <IconItem name="ArrowNarrowLeftIcon">{ArrowNarrowLeftIcon}</IconItem>
         <IconItem name="ArrowNarrowRightIcon">{ArrowNarrowRightIcon}</IconItem>
+        <IconItem name="ArrowRight45">{ArrowRight45}</IconItem>
         <IconItem name="CloseIcon">{CloseIcon}</IconItem>
         <IconItem name="SettingsIcon">{SettingsIcon}</IconItem>
         <IconItem name="CheckCircleIcon">{CheckCircleIcon}</IconItem>
