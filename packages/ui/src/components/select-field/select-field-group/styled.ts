@@ -2,6 +2,7 @@ import { styled, css } from 'styled-components';
 import { SelectFieldSize } from '../types';
 
 export const SelectFieldGroupStyled = styled.div`
+  flex: 1;
   width: 100%;
   position: relative;
   overflow: hidden;
