@@ -53,7 +53,8 @@ export const Basic: SelectFieldStory = {
       'Vite',
       'Bothub',
       'ChatGPT',
-      'Midjourney'
+      'Midjourney',
+      'o3-mini'
     ]
   }
 };
@@ -554,7 +555,15 @@ export const WithTabs: SelectFieldStory = {
 
 export const WithSearch: SelectFieldStory = {
   args: {
-    ...Basic.args,
+    data: [
+      {
+        type: 'collapse',
+        label: 'ChatGPT',
+        icon: <Gpt35Icon />,
+        data: ['gpt-4o', 'gpt-4o-mini', 'o1-mini']
+      },
+      'Midjourney'
+    ],
     search: true,
     searchPlaceholder: 'Поиск...'
   }
