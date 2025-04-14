@@ -19,8 +19,8 @@ export const SimpleGearIcon = icon(({ ...props }) => {
         ) => (
           <>
             <rect
-              width="18"
-              height="18"
+              width={18}
+              height={18}
               rx="4"
               fill={theme.mode === 'dark' ? theme.colors.grayScale.gray3 : ''}
             />
