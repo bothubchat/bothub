@@ -10,6 +10,10 @@ export const filterData = (
       return hasSubstring(item, searchValue);
     }
 
+    if (item.label) {
+      return hasSubstring(item.label, searchValue);
+    }
+
     if (item.type === 'collapse' && item.data) {
       for (const child of item.data) {
         let result = false;
@@ -26,10 +30,6 @@ export const filterData = (
       }
 
       return false;
-    }
-
-    if (item.label) {
-      return hasSubstring(item.label, searchValue);
     }
 
     return true;
