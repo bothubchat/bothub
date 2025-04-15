@@ -430,7 +430,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   }, [isOpen]);
 
   const onOpenedOptionChange = useCallback(
-    (itemId: string | number) => setOpenedOption(itemId),
+    (itemId: string | number) =>
+      setOpenedOption((prev) => (prev === itemId ? null : itemId)),
     [openedOption]
   );
 

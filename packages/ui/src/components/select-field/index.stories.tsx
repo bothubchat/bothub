@@ -557,6 +557,7 @@ export const WithSearch: SelectFieldStory = {
   args: {
     data: [
       {
+        id: 'ChatGPT',
         type: 'collapse',
         label: 'ChatGPT',
         icon: <Gpt35Icon />,
