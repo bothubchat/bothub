@@ -392,6 +392,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   useEffect(() => {
     setOpenedOption(null);
     setScrollTop([0, 0, 0]);
+    setSearchValue('');
   }, [resetStyleState]);
 
   const calculateMaxHeight = useCallback(() => {
