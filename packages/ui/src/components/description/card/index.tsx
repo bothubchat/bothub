@@ -3,15 +3,12 @@ import {
   DescriptionCardBackground,
   DescriptionCardBackgroundWrapper,
   DescriptionCardBorderWrapper,
-  DescriptionCardButton,
   DescriptionCardContent,
   DescriptionCardStyled,
   DescriptionCardText,
   DescriptionCardTitle,
   DescriptionCardTertiaryTitle,
-  DescriptionCardTertiaryText,
-  DescriptionCardWrapper,
-  DescriptionCardUlStled
+  DescriptionCardTertiaryText
 } from './styled';
 import {
   TDescriptionCard,
@@ -20,7 +17,6 @@ import {
 } from './types';
 import { LinksIcon } from '@/ui/icons/links';
 import { useTheme } from '@/ui/theme';
-import { EmailCircleIcon, TgCircleIcon } from '@/ui/icons';
 
 export interface DescriptionCardProps
   extends Omit<
@@ -30,7 +26,6 @@ export interface DescriptionCardProps
   icon?: React.ReactNode;
   title?: React.ReactNode | string;
   text?: React.ReactNode | string;
-  button?: React.ReactNode | boolean;
   variant?: DescriptionCardVariant;
   descriptionCardType?: TDescriptionCard;
   bgDescriptionCard?: TDescriptionCardBackground;
@@ -40,11 +35,10 @@ export interface DescriptionCardProps
 export const DescriptionCard: React.FC<DescriptionCardProps> = ({
   icon = <LinksIcon />,
   title,
-  descriptionCardType = 'collaborate',
+  descriptionCardType,
   bgDescriptionCard,
   text,
   children,
-  button,
   variant = 'main',
   ...props
 }) => {
@@ -137,27 +131,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
               ) : (
                 text
               ))}
-            {descriptionCardType === 'collaborate' && (
-              <DescriptionCardUlStled>{children}</DescriptionCardUlStled>
-            )}
-            {variant !== 'tertiary' && button === true ? (
-              <DescriptionCardWrapper>
-                {descriptionCardType === 'products' ? (
-                  <DescriptionCardButton>Подробнее</DescriptionCardButton>
-                ) : (
-                  <>
-                    <DescriptionCardButton startIcon={<TgCircleIcon />}>
-                      Telegram
-                    </DescriptionCardButton>
-                    <DescriptionCardButton startIcon={<EmailCircleIcon />}>
-                      E-Mail
-                    </DescriptionCardButton>
-                  </>
-                )}
-              </DescriptionCardWrapper>
-            ) : (
-              button
-            )}
+            {children}
           </DescriptionCardContent>
         </DescriptionCardBackgroundWrapper>
       </DescriptionCardBorderWrapper>

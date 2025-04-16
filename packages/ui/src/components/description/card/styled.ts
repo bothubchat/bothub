@@ -88,7 +88,6 @@ export const DescriptionCardContent = styled.div<{
         return css`
           display: flex;
           flex-direction: column;
-          justify-content: center;
           align-items: flex-start;
           padding: 34px;
           @media (max-width: ${theme.tablet.maxWidth}) {
@@ -178,7 +177,7 @@ export const DescriptionCardTertiaryText = styled(Typography).attrs({
   margin-top: 12px;
 `;
 
-export const DescriptionCardWrapper = styled.div`
+export const DescriptionCardButtonsWrapper = styled.div`
   margin-top: 20px;
   display: flex;
   column-gap: 16px;
@@ -209,7 +208,7 @@ export const DescriptionCardStyled = styled.div<{
         > ${DescriptionCardTitle} {
           text-align: center;
         }
-        > ${DescriptionCardWrapper} {
+        > ${DescriptionCardButtonsWrapper} {
           margin: auto 0;
           margin-top: 20px;
         }
@@ -243,7 +242,7 @@ export const DescriptionCardStyled = styled.div<{
     `}
 `;
 
-export const DescriptionCardUlStled = styled.ul`
+export const DescriptionCardUlStyled = styled.ul`
   margin: 0;
   padding: 0;
   padding-right: 60px;
