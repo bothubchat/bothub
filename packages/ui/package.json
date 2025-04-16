@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.30.3-fix-checkbox-gap-2c60bc86-07ca-4670-9555-06890fbcb806",
+  "version": "2.31.0",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
