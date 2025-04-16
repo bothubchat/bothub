@@ -74,13 +74,6 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
     background-color: ${({ theme }) => theme.colors.accent.primary}33;
   }
 
-  svg path {
-    stroke: ${({ theme }) =>
-      theme.mode === 'light'
-        ? theme.default.colors.base.black
-        : theme.default.colors.base.white};
-  }
-
   & > * {
     position: relative;
     z-index: 1;
