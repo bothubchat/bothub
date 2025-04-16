@@ -703,6 +703,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                         }
                         $size={size}
                         $disableScrollbar={disableScrollbar}
+                        $followContentHeight={!!blockHeight}
                       >
                         <SelectFieldOptions
                           value={value}
@@ -718,6 +719,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                       onScrollTopChange={(val) => handleScrollTopChange(val, 1)}
                       $size={size}
                       $disableScrollbar={disableScrollbar}
+                      $followContentHeight={!!blockHeight}
                     >
                       <SelectFieldOptions
                         value={value}
@@ -735,6 +737,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                         }
                         $size={size}
                         $disableScrollbar={disableScrollbar}
+                        $followContentHeight={!!blockHeight}
                       >
                         <SelectFieldOptions
                           value={value}

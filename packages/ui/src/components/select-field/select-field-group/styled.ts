@@ -11,6 +11,7 @@ export const SelectFieldGroupStyled = styled.div`
 export interface SelectFieldGroupContentProps {
   $size: SelectFieldSize;
   $disableScrollbar: boolean;
+  $followContentHeight: boolean;
 }
 
 export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
@@ -20,7 +21,7 @@ export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
   overflow-y: auto;
   padding-right: 8px;
   width: 100%;
-  ${({ $disableScrollbar, $size }) =>
+  ${({ $disableScrollbar, $size, $followContentHeight }) =>
     !$disableScrollbar &&
     css`
       &::-webkit-scrollbar {
@@ -34,15 +35,19 @@ export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
         display: none;
       }
       max-height: ${() => {
+        if ($followContentHeight) {
+          return '100%';
+        }
+
         switch ($size) {
           case 'small':
-            return 186;
+            return '186px';
           case 'md':
-            return 186;
+            return '186px';
           case 'large':
-            return 400;
+            return '400px';
         }
-      }}px;
+      }};
 
       @media (max-height: 560px) {
         max-height: 186px;
