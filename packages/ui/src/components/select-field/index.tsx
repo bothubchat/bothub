@@ -381,7 +381,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
   const [blockHeight, setBlockHeight] = useState<number | null>(null);
 
-  if (contentRef.current && !blockHeight) {
+  if (followContentHeight && contentRef.current && !blockHeight) {
     const { height } = getComputedStyle(contentRef.current.children[0]);
     setBlockHeight(parseInt(height));
   }
