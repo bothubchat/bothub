@@ -94,7 +94,7 @@ export const DescriptionCardContent = styled.div<{
             padding: 30px;
           }
           @media (max-width: ${theme.mobile.maxWidth}) {
-            padding: 67px 30px;
+            padding: 16px;
           }
         `;
     }
@@ -134,6 +134,9 @@ export const DescriptionCardBackground = styled.div<{
           }};
           background-position: right bottom;
           background-repeat: no-repeat;
+          @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+            background-position: bottom;
+          }
         `;
     }
   }}
@@ -202,7 +205,7 @@ export const DescriptionCardStyled = styled.div<{
     css`
       height: 532px;
       @media (max-width: ${theme.mobile.maxWidth}) {
-        height: 380px;
+        height: 500px;
       }
       ${DescriptionCardContent} {
         > ${DescriptionCardTitle} {
@@ -219,6 +222,9 @@ export const DescriptionCardStyled = styled.div<{
           : `url(${JSON.stringify(productsBg)})`};
         background-repeat: no-repeat;
         background-position: bottom right;
+        @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+          background-position: bottom;
+        }
       }
     `}
   ${({ $variant, theme }) =>
