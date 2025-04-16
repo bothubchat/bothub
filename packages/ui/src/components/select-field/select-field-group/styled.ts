@@ -49,9 +49,9 @@ export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
         }
       }};
 
-      @media (max-height: 560px) {
+      /* @media (max-height: 560px) {
         max-height: 186px;
-      }
+      } */
     `}
 `;
 

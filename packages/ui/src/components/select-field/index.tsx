@@ -381,6 +381,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const inputRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  const [modalMaxHeight, setModalMaxHeight] = useState<number | null>(null);
   const [blockHeight, setBlockHeight] = useState<number | null>(null);
 
   if (followContentHeight && contentRef.current && !blockHeight) {
@@ -392,6 +393,24 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     setOpenedOption(null);
     setScrollTop([0, 0, 0]);
   }, [resetStyleState]);
+
+  const calculateMaxHeight = useCallback(() => {
+    if (contentRef.current && placement !== 'bottom-left' && isOpen) {
+      const { bottom } = contentRef.current.getBoundingClientRect();
+
+      setModalMaxHeight(bottom - 30);
+    } else {
+      setModalMaxHeight(null);
+    }
+  }, [contentRef.current, placement, isOpen]);
+
+  useEffect(() => {
+    calculateMaxHeight();
+
+    window.addEventListener('resize', calculateMaxHeight);
+
+    return () => window.removeEventListener('resize', calculateMaxHeight);
+  }, [calculateMaxHeight]);
 
   useEffect(() => {
     if (isOpen) {
@@ -677,11 +696,13 @@ export const SelectField: React.FC<SelectFieldProps> = ({
               <SelectFieldBlockPositionWrapper
                 $blur={blur}
                 $placement={placement}
-                style={
-                  followContentHeight && blockHeight
-                    ? { height: `${blockHeight}px` }
-                    : undefined
-                }
+                style={{
+                  ...(followContentHeight &&
+                    blockHeight && { height: blockHeight }),
+                  ...(modalMaxHeight && {
+                    maxHeight: modalMaxHeight
+                  })
+                }}
               >
                 <SelectFieldBlockContent>
                   <SelectFieldGroups $size={size}>
