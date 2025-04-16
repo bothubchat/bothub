@@ -9,11 +9,18 @@ import {
   DescriptionCardText,
   DescriptionCardTitle,
   DescriptionCardTertiaryTitle,
-  DescriptionCardTertiaryText
+  DescriptionCardTertiaryText,
+  DescriptionCardWrapper,
+  DescriptionCardUlStled
 } from './styled';
-import { DescriptionCardVariant } from './types';
+import {
+  TDescriptionCard,
+  DescriptionCardVariant,
+  TDescriptionCardBackground
+} from './types';
 import { LinksIcon } from '@/ui/icons/links';
 import { useTheme } from '@/ui/theme';
+import { EmailCircleIcon, TgCircleIcon } from '@/ui/icons';
 
 export interface DescriptionCardProps
   extends Omit<
@@ -25,12 +32,18 @@ export interface DescriptionCardProps
   text?: React.ReactNode | string;
   button?: React.ReactNode | boolean;
   variant?: DescriptionCardVariant;
+  descriptionCardType?: TDescriptionCard;
+  bgDescriptionCard?: TDescriptionCardBackground;
+  children?: React.ReactNode;
 }
 
 export const DescriptionCard: React.FC<DescriptionCardProps> = ({
   icon = <LinksIcon />,
   title,
+  descriptionCardType = 'collaborate',
+  bgDescriptionCard,
   text,
+  children,
   button,
   variant = 'main',
   ...props
@@ -66,6 +79,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
     <DescriptionCardStyled
       {...props}
       $variant={variant}
+      $descriptionCardType={descriptionCardType}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -89,7 +103,10 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
               : {}
           }
         >
-          <DescriptionCardBackground $variant={variant} />
+          <DescriptionCardBackground
+            $bgVariant={bgDescriptionCard}
+            $variant={variant}
+          />
           <DescriptionCardContent $variant={variant}>
             {variant === 'tertiary' && icon}
             {variant !== 'tertiary' &&
@@ -120,8 +137,24 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
               ) : (
                 text
               ))}
+            {descriptionCardType === 'collaborate' && (
+              <DescriptionCardUlStled>{children}</DescriptionCardUlStled>
+            )}
             {variant !== 'tertiary' && button === true ? (
-              <DescriptionCardButton>Подробнее</DescriptionCardButton>
+              <DescriptionCardWrapper>
+                {descriptionCardType === 'products' ? (
+                  <DescriptionCardButton>Подробнее</DescriptionCardButton>
+                ) : (
+                  <>
+                    <DescriptionCardButton startIcon={<TgCircleIcon />}>
+                      Telegram
+                    </DescriptionCardButton>
+                    <DescriptionCardButton startIcon={<EmailCircleIcon />}>
+                      E-Mail
+                    </DescriptionCardButton>
+                  </>
+                )}
+              </DescriptionCardWrapper>
             ) : (
               button
             )}
