@@ -617,6 +617,31 @@ export const WithBeforeAndAfter: SelectFieldStory = {
   }
 };
 
+export const ResetStyleState: SelectFieldStory = {
+  render() {
+    const [shouldResetStyleState, setShouldResetStyleState] = useState(false);
+
+    return (
+      <>
+        <SelectField
+          data={WithSearch.args?.data}
+          resetStyleState={shouldResetStyleState}
+          placement="top-right"
+        />
+        <Button
+          type="button"
+          onClick={() => setShouldResetStyleState((prev) => !prev)}
+          style={{
+            marginTop: 20
+          }}
+        >
+          Reset opened option and scroll top state
+        </Button>
+      </>
+    );
+  }
+};
+
 export default {
   title: 'UI Components/Fields/Select',
   component: SelectField,
