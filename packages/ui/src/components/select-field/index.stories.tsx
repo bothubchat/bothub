@@ -563,7 +563,12 @@ export const WithSearch: SelectFieldStory = {
         icon: <Gpt35Icon />,
         data: ['gpt-4o', 'gpt-4o-mini', 'o1-mini']
       },
-      'Midjourney'
+      'Midjourney',
+      {
+        icon: <DallEIcon />,
+        value: 'dall-e',
+        label: 'DALL-E'
+      }
     ],
     search: true,
     searchPlaceholder: 'Поиск...'

@@ -10,26 +10,28 @@ export const filterData = (
       return hasSubstring(item, searchValue);
     }
 
-    if (item.label) {
-      return hasSubstring(item.label, searchValue);
-    }
-
     if (item.type === 'collapse' && item.data) {
+      let result = false;
+
+      if (item.label) {
+        result = hasSubstring(item.label, searchValue);
+      }
+
       for (const child of item.data) {
-        let result = false;
+        if (result) break;
 
         if (typeof child === 'string') {
           result = hasSubstring(child, searchValue);
         } else if (child.label) {
           result = hasSubstring(child.label, searchValue);
         }
-
-        if (result) {
-          return true;
-        }
       }
 
-      return false;
+      return result;
+    }
+
+    if (item.label) {
+      return hasSubstring(item.label, searchValue);
     }
 
     return true;
