@@ -217,10 +217,11 @@ export const DescriptionCardStyled = styled.div<{
   width: 100%;
   min-height: 180px;
   max-width: 630px;
+  aspect-ratio: auto;
   ${({ $variant, theme, $descriptionCardType }) =>
     $variant === 'main' &&
     css`
-      height: ${$descriptionCardType === 'collaborate' ? '638px' : '538px'};
+      height: ${$descriptionCardType === 'collaborate' ? '498px' : '476px'};
       @media (max-width: ${theme.mobile.maxWidth}) {
         height: ${$descriptionCardType === 'collaborate' ? '628px' : '528px'};
       }
