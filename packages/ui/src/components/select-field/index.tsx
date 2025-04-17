@@ -381,7 +381,6 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const inputRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  const [modalMaxHeight, setModalMaxHeight] = useState<number | null>(null);
   const [blockHeight, setBlockHeight] = useState<number | null>(null);
 
   if (followContentHeight && contentRef.current && !blockHeight) {
@@ -395,15 +394,17 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     setSearchValue('');
   }, [resetStyleState]);
 
-  const calculateMaxHeight = useCallback(() => {
-    if (contentRef.current && placement !== 'bottom-left' && isOpen) {
-      const { bottom } = contentRef.current.getBoundingClientRect();
+  const [modalMaxHeight, setModalMaxHeight] = useState<number | null>(null);
 
-      setModalMaxHeight(bottom - 30);
+  const calculateMaxHeight = useCallback(() => {
+    if (inputRef.current && placement !== 'bottom-left' && isOpen) {
+      const { top } = inputRef.current.getBoundingClientRect();
+
+      setModalMaxHeight(top - 20);
     } else {
       setModalMaxHeight(null);
     }
-  }, [contentRef.current, placement, isOpen]);
+  }, [inputRef.current, placement, isOpen]);
 
   useEffect(() => {
     calculateMaxHeight();
