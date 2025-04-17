@@ -144,13 +144,13 @@ export const DescriptionCardBackground = styled.div<{
             left: ${() => {
               switch ($bgVariant) {
                 case 'article':
-                  return '10px';
+                  return '65px';
                 case 'fav':
                   return '10px';
                 case 'referral':
-                  return '10px';
+                  return '75px';
                 case 'tg':
-                  return '10px';
+                  return '0px';
               }
             }};
           }
