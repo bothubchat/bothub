@@ -217,13 +217,10 @@ export const DescriptionCardStyled = styled.div<{
   width: 100%;
   min-height: 180px;
   max-width: 630px;
-  ${({ $variant, theme, $descriptionCardType }) =>
+  ${({ $variant, $descriptionCardType }) =>
     $variant === 'main' &&
     css`
-      height: 532px;
-      @media (max-width: ${theme.mobile.maxWidth}) {
-        min-height: 500px;
-      }
+      height: 638px;
       ${DescriptionCardContent} {
         > ${DescriptionCardTitle} {
           text-align: center;
