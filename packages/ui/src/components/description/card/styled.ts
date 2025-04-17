@@ -262,6 +262,12 @@ export const DescriptionCardStyled = styled.div<{
             ? `url(${JSON.stringify(collaborateBgTablet)})`
             : `url(${JSON.stringify(productsBgTablet)})`};
         }
+        @media (max-width: 550px) {
+          background-image: ${$descriptionCardType === 'collaborate'
+            ? `url(${JSON.stringify(collaborateBg)})`
+            : `url(${JSON.stringify(productsBg)})`};
+        }
+
         @media (max-width: 376px) {
           background-image: ${$descriptionCardType === 'collaborate'
             ? `url(${JSON.stringify(collaborateBgMobile)})`
