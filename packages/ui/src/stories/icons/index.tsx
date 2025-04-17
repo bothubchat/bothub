@@ -228,7 +228,8 @@ import {
   SimpleGearIcon,
   ArrowRight45,
   SetchelIcon,
-  ArticleIcon
+  ArticleIcon,
+  AssemblyIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -331,6 +332,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="GenerationIcon">{GenerationIcon}</IconItem>
         <IconItem name="Gpt35Icon">{Gpt35Icon}</IconItem>
         <IconItem name="Gpt4Icon">{Gpt4Icon}</IconItem>
+        <IconItem name="AssemblyIcon">{AssemblyIcon}</IconItem>
         <IconItem name="ImagineIcon">{ImagineIcon}</IconItem>
         <IconItem name="Imagine2Icon">{Imagine2Icon}</IconItem>
         <IconItem name="LoaderIcon">{LoaderIcon}</IconItem>

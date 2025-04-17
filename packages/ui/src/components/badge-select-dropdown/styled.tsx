@@ -1,6 +1,6 @@
 import { animated, AnimatedProps } from '@react-spring/web';
-import styled, { css } from 'styled-components';
-import { ArrowDownIcon } from '@/ui/icons';
+import { css, styled } from 'styled-components';
+import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { colorToRgba } from '@/ui/utils/colorToRgba';
 import { Typography } from '../typography';
 

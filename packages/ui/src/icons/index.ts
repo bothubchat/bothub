@@ -233,3 +233,4 @@ export * from './exclamation';
 export * from './arrow-right-45';
 export * from './article';
 export * from './setchel';
+export * from './assembly';
