@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   autoUpdate,
   flip,
@@ -9,6 +9,7 @@ import {
 import { createPortal } from 'react-dom';
 import { DatepickerCalendar } from './calendar';
 import { DatepickerProps } from '../types';
+import { useTheme } from '@/ui/theme';
 
 export const Datepicker = ({
   children,
@@ -20,6 +21,7 @@ export const Datepicker = ({
     whileElementsMounted: autoUpdate,
     middleware: [offset(10), flip(), shift()]
   });
+  const theme = useTheme();
 
   return (
     <>
@@ -32,7 +34,10 @@ export const Datepicker = ({
         createPortal(
           <div
             ref={refs.setFloating}
-            style={floatingStyles}
+            style={{
+              ...floatingStyles,
+              zIndex: theme.zIndex.select
+            }}
           >
             <DatepickerCalendar
               {...datepickerProps}
