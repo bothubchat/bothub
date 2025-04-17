@@ -141,7 +141,18 @@ export const DescriptionCardBackground = styled.div<{
           background-position: right bottom;
           background-repeat: no-repeat;
           @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-            background-position: bottom;
+            left: ${() => {
+              switch ($bgVariant) {
+                case 'article':
+                  return '10px';
+                case 'fav':
+                  return '10px';
+                case 'referral':
+                  return '10px';
+                case 'tg':
+                  return '10px';
+              }
+            }};
           }
         `;
     }
