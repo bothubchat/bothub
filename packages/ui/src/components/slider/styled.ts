@@ -28,7 +28,7 @@ export const SliderArrow = styled.div<{
   ${({ $isLeftArrow = true }) =>
     $isLeftArrow
       ? css`
-          left: 0;
+          left: -0.5px;
         `
       : css`
           right: -0.5px;
