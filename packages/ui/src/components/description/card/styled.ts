@@ -97,7 +97,7 @@ export const DescriptionCardContent = styled.div<{
           align-items: flex-start;
           padding: 34px;
           @media (max-width: ${theme.tablet.maxWidth}) {
-            padding: 30px;
+            padding: 18px;
           }
           @media (max-width: ${theme.mobile.maxWidth}) {
             padding: 16px;
@@ -206,6 +206,10 @@ export const DescriptionCardButtonsWrapper = styled.div`
     margin-top: 14px;
     margin-bottom: 0px;
   }
+  @media (max-width: 627px) {
+    flex-direction: column;
+    row-gap: 16px;
+  }
 `;
 export const DescriptionCardButton = styled(Button)``;
 
@@ -223,7 +227,13 @@ export const DescriptionCardStyled = styled.div<{
     css`
       height: ${$descriptionCardType === 'collaborate' ? '498px' : '476px'};
       @media (max-width: 1600px) {
-        height: ${$descriptionCardType === 'collaborate' && '500px'};
+        height: ${$descriptionCardType === 'collaborate' && '565px'};
+      }
+      @media (max-width: 912px) {
+        height: ${$descriptionCardType === 'collaborate' && '628px'};
+      }
+      @media (max-width: 560px) {
+        height: ${$descriptionCardType === 'products' && '532px'};
       }
       @media (max-width: ${theme.mobile.maxWidth}) {
         height: ${$descriptionCardType === 'collaborate' ? '628px' : '528px'};
@@ -241,19 +251,19 @@ export const DescriptionCardStyled = styled.div<{
         }
       }
       ${DescriptionCardBackground} {
-        @media (min-width: 1060px) {
+        @media (min-width: 840px) {
           background-image: ${$descriptionCardType === 'collaborate'
             ? `url(${JSON.stringify(collaborateBg)})`
             : `url(${JSON.stringify(productsBg)})`};
         }
         background-repeat: no-repeat;
         background-position: bottom right;
-        @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+        @media (min-width: 400px) {
           background-image: ${$descriptionCardType === 'collaborate'
             ? `url(${JSON.stringify(collaborateBgTablet)})`
             : `url(${JSON.stringify(productsBgTablet)})`};
         }
-        @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+        @media (max-width: 399px) {
           background-image: ${$descriptionCardType === 'collaborate'
             ? `url(${JSON.stringify(collaborateBgMobile)})`
             : `url(${JSON.stringify(productsBgMobile)})`};
@@ -284,12 +294,16 @@ export const DescriptionCardStyled = styled.div<{
 export const DescriptionCardUlStyled = styled.ul`
   margin: 0;
   padding: 0;
-  padding-right: 60px;
+  padding-right: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   row-gap: 16px;
+
+  @media (min-width: 1600px) {
+    padding-right: 60px;
+  }
 `;
 
 export const DescriptionCardLiStled = styled.li`
