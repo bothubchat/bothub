@@ -202,13 +202,7 @@ export const DescriptionCardButtonsWrapper = styled.div`
   display: flex;
   column-gap: 16px;
   @media (max-width: 550px) {
-    display: flex;
     margin-bottom: 0px;
-  }
-  @media (max-width: 627px) {
-    flex-direction: column;
-    margin-top: 14px auto 0;
-    row-gap: 16px;
   }
 `;
 export const DescriptionCardButton = styled(Button)``;
@@ -235,14 +229,8 @@ export const DescriptionCardStyled = styled.div<{
       @media (max-width: 912px) {
         height: ${$descriptionCardType === 'collaborate' && '603px'};
       }
-      @media (max-width: 560px) {
-        height: ${$descriptionCardType === 'products' && '532px'};
-      }
       @media (max-width: ${theme.mobile.maxWidth}) {
         height: ${$descriptionCardType === 'collaborate' ? '628px' : '528px'};
-      }
-      @media (min-width: 551px) and (max-width: 680px) {
-        height: 100%;
       }
       ${DescriptionCardContent} {
         > ${DescriptionCardTitle} {
