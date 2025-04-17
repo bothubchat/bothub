@@ -21,6 +21,7 @@ export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
   overflow-y: auto;
   padding-right: 8px;
   width: 100%;
+  height: 100%;
   ${({ $disableScrollbar, $size, $followContentHeight }) =>
     !$disableScrollbar &&
     css`
