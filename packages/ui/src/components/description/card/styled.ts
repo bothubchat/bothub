@@ -224,6 +224,9 @@ export const DescriptionCardStyled = styled.div<{
       @media (max-width: ${theme.mobile.maxWidth}) {
         height: ${$descriptionCardType === 'collaborate' ? '628px' : '528px'};
       }
+      @media (min-width: 551px) and (max-width: 680px) {
+        height: 100%;
+      }
       ${DescriptionCardContent} {
         > ${DescriptionCardTitle} {
           text-align: center;
