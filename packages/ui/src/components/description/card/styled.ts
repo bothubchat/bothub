@@ -1,18 +1,24 @@
 import { css, styled } from 'styled-components';
 import { Typography, TypographyProps } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
-import article from './assets/article.svg';
-import refferal from './assets/refferal-min.svg';
-import tg from './assets/tg-only.svg';
-import fav from './assets/fav-profile.svg';
-
-import collaborateBg from './assets/collaborate-bg.svg';
-import productsBg from './assets/products-bg.svg';
 import {
   DescriptionCardVariant,
   TDescriptionCard,
   TDescriptionCardBackground
 } from './types';
+
+import {
+  article,
+  fav,
+  refferal,
+  tg,
+  collaborateBg,
+  collaborateBgTablet,
+  collaborateBgMobile,
+  productsBg,
+  productsBgTablet,
+  productsBgMobile
+} from './assets';
 
 export interface DescriptionCardBorderWrapperProps {
   $variant: DescriptionCardVariant;
@@ -205,7 +211,7 @@ export const DescriptionCardStyled = styled.div<{
     css`
       height: 532px;
       @media (max-width: ${theme.mobile.maxWidth}) {
-        height: 500px;
+        min-height: 500px;
       }
       ${DescriptionCardContent} {
         > ${DescriptionCardTitle} {
@@ -223,7 +229,14 @@ export const DescriptionCardStyled = styled.div<{
         background-repeat: no-repeat;
         background-position: bottom right;
         @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-          background-position: bottom;
+          background-image: ${$descriptionCardType === 'collaborate'
+            ? `url(${JSON.stringify(collaborateBgTablet)})`
+            : `url(${JSON.stringify(productsBgTablet)})`};
+        }
+        @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+          background-image: ${$descriptionCardType === 'collaborate'
+            ? `url(${JSON.stringify(collaborateBgMobile)})`
+            : `url(${JSON.stringify(productsBgMobile)})`};
         }
       }
     `}
