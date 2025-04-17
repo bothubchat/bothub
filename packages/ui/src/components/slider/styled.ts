@@ -28,10 +28,10 @@ export const SliderArrow = styled.div<{
   ${({ $isLeftArrow = true }) =>
     $isLeftArrow
       ? css`
-          left: -0.5px;
+          left: -1px;
         `
       : css`
-          right: -0.5px;
+          right: -1px;
           transform: rotate(180deg);
         `};
 
