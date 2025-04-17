@@ -39,7 +39,7 @@ export const SliderArrow = styled.div<{
     switch ($arrowsSize) {
       case 'sm':
         return css`
-          width: 40px;
+          width: 122px;
 
           background: ${({ theme }) =>
             theme.mode === 'light'
@@ -48,7 +48,7 @@ export const SliderArrow = styled.div<{
         `;
       case 'md':
         return css`
-          width: 48px;
+          width: 80px;
           background: ${({ theme }) =>
             theme.mode === 'light'
               ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
