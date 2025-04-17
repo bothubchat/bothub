@@ -222,6 +222,9 @@ export const DescriptionCardStyled = styled.div<{
     $variant === 'main' &&
     css`
       height: ${$descriptionCardType === 'collaborate' ? '498px' : '476px'};
+      @media (max-width: 1600px) {
+        height: ${$descriptionCardType === 'collaborate' && '500px'};
+      }
       @media (max-width: ${theme.mobile.maxWidth}) {
         height: ${$descriptionCardType === 'collaborate' ? '628px' : '528px'};
       }
@@ -238,9 +241,11 @@ export const DescriptionCardStyled = styled.div<{
         }
       }
       ${DescriptionCardBackground} {
-        background-image: ${$descriptionCardType === 'collaborate'
-          ? `url(${JSON.stringify(collaborateBg)})`
-          : `url(${JSON.stringify(productsBg)})`};
+        @media (min-width: 1060px) {
+          background-image: ${$descriptionCardType === 'collaborate'
+            ? `url(${JSON.stringify(collaborateBg)})`
+            : `url(${JSON.stringify(productsBg)})`};
+        }
         background-repeat: no-repeat;
         background-position: bottom right;
         @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
