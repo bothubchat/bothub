@@ -1,4 +1,5 @@
 import { css, styled } from 'styled-components';
+import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -315,6 +316,8 @@ export const SelectFieldBlock = styled.div<SelectFieldBlockProps>`
   width: 100%;
   box-sizing: border-box;
 `;
+
+export const AnimatedSelectFieldBlock = animated(SelectFieldBlock);
 
 export interface SelectFieldBlockPositionWrapperProps {
   $blur: boolean;
