@@ -251,19 +251,18 @@ export const DescriptionCardStyled = styled.div<{
         }
       }
       ${DescriptionCardBackground} {
-        @media (min-width: 840px) {
-          background-image: ${$descriptionCardType === 'collaborate'
-            ? `url(${JSON.stringify(collaborateBg)})`
-            : `url(${JSON.stringify(productsBg)})`};
-        }
+        background-image: ${$descriptionCardType === 'collaborate'
+          ? `url(${JSON.stringify(collaborateBg)})`
+          : `url(${JSON.stringify(productsBg)})`};
+
         background-repeat: no-repeat;
         background-position: bottom right;
-        @media (min-width: 400px) {
+        @media (max-width: 840px) {
           background-image: ${$descriptionCardType === 'collaborate'
             ? `url(${JSON.stringify(collaborateBgTablet)})`
             : `url(${JSON.stringify(productsBgTablet)})`};
         }
-        @media (max-width: 399px) {
+        @media (max-width: 376px) {
           background-image: ${$descriptionCardType === 'collaborate'
             ? `url(${JSON.stringify(collaborateBgMobile)})`
             : `url(${JSON.stringify(productsBgMobile)})`};
