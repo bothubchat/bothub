@@ -19,11 +19,11 @@ export const SliderArrow = styled.div<{
   $isLeftArrow?: boolean;
 }>`
   height: 100%;
-
   position: absolute;
   z-index: 2;
   top: 0;
   transition: opacity 0.2s;
+  pointer-events: none;
 
   ${({ $isLeftArrow = true }) =>
     $isLeftArrow
@@ -98,4 +98,5 @@ export const SliderArrow = styled.div<{
 export const SliderIconContainer = styled.button`
   all: unset;
   cursor: pointer;
+  pointer-events: all;
 `;
