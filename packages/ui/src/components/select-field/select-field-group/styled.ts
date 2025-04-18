@@ -49,10 +49,6 @@ export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
             return '400px';
         }
       }};
-
-      /* @media (max-height: 560px) {
-        max-height: 186px;
-      } */
     `}
 `;
 
@@ -63,19 +59,25 @@ export interface ShadowProps {
 
 export const Shadow = styled.div<ShadowProps>`
   position: absolute;
-  height: 5px;
+  height: 50px;
   z-index: 1;
   transition: opacity 0.2s;
   opacity: ${({ $show }) => ($show ? 1 : 0)};
 
-  ${({ $onTop = false }) =>
-    $onTop
+  ${({ $onTop = false, theme }) => {
+    const color =
+      theme.mode === 'dark'
+        ? theme.colors.grayScale.gray4
+        : theme.colors.base.black;
+
+    return $onTop
       ? css`
-          inset: -5px 18px auto 10px;
-          box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.5);
+          inset: -1px 8px auto 0;
+          background: linear-gradient(0deg, ${color}00 0%, ${color} 100%);
         `
       : css`
-          inset: auto 18px -5px 10px;
-          box-shadow: 0px -5px 15px 0px rgba(0, 0, 0, 0.5);
-        `};
+          inset: auto 8px -1px 0;
+          background: linear-gradient(180deg, ${color}00 0%, ${color} 100%);
+        `;
+  }}
 `;
