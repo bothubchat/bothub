@@ -1,6 +1,7 @@
 import { ArrowDownIcon, ArticleIcon } from '@/ui/icons';
 import { menuItems } from './config';
 import {
+  MultiLevelFirstLevelMenuLi,
   MultiLevelMenuArrowRight,
   MultiLevelMenuArrowRight45,
   MultiLevelMenuFirsLevelHeader,
@@ -9,6 +10,10 @@ import {
   MultiLevelMenuFirstLevelWrapper,
   MultiLevelMenuHeader,
   MultiLevelMenuLi,
+  MultiLevelMenuSecondLevelHeader,
+  MultiLevelMenuSecondLevelHeaderContent,
+  MultiLevelMenuSecondLevelLi,
+  MultiLevelMenuSecondLevelWrapper,
   MultiLevelMenuStyled,
   MultiLevelMenuTitle,
   MultiLevelMenuWrapper
@@ -25,7 +30,7 @@ export const MultilevelMenu = () => (
           </MultiLevelMenuHeader>
           <MultiLevelMenuFirstLevelWrapper>
             {menuItem.first_level.map((item, indexItem) => (
-              <MultiLevelMenuLi key={indexItem}>
+              <MultiLevelFirstLevelMenuLi key={indexItem}>
                 <MultiLevelMenuFirsLevelHeader>
                   <MultiLevelMenuFirsLevelHeaderContent>
                     <ArticleIcon />
@@ -39,15 +44,22 @@ export const MultilevelMenu = () => (
                     <MultiLevelMenuArrowRight45 />
                   )}
                 </MultiLevelMenuFirsLevelHeader>
-                <ul>
+                <MultiLevelMenuSecondLevelWrapper>
                   {item.children &&
                     item.children.map((childrenItem, indexChildrenItem) => (
-                      <MultiLevelMenuLi key={indexChildrenItem}>
-                        <h4>{childrenItem.title}</h4>
-                      </MultiLevelMenuLi>
+                      <MultiLevelMenuSecondLevelLi key={indexChildrenItem}>
+                        <MultiLevelMenuSecondLevelHeader>
+                          <MultiLevelMenuSecondLevelHeaderContent>
+                            <MultiLevelMenuFirsLevelTitle>
+                              {childrenItem.title}
+                            </MultiLevelMenuFirsLevelTitle>
+                          </MultiLevelMenuSecondLevelHeaderContent>
+                          <MultiLevelMenuArrowRight45 />
+                        </MultiLevelMenuSecondLevelHeader>
+                      </MultiLevelMenuSecondLevelLi>
                     ))}
-                </ul>
-              </MultiLevelMenuLi>
+                </MultiLevelMenuSecondLevelWrapper>
+              </MultiLevelFirstLevelMenuLi>
             ))}
           </MultiLevelMenuFirstLevelWrapper>
         </MultiLevelMenuLi>

@@ -24,8 +24,8 @@ export const MultiLevelMenuFirstLevelWrapper = styled.ul`
   padding: 0;
   display: flex;
   flex-direction: column;
+  position: relative;
   row-gap: 8px;
-  max-width: 250px;
 `;
 
 export const MultiLevelMenuFirsLevelTitle = styled(Typography).attrs({
@@ -37,12 +37,14 @@ export const MultiLevelMenuFirsLevelHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 14px;
+  max-width: 250px;
+  width: 250px;
   //придумать что-то с маргином должен быть внешним а не внутриним
 `;
 
 export const MultiLevelMenuFirsLevelHeaderContent = styled.div`
   display: flex;
-  column-gap: 8px;
+  column-gap: 12px;
   align-items: center;
 `;
 
@@ -59,4 +61,31 @@ export const MultiLevelMenuArrowRight = styled(ArrowDownIcon)`
 
 export const MultiLevelMenuLi = styled.li`
   list-style: none;
+`;
+export const MultiLevelFirstLevelMenuLi = styled(MultiLevelMenuLi)`
+  display: flex;
+  align-items: start;
+  gap: 18px;
+`;
+export const MultiLevelMenuSecondLevelLi = styled(MultiLevelMenuLi)`
+  padding: 10px;
+`;
+
+export const MultiLevelMenuSecondLevelWrapper = styled.div`
+  padding: 0;
+  margin: 0;
+  width: 486px;
+  max-width: 486px;
+`;
+
+export const MultiLevelMenuSecondLevelHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const MultiLevelMenuSecondLevelHeaderContent = styled.div`
+  display: flex;
+  column-gap: 10px;
+  align-items: center;
 `;
