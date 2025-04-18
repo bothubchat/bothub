@@ -12,6 +12,7 @@ export type TypographyVariant =
   | 'body-h1-regular'
   | 'body-xxl-semibold'
   | 'body-xl-semibold'
+  | 'body-xl-medium'
   | 'body-xl-regular'
   | 'body-m-semibold'
   | 'body-m-medium'
