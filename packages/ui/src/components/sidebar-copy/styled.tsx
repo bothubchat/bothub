@@ -7,7 +7,8 @@ export const SidebarStyled = styled.div<{
 }>`
   display: flex;
   flex-direction: column;
-  height: 90vh;
+  height: 100%;
+  height: 98vh;
   width: ${({ $isOpen }) => ($isOpen ? '324px' : '74px')};
   ${({ $isOpen }) => !$isOpen && 'justify-content: center;'}
   padding: 20px 0;
@@ -21,29 +22,39 @@ export const SidebarTop = styled.div<{
   $isOpen: boolean;
 }>`
   ${({ $isOpen }) => $isOpen && 'margin: 0 16px;'}
-
+  height: fit-content;
   padding-bottom: 16px;
 `;
 
 export const SidebarContent = styled.div`
-  height: 100%;
   display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 20px;
 `;
 
 export const SidebarBottom = styled.div`
+  display: flex;
   padding: 0 16px;
+  height: fit-content;
 `;
 
-export const SidebarWrapper = styled.div`
+export const SidebarWrapper = styled.div<{
+  $isScrollable: boolean;
+}>`
   display: flex;
   width: 100%;
   overflow: hidden;
   margin: 0 16px;
+  padding-right: ${({ $isScrollable }) => ($isScrollable ? 20 : 26)}px;
 `;
 
 export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
   ({ theme }) => ({
     variant: 'secondary',
+    size: 6,
     scrollShadows: {
       size: 90,
       color: theme.colors.grayScale.gray4,

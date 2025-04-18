@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 
 export const SidebarMenuStyled = styled.div`
-  z-index: 1;
+  z-index: ${({ theme }) => theme.zIndex.menu};
 `;
 
 export const SidebarMenuList = styled(animated.ul)<{ $isOpen: boolean }>`
@@ -11,11 +11,9 @@ export const SidebarMenuList = styled(animated.ul)<{ $isOpen: boolean }>`
   display: flex;
   flex-direction: column;
   margin: 0;
-
   gap: 20px;
   ${({ $isOpen, theme }) =>
-    $isOpen &&
-    `
+    $isOpen && `
     position: absolute;
     background: ${theme.colors.grayScale.gray7};
     border: 1px solid ${theme.colors.grayScale.gray3};
@@ -24,8 +22,7 @@ export const SidebarMenuList = styled(animated.ul)<{ $isOpen: boolean }>`
     width: 100%;
   `}
   ${({ $isOpen }) =>
-    !$isOpen &&
-    `
+    !$isOpen && `
     margin: 0;
     padding: 0;
     width: fit-content;

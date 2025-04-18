@@ -1,12 +1,16 @@
 import { useCallback, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
+  SidebarArrowDownIcon,
   SidebarGroupBox,
   SidebarGroupList,
   SidebarGroupName,
   SidebarGroupStyled
 } from './styled';
 import { useSidebar } from '../context';
+import { Button } from '../../button';
+import { ArrowDownIcon, ChatIcon } from '@/ui/icons';
+import { FolderIcon } from '@/ui/icons/folder';
 
 export interface SidebarGroupDefaultProps {
   name: string;
@@ -44,10 +48,10 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   const [open, setOpen] = useState<boolean>(false);
   const { isOpen: sidebarOpen, isEdit } = useSidebar();
   const listTransition = useTransition(open, {
-    from: { opacity: 0, scale: 0.85 },
+    from: { opacity: 0, scale: 0.75, },
     enter: { opacity: 1, scale: 1 },
-    leave: { opacity: 0, scale: 0.85 },
-    config: { duration: 150 }
+    leave: { opacity: 0, scale: 0.75 },
+    config: { duration: 200 }
   });
 
   const handleOpen = useCallback(() => {
@@ -64,11 +68,21 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
       </SidebarGroupStyled>
     );
   }
+  
+  if (!sidebarOpen) {
+    return (
+      <Button variant="secondary">
+        <FolderIcon/>
+      </Button>
+    );
+  }
 
   return (
     <SidebarGroupStyled>
       <SidebarGroupBox onClick={handleOpen}>
+        <FolderIcon/>
         <SidebarGroupName>{props.name}</SidebarGroupName>
+        <SidebarArrowDownIcon $isOpen={open}/>
         {!isEdit && props.actions}
         {isEdit && props.checkbox}
       </SidebarGroupBox>
@@ -79,3 +93,5 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
     </SidebarGroupStyled>
   );
 };
+
+export { SidebarGroupsList } from './styled';

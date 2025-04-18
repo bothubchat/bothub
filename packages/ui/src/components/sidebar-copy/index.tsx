@@ -2,6 +2,7 @@ import React, {
   forwardRef,
   StyleHTMLAttributes,
   useCallback,
+  useEffect,
   useState
 } from 'react';
 import {
@@ -17,7 +18,7 @@ import {
   SidebarDivider
 } from './styled';
 import { SidebarProvider } from './context';
-import { ScrollbarRef, ScrollbarScrollEventHandler } from '../scrollbar';
+import { ScrollbarRef } from '../scrollbar';
 
 import { SidebarSectionProp } from './types';
 
@@ -45,136 +46,125 @@ export interface SidebarProps extends React.PropsWithChildren {
   banner?: React.ReactNode;
 }
 
-export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
-  (
-    {
-      open,
-      section,
-      defaultOpen = true,
-      className,
-      id,
-      user,
-      logo,
-      menu,
-      buttons,
-      buttonsModal,
-      toggle,
-      deleteButton,
-      search,
-      lang,
-      themeSwitcher,
-      isHide = false,
-      children,
-      style,
-      banner,
-      onOpen
+export const Sidebar: React.FC<SidebarProps> = ({
+  open,
+  section,
+  defaultOpen = true,
+  className,
+  id,
+  user,
+  logo,
+  menu,
+  buttons,
+  buttonsModal,
+  toggle,
+  deleteButton,
+  search,
+  lang,
+  themeSwitcher,
+  isHide = false,
+  children,
+  style,
+  banner,
+  onOpen
+}) => {
+  const initialIsOpen = open;
+  const setInitialIsOpen = useCallback<
+    React.Dispatch<React.SetStateAction<boolean>>
+  >(
+    (open) => {
+      if (typeof open === 'boolean') {
+        onOpen?.(open);
+      }
     },
-    ref
-  ) => {
-    const initialIsOpen = open;
-    const setInitialIsOpen = useCallback<
-      React.Dispatch<React.SetStateAction<boolean>>
-    >(
-      (open) => {
-        if (typeof open === 'boolean') {
-          onOpen?.(open);
-        }
-      },
-      [onOpen]
-    );
-    const [isOpen, setIsOpen] =
-      typeof initialIsOpen === 'boolean'
-        ? [initialIsOpen, setInitialIsOpen]
-        : useState(defaultOpen);
-    const [isBottom, setIsBottom] = useState<boolean>(false);
-    const [isEdit, setIsEdit] = useState<boolean>(false);
+    [onOpen]
+  );
+  const [isOpen, setIsOpen] =
+    typeof initialIsOpen === 'boolean'
+      ? [initialIsOpen, setInitialIsOpen]
+      : useState(defaultOpen);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const ref = React.useRef<ScrollbarRef>(null);
+  const [isScrolling, setIsScrolling] = useState<boolean>(false);
+  const handleOpen = useCallback<
+    React.Dispatch<React.SetStateAction<boolean>>
+  >(
+    (open) => {
+      setIsOpen(open);
 
-    const handleOpen = useCallback<
-      React.Dispatch<React.SetStateAction<boolean>>
-    >(
-      (open) => {
-        setIsOpen(open);
-
-        if (typeof open === 'boolean' && !initialIsOpen && onOpen) {
-          onOpen(open);
-        }
-      },
-      [setIsOpen, initialIsOpen, onOpen]
-    );
-
-    const handleScroll = useCallback<ScrollbarScrollEventHandler>(
-      ({ isBottom }) => {
-        setIsBottom(isBottom);
-      },
-      [setIsBottom]
-    );
-
-    const handleScrollTop = useCallback(() => {
-      if (ref && typeof ref !== 'function' && ref.current?.element) {
-        ref.current.element.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
+      if (typeof open === 'boolean' && !initialIsOpen && onOpen) {
+        onOpen(open);
       }
-    }, [ref]);
+    },
+    [setIsOpen, initialIsOpen, onOpen]
+  );
 
-    const handleScrollBottom = useCallback(() => {
-      if (ref && typeof ref !== 'function' && ref.current?.element) {
-        ref.current.element.scrollTo({
-          top: ref.current.element.scrollHeight,
-          behavior: 'smooth'
-        });
+  useEffect(() => {
+    if (!ref.current?.element) return;
+
+    const observer = new ResizeObserver(() => {
+      if (ref.current?.element?.clientHeight !== ref.current?.element?.scrollHeight) {
+        setIsScrolling(true);
+      } else {
+        setIsScrolling(false);
       }
-    }, [ref]);
+    })
 
-    return (
-      <SidebarProvider
-        isOpen={isOpen}
-        isEdit={isEdit}
-        setIsEdit={setIsEdit}
-        setIsOpen={handleOpen}
+    observer.observe(ref.current.element);
+
+    return () => {
+      observer.disconnect();
+    }
+
+  }, [ref.current?.element]);
+
+  return (
+    <SidebarProvider
+      isOpen={isOpen}
+      isEdit={isEdit}
+      setIsEdit={setIsEdit}
+      setIsOpen={handleOpen}
+    >
+      <SidebarStyled
+        $isOpen={isOpen}
+        className={className}
+        id={id}
       >
-        <SidebarStyled
-          $isOpen={isOpen}
-          className={className}
-          id={id}
-        >
-          <SidebarTop $isOpen={isOpen}>
-            {section === 'chats' && (
-              <SidebarHead $isOpen={isOpen}>
-                {isOpen && logo}
-                {isOpen && lang}
-                {section === 'chats' && !isOpen && toggle}
-                {menu}
-              </SidebarHead>
-            )}
-            {!isOpen && <SidebarDivider $isOpen={isOpen} />}
-            <SidebarToolbar $isOpen={isOpen}>
-              <SidebarButtons>{buttons}</SidebarButtons>
-              {section === 'chats' && isOpen && toggle}
-            </SidebarToolbar>
-            <SidebarDivider $isOpen={isOpen} />
-          </SidebarTop>
-          <SidebarContent>
-            <SidebarWrapper>
-              <SidebarBodyScrollbarWrapper>
-                {children}
-              </SidebarBodyScrollbarWrapper>
-            </SidebarWrapper>
-          </SidebarContent>
-          <SidebarBottom>
-            {isOpen && isEdit && deleteButton}
-            {user}
-          </SidebarBottom>
-        </SidebarStyled>
-      </SidebarProvider>
-    );
-  }
-);
-
+        <SidebarTop $isOpen={isOpen}>
+          {section === 'chats' && (
+            <SidebarHead $isOpen={isOpen}>
+              {isOpen && logo}
+              {isOpen && lang}
+              {section === 'chats' && !isOpen && toggle}
+              {menu}
+            </SidebarHead>
+          )}
+          {!isOpen && <SidebarDivider $isOpen={isOpen} />}
+          <SidebarToolbar $isOpen={isOpen}>
+            <SidebarButtons>{buttons}{buttonsModal}</SidebarButtons>
+            {section === 'chats' && isOpen && toggle}
+          </SidebarToolbar>
+          <SidebarDivider $isOpen={isOpen} />
+        </SidebarTop>
+        <SidebarContent>
+          <SidebarWrapper $isScrollable={isScrolling}>
+            <SidebarBodyScrollbarWrapper ref={ref}>
+              {children}
+            </SidebarBodyScrollbarWrapper>
+          </SidebarWrapper>
+        </SidebarContent>
+        <SidebarBottom>
+          {isOpen && isEdit && deleteButton}
+          {user}
+        </SidebarBottom>
+      </SidebarStyled>
+    </SidebarProvider>
+  );
+}
 export * from './user-info';
 export * from './styled';
 export * from './context';
 export * from './dropdown';
 export * from './group';
 export * from './buttons';
+export * from './chat';

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   SidebarDropdownContent,
+  SidebarDropdownList,
   SidebarDropdownStyled,
   SidebarDropdownToggler,
   SidebarDropdownTogglerIcon
@@ -49,27 +50,19 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
     }
   }, []);
 
-  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? {
-    right: 0,
-    bottom: 0
-  };
-
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      transform: 'scale(0.0)'
+      scale: 0.75
     },
     enter: {
-      opacity: isOpen ? 1 : 0.5,
-      backdropFilter: 'blur(2px)',
-      transform: `scale(${isOpen ? 1 : 0.999})`,
-      transition: {
-        duration: 150
-      }
+      opacity: 1,
+      zIndex: 100,
+      scale: 1,
     },
     leave: {
       opacity: 0,
-      transform: 'scale(0.999)'
+      scale: 0.75
     },
     config: {
       duration: 150
@@ -92,14 +85,11 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
             item && (
               <SidebarDropdownContent
                 ref={contentRef}
-                style={{
-                  ...style,
-                  transform: 'translate3d(-100%, 0, 0)',
-                  left: contentPosition.right,
-                  top: contentPosition.bottom
-                }}
+                style={style}
               >
-                {children}
+                <SidebarDropdownList>
+                  {children}
+                </SidebarDropdownList>
               </SidebarDropdownContent>
             )
         )}
@@ -108,5 +98,4 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
   );
 };
 
-export * from './styled';
-export * from './item';
+export { SidebarDropdownItem } from './item';
