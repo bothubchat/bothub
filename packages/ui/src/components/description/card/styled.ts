@@ -176,6 +176,7 @@ export const DescriptionCardButtonsWrapper = styled.div`
   margin-top: 20px;
   display: flex;
   column-gap: 16px;
+  z-index: 2;
   @media (max-width: 550px) {
     margin-bottom: 0px;
   }
