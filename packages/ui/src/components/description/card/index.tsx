@@ -3,7 +3,6 @@ import {
   DescriptionCardBackground,
   DescriptionCardBackgroundWrapper,
   DescriptionCardBorderWrapper,
-  DescriptionCardButton,
   DescriptionCardContent,
   DescriptionCardStyled,
   DescriptionCardText,
@@ -11,7 +10,11 @@ import {
   DescriptionCardTertiaryTitle,
   DescriptionCardTertiaryText
 } from './styled';
-import { DescriptionCardVariant } from './types';
+import {
+  TDescriptionCard,
+  DescriptionCardVariant,
+  TDescriptionCardBackground
+} from './types';
 import { LinksIcon } from '@/ui/icons/links';
 import { useTheme } from '@/ui/theme';
 
@@ -23,15 +26,19 @@ export interface DescriptionCardProps
   icon?: React.ReactNode;
   title?: React.ReactNode | string;
   text?: React.ReactNode | string;
-  button?: React.ReactNode | boolean;
   variant?: DescriptionCardVariant;
+  descriptionCardType?: TDescriptionCard;
+  bgDescriptionCard?: TDescriptionCardBackground;
+  children?: React.ReactNode;
 }
 
 export const DescriptionCard: React.FC<DescriptionCardProps> = ({
   icon = <LinksIcon />,
   title,
+  descriptionCardType,
+  bgDescriptionCard,
   text,
-  button,
+  children,
   variant = 'main',
   ...props
 }) => {
@@ -66,6 +73,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
     <DescriptionCardStyled
       {...props}
       $variant={variant}
+      $descriptionCardType={descriptionCardType}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -89,7 +97,10 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
               : {}
           }
         >
-          <DescriptionCardBackground $variant={variant} />
+          <DescriptionCardBackground
+            $bgVariant={bgDescriptionCard}
+            $variant={variant}
+          />
           <DescriptionCardContent $variant={variant}>
             {variant === 'tertiary' && icon}
             {variant !== 'tertiary' &&
@@ -120,11 +131,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
               ) : (
                 text
               ))}
-            {variant !== 'tertiary' && button === true ? (
-              <DescriptionCardButton>Подробнее</DescriptionCardButton>
-            ) : (
-              button
-            )}
+            {children}
           </DescriptionCardContent>
         </DescriptionCardBackgroundWrapper>
       </DescriptionCardBorderWrapper>

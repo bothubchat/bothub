@@ -226,6 +226,8 @@ import {
   ExclamationIcon,
   OrganizationIcon,
   SimpleGearIcon,
+  SetchelIcon,
+  ArticleIcon,
   AssemblyIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
@@ -496,6 +498,8 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TextRewriteIcon">{TextRewriteIcon}</IconItem>
         <IconItem name="FavoriteProfileIcon">{FavoriteProfileIcon}</IconItem>
         <IconItem name="ExclamationIcon">{ExclamationIcon}</IconItem>
+        <IconItem name="SetchelIcon">{SetchelIcon}</IconItem>
+        <IconItem name="ArticleIcon">{ArticleIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
