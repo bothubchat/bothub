@@ -597,10 +597,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                                   onMouseEnter={handleTooltipMouseEnter}
                                   onMouseLeave={handleTooltipMouseLeave}
                                 >
-                                  {value.label && value.label.slice(0, 64)}
-                                  {value.label &&
-                                    value.label.length > 64 &&
-                                    '...'}
+                                  {value.label}
                                 </SelectFieldColorValueText>
                               )}
                             </TooltipConsumer>

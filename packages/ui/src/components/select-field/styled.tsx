@@ -162,6 +162,7 @@ export const SelectFieldInputSide = styled.div`
 
 export const SelectFieldInputLeftSide = styled(SelectFieldInputSide)`
   width: 100%;
+  min-width: 0;
 `;
 
 export interface SelectFieldSearchIconProps {
@@ -242,11 +243,17 @@ export const SelectFieldValue = styled.span`
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
 `;
 
 export const SelectFieldValueText = styled(Typography).attrs({
   variant: 'input-sm'
-})``;
+})`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+`;
 
 export interface SelectFieldValueColorProps {
   $color: string;
@@ -265,6 +272,10 @@ export const SelectFieldColorValueText = styled(Typography).attrs({
   variant: 'input-sm'
 })`
   color: ${({ theme }) => theme.colors.base.white};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 `;
 
 export const SelectFieldValues = styled.div`
