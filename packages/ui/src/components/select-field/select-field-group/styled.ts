@@ -63,6 +63,7 @@ export const Shadow = styled.div<ShadowProps>`
   z-index: 1;
   transition: opacity 0.2s;
   opacity: ${({ $show }) => ($show ? 1 : 0)};
+  pointer-events: none;
 
   ${({ $onTop = false, theme }) => {
     const color =
