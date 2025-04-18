@@ -226,7 +226,6 @@ import {
   ExclamationIcon,
   OrganizationIcon,
   SimpleGearIcon,
-  ArrowRight45,
   SetchelIcon,
   ArticleIcon,
   AssemblyIcon
@@ -257,7 +256,6 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="MenuDotIcon">{MenuDotIcon}</IconItem>
         <IconItem name="ArrowNarrowLeftIcon">{ArrowNarrowLeftIcon}</IconItem>
         <IconItem name="ArrowNarrowRightIcon">{ArrowNarrowRightIcon}</IconItem>
-        <IconItem name="ArrowRight45">{ArrowRight45}</IconItem>
         <IconItem name="CloseIcon">{CloseIcon}</IconItem>
         <IconItem name="SettingsIcon">{SettingsIcon}</IconItem>
         <IconItem name="CheckCircleIcon">{CheckCircleIcon}</IconItem>

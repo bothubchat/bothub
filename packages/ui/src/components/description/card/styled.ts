@@ -7,19 +7,6 @@ import {
   TDescriptionCardBackground
 } from './types';
 
-import {
-  article,
-  fav,
-  refferal,
-  tg,
-  collaborateBg,
-  collaborateBgTablet,
-  collaborateBgMobile,
-  productsBg,
-  productsBgTablet,
-  productsBgMobile
-} from './assets';
-
 export interface DescriptionCardBorderWrapperProps {
   $variant: DescriptionCardVariant;
 }
@@ -126,18 +113,6 @@ export const DescriptionCardBackground = styled.div<{
         `;
       default:
         return css`
-          background-image: ${() => {
-            switch ($bgVariant) {
-              case 'article':
-                return `url(${JSON.stringify(article)})`;
-              case 'fav':
-                return `url(${JSON.stringify(fav)})`;
-              case 'referral':
-                return `url(${JSON.stringify(refferal)})`;
-              case 'tg':
-                return `url(${JSON.stringify(tg)})`;
-            }
-          }};
           background-position: right bottom;
           background-repeat: no-repeat;
           @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
@@ -242,28 +217,8 @@ export const DescriptionCardStyled = styled.div<{
         }
       }
       ${DescriptionCardBackground} {
-        background-image: ${$descriptionCardType === 'collaborate'
-          ? `url(${JSON.stringify(collaborateBg)})`
-          : `url(${JSON.stringify(productsBg)})`};
-
         background-repeat: no-repeat;
         background-position: bottom right;
-        @media (max-width: 840px) {
-          background-image: ${$descriptionCardType === 'collaborate'
-            ? `url(${JSON.stringify(collaborateBgTablet)})`
-            : `url(${JSON.stringify(productsBgTablet)})`};
-        }
-        @media (max-width: 550px) {
-          background-image: ${$descriptionCardType === 'collaborate'
-            ? `url(${JSON.stringify(collaborateBg)})`
-            : `url(${JSON.stringify(productsBg)})`};
-        }
-
-        @media (max-width: 376px) {
-          background-image: ${$descriptionCardType === 'collaborate'
-            ? `url(${JSON.stringify(collaborateBgMobile)})`
-            : `url(${JSON.stringify(productsBgMobile)})`};
-        }
       }
     `}
   ${({ $variant, theme }) =>
