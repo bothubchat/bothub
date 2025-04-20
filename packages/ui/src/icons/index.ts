@@ -233,4 +233,5 @@ export * from './exclamation';
 export * from './article';
 export * from './setchel';
 export * from './assembly';
-export * from './grid-vertical';
+export * from './grok';
+export * from './deepseek';

@@ -1,9 +1,13 @@
 import {
+  ClaudeIcon,
   CodeGenerationIcon,
   DashboardIcon,
+  DeepSeekIcon,
+  FavoriteProfileIcon,
   Gpt4Icon,
-  GridVerticalIcon,
+  GrokIcon,
   ImageGenerationIcon,
+  IncludeContextIcon,
   TextGenerationIcon
 } from '@/ui/icons';
 import {
@@ -14,7 +18,11 @@ import {
   MultiLevelMenuStarIconDeluxe,
   MultiLevelMenuStarIconElite,
   MultiLevelMenuStarIconPremium,
-  MultiLevelMenuStarIconPlans
+  MultiLevelMenuStarIconPlans,
+  MultiLevelMenuFlexIcon,
+  MultiLevelMenuActionChatIcon,
+  MultiLevelMenuSetchelIcon,
+  MultiLevelMenuReferalIcon
 } from '../styled';
 
 export const menuItems = [
@@ -101,7 +109,7 @@ export const menuItems = [
       {
         title: 'На модели',
         path: '#',
-        icon: <GridVerticalIcon />
+        icon: ''
       }
     ]
   },
@@ -138,7 +146,7 @@ export const menuItems = [
       {
         title: 'Claude',
         path: '#',
-        icon: '',
+        icon: <ClaudeIcon size={18} />,
         children: [
           {
             title: 'Elite',
@@ -165,7 +173,7 @@ export const menuItems = [
       {
         title: 'DeepSeek',
         path: '#',
-        icon: '',
+        icon: <DeepSeekIcon />,
         children: [
           {
             title: 'Elite',
@@ -192,7 +200,7 @@ export const menuItems = [
       {
         title: 'Flux',
         path: '#',
-        icon: '',
+        icon: <MultiLevelMenuFlexIcon size={18} />,
         children: [
           {
             title: 'Elite',
@@ -219,7 +227,7 @@ export const menuItems = [
       {
         title: 'Grok',
         path: '#',
-        icon: '',
+        icon: <GrokIcon />,
         children: [
           {
             title: 'Elite',
@@ -246,29 +254,7 @@ export const menuItems = [
       {
         title: 'Все модели',
         path: '#',
-        icon: '',
-        children: [
-          {
-            title: 'Elite',
-            path: '#',
-            icon: ''
-          },
-          {
-            title: 'Deluxe',
-            path: '#',
-            icon: ''
-          },
-          {
-            title: 'Premium',
-            path: '#',
-            icon: ''
-          },
-          {
-            title: 'Basic',
-            path: '#',
-            icon: ''
-          }
-        ]
+        icon: ''
       }
     ]
   },
@@ -276,31 +262,41 @@ export const menuItems = [
     accordion_title: 'Для бизнеса',
     first_level: [
       {
-        title: 'Планы',
+        title: 'Услуги',
         path: '#',
         icon: '',
         children: [
           {
-            title: 'Elite',
+            title: 'Корпоротивная подписка',
             path: '#',
-            icon: ''
+            icon: <MultiLevelMenuSetchelIcon size={18} />,
+            description:
+              'Тариф с приоритетной поддержкой, индивидуальным подходом и контролем расхода токенов по членам команды'
           },
           {
-            title: 'Deluxe',
+            title: 'Соглашение о неразглашении',
             path: '#',
-            icon: ''
+            icon: <IncludeContextIcon size={18} />,
+            description:
+              'NDA в формате дополнительного соглашения для защиты ваших данных'
           },
           {
-            title: 'Premium',
+            title: 'Партнерская программа',
             path: '#',
-            icon: ''
-          },
-          {
-            title: 'Basic',
-            path: '#',
-            icon: ''
+            icon: <MultiLevelMenuReferalIcon size={18} />,
+            description: 'Зарабатывайте на рекомендациях вместе с нами'
           }
         ]
+      },
+      {
+        title: 'Инвесторам',
+        path: '#',
+        icon: <FavoriteProfileIcon size={18} />
+      },
+      {
+        title: 'Поддержка',
+        path: '#',
+        icon: <MultiLevelMenuActionChatIcon size={18} />
       }
     ]
   },

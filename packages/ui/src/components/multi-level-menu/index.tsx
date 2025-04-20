@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { menuItems } from './config';
 import { MultiLevelMenuStyled, MultiLevelMenuWrapper } from './styled';

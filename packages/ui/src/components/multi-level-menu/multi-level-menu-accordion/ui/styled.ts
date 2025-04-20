@@ -106,6 +106,7 @@ export const MultiLevelMenuArrowRight = styled(ArrowDownIcon)`
 `;
 
 export const MultiLevelMenuSecondLevelLi = styled.li`
+  position: relative;
   list-style: none;
   margin-bottom: 8px;
   padding-left: 10px;
@@ -117,7 +118,15 @@ export const MultiLevelMenuSecondLevelLi = styled.li`
   }
 `;
 
-export const MultiLevelMenuSecondLevelHeader = styled.a`
+export const MultiLevelMenuSecondLevelCardLink = styled.a`
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+`;
+
+export const MultiLevelMenuSecondLevelHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;

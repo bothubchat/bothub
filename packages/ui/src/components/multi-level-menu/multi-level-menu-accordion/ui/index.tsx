@@ -8,6 +8,7 @@ import {
   MultiLevelMenuFirstLevelWrapper,
   MultiLevelMenuHeader,
   MultiLevelMenuLi,
+  MultiLevelMenuSecondLevelCardLink,
   MultiLevelMenuSecondLevelDescription,
   MultiLevelMenuSecondLevelHeader,
   MultiLevelMenuSecondLevelHeaderContent,
@@ -57,7 +58,10 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
               {item.children &&
                 item.children.map((childrenItem, indexChildrenItem) => (
                   <MultiLevelMenuSecondLevelLi key={indexChildrenItem}>
-                    <MultiLevelMenuSecondLevelHeader href={childrenItem.path}>
+                    <MultiLevelMenuSecondLevelCardLink
+                      href={childrenItem.path}
+                    />
+                    <MultiLevelMenuSecondLevelHeader>
                       <MultiLevelMenuSecondLevelHeaderContent>
                         {childrenItem.icon}
                         <MultiLevelMenuFirsLevelTitle>
