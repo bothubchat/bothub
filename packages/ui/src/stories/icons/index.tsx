@@ -228,7 +228,13 @@ import {
   SimpleGearIcon,
   SetchelIcon,
   ArticleIcon,
-  AssemblyIcon
+  AssemblyIcon,
+  DataVisualisationIcon,
+  DocumentAnalisysIcon,
+  ProblemSolvmentIcon,
+  SettingAnalisysIcon,
+  TranslationIcon,
+  StarsIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -500,6 +506,14 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="ExclamationIcon">{ExclamationIcon}</IconItem>
         <IconItem name="SetchelIcon">{SetchelIcon}</IconItem>
         <IconItem name="ArticleIcon">{ArticleIcon}</IconItem>
+        <IconItem name="DataVisualisationIcon">
+          {DataVisualisationIcon}
+        </IconItem>
+        <IconItem name="DocumentAnalisysIcon">{DocumentAnalisysIcon}</IconItem>
+        <IconItem name="ProblemSolvmentIcon">{ProblemSolvmentIcon}</IconItem>
+        <IconItem name="TranslationIcon">{TranslationIcon}</IconItem>
+        <IconItem name="StarsIcon">{StarsIcon}</IconItem>
+        <IconItem name="SettingAnalisysIcon">{SettingAnalisysIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
