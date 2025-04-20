@@ -1,6 +1,5 @@
 import { styled } from 'styled-components';
-import { Typography } from '../typography';
-import { ArrowDownIcon, ArrowNarrowRightIcon } from '@/ui/icons';
+import { Imagine2Icon, ArticleIcon, TgCircleIcon, StarIcon } from '@/ui/icons';
 
 export const MultiLevelMenuStyled = styled.nav`
   margin-top: 30px;
@@ -9,83 +8,48 @@ export const MultiLevelMenuStyled = styled.nav`
 export const MultiLevelMenuWrapper = styled.ul`
   display: flex;
   flex-direction: column;
+  user-select: none;
   row-gap: 30px;
 `;
-export const MultiLevelMenuHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
+
+export const StartsIconMultiLevelMenu = styled(Imagine2Icon)`
+  path {
+    fill: ${({ theme }) => theme.colors.base.white};
+  }
 `;
-export const MultiLevelMenuTitle = styled(Typography).attrs({
-  variant: 'body-l-semibold'
-})``;
-
-export const MultiLevelMenuFirstLevelWrapper = styled.ul`
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  row-gap: 8px;
+export const ArticleIconMultiLevelMenu = styled(ArticleIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.base.white};
+  }
 `;
-
-export const MultiLevelMenuFirsLevelTitle = styled(Typography).attrs({
-  variant: 'body-m-medium'
-})``;
-
-export const MultiLevelMenuFirsLevelHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 14px;
-  max-width: 250px;
-  width: 250px;
-  //придумать что-то с маргином должен быть внешним а не внутриним
-`;
-
-export const MultiLevelMenuFirsLevelHeaderContent = styled.div`
-  display: flex;
-  column-gap: 12px;
-  align-items: center;
-`;
-
-export const MultiLevelMenuArrowRight45 = styled(ArrowNarrowRightIcon)`
-  transform: rotate(-45deg);
+export const TgCircleIconMultiLevelMenu = styled(TgCircleIcon)`
   path {
     fill: ${({ theme }) => theme.colors.base.white};
   }
 `;
 
-export const MultiLevelMenuArrowRight = styled(ArrowDownIcon)`
-  transform: rotate(-90deg);
+export const MultiLevelMenuStarIconElite = styled(StarIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.gradient.elite};
+  }
 `;
-
-export const MultiLevelMenuLi = styled.li`
-  list-style: none;
+export const MultiLevelMenuStarIconDeluxe = styled(StarIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.gradient.deluxe};
+  }
 `;
-export const MultiLevelFirstLevelMenuLi = styled(MultiLevelMenuLi)`
-  display: flex;
-  align-items: start;
-  gap: 18px;
+export const MultiLevelMenuStarIconPremium = styled(StarIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.gradient.premium};
+  }
 `;
-export const MultiLevelMenuSecondLevelLi = styled(MultiLevelMenuLi)`
-  padding: 10px;
+export const MultiLevelMenuStarIconBasic = styled(StarIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.gradient.basic};
+  }
 `;
-
-export const MultiLevelMenuSecondLevelWrapper = styled.div`
-  padding: 0;
-  margin: 0;
-  width: 486px;
-  max-width: 486px;
-`;
-
-export const MultiLevelMenuSecondLevelHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-export const MultiLevelMenuSecondLevelHeaderContent = styled.div`
-  display: flex;
-  column-gap: 10px;
-  align-items: center;
+export const MultiLevelMenuStarIconPlans = styled(StarIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.base.white};
+  }
 `;
