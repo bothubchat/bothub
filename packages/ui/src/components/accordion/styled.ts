@@ -2,6 +2,10 @@ import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 
+type IsOpenProps = {
+  $isOpen: boolean;
+};
+
 export const AccordionStyled = styled.div`
   width: 100%;
   display: flex;
@@ -11,7 +15,7 @@ export const AccordionStyled = styled.div`
   position: relative;
 `;
 
-export const AccordionHead = styled.div<{ $isOpen: boolean }>`
+export const AccordionHead = styled.div<IsOpenProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -54,14 +58,14 @@ export const AccordionLabel = styled(Typography).attrs({
   z-index: 1;
 `;
 
-export const AccordionArrow = styled(ArrowDownIcon).attrs<{
-  $isOpen: boolean;
-}>({ size: 24 })`
+export const AccordionArrow = styled(ArrowDownIcon).attrs<IsOpenProps>({
+  size: 24
+})`
   transform: rotate(${({ $isOpen }) => ($isOpen ? '180deg' : '0deg')});
   transition: transform 0.2s ease-in-out;
 `;
 
-export const AccordionBody = styled.div<{ $isOpen: boolean }>`
+export const AccordionBody = styled.div<IsOpenProps>`
   background-color: ${({ theme }) => theme.colors.grayScale.gray3};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-top: 0;
@@ -84,9 +88,15 @@ export const AccordionBody = styled.div<{ $isOpen: boolean }>`
         `};
 `;
 
-export const AccordionText = styled(Typography).attrs({
+export const AccordionText = styled(Typography).attrs<IsOpenProps>({
   variant: 'body-m-regular',
   component: 'p'
 })`
   white-space: pre-wrap;
+  ${({ $isOpen }) =>
+    !$isOpen &&
+    css`
+      opacity: 0;
+      pointer-events: none;
+    `};
 `;
