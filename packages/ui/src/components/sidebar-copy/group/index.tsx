@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   SidebarArrowDownIcon,
+  SidebarGroupBackground,
   SidebarGroupBox,
   SidebarGroupList,
   SidebarGroupName,
@@ -90,6 +91,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
         (style, item) =>
           item && <SidebarGroupList style={style}>{children}</SidebarGroupList>
       )}
+
     </SidebarGroupStyled>
   );
 };

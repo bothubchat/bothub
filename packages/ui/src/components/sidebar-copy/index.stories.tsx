@@ -123,27 +123,44 @@ const Chats = ({
       skeleton={loading}
       actions={actions}
       name="Чаты"
-    ><Chat/></SidebarGroup>
+    >
+      <Chat/>
+    </SidebarGroup>
     <SidebarGroup
       skeleton={loading}
       actions={actions}
       name="Пресеты"
-    ><Chat/></SidebarGroup>
+    >
+      <Chat/>
+    </SidebarGroup>
     <SidebarGroup
       skeleton={loading}
       actions={actions}
-      name="Работа"
-    />
+      name="Чаты"
+    >
+      <Chat/>
+    </SidebarGroup>
     <SidebarGroup
       skeleton={loading}
       actions={actions}
-      name="Работа"
-    />
+      name="Пресеты"
+    >
+      <Chat/>
+    </SidebarGroup>
     <SidebarGroup
       skeleton={loading}
       actions={actions}
-      name="Работа"
-    />
+      name="Чат12222221222222222222ы"
+    >
+      <Chat/>
+    </SidebarGroup>
+    <SidebarGroup
+      skeleton={loading}
+      actions={actions}
+      name="Пресеты"
+    >
+      <Chat/>
+    </SidebarGroup>
   </SidebarGroupsList>
 );
 

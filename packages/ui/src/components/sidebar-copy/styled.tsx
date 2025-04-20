@@ -46,6 +46,7 @@ export const SidebarWrapper = styled.div<{
 }>`
   display: flex;
   width: 100%;
+  height: 100%;
   overflow: hidden;
   margin: 0 16px;
   padding-right: ${({ $isScrollable }) => ($isScrollable ? 20 : 26)}px;

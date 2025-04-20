@@ -2,12 +2,17 @@ import { styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons';
+import { colorToRgba } from '@/ui/utils';
 
 export const SidebarGroupStyled = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 8px;
+`;
+
+export const SidebarGroupBackground = styled.div`
+
 `;
 
 export const SidebarGroupBox = styled.div`
@@ -18,12 +23,12 @@ export const SidebarGroupBox = styled.div`
   padding: 8px;
   height: fit-content;
   position: relative;
-  z-index: 0;
-  &::before, &::after {
-    z-index: -1;
+  transition: all 0.15s ease-in-out;
+  border-radius: 8px;
+  &::before {
     content: '';
-    border-radius: 10px;
     position: absolute;
+    border-radius: 8px;
     top: 0;
     left: 0px;
     width: 100%;
@@ -31,11 +36,8 @@ export const SidebarGroupBox = styled.div`
     transition: all 0.15s ease-in-out;
   }
   &:hover {
+    background: ${({ theme }) => colorToRgba(theme.colors.accent.primaryLight, 0.5)};
     &::before {
-      opacity: 0.5;
-      background: ${({ theme }) => theme.colors.accent.primaryLight};
-    }
-    &::after {
       border-left: 3px solid ${({ theme }) => theme.colors.accent.primary};
     }
   }
@@ -61,6 +63,7 @@ export const SidebarGroupName = styled(Typography).attrs({
 
 export const SidebarGroupsList = styled.div`
   display: flex;
+  height: 100%;
   flex-direction: column;
   gap: 8px;
 `;

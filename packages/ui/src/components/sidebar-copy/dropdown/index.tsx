@@ -19,14 +19,18 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
   ...props
 }) => {
   const theme = useTheme();
-
+  const contentRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
-
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsOpen((prev) => !prev);
+  };
+
+  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? {
+    right: 0,
+    bottom: 0
   };
 
   useEffect(() => {
@@ -38,14 +42,10 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
           setIsOpen(false);
         }
       };
-      const blurListener = () => setIsOpen(false);
-
       document.addEventListener('click', clickListener, true);
-      window.addEventListener('blur', blurListener, true);
 
       return () => {
         document.removeEventListener('click', clickListener, true);
-        window.removeEventListener('blur', blurListener, true);
       };
     }
   }, []);
@@ -53,16 +53,19 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      scale: 0.75
+      transform: 'scale(0.0)'
     },
     enter: {
-      opacity: 1,
-      zIndex: 100,
-      scale: 1,
+      opacity: isOpen ? 1 : 0.5,
+      backdropFilter: 'blur(8px)',
+      transform: `scale(${isOpen ? 1 : 0.999})`,
+      transition: {
+        duration: 150
+      }
     },
     leave: {
       opacity: 0,
-      scale: 0.75
+      transform: 'scale(0.999)'
     },
     config: {
       duration: 150
@@ -75,17 +78,22 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
         {...props}
         ref={dropdownRef}
       >
-        <IconProvider fill={theme.colors.base.white}>
-          <SidebarDropdownToggler onClick={handleToggle}>
-            <SidebarDropdownTogglerIcon />
+          <SidebarDropdownToggler ref={buttonRef} onClick={handleToggle}>
+            <IconProvider fill={theme.colors.base.white}>
+              <SidebarDropdownTogglerIcon />
+            </IconProvider>
           </SidebarDropdownToggler>
-        </IconProvider>
         {dropdownTransition(
           (style, item) =>
             item && (
               <SidebarDropdownContent
                 ref={contentRef}
-                style={style}
+                style={{
+                  ...style,
+                  transform: 'translate3d(-100%, 0, 0)',
+                  left: contentPosition.right,
+                  top: contentPosition.bottom
+                }}
               >
                 <SidebarDropdownList>
                   {children}

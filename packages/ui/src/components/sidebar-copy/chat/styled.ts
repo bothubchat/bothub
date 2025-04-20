@@ -2,6 +2,7 @@ import { SidebarChatIcon } from "@/ui/icons";
 import { styled } from "styled-components";
 import { Typography } from "@/ui/components/typography";
 import { Skeleton } from "@/ui/components/skeleton";
+import { colorToRgba } from "@/ui/utils";
 
 export const SidebarChatStyled = styled.div`
   display: flex;
@@ -11,12 +12,11 @@ export const SidebarChatStyled = styled.div`
   padding: 8px;
   height: fit-content;
   position: relative;
-  z-index: 0;
-  &::before, &::after {
-    z-index: -1;
+  border-radius: 8px;
+  &::before {
     content: '';
-    border-radius: 10px;
     position: absolute;
+    border-radius: 8px;
     top: 0;
     left: 0px;
     width: 100%;
@@ -24,11 +24,8 @@ export const SidebarChatStyled = styled.div`
     transition: all 0.15s ease-in-out;
   }
   &:hover {
+    background: ${({ theme }) => colorToRgba(theme.colors.accent.primaryLight, 0.5)};
     &::before {
-      opacity: 0.5;
-      background: ${({ theme }) => theme.colors.accent.primaryLight};
-    }
-    &::after {
       border-left: 3px solid ${({ theme }) => theme.colors.accent.primary};
     }
   }

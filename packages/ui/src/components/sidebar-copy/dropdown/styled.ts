@@ -2,12 +2,11 @@ import { styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
 import { Typography } from '@/ui/components/typography';
+import { colorToRgba } from '@/ui/utils';
 
 export const SidebarDropdownStyled = styled.div`
   display: flex;
   position: relative;
-  z-index: 0;
-
 `;
 
 export const SidebarDropdownTogglerIcon = styled(MenuDotIcon).attrs({
@@ -30,26 +29,26 @@ export const SidebarDropdownToggler = styled.button`
 `;
 
 export const SidebarDropdownContent = styled(animated.div)`
-  position: absolute;
+  position: fixed;
   transform-origin: top right;
   margin-top: 16px;
   top: 0px;
-  right: 0px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 8px;
   padding: 8px;
+  z-index: 1;
   &::before {
     content: '';
     position: absolute;
     border-radius: 8px;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
     top: 0px;
-    bottom: 0px;
-    left: 0px;
     right: 0px;
-    background: ${({ theme }) => theme.colors.grayScale.gray4};
-    opacity: 0.75;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(${({ theme }) => colorToRgba(theme.colors.grayScale.gray4)}, 0.75);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 `;
 
@@ -66,7 +65,7 @@ export const SidebarDropdownItemStyled = styled.button`
   display: flex;
   align-items: center;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
   gap: 10px;
   padding: 10px;
   background: none;
