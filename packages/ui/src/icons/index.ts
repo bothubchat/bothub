@@ -230,4 +230,6 @@ export * from './text-generation';
 export * from './traffic-analisys';
 export * from './fav-profile';
 export * from './exclamation';
+export * from './article';
+export * from './setchel';
 export * from './assembly';

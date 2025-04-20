@@ -63,6 +63,7 @@ export const BadgeSelectDropdown: React.FC<IBadgeSelectDropdown> = ({
     <BadgeSelectDropdownProvider setIsOpen={setIsOpen}>
       <BadgeSelectDropdownWrapper ref={dropdownRef}>
         <BadgeSelectDropdownTrigger
+          $active={isOpen}
           onClick={handleToggle}
           type="button"
         >
