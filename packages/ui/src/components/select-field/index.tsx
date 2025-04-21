@@ -388,6 +388,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
   const inputRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const isKeyboardOpen = useRef(false);
 
   const [blockHeight, setBlockHeight] = useState<number | null>(null);
 
@@ -454,6 +455,8 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   useEffect(() => {
     if (isOpen) {
       const listener = () => {
+        if (isKeyboardOpen.current) return;
+
         handleClose();
       };
 
@@ -744,6 +747,12 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                           placeholder={searchPlaceholder}
                           value={searchValue}
                           onChange={handleSearchChange}
+                          onClick={() => {
+                            isKeyboardOpen.current = true;
+                          }}
+                          onBlur={() => {
+                            isKeyboardOpen.current = false;
+                          }}
                         />
                       )}
                       {before && (
