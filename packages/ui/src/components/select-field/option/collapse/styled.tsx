@@ -115,12 +115,9 @@ export const SelectFieldCollapseOptionText = styled(
     `}
 `;
 
-export const SelectFieldCollapseOptionArrow = styled(ArrowDownIcon).attrs(
-  ({ theme }) => ({
-    size: 16,
-    fill: theme.colors.base.white
-  })
-)`
+export const SelectFieldCollapseOptionArrow = styled(ArrowDownIcon).attrs({
+  size: 16
+})`
   transition: transform 0.2s ease-in-out;
 `;
 
