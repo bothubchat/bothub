@@ -128,11 +128,17 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
         }
 
         if (item.type === 'radio') {
+          const onClick = (e: React.MouseEvent) => {
+            e.preventDefault();
+
+            handleOptionClick(item);
+          };
+
           return (
             <SelectFieldRadio
               key={item.id ?? item.value ?? `radio-${index}`}
               $selected={item.selected}
-              onClick={handleOptionClick.bind(null, item)}
+              onClick={onClick}
             >
               <SelectFieldRadioTitleAndRadio>
                 {item.label && (
