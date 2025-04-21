@@ -1,4 +1,4 @@
-import { icon, Icon, IconConsumer } from '@/ui/components';
+import { icon, Icon, IconConsumer } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
 export const GridHorizontalIcon = icon(({ ...props }) => {

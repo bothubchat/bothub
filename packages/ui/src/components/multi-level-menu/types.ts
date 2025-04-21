@@ -6,7 +6,8 @@ export type TMenuItem = {
 export type TFirstLevelItem = {
   title: string;
   path: string;
-  icon: JSX.Element | string;
+  icon?: JSX.Element | string;
   description?: string;
+  sub_title?: string;
   children?: TFirstLevelItem[];
 };

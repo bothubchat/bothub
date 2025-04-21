@@ -230,7 +230,12 @@ import {
   ArticleIcon,
   AssemblyIcon,
   GrokIcon,
-  DeepSeekIcon
+  DeepSeekIcon,
+  AcademyIcon,
+  GridVerticalIcon,
+  GridHorizontalIcon,
+  StarGradientIcon,
+  ReportIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -504,6 +509,11 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="ArticleIcon">{ArticleIcon}</IconItem>
         <IconItem name="GrokIcon">{GrokIcon}</IconItem>
         <IconItem name="DeepSeekIcon">{DeepSeekIcon}</IconItem>
+        <IconItem name="AcademyIcon">{AcademyIcon}</IconItem>
+        <IconItem name="GridVerticalIcon">{GridVerticalIcon}</IconItem>
+        <IconItem name="GridHorizontalIcon">{GridHorizontalIcon}</IconItem>
+        <IconItem name="StarGradientIcon">{StarGradientIcon}</IconItem>
+        <IconItem name="ReportIcon">{ReportIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

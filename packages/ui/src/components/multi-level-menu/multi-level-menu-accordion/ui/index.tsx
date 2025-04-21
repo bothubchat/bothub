@@ -1,23 +1,14 @@
+import { useState } from 'react';
+import { useTransition } from '@react-spring/web';
 import {
-  MultiLevelFirstLevelMenuLi,
-  MultiLevelMenuArrowRight,
-  MultiLevelMenuArrowRight45,
-  MultiLevelMenuFirsLevelHeader,
-  MultiLevelMenuFirsLevelHeaderContent,
-  MultiLevelMenuFirsLevelTitle,
+  MultiLevelMenuArrowDownIcon,
   MultiLevelMenuFirstLevelWrapper,
   MultiLevelMenuHeader,
   MultiLevelMenuLi,
-  MultiLevelMenuSecondLevelCardLink,
-  MultiLevelMenuSecondLevelDescription,
-  MultiLevelMenuSecondLevelHeader,
-  MultiLevelMenuSecondLevelHeaderContent,
-  MultiLevelMenuSecondLevelLi,
-  MultiLevelMenuSecondLevelWrapper,
   MultiLevelMenuTitle
 } from './styled';
-import { ArrowDownIcon } from '@/ui/icons';
 import { TMenuItem } from '../../types';
+import { MultiLevelMenuFirstLevelItem } from '../../multi-level-menu-first-level';
 
 interface IMultiLevelMenuAccordion {
   menuItem: TMenuItem;
@@ -28,58 +19,55 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
   menuItem,
   openAccordion,
   handleAccordionToggle
-}) => (
-  <MultiLevelMenuLi onClick={handleAccordionToggle}>
-    <MultiLevelMenuHeader $active={openAccordion}>
-      <MultiLevelMenuTitle>{menuItem.accordion_title}</MultiLevelMenuTitle>
-      <ArrowDownIcon />
-    </MultiLevelMenuHeader>
-    <MultiLevelMenuFirstLevelWrapper $open={openAccordion}>
-      {menuItem.first_level &&
-        menuItem.first_level.map((item, indexItem) => (
-          <MultiLevelFirstLevelMenuLi key={indexItem}>
-            <MultiLevelMenuFirsLevelHeader
-              as={item.children ? 'div' : 'a'}
-              href={item.children ? undefined : item.path}
+}) => {
+  const [openFirstLevelMenu, setOpenFirstLevelMenu] = useState<number | null>(
+    null
+  );
+
+  const handleFirstLevelToggle = (index: number) => {
+    setOpenFirstLevelMenu(openFirstLevelMenu === index ? null : index);
+  };
+
+  const dropdownTransition = useTransition(openAccordion, {
+    from: { opacity: 0, height: 0, transform: 'translateY(-20px)' },
+    enter: { opacity: 1, height: 'auto', transform: 'translateY(0)' },
+    leave: { opacity: 0, height: 0, transform: 'translateY(-20px)' },
+    config: { duration: 200 }
+  });
+
+  return (
+    <MultiLevelMenuLi>
+      <MultiLevelMenuHeader
+        onClick={handleAccordionToggle}
+        $active={openAccordion}
+      >
+        <MultiLevelMenuTitle>{menuItem.accordion_title}</MultiLevelMenuTitle>
+        <MultiLevelMenuArrowDownIcon $open={openAccordion} />
+      </MultiLevelMenuHeader>
+      {dropdownTransition(
+        (style, item) =>
+          item && (
+            <MultiLevelMenuFirstLevelWrapper
+              $open={openAccordion && !!item}
+              style={style}
             >
-              <MultiLevelMenuFirsLevelHeaderContent>
-                {item.icon}
-                <MultiLevelMenuFirsLevelTitle>
-                  {item.title}
-                </MultiLevelMenuFirsLevelTitle>
-              </MultiLevelMenuFirsLevelHeaderContent>
-              {item.children ? (
-                <MultiLevelMenuArrowRight />
-              ) : (
-                <MultiLevelMenuArrowRight45 />
-              )}
-            </MultiLevelMenuFirsLevelHeader>
-            <MultiLevelMenuSecondLevelWrapper>
-              {item.children &&
-                item.children.map((childrenItem, indexChildrenItem) => (
-                  <MultiLevelMenuSecondLevelLi key={indexChildrenItem}>
-                    <MultiLevelMenuSecondLevelCardLink
-                      href={childrenItem.path}
-                    />
-                    <MultiLevelMenuSecondLevelHeader>
-                      <MultiLevelMenuSecondLevelHeaderContent>
-                        {childrenItem.icon}
-                        <MultiLevelMenuFirsLevelTitle>
-                          {childrenItem.title}
-                        </MultiLevelMenuFirsLevelTitle>
-                      </MultiLevelMenuSecondLevelHeaderContent>
-                      <MultiLevelMenuArrowRight45 />
-                    </MultiLevelMenuSecondLevelHeader>
-                    {childrenItem.description && (
-                      <MultiLevelMenuSecondLevelDescription>
-                        {childrenItem.description}
-                      </MultiLevelMenuSecondLevelDescription>
-                    )}
-                  </MultiLevelMenuSecondLevelLi>
+              {menuItem.first_level &&
+                menuItem.first_level.map((item, indexItem) => (
+                  <MultiLevelMenuFirstLevelItem
+                    openFirstLevelMenu={openFirstLevelMenu === indexItem}
+                    handleFirstLevelToggle={() =>
+                      handleFirstLevelToggle(indexItem)
+                    }
+                    onMouseEnter={() => setOpenFirstLevelMenu(indexItem)}
+                    onMouseLeave={() => setOpenFirstLevelMenu(null)}
+                    firstLevelItem={item}
+                    key={indexItem}
+                    accordion_title={menuItem.accordion_title}
+                  />
                 ))}
-            </MultiLevelMenuSecondLevelWrapper>
-          </MultiLevelFirstLevelMenuLi>
-        ))}
-    </MultiLevelMenuFirstLevelWrapper>
-  </MultiLevelMenuLi>
-);
+            </MultiLevelMenuFirstLevelWrapper>
+          )
+      )}
+    </MultiLevelMenuLi>
+  );
+};

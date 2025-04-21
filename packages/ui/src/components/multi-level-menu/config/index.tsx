@@ -1,13 +1,20 @@
 import {
+  AcademyIcon,
   ClaudeIcon,
   CodeGenerationIcon,
   DashboardIcon,
   DeepSeekIcon,
+  EssayGenerationIcon,
   FavoriteProfileIcon,
   Gpt4Icon,
+  GridHorizontalIcon,
+  GridVerticalIcon,
   GrokIcon,
+  HappyRobotIcon,
   ImageGenerationIcon,
   IncludeContextIcon,
+  ReportIcon,
+  SpellingIcon,
   TextGenerationIcon
 } from '@/ui/icons';
 import {
@@ -22,7 +29,11 @@ import {
   MultiLevelMenuFlexIcon,
   MultiLevelMenuActionChatIcon,
   MultiLevelMenuSetchelIcon,
-  MultiLevelMenuReferalIcon
+  MultiLevelMenuReferalIcon,
+  MultiLevelMenuGearIcon,
+  MultiLevelMenuPublicIcon,
+  MultiLevelMenuBlogCircleIcon,
+  MultiLevelMenuBlogNewsIcon
 } from '../styled';
 
 export const menuItems = [
@@ -58,7 +69,37 @@ export const menuItems = [
       {
         title: 'Easy Writer',
         path: '#',
-        icon: <ArticleIconMultiLevelMenu size={18} />
+        icon: <ArticleIconMultiLevelMenu size={18} />,
+        children: [
+          {
+            title: 'Сочинение',
+            sub_title: '(350 - 500 слов)',
+            path: '',
+            icon: <EssayGenerationIcon size={18} />
+          },
+          {
+            title: 'Эссе',
+            sub_title: '(500 - 1000 слов)',
+            path: '',
+            icon: <SpellingIcon size={18} />
+          },
+          {
+            title: 'Доклад',
+            sub_title: '(1000 - 2000 слов)',
+            path: '',
+            icon: <ReportIcon />
+          },
+          {
+            title: 'Реферат',
+            sub_title: '(1500 - 3000 слов)',
+            path: '',
+            icon: <TextGenerationIcon size={18} />
+          },
+          {
+            title: 'Все форматы',
+            path: ''
+          }
+        ]
       },
       {
         title: 'Дашборд',
@@ -109,7 +150,7 @@ export const menuItems = [
       {
         title: 'На модели',
         path: '#',
-        icon: ''
+        icon: <GridVerticalIcon />
       }
     ]
   },
@@ -264,7 +305,7 @@ export const menuItems = [
       {
         title: 'Услуги',
         path: '#',
-        icon: '',
+        icon: <GridHorizontalIcon />,
         children: [
           {
             title: 'Корпоротивная подписка',
@@ -304,31 +345,19 @@ export const menuItems = [
     accordion_title: 'Материалы',
     first_level: [
       {
-        title: 'Планы',
+        title: 'API',
         path: '#',
-        icon: '',
-        children: [
-          {
-            title: 'Elite',
-            path: '#',
-            icon: ''
-          },
-          {
-            title: 'Deluxe',
-            path: '#',
-            icon: ''
-          },
-          {
-            title: 'Premium',
-            path: '#',
-            icon: ''
-          },
-          {
-            title: 'Basic',
-            path: '#',
-            icon: ''
-          }
-        ]
+        icon: <MultiLevelMenuGearIcon size={18} />
+      },
+      {
+        title: 'Академия Bothub',
+        path: '#',
+        icon: <AcademyIcon />
+      },
+      {
+        title: 'Сообщество',
+        path: '#',
+        icon: <MultiLevelMenuPublicIcon size={18} />
       }
     ]
   },
@@ -336,31 +365,24 @@ export const menuItems = [
     accordion_title: 'Компания',
     first_level: [
       {
-        title: 'Планы',
+        title: 'О нас',
         path: '#',
-        icon: '',
-        children: [
-          {
-            title: 'Elite',
-            path: '#',
-            icon: ''
-          },
-          {
-            title: 'Deluxe',
-            path: '#',
-            icon: ''
-          },
-          {
-            title: 'Premium',
-            path: '#',
-            icon: ''
-          },
-          {
-            title: 'Basic',
-            path: '#',
-            icon: ''
-          }
-        ]
+        icon: <HappyRobotIcon size={18} />
+      },
+      {
+        title: 'Блог',
+        path: '#',
+        icon: <MultiLevelMenuBlogCircleIcon size={18} />
+      },
+      {
+        title: 'Новости AI',
+        path: '#',
+        icon: <MultiLevelMenuBlogNewsIcon size={18} />
+      },
+      {
+        title: 'Связаться',
+        path: '#',
+        icon: <MultiLevelMenuActionChatIcon size={18} />
       }
     ]
   }

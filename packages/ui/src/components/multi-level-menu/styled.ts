@@ -7,18 +7,31 @@ import {
   BlackForestLabsIcon,
   ActionChatIcon,
   ReferalIcon,
-  SetchelIcon
+  SetchelIcon,
+  PublicIcon,
+  CoderIcon,
+  BlogCircleIcon,
+  NewsIcon,
+  StarGradientIcon
 } from '@/ui/icons';
 
 export const MultiLevelMenuStyled = styled.nav`
-  margin-top: 30px;
+  margin: 30px 0px;
   padding: 0 40px;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    padding: 0 20px;
+  }
 `;
 export const MultiLevelMenuWrapper = styled.ul`
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   user-select: none;
   row-gap: 30px;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    row-gap: 24px;
+  }
 `;
 
 export const StartsIconMultiLevelMenu = styled(Imagine2Icon)`
@@ -37,26 +50,38 @@ export const TgCircleIconMultiLevelMenu = styled(TgCircleIcon)`
   }
 `;
 
-export const MultiLevelMenuStarIconElite = styled(StarIcon)`
-  path {
-    fill: ${({ theme }) => theme.colors.gradient.elite};
-  }
-`;
-export const MultiLevelMenuStarIconDeluxe = styled(StarIcon)`
-  path {
-    fill: ${({ theme }) => theme.colors.gradient.deluxe};
-  }
-`;
-export const MultiLevelMenuStarIconPremium = styled(StarIcon)`
-  path {
-    fill: ${({ theme }) => theme.colors.gradient.premium};
-  }
-`;
-export const MultiLevelMenuStarIconBasic = styled(StarIcon)`
-  path {
-    fill: ${({ theme }) => theme.colors.gradient.basic};
-  }
-`;
+export const MultiLevelMenuStarIconElite = styled(StarGradientIcon).attrs({
+  x1: '-0.0708662',
+  x2: '17.9291',
+  y1: '9',
+  y2: '9',
+  startColor: '#1C64F2',
+  endColor: '#D41CF2',
+  id: 'paint0_linear_10915_2302'
+})``;
+
+export const MultiLevelMenuStarIconDeluxe = styled(StarGradientIcon).attrs({
+  x1: '0',
+  x2: '18',
+  y1: '9.00002',
+  y2: '9.00002',
+  startColor: '#5728FF',
+  endColor: '#A750FF',
+  id: 'paint0_linear_10915_7313'
+})``;
+
+export const MultiLevelMenuStarIconPremium = styled(StarGradientIcon).attrs({
+  x1: '0',
+  x2: '18',
+  y1: '9.00002',
+  y2: '9.00002',
+  startColor: '#4785FF',
+  endColor: '#7740F2',
+  id: 'paint0_linear_10915_8101'
+})``;
+
+export const MultiLevelMenuStarIconBasic = styled(StarGradientIcon)``;
+
 export const MultiLevelMenuStarIconPlans = styled(StarIcon)`
   path {
     fill: ${({ theme }) => theme.colors.base.white};
@@ -79,6 +104,26 @@ export const MultiLevelMenuReferalIcon = styled(ReferalIcon)`
   }
 `;
 export const MultiLevelMenuSetchelIcon = styled(SetchelIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.base.white};
+  }
+`;
+export const MultiLevelMenuGearIcon = styled(CoderIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.base.white};
+  }
+`;
+export const MultiLevelMenuPublicIcon = styled(PublicIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.base.white};
+  }
+`;
+export const MultiLevelMenuBlogCircleIcon = styled(BlogCircleIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.base.white};
+  }
+`;
+export const MultiLevelMenuBlogNewsIcon = styled(NewsIcon)`
   path {
     fill: ${({ theme }) => theme.colors.base.white};
   }

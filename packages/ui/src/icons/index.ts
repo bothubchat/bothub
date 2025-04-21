@@ -235,3 +235,8 @@ export * from './setchel';
 export * from './assembly';
 export * from './grok';
 export * from './deepseek';
+export * from './academy';
+export * from './grid-horizontal';
+export * from './grid-vertical';
+export * from './star-gradient';
+export * from './report';
