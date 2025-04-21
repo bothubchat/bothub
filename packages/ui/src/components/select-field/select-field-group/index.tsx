@@ -27,13 +27,13 @@ export const SelectFieldGroup = ({
     if (contentRef.current) {
       const { scrollTop, clientHeight, scrollHeight } = contentRef.current;
 
-      if (scrollTop > 0) {
+      if (scrollTop > 1) {
         setShowTopShadow(true);
       } else {
         setShowTopShadow(false);
       }
 
-      if (Math.floor(scrollHeight - scrollTop - clientHeight) > 0) {
+      if (Math.floor(scrollHeight - scrollTop - clientHeight) > 1) {
         setShowBottomShadow(true);
       } else {
         setShowBottomShadow(false);
