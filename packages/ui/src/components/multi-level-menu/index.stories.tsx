@@ -7,7 +7,7 @@ export type MultilevelMenuStory = StoryObj<typeof MultilevelMenu>;
 
 export const Basic: MultilevelMenuStory = {};
 export default {
-  title: 'UI Components/Multi-level-menu',
+  title: 'UI Components/MultiLevelMenu',
   component: MultilevelMenu,
   decorators: [StoryDecorator()]
 } as MultilevelMenuMeta;
