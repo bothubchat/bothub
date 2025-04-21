@@ -16,10 +16,9 @@ import {
 } from '@/ui/icons';
 
 export const MultiLevelMenuStyled = styled.nav`
-  margin: 30px 0px;
-  padding: 0 40px;
+  padding: 30px 40px;
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-    padding: 0 20px;
+    padding: 30 16px;
   }
 `;
 export const MultiLevelMenuWrapper = styled.ul`

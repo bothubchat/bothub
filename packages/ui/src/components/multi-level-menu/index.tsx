@@ -4,7 +4,7 @@ import { MultiLevelMenuAccordion } from './multi-level-menu-accordion';
 import { TMenuItem } from './types';
 
 interface IMultilevelMenu {
-  config: TMenuItem[];
+  config?: TMenuItem[];
 }
 export const MultilevelMenu: React.FC<IMultilevelMenu> = ({ config }) => {
   const menuItems = config;
@@ -40,15 +40,18 @@ export const MultilevelMenu: React.FC<IMultilevelMenu> = ({ config }) => {
   return (
     <MultiLevelMenuStyled>
       <MultiLevelMenuWrapper ref={ref}>
-        {menuItems.map((menuItem, indexMenuItem) => (
-          <MultiLevelMenuAccordion
-            openAccordion={indexMenuItem === openAccordion}
-            handleAccordionToggle={() => handleAccordionToggle(indexMenuItem)}
-            menuItem={menuItem}
-            key={indexMenuItem}
-          />
-        ))}
+        {menuItems &&
+          menuItems.map((menuItem, indexMenuItem) => (
+            <MultiLevelMenuAccordion
+              openAccordion={indexMenuItem === openAccordion}
+              handleAccordionToggle={() => handleAccordionToggle(indexMenuItem)}
+              menuItem={menuItem}
+              key={indexMenuItem}
+            />
+          ))}
       </MultiLevelMenuWrapper>
     </MultiLevelMenuStyled>
   );
 };
+
+export * from './styled';
