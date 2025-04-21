@@ -18,7 +18,7 @@ import {
 export const MultiLevelMenuStyled = styled.nav`
   padding: 30px 40px;
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-    padding: 30 16px;
+    padding: 30px 16px;
   }
 `;
 export const MultiLevelMenuWrapper = styled.ul`
