@@ -42,7 +42,6 @@ export const menuItems = [
     first_level: [
       {
         title: 'ИИ Инструменты',
-        path: '#',
         icon: <StartsIconMultiLevelMenu size={18} />,
         children: [
           {
@@ -62,53 +61,52 @@ export const menuItems = [
           },
           {
             title: 'Все инструменты',
-            path: '#'
+            path: '/models'
           }
         ]
       },
       {
         title: 'Easy Writer',
-        path: '#',
         icon: <ArticleIconMultiLevelMenu size={18} />,
         children: [
           {
             title: 'Сочинение',
             sub_title: '(350 - 500 слов)',
-            path: '',
+            path: '/easy_writer',
             icon: <EssayGenerationIcon size={18} />
           },
           {
             title: 'Эссе',
             sub_title: '(500 - 1000 слов)',
-            path: '',
+            path: '/easy_writer',
             icon: <SpellingIcon size={18} />
           },
           {
             title: 'Доклад',
             sub_title: '(1000 - 2000 слов)',
-            path: '',
+            path: '/easy_writer',
             icon: <ReportIcon />
           },
           {
             title: 'Реферат',
             sub_title: '(1500 - 3000 слов)',
-            path: '',
+            path: '/easy_writer',
             icon: <TextGenerationIcon size={18} />
           },
           {
             title: 'Все форматы',
-            path: ''
+            path: '/easy_writer'
           }
         ]
       },
       {
         title: 'Дашборд',
-        path: '#',
+        path: '/dashboard',
         icon: <DashboardIcon size={18} />
       },
       {
         title: 'Telegram bot',
-        path: '#',
+        path: 'https://t.me/bothub_chat_bot',
         icon: <TgCircleIconMultiLevelMenu size={18} />
       }
     ]
@@ -118,30 +116,29 @@ export const menuItems = [
     first_level: [
       {
         title: 'Планы',
-        path: '#',
         icon: <MultiLevelMenuStarIconPlans size={18} />,
         children: [
           {
             title: 'Elite — 30 000 000 Caps',
-            path: '#',
+            path: '/#plans',
             icon: <MultiLevelMenuStarIconElite size={18} />,
             description: 'Хватит, чтобы сгенерировать 12 000 страниц текста'
           },
           {
             title: 'Deluxe — 7 500 000 Caps',
-            path: '#',
+            path: '/#plans',
             icon: <MultiLevelMenuStarIconDeluxe size={18} />,
             description: 'Хватит, чтобы сгенерировать 3 000 страниц текста'
           },
           {
             title: 'Premium — 3 000 000 Caps',
-            path: '#',
+            path: '/#plans',
             icon: <MultiLevelMenuStarIconPremium size={18} />,
             description: 'Хватит, чтобы сгенерировать 1 200 страниц текста'
           },
           {
             title: 'Basic — 1 000 000 Caps',
-            path: '#',
+            path: '/#plans',
             icon: <MultiLevelMenuStarIconBasic size={18} />,
             description: 'Хватит, чтобы сгенерировать 400 страниц текста'
           }
@@ -149,7 +146,7 @@ export const menuItems = [
       },
       {
         title: 'На модели',
-        path: '#',
+        path: '/models',
         icon: <GridVerticalIcon />
       }
     ]
@@ -159,25 +156,24 @@ export const menuItems = [
     first_level: [
       {
         title: 'ChatGPT',
-        path: '#',
         icon: <Gpt4Icon size={18} />,
         children: [
           {
             title: 'o1',
-            path: '#',
+            path: '/o1',
             icon: <Gpt4Icon size={18} />,
             description: 'Самая последняя и cильная модель от OpenAI.'
           },
           {
             title: 'o1-mini',
-            path: '#',
+            path: '/o1-mini',
             icon: <Gpt4Icon size={18} />,
             description:
               'Уменьшенная и более дешевая версия самой лучшей модели OpenAi, оптимизированная для более быстрого реагирования.'
           },
           {
             title: 'GPT-4o',
-            path: '#',
+            path: '/gpt-4o',
             icon: <Gpt4Icon size={18} />,
             description:
               'Модель c высоким уровнем креативности, адаптированная для  написания человечных текстов. '
@@ -294,8 +290,7 @@ export const menuItems = [
       },
       {
         title: 'Все модели',
-        path: '#',
-        icon: ''
+        path: '/models'
       }
     ]
   },
@@ -304,7 +299,6 @@ export const menuItems = [
     first_level: [
       {
         title: 'Услуги',
-        path: '#',
         icon: <GridHorizontalIcon />,
         children: [
           {
@@ -316,7 +310,7 @@ export const menuItems = [
           },
           {
             title: 'Соглашение о неразглашении',
-            path: '#',
+            path: '/privacy-policy',
             icon: <IncludeContextIcon size={18} />,
             description:
               'NDA в формате дополнительного соглашения для защиты ваших данных'
@@ -331,12 +325,12 @@ export const menuItems = [
       },
       {
         title: 'Инвесторам',
-        path: '#',
+        path: '/bothub_founder',
         icon: <FavoriteProfileIcon size={18} />
       },
       {
         title: 'Поддержка',
-        path: '#',
+        path: 'https://t.me/bothub_chat/25302',
         icon: <MultiLevelMenuActionChatIcon size={18} />
       }
     ]
@@ -346,17 +340,17 @@ export const menuItems = [
     first_level: [
       {
         title: 'API',
-        path: '#',
+        path: '/api/documentation/ru',
         icon: <MultiLevelMenuGearIcon size={18} />
       },
       {
         title: 'Академия Bothub',
-        path: '#',
+        path: 'https://academy.bothub.chat/',
         icon: <AcademyIcon />
       },
       {
         title: 'Сообщество',
-        path: '#',
+        path: 'https://t.me/bothub_chat',
         icon: <MultiLevelMenuPublicIcon size={18} />
       }
     ]
@@ -371,17 +365,17 @@ export const menuItems = [
       },
       {
         title: 'Блог',
-        path: '#',
+        path: '/about-us',
         icon: <MultiLevelMenuBlogCircleIcon size={18} />
       },
       {
         title: 'Новости AI',
-        path: '#',
+        path: 'https://t.me/bothub',
         icon: <MultiLevelMenuBlogNewsIcon size={18} />
       },
       {
         title: 'Связаться',
-        path: '#',
+        path: '/contacts',
         icon: <MultiLevelMenuActionChatIcon size={18} />
       }
     ]
