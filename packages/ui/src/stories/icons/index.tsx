@@ -234,7 +234,23 @@ import {
   ProblemSolvmentIcon,
   SettingAnalisysIcon,
   TranslationIcon,
-  StarsIcon
+  StarsIcon,
+  AcademyIcon,
+  ArticlesIcon,
+  BlogPostIcon,
+  BookIcon,
+  BowTieIcon,
+  CaseStudyIcon,
+  CommentsIcon,
+  GuideIcon,
+  MarketingIcon,
+  PostIcon,
+  ReportIcon,
+  ReviewIcon,
+  ScientificArticleIcon,
+  SellingTextIcon,
+  TextBookIcon,
+  WindIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -514,6 +530,24 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TranslationIcon">{TranslationIcon}</IconItem>
         <IconItem name="StarsIcon">{StarsIcon}</IconItem>
         <IconItem name="SettingAnalisysIcon">{SettingAnalisysIcon}</IconItem>
+        <IconItem name="AcademyIcon">{AcademyIcon}</IconItem>
+        <IconItem name="ArticlesIcon">{ArticlesIcon}</IconItem>
+        <IconItem name="BlogPostIcon">{BlogPostIcon}</IconItem>
+        <IconItem name="BookIcon">{BookIcon}</IconItem>
+        <IconItem name="BowTieIcon">{BowTieIcon}</IconItem>
+        <IconItem name="CaseStudyIcon">{CaseStudyIcon}</IconItem>
+        <IconItem name="CommentsIcon">{CommentsIcon}</IconItem>
+        <IconItem name="GuideIcon">{GuideIcon}</IconItem>
+        <IconItem name="MarketingIcon">{MarketingIcon}</IconItem>
+        <IconItem name="PostIcon">{PostIcon}</IconItem>
+        <IconItem name="ReportIcon">{ReportIcon}</IconItem>
+        <IconItem name="ReviewIcon">{ReviewIcon}</IconItem>
+        <IconItem name="ScientificArticleIcon">
+          {ScientificArticleIcon}
+        </IconItem>
+        <IconItem name="SellingTextIcon">{SellingTextIcon}</IconItem>
+        <IconItem name="TextBookIcon">{TextBookIcon}</IconItem>
+        <IconItem name="WindIcon">{WindIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
