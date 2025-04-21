@@ -99,7 +99,7 @@ export type SelectFieldProps = (
   padding?: [number, number];
   tabs?: {
     tabs: ITab[];
-    onTabClick?: (id: string) => void;
+    onTabClick?: (id: string | null) => void;
     defaultTabId?: string;
   };
   search?: boolean;
@@ -502,6 +502,17 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     return item;
   });
 
+  const onTabClick = useCallback(
+    (id: string | null) => {
+      setScrollTop([0, 0, 0]);
+
+      if (tabs && tabs.onTabClick) {
+        tabs.onTabClick(id);
+      }
+    },
+    [tabs, setScrollTop]
+  );
+
   return (
     <SelectFieldProvider
       selectRef={inputRef}
@@ -723,7 +734,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                           <SelectFieldTabs
                             tabs={tabs.tabs}
                             component="button"
-                            onClick={tabs.onTabClick}
+                            onClick={onTabClick}
                             defaultTabId={tabs.defaultTabId}
                           />
                         </SelectFieldTabsContainer>
