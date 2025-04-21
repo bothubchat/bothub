@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
-import { menuItems } from './config';
 import { MultiLevelMenuStyled, MultiLevelMenuWrapper } from './styled';
 import { MultiLevelMenuAccordion } from './multi-level-menu-accordion';
+import { TMenuItem } from './types';
 
-export const MultilevelMenu = () => {
+interface IMultilevelMenu {
+  config: TMenuItem[];
+}
+export const MultilevelMenu: React.FC<IMultilevelMenu> = ({ config }) => {
+  const menuItems = config;
+
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
-
   const ref = useRef<HTMLUListElement>(null);
+
   useEffect(() => {
     const dropdownEl: HTMLUListElement | null = ref.current;
 
