@@ -1,4 +1,5 @@
 import { css, styled } from 'styled-components';
+import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -8,6 +9,9 @@ import { LoaderCircularGradientIcon } from '@/ui/icons/loader-circular-gradient'
 import { SearchCircleIcon } from '@/ui/icons/search-circle';
 import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
+import { ScrollableTabs } from '../scrollable-tabs';
+import { TextField } from '../text-field';
+import { SearchSimpleIcon } from '@/ui/icons';
 
 export interface SelectFieldStyledProps {
   $fullWidth: boolean;
@@ -158,6 +162,7 @@ export const SelectFieldInputSide = styled.div`
 
 export const SelectFieldInputLeftSide = styled(SelectFieldInputSide)`
   width: 100%;
+  min-width: 0;
 `;
 
 export interface SelectFieldSearchIconProps {
@@ -238,11 +243,17 @@ export const SelectFieldValue = styled.span`
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
 `;
 
 export const SelectFieldValueText = styled(Typography).attrs({
   variant: 'input-sm'
-})``;
+})`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+`;
 
 export interface SelectFieldValueColorProps {
   $color: string;
@@ -261,6 +272,10 @@ export const SelectFieldColorValueText = styled(Typography).attrs({
   variant: 'input-sm'
 })`
   color: ${({ theme }) => theme.colors.base.white};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 `;
 
 export const SelectFieldValues = styled.div`
@@ -313,6 +328,8 @@ export const SelectFieldBlock = styled.div<SelectFieldBlockProps>`
   box-sizing: border-box;
 `;
 
+export const AnimatedSelectFieldBlock = animated(SelectFieldBlock);
+
 export interface SelectFieldBlockPositionWrapperProps {
   $blur: boolean;
   $placement: SelectFieldPlacement;
@@ -323,7 +340,7 @@ export const SelectFieldBlockPositionWrapper = styled.div<SelectFieldBlockPositi
   position: absolute;
   width: 100%;
   box-sizing: border-box;
-  padding: 6px 8px;
+  padding: 6px 0 6px 8px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 10px;
   background: ${({ theme, $blur }) => {
@@ -393,4 +410,21 @@ export const SelectFieldGroups = styled.div<SelectFieldGroupsProps>`
         return 8;
     }
   }}px;
+`;
+
+export const SelectFieldTabsContainer = styled.div`
+  width: 100%;
+  padding-right: 8px;
+`;
+
+export const SelectFieldTabs = styled(ScrollableTabs).attrs({
+  variant: 'secondary'
+})``;
+
+export const SelectFieldSearch = styled(TextField).attrs({
+  fullWidth: true,
+  startIcon: <SearchSimpleIcon />,
+  variant: 'secondary'
+})`
+  padding-right: 8px;
 `;

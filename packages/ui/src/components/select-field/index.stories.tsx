@@ -53,7 +53,8 @@ export const Basic: SelectFieldStory = {
       'Vite',
       'Bothub',
       'ChatGPT',
-      'Midjourney'
+      'Midjourney',
+      'o3-mini'
     ]
   }
 };
@@ -361,6 +362,35 @@ export const Preset: SelectFieldStory = {
         ]
       },
       {
+        id: 'presets-2',
+        type: 'collapse',
+        icon: <StarIcon fill="#F29C1C" />,
+        label: 'Избранные пресеты',
+        data: [
+          {
+            value: '1',
+            label: 'Пресет #1'
+          },
+          {
+            value: '2',
+            label: 'Пресет #2'
+          },
+          {
+            value: '3',
+            label: 'Пресет #3'
+          },
+          {
+            value: '4',
+            label: 'Пресет #4'
+          },
+          {
+            value: '5',
+            label:
+              'Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет'
+          }
+        ]
+      },
+      {
         id: 'disabled',
         type: 'collapse',
         icon: <PublicIcon fill="#4785FF" />,
@@ -525,7 +555,21 @@ export const WithTabs: SelectFieldStory = {
 
 export const WithSearch: SelectFieldStory = {
   args: {
-    ...Basic.args,
+    data: [
+      {
+        id: 'ChatGPT',
+        type: 'collapse',
+        label: 'ChatGPT',
+        icon: <Gpt35Icon />,
+        data: ['gpt-4o', 'gpt-4o-mini', 'o1-mini']
+      },
+      'Midjourney',
+      {
+        icon: <DallEIcon />,
+        value: 'dall-e',
+        label: 'DALL-E'
+      }
+    ],
     search: true,
     searchPlaceholder: 'Поиск...'
   }
@@ -570,6 +614,31 @@ export const WithBeforeAndAfter: SelectFieldStory = {
     before: Basic.args?.data,
     data: Basic.args?.data,
     after: Basic.args?.data
+  }
+};
+
+export const ResetStyleState: SelectFieldStory = {
+  render() {
+    const [shouldResetStyleState, setShouldResetStyleState] = useState(false);
+
+    return (
+      <>
+        <SelectField
+          data={WithSearch.args?.data}
+          resetStyleState={shouldResetStyleState}
+          placement="top-right"
+        />
+        <Button
+          type="button"
+          onClick={() => setShouldResetStyleState((prev) => !prev)}
+          style={{
+            marginTop: 20
+          }}
+        >
+          Reset opened option and scroll top state
+        </Button>
+      </>
+    );
   }
 };
 

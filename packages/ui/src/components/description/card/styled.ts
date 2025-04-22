@@ -179,6 +179,8 @@ export const DescriptionCardButtonsWrapper = styled.div`
   z-index: 2;
   @media (max-width: 550px) {
     margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
   }
 `;
 export const DescriptionCardButton = styled(Button)``;
@@ -263,6 +265,7 @@ export const DescriptionCardLiStled = styled.li`
   list-style: none;
   padding: 0;
   display: flex;
+  z-index: 2;
   align-items: center;
   column-gap: 16px;
 `;

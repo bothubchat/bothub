@@ -24,24 +24,20 @@ export const SelectFieldGroup = ({
   const contentRef = useRef<HTMLDivElement>(null);
 
   const handleShadowsDisplay = useCallback(() => {
-    if (contentRef.current) {
-      const { scrollTop, clientHeight, scrollHeight } = contentRef.current;
+    const el = contentRef.current;
 
-      if (scrollTop > 0) {
-        setShowTopShadow(true);
-      } else {
-        setShowTopShadow(false);
-      }
+    if (el) {
+      const { scrollTop, clientHeight, scrollHeight } = el;
 
-      if (Math.floor(scrollHeight - scrollTop - clientHeight) > 0) {
-        setShowBottomShadow(true);
-      } else {
-        setShowBottomShadow(false);
-      }
+      setShowTopShadow(scrollTop > 1);
+
+      setShowBottomShadow(
+        Math.floor(scrollHeight - scrollTop - clientHeight) > 1
+      );
 
       onScrollTopChange(scrollTop);
     }
-  }, [contentRef.current]);
+  }, [contentRef.current, onScrollTopChange]);
 
   useEffect(() => {
     const el = contentRef.current;
@@ -64,7 +60,7 @@ export const SelectFieldGroup = ({
       onResize.disconnect();
       el.removeEventListener('scroll', handleShadowsDisplay);
     };
-  }, [contentRef.current]);
+  }, [contentRef.current, scrollTop]);
 
   return (
     <S.SelectFieldGroupStyled>

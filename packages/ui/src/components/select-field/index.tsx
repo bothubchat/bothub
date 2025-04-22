@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useTransition } from '@react-spring/web';
 import {
   SelectFieldArrow,
-  SelectFieldBlock,
   SelectFieldBlockPositionWrapper,
   SelectFieldBlockContent,
   SelectFieldColorValueText,
@@ -23,7 +23,11 @@ import {
   SelectFieldInputSide,
   SelectFieldLoader,
   SelectFieldSearchIcon,
-  SelectFieldClearButton
+  SelectFieldClearButton,
+  SelectFieldTabs,
+  SelectFieldSearch,
+  SelectFieldTabsContainer,
+  AnimatedSelectFieldBlock
 } from './styled';
 import {
   SelectFieldChangeEventHandler,
@@ -46,9 +50,6 @@ import { SelectFieldProvider } from './context';
 import { SelectFieldOptions } from './option';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { ITab } from '../scrollable-tabs/types';
-import { ScrollableTabs } from '../scrollable-tabs';
-import { TextField } from '../text-field';
-import { SearchSimpleIcon } from '@/ui/icons';
 import { filterData } from './filterData';
 import { SelectFieldGroup } from './select-field-group';
 
@@ -98,12 +99,13 @@ export type SelectFieldProps = (
   padding?: [number, number];
   tabs?: {
     tabs: ITab[];
-    onTabClick?: (id: string) => void;
+    onTabClick?: (id: string | null) => void;
     defaultTabId?: string;
   };
   search?: boolean;
   searchPlaceholder?: string;
   followContentHeight?: boolean;
+  resetStyleState?: boolean;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;
@@ -138,6 +140,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   search,
   searchPlaceholder,
   followContentHeight = false,
+  resetStyleState,
   onOptionClick,
   onInputChange,
   onSelectClick,
@@ -216,11 +219,16 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const [y, setY] = useState(0);
   const [width, setWidth] = useState(0);
   const [placement, setPlacement] = useState(initialPlacement);
-  const [openedOptions, setOpenedOptions] = useState<Array<string | number>>(
-    []
-  );
+  const [openedOptions, setOpenedOptions] = useState<(string | number)[]>([]);
   const [scrollTop, setScrollTop] = useState([0, 0, 0]);
   const [searchValue, setSearchValue] = useState('');
+
+  const transitions = useTransition(isOpen, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: { tension: 250, friction: 20 }
+  });
 
   const handleScrollTopChange = (value: number, index: number) => {
     setScrollTop((prev) => prev.map((v, i) => (i === index ? value : v)));
@@ -230,7 +238,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     React.ChangeEventHandler<HTMLInputElement>
   >(
     (event) => {
-      setSearchValue(event.currentTarget.value);
+      setSearchValue(event.currentTarget.value.trim());
     },
     [setSearchValue]
   );
@@ -378,13 +386,42 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
   const inputRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+  const isKeyboardOpen = useRef(false);
 
   const [blockHeight, setBlockHeight] = useState<number | null>(null);
 
-  if (contentRef.current && !blockHeight) {
+  if (followContentHeight && contentRef.current && !blockHeight) {
     const { height } = getComputedStyle(contentRef.current.children[0]);
     setBlockHeight(parseInt(height));
   }
+
+  useEffect(() => {
+    setOpenedOptions([]);
+    setScrollTop([0, 0, 0]);
+    setSearchValue('');
+  }, [resetStyleState]);
+
+  const [modalMaxHeight, setModalMaxHeight] = useState<number | null>(null);
+
+  const calculateMaxHeight = useCallback(() => {
+    if (inputRef.current && placement !== 'bottom-left' && isOpen) {
+      const { top } = inputRef.current.getBoundingClientRect();
+
+      setModalMaxHeight(top - 20);
+    } else {
+      setTimeout(() => {
+        setModalMaxHeight(null);
+      }, 175);
+    }
+  }, [inputRef.current, placement, isOpen]);
+
+  useEffect(() => {
+    calculateMaxHeight();
+
+    window.addEventListener('resize', calculateMaxHeight);
+
+    return () => window.removeEventListener('resize', calculateMaxHeight);
+  }, [calculateMaxHeight]);
 
   useEffect(() => {
     if (isOpen) {
@@ -415,28 +452,31 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      const listener = () => {
+      const listener = (e: Event) => {
+        if (isKeyboardOpen.current && e.type !== 'orientationchange') return;
+
         handleClose();
       };
 
       document.addEventListener('scroll', listener);
       window.addEventListener('resize', listener);
+      window.addEventListener('orientationchange', listener);
 
       return () => {
         document.removeEventListener('scroll', listener);
         window.removeEventListener('resize', listener);
+        window.removeEventListener('orientationchange', listener);
       };
     }
   }, [isOpen]);
 
   const onOpenedOptionChange = useCallback(
-    (itemId: string | number) => {
-      if (openedOptions.includes(itemId)) {
-        setOpenedOptions(openedOptions.filter((id) => id !== itemId));
-      } else {
-        setOpenedOptions([...openedOptions, itemId]);
-      }
-    },
+    (itemId: string | number) =>
+      setOpenedOptions((prev) =>
+        prev.includes(itemId)
+          ? prev.filter((id) => id !== itemId)
+          : [...prev, itemId]
+      ),
     [openedOptions]
   );
 
@@ -468,6 +508,18 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
     return item;
   });
+
+  const onTabClick = useCallback(
+    (id: string | null) => {
+      setScrollTop([0, 0, 0]);
+      setOpenedOptions([]);
+
+      if (tabs && tabs.onTabClick) {
+        tabs.onTabClick(id);
+      }
+    },
+    [tabs, setScrollTop]
+  );
 
   return (
     <SelectFieldProvider
@@ -564,10 +616,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                                   onMouseEnter={handleTooltipMouseEnter}
                                   onMouseLeave={handleTooltipMouseLeave}
                                 >
-                                  {value.label && value.label.slice(0, 64)}
-                                  {value.label &&
-                                    value.label.length > 64 &&
-                                    '...'}
+                                  {value.label}
                                 </SelectFieldColorValueText>
                               )}
                             </TooltipConsumer>
@@ -642,122 +691,138 @@ export const SelectField: React.FC<SelectFieldProps> = ({
             )}
           </>
         )}
-        {isOpen && (
-          <Portal>
-            <SelectFieldBlock
-              $contentWidth={contentWidth}
-              ref={contentRef}
-              style={{
-                ...(x !== 0 && {
-                  ...(placement !== 'top-right' && {
-                    left: `${x}px`
-                  }),
-                  ...(placement === 'top-right' && {
-                    ...(typeof contentWidth === 'undefined' && {
-                      left: `calc(${x}px - ${width})`
+
+        {transitions((styles, item) =>
+          item ? (
+            <Portal>
+              <AnimatedSelectFieldBlock
+                $contentWidth={contentWidth}
+                ref={contentRef}
+                style={{
+                  ...(x !== 0 && {
+                    ...(placement !== 'top-right' && {
+                      left: `${x}px`
                     }),
-                    ...(typeof contentWidth === 'number' && {
-                      left: `calc(${x}px - ${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`})`
+                    ...(placement === 'top-right' && {
+                      ...(typeof contentWidth === 'undefined' && {
+                        left: `calc(${x}px - ${width})`
+                      }),
+                      ...(typeof contentWidth === 'number' && {
+                        left: `calc(${x}px - ${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`})`
+                      })
                     })
-                  })
-                }),
-                ...(y !== 0 && {
-                  top: `${y}px`
-                }),
-                ...(typeof contentWidth === 'undefined' && {
-                  width: `${width}px`
-                }),
-                ...(typeof contentWidth === 'number' && {
-                  width: `${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`}`
-                })
-              }}
-            >
-              <SelectFieldBlockPositionWrapper
-                $blur={blur}
-                $placement={placement}
-                style={
-                  followContentHeight && blockHeight
-                    ? { height: `${blockHeight}px` }
-                    : undefined
-                }
+                  }),
+                  ...(y !== 0 && {
+                    top: `${y}px`
+                  }),
+                  ...(typeof contentWidth === 'undefined' && {
+                    width: `${width}px`
+                  }),
+                  ...(typeof contentWidth === 'number' && {
+                    width: `${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`}`
+                  }),
+                  ...styles
+                }}
               >
-                <SelectFieldBlockContent>
-                  <SelectFieldGroups $size={size}>
-                    {!!tabs && (
-                      <ScrollableTabs
-                        tabs={tabs.tabs}
-                        variant="secondary"
-                        component="button"
-                        onClick={tabs.onTabClick}
-                        defaultTabId={tabs.defaultTabId}
-                      />
-                    )}
-                    {search && (
-                      <TextField
-                        fullWidth
-                        startIcon={<SearchSimpleIcon />}
-                        placeholder={searchPlaceholder}
-                        value={searchValue}
-                        onChange={handleSearchChange}
-                        variant="secondary"
-                        autoFocus
-                      />
-                    )}
-                    {before && (
+                <SelectFieldBlockPositionWrapper
+                  $blur={blur}
+                  $placement={placement}
+                  style={{
+                    ...(followContentHeight &&
+                      blockHeight && { height: blockHeight }),
+                    ...(modalMaxHeight && {
+                      maxHeight: modalMaxHeight
+                    })
+                  }}
+                >
+                  <SelectFieldBlockContent>
+                    <SelectFieldGroups $size={size}>
+                      {!!tabs && (
+                        <SelectFieldTabsContainer>
+                          <SelectFieldTabs
+                            tabs={tabs.tabs}
+                            component="button"
+                            onClick={onTabClick}
+                            defaultTabId={tabs.defaultTabId}
+                          />
+                        </SelectFieldTabsContainer>
+                      )}
+                      {search && (
+                        <SelectFieldSearch
+                          placeholder={searchPlaceholder}
+                          value={searchValue}
+                          onChange={handleSearchChange}
+                          onClick={() => {
+                            isKeyboardOpen.current = true;
+                          }}
+                          onBlur={() =>
+                            setTimeout(() => {
+                              isKeyboardOpen.current = false;
+                            }, 500)
+                          }
+                        />
+                      )}
+                      {before && (
+                        <SelectFieldGroup
+                          scrollTop={scrollTop[0]}
+                          onScrollTopChange={(val) =>
+                            handleScrollTopChange(val, 0)
+                          }
+                          $size={size}
+                          $disableScrollbar={disableScrollbar}
+                          $followContentHeight={!!blockHeight}
+                        >
+                          <SelectFieldOptions
+                            value={value}
+                            data={filterData(before, searchValue)}
+                            size={size}
+                            disableSelect={disableSelect}
+                            onOptionClick={handleOptionClick}
+                          />
+                        </SelectFieldGroup>
+                      )}
                       <SelectFieldGroup
-                        scrollTop={scrollTop[0]}
+                        scrollTop={scrollTop[1]}
                         onScrollTopChange={(val) =>
-                          handleScrollTopChange(val, 0)
+                          handleScrollTopChange(val, 1)
                         }
                         $size={size}
                         $disableScrollbar={disableScrollbar}
+                        $followContentHeight={!!blockHeight}
                       >
                         <SelectFieldOptions
                           value={value}
-                          data={filterData(before, searchValue)}
+                          data={filterData(data, searchValue)}
                           size={size}
                           disableSelect={disableSelect}
                           onOptionClick={handleOptionClick}
                         />
                       </SelectFieldGroup>
-                    )}
-                    <SelectFieldGroup
-                      scrollTop={scrollTop[1]}
-                      onScrollTopChange={(val) => handleScrollTopChange(val, 1)}
-                      $size={size}
-                      $disableScrollbar={disableScrollbar}
-                    >
-                      <SelectFieldOptions
-                        value={value}
-                        data={filterData(data, searchValue)}
-                        size={size}
-                        disableSelect={disableSelect}
-                        onOptionClick={handleOptionClick}
-                      />
-                    </SelectFieldGroup>
-                    {after && (
-                      <SelectFieldGroup
-                        scrollTop={scrollTop[2]}
-                        onScrollTopChange={(val) =>
-                          handleScrollTopChange(val, 2)
-                        }
-                        $size={size}
-                        $disableScrollbar={disableScrollbar}
-                      >
-                        <SelectFieldOptions
-                          value={value}
-                          data={filterData(after, searchValue)}
-                          size={size}
-                          disableSelect={disableSelect}
-                          onOptionClick={handleOptionClick}
-                        />
-                      </SelectFieldGroup>
-                    )}
-                  </SelectFieldGroups>
-                </SelectFieldBlockContent>
-              </SelectFieldBlockPositionWrapper>
-            </SelectFieldBlock>
-          </Portal>
+                      {after && (
+                        <SelectFieldGroup
+                          scrollTop={scrollTop[2]}
+                          onScrollTopChange={(val) =>
+                            handleScrollTopChange(val, 2)
+                          }
+                          $size={size}
+                          $disableScrollbar={disableScrollbar}
+                          $followContentHeight={!!blockHeight}
+                        >
+                          <SelectFieldOptions
+                            value={value}
+                            data={filterData(after, searchValue)}
+                            size={size}
+                            disableSelect={disableSelect}
+                            onOptionClick={handleOptionClick}
+                          />
+                        </SelectFieldGroup>
+                      )}
+                    </SelectFieldGroups>
+                  </SelectFieldBlockContent>
+                </SelectFieldBlockPositionWrapper>
+              </AnimatedSelectFieldBlock>
+            </Portal>
+          ) : null
         )}
         {error && <SelectFieldErrorText>{error}</SelectFieldErrorText>}
       </SelectFieldStyled>
