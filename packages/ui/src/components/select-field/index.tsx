@@ -753,9 +753,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                           onClick={() => {
                             isKeyboardOpen.current = true;
                           }}
-                          onBlur={() => {
-                            isKeyboardOpen.current = false;
-                          }}
+                          onBlur={() =>
+                            setTimeout(() => {
+                              isKeyboardOpen.current = false;
+                            }, 500)
+                          }
                         />
                       )}
                       {before && (
