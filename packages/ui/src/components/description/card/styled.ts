@@ -161,6 +161,7 @@ export const DescriptionCardText = styled(Typography).attrs({
   variant: 'body-m-regular',
   component: 'p'
 })`
+  z-index: 2;
   color: ${({ theme }) => theme.default.colors.base.white};
   margin-top: 16px;
 `;
@@ -179,6 +180,8 @@ export const DescriptionCardButtonsWrapper = styled.div`
   z-index: 2;
   @media (max-width: 550px) {
     margin-bottom: 0px;
+    margin-left: auto;
+    margin-right: auto;
   }
 `;
 export const DescriptionCardButton = styled(Button)``;
@@ -247,6 +250,7 @@ export const DescriptionCardUlStyled = styled.ul`
   margin: 0;
   padding: 0;
   padding-right: 20px;
+  z-index: 2;
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
@@ -263,6 +267,7 @@ export const DescriptionCardLiStled = styled.li`
   list-style: none;
   padding: 0;
   display: flex;
+  z-index: 2;
   align-items: center;
   column-gap: 16px;
 `;
