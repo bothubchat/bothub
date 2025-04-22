@@ -12,7 +12,6 @@ export const MultiLevelMenuFirstLevelWrapper: React.FC<
   flex-direction: column;
   position: absolute;
   user-select: none;
-  background: pink;
   row-gap: 8px;
   display: ${({ $open }) => ($open ? 'flex' : 'none')};
 
@@ -20,9 +19,12 @@ export const MultiLevelMenuFirstLevelWrapper: React.FC<
     position: relative;
   }
   @media (min-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    top: 0;
+    top: 77px;
     left: 0;
     border-radius: 17px;
+    padding: 16px;
+    max-width: 1169px;
+    width: 1169px;
     background-color: ${({ theme }) => theme.colors.base.black};
     border: 1px solid;
     border-color: ${({ theme }) => theme.colors.grayScale.gray2};
@@ -47,7 +49,6 @@ export const MultiLevelMenuHeader = styled.button<{ $active: boolean }>`
 `;
 
 export const MultiLevelMenuLi = styled.li`
-  position: relative;
   list-style: none;
 `;
 

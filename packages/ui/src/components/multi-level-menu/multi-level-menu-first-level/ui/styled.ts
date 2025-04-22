@@ -40,12 +40,24 @@ export const MultiLevelMenuSecondLevelWrapper: React.FC<
   user-select: none;
   padding: 0;
   margin: 0;
-  flex-direction: column;
-  display: ${({ $open }) => ($open ? 'flex' : 'none')};
+  position: absolute;
+  top: 10px;
+  left: 250px;
+  right: 16px;
+  display: ${({ $open }) => ($open ? 'grid' : 'none')};
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 16px;
   padding-left: 18px;
   flex-grow: 1;
   ${MultiLevelFirstLevelMenuLi}:hover & {
-    display: flex;
+    display: grid;
+  }
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    flex-direction: column;
+    display: ${({ $open }) => ($open ? 'flex' : 'none')};
+    ${MultiLevelFirstLevelMenuLi}:hover & {
+      display: flex;
+    }
   }
 `;
 
@@ -123,6 +135,11 @@ export const MultiLevelMenuSecondLevelLi = styled.li`
   border-color: ${({ theme }) => theme.colors.grayScale.gray2};
   &:last-child {
     border-bottom: none;
+  }
+  @media (min-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    &:nth-last-child(-n + 2) {
+      border-bottom: none;
+    }
   }
 `;
 
