@@ -161,6 +161,7 @@ export const DescriptionCardText = styled(Typography).attrs({
   variant: 'body-m-regular',
   component: 'p'
 })`
+  z-index: 2;
   color: ${({ theme }) => theme.default.colors.base.white};
   margin-top: 16px;
 `;
