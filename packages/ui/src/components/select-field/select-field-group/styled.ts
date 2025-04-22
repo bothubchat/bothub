@@ -22,6 +22,7 @@ export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
   padding-right: 8px;
   width: 100%;
   height: 100%;
+  -webkit-overflow-scrolling: touch;
   ${({ $disableScrollbar, $size, $followContentHeight }) =>
     !$disableScrollbar &&
     css`
