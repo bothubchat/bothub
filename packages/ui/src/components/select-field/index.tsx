@@ -510,6 +510,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const onTabClick = useCallback(
     (id: string | null) => {
       setScrollTop([0, 0, 0]);
+      setOpenedOptions([]);
 
       if (tabs && tabs.onTabClick) {
         tabs.onTabClick(id);
