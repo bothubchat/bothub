@@ -249,6 +249,7 @@ export const DescriptionCardUlStyled = styled.ul`
   margin: 0;
   padding: 0;
   padding-right: 20px;
+  z-index: 2;
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
