@@ -41,7 +41,9 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
         onClick={handleAccordionToggle}
         $active={openAccordion}
       >
-        <MultiLevelMenuTitle>{menuItem.accordion_title}</MultiLevelMenuTitle>
+        <MultiLevelMenuTitle $open={openAccordion}>
+          {menuItem.accordion_title}
+        </MultiLevelMenuTitle>
         <MultiLevelMenuArrowDownIcon $open={openAccordion} />
       </MultiLevelMenuHeader>
       {dropdownTransition(
@@ -51,8 +53,8 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
               $open={openAccordion && !!item}
               style={style}
             >
-              {menuItem.first_level &&
-                menuItem.first_level.map((item, indexItem) => (
+              {menuItem.children &&
+                menuItem.children.map((item, indexItem) => (
                   <MultiLevelMenuFirstLevelItem
                     openFirstLevelMenu={openFirstLevelMenu === indexItem}
                     handleFirstLevelToggle={() =>

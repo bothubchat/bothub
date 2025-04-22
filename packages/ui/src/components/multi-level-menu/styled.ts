@@ -16,18 +16,27 @@ import {
 } from '@/ui/icons';
 
 export const MultiLevelMenuStyled = styled.nav`
-  padding: 30px 40px;
+  padding-left: 20px;
+  border-left: 1px solid;
+  border-color: ${({ theme }) => theme.colors.grayScale.gray3};
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    padding: 30px 40px;
+  }
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     padding: 30px 16px;
   }
 `;
+
 export const MultiLevelMenuWrapper = styled.ul`
   padding: 0;
   margin: 0;
   display: flex;
-  flex-direction: column;
   user-select: none;
-  row-gap: 30px;
+  gap: 20px;
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    row-gap: 30px;
+    flex-direction: column;
+  }
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     row-gap: 24px;
   }

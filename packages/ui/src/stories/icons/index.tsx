@@ -235,7 +235,8 @@ import {
   GridVerticalIcon,
   GridHorizontalIcon,
   StarGradientIcon,
-  ReportIcon
+  ReportIcon,
+  QwenIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -514,6 +515,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="GridHorizontalIcon">{GridHorizontalIcon}</IconItem>
         <IconItem name="StarGradientIcon">{StarGradientIcon}</IconItem>
         <IconItem name="ReportIcon">{ReportIcon}</IconItem>
+        <IconItem name="QwenIcon">{QwenIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

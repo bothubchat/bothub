@@ -240,3 +240,4 @@ export * from './grid-horizontal';
 export * from './grid-vertical';
 export * from './star-gradient';
 export * from './report';
+export * from './qwen';

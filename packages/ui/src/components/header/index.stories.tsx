@@ -7,9 +7,6 @@ import {
   HeaderUserInfoList,
   HeaderLogoLink,
   HeaderNav,
-  HeaderNavDropdown,
-  HeaderNavDropdownItem,
-  HeaderNavDropdownList,
   HeaderNavLink,
   HeaderUser,
   HeaderUserButton,
@@ -24,8 +21,6 @@ import {
 } from './lang-dropdown';
 import {
   BookmarksBigIcon,
-  BothubAggIcon,
-  BusinessColoredIcon,
   ChatsIcon,
   CoderIcon,
   DashboardIcon,
@@ -34,11 +29,12 @@ import {
   ReferalIcon,
   SettingsIcon,
   TariffIcon,
-  TgColoredIcon,
   UserProfileIcon
 } from '@/ui/icons';
 import { Button } from '../button';
 import { MenuDropdown } from '../menu-dropdown';
+import { MultilevelMenu } from '../multi-level-menu';
+import { menuItems } from '../multi-level-menu/config';
 
 export type HeaderMeta = Meta<typeof Header>;
 
@@ -51,35 +47,7 @@ export const Basic: HeaderStory = {
         <Logo />
       </HeaderLogoLink>
     ),
-    nav: (
-      <HeaderNav>
-        <HeaderNavLink href="#">Главная</HeaderNavLink>
-        <HeaderNavDropdown label="Продукты">
-          <HeaderNavDropdownList>
-            <HeaderNavDropdownItem
-              icon={<BothubAggIcon />}
-              title="Агрегатор нейросетей BotHub"
-              text="ChatGPT на базе 3.5 и 4.0 версии OpenAI"
-            />
-            <HeaderNavDropdownItem
-              icon={<TgColoredIcon />}
-              title="Telegram бот"
-              text="Удобный бот в Telegram который всегда под рукой"
-            />
-            <HeaderNavDropdownItem
-              icon={<BusinessColoredIcon />}
-              title="Бизнес бот"
-              text="ChatGPT для эффективного решения бизнес задач"
-            />
-          </HeaderNavDropdownList>
-        </HeaderNavDropdown>
-        <HeaderNavLink href="#">Тарифы</HeaderNavLink>
-        <HeaderNavLink href="#">Контакты</HeaderNavLink>
-        <HeaderNavLink href="#">Наши возможности</HeaderNavLink>
-        <HeaderNavLink href="#">О Нас</HeaderNavLink>
-        <HeaderNavLink href="#">Документация</HeaderNavLink>
-      </HeaderNav>
-    ),
+    nav: <MultilevelMenu config={menuItems} />,
     lang: (
       <HeaderLangDropdown lang="ru">
         <HeaderLangDropdownList>

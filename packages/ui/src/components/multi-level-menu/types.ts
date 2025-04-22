@@ -1,6 +1,6 @@
 export type TMenuItem = {
   accordion_title: string;
-  first_level?: TFirstLevelItem[];
+  children?: TFirstLevelItem[];
 };
 
 export type TFirstLevelItem = {

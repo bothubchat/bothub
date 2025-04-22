@@ -10,11 +10,25 @@ export const MultiLevelMenuFirstLevelWrapper: React.FC<
   padding: 0;
   display: flex;
   flex-direction: column;
-  position: relative;
+  position: absolute;
   user-select: none;
+  background: pink;
   row-gap: 8px;
   display: ${({ $open }) => ($open ? 'flex' : 'none')};
+
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    position: relative;
+  }
+  @media (min-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    top: 0;
+    left: 0;
+    border-radius: 17px;
+    background-color: ${({ theme }) => theme.colors.base.black};
+    border: 1px solid;
+    border-color: ${({ theme }) => theme.colors.grayScale.gray2};
+  }
 `;
+
 export const MultiLevelMenuHeader = styled.button<{ $active: boolean }>`
   width: 100%;
   padding: 0;
@@ -24,23 +38,34 @@ export const MultiLevelMenuHeader = styled.button<{ $active: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${({ $active }) => $active && '14px'};
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    margin-bottom: ${({ $active }) => $active && '14px'};
+  }
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     margin-bottom: ${({ $active }) => $active && '10px'};
   }
 `;
 
 export const MultiLevelMenuLi = styled.li`
+  position: relative;
   list-style: none;
 `;
 
 export const MultiLevelMenuTitle = styled(Typography).attrs({
   variant: 'body-l-semibold'
-})``;
+})<{ $open: boolean }>`
+  transition: color 0.2s ease-in-out;
+  color: ${({ theme, $open }) =>
+    $open ? theme.colors.accent.primaryLight : theme.colors.base.white};
+`;
 
 export const MultiLevelMenuArrowDownIcon = styled(ArrowDownIcon)<{
   $open: boolean;
 }>`
   transition: transform 0.2s ease-in-out;
   transform: ${({ $open }) => $open && 'rotate(180deg)'};
+  display: none;
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    display: inline-flex;
+  }
 `;

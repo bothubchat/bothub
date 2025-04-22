@@ -39,7 +39,7 @@ import {
 export const menuItems = [
   {
     accordion_title: 'Продукты',
-    first_level: [
+    children: [
       {
         title: 'ИИ Инструменты',
         icon: <StartsIconMultiLevelMenu size={18} />,
@@ -113,7 +113,7 @@ export const menuItems = [
   },
   {
     accordion_title: 'Цены',
-    first_level: [
+    children: [
       {
         title: 'Планы',
         icon: <MultiLevelMenuStarIconPlans size={18} />,
@@ -153,7 +153,7 @@ export const menuItems = [
   },
   {
     accordion_title: 'Модели',
-    first_level: [
+    children: [
       {
         title: 'ChatGPT',
         icon: <Gpt4Icon size={18} />,
@@ -296,7 +296,7 @@ export const menuItems = [
   },
   {
     accordion_title: 'Для бизнеса',
-    first_level: [
+    children: [
       {
         title: 'Услуги',
         icon: <GridHorizontalIcon />,
@@ -337,7 +337,7 @@ export const menuItems = [
   },
   {
     accordion_title: 'Материалы',
-    first_level: [
+    children: [
       {
         title: 'API',
         path: '/api/documentation/ru',
@@ -357,7 +357,7 @@ export const menuItems = [
   },
   {
     accordion_title: 'Компания',
-    first_level: [
+    children: [
       {
         title: 'О нас',
         path: '#',
