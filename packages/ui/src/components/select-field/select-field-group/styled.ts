@@ -15,14 +15,13 @@ export interface SelectFieldGroupContentProps {
 }
 
 export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
-  display: flex;
-  width: inherit;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding-right: 8px;
   width: 100%;
   height: 100%;
+  padding-right: 8px;
+  overflow-x: hidden;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  will-change: transform;
   ${({ $disableScrollbar, $size, $followContentHeight }) =>
     !$disableScrollbar &&
     css`
