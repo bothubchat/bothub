@@ -16,15 +16,17 @@ import { useTheme } from '@/ui/theme';
 import { SelectFieldOptionClickEventHandler } from '../list';
 
 export interface SelectFieldCollapseOptionProps
-  extends React.PropsWithChildren {
+  extends React.PropsWithChildren,
+    Pick<React.ComponentProps<'div'>, 'onMouseEnter' | 'onMouseLeave'> {
   size: SelectFieldSize;
   item: SelectFieldDataItem;
   onClick?: SelectFieldOptionClickEventHandler;
+  icon?: React.ReactNode;
 }
 
 export const SelectFieldCollapseOption: React.FC<
   SelectFieldCollapseOptionProps
-> = ({ size, item, children, onClick }) => {
+> = ({ size, item, children, onClick, icon, ...props }) => {
   const theme = useTheme();
 
   const [isOpen, setIsOpen] = useState(
@@ -53,7 +55,10 @@ export const SelectFieldCollapseOption: React.FC<
   }
 
   return (
-    <SelectFieldCollapseOptionStyled $size={size}>
+    <SelectFieldCollapseOptionStyled
+      {...props}
+      $size={size}
+    >
       <SelectFieldCollapseOptionHead
         $disabled={isDisabled}
         $size={size}
@@ -79,11 +84,13 @@ export const SelectFieldCollapseOption: React.FC<
           </SelectFieldCollapseOptionText>
         </SelectFieldCollapseOptionHeadSide>
         <SelectFieldCollapseOptionHeadSide $size={size}>
-          <SelectFieldCollapseOptionArrow
-            style={{
-              transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)'
-            }}
-          />
+          {icon || (
+            <SelectFieldCollapseOptionArrow
+              style={{
+                transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)'
+              }}
+            />
+          )}
         </SelectFieldCollapseOptionHeadSide>
       </SelectFieldCollapseOptionHead>
       {isOpen && (

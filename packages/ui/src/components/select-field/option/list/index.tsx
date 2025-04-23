@@ -136,7 +136,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
 
           return (
             <Tooltip
-              key={item.id ?? item.value ?? index}
+              key={item.id ?? item.value ?? `radio-${index}`}
               {...(typeof item.tooltip === 'object' && item.tooltip)}
               {...(typeof item.tooltip !== 'object' && {
                 disabled: true
@@ -151,7 +151,6 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               <TooltipConsumer>
                 {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                   <SelectFieldRadio
-                    key={item.id ?? item.value ?? `radio-${index}`}
                     $selected={item.selected}
                     $disabled={item.disabled}
                     onMouseEnter={handleTooltipMouseEnter}
@@ -169,6 +168,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                         checked={item.selected}
                         name={item.radioName}
                         disabled={item.disabled}
+                        icon={item.disabled ? item.end : undefined}
                       />
                     </SelectFieldRadioTitleAndRadio>
 
@@ -186,20 +186,40 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
 
         if (item.type === 'collapse' && item.data) {
           return (
-            <SelectFieldCollapseOption
+            <Tooltip
               key={item.id ?? item.value ?? `collapse-${index}`}
-              size={size}
-              item={item}
-              onClick={item.onClick}
+              {...(typeof item.tooltip === 'object' && item.tooltip)}
+              {...(typeof item.tooltip !== 'object' && {
+                disabled: true
+              })}
+              {...(item.label &&
+                item.label.length > 64 && {
+                  placement: 'top-left',
+                  label: item.label,
+                  disabled: false
+                })}
             >
-              <SelectFieldOptions
-                value={value}
-                data={item.data}
-                size={size}
-                disableSelect={disableSelect}
-                onOptionClick={onOptionClick}
-              />
-            </SelectFieldCollapseOption>
+              <TooltipConsumer>
+                {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                  <SelectFieldCollapseOption
+                    size={size}
+                    item={item}
+                    onMouseEnter={handleTooltipMouseEnter}
+                    onMouseLeave={handleTooltipMouseLeave}
+                    onClick={item.onClick}
+                    icon={item.disabled ? item.end : undefined}
+                  >
+                    <SelectFieldOptions
+                      value={value}
+                      data={item.data ?? []}
+                      size={size}
+                      disableSelect={disableSelect}
+                      onOptionClick={onOptionClick}
+                    />
+                  </SelectFieldCollapseOption>
+                )}
+              </TooltipConsumer>
+            </Tooltip>
           );
         }
 

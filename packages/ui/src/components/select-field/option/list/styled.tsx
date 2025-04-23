@@ -95,8 +95,10 @@ export const SelectFieldRadio = styled.div<{
   ${({ $disabled }) =>
     $disabled &&
     css`
-      opacity: 0.5;
       cursor: not-allowed;
+      & > * > ${SelectFieldRadioLabel} {
+        opacity: 0.5;
+      }
     `}
 `;
 
