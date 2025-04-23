@@ -1,7 +1,8 @@
-import { IconComponent } from '..';
+import { IconComponent } from '../..';
 
 export type TMenuItem = {
   accordion_title: string;
+  linkIcon_hidden?: boolean;
   children?: TFirstLevelItem[];
 };
 

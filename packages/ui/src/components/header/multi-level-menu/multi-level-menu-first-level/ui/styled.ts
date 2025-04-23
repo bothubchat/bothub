@@ -17,11 +17,11 @@ export const MultiLevelFirstLevelMenuLi = styled.li<{
   }
 `;
 
-export const MultiLevelMenuFirsLevelTitle = styled(Typography).attrs({
+export const MultiLevelMenuFirstLevelTitle = styled(Typography).attrs({
   variant: 'body-m-medium'
 })``;
 
-export const MultiLevelMenuFirsLevelHeader = styled.div<{ $active: boolean }>`
+export const MultiLevelMenuFirstLevelHeader = styled.div<{ $active: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -61,7 +61,7 @@ export const MultiLevelMenuFirsLevelHeader = styled.div<{ $active: boolean }>`
   }
 `;
 
-export const MultiLevelMenuFirsLevelHeaderContent = styled.div`
+export const MultiLevelMenuFirstLevelHeaderContent = styled.div`
   display: flex;
   column-gap: 12px;
   align-items: center;

@@ -33,8 +33,8 @@ import {
 } from '@/ui/icons';
 import { Button } from '../button';
 import { MenuDropdown } from '../menu-dropdown';
-import { MultilevelMenu } from '../multi-level-menu';
-import { menuItems } from '../multi-level-menu/config';
+import { MultilevelMenu } from './multi-level-menu';
+import { menuItems } from './multi-level-menu/config';
 
 export type HeaderMeta = Meta<typeof Header>;
 

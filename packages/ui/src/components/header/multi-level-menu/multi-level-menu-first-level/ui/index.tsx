@@ -3,45 +3,41 @@ import { IconProvider, MultiLevelMenuArrowRight45 } from '@/ui/index';
 import { TFirstLevelItem } from '../../types';
 import {
   MultiLevelFirstLevelMenuLi,
-  MultiLevelMenuFirsLevelHeader,
-  MultiLevelMenuFirsLevelHeaderContent,
-  MultiLevelMenuFirsLevelTitle,
+  MultiLevelMenuFirstLevelHeader,
+  MultiLevelMenuFirstLevelHeaderContent,
+  MultiLevelMenuFirstLevelTitle,
   MultiLevelMenuArrowRight
 } from './styled';
 
 interface IMultiLevelMenuFirstLevelItem {
   firstLevelItem: TFirstLevelItem;
-  accordion_title: string;
+  linkIcon_hidden?: boolean;
   onMouseEnter: () => void;
   selectedItemTitle?: string;
 }
 export const MultiLevelMenuFirstLevelItem: React.FC<
   IMultiLevelMenuFirstLevelItem
-> = ({ firstLevelItem, accordion_title, onMouseEnter, selectedItemTitle }) => (
+> = ({ firstLevelItem, linkIcon_hidden, onMouseEnter, selectedItemTitle }) => (
   <MultiLevelFirstLevelMenuLi $gotChild={!!firstLevelItem.children}>
-    <MultiLevelMenuFirsLevelHeader
+    <MultiLevelMenuFirstLevelHeader
       onMouseEnter={onMouseEnter}
       $active={firstLevelItem.title === selectedItemTitle}
       as={firstLevelItem.children ? 'div' : 'a'}
       href={firstLevelItem.children ? undefined : firstLevelItem.path}
     >
-      <MultiLevelMenuFirsLevelHeaderContent>
+      <MultiLevelMenuFirstLevelHeaderContent>
         <IconProvider size={18}>
           {firstLevelItem.icon ? React.createElement(firstLevelItem.icon) : ''}
         </IconProvider>
-        <MultiLevelMenuFirsLevelTitle>
+        <MultiLevelMenuFirstLevelTitle>
           {firstLevelItem.title}
-        </MultiLevelMenuFirsLevelTitle>
-      </MultiLevelMenuFirsLevelHeaderContent>
+        </MultiLevelMenuFirstLevelTitle>
+      </MultiLevelMenuFirstLevelHeaderContent>
       {firstLevelItem.children ? (
         <MultiLevelMenuArrowRight />
       ) : (
-        <MultiLevelMenuArrowRight45
-          $hidden={
-            accordion_title === 'Компания' || accordion_title === 'Материалы'
-          }
-        />
+        <MultiLevelMenuArrowRight45 $hidden={linkIcon_hidden} />
       )}
-    </MultiLevelMenuFirsLevelHeader>
+    </MultiLevelMenuFirstLevelHeader>
   </MultiLevelFirstLevelMenuLi>
 );

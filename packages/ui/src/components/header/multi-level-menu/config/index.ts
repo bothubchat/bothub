@@ -337,6 +337,7 @@ export const menuItems = [
   },
   {
     accordion_title: 'Материалы',
+    linkIcon_hidden: true,
     children: [
       {
         title: 'API',
@@ -357,6 +358,7 @@ export const menuItems = [
   },
   {
     accordion_title: 'Компания',
+    linkIcon_hidden: true,
     children: [
       {
         title: 'О нас',

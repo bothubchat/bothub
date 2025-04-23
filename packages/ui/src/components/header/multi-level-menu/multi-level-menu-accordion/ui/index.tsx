@@ -21,7 +21,7 @@ import { TFirstLevelItem, TMenuItem } from '../../types';
 import { MultiLevelMenuFirstLevelItem } from '../../multi-level-menu-first-level';
 
 import { MultiLevelMenuSecondLevelArrowRight45 } from '../../styled';
-import { MultiLevelMenuFirsLevelTitle } from '../../multi-level-menu-first-level/ui/styled';
+import { MultiLevelMenuFirstLevelTitle } from '../../multi-level-menu-first-level/ui/styled';
 import { IconProvider } from '@/ui/components/icon';
 
 interface IMultiLevelMenuAccordion {
@@ -52,9 +52,9 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
   };
 
   const dropdownTransition = useTransition(openAccordion, {
-    from: { opacity: 0, height: 0, transform: 'translateY(-20px)' },
+    from: { opacity: 0, height: 0, transform: 'translateY(-30px)' },
     enter: { opacity: 1, height: 'auto', transform: 'translateY(0)' },
-    leave: { opacity: 0, height: 0, transform: 'translateY(-20px)' },
+    leave: { opacity: 0, height: 'auto', transform: 'translateY(-10px)' },
     config: { duration: 200 }
   });
 
@@ -91,7 +91,7 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                       firstLevelItem={item}
                       key={indexItem}
                       selectedItemTitle={selectedItem?.title}
-                      accordion_title={menuItem.accordion_title}
+                      linkIcon_hidden={menuItem.linkIcon_hidden}
                     />
                   ))}
               </MultiLevelMenuFirstLevelUl>
@@ -125,9 +125,9 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                                             )
                                           : ''}
                                       </IconProvider>
-                                      <MultiLevelMenuFirsLevelTitle>
+                                      <MultiLevelMenuFirstLevelTitle>
                                         {childrenItem.title}
-                                      </MultiLevelMenuFirsLevelTitle>
+                                      </MultiLevelMenuFirstLevelTitle>
                                       <MultiLevelMenuSecondLevelSubTitle>
                                         {childrenItem.sub_title}
                                       </MultiLevelMenuSecondLevelSubTitle>
