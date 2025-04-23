@@ -1,16 +1,12 @@
 import { styled } from 'styled-components';
-import { animated, AnimatedProps } from '@react-spring/web';
-import { ArrowDownIcon, ArrowNarrowRightIcon } from '@/ui/icons';
+import { ArrowDownIcon } from '@/ui/icons';
 import { Typography } from '@/ui/components/typography';
-import { colorToRgba } from '@/ui/utils';
 
 export const MultiLevelFirstLevelMenuLi = styled.li<{
   $gotChild: boolean;
-  $active: boolean;
 }>`
   display: flex;
   list-style: none;
-  width: ${({ $active }) => ($active ? 'auto' : 'fit-content')};
   align-items: start;
   transition: all 0.5s ease-in;
   &:hover {
@@ -24,42 +20,6 @@ export const MultiLevelFirstLevelMenuLi = styled.li<{
 export const MultiLevelMenuFirsLevelTitle = styled(Typography).attrs({
   variant: 'body-m-medium'
 })``;
-
-export const MultiLevelMenuSecondLevelTitle = styled(Typography).attrs({
-  variant: 'body-m-regular'
-})``;
-
-export const MultiLevelMenuSecondLevelSubTitle = styled(
-  MultiLevelMenuSecondLevelTitle
-)`
-  color: ${({ theme }) => theme.colors.grayScale.gray6};
-`;
-
-export const MultiLevelMenuSecondLevelWrapper: React.FC<
-  AnimatedProps<React.ComponentProps<'div'>> & { $open: boolean }
-> = styled(animated.ul)`
-  user-select: none;
-  padding: 0;
-  margin: 0;
-  top: 10px;
-  left: 250px;
-  right: 16px;
-  display: ${({ $open }) => ($open ? 'grid' : 'none')};
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 16px;
-  padding-left: 18px;
-  flex-grow: 1;
-  ${MultiLevelFirstLevelMenuLi}:hover & {
-    display: grid;
-  }
-  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    flex-direction: column;
-    display: ${({ $open }) => ($open ? 'flex' : 'none')};
-    ${MultiLevelFirstLevelMenuLi}:hover & {
-      display: flex;
-    }
-  }
-`;
 
 export const MultiLevelMenuFirsLevelHeader = styled.div<{ $active: boolean }>`
   display: flex;
@@ -107,93 +67,9 @@ export const MultiLevelMenuFirsLevelHeaderContent = styled.div`
   align-items: center;
 `;
 
-export const MultiLevelMenuArrowRight45 = styled(ArrowNarrowRightIcon)<{
-  $hidden?: boolean;
-}>`
-  transform: rotate(-45deg);
-  display: ${({ $hidden }) => ($hidden ? 'none' : 'inline-flex')};
-  path {
-    fill: ${({ theme }) => theme.colors.base.white};
-  }
-  @media (max-width: 650px) {
-    display: none;
-  }
-`;
-export const MultiLevelMenuSecondLevelArrowRight45 = styled(
-  MultiLevelMenuArrowRight45
-)`
-  background: transparent;
-  border-radius: 50%;
-  padding: 6px;
-  transition: background 0.2s ease-in-out;
-`;
-
 export const MultiLevelMenuArrowRight = styled(ArrowDownIcon)`
   transform: rotate(-90deg);
   @media (max-width: 650px) {
     display: none;
   }
-`;
-
-export const MultiLevelMenuSecondLevelHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  padding-right: 6px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  border-radius: 10px;
-  transition: background 0.2s ease-in-out;
-`;
-export const MultiLevelMenuSecondLevelHeaderWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
-export const MultiLevelMenuSecondLevelLi = styled.li`
-  position: relative;
-  list-style: none;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid;
-  border-color: ${({ theme }) => theme.colors.grayScale.gray2};
-  &:last-child {
-    border-bottom: none;
-  }
-  @media (min-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    &:nth-last-child(-n + 2) {
-      border-bottom: none;
-    }
-  }
-  &:hover {
-    ${MultiLevelMenuSecondLevelHeader} {
-      background: ${({ theme }) =>
-        colorToRgba(theme.colors.accent.primary, 0.2)};
-    }
-    ${MultiLevelMenuSecondLevelArrowRight45} {
-      background: ${({ theme }) => theme.colors.accent.primary};
-    }
-  }
-`;
-
-export const MultiLevelMenuSecondLevelCardLink = styled.a`
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-`;
-
-export const MultiLevelMenuSecondLevelHeaderContent = styled.div`
-  display: flex;
-  column-gap: 10px;
-  align-items: center;
-`;
-
-export const MultiLevelMenuSecondLevelDescription = styled(Typography).attrs({
-  variant: 'body-m-regular'
-})`
-  display: block;
-  margin-top: 8px;
 `;

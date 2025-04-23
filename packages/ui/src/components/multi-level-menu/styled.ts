@@ -12,15 +12,18 @@ import {
   CoderIcon,
   BlogCircleIcon,
   NewsIcon,
-  StarGradientIcon
+  StarGradientIcon,
+  ArrowNarrowRightIcon
 } from '@/ui/icons';
 
 export const MultiLevelMenuStyled = styled.nav`
-  padding-left: 20px;
-  border-left: 1px solid;
-  border-color: ${({ theme }) => theme.colors.grayScale.gray3};
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     padding: 30px 40px;
+  }
+  @media (min-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    padding-left: 20px;
+    border-left: 1px solid;
+    border-color: ${({ theme }) => theme.colors.grayScale.gray3};
   }
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     padding: 30px 16px;
@@ -135,4 +138,25 @@ export const MultiLevelMenuBlogNewsIcon = styled(NewsIcon)`
   path {
     fill: ${({ theme }) => theme.colors.base.white};
   }
+`;
+
+export const MultiLevelMenuArrowRight45 = styled(ArrowNarrowRightIcon)<{
+  $hidden?: boolean;
+}>`
+  transform: rotate(-45deg);
+  display: ${({ $hidden }) => ($hidden ? 'none' : 'inline-flex')};
+  path {
+    fill: ${({ theme }) => theme.colors.base.white};
+  }
+  @media (max-width: 650px) {
+    display: none;
+  }
+`;
+export const MultiLevelMenuSecondLevelArrowRight45 = styled(
+  MultiLevelMenuArrowRight45
+)`
+  background: transparent;
+  border-radius: 50%;
+  padding: 6px;
+  transition: background 0.2s ease-in-out;
 `;
