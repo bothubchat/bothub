@@ -18,7 +18,7 @@ export type ModalCloseEventHandler = () => unknown;
 
 export interface ModalProps extends React.PropsWithChildren {
   open: boolean;
-  title?: string | null;
+  title?: React.ReactNode;
   scrollbar?: boolean;
   images?: React.ReactNode;
   onClose?: ModalCloseEventHandler;
@@ -60,7 +60,11 @@ export const Modal: React.FC<ModalProps> = ({
               >
                 {images}
                 <ModalWindowBody>
-                  {title ? <ModalTitle>{title}</ModalTitle> : null}
+                  {typeof title === 'string' ? (
+                    <ModalTitle>{title}</ModalTitle>
+                  ) : (
+                    title
+                  )}
                   <ModalCloseButton onClick={onClose}>
                     <ModalCloseButtonIcon size={24} />
                   </ModalCloseButton>

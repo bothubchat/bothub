@@ -36,7 +36,7 @@ export const Accordion: React.FC<AccordionProps> = ({
 
       <AccordionBody $isOpen={isOpen}>
         {typeof children === 'string' ? (
-          <AccordionText>{children}</AccordionText>
+          <AccordionText $isOpen={isOpen}>{children}</AccordionText>
         ) : (
           children
         )}

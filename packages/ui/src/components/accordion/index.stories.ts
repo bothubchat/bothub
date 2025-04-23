@@ -13,6 +13,13 @@ export const Basic: AccordionStory = {
   }
 };
 
+export const WithALotOfText: AccordionStory = {
+  args: {
+    label: 'Какие сферы бизнеса могут воспользоваться ChatGPT? '.repeat(3),
+    children: 'Какие сферы бизнеса могут воспользоваться ChatGPT? '.repeat(10)
+  }
+};
+
 export default {
   title: 'UI Components/Accordion',
   component: Accordion,
