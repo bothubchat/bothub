@@ -36,7 +36,9 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
   handleAccordionToggle
 }) => {
   const [selectedItem, setSelectedItem] = useState<TFirstLevelItem | undefined>(
-    menuItem.children ? menuItem.children[0] : undefined
+    menuItem.children && menuItem.children[0].children
+      ? menuItem.children[0]
+      : undefined
   );
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
