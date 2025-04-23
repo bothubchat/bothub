@@ -7,17 +7,13 @@ import {
 } from './styled';
 import { useHeader } from '../context';
 import { HeaderMenuProvider } from './context';
-import { MultilevelMenu } from '../../multi-level-menu';
-import { TMenuItem } from '../../multi-level-menu/types';
 
 export interface HeaderMenuProps extends React.PropsWithChildren {
   isPreset?: boolean;
-  config?: TMenuItem[];
 }
 
 export const HeaderMenu: React.FC<HeaderMenuProps> = ({
   isPreset,
-  config,
   children
 }) => {
   const { variant, isMenuOpen } = useHeader();
@@ -64,11 +60,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({
                 $variant={variant}
                 style={style}
               >
-                {variant === 'main' ? (
-                  <MultilevelMenu config={config} />
-                ) : (
-                  children
-                )}
+                {children}
               </HeaderMenuContent>
             </HeaderMenuStyled>
           )
