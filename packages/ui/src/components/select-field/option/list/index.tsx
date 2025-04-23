@@ -135,28 +135,52 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           };
 
           return (
-            <SelectFieldRadio
-              key={item.id ?? item.value ?? `radio-${index}`}
-              $selected={item.selected}
-              onClick={onClick}
+            <Tooltip
+              key={item.id ?? item.value ?? index}
+              {...(typeof item.tooltip === 'object' && item.tooltip)}
+              {...(typeof item.tooltip !== 'object' && {
+                disabled: true
+              })}
+              {...(item.label &&
+                item.label.length > 64 && {
+                  placement: 'top-left',
+                  label: item.label,
+                  disabled: false
+                })}
             >
-              <SelectFieldRadioTitleAndRadio>
-                {item.label && (
-                  <SelectFieldRadioLabel>{item.label}</SelectFieldRadioLabel>
-                )}
-                <Radio
-                  type="radio"
-                  checked={item.selected}
-                  name={item.radioName}
-                />
-              </SelectFieldRadioTitleAndRadio>
+              <TooltipConsumer>
+                {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                  <SelectFieldRadio
+                    key={item.id ?? item.value ?? `radio-${index}`}
+                    $selected={item.selected}
+                    $disabled={item.disabled}
+                    onMouseEnter={handleTooltipMouseEnter}
+                    onMouseLeave={handleTooltipMouseLeave}
+                    onClick={onClick}
+                  >
+                    <SelectFieldRadioTitleAndRadio>
+                      {item.label && (
+                        <SelectFieldRadioLabel>
+                          {item.label}
+                        </SelectFieldRadioLabel>
+                      )}
+                      <Radio
+                        type="radio"
+                        checked={item.selected}
+                        name={item.radioName}
+                        disabled={item.disabled}
+                      />
+                    </SelectFieldRadioTitleAndRadio>
 
-              {item.description && (
-                <SelectFieldRadioDescription>
-                  {item.description}
-                </SelectFieldRadioDescription>
-              )}
-            </SelectFieldRadio>
+                    {item.description && (
+                      <SelectFieldRadioDescription>
+                        {item.description}
+                      </SelectFieldRadioDescription>
+                    )}
+                  </SelectFieldRadio>
+                )}
+              </TooltipConsumer>
+            </Tooltip>
           );
         }
 
