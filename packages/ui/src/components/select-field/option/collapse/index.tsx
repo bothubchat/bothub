@@ -17,7 +17,10 @@ import { SelectFieldOptionClickEventHandler } from '../list';
 
 export interface SelectFieldCollapseOptionProps
   extends React.PropsWithChildren,
-    Pick<React.ComponentProps<'div'>, 'onMouseEnter' | 'onMouseLeave'> {
+    Pick<
+      React.ComponentProps<'div'>,
+      'onMouseEnter' | 'onMouseLeave' | 'onPointerDown' | 'onPointerUp'
+    > {
   size: SelectFieldSize;
   item: SelectFieldDataItem;
   onClick?: SelectFieldOptionClickEventHandler;

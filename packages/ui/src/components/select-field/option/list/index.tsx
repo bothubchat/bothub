@@ -153,6 +153,8 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                   <SelectFieldRadio
                     $selected={item.selected}
                     $disabled={item.disabled}
+                    onPointerDown={handleTooltipMouseEnter}
+                    onPointerUp={handleTooltipMouseLeave}
                     onMouseEnter={handleTooltipMouseEnter}
                     onMouseLeave={handleTooltipMouseLeave}
                     onClick={onClick}
@@ -204,6 +206,8 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                   <SelectFieldCollapseOption
                     size={size}
                     item={item}
+                    onPointerDown={handleTooltipMouseEnter}
+                    onPointerUp={handleTooltipMouseLeave}
                     onMouseEnter={handleTooltipMouseEnter}
                     onMouseLeave={handleTooltipMouseLeave}
                     onClick={item.onClick}
@@ -256,6 +260,8 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                   $disabled={disabled}
                   $size={size}
                   $backgroundHoverColor={item.backgroundHoverColor}
+                  onPointerDown={handleTooltipMouseEnter}
+                  onPointerUp={handleTooltipMouseLeave}
                   onMouseEnter={handleTooltipMouseEnter}
                   onMouseLeave={handleTooltipMouseLeave}
                   onClick={handleOptionClick.bind(null, item)}
