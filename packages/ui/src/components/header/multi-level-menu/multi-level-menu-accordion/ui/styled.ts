@@ -154,19 +154,19 @@ export const MultiLevelMenuSecondLevelWrapper: React.FC<
   AnimatedProps<React.ComponentProps<'div'>>
 > = styled(animated.div)`
   user-select: none;
-  padding: 0;
-  margin: 0;
+  padding-left: 18px;
+  flex-grow: 1;
+`;
+export const MultiLevelMenuSecondLevelContentWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 16px;
-  padding-left: 18px;
-  flex-grow: 1;
+  height: auto;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     display: flex;
     flex-direction: column;
   }
 `;
-
 export const MultiLevelMenuSecondLevelTitle = styled(Typography).attrs({
   variant: 'body-m-regular'
 })``;

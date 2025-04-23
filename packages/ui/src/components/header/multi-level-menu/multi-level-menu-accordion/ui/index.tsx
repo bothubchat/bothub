@@ -7,6 +7,7 @@ import {
   MultiLevelMenuHeader,
   MultiLevelMenuLi,
   MultiLevelMenuSecondLevelCardLink,
+  MultiLevelMenuSecondLevelContentWrapper,
   MultiLevelMenuSecondLevelDescription,
   MultiLevelMenuSecondLevelHeader,
   MultiLevelMenuSecondLevelHeaderContent,
@@ -101,53 +102,55 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                 (style, item) =>
                   item && (
                     <MultiLevelMenuSecondLevelWrapper style={style}>
-                      {selectedItem &&
-                        selectedItem.children &&
-                        selectedItem.children.map(
-                          (childrenItem, indexChildrenItem) => (
-                            <MultiLevelMenuSecondLevelLi
-                              $even={
-                                selectedItem &&
-                                selectedItem.children &&
-                                selectedItem.children.length % 2 === 0
-                              }
-                              key={indexChildrenItem}
-                            >
-                              <MultiLevelMenuSecondLevelLiHover>
-                                <MultiLevelMenuSecondLevelCardLink
-                                  href={childrenItem.path}
-                                />
-                                <MultiLevelMenuSecondLevelHeader>
-                                  <MultiLevelMenuSecondLevelHeaderWrapper>
-                                    <MultiLevelMenuSecondLevelHeaderContent>
-                                      <IconProvider size={18}>
-                                        {childrenItem.icon
-                                          ? React.createElement(
-                                              childrenItem.icon
-                                            )
-                                          : ''}
-                                      </IconProvider>
-                                      <MultiLevelMenuFirstLevelTitle>
-                                        {childrenItem.title}
-                                      </MultiLevelMenuFirstLevelTitle>
-                                      <MultiLevelMenuSecondLevelSubTitle>
-                                        {childrenItem.sub_title}
-                                      </MultiLevelMenuSecondLevelSubTitle>
-                                    </MultiLevelMenuSecondLevelHeaderContent>
-                                    <MultiLevelMenuSecondLevelArrowRight45
-                                      size={30}
-                                    />
-                                  </MultiLevelMenuSecondLevelHeaderWrapper>
-                                  {childrenItem.description && (
-                                    <MultiLevelMenuSecondLevelDescription>
-                                      {childrenItem.description}
-                                    </MultiLevelMenuSecondLevelDescription>
-                                  )}
-                                </MultiLevelMenuSecondLevelHeader>
-                              </MultiLevelMenuSecondLevelLiHover>
-                            </MultiLevelMenuSecondLevelLi>
-                          )
-                        )}
+                      <MultiLevelMenuSecondLevelContentWrapper>
+                        {selectedItem &&
+                          selectedItem.children &&
+                          selectedItem.children.map(
+                            (childrenItem, indexChildrenItem) => (
+                              <MultiLevelMenuSecondLevelLi
+                                $even={
+                                  selectedItem &&
+                                  selectedItem.children &&
+                                  selectedItem.children.length % 2 === 0
+                                }
+                                key={indexChildrenItem}
+                              >
+                                <MultiLevelMenuSecondLevelLiHover>
+                                  <MultiLevelMenuSecondLevelCardLink
+                                    href={childrenItem.path}
+                                  />
+                                  <MultiLevelMenuSecondLevelHeader>
+                                    <MultiLevelMenuSecondLevelHeaderWrapper>
+                                      <MultiLevelMenuSecondLevelHeaderContent>
+                                        <IconProvider size={18}>
+                                          {childrenItem.icon
+                                            ? React.createElement(
+                                                childrenItem.icon
+                                              )
+                                            : ''}
+                                        </IconProvider>
+                                        <MultiLevelMenuFirstLevelTitle>
+                                          {childrenItem.title}
+                                        </MultiLevelMenuFirstLevelTitle>
+                                        <MultiLevelMenuSecondLevelSubTitle>
+                                          {childrenItem.sub_title}
+                                        </MultiLevelMenuSecondLevelSubTitle>
+                                      </MultiLevelMenuSecondLevelHeaderContent>
+                                      <MultiLevelMenuSecondLevelArrowRight45
+                                        size={30}
+                                      />
+                                    </MultiLevelMenuSecondLevelHeaderWrapper>
+                                    {childrenItem.description && (
+                                      <MultiLevelMenuSecondLevelDescription>
+                                        {childrenItem.description}
+                                      </MultiLevelMenuSecondLevelDescription>
+                                    )}
+                                  </MultiLevelMenuSecondLevelHeader>
+                                </MultiLevelMenuSecondLevelLiHover>
+                              </MultiLevelMenuSecondLevelLi>
+                            )
+                          )}
+                      </MultiLevelMenuSecondLevelContentWrapper>
                     </MultiLevelMenuSecondLevelWrapper>
                   )
               )}
