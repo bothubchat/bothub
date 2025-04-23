@@ -12,7 +12,6 @@ import {
 import { HeaderMenu, HeaderMenuToggleButton } from './menu';
 import { HeaderVariant } from './types';
 import { HeaderProvider } from './context';
-import { TMenuItem } from '../multi-level-menu/types';
 
 export type HeaderOpenEventHandler = (open: boolean) => unknown;
 export type HeaderTabletToggleEventHandler = () => unknown;
@@ -32,7 +31,6 @@ export interface HeaderProps
   tabletMenuOpen?: boolean;
   onOpen?: HeaderOpenEventHandler;
   onTabletOpen?: HeaderTabletToggleEventHandler;
-  config?: TMenuItem[];
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -40,7 +38,6 @@ export const Header: React.FC<HeaderProps> = ({
   variant = 'main',
   logo,
   nav,
-  config,
   buttonsTablet,
   lang,
   user,
@@ -70,10 +67,7 @@ export const Header: React.FC<HeaderProps> = ({
       : useState(false);
 
   const menuNode: React.ReactNode = (
-    <HeaderMenu
-      config={config}
-      isPreset={isPreset}
-    >
+    <HeaderMenu isPreset={isPreset}>
       {themeSwitcher}
       {nav}
       {user}
