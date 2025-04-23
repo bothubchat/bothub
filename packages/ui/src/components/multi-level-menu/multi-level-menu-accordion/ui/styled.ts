@@ -56,8 +56,10 @@ export const MultiLevelMenuTitle = styled(Typography).attrs({
   variant: 'body-l-semibold'
 })<{ $open: boolean }>`
   transition: color 0.2s ease-in-out;
-  color: ${({ theme, $open }) =>
-    $open ? theme.colors.accent.primaryLight : theme.colors.base.white};
+  @media (min-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    color: ${({ theme, $open }) =>
+      $open ? theme.colors.accent.primaryLight : theme.colors.base.white};
+  }
 `;
 
 export const MultiLevelMenuArrowDownIcon = styled(ArrowDownIcon)<{

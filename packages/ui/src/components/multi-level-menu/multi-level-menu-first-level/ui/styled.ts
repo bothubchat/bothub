@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { animated, AnimatedProps } from '@react-spring/web';
 import { ArrowDownIcon, ArrowNarrowRightIcon } from '@/ui/icons';
 import { Typography } from '@/ui/components/typography';
+import { colorToRgba } from '@/ui/utils';
 
 export const MultiLevelFirstLevelMenuLi = styled.li<{
   $gotChild: boolean;
@@ -40,7 +41,6 @@ export const MultiLevelMenuSecondLevelWrapper: React.FC<
   user-select: none;
   padding: 0;
   margin: 0;
-  position: absolute;
   top: 10px;
   left: 250px;
   right: 16px;
@@ -71,6 +71,7 @@ export const MultiLevelMenuFirsLevelHeader = styled.div<{ $active: boolean }>`
   border-color: transparent;
   padding: 10px;
   cursor: pointer;
+  flex-shrink: 0;
   transition: all 0.2s ease-in-out;
   background: ${({ $active }) =>
     $active
@@ -118,6 +119,14 @@ export const MultiLevelMenuArrowRight45 = styled(ArrowNarrowRightIcon)<{
     display: none;
   }
 `;
+export const MultiLevelMenuSecondLevelArrowRight45 = styled(
+  MultiLevelMenuArrowRight45
+)`
+  background: transparent;
+  border-radius: 50%;
+  padding: 6px;
+  transition: background 0.2s ease-in-out;
+`;
 
 export const MultiLevelMenuArrowRight = styled(ArrowDownIcon)`
   transform: rotate(-90deg);
@@ -126,11 +135,27 @@ export const MultiLevelMenuArrowRight = styled(ArrowDownIcon)`
   }
 `;
 
+export const MultiLevelMenuSecondLevelHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  padding-right: 6px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  border-radius: 10px;
+  transition: background 0.2s ease-in-out;
+`;
+export const MultiLevelMenuSecondLevelHeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
 export const MultiLevelMenuSecondLevelLi = styled.li`
   position: relative;
   list-style: none;
-  padding-left: 10px;
-  padding-bottom: 18px;
+  padding-top: 8px;
+  padding-bottom: 8px;
   border-bottom: 1px solid;
   border-color: ${({ theme }) => theme.colors.grayScale.gray2};
   &:last-child {
@@ -141,6 +166,15 @@ export const MultiLevelMenuSecondLevelLi = styled.li`
       border-bottom: none;
     }
   }
+  &:hover {
+    ${MultiLevelMenuSecondLevelHeader} {
+      background: ${({ theme }) =>
+        colorToRgba(theme.colors.accent.primary, 0.2)};
+    }
+    ${MultiLevelMenuSecondLevelArrowRight45} {
+      background: ${({ theme }) => theme.colors.accent.primary};
+    }
+  }
 `;
 
 export const MultiLevelMenuSecondLevelCardLink = styled.a`
@@ -149,15 +183,6 @@ export const MultiLevelMenuSecondLevelCardLink = styled.a`
   right: 0;
   left: 0;
   bottom: 0;
-`;
-
-export const MultiLevelMenuSecondLevelHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-  padding-right: 6px;
-  padding-top: 18px;
 `;
 
 export const MultiLevelMenuSecondLevelHeaderContent = styled.div`

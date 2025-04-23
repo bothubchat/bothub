@@ -13,7 +13,9 @@ import {
   MultiLevelMenuSecondLevelHeader,
   MultiLevelMenuSecondLevelHeaderContent,
   MultiLevelMenuSecondLevelSubTitle,
-  MultiLevelMenuSecondLevelDescription
+  MultiLevelMenuSecondLevelDescription,
+  MultiLevelMenuSecondLevelArrowRight45,
+  MultiLevelMenuSecondLevelHeaderWrapper
 } from './styled';
 
 interface IMultiLevelMenuFirstLevelItem {
@@ -87,22 +89,24 @@ export const MultiLevelMenuFirstLevelItem: React.FC<
                         href={childrenItem.path}
                       />
                       <MultiLevelMenuSecondLevelHeader>
-                        <MultiLevelMenuSecondLevelHeaderContent>
-                          {childrenItem.icon}
-                          <MultiLevelMenuFirsLevelTitle>
-                            {childrenItem.title}
-                          </MultiLevelMenuFirsLevelTitle>
-                          <MultiLevelMenuSecondLevelSubTitle>
-                            {childrenItem.sub_title}
-                          </MultiLevelMenuSecondLevelSubTitle>
-                        </MultiLevelMenuSecondLevelHeaderContent>
-                        <MultiLevelMenuArrowRight45 />
+                        <MultiLevelMenuSecondLevelHeaderWrapper>
+                          <MultiLevelMenuSecondLevelHeaderContent>
+                            {childrenItem.icon}
+                            <MultiLevelMenuFirsLevelTitle>
+                              {childrenItem.title}
+                            </MultiLevelMenuFirsLevelTitle>
+                            <MultiLevelMenuSecondLevelSubTitle>
+                              {childrenItem.sub_title}
+                            </MultiLevelMenuSecondLevelSubTitle>
+                          </MultiLevelMenuSecondLevelHeaderContent>
+                          <MultiLevelMenuSecondLevelArrowRight45 size={30} />
+                        </MultiLevelMenuSecondLevelHeaderWrapper>
+                        {childrenItem.description && (
+                          <MultiLevelMenuSecondLevelDescription>
+                            {childrenItem.description}
+                          </MultiLevelMenuSecondLevelDescription>
+                        )}
                       </MultiLevelMenuSecondLevelHeader>
-                      {childrenItem.description && (
-                        <MultiLevelMenuSecondLevelDescription>
-                          {childrenItem.description}
-                        </MultiLevelMenuSecondLevelDescription>
-                      )}
                     </MultiLevelMenuSecondLevelLi>
                   )
                 )}
