@@ -42,7 +42,6 @@ import {
   MediumCircleIcon,
   MenuDotIcon,
   MenuIcon,
-  MinimizeIcon,
   MjIcon,
   Plus1Icon,
   Plus2Icon,
@@ -61,7 +60,6 @@ import {
   ThumbDownIcon,
   ThumbUpIcon,
   TrashIcon,
-  UnminimizeIcon,
   UpdateIcon,
   UserProfileIcon,
   WarningBigIcon,
@@ -229,6 +227,8 @@ import {
   SetchelIcon,
   ArticleIcon,
   AssemblyIcon,
+  SidebarToggleRight,
+  SidebarToggleLeft,
   GrokIcon,
   DeepSeekIcon,
   AcademyIcon,
@@ -283,7 +283,8 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="CheckedIcon">{CheckedIcon}</IconItem>
         <IconItem name="HotnessIcon">{HotnessIcon}</IconItem>
         <IconItem name="FreeIcon">{FreeIcon}</IconItem>
-        <IconItem name="MinimizeIcon">{MinimizeIcon}</IconItem>
+        <IconItem name="SidebarToggleLeft">{SidebarToggleLeft}</IconItem>
+        <IconItem name="SidebarToggleRight">{SidebarToggleRight}</IconItem>
         <IconItem name="EditIcon">{EditIcon}</IconItem>
         <IconItem name="ManageChatIcon">{ManageChatIcon}</IconItem>
         <IconItem name="CopyIcon">{CopyIcon}</IconItem>
@@ -296,7 +297,6 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="CoderIcon">{CoderIcon}</IconItem>
         <IconItem name="BookmarksIcon">{BookmarksIcon}</IconItem>
         <IconItem name="AIIcon">{AIIcon}</IconItem>
-        <IconItem name="UnminimizeIcon">{UnminimizeIcon}</IconItem>
         <IconItem name="UpdateIcon">{UpdateIcon}</IconItem>
         <IconItem name="RestoreIcon">{RestoreIcon}</IconItem>
         <IconItem name="ChatIcon">{ChatIcon}</IconItem>

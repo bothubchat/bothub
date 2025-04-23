@@ -24,6 +24,7 @@ export const ScrollableTabs = ({
     const newValue = id === selected ? null : id;
 
     setSelected(newValue);
+
     if (onClick) {
       onClick(newValue);
     }
