@@ -117,6 +117,7 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                               >
                                 <MultiLevelMenuSecondLevelLiHover>
                                   <MultiLevelMenuSecondLevelCardLink
+                                    onClick={childrenItem.onClick}
                                     href={childrenItem.path}
                                   />
                                   <MultiLevelMenuSecondLevelHeader>

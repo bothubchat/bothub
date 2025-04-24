@@ -132,6 +132,7 @@ export const MultiLevelMenuSecondLevelLi = styled.li<{ $even?: boolean }>`
 
 export const MultiLevelMenuSecondLevelCardLink = styled.a`
   position: absolute;
+  cursor: pointer;
   top: 0;
   right: 0;
   left: 0;
