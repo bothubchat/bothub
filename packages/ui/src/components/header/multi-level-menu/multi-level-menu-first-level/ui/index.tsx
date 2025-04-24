@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProvider, MultiLevelMenuArrowRight45 } from '@/ui/index';
+import { IconProvider } from '@/ui/components/icon';
 import { TFirstLevelItem } from '../../types';
 import {
   MultiLevelFirstLevelMenuLi,
@@ -8,6 +8,7 @@ import {
   MultiLevelMenuFirstLevelTitle,
   MultiLevelMenuArrowRight
 } from './styled';
+import { MultiLevelMenuArrowRight45 } from '../../styled';
 
 interface IMultiLevelMenuFirstLevelItem {
   firstLevelItem: TFirstLevelItem;

@@ -1,4 +1,4 @@
-import { IconComponent } from '../..';
+import { IconComponent } from '@/ui/components/icon';
 
 export type TMenuItem = {
   accordion_title: string;
