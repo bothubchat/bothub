@@ -15,6 +15,7 @@ export interface RadioProps extends React.ComponentProps<'input'> {
   label?: string | boolean;
   skeleton?: boolean;
   onValueChange?: RadioValueChangeEventHandler;
+  icon?: React.ReactNode;
 }
 
 export const Radio: React.FC<RadioProps> = ({
@@ -22,6 +23,7 @@ export const Radio: React.FC<RadioProps> = ({
   label,
   skeleton = false,
   onValueChange,
+  icon,
   ...props
 }) => {
   const handleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
@@ -45,9 +47,13 @@ export const Radio: React.FC<RadioProps> = ({
         />
       )}
       {!skeleton && (
-        <RadioCircle $skeleton={false}>
-          <RadioCircleDot />
-        </RadioCircle>
+        <>
+          {icon || (
+            <RadioCircle $skeleton={false}>
+              <RadioCircleDot />
+            </RadioCircle>
+          )}
+        </>
       )}
       {skeleton && (
         <RadioCircle

@@ -46,6 +46,7 @@ export interface TextFieldProps
   readonly?: boolean;
   variant?: Variant;
   autoFocus?: boolean;
+  autoComplete?: React.ComponentProps<'input'>['autoComplete'];
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -76,6 +77,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   readonly = false,
   variant = 'primary',
   autoFocus,
+  autoComplete,
   ...props
 }) => {
   const theme = useTheme();
@@ -205,6 +207,7 @@ export const TextField: React.FC<TextFieldProps> = ({
             onMouseLeave={handleMouseLeave}
             $variant={variant}
             autoFocus={autoFocus}
+            autoComplete={autoComplete}
           />
           {type === 'search' && value && (
             <TextFieldClearButton onClick={handleClear} />

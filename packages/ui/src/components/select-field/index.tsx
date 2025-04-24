@@ -452,18 +452,20 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      const listener = () => {
-        if (isKeyboardOpen.current) return;
+      const listener = (e: Event) => {
+        if (isKeyboardOpen.current && e.type !== 'orientationchange') return;
 
         handleClose();
       };
 
       document.addEventListener('scroll', listener);
       window.addEventListener('resize', listener);
+      window.addEventListener('orientationchange', listener);
 
       return () => {
         document.removeEventListener('scroll', listener);
         window.removeEventListener('resize', listener);
+        window.removeEventListener('orientationchange', listener);
       };
     }
   }, [isOpen]);
@@ -753,9 +755,11 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                           onClick={() => {
                             isKeyboardOpen.current = true;
                           }}
-                          onBlur={() => {
-                            isKeyboardOpen.current = false;
-                          }}
+                          onBlur={() =>
+                            setTimeout(() => {
+                              isKeyboardOpen.current = false;
+                            }, 500)
+                          }
                         />
                       )}
                       {before && (
