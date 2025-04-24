@@ -57,11 +57,13 @@ export const SelectFieldCollapseOptionHead = styled.div<SelectFieldCollapseOptio
     if ($disabled) {
       return css`
         cursor: not-allowed;
-        opacity: 0.5;
         &:hover {
           background: ${theme.mode === 'light'
             ? 'rgba(0, 0, 0, 0.05)'
             : 'rgba(255, 255, 255, 0.05)'};
+        }
+        & > ${SelectFieldCollapseOptionHeadSide}:first-child {
+          opacity: 0.5;
         }
       `;
     }
