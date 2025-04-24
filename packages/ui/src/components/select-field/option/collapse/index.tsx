@@ -19,7 +19,11 @@ export interface SelectFieldCollapseOptionProps
   extends React.PropsWithChildren,
     Pick<
       React.ComponentProps<'div'>,
-      'onMouseEnter' | 'onMouseLeave' | 'onPointerDown' | 'onPointerUp'
+      | 'onMouseEnter'
+      | 'onMouseLeave'
+      | 'onPointerDown'
+      | 'onPointerUp'
+      | 'onPointerLeave'
     > {
   size: SelectFieldSize;
   item: SelectFieldDataItem;
