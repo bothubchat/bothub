@@ -40,6 +40,7 @@ export const SidebarDropdownToggler = styled.button<{ $open: boolean }>`
   align-items: center;
   cursor: pointer;
   gap: 6px;
+  padding: 0;
   &:hover {
     ${SidebarDropdownTogglerIcon} circle {
       fill: ${({ theme }) => theme.colors.grayScale.gray6};
