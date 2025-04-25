@@ -7,7 +7,10 @@ export interface HeaderMenuToggleButtonStyledProps {
   $variant: HeaderVariant;
 }
 
-export const HeaderMenuToggleButtonStyled = styled(Button)<HeaderMenuToggleButtonStyledProps>`
+export const HeaderMenuToggleButtonStyled = styled(
+  Button
+)<HeaderMenuToggleButtonStyledProps>`
+  padding: 10px;
   ${adaptive(({ $variant }) => ({
     variant: $variant,
     desktop: css`

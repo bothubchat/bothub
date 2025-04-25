@@ -42,7 +42,6 @@ import {
   MediumCircleIcon,
   MenuDotIcon,
   MenuIcon,
-  MinimizeIcon,
   MjIcon,
   Plus1Icon,
   Plus2Icon,
@@ -61,7 +60,6 @@ import {
   ThumbDownIcon,
   ThumbUpIcon,
   TrashIcon,
-  UnminimizeIcon,
   UpdateIcon,
   UserProfileIcon,
   WarningBigIcon,
@@ -194,7 +192,51 @@ import {
   ShowUiIcon,
   SortUserIcon,
   HappyRobotIcon,
+  ManageChatIcon,
+  IncludeContextIcon,
+  WebSearchIcon,
+  AnalyzeUrlsIcon,
   QueueIcon,
+  COTR1Icon,
+  LoaderCircularGradient2Icon,
+  SortAlphabetAscendingIcon,
+  SortAlphabetDescendingIcon,
+  SortDateAscendingIcon,
+  SortDateDescendingIcon,
+  PrintIcon,
+  Pc1Icon,
+  Pc2Icon,
+  Pc3Icon,
+  FlagRUIcon,
+  FlagKZIcon,
+  VolumeIcon,
+  FavoriteProfileIcon,
+  CodeGenerationIcon,
+  EssayGenerationIcon,
+  ImageGenerationIcon,
+  SpeechSynthesysIcon,
+  SpellingIcon,
+  TrafficAnalisysIcon,
+  TextGenerationIcon,
+  StarUnfilledIcon,
+  TranscriptionIcon,
+  TextRewriteIcon,
+  ExclamationIcon,
+  OrganizationIcon,
+  SimpleGearIcon,
+  SetchelIcon,
+  ArticleIcon,
+  AssemblyIcon,
+  SidebarToggleRight,
+  SidebarToggleLeft,
+  GrokIcon,
+  DeepSeekIcon,
+  AcademyIcon,
+  GridVerticalIcon,
+  GridHorizontalIcon,
+  StarGradientIcon,
+  ReportIcon,
+  QwenIcon,
   SortAlphabetTopBottomIcon,
   SortAlphabetBottomTopIcon,
   PauseIcon,
@@ -203,8 +245,6 @@ import {
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
-import { OrganizationIcon } from '@/ui/icons/organization';
-import { SimpleGearIcon } from '@/ui/icons/simple-gear';
 
 export type IconsProps = IconProviderProps;
 
@@ -248,8 +288,10 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="CheckedIcon">{CheckedIcon}</IconItem>
         <IconItem name="HotnessIcon">{HotnessIcon}</IconItem>
         <IconItem name="FreeIcon">{FreeIcon}</IconItem>
-        <IconItem name="MinimizeIcon">{MinimizeIcon}</IconItem>
+        <IconItem name="SidebarToggleLeft">{SidebarToggleLeft}</IconItem>
+        <IconItem name="SidebarToggleRight">{SidebarToggleRight}</IconItem>
         <IconItem name="EditIcon">{EditIcon}</IconItem>
+        <IconItem name="ManageChatIcon">{ManageChatIcon}</IconItem>
         <IconItem name="CopyIcon">{CopyIcon}</IconItem>
         <IconItem name="TrashIcon">{TrashIcon}</IconItem>
         <IconItem name="ChatsIcon">{ChatsIcon}</IconItem>
@@ -260,7 +302,6 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="CoderIcon">{CoderIcon}</IconItem>
         <IconItem name="BookmarksIcon">{BookmarksIcon}</IconItem>
         <IconItem name="AIIcon">{AIIcon}</IconItem>
-        <IconItem name="UnminimizeIcon">{UnminimizeIcon}</IconItem>
         <IconItem name="UpdateIcon">{UpdateIcon}</IconItem>
         <IconItem name="RestoreIcon">{RestoreIcon}</IconItem>
         <IconItem name="Restore2Icon">{Restore2Icon}</IconItem>
@@ -303,12 +344,16 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="GenerationIcon">{GenerationIcon}</IconItem>
         <IconItem name="Gpt35Icon">{Gpt35Icon}</IconItem>
         <IconItem name="Gpt4Icon">{Gpt4Icon}</IconItem>
+        <IconItem name="AssemblyIcon">{AssemblyIcon}</IconItem>
         <IconItem name="ImagineIcon">{ImagineIcon}</IconItem>
         <IconItem name="Imagine2Icon">{Imagine2Icon}</IconItem>
         <IconItem name="LoaderIcon">{LoaderIcon}</IconItem>
         <IconItem name="LoaderCircularIcon">{LoaderCircularIcon}</IconItem>
         <IconItem name="LoaderCircularGradientIcon">
           {LoaderCircularGradientIcon}
+        </IconItem>
+        <IconItem name="LoaderCircularGradient2Icon">
+          {LoaderCircularGradient2Icon}
         </IconItem>
         <IconItem name="MinusIcon">{MinusIcon}</IconItem>
         <IconItem name="MjWhiteIcon">{MjWhiteIcon}</IconItem>
@@ -355,13 +400,22 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="XlsIcon">{XlsIcon}</IconItem>
         <IconItem name="WordIcon">{WordIcon}</IconItem>
         <IconItem name="TxtIcon">{TxtIcon}</IconItem>
-        <IconItem name="BothubLogoGradient" size={32}>
+        <IconItem
+          name="BothubLogoGradient"
+          size={32}
+        >
           {BothubLogoGradient}
         </IconItem>
-        <IconItem name="TelegramLogoGradient" size={32}>
+        <IconItem
+          name="TelegramLogoGradient"
+          size={32}
+        >
           {TelegramLogoGradient}
         </IconItem>
-        <IconItem name="DeclineCircleIcon" size={32}>
+        <IconItem
+          name="DeclineCircleIcon"
+          size={32}
+        >
           {DeclineCircleIcon}
         </IconItem>
         <IconItem name="SimpleGearBgIcon">{SimpleGearBgIcon}</IconItem>
@@ -416,13 +470,65 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="SortUserIcon">{SortUserIcon}</IconItem>
         <IconItem name="SortAscendingIcon">{SortAscendingIcon}</IconItem>
         <IconItem name="SortDescendingIcon">{SortDescendingIcon}</IconItem>
+        <IconItem name="SortAlphabetAscendingIcon">
+          {SortAlphabetAscendingIcon}
+        </IconItem>
+        <IconItem name="SortAlphabetDescendingIcon">
+          {SortAlphabetDescendingIcon}
+        </IconItem>
+        <IconItem name="SortDateAscendingIcon">
+          {SortDateAscendingIcon}
+        </IconItem>
+        <IconItem name="SortDateDescendingIcon">
+          {SortDateDescendingIcon}
+        </IconItem>
         <IconItem name="QuoteIcon">{QuoteIcon}</IconItem>
         <IconItem name="URLCircleIcon">{URLCircleIcon}</IconItem>
         <IconItem name="ShowUiIcon">{ShowUiIcon}</IconItem>
         <IconItem name="HideUiIcon">{HideUiIcon}</IconItem>
+        <IconItem name="IncludeContextIcon">{IncludeContextIcon}</IconItem>
+        <IconItem name="WebSearchIcon">{WebSearchIcon}</IconItem>
+        <IconItem name="AnalyzeUrlsIcon">{AnalyzeUrlsIcon}</IconItem>
         <IconItem name="QueueIcon">{QueueIcon}</IconItem>
-        <IconItem name="SortAlphabetTopBottomIcon">{SortAlphabetTopBottomIcon}</IconItem>
-        <IconItem name="SortAlphabetBottomTopIcon">{SortAlphabetBottomTopIcon}</IconItem>
+        <IconItem name="COTR1Icon">{COTR1Icon}</IconItem>
+        <IconItem name="FlagRUIcon">{FlagRUIcon}</IconItem>
+        <IconItem name="FlagKZIcon">{FlagKZIcon}</IconItem>
+        <IconItem name="PrintIcon">{PrintIcon}</IconItem>
+        <IconItem name="Pc1Icon">{Pc1Icon}</IconItem>
+        <IconItem name="Pc2Icon">{Pc2Icon}</IconItem>
+        <IconItem name="Pc3Icon">{Pc3Icon}</IconItem>
+        <IconItem name="CodeGenerationIcon">{CodeGenerationIcon}</IconItem>
+        <IconItem name="EssayGenerationIcon">{EssayGenerationIcon}</IconItem>
+        <IconItem name="ImageGenerationIcon">{ImageGenerationIcon}</IconItem>
+        <IconItem name="SpeechSynthesysIcon">{SpeechSynthesysIcon}</IconItem>
+        <IconItem name="SpellingIcon">{SpellingIcon}</IconItem>
+        <IconItem name="TextGenerationIcon">{TextGenerationIcon}</IconItem>
+        <IconItem name="TrafficAnalisysIcon">{TrafficAnalisysIcon}</IconItem>
+        <IconItem name="VolumeIcon">{VolumeIcon}</IconItem>
+        <IconItem name="ImageGenerationIcon">{ImageGenerationIcon}</IconItem>
+        <IconItem name="SpeechSynthesysIcon">{SpeechSynthesysIcon}</IconItem>
+        <IconItem name="StarUnfilledIcon">{StarUnfilledIcon}</IconItem>
+        <IconItem name="TranscriptionIcon">{TranscriptionIcon}</IconItem>
+        <IconItem name="TextRewriteIcon">{TextRewriteIcon}</IconItem>
+        <IconItem name="FavoriteProfileIcon">{FavoriteProfileIcon}</IconItem>
+        <IconItem name="ExclamationIcon">{ExclamationIcon}</IconItem>
+        <IconItem name="SetchelIcon">{SetchelIcon}</IconItem>
+        <IconItem name="ArticleIcon">{ArticleIcon}</IconItem>
+        <IconItem name="GrokIcon">{GrokIcon}</IconItem>
+        <IconItem name="DeepSeekIcon">{DeepSeekIcon}</IconItem>
+        <IconItem name="AcademyIcon">{AcademyIcon}</IconItem>
+        <IconItem name="GridVerticalIcon">{GridVerticalIcon}</IconItem>
+        <IconItem name="GridHorizontalIcon">{GridHorizontalIcon}</IconItem>
+        <IconItem name="StarGradientIcon">{StarGradientIcon}</IconItem>
+        <IconItem name="ReportIcon">{ReportIcon}</IconItem>
+        <IconItem name="QwenIcon">{QwenIcon}</IconItem>
+        <IconItem name="QueueIcon">{QueueIcon}</IconItem>
+        <IconItem name="SortAlphabetTopBottomIcon">
+          {SortAlphabetTopBottomIcon}
+        </IconItem>
+        <IconItem name="SortAlphabetBottomTopIcon">
+          {SortAlphabetBottomTopIcon}
+        </IconItem>
         <IconItem name="PauseIcon">{PauseIcon}</IconItem>
         <IconItem name="PlayIcon">{PlayIcon}</IconItem>
       </IconList>

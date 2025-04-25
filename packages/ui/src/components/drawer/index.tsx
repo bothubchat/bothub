@@ -1,10 +1,8 @@
-import {
-  PropsWithChildren, useEffect, useRef, useState 
-} from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 
 import { createPortal } from 'react-dom';
 import * as S from './styled';
-import { CloseIcon } from '../../icons';
+import { CloseIcon } from '@/ui/icons/close';
 
 export type DrawerProps = {
   title?: string | null;
@@ -16,7 +14,7 @@ export const Drawer = ({
   title,
   open,
   onClose,
-  children,
+  children
 }: PropsWithChildren<DrawerProps>) => {
   const [isReady, setIsReady] = useState(false);
   const [localOpen, setLocalOpen] = useState(false);
@@ -70,17 +68,21 @@ export const Drawer = ({
 
   return createPortal(
     <>
-      <S.Overlay ref={overlayRef} onClick={handleClose} />
+      <S.Overlay
+        ref={overlayRef}
+        onClick={handleClose}
+      />
       <S.Component ref={componentRef}>
         <S.Header>
           {title && <S.Title variant="body-xl-semibold">{title}</S.Title>}
-          <S.CloseButton onClick={handleClose} type="button">
+          <S.CloseButton
+            onClick={handleClose}
+            type="button"
+          >
             <CloseIcon />
           </S.CloseButton>
         </S.Header>
-        <S.Content>
-          {children}
-        </S.Content>
+        <S.Content>{children}</S.Content>
       </S.Component>
     </>,
     document.body

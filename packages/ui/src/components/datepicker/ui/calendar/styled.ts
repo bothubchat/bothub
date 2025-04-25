@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
-import { Button } from '../../../button';
-import { Typography } from '../../../typography';
-import { ArrowNarrowLeftIcon } from '../../../../icons';
+import { Button } from '@/ui/components/button';
+import { Typography } from '@/ui/components/typography';
+import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
 
 export const Wrapper = styled.div`
   padding: 16px;
@@ -22,9 +22,9 @@ const ChangeMonthButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
-  transition: .2s ease-out;
+  transition: 0.2s ease-out;
   &:hover {
-    opacity: .6;
+    opacity: 0.6;
   }
 `;
 export const PrevMonth = styled(ChangeMonthButton)``;
@@ -54,7 +54,7 @@ export const DateGridItem = styled.div`
 export const DayOfMonth = styled(Typography)``;
 
 export const DateGridInteractiveItem = styled(DateGridItem).attrs({
-  as: 'button',
+  as: 'button'
 })<{
   $active?: boolean;
   $outRange?: boolean;
@@ -67,31 +67,41 @@ export const DateGridInteractiveItem = styled(DateGridItem).attrs({
   background: none;
   outline: none;
   cursor: pointer;
-  transition: .2s ease-out;
+  transition: 0.2s ease-out;
   &:hover {
     background-color: ${(props) => props.theme.colors.grayScale.gray2};
   }
-  ${(props) => props.$active && `
+  ${(props) =>
+    props.$active &&
+    `
     border-radius: 8px;
     background-color: ${props.theme.colors.accent.primary};
     &:hover {
       background-color: ${props.theme.colors.accent.primaryLight};
     }
   `}
-  ${(props) => props.$outRange && `
+  ${(props) =>
+    props.$outRange &&
+    `
     ${DayOfMonth} {
       color: ${props.$active ? props.theme.colors.grayScale.gray2 : props.theme.colors.grayScale.gray1};
     }
   `}
-  ${(props) => props.$startDate && `
+  ${(props) =>
+    props.$startDate &&
+    `
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   `}
-  ${(props) => props.$finishDate && `
+  ${(props) =>
+    props.$finishDate &&
+    `
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   `}
-  ${(props) => props.$isBetweenSelected && `
+  ${(props) =>
+    props.$isBetweenSelected &&
+    `
     border-radius: 0;
     background-color: ${props.theme.colors.grayScale.gray2};
   `}

@@ -2,14 +2,12 @@ import React from 'react';
 import { FooterMainColumn, FooterContainer, FooterStyled } from './styled';
 
 export interface FooterProps extends React.PropsWithChildren {
-  id?: string; 
+  id?: string;
   logo?: React.ReactNode;
   nav?: React.ReactNode;
 }
 
-export const Footer: React.FC<FooterProps> = ({
-  id, logo, nav, children 
-}) => (
+export const Footer: React.FC<FooterProps> = ({ id, logo, nav, children }) => (
   <FooterStyled id={id}>
     <FooterContainer>
       <FooterMainColumn>
@@ -21,4 +19,5 @@ export const Footer: React.FC<FooterProps> = ({
   </FooterStyled>
 );
 
+export * from './mobile';
 export * from './styled';

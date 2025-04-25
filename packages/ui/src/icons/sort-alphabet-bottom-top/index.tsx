@@ -13,7 +13,7 @@ export const SortAlphabetBottomTopIcon = icon(({ ...props }) => {
       <IconConsumer>
         {(
           { fill = theme.colors.base.white } = {
-            fill: theme.colors.base.white,
+            fill: theme.colors.base.white
           }
         ) => (
           <path

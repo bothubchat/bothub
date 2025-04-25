@@ -1,6 +1,9 @@
 import React, { useCallback } from 'react';
 import {
-  IconComponent, IconProps, Tooltip, TooltipConsumer 
+  IconComponent,
+  IconProps,
+  Tooltip,
+  TooltipConsumer
 } from '@/ui/components';
 import { IconItemStyled } from './styled';
 
@@ -9,20 +12,21 @@ export interface IconItemProps extends Omit<IconProps, 'children'> {
   children: IconComponent;
 }
 
-export const IconItem: React.FC<IconItemProps> = ({ name, children, ...props }) => {
+export const IconItem: React.FC<IconItemProps> = ({
+  name,
+  children,
+  ...props
+}) => {
   const handleClick = useCallback(() => {
     window.navigator.clipboard.writeText(name);
     alert('Copied to clipboard');
   }, [name]);
-  
+
   return (
     <Tooltip label={name}>
       <TooltipConsumer>
-        {({
-          handleTooltipMouseEnter,
-          handleTooltipMouseLeave
-        }) => (
-          <IconItemStyled 
+        {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+          <IconItemStyled
             onMouseEnter={handleTooltipMouseEnter}
             onMouseLeave={handleTooltipMouseLeave}
             onClick={handleClick}

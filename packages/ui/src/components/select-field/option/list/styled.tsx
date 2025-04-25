@@ -1,6 +1,6 @@
 import { styled, css } from 'styled-components';
 import { SelectFieldSize } from '@/ui/components/select-field/types';
-import { Typography } from '@/ui/components/typography';
+import { Typography, TypographyProps } from '@/ui/components/typography';
 
 export interface SelectFieldOptionsStyledProps {
   $size: SelectFieldSize;
@@ -16,6 +16,8 @@ export const SelectFieldOptionsStyled = styled.div<SelectFieldOptionsStyledProps
         return 4;
       case 'md':
         return 6;
+      case 'large':
+        return 8;
     }
   }}px;
 `;
@@ -44,11 +46,81 @@ export const SelectFieldEmpty = styled.div<SelectFieldEmptyProps>`
         return 8;
       case 'md':
         return 12;
+      case 'large':
+        return 12;
     }
   }}px;
 `;
 
-export const SelectFieldEmptyText = styled(Typography).attrs({ variant: 'input-sm' })`
+export const SelectFieldRadio = styled.div<{
+  $selected?: boolean;
+  $disabled?: boolean;
+}>`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  cursor: pointer;
+  position: relative;
+
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    border-radius: 8px;
+    inset: 0;
+    opacity: 0.2;
+    transition: background 0.2s;
+
+    ${({ $selected }) =>
+      $selected &&
+      css`
+        background: linear-gradient(
+          90deg,
+          rgba(28, 100, 242, 1) 0%,
+          rgba(212, 28, 242, 1) 100%
+        );
+      `};
+  }
+
+  &:hover:before {
+    background-color: ${({ theme }) => theme.colors.accent.primary};
+  }
+
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      cursor: not-allowed;
+      & > * > ${SelectFieldRadioLabel} {
+        opacity: 0.5;
+      }
+    `}
+`;
+
+export const SelectFieldRadioTitleAndRadio = styled.label`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  cursor: inherit;
+`;
+
+export const SelectFieldRadioLabel = styled(Typography).attrs({
+  variant: 'body-m-semibold'
+})``;
+
+export const SelectFieldRadioDescription = styled(Typography).attrs({
+  variant: 'body-m-regular'
+})``;
+
+export const SelectFieldEmptyText = styled(Typography).attrs({
+  variant: 'input-sm'
+})`
   text-align: center;
   color: ${({ theme }) => theme.colors.grayScale.gray1};
 `;
@@ -57,6 +129,7 @@ export interface SelectFieldOptionProps {
   $selected: boolean;
   $disabled: boolean;
   $size: SelectFieldSize;
+  $backgroundHoverColor?: 'gradient' | 'primary';
 }
 
 export interface SelectFieldOptionTextProps {
@@ -64,20 +137,39 @@ export interface SelectFieldOptionTextProps {
   $bold?: boolean;
 }
 
-export const SelectFieldOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldOptionTextProps>`
-  color: ${({ theme, $selected }) => ($selected ? theme.default.colors.base.white : theme.colors.base.white)};
-  ${({ $bold }) => $bold && css`
-  font-weight: 500;
-  `}
+export const SelectFieldOptionText = styled(Typography).attrs<
+  SelectFieldOptionTextProps & { $size: SelectFieldSize }
+>(({ $size }) => {
+  const variant: TypographyProps['variant'] =
+    $size === 'small'
+      ? 'input-sm'
+      : $size === 'md'
+        ? 'button-sm'
+        : 'body-m-semibold';
+
+  return { variant };
+})`
+  color: ${({ theme, $selected }) =>
+    $selected ? theme.default.colors.base.white : theme.colors.base.white};
+
+  ${({ $bold }) =>
+    $bold &&
+    css`
+      font-weight: 500;
+    `}
 `;
 
 export interface SelectFieldColorOptionTextProps {
   $selected: boolean;
 }
 
-export const SelectFieldColorOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldColorOptionTextProps>`
-  color: ${({ theme, $selected }) => ($selected ? theme.default.colors.base.white : theme.colors.base.white)};
+export const SelectFieldColorOptionText = styled(Typography).attrs({
+  variant: 'input-sm'
+})<SelectFieldColorOptionTextProps>`
+  color: ${({ theme, $selected }) =>
+    $selected ? theme.default.colors.base.white : theme.colors.base.white};
 `;
+
 export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
   display: flex;
   justify-content: space-between;
@@ -85,11 +177,13 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
   padding: ${({ $size }) => {
     switch ($size) {
       case 'small':
-        return 8;
+        return '8px';
       case 'md':
-        return 12;
+        return '12px';
+      case 'large':
+        return '8px 10px';
     }
-  }}px;
+  }};
   border-radius: 6px;
   gap: ${({ $size }) => {
     switch ($size) {
@@ -97,6 +191,8 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
         return 8;
       case 'md':
         return 10;
+      case 'large':
+        return 8;
     }
   }}px;
 
@@ -105,44 +201,95 @@ export const SelectFieldOption = styled.div<SelectFieldOptionProps>`
     ${SelectFieldOptionText}, ${SelectFieldColorOptionText} {
       color: ${({ theme }) => theme.default.colors.base.white};
     }
-    svg[d="fill"] path, svg[d="all"] path{
+    svg[d='fill'] path,
+    svg[d='all'] path {
       fill: ${({ theme }) => theme.default.colors.base.white} !important;
     }
-    svg[d="stroke"] path, svg[d="all"] path{
+    svg[d='stroke'] path,
+    svg[d='all'] path {
       stroke: ${({ theme }) => theme.default.colors.base.white} !important;
     }
-    transition: all .2s ease-out;
+    transition: all 0.2s ease-out;
   }
 
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
 
-  ${({ theme, $selected, $disabled }) => {
+  ${({ theme, $selected, $disabled, $backgroundHoverColor }) => {
     if ($disabled) {
       return css`
         cursor: not-allowed;
         &:hover {
-          background: ${theme.mode === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'};
+          background: ${theme.mode === 'light'
+            ? 'rgba(0, 0, 0, 0.05)'
+            : 'rgba(255, 255, 255, 0.05)'};
         }
         > ${SelectFieldOptionSide}:first-child {
           opacity: 0.5;
         }
       `;
     }
-    if ($selected) {
-      return css`
-        cursor: default;
-        background: ${({ theme }) => theme.colors.accent.primary};
-      `;
+    switch ($backgroundHoverColor) {
+      case 'gradient':
+        return css`
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          justify-content: center;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          &:hover::before {
+            background: ${theme.colors.premiumGradient};
+            content: '';
+            opacity: 0.2;
+            border: inherit;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+          }
+        `;
+      case 'primary':
+        return css`
+          cursor: pointer;
+          position: relative;
+          overflow: hidden;
+          justify-content: center;
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-align: center;
+          &:hover::before {
+            background: ${theme.colors.accent.primary};
+            content: '';
+            opacity: 0.2;
+            border: inherit;
+            left: 0;
+            top: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+          }
+        `;
+      default:
+        return css`
+          ${!$selected &&
+          `
+            cursor: pointer;
+            &:hover {
+              background: ${theme.mode === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'};
+            }
+          `}
+          ${$selected &&
+          `
+            background: ${theme.colors.accent.primary};
+            cursor: default;
+          `}
+        `;
     }
-
-    return css`
-      cursor: pointer;
-      &:hover {
-        background: ${theme.mode === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'};
-      }
-    `;
   }}
 `;
 
@@ -150,6 +297,12 @@ export const SelectFieldOptionSide = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+`;
+
+export const SelectFieldOptionLabel = styled(Typography).attrs({
+  variant: 'body-m-medium'
+})`
+  padding-right: 8px;
 `;
 
 export interface SelectFieldOptionColorProps {

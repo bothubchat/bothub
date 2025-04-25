@@ -3,7 +3,7 @@ import { StoryDecorator } from '@/ui/story-decorator';
 import {
   UploadedFile,
   UploadedFileStatusChip,
-  UploadedFileStatusChipText,
+  UploadedFileStatusChipText
 } from '.';
 import { CheckSmallIcon } from '@/ui/icons';
 import { useTheme } from '@/ui/theme';
@@ -15,24 +15,16 @@ export type UploadedFileStory = StoryObj<typeof UploadedFile>;
 
 export const All = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-    <Typography variant="body-s-medium">
-      {InProgress.name}
-    </Typography>
+    <Typography variant="body-s-medium">{InProgress.name}</Typography>
     <InProgress />
 
-    <Typography variant="body-s-medium">
-      {Paused.name}
-    </Typography>
+    <Typography variant="body-s-medium">{Paused.name}</Typography>
     <Paused />
 
-    <Typography variant="body-s-medium">
-      {Done.name}
-    </Typography>
+    <Typography variant="body-s-medium">{Done.name}</Typography>
     <Done />
-    
-    <Typography variant="body-s-medium">
-      {Error.name}
-    </Typography>
+
+    <Typography variant="body-s-medium">{Error.name}</Typography>
     <Error />
   </div>
 );
@@ -69,7 +61,7 @@ export const Done = () => {
       progress={30}
       onDelete={() => {}}
       status="done"
-      doneLabel={(
+      doneLabel={
         <UploadedFileStatusChip>
           <UploadedFileStatusChipText $status="done">
             Загрузка завершена
@@ -79,7 +71,7 @@ export const Done = () => {
             size={18}
           />
         </UploadedFileStatusChip>
-      )}
+      }
     />
   );
 };

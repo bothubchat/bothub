@@ -73,28 +73,34 @@ export const MessageTitleStyled = styled.span<MessageTitleStyledProps>`
   }}
   &::selection {
     ${({ $messageColor }) => {
-    switch ($messageColor) {
-      case 'default':
-        return css`
-          background: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white)};
-          color: ${({ theme }) => (theme.mode === 'light' ? theme.default.colors.base.white : theme.colors.accent.primary)};
-        `;
-      case 'green':
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${({ theme }) => theme.colors.gpt3};
-        `;
-      case 'purple':
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${({ theme }) => theme.colors.gpt4};
-        `;
-      default:
-        return css`
-          background: ${({ theme }) => theme.default.colors.base.white};
-          color: ${$messageColor};
-        `;
-    }
-  }}
+      switch ($messageColor) {
+        case 'default':
+          return css`
+            background: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.accent.primary
+                : theme.colors.base.white};
+            color: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.base.white
+                : theme.colors.accent.primary};
+          `;
+        case 'green':
+          return css`
+            background: ${({ theme }) => theme.default.colors.base.white};
+            color: ${({ theme }) => theme.colors.gpt3};
+          `;
+        case 'purple':
+          return css`
+            background: ${({ theme }) => theme.default.colors.base.white};
+            color: ${({ theme }) => theme.colors.gpt4};
+          `;
+        default:
+          return css`
+            background: ${({ theme }) => theme.default.colors.base.white};
+            color: ${$messageColor};
+          `;
+      }
+    }}
   }
 `;

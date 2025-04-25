@@ -36,7 +36,7 @@ export const UploadedFileInfo = styled.div`
 `;
 
 export const UploadedFileSize = styled(Typography).attrs({
-  variant: 'body-xs-medium',
+  variant: 'body-xs-medium'
 })`
   color: ${({ theme }) => theme.colors.grayScale.gray6};
   text-transform: uppercase;
@@ -60,7 +60,7 @@ export const UploadedFileStatusChip = styled.div`
 `;
 
 export const UploadedFileStatusChipText = styled(Typography).attrs({
-  variant: 'body-s-medium',
+  variant: 'body-s-medium'
 })<{
   $status: UploadedFileStatus;
 }>`
@@ -81,7 +81,7 @@ export const UploadedFileFooter = styled.div`
 `;
 
 export const UploadedFileProgressBar = styled(Progress).attrs({
-  fullWidth: true,
+  fullWidth: true
 })<{
   $error: boolean;
 }>`
@@ -92,13 +92,14 @@ export const UploadedFileProgressBar = styled(Progress).attrs({
 
     & > div {
       border-radius: 4px;
-      background-color: ${({ theme, $error }) => ($error ? theme.colors.critic : theme.colors.accent.primary)};
+      background-color: ${({ theme, $error }) =>
+        $error ? theme.colors.critic : theme.colors.accent.primary};
     }
   }
 `;
 
 export const UploadedFileProgressValue = styled(Typography).attrs({
-  variant: 'body-s-medium',
+  variant: 'body-s-medium'
 })`
   flex: 0 0 fit-content;
   color: ${({ theme }) => theme.colors.grayScale.gray1};

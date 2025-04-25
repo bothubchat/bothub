@@ -13,12 +13,19 @@ import {
 } from './styled';
 import { BadgeText } from '@/ui/components/badge';
 import { IconProvider } from '@/ui/components/icon';
-import { FileIcon } from '@/ui/components/file-icon';
 import { TooltipConsumer } from '../tooltip';
+import {
+  AttachFileIcon,
+  PdfIcon,
+  TxtIcon,
+  WordIcon,
+  XlsIcon
+} from '@/ui/icons';
 
 export type FileFieldChangeEventHandler = (files: File[]) => unknown;
 
-export interface FileFieldProps extends Omit<React.ComponentProps<'div'>, 'onChange'> {
+export interface FileFieldProps
+  extends Omit<React.ComponentProps<'div'>, 'onChange'> {
   label?: React.ReactNode;
   placeholder?: string;
   error?: string;
@@ -34,43 +41,59 @@ export interface FileFieldProps extends Omit<React.ComponentProps<'div'>, 'onCha
 }
 
 export const FileField: React.FC<FileFieldProps> = ({
-  label, files: initialFiles, placeholder, error, fullWidth = false, disabled = false,
-  multiple = true, accept, onChange, id, open = true,
+  label,
+  files: initialFiles,
+  placeholder,
+  error,
+  fullWidth = false,
+  disabled = false,
+  multiple = true,
+  accept,
+  onChange,
+  id,
+  open = true,
   icon = <FileFieldIcon />,
   ...props
 }) => {
-  const setInitialFilesChange = useCallback<FileFieldChangeEventHandler>((files) => {
-    onChange?.(files);
-  }, [onChange]);
+  const setInitialFilesChange = useCallback<FileFieldChangeEventHandler>(
+    (files) => {
+      onChange?.(files);
+    },
+    [onChange]
+  );
 
-  const [files, setFiles] = Array.isArray(initialFiles) ? (
-    [initialFiles, setInitialFilesChange]
-  ) : useState<File[]>([]);
+  const [files, setFiles] = Array.isArray(initialFiles)
+    ? [initialFiles, setInitialFilesChange]
+    : useState<File[]>([]);
 
-  const handleInputChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => {
-    if (multiple) {
-      setFiles([
-        ...(
-          new Map([
-            ...files,
-            ...(event.currentTarget.files ?? [])
-          ].map((file) => [file.name, file]))
-        ).values()
-      ]);
-    } else {
-      setFiles([...(event.currentTarget.files ?? [])].slice(0, 1));
-    }
-  }, [files, setFiles, multiple]);
+  const handleInputChange = useCallback<
+    React.ChangeEventHandler<HTMLInputElement>
+  >(
+    (event) => {
+      if (multiple) {
+        setFiles([
+          ...new Map(
+            [...files, ...(event.currentTarget.files ?? [])].map((file) => [
+              file.name,
+              file
+            ])
+          ).values()
+        ]);
+      } else {
+        setFiles([...(event.currentTarget.files ?? [])].slice(0, 1));
+      }
+    },
+    [files, setFiles, multiple]
+  );
 
-  const handleFileDelete = useCallback((file: File, event: React.MouseEvent) => {
-    event.preventDefault();
+  const handleFileDelete = useCallback(
+    (file: File, event: React.MouseEvent) => {
+      event.preventDefault();
 
-    setFiles(
-      files.filter(({ name }) => (
-        name !== file.name
-      ))
-    );
-  }, [files, setFiles]);
+      setFiles(files.filter(({ name }) => name !== file.name));
+    },
+    [files, setFiles]
+  );
 
   return (
     <TooltipConsumer>
@@ -85,9 +108,7 @@ export const FileField: React.FC<FileFieldProps> = ({
           {...props}
         >
           {typeof label === 'string' && open && (
-            <FileFieldLabel>
-              {label}
-            </FileFieldLabel>
+            <FileFieldLabel>{label}</FileFieldLabel>
           )}
           {typeof label !== 'string' && label}
           <FileFieldBlock
@@ -104,44 +125,47 @@ export const FileField: React.FC<FileFieldProps> = ({
               value=""
               onChange={handleInputChange}
             />
-            {(placeholder && files.length === 0) && open && (
-              <FileFieldPlaceholder>
-                {placeholder}
-              </FileFieldPlaceholder>
+            {placeholder && files.length === 0 && open && (
+              <FileFieldPlaceholder>{placeholder}</FileFieldPlaceholder>
             )}
             {files.length > 0 && open && (
               <FileFieldFiles>
-                {files.map((file) => (
-                  <FileFieldFile
-                    key={file.name}
-                  >
-                    <IconProvider
-                      size={12}
-                    >
-                      <FileIcon filename={file.name} />
-                    </IconProvider>
-                    <BadgeText>
-                      {file.name.length > 18 && '...'}
-                      {file.name.slice(-18)}
-                    </BadgeText>
-                    <FileFieldFileDeleteButton
-                      disabled={disabled}
-                      onClick={handleFileDelete.bind(null, file)}
-                    />
-                  </FileFieldFile>
-                ))}
+                {files.map((file) => {
+                  let iconNode: React.ReactNode;
+
+                  if (file.name.match(/.txt$/i)) {
+                    iconNode = <TxtIcon />;
+                  } else if (file.name.match(/.docx$/i)) {
+                    iconNode = <WordIcon />;
+                  } else if (file.name.match(/.xlsx$/i)) {
+                    iconNode = <XlsIcon />;
+                  } else if (file.name.match(/.pdf$/i)) {
+                    iconNode = <PdfIcon />;
+                  } else {
+                    iconNode = <AttachFileIcon />;
+                  }
+
+                  return (
+                    <FileFieldFile key={file.name}>
+                      <IconProvider size={12}>{iconNode}</IconProvider>
+                      <BadgeText>
+                        {file.name.length > 18 && '...'}
+                        {file.name.slice(-18)}
+                      </BadgeText>
+                      <FileFieldFileDeleteButton
+                        disabled={disabled}
+                        onClick={handleFileDelete.bind(null, file)}
+                      />
+                    </FileFieldFile>
+                  );
+                })}
               </FileFieldFiles>
             )}
           </FileFieldBlock>
-          {error && (
-            <FileFieldErrorText>
-              {error}
-            </FileFieldErrorText>
-          )}
+          {error && <FileFieldErrorText>{error}</FileFieldErrorText>}
         </FileFieldStyled>
       )}
     </TooltipConsumer>
-
   );
 };
 

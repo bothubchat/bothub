@@ -2,9 +2,9 @@ import { Middleware } from 'stylis';
 
 export const BothubStyleSheetDashboardPlugin: Middleware = (element) => {
   if (
-    element.type === 'decl'
-    && element.props !== 'background'
-    && element.props !== 'background-image'
+    element.type === 'decl' &&
+    element.props !== 'background' &&
+    element.props !== 'background-image'
   ) {
     element.value = element.value.replace(/([-0-9.]+)px/g, (_, value) => {
       const pxValue = +value;
@@ -26,9 +26,9 @@ const MIN_LINE_HEIGHT = 16;
 
 export const BothubStyleSheetMainPlugin: Middleware = (element) => {
   if (
-    element.type === 'decl'
-    && element.props !== 'background'
-    && element.props !== 'background-image'
+    element.type === 'decl' &&
+    element.props !== 'background' &&
+    element.props !== 'background-image'
   ) {
     element.value = element.value.replace(/([-0-9.]+)px/g, (_, value) => {
       const pxValue = +value;

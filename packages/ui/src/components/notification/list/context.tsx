@@ -4,15 +4,14 @@ export interface NotificationsContextValue {
   isInNotificationList: boolean;
 }
 
-export const NotificationsContext = React.createContext<NotificationsContextValue>({
-  isInNotificationList: false
-});
+export const NotificationsContext =
+  React.createContext<NotificationsContextValue>({
+    isInNotificationList: false
+  });
 
-export const NotificationsProvider: React.FC<NotificationsContextValue & React.PropsWithChildren
-> = ({
-  children,
-  ...value
-}) => (
+export const NotificationsProvider: React.FC<
+  NotificationsContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
   <NotificationsContext.Provider value={value}>
     {children}
   </NotificationsContext.Provider>

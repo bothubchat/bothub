@@ -8,24 +8,28 @@ export type InputMessageMeta = Meta<typeof InputMessage>;
 
 export type InputMessageStory = StoryObj<typeof InputMessage>;
 
-export const Basic: InputMessageStory = {};
+export const Basic: InputMessageStory = {
+  args: {
+    uploadFileLimit: 100
+  }
+};
 
 export const Voice: InputMessageStory = {
   args: {
-    voice: true,
-  },
+    voice: true
+  }
 };
 
 export const UploadFileDisabled: InputMessageStory = {
   args: {
-    uploadFileDisabled: true,
-  },
+    uploadFileDisabled: true
+  }
 };
 
 export const Disabled: InputMessageStory = {
   args: {
-    disabled: true,
-  },
+    disabled: true
+  }
 };
 
 export const WithAlternativeKeyModalTexts: InputMessageStory = {
@@ -34,27 +38,24 @@ export const WithAlternativeKeyModalTexts: InputMessageStory = {
       <h6
         style={{
           margin: 0,
-          color: '#616D8D',
+          color: '#616D8D'
         }}
       >
         <span
           style={{
-            color: '#fff',
+            color: '#fff'
           }}
         >
           Enter
-        </span>
-        {' '}
-        - отправить,
-        {' '}
+        </span>{' '}
+        - отправить,{' '}
         <span
           style={{
-            color: '#fff',
+            color: '#fff'
           }}
         >
           Ctrl/Shift + Enter
-        </span>
-        {' '}
+        </span>{' '}
         - перенос строки
       </h6>
     ),
@@ -62,34 +63,35 @@ export const WithAlternativeKeyModalTexts: InputMessageStory = {
       <h6
         style={{
           margin: 0,
-          color: '#616D8D',
+          color: '#616D8D'
         }}
       >
         <span
           style={{
-            color: '#fff',
+            color: '#fff'
           }}
         >
           Ctrl/Shift + Enter
-        </span>
-        {' '}
-        - отправить,
-        {' '}
+        </span>{' '}
+        - отправить,{' '}
         <span
           style={{
-            color: '#fff',
+            color: '#fff'
           }}
         >
           Enter
-        </span>
-        {' '}
+        </span>{' '}
         - перенос строки
       </h6>
     ),
     rightActions: (
-      <Button variant="text" startIcon={<QueueIcon />} iconSize={24} />
+      <Button
+        variant="text"
+        startIcon={<QueueIcon />}
+        iconSize={24}
+      />
     )
-  },
+  }
 };
 
 export default {
@@ -97,6 +99,6 @@ export default {
   component: InputMessage,
   decorators: [StoryDecorator()],
   args: {
-    placeholder: 'Спроси о чем-нибудь...',
-  },
+    placeholder: 'Спроси о чем-нибудь...'
+  }
 } as InputMessageMeta;

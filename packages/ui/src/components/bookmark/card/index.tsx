@@ -21,11 +21,19 @@ export interface BookmarkCardProps extends React.PropsWithChildren {
 }
 
 export const BookmarkCard: React.FC<BookmarkCardProps> = ({
-  name, actions, color, skeleton = false, children, onClick
+  name,
+  actions,
+  color,
+  skeleton = false,
+  children,
+  onClick
 }) => {
-  const handleClick = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    onClick?.(event);
-  }, [onClick]);
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      onClick?.(event);
+    },
+    [onClick]
+  );
 
   return (
     <BookmarkCardStyled
@@ -36,11 +44,11 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
         {!skeleton && (
           <BookmrakCardLine
             $skeleton={false}
-            $color={color} 
+            $color={color}
           />
         )}
         {skeleton && (
-          <BookmrakCardLine 
+          <BookmrakCardLine
             $skeleton
             as={Skeleton}
             variant="rectangular"
@@ -50,17 +58,13 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
           <BookmarkCardHead>
             <BookmarkCardName>
               {!skeleton && name}
-              {skeleton && (
-                <Skeleton />
-              )}
+              {skeleton && <Skeleton />}
             </BookmarkCardName>
             {actions}
           </BookmarkCardHead>
           <BookmarkCardBody>
             <BookmarkCardChats>
-              <BookmarkCardChatList>
-                {children}
-              </BookmarkCardChatList>
+              <BookmarkCardChatList>{children}</BookmarkCardChatList>
             </BookmarkCardChats>
           </BookmarkCardBody>
         </BookmarkCardMain>

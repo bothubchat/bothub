@@ -1,5 +1,9 @@
 import React from 'react';
-import { MessageTableCellStyled, MessageTableCellText, MessageTableHeadCell } from './styled';
+import {
+  MessageTableCellStyled,
+  MessageTableCellText,
+  MessageTableHeadCell
+} from './styled';
 import { useMessage } from '../../../context';
 
 export interface MessageTableCellProps extends React.PropsWithChildren {
@@ -8,7 +12,10 @@ export interface MessageTableCellProps extends React.PropsWithChildren {
 }
 
 export const MessageTableCell: React.FC<MessageTableCellProps> = ({
-  className, head = false, children, ...props
+  className,
+  head = false,
+  children,
+  ...props
 }) => {
   const { color } = useMessage();
 

@@ -1,4 +1,4 @@
-import { css, styled } from 'styled-components';
+import { css, styled, keyframes } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { TrashIcon } from '@/ui/icons/trash';
@@ -8,14 +8,19 @@ import { MenuDotIcon } from '@/ui/icons/menu-dot';
 import { SidebarChatIcon } from '@/ui/icons/sidebar-chat';
 import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { Checkbox } from '@/ui/components/checkbox';
-import { Tooltip } from '../../tooltip';
-import { SidebarDropdownStyled } from '../dropdown';
+import { Tooltip } from '@/ui/components/tooltip';
+import { colorToRgba } from '@/ui/utils/colorToRgba';
 
-export const SidebarChatLeft = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
+export interface SidebarChatLeftProps {
+  $sidebarOpen?: boolean;
+}
+
+export const SidebarChatLeft = styled.div<SidebarChatLeftProps>`
   cursor: pointer;
+  display: block;
+  margin-right: 8px;
+  width: 100%;
+  overflow: hidden;
 `;
 
 export const SidebarChatRight = styled.div`
@@ -31,7 +36,12 @@ export const SidebarChatIconStyled = styled(SidebarChatIcon)`
   display: none;
 `;
 
-export const SidebarChatIconContainer = styled.span<{ $active?: boolean, $isDefault?: boolean }>`
+export interface SidebarChatIconContainerProps {
+  $active?: boolean;
+  $isDefault?: boolean;
+}
+
+export const SidebarChatIconContainer = styled.span<SidebarChatIconContainerProps>`
   display: inline-flex;
   width: 18px;
   height: 18px;
@@ -39,16 +49,25 @@ export const SidebarChatIconContainer = styled.span<{ $active?: boolean, $isDefa
   flex-shrink: 0;
   ${SidebarChatIconStyled} {
     display: ${({ $isDefault }) => ($isDefault ? 'inline-flex' : 'none')};
-    ${({ $active }) => $active && css`
-      fill: ${({ theme }) => theme.colors.base.white};
-      stroke: ${({ theme }) => theme.colors.base.white};
-    `}
+    ${({ $active, theme }) =>
+      $active &&
+      css`
+        fill: ${theme.colors.base.white};
+        stroke: ${theme.colors.base.white};
+      `}
   }
 `;
 
-export const SidebarChatName = styled(Typography).attrs({ variant: 'body-m-medium', component: 'span' })`
+export const SidebarChatNameBox = styled.div``;
+
+export const SidebarChatName = styled(Typography).attrs({
+  variant: 'body-m-medium',
+  component: 'div'
+})`
+  overflow: hidden;
   white-space: nowrap;
-  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transition: opacity 0.3s;
   ${adaptive({
     tablet: css`
@@ -80,21 +99,83 @@ export const SidebarChatActions = styled.div`
   margin-left: 8px;
 `;
 
-export const SidebarChatEditAction = styled(Button).attrs({ variant: 'text', children: <MenuDotIcon /> })`
+export const SidebarChatEditAction = styled(Button).attrs({
+  variant: 'text',
+  children: <MenuDotIcon />
+})`
   transform: rotate(90deg);
 `;
 
-export const SidebarChatDeleteAction = styled(Button).attrs({ variant: 'text', children: <TrashIcon /> })``;
+export const SidebarChatDeleteAction = styled(Button).attrs({
+  variant: 'text',
+  children: <TrashIcon />
+})``;
 
 export const SidebarChatClosed = styled.div``;
 
-export const SidebarChatCaps = styled(Typography).attrs({ variant: 'body-s-medium', component: 'span' })`
+export const SidebarChatCaps = styled(Typography).attrs({
+  variant: 'body-s-medium',
+  component: 'span'
+})`
   display: inline-flex;
   padding: 4px 8px;
   background: ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 10px;
   cursor: default;
   transition: opacity 0.3s;
+`;
+
+const SidebarChatOutlineAnimation = keyframes`
+  from {
+    opacity: 0;
+    left: 0px;
+  }
+  to {
+    opacity: 1;
+    left: -3px;
+  }
+`;
+
+export interface SidebarChatWithOutlineStyledProps {
+  $active: boolean;
+}
+
+export const SidebarChatWithOutlineStyled = styled.div<SidebarChatWithOutlineStyledProps>`
+  margin-left: 3px;
+  height: 100%;
+  position: relative;
+  ${({ $active, theme }) =>
+    $active &&
+    css`
+      border-radius: 10px;
+      &:before {
+        content: '';
+        width: 20px;
+        height: 100%;
+        border-radius: 10px;
+        position: absolute;
+        top: 0;
+        left: 0px;
+        background-color: ${theme.colors.accent.primary};
+        z-index: 0;
+        animation: ${SidebarChatOutlineAnimation} 0.3s ease-in-out 1 forwards;
+      }
+    `};
+`;
+
+export interface SidebarChatWithBackgroundStyledProps {
+  $active: boolean;
+}
+
+export const SidebarChatWithBackgroundStyled = styled.div<SidebarChatWithBackgroundStyledProps>`
+  height: 100%;
+  border-radius: 10px;
+  position: relative;
+  ${({ $active, theme }) =>
+    $active &&
+    css`
+      background-color: ${theme.colors.grayScale.gray4};
+    `}
 `;
 
 export interface SidebarChatStyledProps {
@@ -114,45 +195,42 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  ${({ $draggble }) => {
+  ${({ $draggble, theme }) => {
     if ($draggble) {
       return css`
-        background: ${({ theme }) => theme.colors.grayScale.gray3};
+        background: ${theme.colors.grayScale.gray3};
         border-radius: 10px;
         opacity: 0.7;
       `;
     }
-  }}
-  ${({ $active }) => {
+  }};
+  ${({ $active, $skeleton, theme }) => {
     if ($active) {
       return css`
+        border-radius: 10px;
+        background-color: ${colorToRgba(theme.colors.accent.primaryLight, 0.5)};
+        transition: background-color 0.3s ease-out;
         ${SidebarChatIconStyled} {
           path {
-            stroke: ${({ theme }) => theme.colors.base.white};
+            stroke: ${theme.colors.base.white};
           }
           border-radius: 10px;
         }
       `;
     }
-  }}
-  ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
-      ${SidebarDropdownStyled} {
-        margin-left: 0;
-        width: 0;
-        overflow: hidden;
-        transition: width 0.3s ease, margin-left 0.3s ease;
-      }
-      &:hover {
-        ${SidebarDropdownStyled} {
-          width: 38px;
-          margin-left: 16px;
-          fill: ${({ theme }) => theme.colors.base.white};
+    if (!$active && !$skeleton) {
+      return css`
+        &:hover {
+          border-radius: 10px;
+          background-color: ${colorToRgba(
+            theme.colors.accent.primaryLight,
+            0.5
+          )};
+          transition: background-color 0.3s ease-out;
         }
-      }
-    `
-  })}
+      `;
+    }
+  }}
   ${({ $skeleton, $active }) => {
     if ($skeleton || $active) {
       return css``;
@@ -189,4 +267,4 @@ export const SidebarChatDragHandle = styled(DragDotIcon)`
   cursor: grab;
 `;
 
-export const SidebarChatNameTooltip = styled(Tooltip)`overflow: hidden;`;
+export const SidebarChatNameTooltip = styled(Tooltip)``;

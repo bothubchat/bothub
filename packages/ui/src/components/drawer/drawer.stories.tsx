@@ -15,6 +15,6 @@ export default {
 export const Basic: DrawerStory = {
   args: {
     children: 'Text',
-    open: true,
+    open: true
   }
 };

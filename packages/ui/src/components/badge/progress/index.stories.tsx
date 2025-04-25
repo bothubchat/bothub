@@ -11,12 +11,7 @@ export const Basic: BadgeProgressStory = {
     value: 69,
     children: (
       <BadgeProgressText>
-        <BadgeProgressTextBold>
-          Midjourney
-        </BadgeProgressTextBold>
-        {' '}
-        генерирует 
-        {' '}
+        <BadgeProgressTextBold>Midjourney</BadgeProgressTextBold> генерирует{' '}
         <BadgeProgressTextBold>69%</BadgeProgressTextBold>
       </BadgeProgressText>
     )
@@ -27,11 +22,7 @@ export const WithoutValue: BadgeProgressStory = {
   args: {
     children: (
       <BadgeProgressText>
-        <BadgeProgressTextBold>
-          DALL-E 3
-        </BadgeProgressTextBold>
-        {' '}
-        генерирует
+        <BadgeProgressTextBold>DALL-E 3</BadgeProgressTextBold> генерирует
       </BadgeProgressText>
     )
   }

@@ -3,10 +3,13 @@ import { Block } from '@/ui/components/block';
 import { Typography } from '@/ui/components/typography';
 import { AdaptiveVariant, adaptive } from '@/ui/adaptive';
 
-export const AdaptiveBlockText = styled(Typography).attrs({ variant: 'h1', component: 'h1' })`
+export const AdaptiveBlockText = styled(Typography).attrs({
+  variant: 'h1',
+  component: 'h1'
+})`
   opacity: 0.3;
   transition: opacity 0.3s;
-`; 
+`;
 
 export const AdaptiveBlockDesktopText = styled(AdaptiveBlockText)`
   color: ${({ theme }) => theme.colors.green};
@@ -48,11 +51,13 @@ export const AdaptiveBlockStyled = styled(Block)<AdaptiveBlockStyledProps>`
         opacity: 1;
       }
     `,
-    miniTablet: !$disableMiniTablet && css`
-      ${AdaptiveBlockMiniTabletText} {
-        opacity: 1;
-      }
-    `,
+    miniTablet:
+      !$disableMiniTablet &&
+      css`
+        ${AdaptiveBlockMiniTabletText} {
+          opacity: 1;
+        }
+      `,
     mobile: css`
       ${AdaptiveBlockMobileText} {
         opacity: 1;

@@ -13,7 +13,7 @@ import { Badge } from '@/ui/components/badge';
 import { Scrollbar } from '@/ui/components/scrollbar';
 import {
   MessageImageButton,
-  MessageImageButtonZoneWrapper,
+  MessageImageButtonZoneWrapper
 } from './components/image/button';
 
 export interface MessageStyledProps {
@@ -44,7 +44,7 @@ export const MessageStyledWithBottomPanel = styled.div`
   width: fit-content;
   max-width: 100%;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 `;
 
 export const MessageStyled = styled.div<MessageStyledProps>`
@@ -74,7 +74,7 @@ export const MessageStyled = styled.div<MessageStyledProps>`
       ${MessageActions} {
         visibility: visible !important;
       }
-    `,
+    `
   }))}
 `;
 
@@ -85,7 +85,7 @@ export interface MessageContentProps {
 export const MessageContent = styled.div<MessageContentProps>`
   position: relative;
   display: grid;
-  column-gap: 10px;
+  column-gap: 12px;
   max-width: 100%;
   ${({ $variant }) => {
     switch ($variant) {
@@ -127,7 +127,7 @@ export interface MessageNameProps {
 }
 
 export const MessageName = styled(Typography).attrs({
-  variant: 'body-m-regular',
+  variant: 'body-m-regular'
 })<MessageNameProps>`
   color: ${({ theme, $color }) => {
     switch ($color) {
@@ -153,6 +153,9 @@ export const MessageAvatar = styled(Avatar)`
   grid-area: avatar;
   align-self: flex-end;
   user-select: none;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    display: none;
+  }
 `;
 
 export interface MessageBlockProps {
@@ -192,94 +195,126 @@ export const MessageBlock = styled.div<MessageBlockProps>`
         `;
     }
   }}
-  background: ${({ $hexColor }) => $hexColor};
+  ${({ $hexColor, $variant }) =>
+    $variant === 'user' && `background: ${$hexColor};`}
 
-  ${({ $hasTimestamp, $timestampPosition }) => ($hasTimestamp
-    ? adaptive({
-      variant: 'dashboard',
-      merge: true,
-      desktop: css`
-            padding: ${$timestampPosition === 'right' ? '8px' : '8px 8px 5px 8px'};
+  ${({ $hasTimestamp, $timestampPosition, $variant }) =>
+    $hasTimestamp
+      ? $variant === 'user' &&
+        adaptive({
+          variant: 'dashboard',
+          merge: true,
+          desktop: css`
+            padding: ${$timestampPosition === 'right'
+              ? '8px'
+              : '8px 8px 5px 8px'};
           `,
-      tablet: css`
-            padding: ${$timestampPosition === 'right' ? '8px' : '8px 8px 5px 8px'};
-            `,
-    })
-    : adaptive({
-      variant: 'dashboard',
-      merge: true,
-      desktop: css`
+          tablet: css`
+            padding: ${$timestampPosition === 'right'
+              ? '8px'
+              : '8px 8px 5px 8px'};
+          `
+        })
+      : $variant === 'user' &&
+        adaptive({
+          variant: 'dashboard',
+          merge: true,
+          desktop: css`
             padding: 14px 16px;
           `,
-      tablet: css`
+          tablet: css`
             padding: 14px;
-          `,
-    }))}
+          `
+        })}
 
-  ${({ $timestampPosition }) => $timestampPosition === 'bottom'
-    && css`
+  ${({ $timestampPosition }) =>
+    $timestampPosition === 'bottom' &&
+    css`
       flex-direction: column;
     `}
 `;
 
-export const MessageBlockBottomPanel = styled.div`
+export const MessageBlockBottomPanel = styled.div<{ $variant: MessageVariant }>`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-left: 48px;
-  margin-right: 95px;
-  @media (width <= ${({ theme }) => theme.mobile.maxWidth}) {
-    margin-right: 28px;
-  }
+  gap: 10px;
+  ${({ $variant }) => {
+    switch ($variant) {
+      case 'user':
+        return css`
+          margin-top: 4px;
+          margin-left: 0px;
+        `;
+      case 'assistant':
+        return css`
+          margin-left: 52px;
+        `;
+      default:
+        return css``;
+    }
+  }}
 `;
 
 export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
-  ${({ $top }) => ($top
-    ? adaptive({
-      desktop: css`
+  ${({ $top }) =>
+    $top
+      ? adaptive({
+          desktop: css`
             display: none;
           `,
-      tablet: css`
+          tablet: css`
             display: none;
           `,
-      mobile: css`
+          mobile: css`
+            display: block;
+          `
+        })
+      : adaptive({
+          desktop: css`
             display: block;
           `,
-    })
-    : adaptive({
-      desktop: css`
+          tablet: css`
             display: block;
           `,
-      tablet: css`
-            display: block;
-          `,
-      mobile: css`
+          mobile: css`
             display: none;
-          `,
-    }))}
+          `
+        })}
 `;
 
 export const MessageBlockScrollbarWrapper = styled(Scrollbar).attrs({
-  variant: 'secondary',
+  variant: 'secondary'
 })``;
 
-export const MessageBlockContent = styled.div`
+export const MessageBlockContent = styled.div<{
+  $variant: MessageVariant;
+}>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
   grid-area: block;
   border-radius: 10px;
-  padding: 8px;
+  padding: ${({ $variant }) => {
+    switch ($variant) {
+      case 'user':
+        return '8px';
+      case 'assistant':
+        return '0px 8px 8px 0px';
+    }
+  }};
   max-width: 100%;
-  overflow: clip;
+  overflow: auto;
 `;
 
 export const MessageBlockTextArea = styled.span.attrs({
   role: 'textbox',
   contentEditable: true,
-  suppressContentEditableWarning: true,
+  suppressContentEditableWarning: true
 })`
+  min-width: 10ch;
+  min-height: 1ch;
+  min-height: 1cap;
   width: 100%;
   max-width: 100%;
   height: auto;
@@ -298,7 +333,7 @@ export const MessageBlockTextArea = styled.span.attrs({
     `,
     mobile: css`
       font-size: 14px;
-    `,
+    `
   })}
 `;
 
@@ -307,7 +342,7 @@ export const MessageButtonsStyled = styled.div`
 `;
 
 export const MessageTransaction = styled(Typography).attrs({
-  variant: 'body-m-regular',
+  variant: 'body-m-regular'
 })`
   text-transform: uppercase;
   color: ${({ theme }) => {
@@ -328,17 +363,17 @@ export const MessageActions = styled.div`
 
 export const MessageAction = styled(Button).attrs({
   variant: 'text',
-  iconSize: 18,
+  iconSize: 18
 })``;
 
 export const MessageEditAction = styled(MessageAction).attrs({
-  children: <EditIcon />,
+  children: <EditIcon />
 })``;
 
 export const MessageImageLeftArrowButton = styled(MessageImageButton).attrs({
   variant: 'primary-transparent',
   zone: true,
-  children: <ArrowNarrowLeftIcon />,
+  children: <ArrowNarrowLeftIcon />
 })`
   ${MessageImageButtonZoneWrapper} {
     justify-content: flex-start;
@@ -348,7 +383,7 @@ export const MessageImageLeftArrowButton = styled(MessageImageButton).attrs({
 export const MessageImageRightArrowButton = styled(MessageImageButton).attrs({
   variant: 'primary-transparent',
   zone: true,
-  children: <ArrowNarrowRightIcon />,
+  children: <ArrowNarrowRightIcon />
 })`
   ${MessageImageButtonZoneWrapper} {
     justify-content: flex-end;
@@ -358,7 +393,7 @@ export const MessageImageRightArrowButton = styled(MessageImageButton).attrs({
 export const MessageImageTopArrowButton = styled(MessageImageButton).attrs({
   variant: 'primary-transparent',
   zone: true,
-  children: <ArrowNarrowUpIcon />,
+  children: <ArrowNarrowUpIcon />
 })`
   ${MessageImageButtonZoneWrapper} {
     align-items: flex-start;
@@ -368,7 +403,7 @@ export const MessageImageTopArrowButton = styled(MessageImageButton).attrs({
 export const MessageImageBottomArrowButton = styled(MessageImageButton).attrs({
   variant: 'primary-transparent',
   zone: true,
-  children: <ArrowNarrowDownIcon />,
+  children: <ArrowNarrowDownIcon />
 })`
   ${MessageImageButtonZoneWrapper} {
     align-items: flex-end;

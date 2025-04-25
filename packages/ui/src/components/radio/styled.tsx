@@ -36,9 +36,11 @@ export const RadioCircle = styled.span<RadioCircleProps>`
   flex-shrink: 0;
   border-radius: 8px;
   box-sizing: border-box;
-  ${({ $skeleton }) => !$skeleton && css`
-    border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  `}
+  ${({ $skeleton }) =>
+    !$skeleton &&
+    css`
+      border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+    `}
 `;
 
 export const RadioCircleDot = styled.span`
@@ -51,7 +53,9 @@ export const RadioCircleDot = styled.span`
   visibility: hidden;
 `;
 
-export const RadioLabel = styled(Typography).attrs({ variant: 'body-m-medium' })``;
+export const RadioLabel = styled(Typography).attrs({
+  variant: 'body-m-medium'
+})``;
 
 export const RadioInput = styled.input`
   display: none;

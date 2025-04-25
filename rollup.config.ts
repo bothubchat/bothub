@@ -1,7 +1,5 @@
 import path, { join } from 'path';
-import {
-  defineConfig, ExternalOption, Plugin, RollupOptions 
-} from 'rollup';
+import { defineConfig, ExternalOption, Plugin, RollupOptions } from 'rollup';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import esbuild from 'rollup-plugin-esbuild';
 import postcss from 'rollup-plugin-postcss';
@@ -15,12 +13,15 @@ import nodeExternals from 'rollup-plugin-node-externals';
 import babel from '@rollup/plugin-babel';
 import { visualizer } from 'rollup-plugin-visualizer';
 import commonjs from '@rollup/plugin-commonjs';
+import eslint from '@rollup/plugin-eslint';
 
 export interface CreateConfigOptions {
   packageName: string;
 }
 
-export function createConfig({ packageName }: CreateConfigOptions): RollupOptions[] {
+export function createConfig({
+  packageName
+}: CreateConfigOptions): RollupOptions[] {
   const rootPath: string = process.cwd();
   const packagesPath: string = join(rootPath, './packages');
   const packagePath: string = join(packagesPath, packageName);
@@ -32,13 +33,16 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
     ...Object.keys({
       ...packageConfig.peerDependencies,
       ...packageConfig.devDependencies,
-      ...packageConfig.dependencies,
+      ...packageConfig.dependencies
     }),
+    'unified',
+    'remark-parse',
+    'remark-gfm',
+    'mdast',
+    'mdast-util-to-markdown'
   ];
   const aliasPlugin: Plugin = alias({
-    entries: [
-      { find: `@/${packageName}`, replacement: srcPath }
-    ]
+    entries: [{ find: `@/${packageName}`, replacement: srcPath }]
   });
 
   return [
@@ -50,17 +54,18 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
           format: 'es',
           externalLiveBindings: false,
           preserveModules: true,
-          preserveModulesRoot: path.resolve(rootPath, `packages/${packageName}/src`),
+          preserveModulesRoot: path.resolve(
+            rootPath,
+            `packages/${packageName}/src`
+          )
         }
       ],
       plugins: [
         commonjs({
-          include: 'node_modules/**',
+          include: 'node_modules/**'
         }),
         del({
-          targets: [
-            join(distPath, './*')
-          ],
+          targets: [join(distPath, './*')],
           runOnce: true
         }),
         aliasPlugin,
@@ -70,22 +75,23 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
         }),
         esbuild({
           tsconfig: join(rootPath, './tsconfig.json'),
-          exclude: [
-            '**/*.stories.ts'
-          ],
+          exclude: ['**/*.stories.ts'],
           sourceMap: false
         }),
         visualizer(),
-        babel({ 
+        babel({
           babelHelpers: 'bundled',
           exclude: 'node_modules/**',
           extensions: ['.js', '.ts', '.tsx'],
           presets: ['@babel/preset-react'],
           plugins: [
-            ['babel-plugin-styled-components', {
-              ssr: true,
-              displayName: true
-            }],
+            [
+              'babel-plugin-styled-components',
+              {
+                ssr: true,
+                displayName: true
+              }
+            ]
           ]
         }),
         image({
@@ -100,21 +106,22 @@ export function createConfig({ packageName }: CreateConfigOptions): RollupOption
           declarationDir: distPath,
           exclude: [
             './**/*.stories.ts',
-            './**/*.stories.tsx'
+            './**/*.stories.tsx',
+            './packages/*/tests',
+            './**/*.test.ts',
+            './**/*.test.tsx'
           ]
-        })
+        }),
+        eslint({})
       ],
       external
     }
   ];
 }
 
-export const createUiConfig = () => (
+export const createUiConfig = () =>
   createConfig({
     packageName: 'ui'
-  })
-);
+  });
 
-export default defineConfig([
-  ...createUiConfig()
-]);
+export default defineConfig([...createUiConfig()]);

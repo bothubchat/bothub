@@ -6,32 +6,53 @@ import {
   HeaderOffset,
   HeaderRight,
   HeaderStyled,
-  HeaderContainerContent
+  HeaderContainerContent,
+  HeaderCenter
 } from './styled';
 import { HeaderMenu, HeaderMenuToggleButton } from './menu';
 import { HeaderVariant } from './types';
 import { HeaderProvider } from './context';
 
 export type HeaderOpenEventHandler = (open: boolean) => unknown;
+export type HeaderTabletToggleEventHandler = () => unknown;
 
-export interface HeaderProps extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang' | '$variant'> {
+export interface HeaderProps
+  extends Omit<React.ComponentProps<typeof HeaderStyled>, 'lang' | '$variant'> {
   id?: string;
-  variant?: HeaderVariant;
+  variant?: HeaderVariant | 'admin';
   logo?: React.ReactNode;
   nav?: React.ReactNode;
+  buttonsTablet?: React.ReactNode;
   lang?: React.ReactNode;
   user?: React.ReactNode;
   themeSwitcher?: React.ReactNode;
   open?: boolean;
   isPreset?: boolean;
+  tabletMenuOpen?: boolean;
   onOpen?: HeaderOpenEventHandler;
+  onTabletOpen?: HeaderTabletToggleEventHandler;
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  id, variant = 'main', logo, nav, lang, user, themeSwitcher, open, onOpen, isPreset = false, ...props
+  id,
+  variant = 'main',
+  logo,
+  nav,
+  buttonsTablet,
+  lang,
+  user,
+  themeSwitcher,
+  open,
+  tabletMenuOpen,
+  onOpen,
+  onTabletOpen,
+  isPreset = false,
+  ...props
 }) => {
   const initialIsMenuOpen = open;
-  const setInitialIsMenuOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>(
+  const setInitialIsMenuOpen = useCallback<
+    React.Dispatch<React.SetStateAction<boolean>>
+  >(
     (open) => {
       if (typeof open === 'boolean') {
         onOpen?.(open);
@@ -40,7 +61,10 @@ export const Header: React.FC<HeaderProps> = ({
     [onOpen]
   );
 
-  const [isMenuOpen, setIsMenuOpen] = typeof initialIsMenuOpen === 'boolean' ? [initialIsMenuOpen, setInitialIsMenuOpen] : useState(false);
+  const [isMenuOpen, setIsMenuOpen] =
+    typeof initialIsMenuOpen === 'boolean'
+      ? [initialIsMenuOpen, setInitialIsMenuOpen]
+      : useState(false);
 
   const menuNode: React.ReactNode = (
     <HeaderMenu isPreset={isPreset}>
@@ -52,7 +76,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <HeaderProvider
-      variant={variant}
+      variant={variant === 'admin' ? 'dashboard' : variant}
       isMenuOpen={isMenuOpen}
       setIsMenuOpen={setIsMenuOpen}
     >
@@ -61,13 +85,12 @@ export const Header: React.FC<HeaderProps> = ({
         $variant={variant}
         id={id}
       >
-        <HeaderContent
-          $variant={variant}
-        >
-          <HeaderContainer
-            disabled={variant === 'dashboard'}
-          >
-            <HeaderContainerContent>
+        <HeaderContent $variant={variant}>
+          <HeaderContainer disabled={variant === 'dashboard'}>
+            <HeaderContainerContent
+              $screenSize="desktop"
+              $variant={variant}
+            >
               <HeaderLeft>
                 {logo}
                 {nav}
@@ -77,6 +100,33 @@ export const Header: React.FC<HeaderProps> = ({
                 {lang}
                 {user}
                 <HeaderMenuToggleButton />
+              </HeaderRight>
+            </HeaderContainerContent>
+            <HeaderContainerContent
+              $screenSize="tablet"
+              $variant={variant}
+            >
+              <HeaderLeft>
+                <HeaderMenuToggleButton
+                  isOpen={tabletMenuOpen}
+                  onTabletOpen={onTabletOpen}
+                />
+                {buttonsTablet}
+              </HeaderLeft>
+              <HeaderCenter>{logo}</HeaderCenter>
+              <HeaderRight>
+                {lang}
+                {user}
+              </HeaderRight>
+            </HeaderContainerContent>
+            <HeaderContainerContent
+              $screenSize="mobile"
+              $variant={variant}
+            >
+              <HeaderCenter>{logo}</HeaderCenter>
+              <HeaderRight>
+                {lang}
+                {variant === 'main' && <HeaderMenuToggleButton />}
               </HeaderRight>
             </HeaderContainerContent>
           </HeaderContainer>
@@ -97,3 +147,4 @@ export * from './menu';
 export * from './types';
 export * from './context';
 export * from './theme-switcher';
+export * from './multi-level-menu';

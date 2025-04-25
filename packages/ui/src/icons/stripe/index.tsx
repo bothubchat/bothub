@@ -1,7 +1,12 @@
 import { Icon, icon } from '@/ui/components/icon';
 
 export const StripeIcon = icon(({ ...props }) => (
-  <Icon size={18} viewBox="0 0 18 18" fill="none" {...props}>
+  <Icon
+    size={18}
+    viewBox="0 0 18 18"
+    fill="none"
+    {...props}
+  >
     <path
       fillRule="evenodd"
       clipRule="evenodd"

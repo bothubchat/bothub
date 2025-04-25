@@ -17,6 +17,8 @@ export const SelectFieldCollapseOptionStyled = styled.div<SelectFieldCollapseOpt
         return 4;
       case 'md':
         return 6;
+      case 'large':
+        return 8;
     }
   }}px;
 `;
@@ -36,6 +38,8 @@ export const SelectFieldCollapseOptionHead = styled.div<SelectFieldCollapseOptio
         return 8;
       case 'md':
         return 12;
+      case 'large':
+        return 10;
     }
   }}px;
   border-radius: 6px;
@@ -45,15 +49,21 @@ export const SelectFieldCollapseOptionHead = styled.div<SelectFieldCollapseOptio
         return 8;
       case 'md':
         return 10;
+      case 'large':
+        return 8;
     }
   }}px;
   ${({ theme, $disabled }) => {
     if ($disabled) {
       return css`
         cursor: not-allowed;
-        opacity: 0.5;
         &:hover {
-          background: ${theme.mode === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'};
+          background: ${theme.mode === 'light'
+            ? 'rgba(0, 0, 0, 0.05)'
+            : 'rgba(255, 255, 255, 0.05)'};
+        }
+        & > ${SelectFieldCollapseOptionHeadSide}:first-child {
+          opacity: 0.5;
         }
       `;
     }
@@ -61,7 +71,7 @@ export const SelectFieldCollapseOptionHead = styled.div<SelectFieldCollapseOptio
     return css`
       cursor: pointer;
       &:hover {
-        background: ${theme.mode === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'};
+        background: ${theme.colors.accent.primary}33;
       }
     `;
   }}
@@ -81,25 +91,35 @@ export const SelectFieldCollapseOptionHeadSide = styled.div<SelectFieldCollapseO
         return 8;
       case 'md':
         return 10;
+      case 'large':
+        return 8;
     }
   }}px;
 `;
 
+export interface SelectFieldCollapseOptionTextAttrsProps {
+  $size: SelectFieldSize;
+}
+
 export interface SelectFieldCollapseOptionTextProps {
   $bold?: boolean;
 }
-export const SelectFieldCollapseOptionText = styled(Typography).attrs({ variant: 'input-sm' })<SelectFieldCollapseOptionTextProps>`
-  ${({ $bold }) => $bold && css`
-    font-weight: 500;
-  `}
+
+export const SelectFieldCollapseOptionText = styled(
+  Typography
+).attrs<SelectFieldCollapseOptionTextAttrsProps>((props) => ({
+  variant: props.$size === 'large' ? 'body-m-semibold' : 'input-sm'
+}))<SelectFieldCollapseOptionTextProps>`
+  ${({ $bold }) =>
+    $bold &&
+    css`
+      font-weight: 500;
+    `}
 `;
 
-export const SelectFieldCollapseOptionArrow = styled(ArrowDownIcon).attrs(
-  ({ theme }) => ({ 
-    size: 16,
-    fill: theme.colors.base.white
-  })
-)`
+export const SelectFieldCollapseOptionArrow = styled(ArrowDownIcon).attrs({
+  size: 16
+})`
   transition: transform 0.2s ease-in-out;
 `;
 

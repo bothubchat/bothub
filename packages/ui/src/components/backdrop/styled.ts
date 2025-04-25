@@ -13,7 +13,7 @@ export const BackdropStyled = styled(animated.div)`
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  z-index: ${({ theme, }) => theme.zIndex.backdrop};
+  z-index: ${({ theme }) => theme.zIndex.backdrop};
   cursor: pointer;
   overflow: auto;
 `;

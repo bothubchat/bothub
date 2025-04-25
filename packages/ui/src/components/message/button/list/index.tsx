@@ -1,6 +1,13 @@
 import React from 'react';
-import { MessageButtonsContent, MessageButtonsScrollbarWrapper, MessageButtonsStyled } from './styled';
-import { ScrollbarShadow, ScrollbarShadowProps } from '@/ui/components/scrollbar';
+import {
+  MessageButtonsContent,
+  MessageButtonsScrollbarWrapper,
+  MessageButtonsStyled
+} from './styled';
+import {
+  ScrollbarShadow,
+  ScrollbarShadowProps
+} from '@/ui/components/scrollbar';
 import { useTheme } from '@/ui/theme';
 
 export interface MessageButtonsProps extends React.ComponentProps<'div'> {
@@ -8,14 +15,14 @@ export interface MessageButtonsProps extends React.ComponentProps<'div'> {
 }
 
 export const MessageButtons: React.FC<MessageButtonsProps> = ({
-  scrollShadows, children, ...props
+  scrollShadows,
+  children,
+  ...props
 }) => {
   const theme = useTheme();
 
   return (
-    <MessageButtonsStyled
-      {...props}
-    >
+    <MessageButtonsStyled {...props}>
       <MessageButtonsScrollbarWrapper
         scrollShadows={{
           color: theme.colors.grayScale.gray4,
@@ -24,9 +31,7 @@ export const MessageButtons: React.FC<MessageButtonsProps> = ({
           ...scrollShadows
         }}
       >
-        <MessageButtonsContent>
-          {children}
-        </MessageButtonsContent>
+        <MessageButtonsContent>{children}</MessageButtonsContent>
       </MessageButtonsScrollbarWrapper>
     </MessageButtonsStyled>
   );

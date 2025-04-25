@@ -4,7 +4,7 @@ import { adaptive } from '@/ui/adaptive';
 import {
   MessageColor,
   MessageTimestampPosition,
-  MessageVariant,
+  MessageVariant
 } from '../types';
 
 export interface TimestampProps {
@@ -15,7 +15,7 @@ export const TimestampStyled = styled.div<TimestampProps>`
   height: fit-content;
   display: flex;
   justify-content: flex-end;
-  
+
   ${({ $timestampPosition }) => {
     switch ($timestampPosition) {
       case 'right':
@@ -35,7 +35,7 @@ export interface TimestampTextProp {
   $color: MessageColor;
 }
 export const TimestampText = styled(Typography).attrs({
-  variant: 'body-s-regular',
+  variant: 'body-s-regular'
 })<TimestampTextProp>`
   color: ${({ theme, $variant, $color }) => {
     if (theme.mode === 'dark' || $variant === 'user' || $color !== 'default') {
@@ -52,6 +52,6 @@ export const TimestampText = styled(Typography).attrs({
     `,
     mobile: css`
       font-size: 10px;
-    `,
+    `
   })};
 `;

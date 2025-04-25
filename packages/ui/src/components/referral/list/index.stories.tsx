@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
-  ReferralCard, 
-  ReferralCardLink, 
-  ReferralCardTable, 
-  ReferralCardTableCell, 
-  ReferralCardTableHeadCell, 
-  ReferralCardTableRow, 
-  ReferralCardWithdrawButton 
+  ReferralCard,
+  ReferralCardLink,
+  ReferralCardTable,
+  ReferralCardTableCell,
+  ReferralCardTableHeadCell,
+  ReferralCardTableRow,
+  ReferralCardWithdrawButton
 } from '@/ui/components/referral';
 import { Referrals } from '.';
 import { CreateReferralButton } from './styled';
@@ -18,11 +18,7 @@ export type ReferralsStory = StoryObj<typeof Referrals>;
 
 export const Basic: ReferralsStory = {
   args: {
-    create: (
-      <CreateReferralButton>
-        Создать программу
-      </CreateReferralButton>
-    ),
+    create: <CreateReferralButton>Создать программу</CreateReferralButton>,
     children: [...Array(5)].map(() => (
       <ReferralCard
         name="Реферальная система с ChatGPT-4"
@@ -34,11 +30,11 @@ export const Basic: ReferralsStory = {
           minText: '0 ₽',
           maxText: '20000 ₽'
         }}
-        withdraw={(
+        withdraw={
           <ReferralCardWithdrawButton>
             Вывести средства
           </ReferralCardWithdrawButton>
-        )}
+        }
         dateCreated="Дата последнего вывода: 07.09.23, 15:33:47"
       >
         <ReferralCardTable>
@@ -53,22 +49,16 @@ export const Basic: ReferralsStory = {
             </ReferralCardTableCell>
           </ReferralCardTableRow>
           <ReferralCardTableRow>
-            <ReferralCardTableHeadCell>
-              Код:
-            </ReferralCardTableHeadCell>
+            <ReferralCardTableHeadCell>Код:</ReferralCardTableHeadCell>
             <ReferralCardTableCell>
-              <ReferralCardLink>
-                T2Yasv23azILMH21
-              </ReferralCardLink>
+              <ReferralCardLink>T2Yasv23azILMH21</ReferralCardLink>
             </ReferralCardTableCell>
           </ReferralCardTableRow>
           <ReferralCardTableRow>
             <ReferralCardTableHeadCell>
               Всего пользователей:
             </ReferralCardTableHeadCell>
-            <ReferralCardTableCell>
-              24
-            </ReferralCardTableCell>
+            <ReferralCardTableCell>24</ReferralCardTableCell>
           </ReferralCardTableRow>
         </ReferralCardTable>
       </ReferralCard>

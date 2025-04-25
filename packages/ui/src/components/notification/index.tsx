@@ -9,7 +9,7 @@ import {
   NotificationRight,
   NotificationStyled,
   NotificationText,
-  NotificationTitle,
+  NotificationTitle
 } from './styled';
 import { ErrorBigIcon } from '@/ui/icons/error-big';
 import { InfoBigIcon } from '@/ui/icons/info-big';
@@ -27,7 +27,7 @@ export interface NotificationProps {
   autoClose?: number | false;
   notificationId?: string;
   title?: string;
-  children?: string;
+  children?: React.ReactNode;
   onClose?: NotificationCloseEventHandler;
 }
 
@@ -38,11 +38,11 @@ export const Notification: React.FC<NotificationProps> = ({
   notificationId = 'unknown',
   title,
   children,
-  onClose,
+  onClose
 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const { isInNotificationList } = useNotifications();
-  const isText = !!children && !!title;
+  const hasTitleAndChildren = !!children && !!title;
 
   let iconComponent: React.FC;
   switch (variant) {
@@ -90,44 +90,47 @@ export const Notification: React.FC<NotificationProps> = ({
     isOpen,
     isInNotificationList
       ? {
-        from: { opacity: 0, transform: 'translateX(412px)' },
-        enter: { opacity: 1, transform: 'translateX(0px)' },
-        leave: { opacity: 0, transform: 'translateX(412px)' },
-        config: { duration: 250 },
-        onDestroyed: handleExitComplete,
-      }
+          from: { opacity: 0, transform: 'translateX(412px)' },
+          enter: { opacity: 1, transform: 'translateX(0px)' },
+          leave: { opacity: 0, transform: 'translateX(412px)' },
+          config: { duration: 250 },
+          onDestroyed: handleExitComplete
+        }
       : {
-        onDestroyed: handleExitComplete,
-      }
+          onDestroyed: handleExitComplete
+        }
   );
 
-  return (
-    notificationTransition(
-      (style, item) => item && (
+  return notificationTransition(
+    (style, item) =>
+      item && (
         <NotificationStyled
           style={style}
           $variant={variant}
           className={className}
         >
-          <NotificationContent $text={isText}>
-            <NotificationLeft $text={isText}>
+          <NotificationContent $text={hasTitleAndChildren}>
+            <NotificationLeft $text={hasTitleAndChildren}>
               <NotificationIcon as={iconComponent} />
               <NotificationInfo>
                 <NotificationTitle>{title ?? children}</NotificationTitle>
-                {isText && <NotificationText>{children}</NotificationText>}
+                {hasTitleAndChildren && typeof children === 'string' ? (
+                  <NotificationText>{children}</NotificationText>
+                ) : null}
+                {hasTitleAndChildren && typeof children !== 'string'
+                  ? children
+                  : null}
               </NotificationInfo>
             </NotificationLeft>
             <NotificationRight>
-              <NotificationCloseButton
-                onClick={setIsOpen.bind(null, false)}
-              />
+              <NotificationCloseButton onClick={setIsOpen.bind(null, false)} />
             </NotificationRight>
           </NotificationContent>
         </NotificationStyled>
       )
-    )
   );
 };
 
 export * from './types';
 export * from './list';
+export { NotificationText } from './styled';

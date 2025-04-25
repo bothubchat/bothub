@@ -12,11 +12,13 @@ export const PromptCardStyled = styled.div`
   overflow: hidden;
   cursor: pointer;
   &:hover {
-    box-shadow: inset 0px 0px 0px 1px ${({ theme }) => theme.colors.accent.primary};
+    box-shadow: inset 0px 0px 0px 1px
+      ${({ theme }) => theme.colors.accent.primary};
   }
   &:focus {
     cursor: default;
-    box-shadow: inset 0px 0px 0px 1px ${({ theme }) => theme.colors.accent.primary};
+    box-shadow: inset 0px 0px 0px 1px
+      ${({ theme }) => theme.colors.accent.primary};
   }
   ${adaptive(() => ({
     desktop: css`
@@ -38,4 +40,6 @@ export const PromptCardContent = styled.div`
 
 export const PromptCardCopyIcon = styled(CopyIcon)``;
 
-export const PromptCardText = styled(Typography).attrs({ variant: 'body-m-regular' })``;
+export const PromptCardText = styled(Typography).attrs({
+  variant: 'body-m-regular'
+})``;

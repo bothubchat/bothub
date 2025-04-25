@@ -4,7 +4,7 @@ export type ScrollbarVariant = 'primary' | 'secondary';
 
 export interface ScrollbarShadowsProps {
   size?: number;
-  color?: string; 
+  color?: string;
   left?: React.ReactNode;
   right?: React.ReactNode;
   top?: React.ReactNode;

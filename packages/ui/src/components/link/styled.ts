@@ -14,9 +14,11 @@ export const LinkStyled = styled.a<LinkStyledProps>`
   color: ${({ theme }) => theme.colors.accent.primary};
   text-align: ${({ $align }) => $align};
   cursor: pointer;
-  ${({ $fullWidth }) => $fullWidth && css`
-    width: 100%;
-  `}
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    css`
+      width: 100%;
+    `}
   &:hover {
     color: ${({ theme }) => theme.colors.accent.primaryLight};
   }

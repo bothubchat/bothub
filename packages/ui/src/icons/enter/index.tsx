@@ -1,7 +1,12 @@
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const EnterIcon = icon(({ ...props }) => (
-  <Icon size={16} viewBox="0 0 24 24" fill="none" {...props}>
+  <Icon
+    size={16}
+    viewBox="0 0 24 24"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {({ fill = '#313E62' } = { fill: '#313E62' }) => (
         <>
@@ -38,7 +43,10 @@ export const EnterIcon = icon(({ ...props }) => (
             />
           </mask>
           <g mask="url(#mask0_2985_13326)">
-            <path d="M0 0H24V24H0V0Z" fill={fill} />
+            <path
+              d="M0 0H24V24H0V0Z"
+              fill={fill}
+            />
           </g>
         </>
       )}

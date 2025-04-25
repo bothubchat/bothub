@@ -8,7 +8,7 @@ import {
   DropzoneFieldFilesStyled,
   DropzoneFieldInput,
   DropzoneFieldPlaceholder,
-  DropzoneFieldStyled,
+  DropzoneFieldStyled
 } from './styled';
 
 export type DropzoneFieldChangeEventHandler = (files: File[]) => void;
@@ -54,7 +54,7 @@ export const DropzoneField = ({
     : useState<File[]>([]);
 
   const handleInputChange = useCallback<
-  React.ChangeEventHandler<HTMLInputElement>
+    React.ChangeEventHandler<HTMLInputElement>
   >(
     (event) => {
       const droppedFiles = [...(event.currentTarget.files ?? [])];
@@ -62,11 +62,8 @@ export const DropzoneField = ({
       if (multiple) {
         setFiles([
           ...new Map(
-            [...files, ...droppedFiles].map((file) => [
-              file.name,
-              file,
-            ])
-          ).values(),
+            [...files, ...droppedFiles].map((file) => [file.name, file])
+          ).values()
         ]);
       } else {
         setFiles([...droppedFiles].slice(0, 1));
@@ -85,15 +82,15 @@ export const DropzoneField = ({
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
-      const droppedFiles = [...(e.dataTransfer.files ?? [])].filter(
-        (file) => accept?.includes(file.type)
+      const droppedFiles = [...(e.dataTransfer.files ?? [])].filter((file) =>
+        accept?.includes(file.type)
       );
-      
+
       if (multiple) {
         setFiles([
           ...new Map(
             [...files, ...droppedFiles].map((file) => [file.name, file])
-          ).values(),
+          ).values()
         ]);
       } else {
         setFiles([...droppedFiles].slice(0, 1));

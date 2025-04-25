@@ -1,5 +1,9 @@
 import {
-  AttachFileIcon, PdfIcon, TxtIcon, WordIcon, XlsIcon 
+  AttachFileIcon,
+  PdfIcon,
+  TxtIcon,
+  WordIcon,
+  XlsIcon
 } from '@/ui/icons';
 
 export type FileIconProps = {

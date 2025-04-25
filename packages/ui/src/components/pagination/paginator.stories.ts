@@ -9,7 +9,7 @@ export type PaginatorStory = StoryObj<typeof Paginator>;
 export const Basic: PaginatorStory = {
   args: {
     lastPage: 80,
-    current: 1,
+    current: 1
   }
 };
 
@@ -19,6 +19,6 @@ export default {
   decorators: [StoryDecorator()],
   argTypes: {
     current: { control: { type: 'number' } },
-    lastPage: { control: { type: 'number' } },
+    lastPage: { control: { type: 'number' } }
   }
 } as PaginatorMeta;

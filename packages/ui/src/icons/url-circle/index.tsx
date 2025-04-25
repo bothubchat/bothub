@@ -5,11 +5,17 @@ export const URLCircleIcon = icon(({ ...props }) => {
   const theme = useTheme();
 
   return (
-    <Icon size={18} height={16} viewBox="0 0 16 16" fill="none" {...props}>
+    <Icon
+      size={18}
+      height={16}
+      viewBox="0 0 16 16"
+      fill="none"
+      {...props}
+    >
       <IconConsumer>
         {(
           { fill = theme.colors.grayScale.gray1 } = {
-            fill: theme.colors.grayScale.gray1,
+            fill: theme.colors.grayScale.gray1
           }
         ) => (
           <>

@@ -7,7 +7,10 @@ interface ListRowProps {
   onChange?: (value: string) => void;
 }
 
-export const TariffListRow: React.FC<ListRowProps> = ({ cardList, onChange }) => {
+export const TariffListRow: React.FC<ListRowProps> = ({
+  cardList,
+  onChange
+}) => {
   const ref = React.useRef<HTMLFormElement>(null);
   const [selected, setSelected] = React.useState<string>('Basic');
   const handleChange = () => {

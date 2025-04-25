@@ -10,9 +10,11 @@ export const BothubGlobalStyleStyled = createGlobalStyle<BothubGlobalStyleProps>
     transition: background 0.3s;
     background: ${({ theme }) => theme.colors.base.black};
     ${ScrollbarStyle}
-    ${({ $margin }) => typeof $margin === 'string' && css`
-      margin: ${$margin} !important;
-    `}
+    ${({ $margin }) =>
+      typeof $margin === 'string' &&
+      css`
+        margin: ${$margin} !important;
+      `}
   }
 
   * {

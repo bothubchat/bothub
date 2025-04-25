@@ -1,10 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react';
 import {
   TextFieldErrorText,
-  TextFieldInput, 
-  TextFieldBlock, 
-  TextFieldLabel, 
-  TextFieldStyled, 
+  TextFieldInput,
+  TextFieldBlock,
+  TextFieldLabel,
+  TextFieldStyled,
   TextFieldSkeleton,
   TextFieldClearButton,
   TextFieldColorPreview,
@@ -14,12 +14,23 @@ import {
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { SearchCircleIcon } from '@/ui/icons/search-circle';
-import { TextFieldType } from './types';
+import { TextFieldType, Variant } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 
 export type TextFieldValueChangeEventHandler = (value: string) => unknown;
 
-export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFieldStyled>, 'onChange' | 'onFocus' | 'onBlur' | 'onMouseEnter' | 'onMouseLeave' | '$fullWidth' | '$disabled'> {
+export interface TextFieldProps
+  extends Omit<
+    React.ComponentProps<typeof TextFieldStyled>,
+    | 'onChange'
+    | 'onFocus'
+    | 'onBlur'
+    | 'onMouseEnter'
+    | 'onMouseLeave'
+    | '$fullWidth'
+    | '$disabled'
+    | 'autoFocus'
+  > {
   label?: string | boolean | React.ReactNode;
   placeholder?: string;
   value?: string;
@@ -33,6 +44,9 @@ export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFie
   disabled?: boolean;
   skeleton?: boolean;
   readonly?: boolean;
+  variant?: Variant;
+  autoFocus?: boolean;
+  autoComplete?: React.ComponentProps<'input'>['autoComplete'];
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -41,12 +55,30 @@ export interface TextFieldProps extends Omit<React.ComponentProps<typeof TextFie
   onValueChange?: TextFieldValueChangeEventHandler;
 }
 
-export const TextField: React.FC<TextFieldProps> = ({ 
-  label, placeholder, value, defaultValue, error, name, 
-  type, fullWidth = false, disabled = false, startIcon, endIcon, skeleton = false,
-  onChange, onFocus, onBlur, onMouseEnter, onMouseLeave, onValueChange,
+export const TextField: React.FC<TextFieldProps> = ({
+  label,
+  placeholder,
+  value,
+  defaultValue,
+  error,
+  name,
+  type,
+  fullWidth = false,
+  disabled = false,
+  startIcon,
+  endIcon,
+  skeleton = false,
+  onChange,
+  onFocus,
+  onBlur,
+  onMouseEnter,
+  onMouseLeave,
+  onValueChange,
   readonly = false,
-  ...props 
+  variant = 'primary',
+  autoFocus,
+  autoComplete,
+  ...props
 }) => {
   const theme = useTheme();
 
@@ -55,27 +87,42 @@ export const TextField: React.FC<TextFieldProps> = ({
   const [isFocus, setIsFocus] = useState(false);
   const [isHover, setIsHover] = useState(false);
 
-  const handleFocus = useCallback((event: React.FocusEvent<HTMLInputElement>) => {
-    onFocus?.(event);
-    setIsFocus(true);
-  }, [onFocus]);
-  const handleBlur = useCallback((event: React.FocusEvent<HTMLInputElement>) => {
-    onBlur?.(event);
-    setIsFocus(false);
-  }, [onBlur]);
-  const handleMouseEnter = useCallback((event: React.MouseEvent<HTMLInputElement>) => {
-    onMouseEnter?.(event);
-    setIsHover(true);
-  }, [onMouseEnter]);
-  const handleMouseLeave = useCallback((event: React.MouseEvent<HTMLInputElement>) => {
-    onMouseLeave?.(event);
-    setIsHover(false);
-  }, [onMouseLeave]);
+  const handleFocus = useCallback(
+    (event: React.FocusEvent<HTMLInputElement>) => {
+      onFocus?.(event);
+      setIsFocus(true);
+    },
+    [onFocus]
+  );
+  const handleBlur = useCallback(
+    (event: React.FocusEvent<HTMLInputElement>) => {
+      onBlur?.(event);
+      setIsFocus(false);
+    },
+    [onBlur]
+  );
+  const handleMouseEnter = useCallback(
+    (event: React.MouseEvent<HTMLInputElement>) => {
+      onMouseEnter?.(event);
+      setIsHover(true);
+    },
+    [onMouseEnter]
+  );
+  const handleMouseLeave = useCallback(
+    (event: React.MouseEvent<HTMLInputElement>) => {
+      onMouseLeave?.(event);
+      setIsHover(false);
+    },
+    [onMouseLeave]
+  );
 
-  const handleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => {
-    onChange?.(event);
-    onValueChange?.(event.target.value);
-  }, [onChange, onValueChange]);
+  const handleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
+    (event) => {
+      onChange?.(event);
+      onValueChange?.(event.target.value);
+    },
+    [onChange, onValueChange]
+  );
 
   const handleClear = useCallback(() => {
     const inputEl: HTMLInputElement | null = inputRef.current;
@@ -92,34 +139,36 @@ export const TextField: React.FC<TextFieldProps> = ({
       fill: theme.colors.grayScale.gray1
     }),
     ...(!disabled && {
-      fill: theme.mode === 'light' ? theme.default.colors.accent.primary : theme.colors.base.white
+      fill:
+        theme.mode === 'light'
+          ? theme.default.colors.accent.primary
+          : theme.colors.base.white
     })
   };
 
   return (
-    <TextFieldStyled 
-      {...props} 
+    <TextFieldStyled
+      {...props}
       $fullWidth={fullWidth}
       $disabled={disabled}
     >
-      {(label && skeleton) && (
+      {label && skeleton && (
         <TextFieldLabel>
           <Skeleton width={100} />
         </TextFieldLabel>
       )}
-      {(typeof label === 'string' && !skeleton) && (
-        <TextFieldLabel>
-          {label}
-        </TextFieldLabel>
+      {typeof label === 'string' && !skeleton && (
+        <TextFieldLabel>{label}</TextFieldLabel>
       )}
-      {(typeof label !== 'string' && !skeleton) && label}
+      {typeof label !== 'string' && !skeleton && label}
       {!skeleton && (
-        <TextFieldBlock 
-          $error={!!error} 
-          $hover={isHover} 
+        <TextFieldBlock
+          $error={!!error}
+          $hover={isHover}
           $focus={isFocus}
           $disabled={disabled}
           $skeleton={false}
+          $variant={variant}
         >
           {(type === 'search' || startIcon) && (
             <IconProvider {...iconProps}>
@@ -127,20 +176,18 @@ export const TextField: React.FC<TextFieldProps> = ({
               {type === 'search' && <SearchCircleIcon />}
             </IconProvider>
           )}
-          {(type === 'color'
-            && typeof CSS === 'object' 
-            && typeof CSS.supports === 'function'
-            && CSS.supports('background', value ?? '#000')) && (
-            <TextFieldColor>
-              <TextFieldColorInput 
-                value={value ?? '#000'}
-                onChange={handleChange}
-              />
-              <TextFieldColorPreview
-                $color={value ?? '#000'}
-              />
-            </TextFieldColor>
-          )}
+          {type === 'color' &&
+            typeof CSS === 'object' &&
+            typeof CSS.supports === 'function' &&
+            CSS.supports('background', value ?? '#000') && (
+              <TextFieldColor>
+                <TextFieldColorInput
+                  value={value ?? '#000'}
+                  onChange={handleChange}
+                />
+                <TextFieldColorPreview $color={value ?? '#000'} />
+              </TextFieldColor>
+            )}
           <TextFieldInput
             ref={inputRef}
             value={value}
@@ -158,16 +205,15 @@ export const TextField: React.FC<TextFieldProps> = ({
             onBlur={handleBlur}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
+            $variant={variant}
+            autoFocus={autoFocus}
+            autoComplete={autoComplete}
           />
-          {(type === 'search' && value) && (
-            <TextFieldClearButton
-              onClick={handleClear}
-            />
+          {type === 'search' && value && (
+            <TextFieldClearButton onClick={handleClear} />
           )}
-          {(type !== 'search' && endIcon) && (
-            <IconProvider {...iconProps}>
-              {endIcon}
-            </IconProvider>
+          {type !== 'search' && endIcon && (
+            <IconProvider {...iconProps}>{endIcon}</IconProvider>
           )}
         </TextFieldBlock>
       )}
@@ -178,13 +224,12 @@ export const TextField: React.FC<TextFieldProps> = ({
           $focus={false}
           $disabled={false}
           $skeleton
+          $variant={variant}
         >
           <TextFieldSkeleton />
         </TextFieldBlock>
       )}
-      {error && (
-        <TextFieldErrorText>{error}</TextFieldErrorText>
-      )}
+      {error && <TextFieldErrorText>{error}</TextFieldErrorText>}
     </TextFieldStyled>
   );
 };

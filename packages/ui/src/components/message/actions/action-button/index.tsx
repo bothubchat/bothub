@@ -25,26 +25,31 @@ export const ActionButton = ({
   onMouseLeave,
   ...props
 }: ActionButtonProps) => (
-  <S.MessageActionsButton
-    ref={ref}
-    onClick={() => {
-      onClick?.({ id, message });
-    }}
-    onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}
-    {...props}
+  <Tooltip
+    label={tooltipLabel}
+    placement="top"
+    align="center"
   >
-    <Tooltip label={tooltipLabel} placement="top" align="center">
-      <TooltipConsumer>
-        {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-          <S.MessageActionsButtonWithTooltip
-            onMouseEnter={handleTooltipMouseEnter}
-            onMouseLeave={handleTooltipMouseLeave}
-          >
-            {children}
-          </S.MessageActionsButtonWithTooltip>
-        )}
-      </TooltipConsumer>
-    </Tooltip>
-  </S.MessageActionsButton>
+    <TooltipConsumer>
+      {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+        <S.MessageActionsButton
+          ref={ref}
+          onClick={() => {
+            onClick?.({ id, message });
+          }}
+          onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
+            handleTooltipMouseEnter(e);
+            onMouseEnter?.();
+          }}
+          onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
+            handleTooltipMouseLeave(e);
+            onMouseLeave?.();
+          }}
+          {...props}
+        >
+          {children}
+        </S.MessageActionsButton>
+      )}
+    </TooltipConsumer>
+  </Tooltip>
 );

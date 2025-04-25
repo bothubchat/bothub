@@ -15,10 +15,14 @@ export interface SidebarEmptyTextProps {
   $open: boolean;
 }
 
-export const SidebarEmptyText = styled(Typography).attrs({ variant: 'body-m-medium' })<SidebarEmptyTextProps>`
+export const SidebarEmptyText = styled(Typography).attrs({
+  variant: 'body-m-medium'
+})<SidebarEmptyTextProps>`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
   cursor: default;
-  ${({ $open }) => !$open && css`
-    display: none;
-  `}
+  ${({ $open }) =>
+    !$open &&
+    css`
+      display: none;
+    `}
 `;

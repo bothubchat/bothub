@@ -6,16 +6,15 @@ export interface ImageFullScreenContextValue {
   activeItem: ImageFullScreenDataItem | null;
 }
 
-export const ImageFullScreenContext = React.createContext<ImageFullScreenContextValue>({
-  data: [],
-  activeItem: null
-});
+export const ImageFullScreenContext =
+  React.createContext<ImageFullScreenContextValue>({
+    data: [],
+    activeItem: null
+  });
 
-export const ImageFullScreenProvider: React.FC<ImageFullScreenContextValue & React.PropsWithChildren
-> = ({
-  children,
-  ...value
-}) => (
+export const ImageFullScreenProvider: React.FC<
+  ImageFullScreenContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
   <ImageFullScreenContext.Provider value={value}>
     {children}
   </ImageFullScreenContext.Provider>

@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useRef } from 'react';
+import React, { useRef } from 'react';
 import {
   TariffCardStyled,
   TariffCardStyledContent,
@@ -14,16 +14,15 @@ import {
   TariffCardGiveCapsText,
   TariffCardGiveCapsBadge,
   TariffCardGiveCapsBadgeText,
-  TariffCardStyledGiveCaps, TariffCardContainer, TariffCardStyledOldPrice,
-  TariffCardStyledOldPriceWrapper
+  TariffCardStyledGiveCaps,
+  TariffCardContainer,
+  TariffCardDiscountBadge,
+  TariffCardDiscountBadgeText
 } from './styled';
-import { TariffCardColor, TariffType } from './types';
-
-const TariffCardImages = lazy(() => import('./tariff-card-images')
-  .then((module) => ({ default: module.TariffCardImages })));
+import { TariffType } from './types';
 
 export interface TariffCardRowProps extends React.ComponentProps<'div'> {
-  name: string;
+  name: TariffType;
   description?: string;
   giveCaps?: string;
   giveCapsText?: string;
@@ -32,8 +31,8 @@ export interface TariffCardRowProps extends React.ComponentProps<'div'> {
   oldPrice?: string;
   selected?: boolean;
   variant?: 'main' | 'dashboard';
-  color?: TariffCardColor;
   isDefault?: boolean;
+  textDiscount?: string;
 }
 
 export const TariffCardRow: React.FC<TariffCardRowProps> = ({
@@ -46,10 +45,9 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
   giveCapsText,
   selected,
   isDefault = true,
-  color = 'white',
-  oldPrice,
-  children,
+  children: _,
   description,
+  textDiscount,
   ...props
 }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -65,17 +63,9 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
       $variant={variant}
       onClick={handleClick}
       ref={ref}
-      selected={selected}
+      $selected={selected}
       {...props}
     >
-      {!isDefault && (
-        <Suspense>
-          <TariffCardImages 
-            variant={variant} 
-            name={name as TariffType}
-          />
-        </Suspense>
-      )}
       <TariffCardStyledContent $variant={variant}>
         <TarrifCardStyledLeft $variant={variant}>
           <TarrifCardStyledRadio
@@ -85,7 +75,7 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
             value={name}
           />
           <TariffCardContainer $variant={variant}>
-            <TariffCardStyledName $color={color}>{name}</TariffCardStyledName>
+            <TariffCardStyledName $color={name}>{name}</TariffCardStyledName>
             <TariffCardStyledGiveCaps>
               <TariffCardGiveCapsText>{giveCapsText}</TariffCardGiveCapsText>
               <TariffCardGiveCapsBadge>
@@ -95,29 +85,35 @@ export const TariffCardRow: React.FC<TariffCardRowProps> = ({
               </TariffCardGiveCapsBadge>
             </TariffCardStyledGiveCaps>
           </TariffCardContainer>
-          <TariffCardStyledMiddle>
-            <TariffCardStyledDescriptionIcon $variant={variant} />
-            <TariffCardStyledDescription>
-              {description}
-            </TariffCardStyledDescription>
-          </TariffCardStyledMiddle>
         </TarrifCardStyledLeft>
+        <TariffCardStyledMiddle>
+          <TariffCardStyledDescriptionIcon $variant={variant} />
+          <TariffCardStyledDescription>
+            {description}
+          </TariffCardStyledDescription>
+        </TariffCardStyledMiddle>
         <TarrifCardStyledRight $variant={variant}>
-          <TariffCardStyledPrice $isDefault={isDefault} $variant={variant}>
+          <TariffCardStyledPrice
+            $isDefault={isDefault}
+            $variant={variant}
+          >
             {price}
           </TariffCardStyledPrice>
-          <TariffCardStyledCurrency $isDefault={isDefault} $variant={variant}>
+          <TariffCardStyledCurrency
+            $isDefault={isDefault}
+            $variant={variant}
+          >
             {currency}
           </TariffCardStyledCurrency>
-          {!isDefault && oldPrice && (
-            <TariffCardStyledOldPriceWrapper $variant={variant}>
-              <TariffCardStyledOldPrice $variant={variant}>
-                {`${oldPrice} ${currency}`}
-              </TariffCardStyledOldPrice>
-            </TariffCardStyledOldPriceWrapper>
-          )}
         </TarrifCardStyledRight>
       </TariffCardStyledContent>
+      {textDiscount && (
+        <TariffCardDiscountBadge $active={!!selected}>
+          <TariffCardDiscountBadgeText $active={!!selected}>
+            {textDiscount}
+          </TariffCardDiscountBadgeText>
+        </TariffCardDiscountBadge>
+      )}
     </TariffCardStyled>
   );
 };

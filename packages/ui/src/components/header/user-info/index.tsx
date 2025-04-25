@@ -1,16 +1,14 @@
-import React, {
-  useCallback, useEffect, useRef, useState 
-} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   HeaderUserInfoArrow,
   HeaderUserInfoBody,
-  HeaderUserInfoHead, 
-  HeaderUserInfoInfo, 
-  HeaderUserInfoInfoText, 
-  HeaderUserInfoName, 
-  HeaderUserInfoStyled, 
-  HeaderUserInfoTokens 
+  HeaderUserInfoHead,
+  HeaderUserInfoInfo,
+  HeaderUserInfoInfoText,
+  HeaderUserInfoName,
+  HeaderUserInfoStyled,
+  HeaderUserInfoTokens
 } from './styled';
 import { HeaderUserInfoProvider } from './context';
 import { useHeaderMenu } from '../menu/context';
@@ -22,7 +20,10 @@ export interface HeaderUserInfoProps extends React.PropsWithChildren {
 }
 
 export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
-  avatar, name, tokens, children 
+  avatar,
+  name,
+  tokens,
+  children
 }) => {
   const { isInMenu } = useHeaderMenu();
 
@@ -64,28 +65,36 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
     }
   }, []);
 
-  const userInfoTransition = useTransition(isOpen, !isInMenu ? {
-    from: {
-      opacity: 0,
-      transform: 'scale(0)',
-    },
-    enter: {
-      opacity: isOpen ? 1 : 0.5,
-      transform: `scale(${isOpen ? 1 : 0.999})`,
-      transition: {
-        duration: 0.15
-      }
-    },
-    leave: {
-      opacity: 0,
-      transform: 'scale(0.999)',
-    },
-    config: { duration: 150 }
-  } : {});
+  const userInfoTransition = useTransition(
+    isOpen,
+    !isInMenu
+      ? {
+          from: {
+            opacity: 0,
+            transform: 'scale(0)'
+          },
+          enter: {
+            opacity: isOpen ? 1 : 0.5,
+            transform: `scale(${isOpen ? 1 : 0.999})`,
+            transition: {
+              duration: 0.15
+            }
+          },
+          leave: {
+            opacity: 0,
+            transform: 'scale(0.999)'
+          },
+          config: { duration: 150 }
+        }
+      : {}
+  );
 
   return (
     <HeaderUserInfoProvider setIsOpen={setIsOpen}>
-      <HeaderUserInfoStyled ref={userRef} $inMenu={isInMenu}>
+      <HeaderUserInfoStyled
+        ref={userRef}
+        $inMenu={isInMenu}
+      >
         <HeaderUserInfoHead
           $inMenu={isInMenu}
           ref={headRef}
@@ -94,30 +103,27 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
           <HeaderUserInfoInfo>
             {avatar}
             <HeaderUserInfoInfoText>
-              <HeaderUserInfoName>
-                {name}
-              </HeaderUserInfoName>
-              <HeaderUserInfoTokens>
-                {tokens}
-              </HeaderUserInfoTokens>
+              <HeaderUserInfoName>{name}</HeaderUserInfoName>
+              <HeaderUserInfoTokens>{tokens}</HeaderUserInfoTokens>
             </HeaderUserInfoInfoText>
           </HeaderUserInfoInfo>
-          <HeaderUserInfoArrow 
+          <HeaderUserInfoArrow
             style={{
               transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'
             }}
           />
         </HeaderUserInfoHead>
-        {userInfoTransition((style, item) => (
-          item && (
-            <HeaderUserInfoBody
-              $inMenu={isInMenu}
-              style={{ ...style, width }}
-            >
-              {children}
-            </HeaderUserInfoBody>
-          )
-        ))}
+        {userInfoTransition(
+          (style, item) =>
+            item && (
+              <HeaderUserInfoBody
+                $inMenu={isInMenu}
+                style={{ ...style, width }}
+              >
+                {children}
+              </HeaderUserInfoBody>
+            )
+        )}
       </HeaderUserInfoStyled>
     </HeaderUserInfoProvider>
   );

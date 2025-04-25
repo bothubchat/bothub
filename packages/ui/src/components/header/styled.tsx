@@ -15,7 +15,7 @@ export const HeaderOffset = styled.div`
 `;
 
 export interface HeaderStyledProps {
-  $variant: HeaderVariant;
+  $variant: HeaderVariant | 'admin';
 }
 
 export const HeaderStyled = styled.header<HeaderStyledProps>`
@@ -42,14 +42,17 @@ export const HeaderStyled = styled.header<HeaderStyledProps>`
           ${adaptiveStyle}
         `;
       }
+      case 'admin':
       case 'dashboard': {
         const adaptiveStyle = adaptive({
           variant: 'dashboard',
+          merge: true,
           desktop: css`
             height: ${theme.dashboard.header.height};
           `,
           tablet: css`
             height: ${theme.dashboard.header.tablet.height};
+            z-index: ${theme.zIndex.modal};
           `,
           mobile: css`
             height: ${theme.dashboard.header.mobile.height};
@@ -63,10 +66,18 @@ export const HeaderStyled = styled.header<HeaderStyledProps>`
       }
     }
   }}
+  ${({ $variant }) =>
+    $variant === 'admin' &&
+    adaptive({
+      variant: 'dashboard',
+      mobile: css`
+        padding: 0;
+      `
+    })}
 `;
 
 export interface HeaderContentProps {
-  $variant: HeaderVariant;
+  $variant: HeaderVariant | 'admin';
 }
 
 export const HeaderContent = styled.div<HeaderContentProps>`
@@ -82,8 +93,9 @@ export const HeaderContent = styled.div<HeaderContentProps>`
           border-bottom: 1px solid ${theme.colors.grayScale.gray3};
           backdrop-filter: blur(9px);
           -webkit-backdrop-filter: blur(9px);
-          background: rgba(18, 24, 37, 0.40);
+          background-color: rgba(18, 24, 37, 0.4);
         `;
+      case 'admin':
       case 'dashboard': {
         const adaptiveStyle = adaptive({
           variant: 'dashboard',
@@ -96,19 +108,26 @@ export const HeaderContent = styled.div<HeaderContentProps>`
             padding: 0px 18px;
           `,
           mobile: css`
-            border-radius: 10px;
             padding: 0px 16px;
           `
         });
 
         return css`
-          transition: background 0.3s;
-          background: ${theme.colors.grayScale.gray4};
+          transition: background-color 0.3s;
+          background-color: ${theme.colors.grayScale.gray4};
           ${adaptiveStyle}
         `;
       }
     }
   }}
+  ${({ $variant }) =>
+    $variant === 'admin' &&
+    adaptive({
+      variant: 'dashboard',
+      mobile: css`
+        border-radius: 18px;
+      `
+    })}
 `;
 
 export const HeaderContainer = styled(Container)`
@@ -119,28 +138,82 @@ export const HeaderContainer = styled(Container)`
   position: relative;
 `;
 
-export const HeaderContainerContent = styled.div`
+export interface HeaderContainerContentProps {
+  $screenSize: 'desktop' | 'tablet' | 'mobile';
+  $variant: HeaderVariant | 'admin';
+}
+
+export const HeaderContainerContent = styled.div<HeaderContainerContentProps>`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
   height: inherit;
   box-sizing: border-box;
   position: relative;
+  ${({ $screenSize, $variant }) =>
+    adaptive({
+      variant: 'dashboard',
+      desktop: css`
+        display: ${$screenSize === 'desktop' ? 'flex' : 'none'};
+        justify-content: space-between;
+      `,
+      tablet: css`
+        display: ${$screenSize === 'tablet' ? 'flex' : 'none'};
+        border-radius: 0;
+        padding: 8px;
+        justify-content: space-between;
+        z-index: ${({ theme }) => theme.zIndex.modal};
+      `,
+      mobile: css`
+        display: ${($variant !== 'admin' && $screenSize === 'mobile') ||
+        ($variant === 'admin' && $screenSize === 'tablet')
+          ? 'flex'
+          : 'none'};
+        border-radius: 0;
+        padding: 8px;
+        justify-content: space-between;
+        z-index: ${({ theme }) => theme.zIndex.modal};
+      `
+    })}
 `;
 
 export const HeaderLeft = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
+  gap: 18px;
+  ${adaptive({
+    variant: 'dashboard',
+    tablet: css`
+      flex: 1;
+    `
+  })}
+`;
+
+export const HeaderCenter = styled.div`
+  display: flex;
+  align-items: center;
+  ${adaptive({
+    variant: 'dashboard',
+    tablet: css`
+      flex: 1;
+      justify-content: center;
+    `
+  })}
 `;
 
 export const HeaderRight = styled.div`
   display: flex;
   align-items: center;
-  gap: 34px;
-  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-    gap: 24px;
-  }
+  gap: 24px;
+  ${adaptive({
+    variant: 'dashboard',
+    tablet: css`
+      gap: 8px;
+      flex: 1;
+      justify-content: end;
+    `
+  })}
 `;
 
 export const HeaderLogoLink = styled.a`

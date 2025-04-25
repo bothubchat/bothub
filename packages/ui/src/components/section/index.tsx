@@ -13,7 +13,7 @@ export const Section: React.FC<SectionProps> = ({
   bg = null,
   bgLines = false,
   fullHeight = false,
-  children, 
+  children,
   ...props
 }) => {
   let containerNode: React.ReactNode;
@@ -21,11 +21,7 @@ export const Section: React.FC<SectionProps> = ({
     containerNode = children;
   } else {
     containerNode = (
-      <SectionContainer
-        $fullHeight={fullHeight}
-      >
-        {children}
-      </SectionContainer>
+      <SectionContainer $fullHeight={fullHeight}>{children}</SectionContainer>
     );
   }
 
@@ -36,9 +32,7 @@ export const Section: React.FC<SectionProps> = ({
     childrenNode = (
       <>
         {bg}
-        <SectionContent
-          $fullHeight={fullHeight}
-        >
+        <SectionContent $fullHeight={fullHeight}>
           {containerNode}
         </SectionContent>
       </>
@@ -47,12 +41,12 @@ export const Section: React.FC<SectionProps> = ({
 
   return (
     <SectionStyled
-      $bg={bg !== null} 
+      $bg={bg !== null}
       $bgLines={bgLines}
       $fullHeight={fullHeight}
       {...props}
     >
       {childrenNode}
     </SectionStyled>
-  );  
+  );
 };

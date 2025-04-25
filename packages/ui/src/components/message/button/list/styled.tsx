@@ -18,7 +18,9 @@ export const MessageButtonsStyled = styled.div`
   })}
 `;
 
-export const MessageButtonsScrollbarWrapper = styled(Scrollbar).attrs({ variant: 'secondary' })`
+export const MessageButtonsScrollbarWrapper = styled(Scrollbar).attrs({
+  variant: 'secondary'
+})`
   width: 100%;
   overflow-y: hidden;
 `;

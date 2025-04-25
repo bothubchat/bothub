@@ -12,7 +12,7 @@ export const Basic: SwitchFieldStory = {
 
 export const Label: SwitchFieldStory = {
   args: {
-    label: 'Label',
+    label: 'Label'
   }
 };
 

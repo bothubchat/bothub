@@ -14,7 +14,7 @@ export const QueueIcon = icon(({ ...props }) => {
       <IconConsumer>
         {(
           { fill = theme.colors.grayScale.gray2 } = {
-            fill: theme.colors.grayScale.gray2,
+            fill: theme.colors.grayScale.gray2
           }
         ) => (
           <>

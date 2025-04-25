@@ -4,8 +4,8 @@ import { useHeaderMenu } from '../menu/context';
 import { useHeader } from '../context';
 
 export type HeaderNavProps = Omit<
-React.ComponentProps<typeof HeaderNavStyled>, 
-keyof HeaderNavStyledProps
+  React.ComponentProps<typeof HeaderNavStyled>,
+  keyof HeaderNavStyledProps
 >;
 
 export const HeaderNav: React.FC<HeaderNavProps> = ({ ...props }) => {
@@ -19,7 +19,6 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ ...props }) => {
         $inMenu={isInMenu}
       />
     </>
-
   );
 };
 

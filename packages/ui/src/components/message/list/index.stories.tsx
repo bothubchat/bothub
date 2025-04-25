@@ -4,7 +4,7 @@ import { StoryDecorator } from '@/ui/story-decorator';
 import {
   Message,
   MessageAvatar,
-  MessageTransaction,
+  MessageTransaction
 } from '@/ui/components/message';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import { Messages } from '.';
@@ -42,8 +42,8 @@ console.log("Hello, world!");
         <Message avatar={<MessageAvatar />}>Спасибо бот! то что нужно</Message>
         <ActionMessage>Контекст сброшен</ActionMessage>
       </>
-    ),
-  },
+    )
+  }
 };
 
 export const Skeleton: MessagesStory = {
@@ -51,36 +51,36 @@ export const Skeleton: MessagesStory = {
     children: [...Array(3)].map((_, index) => (
       <React.Fragment key={index}>
         <Message
-          avatar={(
+          avatar={
             <MessageAvatar>
               <BothubSkeleton />
             </MessageAvatar>
-          )}
+          }
           skeleton
         />
         <Message
           variant="assistant"
-          avatar={(
+          avatar={
             <MessageAvatar>
               <BothubSkeleton />
             </MessageAvatar>
-          )}
+          }
           skeleton
         />
       </React.Fragment>
-    )),
-  },
+    ))
+  }
 };
 
 export default {
   title: 'Components/Message/List',
   component: Messages,
-  decorators: [StoryDecorator()],
+  decorators: [StoryDecorator({ scale: 'main' })],
   argTypes: {
     children: {
       table: {
-        disable: true,
-      },
-    },
-  },
+        disable: true
+      }
+    }
+  }
 } as MessagesMeta;

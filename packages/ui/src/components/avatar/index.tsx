@@ -2,7 +2,10 @@ import React from 'react';
 import defaultAvatar from './assets/default-avatar.png';
 import botAvatar from './assets/bot-avatar.png';
 import {
-  AvatarImage, AvatarObject, AvatarSkeleton, AvatarStyled 
+  AvatarImage,
+  AvatarObject,
+  AvatarSkeleton,
+  AvatarStyled
 } from './styled';
 import { AvatarVariant } from './types';
 import { IconProvider } from '../icon';
@@ -13,10 +16,18 @@ export interface AvatarProps extends React.ComponentProps<'img'> {
 }
 
 export const Avatar: React.FC<AvatarProps> = ({
-  className, style, variant = 'user', size = 40, src, alt, children, ...props
+  className,
+  style,
+  variant = 'user',
+  size = 40,
+  src,
+  alt,
+  children,
+  ...props
 }) => {
   const isChildren = React.isValidElement(children);
-  const isSkeleton = isChildren && (children.type as React.FC).displayName === 'Skeleton';
+  const isSkeleton =
+    isChildren && (children.type as React.FC).displayName === 'Skeleton';
 
   switch (variant) {
     case 'user':
@@ -40,7 +51,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       className={className}
       style={style}
     >
-      {(!isSkeleton && !isChildren) && (
+      {!isSkeleton && !isChildren && (
         <AvatarObject
           data={src}
           width={size}
@@ -54,16 +65,10 @@ export const Avatar: React.FC<AvatarProps> = ({
           />
         </AvatarObject>
       )}
-      {(isChildren && !isSkeleton) && (
-        <IconProvider
-          size={size}
-        >
-          {children}
-        </IconProvider>
+      {isChildren && !isSkeleton && (
+        <IconProvider size={size}>{children}</IconProvider>
       )}
-      {isSkeleton && (
-        <AvatarSkeleton />
-      )}
+      {isSkeleton && <AvatarSkeleton />}
     </AvatarStyled>
   );
 };

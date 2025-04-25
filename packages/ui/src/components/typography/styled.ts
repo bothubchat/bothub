@@ -56,6 +56,47 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 30px;
           }
         `;
+      case 'h4':
+        return `
+          font-weight: 600;
+          font-size: 26px;
+          line-height: 34px;
+          --skeleton-height: 34px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 22px;
+            line-height: 30px;
+            --skeleton-height: 30px;
+          }
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 20px;
+            line-height: 26px;
+            --skeleton-height: 26px;
+          }
+        `;
+      case 'h5':
+        return `
+          font-weight: 600;
+          font-size: 22px;
+          line-height: 30px;
+          --skeleton-height: 30px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 20px;
+            line-height: 26px;
+            --skeleton-height: 26px;
+          }
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 18px;
+            line-height: 24px;
+            --skeleton-height: 24px;
+          }
+        `;
+      case 'h6':
+        return `
+          font-weight: 600;
+          font-size: 18px;
+          line-height: 24px;
+          --skeleton-height: 24px;
+        `;
       case 'body-xxxl-regular':
         return `
           font-size: 46px;
@@ -175,6 +216,23 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 24px;
           }
         `;
+      case 'body-xl-medium':
+        return `
+          font-weight: 500;
+          font-size: 22px;
+          line-height: 29px;
+          --skeleton-height: 29px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 20px;
+            line-height: 26px;
+            --skeleton-height: 26px;
+          }
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 18px;
+            line-height: 24px;
+            --skeleton-height: 24px;
+          }
+        `;
       case 'body-m-semibold':
         return `
           font-weight: 600;
@@ -190,18 +248,6 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
       case 'body-m-medium':
         return `
           font-weight: 500;
-          font-size: 16px;
-          line-height: 22px;
-          --skeleton-height: 22px;
-          @media (max-width: ${theme.tablet.maxWidth}) {
-            font-size: 14px;
-            line-height: 18px;
-            --skeleton-height: 18px;
-          }
-        `;
-      case 'body-m-regular':
-        return `
-          font-weight: 400;
           font-size: 16px;
           line-height: 22px;
           --skeleton-height: 22px;
@@ -261,16 +307,40 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
         `;
       case 'body-xs-medium':
         return `
-            font-weight: 400;
-            font-size: 12px;
+          font-weight: 500;
+          font-size: 12px;
+          line-height: 16px;
+          --skeleton-height: 16px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 10px;
             line-height: 16px;
             --skeleton-height: 16px;
-            @media (max-width: ${theme.tablet.maxWidth}) {
-              font-size: 10px;
-              line-height: 16px;
-              --skeleton-height: 16px;
-            }
+          }
           `;
+      case 'body-m-regular':
+        return `
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 22px;
+          --skeleton-height: 22px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 14px;
+            line-height: 18px;
+            --skeleton-height: 18px;
+          }
+        `;
+      case 'body-l-regular':
+        return `
+          font-weight: 400;
+          font-size: 18px;
+          line-height: 23.4px;
+          --skeleton-height: 24px;
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 16px;
+            line-height: 22px;
+            --skeleton-height: 22px;
+          }
+        `;
       case 'body-l-semibold':
         return `
           font-weight: 600;
@@ -353,23 +423,6 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 24px;
           }
         `;
-      case 'body-xl-medium':
-        return `
-            font-size: 24px;
-            font-weight: 500;
-            line-height: 31.2px;
-            --skeleton-height: 31.2px;
-            @media (max-width: ${theme.tablet.maxWidth}) {
-              font-size: 22px;
-              line-height: 30px;
-              --skeleton-height: 30px;
-            }
-            @media (max-width: ${theme.mobile.maxWidth}) {
-              font-size: 18px;
-              line-height: 24px;
-              --skeleton-height: 24px;
-            }
-          `;
       default:
         return '';
     }
@@ -383,7 +436,9 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
   text-decoration: none;
   text-align: ${({ $align }) => $align};
   --skeleton-width: 200px;
-  ${({ $fullWidth }) => $fullWidth && `
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    `
     width: 100%;
   `}
   ${({ $variant }) => getTypographyStyles($variant)}

@@ -3,7 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useRef,
-  useState,
+  useState
 } from 'react';
 import {
   MessageBlock,
@@ -21,7 +21,7 @@ import {
   MessageTop,
   MessageAvatar,
   MessageStyledWithBottomPanel,
-  MessageButtonsStyled,
+  MessageButtonsStyled
 } from './styled';
 import {
   MessageActionEventHandler,
@@ -29,10 +29,11 @@ import {
   MessageCopyEventHandler,
   MessageTimestampPosition,
   MessageVariant,
-  MessageVersionEventHandler,
+  MessageVersionEventHandler
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
+import { getTgMarkdown } from '@/ui/utils';
 import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
@@ -56,9 +57,12 @@ export interface MessageProps {
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
+  copyPlainText?: string | null;
+  copyTgText?: string | null;
   editText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
+  onReportText?: string | null;
   submitEditTooltipLabel?: string | null;
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
@@ -79,6 +83,7 @@ export interface MessageProps {
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
+  onReport?: MessageActionEventHandler;
   onNextVersion?: MessageVersionEventHandler;
   onPrevVersion?: MessageVersionEventHandler;
 }
@@ -98,9 +103,12 @@ export const Message: React.FC<MessageProps> = ({
   disableDelete = false,
   disableUpdate = false,
   disableCopy = false,
+  copyPlainText,
+  copyTgText,
   editText,
   resendText,
   deleteText,
+  onReportText,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
   updateTooltipLabel,
@@ -121,53 +129,85 @@ export const Message: React.FC<MessageProps> = ({
   onResend,
   onDelete,
   onUpdate,
+  onReport,
   onNextVersion,
-  onPrevVersion,
+  onPrevVersion
 }) => {
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
   const messageBlockContentRef = useRef<HTMLDivElement | null>(null);
-
+  const messageText = useRef<string | null>(null);
   const editFieldRef = useRef<HTMLSpanElement | null>(null);
-  const [isEditing, onEditing] = useState<boolean>(false);
-  const [editedText, onEditedText] = useState<string>(content ?? '');
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [editedText, setEditedText] = useState<string>(content ?? '');
   const handleEditText = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onEditedText(e.target.innerText);
+      setEditedText(e.target.textContent ?? '');
     },
     []
   );
 
-  const getRichText = useCallback((content: HTMLElement) => {
-    const htmlStr = new DOMParser().parseFromString(
-      content.innerHTML,
-      'text/html'
-    );
-    const codeNodes = htmlStr.getElementsByTagName('code');
-    for (const codeNode of codeNodes) {
-      const el = htmlStr.createElement('span');
-      el.innerText = codeNode.innerText;
-      codeNode.replaceWith(el);
-    }
+  const getRichText = useCallback(
+    (html: HTMLElement) => {
+      const htmlStr = new DOMParser().parseFromString(
+        html.innerHTML,
+        'text/html'
+      );
+      const codeNodes = htmlStr.getElementsByTagName('code');
+      for (const codeNode of codeNodes) {
+        const el = htmlStr.createElement('span');
+        el.innerText = codeNode.innerText;
+        codeNode.replaceWith(el);
+      }
+      const clipboardItem = new ClipboardItem({
+        'text/plain': new Blob([content!], { type: 'text/plain' }),
+        'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' })
+      });
+      return [clipboardItem];
+    },
+    [content]
+  );
+
+  const getPlainText = useCallback((html: HTMLElement) => {
     const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([content.innerText], { type: 'text/plain' }),
-      'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' }),
+      'text/plain': new Blob([html.innerText], { type: 'text/plain' })
     });
     return [clipboardItem];
   }, []);
 
-  const handleCopy = useCallback(() => {
+  const getTgText = useCallback((string: string) => {
+    const tgMarkdown = getTgMarkdown(string);
+
+    const clipboardItem = new ClipboardItem({
+      'text/plain': new Blob([tgMarkdown], { type: 'text/plain' })
+    });
+    return [clipboardItem];
+  }, []);
+
+  const handlePlainTextCopy = useCallback(() => {
     if (messageBlockContentRef.current) {
+      return onCopy?.(getPlainText(messageBlockContentRef.current));
+    }
+  }, [messageBlockContentRef.current, content]);
+
+  const handleTgTextCopy = useCallback(() => {
+    if (messageText.current) {
+      return onCopy?.(getTgText(messageText.current));
+    }
+  }, [messageText.current]);
+
+  const handleRichTextCopy = useCallback(() => {
+    if (messageBlockContentRef.current && content) {
       return onCopy?.(getRichText(messageBlockContentRef.current));
     }
-  }, [messageBlockContentRef.current]);
+  }, [messageBlockContentRef.current, content]);
 
   if (
     !(
-      color
-      && typeof CSS === 'object'
-      && typeof CSS.supports === 'function'
-      && CSS.supports('background', color ?? '#000')
+      color &&
+      typeof CSS === 'object' &&
+      typeof CSS.supports === 'function' &&
+      CSS.supports('background', color ?? '#000')
     )
   ) {
     color = 'default';
@@ -194,9 +234,10 @@ export const Message: React.FC<MessageProps> = ({
     case 'assistant':
       switch (color) {
         case 'default':
-          hexColor = theme.mode === 'dark'
-            ? theme.colors.grayScale.gray2
-            : theme.colors.grayScale.gray3;
+          hexColor =
+            theme.mode === 'dark'
+              ? theme.colors.grayScale.gray2
+              : theme.colors.grayScale.gray3;
           break;
         case 'green':
           hexColor = theme.colors.gpt3;
@@ -223,17 +264,29 @@ export const Message: React.FC<MessageProps> = ({
     }
   }, [editFieldRef, isEditing]);
 
+  useEffect(() => {
+    if (!content) return;
+    messageText.current = content;
+  }, [content]);
+
   return (
     <MessageProvider
       variant={variant}
       color={color}
       typing={typing}
-      onCopy={handleCopy}
+      onCopy={handlePlainTextCopy}
       onCodeCopy={onCodeCopy}
     >
-      <MessageStyledWrapper $variant={variant} ref={messageRef}>
+      <MessageStyledWrapper
+        $variant={variant}
+        ref={messageRef}
+      >
         <MessageStyledWithBottomPanel>
-          <MessageStyled $variant={variant} className={className}>
+          <MessageStyled
+            $variant={variant}
+            className={className}
+            data-date={timestamp}
+          >
             <MessageContent $variant={variant}>
               {(name || transaction) && (
                 <MessageTop>
@@ -251,6 +304,7 @@ export const Message: React.FC<MessageProps> = ({
               )}
               {typeof name !== 'string' && name}
               <MessageAvatar>{avatar}</MessageAvatar>
+
               <MessageBlockWrapper>
                 <MessageBlock
                   $variant={variant}
@@ -264,10 +318,13 @@ export const Message: React.FC<MessageProps> = ({
                       color: hexColor,
                       size: 60,
                       left: <ScrollbarShadow side="left" />,
-                      right: <ScrollbarShadow side="right" />,
+                      right: <ScrollbarShadow side="right" />
                     }}
                   >
-                    <MessageBlockContent ref={messageBlockContentRef}>
+                    <MessageBlockContent
+                      ref={messageBlockContentRef}
+                      $variant={variant}
+                    >
                       {!isEditing ? (
                         <>
                           {!skeleton && (
@@ -286,14 +343,14 @@ export const Message: React.FC<MessageProps> = ({
                                 width={260}
                                 opacity={[
                                   theme.mode === 'light' ? 0.1 : 0.15,
-                                  theme.mode === 'light' ? 0.225 : 0.45,
+                                  theme.mode === 'light' ? 0.225 : 0.45
                                 ]}
                                 colors={[
                                   variant === 'user'
                                     ? theme.colors.base.white
                                     : theme.mode === 'light'
                                       ? theme.default.colors.base.black
-                                      : theme.colors.grayScale.gray6,
+                                      : theme.colors.grayScale.gray6
                                 ]}
                               />
                             </MessageParagraph>
@@ -306,16 +363,23 @@ export const Message: React.FC<MessageProps> = ({
                             onInput={handleEditText}
                             ref={editFieldRef}
                           >
-                            {children}
+                            {content}
                           </MessageBlockTextArea>
                         </MessageParagraph>
                       )}
                     </MessageBlockContent>
                   </MessageBlockScrollbarWrapper>
-                  {timestamp && <MessageTimestamp time={timestamp} position={timestampPosition} />}
+                  {timestamp && (
+                    <MessageTimestamp
+                      time={timestamp}
+                      position={timestampPosition}
+                    />
+                  )}
                 </MessageBlock>
               </MessageBlockWrapper>
             </MessageContent>
+          </MessageStyled>
+          <MessageBlockBottomPanel $variant={variant}>
             {!skeleton && (
               <MessageActions
                 id={id}
@@ -327,9 +391,12 @@ export const Message: React.FC<MessageProps> = ({
                 disableDelete={disableDelete}
                 disableUpdate={disableUpdate}
                 disableCopy={disableCopy}
+                copyPlainText={copyPlainText}
+                copyTgText={copyTgText}
                 editText={editText}
                 resendText={resendText}
                 deleteText={deleteText}
+                onReportText={onReportText}
                 submitEditTooltipLabel={submitEditTooltipLabel}
                 discardEditTooltipLabel={discardEditTooltipLabel}
                 updateTooltipLabel={updateTooltipLabel}
@@ -337,21 +404,20 @@ export const Message: React.FC<MessageProps> = ({
                 editing={isEditing}
                 editedText={editedText}
                 messageRef={messageRef}
-                onEditing={onEditing}
-                onEditedText={onEditedText}
+                onEditing={setIsEditing}
+                onEditedText={setEditedText}
                 onEdit={onEdit}
                 onResend={onResend}
                 onDelete={onDelete}
                 onUpdate={onUpdate}
-                onCopy={handleCopy}
+                onReport={onReport}
+                onPlainTextCopy={handlePlainTextCopy}
+                onTgCopy={handleTgTextCopy}
+                onCopy={handleRichTextCopy}
               />
             )}
-          </MessageStyled>
-          <MessageBlockBottomPanel>
-            {transaction ? (
+            {transaction && (
               <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
-            ) : (
-              buttons ?? <div />
             )}
             <MessageVersions
               id={id}
@@ -360,11 +426,10 @@ export const Message: React.FC<MessageProps> = ({
               onNextVersion={onNextVersion}
               onPrevVersion={onPrevVersion}
               editing={isEditing}
+              variant={variant}
             />
           </MessageBlockBottomPanel>
-          {transaction && (
-            <MessageButtonsStyled>{buttons}</MessageButtonsStyled>
-          )}
+          <MessageButtonsStyled>{buttons}</MessageButtonsStyled>
         </MessageStyledWithBottomPanel>
       </MessageStyledWrapper>
     </MessageProvider>
@@ -382,3 +447,6 @@ export * from './badge-progress';
 export * from './button';
 export * from './file';
 export * from './voice';
+export * from './reasoning-block';
+export * from './search-results';
+export * from './video';

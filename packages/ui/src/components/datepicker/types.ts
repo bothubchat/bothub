@@ -7,7 +7,10 @@ export type SingleDatepickerProps = {
   value?: Date | null;
   onChange(value: Date | null): void;
   locale?: Locale;
-  children: (setRef: UseFloatingReturn['refs']['setReference'], setOpen: Dispatch<SetStateAction<boolean>>) => ReactNode;
+  children: (
+    setRef: UseFloatingReturn['refs']['setReference'],
+    setOpen: Dispatch<SetStateAction<boolean>>
+  ) => ReactNode;
   defaultOpen?: boolean;
   buttonSaveText?: string;
   buttonCloseText?: string;
@@ -22,4 +25,4 @@ export type RangeDatepickerProps = {
 
 export type DatepickerProps = SingleDatepickerProps | RangeDatepickerProps;
 
-export type Locale = typeof locales[number];
+export type Locale = (typeof locales)[number];

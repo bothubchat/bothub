@@ -1,7 +1,12 @@
 import { Icon, icon } from '@/ui/components/icon';
 
 export const SuccessIcon = icon(({ ...props }) => (
-  <Icon size={24} viewBox="0 0 24 24" fill="none" {...props}>
+  <Icon
+    size={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    {...props}
+  >
     <g clipPath="url(#clip0_2574_45671)">
       <path
         d="M24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12Z"
@@ -16,7 +21,11 @@ export const SuccessIcon = icon(({ ...props }) => (
     </g>
     <defs>
       <clipPath id="clip0_2574_45671">
-        <rect width="24" height="24" fill="white" />
+        <rect
+          width="24"
+          height="24"
+          fill="white"
+        />
       </clipPath>
     </defs>
   </Icon>

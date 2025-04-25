@@ -6,9 +6,10 @@ import { TextField } from '@/ui/components';
 
 export type DatepickerFieldMeta = Meta<typeof Datepicker>;
 
-const dateText = (str: string | number) => new Intl.DateTimeFormat('en-US', {
-  dateStyle: 'full',
-}).format(new Date(str));
+const dateText = (str: string | number) =>
+  new Intl.DateTimeFormat('en-US', {
+    dateStyle: 'full'
+  }).format(new Date(str));
 
 export const RangeDatepicker = () => {
   const [value, setValue] = useState<[Date, Date | null] | null>(null);
@@ -27,7 +28,10 @@ export const RangeDatepicker = () => {
       locale="ru-RU"
     >
       {(setRef, setOpen) => (
-        <div ref={setRef} style={{ display: 'inline-block' }}>
+        <div
+          ref={setRef}
+          style={{ display: 'inline-block' }}
+        >
           <TextField
             readonly
             type="text"
@@ -52,7 +56,10 @@ export const SingleDatepicker = () => {
       locale="en-US"
     >
       {(setRef, setOpen) => (
-        <div ref={setRef} style={{ display: 'inline-block' }}>
+        <div
+          ref={setRef}
+          style={{ display: 'inline-block' }}
+        >
           <TextField
             readonly
             type="text"

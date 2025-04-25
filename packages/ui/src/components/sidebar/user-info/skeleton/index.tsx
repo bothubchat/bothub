@@ -4,7 +4,7 @@ import {
   SidebarUserInfoMain,
   SidebarUserInfoLeft,
   SidebarUserInfoText,
-  SidebarUserInfoUpdateTariffContainer,
+  SidebarUserInfoUpdateTariffContainer
 } from '../styled';
 import { SidebarUserInfoAvatar } from '../avatar';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -34,7 +34,11 @@ export const SidebarUserInfoSkeleton = () => {
           </SidebarUserInfoLeft>
         </SidebarUserInfoMain>
         <SidebarUserInfoUpdateTariffContainer $open={isOpen}>
-          <Button skeleton fullWidth size="small" />
+          <Button
+            skeleton
+            fullWidth
+            size="small"
+          />
         </SidebarUserInfoUpdateTariffContainer>
       </SidebarUserInfoContent>
     </SidebarUserInfoStyled>

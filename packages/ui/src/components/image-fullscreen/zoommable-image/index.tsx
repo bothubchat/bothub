@@ -2,7 +2,7 @@ import React, { useCallback, useState, useRef } from 'react';
 import {
   ZoommableImageContainer,
   ZoommableImageWrapper,
-  ZoommableImageStyled,
+  ZoommableImageStyled
 } from './styled';
 
 export interface ZoommableImageProps {
@@ -16,7 +16,7 @@ export const ZoommableImage = ({
   imageProps,
   className,
   onZoomStart,
-  onZoomEnd,
+  onZoomEnd
 }: ZoommableImageProps) => {
   const [zoom, setZoom] = useState(1);
   const isZooming = zoom !== 1;
@@ -36,21 +36,25 @@ export const ZoommableImage = ({
 
       return {
         x: Math.max(-boundX, Math.min(boundX, x)),
-        y: Math.max(-boundY, Math.min(boundY, y)),
+        y: Math.max(-boundY, Math.min(boundY, y))
       };
     },
     [zoom]
   );
 
-  const updateTransform = useCallback((zoom: number) => {
-    if (wrapperRef.current) {
-      const { x, y } = getBoundedPosition(
-        positionRef.current.x,
-        positionRef.current.y
-      );
-      wrapperRef.current.style.transform = zoom !== 1 ? `translate(${x}px, ${y}px) scale(${zoom})` : '';
-    }
-  }, [getBoundedPosition]);
+  const updateTransform = useCallback(
+    (zoom: number) => {
+      if (wrapperRef.current) {
+        const { x, y } = getBoundedPosition(
+          positionRef.current.x,
+          positionRef.current.y
+        );
+        wrapperRef.current.style.transform =
+          zoom !== 1 ? `translate(${x}px, ${y}px) scale(${zoom})` : '';
+      }
+    },
+    [getBoundedPosition]
+  );
 
   const onDoubleClick = useCallback(() => {
     if (wrapperRef.current) {
@@ -92,7 +96,7 @@ export const ZoommableImage = ({
 
       const newPosition = {
         x: positionRef.current.x + deltaX,
-        y: positionRef.current.y + deltaY,
+        y: positionRef.current.y + deltaY
       };
 
       positionRef.current = getBoundedPosition(newPosition.x, newPosition.y);
@@ -121,10 +125,13 @@ export const ZoommableImage = ({
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
         style={{
-          cursor: isDragging ? 'grabbing' : 'grab',
+          cursor: isDragging ? 'grabbing' : 'grab'
         }}
       >
-        <ZoommableImageStyled {...imageProps} draggable="false" />
+        <ZoommableImageStyled
+          {...imageProps}
+          draggable="false"
+        />
       </ZoommableImageWrapper>
     </ZoommableImageContainer>
   );

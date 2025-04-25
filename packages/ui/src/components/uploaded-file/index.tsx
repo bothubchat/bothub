@@ -1,6 +1,4 @@
-import {
-  CloseIcon, PauseIcon, PlayIcon, Restore2Icon 
-} from '@/ui/icons';
+import { CloseIcon, PauseIcon, PlayIcon, Restore2Icon } from '@/ui/icons';
 import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { FileSize } from '@/ui/components/file-size';
@@ -16,7 +14,7 @@ import {
   UploadedFileIcon,
   UploadedFileSize,
   UploadedFileStatusChip,
-  UploadedFileStatusChipText,
+  UploadedFileStatusChipText
 } from './styled';
 import { UploadedFileStatus } from './types';
 
@@ -45,7 +43,7 @@ export const UploadedFile = ({
   status = 'done',
   doneLabel,
   errorLabel,
-  fullWidth = false,
+  fullWidth = false
 }: UploadedFileProps) => (
   <UploadedFileStyled $fullWidth={fullWidth}>
     <UploadedFileHeader>
@@ -136,10 +134,7 @@ export const UploadedFile = ({
         max={100}
         $error={status === 'error'}
       />
-      <UploadedFileProgressValue>
-        {progress}
-        %
-      </UploadedFileProgressValue>
+      <UploadedFileProgressValue>{progress}%</UploadedFileProgressValue>
     </UploadedFileFooter>
   </UploadedFileStyled>
 );

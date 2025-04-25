@@ -14,7 +14,8 @@ export const Basic: BookmarkStory = {
 
 export const LongName: BookmarkStory = {
   args: {
-    children: 'Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark'
+    children:
+      'Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark Bookmark'
   }
 };
 
@@ -25,7 +26,7 @@ export const Skeleton: BookmarkStory = {
 };
 
 export default {
-  title: 'Components/Bookmark/Item',
+  title: 'UI Components/Bookmark/Item',
   component: Bookmark,
   decorators: [StoryDecorator()]
 } as BookmarkMeta;

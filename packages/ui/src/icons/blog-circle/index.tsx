@@ -1,7 +1,12 @@
 import { Icon, icon, IconConsumer } from '@/ui/components/icon';
 
 export const BlogCircleIcon = icon(({ ...props }) => (
-  <Icon size={24} viewBox="0 0 24 24" fill="none" {...props}>
+  <Icon
+    size={24}
+    viewBox="0 0 24 24"
+    fill="none"
+    {...props}
+  >
     <IconConsumer>
       {({ fill = '#616D8D' } = { fill: '#616D8D' }) => (
         <path

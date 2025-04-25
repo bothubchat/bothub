@@ -1,9 +1,14 @@
 import React from 'react';
-import { MessageInlineCodeStyled, MessageInlineCodeStyledProps } from './styled';
+import {
+  MessageInlineCodeStyled,
+  MessageInlineCodeStyledProps
+} from './styled';
 import { useMessage } from '../../../context';
 
 export type MessageInlineCodeProps = Omit<
-React.ComponentProps<typeof MessageInlineCodeStyled>, keyof MessageInlineCodeStyledProps>;
+  React.ComponentProps<typeof MessageInlineCodeStyled>,
+  keyof MessageInlineCodeStyledProps
+>;
 
 export const MessageInlineCode: React.FC<MessageInlineCodeProps> = ({
   ...props
@@ -11,7 +16,7 @@ export const MessageInlineCode: React.FC<MessageInlineCodeProps> = ({
   const { variant, color } = useMessage();
 
   return (
-    <MessageInlineCodeStyled 
+    <MessageInlineCodeStyled
       $messageVariant={variant}
       $messageColor={color}
       {...props}

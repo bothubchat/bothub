@@ -12,14 +12,10 @@ export const AdaptiveContext = React.createContext<AdaptiveContextValue>({
   isMobile: false
 });
 
-export const AdaptiveProvider: React.FC<AdaptiveContextValue & React.PropsWithChildren
-> = ({
-  children,
-  ...value
-}) => (
-  <AdaptiveContext.Provider value={value}>
-    {children}
-  </AdaptiveContext.Provider>
+export const AdaptiveProvider: React.FC<
+  AdaptiveContextValue & React.PropsWithChildren
+> = ({ children, ...value }) => (
+  <AdaptiveContext.Provider value={value}>{children}</AdaptiveContext.Provider>
 );
 
 export const useAdaptive = () => useContext(AdaptiveContext);

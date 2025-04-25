@@ -3,7 +3,9 @@ import { ScrollbarStyle } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 import { MessageMultilineCodeContentProps } from './types';
 
-export const MessageMultilineCodeContentContainer = styled.div``;
+export const MessageMultilineCodeContentContainer = styled.div`
+  background-color: #002635;
+`;
 
 export const contentStyles = css<MessageMultilineCodeContentProps>`
   ${ScrollbarStyle}
@@ -14,33 +16,38 @@ export const contentStyles = css<MessageMultilineCodeContentProps>`
   &::selection,
   *::selection {
     ${({ $messageColor }) => {
-    switch ($messageColor) {
-      case 'default':
-        return css`
-            background: ${({ theme }) => (theme.mode === 'light'
-    ? theme.default.colors.accent.primary
-    : theme.colors.base.white)} !important;
-            color: ${({ theme }) => (theme.mode === 'light'
-    ? theme.default.colors.base.white
-    : theme.colors.accent.primary)} !important;
+      switch ($messageColor) {
+        case 'default':
+          return css`
+            background: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.accent.primary
+                : theme.colors.base.white} !important;
+            color: ${({ theme }) =>
+              theme.mode === 'light'
+                ? theme.default.colors.base.white
+                : theme.colors.accent.primary} !important;
           `;
-      case 'green':
-        return css`
-            background: ${({ theme }) => theme.default.colors.base.white} !important;
+        case 'green':
+          return css`
+            background: ${({ theme }) =>
+              theme.default.colors.base.white} !important;
             color: ${({ theme }) => theme.colors.gpt3} !important;
           `;
-      case 'purple':
-        return css`
-            background: ${({ theme }) => theme.default.colors.base.white} !important;
+        case 'purple':
+          return css`
+            background: ${({ theme }) =>
+              theme.default.colors.base.white} !important;
             color: ${({ theme }) => theme.colors.gpt4} !important;
           `;
-      default:
-        return css`
-            background: ${({ theme }) => theme.default.colors.base.white} !important;
+        default:
+          return css`
+            background: ${({ theme }) =>
+              theme.default.colors.base.white} !important;
             color: ${$messageColor} !important;
           `;
-    }
-  }}
+      }
+    }}
   }
   ${adaptive({
     variant: 'dashboard',
@@ -60,14 +67,15 @@ export const contentStyles = css<MessageMultilineCodeContentProps>`
       &::-webkit-scrollbar {
         display: none;
       }
-    `,
+    `
   })}
+  padding: 1em;
 `;
 
 export const MessageMultilineCodeContentStyled = styled.div<MessageMultilineCodeContentProps>`
   ${contentStyles}
-  padding: 1em;
   background-color: #002635;
+  color: #fff;
 `;
 
 export const MessageMultilineCodeLastLine = styled.div``;

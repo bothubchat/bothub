@@ -21,11 +21,11 @@ export const Label = () => {
       showFiles={false}
       files={files}
       onChange={(files) => setFiles(files)}
-      label={(
+      label={
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'space-between'
           }}
         >
           <Typography variant="body-m-regular">
@@ -38,8 +38,8 @@ export const Label = () => {
             Макс. размер: 20 MB
           </Typography>
         </div>
-      )}
-      placeholder={(
+      }
+      placeholder={
         <div
           style={{
             maxWidth: '340px',
@@ -47,14 +47,20 @@ export const Label = () => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            gap: '8px',
+            gap: '8px'
           }}
         >
           <div>
-            <Typography variant="body-l-semibold" component="span">
+            <Typography
+              variant="body-l-semibold"
+              component="span"
+            >
               Excel таблица .xlsx
             </Typography>
-            <Typography variant="body-m-regular" component="span">
+            <Typography
+              variant="body-m-regular"
+              component="span"
+            >
               {' '}
               — промпты находятся в определённом столбце заданного листа.
               Стандартное состояние Лист 1/Столбец А.
@@ -69,7 +75,7 @@ export const Label = () => {
             <u>Шаблон</u>
           </Typography>
         </div>
-      )}
+      }
     />
   );
 };
@@ -77,5 +83,5 @@ export const Label = () => {
 export default {
   title: 'UI Components/Fields/Dropzone',
   component: DropzoneField,
-  decorators: [StoryDecorator({ margin: '50px 0px' })],
+  decorators: [StoryDecorator({ margin: '50px 0px' })]
 } as DropzoneFieldMeta;

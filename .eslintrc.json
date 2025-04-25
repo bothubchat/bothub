@@ -7,51 +7,45 @@
     "airbnb",
     "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
-    "plugin:storybook/recommended"
+    "plugin:storybook/recommended",
+    "prettier"
   ],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": [
-      "./tsconfig.json"
-    ]
+    "project": ["./tsconfig.json"]
   },
   "ignorePatterns": [
     ".eslintrc.json",
     "postcss.config.js",
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "**/*.svg",
+    "**/*.webp",
+    "**/*.png"
   ],
   "plugins": [
     "react",
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "prettier",
+    "testing-library",
+    "@vitest"
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "import/prefer-default-export": "off",
-    "react/function-component-definition": [
-      0
-    ],
-    "jsx-a11y/no-noninteractive-element-interactions": [
-      0
-    ],
-    "jsx-a11y/click-events-have-key-events": [
-      0
-    ],
+    "react/function-component-definition": [0],
+    "jsx-a11y/no-noninteractive-element-interactions": [0],
+    "jsx-a11y/click-events-have-key-events": [0],
     "no-unused-vars": "error",
     "react/jsx-props-no-spreading": "off",
     "@typescript-eslint/no-throw-literal": "off",
-    "@typescript-eslint/indent": [
-      "error",
-      2
-    ],
+    "@typescript-eslint/indent": "off",
     "no-trailing-spaces": "off",
     "consistent-return": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "no-param-reassign": "off",
     "@typescript-eslint/comma-dangle": "off",
-    "jsx-a11y/no-static-element-interactions": [
-      0
-    ],
+    "jsx-a11y/no-static-element-interactions": [0],
     "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/no-shadow": "off",
     "class-methods-use-this": "off",
@@ -76,6 +70,20 @@
     "no-nested-ternary": "off",
     "global-require": "off",
     "no-plusplus": "off",
-    "no-mixed-operators": "off"
+    "no-mixed-operators": "off",
+    "implicit-arrow-linebreak": "off",
+    "prettier/prettier": "error",
+    "@typescript-eslint/no-unused-vars": [
+      2,
+      {
+        "vars": "all",
+        "argsIgnorePattern": "^_$"
+      }
+    ],
+    "testing-library/await-async-queries": "error",
+    "testing-library/no-await-sync-queries": "error",
+    "testing-library/no-debugging-utils": "warn",
+    "testing-library/no-dom-import": "off",
+    "no-continue": "off"
   }
 }

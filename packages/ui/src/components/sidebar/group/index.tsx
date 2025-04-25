@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import {
   SidebarChatList,
@@ -12,6 +12,8 @@ import {
   SidebarGroupsStyled,
   SidebarGroupSkeletonIcon,
   SidebarGroupTooltip,
+  SidebarGroupNameWithOutline,
+  SidebarGroupNameWithBg
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { useSidebar } from '../context';
@@ -27,6 +29,7 @@ export interface SidebarGroupDefaultProps {
   open?: boolean;
   color?: string;
   isDefault?: boolean;
+  active?: boolean;
   onHandleOpen?: () => void;
 }
 
@@ -38,21 +41,37 @@ export interface SidebarGroupSkeletonProps {
   onHandleOpen?: () => void;
 }
 
-export type SidebarGroupProps
-  = (SidebarGroupDefaultProps | SidebarGroupSkeletonProps) & React.PropsWithChildren;
+export type SidebarGroupProps = (
+  | SidebarGroupDefaultProps
+  | SidebarGroupSkeletonProps
+) &
+  React.PropsWithChildren;
 
 export const SidebarGroup: React.FC<SidebarGroupProps> = ({
-  children, ...props
+  children,
+  ...props
 }) => {
-  const [open, setOpen] = props.open !== undefined
-    ? [props.open, props.onHandleOpen] : useState<boolean>(false);
+  const [open, setOpen] =
+    props.open !== undefined
+      ? [props.open, props.onHandleOpen]
+      : useState<boolean>(false);
   const { setNodeRef } = useDroppable({
-    id: !props.skeleton ? props.id : 'draggable-skeleton',
+    id: !props.skeleton ? props.id : 'draggable-skeleton'
   });
-  const sidebarOpen = useSidebar().isOpen;
+  const { isOpen: sidebarOpen } = useSidebar();
+  const ref = useRef<HTMLDivElement>(null);
   const onHandleOpen = useCallback(() => {
     setOpen?.(!open);
   }, [open, setOpen]);
+
+  const [disableTooltip, setDisableTooltip] = useState(true);
+
+  useEffect(() => {
+    if (ref.current) {
+      const { scrollWidth, offsetWidth } = ref.current!;
+      setDisableTooltip(scrollWidth <= offsetWidth);
+    }
+  }, [!props.skeleton && props.name]);
 
   const over = !props.skeleton && props.edit && props.over;
   return (
@@ -61,65 +80,83 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
       ref={!props.skeleton && props.edit ? setNodeRef : undefined}
     >
       {!props.isDefault && (
-        <SidebarGroupName
-          open={open}
-          $skeleton={!!props.skeleton}
-          onClick={!props.skeleton ? onHandleOpen : undefined}
+        <SidebarGroupNameWithOutline
+          $active={!props.skeleton && props.active}
+          $open={open}
         >
-          {!props.skeleton && props.edit && <SidebarGroupDragHandle />}
-          {!props.skeleton && (
-            <>
-              <SidebarGroupTooltip
-                label={props.name}
-                placement="center-right"
-                placementX={15}
-                disabled={props.name.length <= 0 || sidebarOpen}
-              >
-                <TooltipConsumer>
-                  {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                    <SidebarGroupDragFolder
-                      onMouseEnter={handleTooltipMouseEnter}
-                      onMouseLeave={handleTooltipMouseLeave}
-                      fill={props.color}
-                    />
-                  )}
-                </TooltipConsumer>
-              </SidebarGroupTooltip>
-            </>
-          )}
-          {props.skeleton && <SidebarGroupSkeletonIcon width={24} height={24} />}
-          {!props.skeleton && (
-            <Tooltip label={props.name} placement="top-left" disabled={props.name.length <= 24}>
-              <TooltipConsumer>
-                {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                  <SidebarGroupNameBox
-                    onMouseEnter={handleTooltipMouseEnter}
-                    onMouseLeave={handleTooltipMouseLeave}
+          <SidebarGroupNameWithBg>
+            <SidebarGroupName
+              $open={open}
+              $skeleton={!!props.skeleton}
+              $edit={!props.skeleton && props.edit}
+              onClick={!props.skeleton ? onHandleOpen : undefined}
+            >
+              {!props.skeleton && props.edit && <SidebarGroupDragHandle />}
+              {!props.skeleton && (
+                <>
+                  <SidebarGroupTooltip
+                    label={props.name}
+                    placement="center-right"
+                    placementX={15}
+                    disabled={props.name.length <= 0 || sidebarOpen}
                   >
-                    {props.name.slice(0, 22)}
-                    {props.name.length > 22 && '...'}
-                  </SidebarGroupNameBox>
-                )}
-              </TooltipConsumer>
-            </Tooltip>
-          )}
-          {!props.skeleton && <SidebarGroupArrowDown />}
-          {!props.skeleton && props.edit && props.checkbox}
-          {!props.skeleton && !props.edit && props.actions}
-          {props.skeleton && <SidebarGroupSkeleton />}
-        </SidebarGroupName>
+                    <TooltipConsumer>
+                      {({
+                        handleTooltipMouseEnter,
+                        handleTooltipMouseLeave
+                      }) => (
+                        <SidebarGroupDragFolder
+                          onMouseEnter={handleTooltipMouseEnter}
+                          onMouseLeave={handleTooltipMouseLeave}
+                          fill={props.color}
+                        />
+                      )}
+                    </TooltipConsumer>
+                  </SidebarGroupTooltip>
+                </>
+              )}
+              {props.skeleton && (
+                <SidebarGroupSkeletonIcon
+                  width={24}
+                  height={24}
+                />
+              )}
+              {!props.skeleton && (
+                <Tooltip
+                  label={props.name}
+                  placement="top-left"
+                  disabled={disableTooltip}
+                >
+                  <TooltipConsumer>
+                    {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                      <SidebarGroupNameBox
+                        ref={ref}
+                        onMouseEnter={handleTooltipMouseEnter}
+                        onMouseLeave={handleTooltipMouseLeave}
+                      >
+                        {props.name}
+                      </SidebarGroupNameBox>
+                    )}
+                  </TooltipConsumer>
+                </Tooltip>
+              )}
+              {!props.skeleton && <SidebarGroupArrowDown />}
+              {!props.skeleton && props.edit && props.checkbox}
+              {!props.skeleton && !props.edit && props.actions}
+              {props.skeleton && <SidebarGroupSkeleton />}
+            </SidebarGroupName>
+          </SidebarGroupNameWithBg>
+        </SidebarGroupNameWithOutline>
       )}
-      <SidebarChatList open={props.isDefault || open}>
+      <SidebarChatList $open={props.isDefault || open}>
         {children}
       </SidebarChatList>
     </SidebarGroupStyled>
   );
 };
 
-export const SidebarGroups: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <SidebarGroupsStyled>
-    {children}
-  </SidebarGroupsStyled>
-);
+export const SidebarGroups: React.FC<{ children: React.ReactNode }> = ({
+  children
+}) => <SidebarGroupsStyled>{children}</SidebarGroupsStyled>;
 
 export * from './styled';

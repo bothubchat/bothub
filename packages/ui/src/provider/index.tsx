@@ -14,14 +14,8 @@ export const BothubUIProvider: React.FC<BothubUIProviderProps> = ({
   globalStyle,
   children
 }) => (
-  <ThemeProvider
-    {...theme}
-  >
+  <ThemeProvider {...theme}>
     {children}
-    {!disableGlobalStyle && (
-      <BothubGlobalStyle
-        {...globalStyle}
-      />
-    )}
+    {!disableGlobalStyle && <BothubGlobalStyle {...globalStyle} />}
   </ThemeProvider>
 );

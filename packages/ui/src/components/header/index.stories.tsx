@@ -7,9 +7,6 @@ import {
   HeaderUserInfoList,
   HeaderLogoLink,
   HeaderNav,
-  HeaderNavDropdown,
-  HeaderNavDropdownItem,
-  HeaderNavDropdownList,
   HeaderNavLink,
   HeaderUser,
   HeaderUserButton,
@@ -17,11 +14,13 @@ import {
 } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Logo } from '@/ui/components/logo';
-import { HeaderLangDropdown, HeaderLangDropdownItem, HeaderLangDropdownList } from './lang-dropdown';
+import {
+  HeaderLangDropdown,
+  HeaderLangDropdownItem,
+  HeaderLangDropdownList
+} from './lang-dropdown';
 import {
   BookmarksBigIcon,
-  BothubAggIcon,
-  BusinessColoredIcon,
   ChatsIcon,
   CoderIcon,
   DashboardIcon,
@@ -30,9 +29,12 @@ import {
   ReferalIcon,
   SettingsIcon,
   TariffIcon,
-  TgColoredIcon,
   UserProfileIcon
 } from '@/ui/icons';
+import { Button } from '../button';
+import { MenuDropdown } from '../menu-dropdown';
+import { MultilevelMenu } from './multi-level-menu';
+import { menuItems } from './multi-level-menu/config';
 
 export type HeaderMeta = Meta<typeof Header>;
 
@@ -45,35 +47,7 @@ export const Basic: HeaderStory = {
         <Logo />
       </HeaderLogoLink>
     ),
-    nav: (
-      <HeaderNav>
-        <HeaderNavLink href="#">Главная</HeaderNavLink>
-        <HeaderNavDropdown label="Продукты">
-          <HeaderNavDropdownList>
-            <HeaderNavDropdownItem
-              icon={<BothubAggIcon />}
-              title="Агрегатор нейросетей BotHub"
-              text="ChatGPT на базе 3.5 и 4.0 версии OpenAI"
-            />
-            <HeaderNavDropdownItem
-              icon={<TgColoredIcon />}
-              title="Telegram бот"
-              text="Удобный бот в Telegram который всегда под рукой"
-            />
-            <HeaderNavDropdownItem
-              icon={<BusinessColoredIcon />}
-              title="Бизнес бот"
-              text="ChatGPT для эффективного решения бизнес задач"
-            />
-          </HeaderNavDropdownList>
-        </HeaderNavDropdown>
-        <HeaderNavLink href="#">Тарифы</HeaderNavLink>
-        <HeaderNavLink href="#">Контакты</HeaderNavLink>
-        <HeaderNavLink href="#">Наши возможности</HeaderNavLink>
-        <HeaderNavLink href="#">О Нас</HeaderNavLink>
-        <HeaderNavLink href="#">Документация</HeaderNavLink>
-      </HeaderNav>
-    ),
+    nav: <MultilevelMenu config={menuItems} />,
     lang: (
       <HeaderLangDropdown lang="ru">
         <HeaderLangDropdownList>
@@ -98,7 +72,9 @@ export const Authorized: HeaderStory = {
     user: (
       <HeaderUser>
         <HeaderUserInfo
-          avatar={<HeaderUserInfoAvatar src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album" />}
+          avatar={
+            <HeaderUserInfoAvatar src="https://sun9-10.userapi.com/impg/Cj0IN0wgoLVrUC7TLK6OOf7UK122Hs4PrZwjjQ/VcFb3Xn1j1A.jpg?size=640x640&quality=95&sign=8311a1a31d98004967ebaba8d62b2710&type=album" />
+          }
           name="Артём"
           tokens="2 023 CAPS"
         >
@@ -112,9 +88,7 @@ export const Authorized: HeaderStory = {
             <HeaderUserInfoItem icon={<SettingsIcon />}>
               Настройки
             </HeaderUserInfoItem>
-            <HeaderUserInfoItem icon={<LogoutIcon />}>
-              Выйти
-            </HeaderUserInfoItem>
+            <HeaderUserInfoItem icon={<LogoutIcon />}>Выйти</HeaderUserInfoItem>
           </HeaderUserInfoList>
         </HeaderUserInfo>
       </HeaderUser>
@@ -128,17 +102,75 @@ export const Dashboard: HeaderStory = {
     variant: 'dashboard',
     nav: (
       <HeaderNav>
-        <HeaderNavLink icon={<ChatsIcon />} href="#">Чаты</HeaderNavLink>
-        <HeaderNavLink icon={<BookmarksBigIcon />} href="#">Закладки</HeaderNavLink>
-        <HeaderNavLink icon={<PresetsBigIcon />} href="#">Пресеты</HeaderNavLink>
-        <HeaderNavLink icon={<ReferalIcon />} href="#">Партнерская программа</HeaderNavLink>
-        <HeaderNavLink icon={<TariffIcon />} href="#">Пакеты</HeaderNavLink>
-        <HeaderNavLink icon={<CoderIcon />} href="#">Для разработчиков</HeaderNavLink>
+        <HeaderNavLink
+          icon={<ChatsIcon />}
+          href="#"
+        >
+          Чаты
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<BookmarksBigIcon />}
+          href="#"
+        >
+          Закладки
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<PresetsBigIcon />}
+          href="#"
+        >
+          Пресеты
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<ReferalIcon />}
+          href="#"
+        >
+          Партнерская программа
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<TariffIcon />}
+          href="#"
+        >
+          Пакеты
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<CoderIcon />}
+          href="#"
+        >
+          Для разработчиков
+        </HeaderNavLink>
       </HeaderNav>
     ),
-    themeSwitcher: (
-      <HeaderThemeSwitcher />
-    )
+    themeSwitcher: <HeaderThemeSwitcher />
+  }
+};
+
+export const DashboardTablet: HeaderStory = {
+  args: {
+    ...Authorized.args,
+    variant: 'dashboard',
+    nav: (
+      <HeaderNav>
+        <MenuDropdown>
+          <div
+            style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
+          >
+            <Button variant="text">Item 1</Button>
+            <Button variant="text">Item 2</Button>
+            <Button variant="text">Item 3</Button>
+            <Button variant="text">Item 4</Button>
+            <Button variant="text">Item 5</Button>
+            <Button variant="text">Item 6</Button>
+          </div>
+        </MenuDropdown>
+        <Button variant="secondary">
+          <ChatsIcon />
+        </Button>
+        <Button variant="secondary">
+          <SettingsIcon />
+        </Button>
+      </HeaderNav>
+    ),
+    themeSwitcher: <HeaderThemeSwitcher />
   }
 };
 
@@ -148,14 +180,44 @@ export const AdminDashboard: HeaderStory = {
     variant: 'dashboard',
     nav: (
       <HeaderNav>
-        <HeaderNavLink icon={<ChatsIcon />} href="#">Чаты</HeaderNavLink>
-        <HeaderNavLink icon={<BookmarksBigIcon />} href="#">Закладки</HeaderNavLink>
-        <HeaderNavLink icon={<PresetsBigIcon />} href="#">Пресеты</HeaderNavLink>
-        <HeaderNavLink icon={<ReferalIcon />} href="#">Партнерская программа</HeaderNavLink>
-        <HeaderNavLink icon={<TariffIcon />} href="#">Пакеты</HeaderNavLink>
-        <HeaderNavLink icon={<CoderIcon />} href="#">Для разработчиков</HeaderNavLink>
+        <HeaderNavLink
+          icon={<ChatsIcon />}
+          href="#"
+        >
+          Чаты
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<BookmarksBigIcon />}
+          href="#"
+        >
+          Закладки
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<PresetsBigIcon />}
+          href="#"
+        >
+          Пресеты
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<ReferalIcon />}
+          href="#"
+        >
+          Партнерская программа
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<TariffIcon />}
+          href="#"
+        >
+          Пакеты
+        </HeaderNavLink>
+        <HeaderNavLink
+          icon={<CoderIcon />}
+          href="#"
+        >
+          Для разработчиков
+        </HeaderNavLink>
       </HeaderNav>
-    ),
+    )
   }
 };
 

@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.19.0-feat-14236-prompt-queue-fc58e0a3-88e8-4da9-9b96-a91b181d5e47",
+  "version": "2.32.7-develop-6e136f53-fa45-4f15-9909-c5f330c6173c",
   "description": "Bothub UI Components",
   "keywords": [
     "bothub",
@@ -42,6 +42,7 @@
   },
   "sideEffects": false,
   "peerDependencies": {
+    "@uidotdev/usehooks": "^2.4.1",
     "react": ">=18.2.0",
     "react-dom": ">=18.2.0",
     "react-helmet": ">=6.1.0",
