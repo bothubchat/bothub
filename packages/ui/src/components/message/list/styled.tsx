@@ -38,11 +38,12 @@ export const MessagesContent = styled.div`
   justify-content: center;
 `;
 
-export const MessagesContainer = styled.div`
+export const MessagesContainer = styled.div<{ $fullWidth: boolean }>`
   display: flex;
   flex-direction: column;
   width: inherit;
-  max-width: ${({ theme }) => theme.dashboard.chat.containerWidth};
+  max-width: ${({ theme, $fullWidth }) =>
+    $fullWidth ? 'none' : theme.dashboard.chat.containerWidth};
 `;
 
 export const MessagesStart = styled.div`

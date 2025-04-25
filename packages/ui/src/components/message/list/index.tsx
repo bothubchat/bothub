@@ -26,12 +26,16 @@ export interface MessagesRef {
 
 export interface MessagesProps extends React.PropsWithChildren {
   className?: string;
+  fullWidth: boolean;
   startRef?: (node?: Element | null | undefined) => void;
   scrollShadows?: ScrollbarShadowsProps;
 }
 
 export const Messages = forwardRef<MessagesRef, MessagesProps>(
-  ({ className, startRef, scrollShadows, children }, ref) => {
+  (
+    { fullWidth = false, className, startRef, scrollShadows, children },
+    ref
+  ) => {
     const scrollbarRef = useRef<ScrollbarRef>(null);
 
     const setScroll = useCallback<SetScrollFunction>(
@@ -59,7 +63,7 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(
             defaultStickyBottom
           >
             <MessagesContent>
-              <MessagesContainer>
+              <MessagesContainer $fullWidth={fullWidth}>
                 <MessagesStart ref={startRef} />
                 <MessagesScrollProvider scrollbarRef={scrollbarRef}>
                   <MessageList>{children}</MessageList>
