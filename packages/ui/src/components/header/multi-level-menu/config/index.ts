@@ -120,19 +120,17 @@ export const menuItems = [
         children: [
           {
             title: 'Elite — 30 000 000 Caps',
-            path: '/#plans',
             icon: MultiLevelMenuStarIconElite,
             description: 'Хватит, чтобы сгенерировать 12 000 страниц текста'
           },
           {
             title: 'Deluxe — 7 500 000 Caps',
-            path: '/#plans',
             icon: MultiLevelMenuStarIconDeluxe,
             description: 'Хватит, чтобы сгенерировать 3 000 страниц текста'
           },
           {
             title: 'Premium — 3 000 000 Caps',
-            path: '/#plans',
+            path: '',
             icon: MultiLevelMenuStarIconPremium,
             description: 'Хватит, чтобы сгенерировать 1 200 страниц текста'
           },
