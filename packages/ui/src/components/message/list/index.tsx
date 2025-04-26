@@ -26,7 +26,7 @@ export interface MessagesRef {
 
 export interface MessagesProps extends React.PropsWithChildren {
   className?: string;
-  fullWidth: boolean;
+  fullWidth?: boolean;
   startRef?: (node?: Element | null | undefined) => void;
   scrollShadows?: ScrollbarShadowsProps;
 }
