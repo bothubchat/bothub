@@ -13,8 +13,8 @@ export interface HeaderMenuProps extends React.PropsWithChildren {
 }
 
 export const HeaderMenu: React.FC<HeaderMenuProps> = ({
-  children,
-  isPreset
+  isPreset,
+  children
 }) => {
   const { variant, isMenuOpen } = useHeader();
 

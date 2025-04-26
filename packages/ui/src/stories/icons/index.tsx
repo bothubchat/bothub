@@ -42,7 +42,6 @@ import {
   MediumCircleIcon,
   MenuDotIcon,
   MenuIcon,
-  MinimizeIcon,
   MjIcon,
   Plus1Icon,
   Plus2Icon,
@@ -61,7 +60,6 @@ import {
   ThumbDownIcon,
   ThumbUpIcon,
   TrashIcon,
-  UnminimizeIcon,
   UpdateIcon,
   UserProfileIcon,
   WarningBigIcon,
@@ -235,7 +233,6 @@ import {
   SettingAnalisysIcon,
   TranslationIcon,
   StarsIcon,
-  AcademyIcon,
   ArticlesIcon,
   BlogPostIcon,
   BookIcon,
@@ -245,12 +242,21 @@ import {
   GuideIcon,
   MarketingIcon,
   PostIcon,
-  ReportIcon,
   ReviewIcon,
   ScientificArticleIcon,
   SellingTextIcon,
   TextBookIcon,
-  WindIcon
+  WindIcon,
+  SidebarToggleRight,
+  SidebarToggleLeft,
+  AcademyIcon,
+  DeepSeekIcon,
+  GridHorizontalIcon,
+  GridVerticalIcon,
+  GrokIcon,
+  QwenIcon,
+  ReportIcon,
+  StarGradientIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -297,7 +303,8 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="CheckedIcon">{CheckedIcon}</IconItem>
         <IconItem name="HotnessIcon">{HotnessIcon}</IconItem>
         <IconItem name="FreeIcon">{FreeIcon}</IconItem>
-        <IconItem name="MinimizeIcon">{MinimizeIcon}</IconItem>
+        <IconItem name="SidebarToggleLeft">{SidebarToggleLeft}</IconItem>
+        <IconItem name="SidebarToggleRight">{SidebarToggleRight}</IconItem>
         <IconItem name="EditIcon">{EditIcon}</IconItem>
         <IconItem name="ManageChatIcon">{ManageChatIcon}</IconItem>
         <IconItem name="CopyIcon">{CopyIcon}</IconItem>
@@ -310,7 +317,6 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="CoderIcon">{CoderIcon}</IconItem>
         <IconItem name="BookmarksIcon">{BookmarksIcon}</IconItem>
         <IconItem name="AIIcon">{AIIcon}</IconItem>
-        <IconItem name="UnminimizeIcon">{UnminimizeIcon}</IconItem>
         <IconItem name="UpdateIcon">{UpdateIcon}</IconItem>
         <IconItem name="RestoreIcon">{RestoreIcon}</IconItem>
         <IconItem name="ChatIcon">{ChatIcon}</IconItem>
@@ -548,6 +554,14 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="SellingTextIcon">{SellingTextIcon}</IconItem>
         <IconItem name="TextBookIcon">{TextBookIcon}</IconItem>
         <IconItem name="WindIcon">{WindIcon}</IconItem>
+        <IconItem name="GrokIcon">{GrokIcon}</IconItem>
+        <IconItem name="DeepSeekIcon">{DeepSeekIcon}</IconItem>
+        <IconItem name="AcademyIcon">{AcademyIcon}</IconItem>
+        <IconItem name="GridVerticalIcon">{GridVerticalIcon}</IconItem>
+        <IconItem name="GridHorizontalIcon">{GridHorizontalIcon}</IconItem>
+        <IconItem name="StarGradientIcon">{StarGradientIcon}</IconItem>
+        <IconItem name="ReportIcon">{ReportIcon}</IconItem>
+        <IconItem name="QwenIcon">{QwenIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
