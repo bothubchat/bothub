@@ -105,7 +105,7 @@ export type SelectFieldProps = (
   search?: boolean;
   searchPlaceholder?: string;
   followContentHeight?: boolean;
-  resetStyleState?: boolean;
+  resetStyleState?: string | number | boolean | null;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;
