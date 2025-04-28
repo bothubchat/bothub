@@ -52,7 +52,10 @@ export const SelectFieldEmpty = styled.div<SelectFieldEmptyProps>`
   }}px;
 `;
 
-export const SelectFieldRadio = styled.div<{ $selected?: boolean }>`
+export const SelectFieldRadio = styled.div<{
+  $selected?: boolean;
+  $disabled?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -88,6 +91,15 @@ export const SelectFieldRadio = styled.div<{ $selected?: boolean }>`
   &:hover:before {
     background-color: ${({ theme }) => theme.colors.accent.primary};
   }
+
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      cursor: not-allowed;
+      & > * > ${SelectFieldRadioLabel} {
+        opacity: 0.5;
+      }
+    `}
 `;
 
 export const SelectFieldRadioTitleAndRadio = styled.label`
