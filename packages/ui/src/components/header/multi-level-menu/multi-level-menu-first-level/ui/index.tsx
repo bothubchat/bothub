@@ -24,6 +24,7 @@ export const MultiLevelMenuFirstLevelItem: React.FC<
       onMouseEnter={onMouseEnter}
       $active={firstLevelItem.title === selectedItemTitle}
       as={firstLevelItem.children ? 'div' : 'a'}
+      onClick={firstLevelItem.onClick}
       href={firstLevelItem.children ? undefined : firstLevelItem.path}
     >
       <MultiLevelMenuFirstLevelHeaderContent>

@@ -37,6 +37,7 @@ export const MultilevelMenu: React.FC<IMultilevelMenu> = ({ config }) => {
     setOpenAccordion(openAccordion === index ? null : index);
   };
 
+  const handleCloseAccordion = () => setOpenAccordion(null);
   return (
     <MultiLevelMenuStyled>
       <MultiLevelMenuWrapper ref={ref}>
@@ -45,6 +46,7 @@ export const MultilevelMenu: React.FC<IMultilevelMenu> = ({ config }) => {
             <MultiLevelMenuAccordion
               openAccordion={indexMenuItem === openAccordion}
               handleAccordionToggle={() => handleAccordionToggle(indexMenuItem)}
+              handleCloseAccordion={handleCloseAccordion}
               menuItem={menuItem}
               key={indexMenuItem}
             />

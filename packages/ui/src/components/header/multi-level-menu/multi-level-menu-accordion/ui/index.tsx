@@ -29,11 +29,13 @@ interface IMultiLevelMenuAccordion {
   menuItem: TMenuItem;
   openAccordion: boolean;
   handleAccordionToggle: () => void;
+  handleCloseAccordion: () => void;
 }
 
 export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
   menuItem,
   openAccordion,
+  handleCloseAccordion,
   handleAccordionToggle
 }) => {
   const [selectedItem, setSelectedItem] = useState<TFirstLevelItem | undefined>(
@@ -115,7 +117,9 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                                 }
                                 key={indexChildrenItem}
                               >
-                                <MultiLevelMenuSecondLevelLiHover>
+                                <MultiLevelMenuSecondLevelLiHover
+                                  onClick={handleCloseAccordion}
+                                >
                                   <MultiLevelMenuSecondLevelCardLink
                                     onClick={childrenItem.onClick}
                                     href={childrenItem.path}
