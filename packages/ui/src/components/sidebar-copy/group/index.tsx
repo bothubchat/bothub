@@ -55,7 +55,9 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
     config: { duration: 200 }
   });
 
-  const handleOpen = useCallback(() => {
+  const handleOpen = useCallback((e: React.MouseEvent) => {
+    e.preventDefault(); 
+    e.stopPropagation();
     setOpen((prev) => !prev);
   }, []);
 
@@ -72,9 +74,15 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   
   if (!sidebarOpen) {
     return (
-      <Button variant="secondary">
-        <FolderIcon/>
-      </Button>
+      <SidebarGroupStyled>
+        <Button variant="secondary" onClick={handleOpen}>
+          <FolderIcon/>
+        </Button>
+        {listTransition(
+          (style, item) =>
+            item && <SidebarGroupList style={style}>{children}</SidebarGroupList>
+        )}
+      </SidebarGroupStyled>
     );
   }
 
@@ -91,7 +99,6 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
         (style, item) =>
           item && <SidebarGroupList style={style}>{children}</SidebarGroupList>
       )}
-
     </SidebarGroupStyled>
   );
 };

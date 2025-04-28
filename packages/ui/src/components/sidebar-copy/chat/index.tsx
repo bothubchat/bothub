@@ -1,5 +1,8 @@
-import { SidebarChatStyled, SidebarChatName, SidebarChatIconStyled, SidebarChatIconSkeleton, SidebarChatSkeleton} from './styled';
+import { Button } from '@/ui/components/button';
+import { useSidebar } from '../context';
+import { SidebarChatStyled, SidebarChatName, SidebarChatIconStyled } from './styled';
 import { IconProvider } from '@/ui/components/icon';
+import { SidebarChatSkeleton } from './skeleton';
 
 export interface SidebarChatDefaultProps {
   color: string;
@@ -31,15 +34,19 @@ export type SidebarChatProps = (
 };
 
 export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
+  const { isOpen: sidebarOpen } = useSidebar();
 
   if (props.skeleton) {
     return(
-      <SidebarChatStyled>
-        <SidebarChatIconSkeleton />
-        <SidebarChatName>
-          <SidebarChatSkeleton/>
-        </SidebarChatName>
-      </SidebarChatStyled>
+      <SidebarChatSkeleton/>
+    )
+  }
+
+  if (!sidebarOpen) {
+    return(
+      <Button variant="secondary">
+        {props.icon || <SidebarChatIconStyled/>}
+      </Button>
     )
   }
 

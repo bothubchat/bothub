@@ -147,8 +147,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <SidebarDivider $isOpen={isOpen} />
         </SidebarTop>
         <SidebarContent>
-          <SidebarWrapper $isScrollable={isScrolling}>
-            <SidebarBodyScrollbarWrapper ref={ref}>
+          <SidebarWrapper $isScrollable={isScrolling} $isOpen={isOpen}>
+            <SidebarBodyScrollbarWrapper ref={ref} $isOpen={isOpen}>
               {children}
             </SidebarBodyScrollbarWrapper>
           </SidebarWrapper>

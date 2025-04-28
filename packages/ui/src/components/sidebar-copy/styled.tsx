@@ -43,13 +43,14 @@ export const SidebarBottom = styled.div`
 
 export const SidebarWrapper = styled.div<{
   $isScrollable: boolean;
+  $isOpen: boolean;
 }>`
   display: flex;
   width: 100%;
   height: 100%;
   overflow: hidden;
   margin: 0 16px;
-  padding-right: ${({ $isScrollable }) => ($isScrollable ? 20 : 26)}px;
+  padding-right: ${({ $isScrollable, $isOpen }) => ($isScrollable && $isOpen ? 20 : 26)}px;
 `;
 
 export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
@@ -63,11 +64,15 @@ export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
       bottom: <ScrollbarShadow side="bottom" />
     }
   })
-)`
+)<{ $isOpen: boolean }>`
   position: relative;
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  ${({ $isOpen }) => !$isOpen && `
+    scrollbar-width: none;
+    padding-right: 6px;
+  `}
 `;
 
 export const SidebarToolbar = styled.div<{

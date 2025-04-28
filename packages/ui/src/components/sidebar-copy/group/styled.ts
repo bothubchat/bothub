@@ -9,6 +9,7 @@ export const SidebarGroupStyled = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  user-select: none;
 `;
 
 export const SidebarGroupBackground = styled.div`
