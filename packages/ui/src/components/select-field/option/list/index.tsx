@@ -5,15 +5,11 @@ import {
   SelectFieldSize
 } from '@/ui/components/select-field/types';
 import {
-  SelectFieldColorOptionText,
   SelectFieldDivider,
   SelectFieldEmpty,
   SelectFieldEmptyText,
-  SelectFieldOption,
-  SelectFieldOptionColor,
   SelectFieldOptionLabel,
   SelectFieldOptionSide,
-  SelectFieldOptionText,
   SelectFieldOptionsStyled,
   SelectFieldRadio,
   SelectFieldRadioDescription,
@@ -26,6 +22,11 @@ import { useTheme } from '@/ui/theme';
 import { SelectFieldCollapseOption } from '../collapse';
 import { SearchDataIcon } from '@/ui/icons/search-data';
 import { Radio } from '@/ui/components/radio';
+import {
+  SelectFieldOptionStyled,
+  SelectFieldOptionText
+} from '../select-field-option/styled';
+import { SelectFieldOption } from '../select-field-option';
 
 export type SelectFieldOptionClickEventHandler = (
   item: SelectFieldDataItem
@@ -73,7 +74,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           }
 
           return (
-            <SelectFieldOption
+            <SelectFieldOptionStyled
               $selected={selected}
               $disabled={false}
               $size={size}
@@ -88,7 +89,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                   {item}
                 </SelectFieldOptionText>
               </SelectFieldOptionSide>
-            </SelectFieldOption>
+            </SelectFieldOptionStyled>
           );
         }
 
@@ -242,13 +243,19 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               : item.value === value.value) && !disableSelect;
         }
 
-        return (
+        const key = item.id ?? item.value ?? index;
+        const props = {
+          item,
+          selected,
+          disabled,
+          size,
+          onClick: handleOptionClick.bind(null, item)
+        };
+
+        return item.tooltip || (item.label && item.label.length > 64) ? (
           <Tooltip
-            key={item.id ?? item.value ?? index}
-            {...(typeof item.tooltip === 'object' && item.tooltip)}
-            {...(typeof item.tooltip !== 'object' && {
-              disabled: true
-            })}
+            key={key}
+            {...item.tooltip}
             {...(item.label &&
               item.label.length > 64 && {
                 placement: 'top-left',
@@ -259,71 +266,18 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
             <TooltipConsumer>
               {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                 <SelectFieldOption
-                  $selected={selected}
-                  $disabled={disabled}
-                  $size={size}
-                  $backgroundHoverColor={item.backgroundHoverColor}
-                  onPointerDown={handleTooltipMouseEnter}
-                  onPointerLeave={handleTooltipMouseLeave}
+                  {...props}
                   onMouseEnter={handleTooltipMouseEnter}
                   onMouseLeave={handleTooltipMouseLeave}
-                  onClick={handleOptionClick.bind(null, item)}
-                >
-                  <SelectFieldOptionSide>
-                    {item.icon && (
-                      <IconProvider
-                        fill={theme.colors.base.white}
-                        size={size === 'large' ? 24 : 18}
-                      >
-                        {item.icon}
-                      </IconProvider>
-                    )}
-                    {!item.color && (
-                      <SelectFieldOptionText
-                        $selected={selected}
-                        $size={size}
-                        $bold={item.bold}
-                      >
-                        {item.label && (
-                          <>
-                            {item.label.slice(0, 64)}
-                            {item.label.length > 64 && '...'}
-                          </>
-                        )}
-                        {!item.label && item.value}
-                      </SelectFieldOptionText>
-                    )}
-                    {item.color && (
-                      <SelectFieldOptionColor
-                        $color={
-                          item.color === theme.colors.accent.primary && selected
-                            ? theme.colors.accent.primaryLight
-                            : item.color
-                        }
-                      />
-                    )}
-                    {item.color && (
-                      <SelectFieldColorOptionText $selected={selected}>
-                        {item.label && (
-                          <>
-                            {item.label.slice(0, 64)}
-                            {item.label.length > 64 && '...'}
-                          </>
-                        )}
-
-                        {!item.label && item.value}
-                      </SelectFieldColorOptionText>
-                    )}
-                  </SelectFieldOptionSide>
-                  {item.end && (
-                    <SelectFieldOptionSide>
-                      <IconProvider size={16}>{item.end}</IconProvider>
-                    </SelectFieldOptionSide>
-                  )}
-                </SelectFieldOption>
+                />
               )}
             </TooltipConsumer>
           </Tooltip>
+        ) : (
+          <SelectFieldOption
+            key={key}
+            {...props}
+          />
         );
       })}
     </SelectFieldOptionsStyled>
