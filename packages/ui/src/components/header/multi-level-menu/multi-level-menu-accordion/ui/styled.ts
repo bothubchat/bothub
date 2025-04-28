@@ -3,7 +3,7 @@ import { animated, AnimatedProps } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons';
 import { colorToRgba } from '@/ui/utils';
-import { MultiLevelMenuSecondLevelArrowRight45 } from '@/ui/index';
+import { MultiLevelMenuSecondLevelArrowRight45 } from '../../styled';
 
 export const MultiLevelMenuFirstLevelWrapper: React.FC<
   AnimatedProps<React.ComponentProps<'div'>> & { $open: boolean }

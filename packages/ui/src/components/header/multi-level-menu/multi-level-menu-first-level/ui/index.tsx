@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProvider, MultiLevelMenuArrowRight45 } from '@/ui/index';
+import { IconProvider } from '@/ui/components/icon';
 import { TFirstLevelItem } from '../../types';
 import {
   MultiLevelFirstLevelMenuLi,
@@ -8,6 +8,7 @@ import {
   MultiLevelMenuFirstLevelTitle,
   MultiLevelMenuArrowRight
 } from './styled';
+import { MultiLevelMenuArrowRight45 } from '../../styled';
 
 interface IMultiLevelMenuFirstLevelItem {
   firstLevelItem: TFirstLevelItem;
@@ -23,6 +24,7 @@ export const MultiLevelMenuFirstLevelItem: React.FC<
       onMouseEnter={onMouseEnter}
       $active={firstLevelItem.title === selectedItemTitle}
       as={firstLevelItem.children ? 'div' : 'a'}
+      onClick={firstLevelItem.onClick}
       href={firstLevelItem.children ? undefined : firstLevelItem.path}
     >
       <MultiLevelMenuFirstLevelHeaderContent>
