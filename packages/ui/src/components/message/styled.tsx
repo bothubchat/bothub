@@ -317,7 +317,7 @@ export const MessageBlockContent = styled.div<{
       case 'user':
         return '8px';
       case 'assistant':
-        return $speechSynthesis ? '0px' : '0px 8px 8px 0px';
+        return $speechSynthesis ? '0px 8px 0px 0px' : '0px 8px 8px 0px';
     }
   }};
   max-width: 100%;

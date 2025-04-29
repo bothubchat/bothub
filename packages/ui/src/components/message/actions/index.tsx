@@ -376,7 +376,8 @@ export const MessageActions = ({
               <UpdateIcon size={18} />
             </ActionButton>
           )}
-          {!disableCopy && variant !== 'assistant' && (
+          {((!disableCopy && !speechSynthesis) ||
+            (!disableCopy && speechSynthesis && variant !== 'assistant')) && (
             <CopyButton
               onCopy={onCopy}
               tooltipLabel={copyTooltipLabel}
