@@ -234,10 +234,14 @@ export const MessageBlock = styled.div<MessageBlockProps>`
     `}
 `;
 
-export const MessageBlockBottomPanel = styled.div<{ $variant: MessageVariant }>`
+export const MessageBlockBottomPanel = styled.div<{
+  $variant: MessageVariant;
+  $speechSynthesis?: boolean;
+}>`
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: ${({ $speechSynthesis, $variant }) =>
+    $variant !== 'user' && $speechSynthesis && 'space-between'};
   ${({ $variant }) => {
     switch ($variant) {
       case 'user':
@@ -253,6 +257,18 @@ export const MessageBlockBottomPanel = styled.div<{ $variant: MessageVariant }>`
         return css``;
     }
   }}
+`;
+
+export const MessageBlockBottomPanelContent = styled.div<{
+  $variant: MessageVariant;
+  $speechSynthesis?: boolean;
+}>`
+  display: flex;
+  gap: 10px;
+  flex-direction: ${({ $speechSynthesis, $variant }) =>
+    $variant !== 'user' && $speechSynthesis && 'row-reverse'};
+  justify-content: ${({ $speechSynthesis, $variant }) =>
+    $variant !== 'user' && $speechSynthesis && 'start'};
 `;
 
 export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
@@ -288,6 +304,7 @@ export const MessageBlockScrollbarWrapper = styled(Scrollbar).attrs({
 
 export const MessageBlockContent = styled.div<{
   $variant: MessageVariant;
+  $speechSynthesis?: boolean;
 }>`
   display: flex;
   flex-direction: column;
@@ -295,12 +312,12 @@ export const MessageBlockContent = styled.div<{
   gap: 10px;
   grid-area: block;
   border-radius: 10px;
-  padding: ${({ $variant }) => {
+  padding: ${({ $variant, $speechSynthesis }) => {
     switch ($variant) {
       case 'user':
         return '8px';
       case 'assistant':
-        return '0px 8px 8px 0px';
+        return $speechSynthesis ? '0px' : '0px 8px 8px 0px';
     }
   }};
   max-width: 100%;

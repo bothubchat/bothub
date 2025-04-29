@@ -21,7 +21,8 @@ import {
   MessageTop,
   MessageAvatar,
   MessageStyledWithBottomPanel,
-  MessageButtonsStyled
+  MessageButtonsStyled,
+  MessageBlockBottomPanelContent
 } from './styled';
 import {
   MessageActionEventHandler,
@@ -57,6 +58,7 @@ export interface MessageProps {
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
+  disableDownload?: boolean;
   copyPlainText?: string | null;
   copyTgText?: string | null;
   editText?: string | null;
@@ -67,6 +69,7 @@ export interface MessageProps {
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
+  downloadTooltipLabel?: string | null;
   typing?: boolean;
   timestamp?: string | number;
   timestampPosition?: MessageTimestampPosition;
@@ -86,10 +89,13 @@ export interface MessageProps {
   onReport?: MessageActionEventHandler;
   onNextVersion?: MessageVersionEventHandler;
   onPrevVersion?: MessageVersionEventHandler;
+  onDownload?: () => void;
+  speechSynthesis?: boolean;
 }
 
 export const Message: React.FC<MessageProps> = ({
   id,
+  speechSynthesis,
   content,
   className,
   variant = 'user',
@@ -103,12 +109,14 @@ export const Message: React.FC<MessageProps> = ({
   disableDelete = false,
   disableUpdate = false,
   disableCopy = false,
+  disableDownload = false,
   copyPlainText,
   copyTgText,
   editText,
   resendText,
   deleteText,
   onReportText,
+  downloadTooltipLabel,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
   updateTooltipLabel,
@@ -131,7 +139,8 @@ export const Message: React.FC<MessageProps> = ({
   onUpdate,
   onReport,
   onNextVersion,
-  onPrevVersion
+  onPrevVersion,
+  onDownload
 }) => {
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
@@ -324,6 +333,9 @@ export const Message: React.FC<MessageProps> = ({
                     <MessageBlockContent
                       ref={messageBlockContentRef}
                       $variant={variant}
+                      $speechSynthesis={
+                        speechSynthesis && variant === 'assistant'
+                      }
                     >
                       {!isEditing ? (
                         <>
@@ -379,46 +391,58 @@ export const Message: React.FC<MessageProps> = ({
               </MessageBlockWrapper>
             </MessageContent>
           </MessageStyled>
-          <MessageBlockBottomPanel $variant={variant}>
-            {!skeleton && (
-              <MessageActions
-                id={id}
-                message={content}
-                variant={variant}
-                skeleton={skeleton}
-                disableResend={disableResend}
-                disableEdit={disableEdit}
-                disableDelete={disableDelete}
-                disableUpdate={disableUpdate}
-                disableCopy={disableCopy}
-                copyPlainText={copyPlainText}
-                copyTgText={copyTgText}
-                editText={editText}
-                resendText={resendText}
-                deleteText={deleteText}
-                onReportText={onReportText}
-                submitEditTooltipLabel={submitEditTooltipLabel}
-                discardEditTooltipLabel={discardEditTooltipLabel}
-                updateTooltipLabel={updateTooltipLabel}
-                copyTooltipLabel={copyTooltipLabel}
-                editing={isEditing}
-                editedText={editedText}
-                messageRef={messageRef}
-                onEditing={setIsEditing}
-                onEditedText={setEditedText}
-                onEdit={onEdit}
-                onResend={onResend}
-                onDelete={onDelete}
-                onUpdate={onUpdate}
-                onReport={onReport}
-                onPlainTextCopy={handlePlainTextCopy}
-                onTgCopy={handleTgTextCopy}
-                onCopy={handleRichTextCopy}
-              />
-            )}
-            {transaction && (
-              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
-            )}
+          <MessageBlockBottomPanel
+            $speechSynthesis={speechSynthesis}
+            $variant={variant}
+          >
+            <MessageBlockBottomPanelContent
+              $speechSynthesis={speechSynthesis}
+              $variant={variant}
+            >
+              {!skeleton && (
+                <MessageActions
+                  id={id}
+                  onDownload={onDownload}
+                  disableDownload={disableDownload}
+                  speechSynthesis={speechSynthesis}
+                  message={content}
+                  variant={variant}
+                  skeleton={skeleton}
+                  disableResend={disableResend}
+                  disableEdit={disableEdit}
+                  disableDelete={disableDelete}
+                  disableUpdate={disableUpdate}
+                  disableCopy={disableCopy}
+                  copyPlainText={copyPlainText}
+                  copyTgText={copyTgText}
+                  editText={editText}
+                  resendText={resendText}
+                  deleteText={deleteText}
+                  onReportText={onReportText}
+                  downloadTooltipLabel={downloadTooltipLabel}
+                  submitEditTooltipLabel={submitEditTooltipLabel}
+                  discardEditTooltipLabel={discardEditTooltipLabel}
+                  updateTooltipLabel={updateTooltipLabel}
+                  copyTooltipLabel={copyTooltipLabel}
+                  editing={isEditing}
+                  editedText={editedText}
+                  messageRef={messageRef}
+                  onEditing={setIsEditing}
+                  onEditedText={setEditedText}
+                  onEdit={onEdit}
+                  onResend={onResend}
+                  onDelete={onDelete}
+                  onUpdate={onUpdate}
+                  onReport={onReport}
+                  onPlainTextCopy={handlePlainTextCopy}
+                  onTgCopy={handleTgTextCopy}
+                  onCopy={handleRichTextCopy}
+                />
+              )}
+              {transaction && (
+                <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
+              )}
+            </MessageBlockBottomPanelContent>
             <MessageVersions
               id={id}
               version={version}

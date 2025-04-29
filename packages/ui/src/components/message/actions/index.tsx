@@ -30,6 +30,7 @@ import { CopyIcon } from '@/ui/icons/copy';
 import { useScrollbarRef } from '../list';
 import { ModalOption } from './types';
 import { ThumbDownIcon } from '@/ui/icons/thumb-down';
+import { DownloadImgIcon } from '@/ui/icons';
 
 type MessageActionsProps = {
   id?: string;
@@ -41,12 +42,14 @@ type MessageActionsProps = {
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
+  disableDownload?: boolean;
   editText?: string | null;
   copyTgText?: string | null;
   copyPlainText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
   onReportText?: string | null;
+  downloadTooltipLabel?: string | null;
   submitEditTooltipLabel?: string | null;
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
@@ -64,11 +67,14 @@ type MessageActionsProps = {
   onPlainTextCopy?: MessagePlainTextCopyEventHandler;
   onTgCopy?: MessageTgCopyEventHandler;
   onCopy?: MessageActionEventHandler;
+  onDownload?: () => void;
+  speechSynthesis?: boolean;
 };
 
 export const MessageActions = ({
   id,
   message,
+  speechSynthesis,
   variant = 'user',
   skeleton,
   disableResend,
@@ -76,12 +82,14 @@ export const MessageActions = ({
   disableDelete,
   disableUpdate,
   disableCopy,
+  disableDownload,
   editText,
   copyTgText,
   copyPlainText,
   resendText,
   deleteText,
   onReportText,
+  downloadTooltipLabel,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
   updateTooltipLabel,
@@ -98,7 +106,8 @@ export const MessageActions = ({
   onReport,
   onPlainTextCopy,
   onTgCopy,
-  onCopy
+  onCopy,
+  onDownload
 }: MessageActionsProps) => {
   const [menuShown, setMenuShown] = useState(false);
   const [timeoutId, setTimeoutId] = useState<number>();
@@ -111,6 +120,9 @@ export const MessageActions = ({
 
   const modalEnabled = () => {
     if (skeleton) {
+      return false;
+    }
+    if (variant === 'assistant' && speechSynthesis) {
       return false;
     }
     switch (variant) {
@@ -364,7 +376,7 @@ export const MessageActions = ({
               <UpdateIcon size={18} />
             </ActionButton>
           )}
-          {!disableCopy && (
+          {!disableCopy && variant !== 'assistant' && (
             <CopyButton
               onCopy={onCopy}
               tooltipLabel={copyTooltipLabel}
@@ -409,6 +421,14 @@ export const MessageActions = ({
             />
           </ActionButton>
         </S.MessageEditButtonsStyled>
+      )}
+      {!disableDownload && speechSynthesis && variant !== 'user' && (
+        <ActionButton
+          tooltipLabel={downloadTooltipLabel}
+          onClick={onDownload}
+        >
+          <DownloadImgIcon size={18} />
+        </ActionButton>
       )}
     </S.MessageActionsStyled>
   );
