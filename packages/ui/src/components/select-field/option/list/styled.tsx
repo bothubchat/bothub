@@ -112,7 +112,9 @@ export const SelectFieldRadioTitleAndRadio = styled.label`
 
 export const SelectFieldRadioLabel = styled(Typography).attrs({
   variant: 'body-m-semibold'
-})``;
+})`
+  width: 100%;
+`;
 
 export const SelectFieldRadioDescription = styled(Typography).attrs({
   variant: 'body-m-regular'
