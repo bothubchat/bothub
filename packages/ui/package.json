@@ -1,6 +1,8 @@
 {
   "name": "@bothub-chat/ui",
   "version": "2.33.1-develop-4ab6a342-8d33-45a0-b1dd-e6c35fad6fa3",
+  "description": "Bothub UI Components",
+  "keywords": [
     "bot",
     "chat",
     "chatgpt",
