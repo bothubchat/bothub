@@ -30,6 +30,7 @@ import {
   AnimatedSelectFieldBlock
 } from './styled';
 import {
+  ResetStyleStateType,
   SelectFieldChangeEventHandler,
   SelectFieldData,
   SelectFieldDataItem,
@@ -105,7 +106,7 @@ export type SelectFieldProps = (
   search?: boolean;
   searchPlaceholder?: string;
   followContentHeight?: boolean;
-  resetStyleState?: string | number | boolean | null;
+  resetStyleState?: ResetStyleStateType;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;

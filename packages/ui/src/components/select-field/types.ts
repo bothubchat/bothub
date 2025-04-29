@@ -63,3 +63,5 @@ export type SelectFieldSize = 'small' | 'md' | 'large';
 export type SelectFieldPlacement = 'bottom-left' | 'top-left' | 'top-right';
 
 export type SelectFieldInputType = 'text' | 'search';
+
+export type ResetStyleStateType = string | number | boolean | null;
