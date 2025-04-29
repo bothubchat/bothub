@@ -2,6 +2,7 @@ export type ButtonVariant =
   | 'primary'
   | 'primary-transparent'
   | 'primary-outline'
+  | 'gradient'
   | 'secondary'
   | 'text'
   | 'help'
