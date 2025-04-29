@@ -240,8 +240,11 @@ export const MessageBlockBottomPanel = styled.div<{
 }>`
   display: flex;
   align-items: center;
+  flex-direction: ${({ $speechSynthesis, $variant }) =>
+    $variant !== 'user' && $speechSynthesis && 'row-reverse'};
   justify-content: ${({ $speechSynthesis, $variant }) =>
-    $variant !== 'user' && $speechSynthesis && 'space-between'};
+    $variant !== 'user' && $speechSynthesis && 'start'};
+  gap: 10px;
   ${({ $variant }) => {
     switch ($variant) {
       case 'user':
@@ -257,18 +260,6 @@ export const MessageBlockBottomPanel = styled.div<{
         return css``;
     }
   }}
-`;
-
-export const MessageBlockBottomPanelContent = styled.div<{
-  $variant: MessageVariant;
-  $speechSynthesis?: boolean;
-}>`
-  display: flex;
-  gap: 10px;
-  flex-direction: ${({ $speechSynthesis, $variant }) =>
-    $variant !== 'user' && $speechSynthesis && 'row-reverse'};
-  justify-content: ${({ $speechSynthesis, $variant }) =>
-    $variant !== 'user' && $speechSynthesis && 'start'};
 `;
 
 export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`

@@ -21,8 +21,7 @@ import {
   MessageTop,
   MessageAvatar,
   MessageStyledWithBottomPanel,
-  MessageButtonsStyled,
-  MessageBlockBottomPanelContent
+  MessageButtonsStyled
 } from './styled';
 import {
   MessageActionEventHandler,
@@ -395,54 +394,49 @@ export const Message: React.FC<MessageProps> = ({
             $speechSynthesis={speechSynthesis}
             $variant={variant}
           >
-            <MessageBlockBottomPanelContent
-              $speechSynthesis={speechSynthesis}
-              $variant={variant}
-            >
-              {!skeleton && (
-                <MessageActions
-                  id={id}
-                  onDownload={onDownload}
-                  disableDownload={disableDownload}
-                  speechSynthesis={speechSynthesis}
-                  message={content}
-                  variant={variant}
-                  skeleton={skeleton}
-                  disableResend={disableResend}
-                  disableEdit={disableEdit}
-                  disableDelete={disableDelete}
-                  disableUpdate={disableUpdate}
-                  disableCopy={disableCopy}
-                  copyPlainText={copyPlainText}
-                  copyTgText={copyTgText}
-                  editText={editText}
-                  resendText={resendText}
-                  deleteText={deleteText}
-                  onReportText={onReportText}
-                  downloadTooltipLabel={downloadTooltipLabel}
-                  submitEditTooltipLabel={submitEditTooltipLabel}
-                  discardEditTooltipLabel={discardEditTooltipLabel}
-                  updateTooltipLabel={updateTooltipLabel}
-                  copyTooltipLabel={copyTooltipLabel}
-                  editing={isEditing}
-                  editedText={editedText}
-                  messageRef={messageRef}
-                  onEditing={setIsEditing}
-                  onEditedText={setEditedText}
-                  onEdit={onEdit}
-                  onResend={onResend}
-                  onDelete={onDelete}
-                  onUpdate={onUpdate}
-                  onReport={onReport}
-                  onPlainTextCopy={handlePlainTextCopy}
-                  onTgCopy={handleTgTextCopy}
-                  onCopy={handleRichTextCopy}
-                />
-              )}
-              {transaction && (
-                <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
-              )}
-            </MessageBlockBottomPanelContent>
+            {!skeleton && (
+              <MessageActions
+                id={id}
+                onDownload={onDownload}
+                disableDownload={disableDownload}
+                speechSynthesis={speechSynthesis}
+                message={content}
+                variant={variant}
+                skeleton={skeleton}
+                disableResend={disableResend}
+                disableEdit={disableEdit}
+                disableDelete={disableDelete}
+                disableUpdate={disableUpdate}
+                disableCopy={disableCopy}
+                copyPlainText={copyPlainText}
+                copyTgText={copyTgText}
+                editText={editText}
+                resendText={resendText}
+                deleteText={deleteText}
+                onReportText={onReportText}
+                downloadTooltipLabel={downloadTooltipLabel}
+                submitEditTooltipLabel={submitEditTooltipLabel}
+                discardEditTooltipLabel={discardEditTooltipLabel}
+                updateTooltipLabel={updateTooltipLabel}
+                copyTooltipLabel={copyTooltipLabel}
+                editing={isEditing}
+                editedText={editedText}
+                messageRef={messageRef}
+                onEditing={setIsEditing}
+                onEditedText={setEditedText}
+                onEdit={onEdit}
+                onResend={onResend}
+                onDelete={onDelete}
+                onUpdate={onUpdate}
+                onReport={onReport}
+                onPlainTextCopy={handlePlainTextCopy}
+                onTgCopy={handleTgTextCopy}
+                onCopy={handleRichTextCopy}
+              />
+            )}
+            {transaction && (
+              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
+            )}
             <MessageVersions
               id={id}
               version={version}
