@@ -23,6 +23,7 @@ export interface ModalProps extends React.PropsWithChildren {
   images?: React.ReactNode;
   onClose?: ModalCloseEventHandler;
   className?: string;
+  disableBackdrop?: boolean;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -32,7 +33,8 @@ export const Modal: React.FC<ModalProps> = ({
   children,
   onClose,
   images,
-  className
+  className,
+  disableBackdrop = false
 }) => {
   let modalNode: React.ReactNode;
 
@@ -47,10 +49,13 @@ export const Modal: React.FC<ModalProps> = ({
   } else {
     modalNode = (
       <ModalStyled>
-        <Backdrop
-          open={open}
-          onClick={onClose}
-        />
+        {!disableBackdrop && (
+          <Backdrop
+            open={open}
+            onClick={onClose}
+          />
+        )}
+
         {modalTransition(
           (style, item) =>
             item && (
