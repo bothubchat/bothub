@@ -9,10 +9,7 @@ export const ModalStyled = styled.div`
   justify-content: center;
   align-items: center;
   position: fixed;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
+  inset: 0;
   z-index: ${({ theme }) => theme.zIndex.modal};
 `;
 

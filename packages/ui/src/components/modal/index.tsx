@@ -92,3 +92,5 @@ export const Modal: React.FC<ModalProps> = ({
 
   return <Portal>{modalNode}</Portal>;
 };
+
+export * from './styled';
