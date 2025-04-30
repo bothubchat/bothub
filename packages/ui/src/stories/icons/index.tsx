@@ -256,7 +256,8 @@ import {
   GrokIcon,
   QwenIcon,
   ReportIcon,
-  StarGradientIcon
+  StarGradientIcon,
+  MusicNoteIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -562,6 +563,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="StarGradientIcon">{StarGradientIcon}</IconItem>
         <IconItem name="ReportIcon">{ReportIcon}</IconItem>
         <IconItem name="QwenIcon">{QwenIcon}</IconItem>
+        <IconItem name="MusicNoteIcon">{MusicNoteIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
