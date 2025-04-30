@@ -1,50 +1,65 @@
-import React from 'react';
-import { AnimatedProps } from '@react-spring/web';
+import { useTransition } from '@react-spring/web';
+import type { PropsWithChildren, ReactNode } from 'react';
 import * as S from './styled';
 
 export type ModalCloseEventHandler = () => unknown;
 
 export type ModalWindowlProps = {
-  title?: React.ReactNode;
+  open: boolean;
+  title?: ReactNode;
   scrollbar?: boolean;
-  images?: React.ReactNode;
+  images?: ReactNode;
   className?: string;
-  style?: AnimatedProps<React.CSSProperties>;
   onClose?: ModalCloseEventHandler;
-} & React.PropsWithChildren;
+} & PropsWithChildren;
 
 export const ModalWindow = ({
   children,
+  open,
   title = null,
   scrollbar = false,
   images,
   className,
-  style,
   onClose
-}: ModalWindowlProps) => (
-  <S.ModalWindowStyled
-    style={style}
-    className={className}
-  >
-    {images}
-    <S.ModalWindowBody>
-      {typeof title === 'string' ? (
-        <S.ModalWindowTitle>{title}</S.ModalWindowTitle>
-      ) : (
-        title
+}: ModalWindowlProps) => {
+  const modalTransition = useTransition(open, {
+    from: { opacity: 0, transform: 'scale(0.9)' },
+    enter: { opacity: 1, transform: 'scale(1)' },
+    config: { duration: 200 }
+  });
+
+  return (
+    <>
+      {modalTransition(
+        (style, item) =>
+          item && (
+            <S.ModalWindowStyled
+              style={style}
+              className={className}
+            >
+              {images}
+              <S.ModalWindowBody>
+                {typeof title === 'string' ? (
+                  <S.ModalWindowTitle>{title}</S.ModalWindowTitle>
+                ) : (
+                  title
+                )}
+                <S.ModalWindowCloseButton onClick={onClose}>
+                  <S.ModalWindowCloseButtonIcon size={24} />
+                </S.ModalWindowCloseButton>
+                <S.ModalWindowBodyContent>
+                  <S.ModalWindowBodyScrollbarWrapper
+                    overflow={scrollbar ? 'auto' : 'visible'}
+                    disabled={!scrollbar}
+                    disableShadows={!scrollbar}
+                  >
+                    <S.ModalWindowContent>{children}</S.ModalWindowContent>
+                  </S.ModalWindowBodyScrollbarWrapper>
+                </S.ModalWindowBodyContent>
+              </S.ModalWindowBody>
+            </S.ModalWindowStyled>
+          )
       )}
-      <S.ModalWindowCloseButton onClick={onClose}>
-        <S.ModalWindowCloseButtonIcon size={24} />
-      </S.ModalWindowCloseButton>
-      <S.ModalWindowBodyContent>
-        <S.ModalWindowBodyScrollbarWrapper
-          overflow={scrollbar ? 'auto' : 'visible'}
-          disabled={!scrollbar}
-          disableShadows={!scrollbar}
-        >
-          <S.ModalWindowContent>{children}</S.ModalWindowContent>
-        </S.ModalWindowBodyScrollbarWrapper>
-      </S.ModalWindowBodyContent>
-    </S.ModalWindowBody>
-  </S.ModalWindowStyled>
-);
+    </>
+  );
+};
