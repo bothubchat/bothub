@@ -1,40 +1,18 @@
 import React from 'react';
 import { useTransition } from '@react-spring/web';
-import {
-  ModalCloseButton,
-  ModalCloseButtonIcon,
-  ModalContent,
-  ModalStyled,
-  ModalTitle,
-  ModalWindow,
-  ModalWindowBody,
-  ModalWindowBodyContent,
-  ModalWindowBodyScrollbarWrapper
-} from './styled';
+import * as S from './styled';
 import { Backdrop } from '@/ui/components/backdrop';
 import { Portal } from '@/ui/components/portal';
+import { ModalWindow, ModalWindowlProps } from './modal-window';
 
-export type ModalCloseEventHandler = () => unknown;
-
-export interface ModalProps extends React.PropsWithChildren {
+export type ModalProps = {
   open: boolean;
-  title?: React.ReactNode;
-  scrollbar?: boolean;
-  images?: React.ReactNode;
-  onClose?: ModalCloseEventHandler;
-  className?: string;
-  disableBackdrop?: boolean;
-}
+} & Omit<ModalWindowlProps, 'style'>;
 
 export const Modal: React.FC<ModalProps> = ({
   open,
-  title = null,
-  scrollbar = false,
-  children,
   onClose,
-  images,
-  className,
-  disableBackdrop = false
+  ...modalWindowProps
 }) => {
   let modalNode: React.ReactNode;
 
@@ -48,49 +26,27 @@ export const Modal: React.FC<ModalProps> = ({
     modalNode = null;
   } else {
     modalNode = (
-      <ModalStyled>
-        {!disableBackdrop && (
-          <Backdrop
-            open={open}
-            onClick={onClose}
-          />
-        )}
+      <S.ModalStyled>
+        <Backdrop
+          open={open}
+          onClick={onClose}
+        />
 
         {modalTransition(
           (style, item) =>
             item && (
               <ModalWindow
                 style={style}
-                className={className}
-              >
-                {images}
-                <ModalWindowBody>
-                  {typeof title === 'string' ? (
-                    <ModalTitle>{title}</ModalTitle>
-                  ) : (
-                    title
-                  )}
-                  <ModalCloseButton onClick={onClose}>
-                    <ModalCloseButtonIcon size={24} />
-                  </ModalCloseButton>
-                  <ModalWindowBodyContent>
-                    <ModalWindowBodyScrollbarWrapper
-                      overflow={scrollbar ? 'auto' : 'visible'}
-                      disabled={!scrollbar}
-                      disableShadows={!scrollbar}
-                    >
-                      <ModalContent>{children}</ModalContent>
-                    </ModalWindowBodyScrollbarWrapper>
-                  </ModalWindowBodyContent>
-                </ModalWindowBody>
-              </ModalWindow>
+                onClose={onClose}
+                {...modalWindowProps}
+              />
             )
         )}
-      </ModalStyled>
+      </S.ModalStyled>
     );
   }
 
   return <Portal>{modalNode}</Portal>;
 };
 
-export * from './styled';
+export * from './modal-window';
