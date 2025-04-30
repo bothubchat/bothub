@@ -105,6 +105,7 @@ export type SelectFieldProps = (
   search?: boolean;
   searchPlaceholder?: string;
   followContentHeight?: boolean;
+  contentHeight?: number;
   resetStyleState?: boolean;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
@@ -140,6 +141,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   search,
   searchPlaceholder,
   followContentHeight = false,
+  contentHeight,
   resetStyleState,
   onOptionClick,
   onInputChange,
@@ -388,7 +390,9 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   const contentRef = useRef<HTMLDivElement>(null);
   const isKeyboardOpen = useRef(false);
 
-  const [blockHeight, setBlockHeight] = useState<number | null>(null);
+  const [blockHeight, setBlockHeight] = useState<number | null>(
+    contentHeight || null
+  );
 
   if (followContentHeight && contentRef.current && !blockHeight) {
     const { height } = getComputedStyle(contentRef.current.children[0]);
