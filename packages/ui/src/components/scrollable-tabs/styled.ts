@@ -71,7 +71,7 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
   }
 
   &:hover:before {
-    background-color: ${({ theme }) => theme.colors.accent.primary}33;
+    background-color: ${({ theme }) => theme.colors.accent.primary}20;
   }
 
   & > * {
