@@ -263,13 +263,6 @@ export const CreateReferral: ModalStory = {
   }
 };
 
-export const WithoutBackdrop: ModalStory = {
-  args: {
-    ...Auth.args,
-    disableBackdrop: true
-  }
-};
-
 export default {
   title: 'UI Components/Modal',
   component: Modal,
