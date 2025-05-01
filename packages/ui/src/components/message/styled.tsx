@@ -287,7 +287,7 @@ export const MessageBlockTransaction = styled.div<{
             display: block;
           `,
           mobile: css`
-            display: none;
+            display: ${$speechSynthesis ? 'block' : 'none'};
           `
         })}
 `;

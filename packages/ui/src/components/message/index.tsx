@@ -305,7 +305,10 @@ export const Message: React.FC<MessageProps> = ({
                     </MessageSender>
                   )}
                   {typeof name !== 'string' && <div />}
-                  <MessageBlockTransaction $top>
+                  <MessageBlockTransaction
+                    $speechSynthesis={speechSynthesis}
+                    $top
+                  >
                     {transaction}
                   </MessageBlockTransaction>
                 </MessageTop>
