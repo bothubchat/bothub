@@ -28,6 +28,8 @@ export const ModalWindow = ({
     config: { duration: 200 }
   });
 
+  const content = <S.ModalWindowContent>{children}</S.ModalWindowContent>;
+
   return (
     <>
       {modalTransition(
@@ -48,13 +50,17 @@ export const ModalWindow = ({
                   <S.ModalWindowCloseButtonIcon size={24} />
                 </S.ModalWindowCloseButton>
                 <S.ModalWindowBodyContent>
-                  <S.ModalWindowBodyScrollbarWrapper
-                    overflow={scrollbar ? 'auto' : 'visible'}
-                    disabled={!scrollbar}
-                    disableShadows={!scrollbar}
-                  >
-                    <S.ModalWindowContent>{children}</S.ModalWindowContent>
-                  </S.ModalWindowBodyScrollbarWrapper>
+                  {scrollbar ? (
+                    <S.ModalWindowBodyScrollbarWrapper
+                      overflow={scrollbar ? 'auto' : 'visible'}
+                      disabled={!scrollbar}
+                      disableShadows={!scrollbar}
+                    >
+                      {content}
+                    </S.ModalWindowBodyScrollbarWrapper>
+                  ) : (
+                    content
+                  )}
                 </S.ModalWindowBodyContent>
               </S.ModalWindowBody>
             </S.ModalWindowStyled>
