@@ -262,8 +262,11 @@ export const MessageBlockBottomPanel = styled.div<{
   }}
 `;
 
-export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
-  ${({ $top }) =>
+export const MessageBlockTransaction = styled.div<{
+  $top?: boolean;
+  $speechSynthesis?: boolean;
+}>`
+  ${({ $top, $speechSynthesis }) =>
     $top
       ? adaptive({
           desktop: css`
@@ -273,7 +276,7 @@ export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
             display: none;
           `,
           mobile: css`
-            display: block;
+            display: ${$speechSynthesis ? 'none' : 'block'};
           `
         })
       : adaptive({

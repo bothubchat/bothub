@@ -435,7 +435,9 @@ export const Message: React.FC<MessageProps> = ({
               />
             )}
             {transaction && (
-              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
+              <MessageBlockTransaction $speechSynthesis={speechSynthesis}>
+                {transaction}
+              </MessageBlockTransaction>
             )}
             <MessageVersions
               id={id}
