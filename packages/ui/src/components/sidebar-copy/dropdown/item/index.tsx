@@ -8,8 +8,14 @@ type SidebarDropdownItemProps = {
 
 export const SidebarDropdownItem: React.FC<SidebarDropdownItemProps> = ({ icon, ...props }) => {
   const theme = useTheme();
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
   return (
-    <SidebarDropdownItemStyled {...props}>
+    <SidebarDropdownItemStyled onClick={handleClick} {...props}>
       <IconProvider fill={theme.colors.grayScale.gray1}>
         {icon}
       </IconProvider>

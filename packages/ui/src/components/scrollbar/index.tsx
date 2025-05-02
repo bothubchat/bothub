@@ -36,6 +36,7 @@ export interface ScrollbarProps extends React.PropsWithChildren {
 export type ScrollbarScrollEventHandler = (event: {
   isTop: boolean;
   isBottom: boolean;
+  previousScrollTop: number;
 }) => unknown;
 
 export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
@@ -113,7 +114,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         if (disabled) {
           scrollbarEl.scrollTo(0, 0);
         }
-        onScroll?.({ isTop, isBottom });
+        onScroll?.({ isTop, isBottom, previousScrollTop });
       },
       [
         scrollbarRef.current,

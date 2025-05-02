@@ -86,6 +86,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const ref = React.useRef<ScrollbarRef>(null);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
+  const [scrollTop, setScrollTop] = useState(false);
   const handleOpen = useCallback<
     React.Dispatch<React.SetStateAction<boolean>>
   >(

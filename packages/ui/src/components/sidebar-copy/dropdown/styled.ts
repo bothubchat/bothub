@@ -29,14 +29,14 @@ export const SidebarDropdownToggler = styled.button`
 `;
 
 export const SidebarDropdownContent = styled(animated.div)`
-  position: fixed;
+  position: absolute;
   transform-origin: top right;
   margin-top: 16px;
   top: 0px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 8px;
   padding: 8px;
-  z-index: 1;
+  z-index:3;
   &::before {
     content: '';
     position: absolute;

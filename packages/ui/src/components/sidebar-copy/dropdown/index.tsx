@@ -23,14 +23,12 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const [openUpward, setOpenUpward] = useState(false);
+
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     setIsOpen((prev) => !prev);
-  };
-
-  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? {
-    right: 0,
-    bottom: 0
   };
 
   useEffect(() => {
@@ -50,25 +48,51 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
     }
   }, []);
 
+  useEffect(() => {
+    if (isOpen && buttonRef.current && contentRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      const containerRect = buttonRef.current?.parentElement?.getBoundingClientRect();
+      const menuRect = contentRef.current.getBoundingClientRect();
+      if (!containerRect) return;
+      const spaceBelow = containerRect.bottom - buttonRect.bottom;
+      const spaceAbove = buttonRect.top - containerRect.top;
+
+      if (menuRect.height > spaceBelow && spaceAbove > spaceBelow) {
+        setOpenUpward(true);
+      } else {
+        setOpenUpward(false);
+      }
+    }
+  }, [isOpen]);
+
+
+  const dropdownParent = dropdownRef.current?.parentElement?.parentElement;
+
+  const [parentHeight, parentScrollHeight] = [ dropdownParent?.offsetHeight, dropdownParent?.scrollHeight];
+  const reverse = parentHeight! < parentScrollHeight!
+
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      transform: 'scale(0.0)'
+      transform: 'scale(0.0)',
+      visability: 'hidden'
     },
     enter: {
-      opacity: isOpen ? 1 : 0.5,
+      opacity: 1,
       backdropFilter: 'blur(8px)',
-      transform: `scale(${isOpen ? 1 : 0.999})`,
+      transform: `scale(1)`,
       transition: {
         duration: 150
       }
     },
     leave: {
       opacity: 0,
+      visability: 'hidden',
       transform: 'scale(0.999)'
     },
     config: {
-      duration: 150
+      delay: 100,
+      duration: 200
     }
   });
 
@@ -78,11 +102,11 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
         {...props}
         ref={dropdownRef}
       >
-          <SidebarDropdownToggler ref={buttonRef} onClick={handleToggle}>
-            <IconProvider fill={theme.colors.base.white}>
-              <SidebarDropdownTogglerIcon />
-            </IconProvider>
-          </SidebarDropdownToggler>
+        <SidebarDropdownToggler ref={buttonRef} onClick={handleToggle}>
+          <IconProvider fill={theme.colors.base.white}>
+            <SidebarDropdownTogglerIcon />
+          </IconProvider>
+        </SidebarDropdownToggler>
         {dropdownTransition(
           (style, item) =>
             item && (
@@ -90,9 +114,8 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
                 ref={contentRef}
                 style={{
                   ...style,
-                  transform: 'translate3d(-100%, 0, 0)',
-                  left: contentPosition.right,
-                  top: contentPosition.bottom
+                  top: 0,
+                  transform: openUpward ? 'translate3d(-100%, -100%, 0)' : 'translate3d(-100%, 0, 0)',
                 }}
               >
                 <SidebarDropdownList>

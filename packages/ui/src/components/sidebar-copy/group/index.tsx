@@ -87,7 +87,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   }
 
   return (
-    <SidebarGroupStyled>
+    <SidebarGroupStyled id={props.id}>
       <SidebarGroupBox onClick={handleOpen}>
         <FolderIcon/>
         <SidebarGroupName>{props.name}</SidebarGroupName>
