@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { ArrowNarrowDownIcon } from '@/ui/icons';
 
 export const MessageListScrollButton = styled.button`
+  z-index: 1;
   position: absolute;
   display: flex;
   align-items: center;
