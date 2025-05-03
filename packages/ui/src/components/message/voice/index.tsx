@@ -113,7 +113,6 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
     },
     [isTextShowed]
   );
-  console.log({ isLoading });
 
   return (
     <MessageVoiceStyled {...props}>
