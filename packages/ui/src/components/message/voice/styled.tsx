@@ -43,10 +43,10 @@ export const MessageVoicePlayIcon = styled(PlayButtonIcon)``;
 
 export const MessageVoicePauseIcon = styled(PauseButtonIcon)``;
 
-export const MessageVoiceWaves = styled.svg`
+export const MessageVoiceWaves = styled.svg<{ $audioWidth?: string }>`
   display: flex;
   flex-shrink: 0;
-  width: 145px;
+  width: ${({ $audioWidth }) => ($audioWidth ? `${$audioWidth}px` : '145px')};
   height: 36px;
 `;
 
@@ -61,7 +61,9 @@ export const MessageVoiceToggleTextButton = styled(Button).attrs({
   variant: 'text',
   iconSize: 30,
   disableHoverColor: true
-})``;
+})<{ $hidden?: boolean }>`
+  display: ${({ $hidden }) => $hidden && 'none'};
+`;
 
 export const MessageVoiceShowTextIcon = styled(TextReadIcon)``;
 
