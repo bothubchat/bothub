@@ -56,7 +56,7 @@ export const Basic: ThemeButtonStory = {
 };
 
 export default {
-  title: 'UI Components/ThemeButton',
+  title: 'Components/ThemeButton',
   component: ThemeButton,
   decorators: [StoryDecorator()]
 } as ThemeButtonMeta;

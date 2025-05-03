@@ -9,6 +9,31 @@ export interface Theme {
   default: DefaultTheme;
 }
 
+export interface ColorScheme {
+  light: Theme;
+  dark: Theme;
+}
+
+export type ColorSchemeNames =
+  | 'standard'
+  | 'strawberry'
+  | 'rose'
+  | 'orange'
+  | 'milktea'
+  | 'banana'
+  | 'apple'
+  | 'swamp'
+  | 'aquamarine'
+  | 'mountain'
+  | 'lake'
+  | 'iris'
+  | 'peony'
+  | 'custom';
+
+export type ColorSchemes = {
+  [key in ColorSchemeNames]: ColorScheme;
+};
+
 export type DefaultTheme = Omit<Theme, 'default'>;
 
 export type ThemeMode = 'dark' | 'light';

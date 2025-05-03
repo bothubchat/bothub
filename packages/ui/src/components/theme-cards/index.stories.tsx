@@ -9,7 +9,7 @@ export type ThemesCardStory = StoryObj<typeof ThemeCards>;
 export const Basic: ThemesCardStory = {};
 
 export default {
-  title: 'UI Components/ThemeCards',
+  title: 'Components/ThemeCards',
   component: ThemeCards,
   decorators: [StoryDecorator()]
 } as ThemesCardMeta;
