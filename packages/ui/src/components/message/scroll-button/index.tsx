@@ -4,7 +4,7 @@ import {
   MessageListScrollButton,
   MessageListArrowNarrowDownIcon
 } from './styled';
-import { ScrollbarRef } from '../../scrollbar';
+import { ScrollbarRef } from '@/ui/index';
 
 interface IScrollButton {
   scrollbarRef: React.RefObject<ScrollbarRef>;

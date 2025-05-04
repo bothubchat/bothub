@@ -43,7 +43,7 @@ export const MessageVoicePlayIcon = styled(PlayButtonIcon)``;
 
 export const MessageVoicePauseIcon = styled(PauseButtonIcon)``;
 
-export const MessageVoiceWaves = styled.svg<{ $audioWidth?: string }>`
+export const MessageVoiceWaves = styled.svg`
   display: flex;
   flex-shrink: 0;
   width: 145px;
