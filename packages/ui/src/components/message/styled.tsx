@@ -236,14 +236,9 @@ export const MessageBlock = styled.div<MessageBlockProps>`
 
 export const MessageBlockBottomPanel = styled.div<{
   $variant: MessageVariant;
-  $speechSynthesis?: boolean;
 }>`
   display: flex;
   align-items: center;
-  flex-direction: ${({ $speechSynthesis, $variant }) =>
-    $variant !== 'user' && $speechSynthesis && 'row-reverse'};
-  justify-content: ${({ $speechSynthesis, $variant }) =>
-    $variant !== 'user' && $speechSynthesis && 'start'};
   gap: 10px;
   ${({ $variant }) => {
     switch ($variant) {
@@ -264,9 +259,8 @@ export const MessageBlockBottomPanel = styled.div<{
 
 export const MessageBlockTransaction = styled.div<{
   $top?: boolean;
-  $speechSynthesis?: boolean;
 }>`
-  ${({ $top, $speechSynthesis }) =>
+  ${({ $top }) =>
     $top
       ? adaptive({
           desktop: css`
@@ -276,7 +270,7 @@ export const MessageBlockTransaction = styled.div<{
             display: none;
           `,
           mobile: css`
-            display: ${$speechSynthesis ? 'none' : 'block'};
+            display: 'block';
           `
         })
       : adaptive({
@@ -287,7 +281,7 @@ export const MessageBlockTransaction = styled.div<{
             display: block;
           `,
           mobile: css`
-            display: ${$speechSynthesis ? 'block' : 'none'};
+            display: 'none';
           `
         })}
 `;
@@ -298,7 +292,6 @@ export const MessageBlockScrollbarWrapper = styled(Scrollbar).attrs({
 
 export const MessageBlockContent = styled.div<{
   $variant: MessageVariant;
-  $speechSynthesis?: boolean;
 }>`
   display: flex;
   flex-direction: column;
@@ -306,12 +299,12 @@ export const MessageBlockContent = styled.div<{
   gap: 10px;
   grid-area: block;
   border-radius: 10px;
-  padding: ${({ $variant, $speechSynthesis }) => {
+  padding: ${({ $variant }) => {
     switch ($variant) {
       case 'user':
         return '8px';
       case 'assistant':
-        return $speechSynthesis ? '0px 8px 0px 0px' : '0px 8px 8px 0px';
+        return '0px 8px 0px 0px';
     }
   }};
   max-width: 100%;

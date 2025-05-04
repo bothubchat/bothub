@@ -68,13 +68,11 @@ type MessageActionsProps = {
   onTgCopy?: MessageTgCopyEventHandler;
   onCopy?: MessageActionEventHandler;
   onDownload?: () => void;
-  speechSynthesis?: boolean;
 };
 
 export const MessageActions = ({
   id,
   message,
-  speechSynthesis,
   variant = 'user',
   skeleton,
   disableResend,
@@ -120,9 +118,6 @@ export const MessageActions = ({
 
   const modalEnabled = () => {
     if (skeleton) {
-      return false;
-    }
-    if (variant === 'assistant' && speechSynthesis) {
       return false;
     }
     switch (variant) {
@@ -376,8 +371,7 @@ export const MessageActions = ({
               <UpdateIcon size={18} />
             </ActionButton>
           )}
-          {((!disableCopy && !speechSynthesis) ||
-            (!disableCopy && speechSynthesis && variant !== 'assistant')) && (
+          {!disableCopy && (
             <CopyButton
               onCopy={onCopy}
               tooltipLabel={copyTooltipLabel}
@@ -423,7 +417,7 @@ export const MessageActions = ({
           </ActionButton>
         </S.MessageEditButtonsStyled>
       )}
-      {!disableDownload && speechSynthesis && variant !== 'user' && (
+      {!disableDownload && (
         <ActionButton
           tooltipLabel={downloadTooltipLabel}
           onClick={onDownload}

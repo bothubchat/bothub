@@ -89,12 +89,10 @@ export interface MessageProps {
   onNextVersion?: MessageVersionEventHandler;
   onPrevVersion?: MessageVersionEventHandler;
   onDownload?: () => void;
-  speechSynthesis?: boolean;
 }
 
 export const Message: React.FC<MessageProps> = ({
   id,
-  speechSynthesis,
   content,
   className,
   variant = 'user',
@@ -108,7 +106,7 @@ export const Message: React.FC<MessageProps> = ({
   disableDelete = false,
   disableUpdate = false,
   disableCopy = false,
-  disableDownload = false,
+  disableDownload = true,
   copyPlainText,
   copyTgText,
   editText,
@@ -305,10 +303,7 @@ export const Message: React.FC<MessageProps> = ({
                     </MessageSender>
                   )}
                   {typeof name !== 'string' && <div />}
-                  <MessageBlockTransaction
-                    $speechSynthesis={speechSynthesis}
-                    $top
-                  >
+                  <MessageBlockTransaction $top>
                     {transaction}
                   </MessageBlockTransaction>
                 </MessageTop>
@@ -335,9 +330,6 @@ export const Message: React.FC<MessageProps> = ({
                     <MessageBlockContent
                       ref={messageBlockContentRef}
                       $variant={variant}
-                      $speechSynthesis={
-                        speechSynthesis && variant === 'assistant'
-                      }
                     >
                       {!isEditing ? (
                         <>
@@ -393,16 +385,12 @@ export const Message: React.FC<MessageProps> = ({
               </MessageBlockWrapper>
             </MessageContent>
           </MessageStyled>
-          <MessageBlockBottomPanel
-            $speechSynthesis={speechSynthesis}
-            $variant={variant}
-          >
+          <MessageBlockBottomPanel $variant={variant}>
             {!skeleton && (
               <MessageActions
                 id={id}
                 onDownload={onDownload}
                 disableDownload={disableDownload}
-                speechSynthesis={speechSynthesis}
                 message={content}
                 variant={variant}
                 skeleton={skeleton}
@@ -438,9 +426,7 @@ export const Message: React.FC<MessageProps> = ({
               />
             )}
             {transaction && (
-              <MessageBlockTransaction $speechSynthesis={speechSynthesis}>
-                {transaction}
-              </MessageBlockTransaction>
+              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
             )}
             <MessageVersions
               id={id}

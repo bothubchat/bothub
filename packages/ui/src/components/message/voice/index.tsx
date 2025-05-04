@@ -23,16 +23,10 @@ export interface MessageVoiceProps extends React.ComponentProps<'div'> {
   src: string;
   waveData: number[];
   duration: number;
-  hiddenText?: boolean;
-  audioWaveWidth?: string;
-  speechSynthesisComp?: boolean;
 }
 
 export const MessageVoice: React.FC<MessageVoiceProps> = ({
   src,
-  speechSynthesisComp,
-  hiddenText,
-  audioWaveWidth,
   waveData,
   duration,
   tabIndex = 0,
@@ -46,7 +40,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   const audioRef = useRef<HTMLAudioElement>(null);
   const wavesRef = useRef<SVGSVGElement>(null);
 
-  const [isLoading, setIsLoading] = useState<boolean>(!speechSynthesisComp);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isPlayed, setIsPlayed] = useState(false);
   const [isTextShowed, setIsTextShowed] = useState(false);
   const [currentTime, setCurrentTime] = useState<number | null>(null);
@@ -145,17 +139,16 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
           </IconProvider>
         </MessageVoiceToggleButton>
         <MessageVoiceWaves
-          $audioWidth={audioWaveWidth}
           ref={wavesRef}
-          width={audioWaveWidth || '145'}
+          width="145"
           height="36"
-          viewBox={audioWaveWidth ? `0 0 ${audioWaveWidth} 36` : '0 0 145 36'}
+          viewBox="0 0 145 36"
           fill="none"
           onClick={handleWavesClick}
         >
           <g clipPath={`url(#${voiceId}_clip)`}>
             <rect
-              width={audioWaveWidth || '145'}
+              width="145"
               height="36"
               opacity="0.6"
               {...(color === 'default' && {
@@ -170,9 +163,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
                 height="36"
                 fill={theme.default.colors.base.white}
                 style={{
-                  width: audioWaveWidth
-                    ? Number(audioWaveWidth) * (currentTime / duration)
-                    : 145 * (currentTime / duration)
+                  width: 145 * (currentTime / duration)
                 }}
               />
             )}
@@ -200,10 +191,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
           {currentTime !== null && formatSeconds(currentTime)}
           {currentTime === null && formatSeconds(duration)}
         </MessageVoiceDurationText>
-        <MessageVoiceToggleTextButton
-          $hidden={hiddenText}
-          onClick={handleTextToggle}
-        >
+        <MessageVoiceToggleTextButton onClick={handleTextToggle}>
           <IconProvider
             {...(color === 'default'
               ? {}

@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '../typography';
 import { Variant } from './types';
+import { colorToRgba } from '@/ui/utils';
 
 type VariantProps = { $variant: Variant };
 
@@ -71,7 +72,8 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
   }
 
   &:hover:before {
-    background-color: ${({ theme }) => theme.colors.accent.primary}20;
+    background-color: ${({ theme }) =>
+      colorToRgba(theme.colors.accent.primary, 0.2)};
   }
 
   & > * {
