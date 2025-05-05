@@ -25,6 +25,7 @@ export const ModalWindow = ({
   const modalTransition = useTransition(open, {
     from: { opacity: 0, transform: 'scale(0.9)' },
     enter: { opacity: 1, transform: 'scale(1)' },
+    leave: { opacity: 0, transform: 'scale(0.9)' },
     config: { duration: 200 }
   });
 
