@@ -16,7 +16,8 @@ export const ModalWindowStyled = styled(animated.div)`
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 17px;
   position: relative;
-  z-index: ${({ theme }) => theme.zIndex.modal + 1};
+  z-index: ${({ theme }) => theme.zIndex.modal};
+
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     margin: 0px 10px;
   }
@@ -31,10 +32,12 @@ export const ModalWindowBody = styled.div`
   padding-right: 10px;
   width: 100%;
   box-sizing: border-box;
+
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     padding: 18px;
     padding-right: 9px;
   }
+
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     padding: 14px 18px;
     padding-right: 9px;
@@ -46,11 +49,13 @@ export const ModalWindowTitle = styled(Typography)`
   font-size: 22px;
   line-height: 29px;
   margin-bottom: 20px;
+
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     font-size: 20px;
     line-height: 26px;
     margin-bottom: 18px;
   }
+
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     font-size: 18px;
     line-height: 24px;
@@ -68,15 +73,18 @@ export const ModalWindowCloseButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+
   path {
     fill: ${({ theme }) => theme.colors.grayScale.gray1};
   }
+
   &:hover path {
     fill: ${({ theme }) =>
       theme.mode === 'light'
         ? theme.default.colors.accent.primary
         : theme.colors.base.white};
   }
+
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     > svg {
       width: 18px;
@@ -108,6 +116,7 @@ export const ModalWindowBodyScrollbarWrapper = styled(Scrollbar).attrs(
   height: 100%;
   padding-right: 10px;
   max-height: 80vh;
+
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     padding-right: 9px;
   }
