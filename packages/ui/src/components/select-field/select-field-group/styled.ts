@@ -21,19 +21,23 @@ export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+
   ${({ $disableScrollbar, $size, $followContentHeight }) =>
     !$disableScrollbar &&
     css`
       &::-webkit-scrollbar {
         width: 4px;
       }
+
       &::-webkit-scrollbar-thumb {
         background: ${({ theme }) => theme.colors.accent.primary};
         border-radius: 2px;
       }
+
       &::-webkit-scrollbar-corner {
         display: none;
       }
+
       max-height: ${() => {
         if ($followContentHeight) {
           return '100%';

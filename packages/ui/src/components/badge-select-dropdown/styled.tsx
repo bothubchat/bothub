@@ -27,6 +27,8 @@ export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
 export const BadgeSelectDropdownList: React.FC<
   AnimatedProps<React.ComponentProps<'ul'>> & { $open: boolean }
 > = styled(animated.ul)`
+  max-height: 192px;
+  overflow-y: auto;
   padding: 0;
   margin: 0;
   display: none;
@@ -49,6 +51,19 @@ export const BadgeSelectDropdownList: React.FC<
   `}
   flex-direction: column;
   gap: 1px;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.accent.primary};
+    border-radius: 2px;
+  }
+
+  &::-webkit-scrollbar-corner {
+    display: none;
+  }
 `;
 
 export const BadgeSelectDropdownWrapper = styled.div`
