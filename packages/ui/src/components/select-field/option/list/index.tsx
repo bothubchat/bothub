@@ -161,6 +161,9 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                     onClick={onClick}
                   >
                     <SelectFieldRadioTitleAndRadio>
+                      {item.icon && (
+                        <IconProvider size={18}>{item.icon}</IconProvider>
+                      )}
                       {item.label && (
                         <SelectFieldRadioLabel>
                           {item.label}
