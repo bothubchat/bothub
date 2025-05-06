@@ -35,7 +35,8 @@ export const BadgeSelectDropdownList: React.FC<
   position: absolute;
   z-index: 1;
   top: 38px;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   transform-origin: top center;
 
   padding: 8px;
@@ -66,6 +67,7 @@ export const BadgeSelectDropdownList: React.FC<
 `;
 
 export const BadgeSelectDropdownWrapper = styled.div`
+  display: inline-block;
   position: relative;
 `;
 

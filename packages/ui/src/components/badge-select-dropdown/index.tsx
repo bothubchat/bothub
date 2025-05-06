@@ -72,12 +72,13 @@ export const BadgeSelectDropdown: React.FC<IBadgeSelectDropdown> = ({
           </BadgeSelectDropdownSpanStyled>
           <BadgeSelectDropdownTogglerArrow $open={isOpen} />
         </BadgeSelectDropdownTrigger>
+
         {dropdownTransition(
           (style, item) =>
             item && (
               <BadgeSelectDropdownList
                 $open={isOpen && !!item}
-                style={style}
+                // style={style}
               >
                 {children}
               </BadgeSelectDropdownList>
