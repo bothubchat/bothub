@@ -1,5 +1,12 @@
-export const hasSubstring = (str: string, subStr: string): boolean => {
+export const hasSubstring = (
+  str: string | string[],
+  subStr: string
+): boolean => {
   const escapedSubStr = subStr.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 
-  return new RegExp(escapedSubStr, 'i').test(str);
+  if (typeof str === 'string') {
+    return new RegExp(escapedSubStr, 'i').test(str);
+  }
+
+  return str.some((val) => new RegExp(escapedSubStr, 'i').test(val));
 };
