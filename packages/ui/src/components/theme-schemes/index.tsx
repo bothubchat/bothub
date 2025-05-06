@@ -34,7 +34,7 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = React.memo(
           onClick={() => onClick?.('strawberry')}
         >
           <ThemeButton theme={themes.strawberry[theme.mode]} />
-          <ThemeButton theme={theme} />
+          <ThemeButton theme={themes.rose[theme.mode]} />
           <ThemeButton theme={theme} />
           <ThemeButton theme={theme} />
           <ThemeButton theme={theme} />

@@ -99,55 +99,110 @@ const standardDark: Theme = {
 const standardLight: Theme = {
   ...defaultTheme,
   mode: 'light',
-  default: defaultTheme
+  default: defaultTheme,
+  colors: {
+    ...defaultTheme.colors,
+    base: {
+      black: '#FFFFFF',
+      white: '#0E0C15'
+    },
+    accent: {
+      primary: '#1C64F2',
+      primaryLight: '#4785FF',
+      strong: '#073CA4',
+      strongDown: '#0E3176'
+    },
+    grayScale: {
+      gray1: '#ADB8C0',
+      gray2: '#CDD5DA',
+      gray3: '#DBE0E4',
+      gray4: '#F5F6F7',
+      gray5: '#ADB5BD',
+      gray6: '#DDE8F3',
+      gray7: '#E6E9EC'
+    }
+  }
 };
 
 export const themes: ColorSchemes = {
   standard: {
     dark: standardDark,
-    light: {
-      ...standardLight,
-      colors: {
-        ...defaultTheme.colors,
-        base: {
-          black: '#FFFFFF',
-          white: '#0E0C15'
-        },
-        accent: {
-          primary: '#1C64F2',
-          primaryLight: '#4785FF',
-          strong: '#073CA4',
-          strongDown: '#0E3176'
-        },
-        grayScale: {
-          gray1: '#ADB8C0',
-          gray2: '#CDD5DA',
-          gray3: '#DBE0E4',
-          gray4: '#F5F6F7',
-          gray5: '#ADB5BD',
-          gray6: '#DDE8F3',
-          gray7: '#E6E9EC'
-        }
-      }
-    }
+    light: standardLight
   },
   strawberry: {
     dark: {
       ...standardDark,
       colors: {
-        ...defaultTheme.colors,
+        ...standardDark.colors,
         base: {
           black: '#30191E',
           white: '#FFFFFF'
         },
         accent: {
           primary: '#FFB1C0',
-          primaryLight: '#FFB1C080'
+          primaryLight: '#FFB1C080',
+          strong: '#FFB1C0',
+          strongDown: '#FFB1C0'
         },
         grayScale: {
           gray1: '#9F6D78',
           gray2: '#9F6D78',
-          gray4: '#4F3439'
+          gray3: '#6E474F',
+          gray4: '#4F3439',
+          gray5: '#9F6D78',
+          gray6: '#9F6D78',
+          gray7: '#9F6D78'
+        }
+      }
+    },
+    light: {
+      ...standardLight,
+      colors: {
+        ...standardLight.colors,
+        accent: {
+          primary: '#924759',
+          primaryLight: '#F3D2D7',
+          strong: '#924759',
+          strongDown: '#924759'
+        },
+        grayScale: {
+          ...standardLight.colors.grayScale,
+          gray3: '#F3D2D7'
+        }
+      }
+    }
+  },
+  rose: {
+    dark: {
+      ...standardDark,
+      colors: {
+        ...standardDark.colors,
+        accent: {
+          primary: '#DDBFC3',
+          primaryLight: '#DDBFC3',
+          strong: '#DDBFC3',
+          strongDown: '#DDBFC3'
+        },
+        grayScale: {
+          gray1: '#AF969C',
+          gray2: '#AF969C',
+          gray3: '#5E4D50',
+          gray4: '#46383A',
+          gray5: '#AF969C',
+          gray6: '#AF969C',
+          gray7: '#AF969C'
+        }
+      }
+    },
+    light: {
+      ...standardLight,
+      colors: {
+        ...standardLight.colors,
+        accent: {
+          primary: '#70585C',
+          primaryLight: '#E5D0D3',
+          strong: '#70585C',
+          strongDown: '#70585C'
         }
       }
     }

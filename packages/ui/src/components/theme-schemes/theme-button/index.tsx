@@ -25,18 +25,18 @@ export interface ThemeButtonProps {
 
 export const ThemeButton: React.FC<ThemeButtonProps> = React.memo(
   ({ theme, active, hasActions, onEdit, onDelete }) => {
-    const defTheme = useTheme();
+    const standardTheme = useTheme();
 
     return (
-      <ThemeProvider theme={{ ...defTheme, ...theme }}>
+      <ThemeProvider theme={{ ...standardTheme, ...theme }}>
         <ThemeButtonWrapperStyled>
           <ThemeButtonStyled $active={active}>
             <ThemeButtonIconStyled>
               <IconProvider
                 fill={
                   theme.mode === 'dark'
-                    ? theme.colors.accent.primary
-                    : theme.colors.accent.primaryLight
+                    ? theme.colors.accent.primaryLight
+                    : theme.colors.accent.primary
                 }
                 size={28}
               >
