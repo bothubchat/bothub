@@ -14,7 +14,6 @@ export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
   align-items: center;
   cursor: pointer;
   column-gap: 8px;
-  min-width: 98px;
   padding: 6px 12px;
   border-radius: 14px;
   background: ${({ theme, $active }) =>
