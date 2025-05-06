@@ -190,23 +190,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     [setMessage, onTextAreaChange]
   );
 
-  const handleInput = useCallback<React.ReactEventHandler<HTMLTextAreaElement>>(
-    (event) => {
-      const textareaEl: HTMLElement | null = textareaRef.current;
-
-      if (textareaEl === null) {
-        return;
-      }
-
-      textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 18px)';
-      textareaEl.style.height = `${event.currentTarget.scrollHeight}px`;
-      textareaEl.focus();
-
-      setTextareaHeight(`${event.currentTarget.scrollHeight}px`);
-    },
-    []
-  );
-
   const handleSideUploadFiles = useCallback(
     async (uploadFiles: File[]) => {
       if (!uploadFiles.length) return;
@@ -398,6 +381,24 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
     stopVoiceRecording();
   }, [isVoiceRecording, stopVoiceRecording]);
+
+  const handleInput = useCallback(() => {
+    const textareaEl: HTMLElement | null = textareaRef.current;
+
+    if (textareaEl === null) {
+      return;
+    }
+
+    textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 18px)';
+    textareaEl.style.height = `${textareaEl.scrollHeight}px`;
+    textareaEl.focus();
+
+    setTextareaHeight(`${textareaEl.scrollHeight}px`);
+  }, [message]);
+
+  useEffect(() => {
+    handleInput();
+  }, [handleInput]);
 
   useEffect(() => {
     const textareaEl: HTMLElement | null = textareaRef.current;
@@ -633,7 +634,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                   onFocus={handleFocus}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  onInput={handleInput}
                   onPaste={handlePaste}
                 />
               )}
