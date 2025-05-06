@@ -3,10 +3,11 @@ export const hasSubstring = (
   subStr: string
 ): boolean => {
   const escapedSubStr = subStr.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+  const regExp = new RegExp(escapedSubStr, 'i');
 
   if (typeof str === 'string') {
-    return new RegExp(escapedSubStr, 'i').test(str);
+    return regExp.test(str);
   }
 
-  return str.some((val) => new RegExp(escapedSubStr, 'i').test(val));
+  return str.some((val) => regExp.test(val));
 };
