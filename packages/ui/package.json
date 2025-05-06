@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.33.4-develop-17ff3526-9e55-493d-ab20-0ac7880dbedf",
+  "version": "2.33.4-fix-message-input-aab37b71-9f80-41ea-8f64-58ae7d71358b",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
