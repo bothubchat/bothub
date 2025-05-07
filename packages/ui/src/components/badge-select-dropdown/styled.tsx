@@ -6,7 +6,11 @@ import { Typography } from '../typography';
 
 export const BadgeSelectDropdownSpanStyled = styled(Typography).attrs({
   variant: 'body-s-medium'
-})``;
+})`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
 
 export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
   border: none;
@@ -21,6 +25,7 @@ export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
       ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
       : theme.colors.grayScale.gray3};
   color: ${({ theme }) => theme.colors.base.white};
+  width: 100%;
 `;
 
 export const BadgeSelectDropdownList: React.FC<
@@ -69,6 +74,7 @@ export const BadgeSelectDropdownList: React.FC<
 export const BadgeSelectDropdownWrapper = styled.div`
   display: inline-block;
   position: relative;
+  width: 100%;
 `;
 
 export const BadgeSelectDropdownTogglerArrow = styled(ArrowDownIcon).attrs({
