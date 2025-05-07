@@ -5,22 +5,18 @@ import { CloseIcon } from '@/ui/icons/close';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 
 export const ModalWindowStyled = styled(animated.div)`
-  width: 100%;
-  max-width: 494px;
-  position: relative;
-  z-index: ${({ theme }) => theme.zIndex.modal};
-`;
-
-export const ModalWindowWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
+  width: 100%;
+  max-width: 494px;
   overflow: hidden;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 17px;
   position: relative;
+  z-index: ${({ theme }) => theme.zIndex.modal};
 
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     margin: 0px 10px;
