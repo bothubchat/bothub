@@ -1,5 +1,5 @@
 import { hasSubstring } from '@/ui/utils';
-import { SelectFieldData } from './types';
+import { SelectFieldData } from '../types';
 
 export const filterData = (
   data: SelectFieldData,
