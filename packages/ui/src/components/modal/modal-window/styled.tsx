@@ -114,12 +114,7 @@ export const ModalWindowBodyScrollbarWrapper = styled(Scrollbar).attrs(
   display: flex;
   width: 100%;
   height: 100%;
-  padding-right: 10px;
   max-height: 80vh;
-
-  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    padding-right: 9px;
-  }
 `;
 
 export const ModalWindowContent = styled.div`
@@ -128,4 +123,9 @@ export const ModalWindowContent = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   width: 100%;
+  padding-right: 10px;
+
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    padding-right: 9px;
+  }
 `;
