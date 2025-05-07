@@ -28,15 +28,16 @@ export const SidebarDropdownToggler = styled.button`
   align-items: center;
 `;
 
-export const SidebarDropdownContent = styled(animated.div)`
+export const SidebarDropdownContent = styled.div`
   position: absolute;
   transform-origin: top right;
   margin-top: 16px;
-  top: 0px;
+  top: 16px;
+  right: -2px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 8px;
   padding: 8px;
-  z-index:3;
+  z-index: 3;
   &::before {
     content: '';
     position: absolute;
@@ -44,9 +45,11 @@ export const SidebarDropdownContent = styled(animated.div)`
     z-index: -1;
     width: 100%;
     height: 100%;
-    top: 0px;
     right: 0px;
-    background: rgba(${({ theme }) => colorToRgba(theme.colors.grayScale.gray4)}, 0.75);
+    background: rgba(
+      ${({ theme }) => colorToRgba(theme.colors.grayScale.gray4)},
+      0.75
+    );
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
   }

@@ -87,9 +87,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const ref = React.useRef<ScrollbarRef>(null);
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
   const [scrollTop, setScrollTop] = useState(false);
-  const handleOpen = useCallback<
-    React.Dispatch<React.SetStateAction<boolean>>
-  >(
+  const handleOpen = useCallback<React.Dispatch<React.SetStateAction<boolean>>>(
     (open) => {
       setIsOpen(open);
 
@@ -104,19 +102,21 @@ export const Sidebar: React.FC<SidebarProps> = ({
     if (!ref.current?.element) return;
 
     const observer = new ResizeObserver(() => {
-      if (ref.current?.element?.clientHeight !== ref.current?.element?.scrollHeight) {
+      if (
+        ref.current?.element?.clientHeight !==
+        ref.current?.element?.scrollHeight
+      ) {
         setIsScrolling(true);
       } else {
         setIsScrolling(false);
       }
-    })
+    });
 
     observer.observe(ref.current.element);
 
     return () => {
       observer.disconnect();
-    }
-
+    };
   }, [ref.current?.element]);
 
   return (
@@ -142,14 +142,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
           )}
           {!isOpen && <SidebarDivider $isOpen={isOpen} />}
           <SidebarToolbar $isOpen={isOpen}>
-            <SidebarButtons>{buttons}{buttonsModal}</SidebarButtons>
+            <SidebarButtons>
+              {buttons}
+              {buttonsModal}
+            </SidebarButtons>
             {section === 'chats' && isOpen && toggle}
           </SidebarToolbar>
           <SidebarDivider $isOpen={isOpen} />
         </SidebarTop>
         <SidebarContent>
-          <SidebarWrapper $isScrollable={isScrolling} $isOpen={isOpen}>
-            <SidebarBodyScrollbarWrapper ref={ref} $isOpen={isOpen}>
+          <SidebarWrapper
+            $isScrollable={isScrolling}
+            $isOpen={isOpen}
+          >
+            <SidebarBodyScrollbarWrapper
+              ref={ref}
+              $isOpen={isOpen}
+            >
               {children}
             </SidebarBodyScrollbarWrapper>
           </SidebarWrapper>
@@ -161,7 +170,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </SidebarStyled>
     </SidebarProvider>
   );
-}
+};
 export * from './user-info';
 export * from './styled';
 export * from './context';

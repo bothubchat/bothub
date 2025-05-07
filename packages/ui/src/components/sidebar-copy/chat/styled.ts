@@ -1,8 +1,8 @@
-import { SidebarChatIcon } from "@/ui/icons";
-import { styled } from "styled-components";
-import { Typography } from "@/ui/components/typography";
-import { Skeleton } from "@/ui/components/skeleton";
-import { colorToRgba } from "@/ui/utils";
+import { styled } from 'styled-components';
+import { SidebarChatIcon } from '@/ui/icons';
+import { Typography } from '@/ui/components/typography';
+import { Skeleton } from '@/ui/components/skeleton';
+import { colorToRgba } from '@/ui/utils';
 
 export const SidebarChatStyled = styled.div`
   display: flex;
@@ -24,7 +24,8 @@ export const SidebarChatStyled = styled.div`
     transition: all 0.15s ease-in-out;
   }
   &:hover {
-    background: ${({ theme }) => colorToRgba(theme.colors.accent.primaryLight, 0.5)};
+    background: ${({ theme }) =>
+      colorToRgba(theme.colors.accent.primaryLight, 0.5)};
     &::before {
       border-left: 3px solid ${({ theme }) => theme.colors.accent.primary};
     }
@@ -54,5 +55,5 @@ export const SidebarChatIconSkeleton = styled(Skeleton)`
 `;
 
 export const SidebarChatSkeleton = styled(Skeleton)`
-  width: 70%;
+  width: 100%;
 `;

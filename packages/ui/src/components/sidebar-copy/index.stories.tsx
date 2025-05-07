@@ -1,6 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
-import { Sidebar, SidebarListActions, SidebarDropdownItem, SidebarChat, SidebarGroupsList, SidebarGroup } from '.';
+import {
+  Sidebar,
+  SidebarListActions,
+  SidebarDropdownItem,
+  SidebarChat,
+  SidebarGroupsList,
+  SidebarGroup
+} from '.';
 import { Logo } from '@/ui/components/logo';
 import {
   SidebarLangDropdown,
@@ -92,22 +99,74 @@ const Menu = () => (
 
 const ChatsActions = () => (
   <SidebarListActions>
-    <SidebarDropdownItem icon={<ChatsIcon />}>Редактировать</SidebarDropdownItem>
+    <SidebarDropdownItem icon={<ChatsIcon />}>
+      Редактировать
+    </SidebarDropdownItem>
   </SidebarListActions>
 );
 
 const Chat: React.FC<{ skeleton?: boolean }> = ({ skeleton = false }) => (
   <>
-    <SidebarChat actions={<ChatsActions />} name='ЧатЧатЧатЧатЧатЧатЧатЧатЧатЧатЧатЧат' icon={<Gpt35Icon />} skeleton={skeleton} />
-    <SidebarChat actions={<ChatsActions />} name='Чат' icon={<Gpt35Icon />} skeleton={skeleton} />
-    <SidebarChat  actions={<ChatsActions />} name='Чат' icon={<Gpt35Icon />} skeleton={skeleton} />
-    <SidebarChat actions={<ChatsActions />} name='Чат' icon={<Gpt35Icon />} skeleton={skeleton} />
-    <SidebarChat actions={<ChatsActions />} name='Чат' icon={<Gpt35Icon />} skeleton={skeleton} />
-    <SidebarChat actions={<ChatsActions />} name='Чат' icon={<Gpt35Icon />} skeleton={skeleton} />
-    <SidebarChat actions={<ChatsActions />} name='Чат' icon={<Gpt35Icon />} skeleton={skeleton} />
-    <SidebarChat actions={<ChatsActions />} name='Чат' icon={<Gpt35Icon />} skeleton={skeleton} />
-    <SidebarChat actions={<ChatsActions />} name='Чат' icon={<Gpt35Icon />} skeleton={skeleton} />
-    <SidebarChat actions={<ChatsActions />} name='Чат' icon={<Gpt35Icon />} skeleton={skeleton} />
+    <SidebarChat
+      actions={<ChatsActions />}
+      name="ЧатЧатЧатЧатЧатЧатЧатЧатЧатЧатЧатЧат"
+      icon={<Gpt35Icon />}
+      skeleton={skeleton}
+    />
+    <SidebarChat
+      actions={<ChatsActions />}
+      name="Чат"
+      icon={<Gpt35Icon />}
+      skeleton={skeleton}
+    />
+    <SidebarChat
+      actions={<ChatsActions />}
+      name="Чат"
+      icon={<Gpt35Icon />}
+      skeleton={skeleton}
+    />
+    <SidebarChat
+      actions={<ChatsActions />}
+      name="Чат"
+      icon={<Gpt35Icon />}
+      skeleton={skeleton}
+    />
+    <SidebarChat
+      actions={<ChatsActions />}
+      name="Чат"
+      icon={<Gpt35Icon />}
+      skeleton={skeleton}
+    />
+    <SidebarChat
+      actions={<ChatsActions />}
+      name="Чат"
+      icon={<Gpt35Icon />}
+      skeleton={skeleton}
+    />
+    <SidebarChat
+      actions={<ChatsActions />}
+      name="Чат"
+      icon={<Gpt35Icon />}
+      skeleton={skeleton}
+    />
+    <SidebarChat
+      actions={<ChatsActions />}
+      name="Чат"
+      icon={<Gpt35Icon />}
+      skeleton={skeleton}
+    />
+    <SidebarChat
+      actions={<ChatsActions />}
+      name="Чат"
+      icon={<Gpt35Icon />}
+      skeleton={skeleton}
+    />
+    <SidebarChat
+      actions={<ChatsActions />}
+      name="Чат"
+      icon={<Gpt35Icon />}
+      skeleton={skeleton}
+    />
   </>
 );
 
@@ -124,42 +183,42 @@ const Chats = ({
       actions={actions}
       name="Чаты"
     >
-      <Chat/>
+      <Chat skeleton />
     </SidebarGroup>
     <SidebarGroup
       skeleton={loading}
       actions={actions}
       name="Пресеты"
     >
-      <Chat/>
+      <Chat />
     </SidebarGroup>
     <SidebarGroup
       skeleton={loading}
       actions={actions}
       name="Чаты"
     >
-      <Chat/>
+      <Chat />
     </SidebarGroup>
     <SidebarGroup
       skeleton={loading}
       actions={actions}
       name="Пресеты"
     >
-      <Chat/>
+      <Chat />
     </SidebarGroup>
     <SidebarGroup
       skeleton={loading}
       actions={actions}
       name="Чат12222221222222222222ы"
     >
-      <Chat/>
+      <Chat />
     </SidebarGroup>
     <SidebarGroup
       skeleton={loading}
       actions={actions}
       name="Пресеты"
     >
-      <Chat/>
+      <Chat />
     </SidebarGroup>
   </SidebarGroupsList>
 );
@@ -209,7 +268,7 @@ export const Basic: SidebarStory = {
     ),
     children: (
       <Chats
-        loading={false}
+        loading
         actions={<ChatsActions />}
       />
     )

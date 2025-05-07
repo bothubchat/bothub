@@ -12,9 +12,7 @@ export const SidebarGroupStyled = styled.div`
   user-select: none;
 `;
 
-export const SidebarGroupBackground = styled.div`
-
-`;
+export const SidebarGroupBackground = styled.div``;
 
 export const SidebarGroupBox = styled.div`
   display: flex;
@@ -37,7 +35,8 @@ export const SidebarGroupBox = styled.div`
     transition: all 0.15s ease-in-out;
   }
   &:hover {
-    background: ${({ theme }) => colorToRgba(theme.colors.accent.primaryLight, 0.5)};
+    background: ${({ theme }) =>
+      colorToRgba(theme.colors.accent.primaryLight, 0.5)};
     &::before {
       border-left: 3px solid ${({ theme }) => theme.colors.accent.primary};
     }
@@ -49,12 +48,11 @@ export const SidebarGroupList = styled(animated.div)`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  overflow: hidden;
 `;
 
 export const SidebarGroupName = styled(Typography).attrs({
   variant: 'body-l-medium',
-  component: 'p',
+  component: 'p'
 })`
   white-space: nowrap;
   overflow: hidden;
@@ -74,4 +72,19 @@ export const SidebarArrowDownIcon = styled(ArrowDownIcon)<{
 }>`
   transform: rotate(${({ $isOpen }) => ($isOpen ? '180deg' : '0deg')});
   transition: transform 0.2s linear;
+`;
+
+export const SidebarGroupButton = styled.button`
+  display: flex;
+  background: none;
+  outline: none;
+  padding: 0;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 `;

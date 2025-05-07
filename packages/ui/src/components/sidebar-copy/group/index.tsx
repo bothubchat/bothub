@@ -2,15 +2,13 @@ import { useCallback, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   SidebarArrowDownIcon,
-  SidebarGroupBackground,
   SidebarGroupBox,
+  SidebarGroupButton,
   SidebarGroupList,
   SidebarGroupName,
   SidebarGroupStyled
 } from './styled';
 import { useSidebar } from '../context';
-import { Button } from '../../button';
-import { ArrowDownIcon, ChatIcon } from '@/ui/icons';
 import { FolderIcon } from '@/ui/icons/folder';
 
 export interface SidebarGroupDefaultProps {
@@ -49,14 +47,14 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   const [open, setOpen] = useState<boolean>(false);
   const { isOpen: sidebarOpen, isEdit } = useSidebar();
   const listTransition = useTransition(open, {
-    from: { opacity: 0, scale: 0.75, },
+    from: { opacity: 0, scale: 0.75 },
     enter: { opacity: 1, scale: 1 },
     leave: { opacity: 0, scale: 0.75 },
     config: { duration: 200 }
   });
 
   const handleOpen = useCallback((e: React.MouseEvent) => {
-    e.preventDefault(); 
+    e.preventDefault();
     e.stopPropagation();
     setOpen((prev) => !prev);
   }, []);
@@ -71,16 +69,18 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
       </SidebarGroupStyled>
     );
   }
-  
+
   if (!sidebarOpen) {
     return (
       <SidebarGroupStyled>
-        <Button variant="secondary" onClick={handleOpen}>
-          <FolderIcon/>
-        </Button>
+        <SidebarGroupButton onClick={handleOpen}>
+          <FolderIcon />
+        </SidebarGroupButton>
         {listTransition(
           (style, item) =>
-            item && <SidebarGroupList style={style}>{children}</SidebarGroupList>
+            item && (
+              <SidebarGroupList style={style}>{children}</SidebarGroupList>
+            )
         )}
       </SidebarGroupStyled>
     );
@@ -89,9 +89,9 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   return (
     <SidebarGroupStyled id={props.id}>
       <SidebarGroupBox onClick={handleOpen}>
-        <FolderIcon/>
+        <FolderIcon />
         <SidebarGroupName>{props.name}</SidebarGroupName>
-        <SidebarArrowDownIcon $isOpen={open}/>
+        <SidebarArrowDownIcon $isOpen={open} />
         {!isEdit && props.actions}
         {isEdit && props.checkbox}
       </SidebarGroupBox>

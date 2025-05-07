@@ -1,10 +1,16 @@
-import { SidebarChatStyled, SidebarChatIconSkeleton, SidebarChatName,SidebarChatSkeleton as SidebarChatSkeletonStyled } from "./styled";
+import {
+  SidebarChatStyled,
+  SidebarChatIconSkeleton,
+  SidebarChatName,
+  SidebarChatSkeleton as SidebarChatSkeletonStyled
+} from './styled';
 
 export const SidebarChatSkeleton: React.FC = () => (
   <SidebarChatStyled>
     <SidebarChatIconSkeleton />
     <SidebarChatName>
-      <SidebarChatSkeletonStyled/>
+      <SidebarChatSkeletonStyled />
     </SidebarChatName>
+    <SidebarChatIconSkeleton />
   </SidebarChatStyled>
-)
+);
