@@ -155,11 +155,9 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   font-weight: 400;
   font-size: 18px;
   line-height: 23.4px;
-  --skeleton-height: 24px;
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     font-size: 16px;
     line-height: 22px;
-    --skeleton-height: 22px;
   }
 `;
 
