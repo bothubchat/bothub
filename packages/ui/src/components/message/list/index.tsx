@@ -18,7 +18,7 @@ import {
   ScrollbarShadowsProps
 } from '@/ui/components/scrollbar';
 import { MessagesProvider, MessagesScrollProvider } from './context';
-import { ScrollButton } from '@/ui/index';
+import { ScrollButton } from '../scroll-button';
 
 export interface MessagesRef {
   element: Element | null;

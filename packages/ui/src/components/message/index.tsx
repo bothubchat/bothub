@@ -459,4 +459,3 @@ export * from './voice';
 export * from './reasoning-block';
 export * from './search-results';
 export * from './video';
-export * from './scroll-button';

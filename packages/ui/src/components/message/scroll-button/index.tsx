@@ -3,7 +3,8 @@ import {
   MessageListScrollButton,
   MessageListArrowNarrowDownIcon
 } from './styled';
-import { MessagesContext, ScrollbarRef } from '@/ui/index';
+import { MessagesContext } from '../list/context';
+import { ScrollbarRef } from '../..';
 
 interface IScrollButton {
   scrollbarRef: React.RefObject<ScrollbarRef>;
