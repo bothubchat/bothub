@@ -396,4 +396,5 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 export * from './types';
 export * from './styled';
 export * from './context';
-export * from './context';
+export * from './select-modal';
+export * from './useSelectField';

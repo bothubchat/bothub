@@ -343,3 +343,5 @@ export const SelectModal = ({
       )
   );
 };
+
+export * from './styled';
