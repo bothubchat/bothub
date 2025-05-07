@@ -18,6 +18,7 @@ import {
   ScrollbarShadowsProps
 } from '@/ui/components/scrollbar';
 import { MessagesProvider, MessagesScrollProvider } from './context';
+import { ScrollButton } from '../scroll-button';
 
 export interface MessagesRef {
   element: Element | null;
@@ -26,14 +27,25 @@ export interface MessagesRef {
 
 export interface MessagesProps extends React.PropsWithChildren {
   className?: string;
+  scrollButton?: boolean;
+  fullWidth?: boolean;
   startRef?: (node?: Element | null | undefined) => void;
   scrollShadows?: ScrollbarShadowsProps;
 }
 
 export const Messages = forwardRef<MessagesRef, MessagesProps>(
-  ({ className, startRef, scrollShadows, children }, ref) => {
+  (
+    {
+      scrollButton = false,
+      fullWidth = false,
+      className,
+      startRef,
+      scrollShadows,
+      children
+    },
+    ref
+  ) => {
     const scrollbarRef = useRef<ScrollbarRef>(null);
-
     const setScroll = useCallback<SetScrollFunction>(
       (options) =>
         scrollbarRef.current?.setScroll(options ?? { side: 'bottom' }),
@@ -59,7 +71,7 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(
             defaultStickyBottom
           >
             <MessagesContent>
-              <MessagesContainer>
+              <MessagesContainer $fullWidth={fullWidth}>
                 <MessagesStart ref={startRef} />
                 <MessagesScrollProvider scrollbarRef={scrollbarRef}>
                   <MessageList>{children}</MessageList>
@@ -67,6 +79,7 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(
               </MessagesContainer>
             </MessagesContent>
           </MessagesScrollbarWrapper>
+          {scrollButton && <ScrollButton scrollbarRef={scrollbarRef} />}
         </MessagesStyled>
       </MessagesProvider>
     );

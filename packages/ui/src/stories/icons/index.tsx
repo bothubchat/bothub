@@ -257,6 +257,7 @@ import {
   QwenIcon,
   ReportIcon,
   StarGradientIcon,
+  MusicNoteIcon,
   CustomerSupportIcon,
   AddProfileIcon,
   TokenCounterIcon
@@ -568,6 +569,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="CustomerSupportIcon">{CustomerSupportIcon}</IconItem>
         <IconItem name="TokenCounterIcon">{TokenCounterIcon}</IconItem>
         <IconItem name="AddProfileIcon">{AddProfileIcon}</IconItem>
+        <IconItem name="MusicNoteIcon">{MusicNoteIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
