@@ -25,7 +25,7 @@ export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
       ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
       : theme.colors.grayScale.gray3};
   color: ${({ theme }) => theme.colors.base.white};
-  width: 100%;
+  max-width: 100%;
 `;
 
 export const BadgeSelectDropdownList: React.FC<
