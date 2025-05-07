@@ -129,7 +129,6 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   outline: none;
   resize: none;
   border: none;
-  line-height: 18px;
   color: ${({ theme, $disabled }) => {
     if ($disabled) {
       return theme.colors.grayScale.gray1;
@@ -137,8 +136,7 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
 
     return theme.colors.base.white;
   }};
-  font-weight: 500;
-  font-size: 14px;
+
   overflow: auto;
   scrollbar-width: none;
   padding: 0px;
@@ -153,6 +151,16 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
     css`
       cursor: not-allowed;
     `}
+
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 23.4px;
+  --skeleton-height: 24px;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    font-size: 16px;
+    line-height: 22px;
+    --skeleton-height: 22px;
+  }
 `;
 
 export const InputMessageSendButton = styled(Button)`
