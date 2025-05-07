@@ -20,12 +20,17 @@ export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
   column-gap: 8px;
   padding: 6px 12px;
   border-radius: 14px;
-  background: ${({ theme, $active }) =>
+  transition: background-color 0.2s;
+  background-color: ${({ theme, $active }) =>
     $active
       ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
       : theme.colors.grayScale.gray3};
   color: ${({ theme }) => theme.colors.base.white};
   max-width: 100%;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.grayScale.gray2};
+  }
 `;
 
 export const BadgeSelectDropdownList: React.FC<
