@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
-import { MessagesContext } from '../list';
 import {
   MessageListScrollButton,
   MessageListArrowNarrowDownIcon
 } from './styled';
-import { ScrollbarRef } from '@/ui/index';
+import { MessagesContext } from '../list/context';
+import { ScrollbarRef } from '../..';
 
 interface IScrollButton {
   scrollbarRef: React.RefObject<ScrollbarRef>;
