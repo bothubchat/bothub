@@ -1,94 +1,98 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
-import {
-  BadgeSelectDropdownWrapper,
-  BadgeSelectDropdownTrigger,
-  BadgeSelectDropdownSpanStyled,
-  BadgeSelectDropdownTogglerArrow,
-  BadgeSelectDropdownList
-} from './styled';
-import { BadgeSelectDropdownProvider } from './context';
+import * as S from './styled';
 
-interface IBadgeSelectDropdown {
-  activeDropDownItem: string;
-  children: React.ReactNode;
-}
+export type BadgeSelectDropdownProps = {
+  options: string[];
+  value: string;
+  onChange(value: string): void;
+};
 
-export const BadgeSelectDropdown: React.FC<IBadgeSelectDropdown> = ({
-  children,
-  activeDropDownItem
-}) => {
-  const dropdownRef = useRef<HTMLDivElement>(null);
+export const BadgeSelectDropdown = ({
+  options,
+  value,
+  onChange
+}: BadgeSelectDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleToggle = useCallback(() => {
-    setIsOpen(!isOpen);
-  }, [isOpen]);
-
-  useEffect(() => {
-    const dropdownEl: HTMLDivElement | null = dropdownRef.current;
-
-    if (dropdownEl !== null) {
-      const clickListener = (event: Event) => {
-        if (!dropdownEl.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      const blurListener = () => setIsOpen(false);
-
-      document.addEventListener('click', clickListener);
-      window.addEventListener('blur', blurListener);
-
-      return () => {
-        document.removeEventListener('click', clickListener);
-        window.removeEventListener('blur', blurListener);
-      };
-    }
-  }, []);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const dropdownTransition = useTransition(isOpen, {
-    from: {
-      opacity: 0,
-      transform: 'scale(0)'
-    },
-    enter: {
-      opacity: isOpen ? 1 : 0.5,
-      transform: `scale(${isOpen ? 1 : 0.999})`
-    },
-    leave: { opacity: 0, transform: 'scale(0.999)' },
+    from: { opacity: 0, transform: 'scale(0)' },
+    enter: { opacity: 1, transform: 'scale(1)' },
+    leave: { opacity: 0, transform: 'scale(0)' },
     config: { duration: 150 }
   });
 
-  return (
-    <BadgeSelectDropdownProvider setIsOpen={setIsOpen}>
-      <BadgeSelectDropdownWrapper ref={dropdownRef}>
-        <BadgeSelectDropdownTrigger
-          $active={isOpen}
-          onClick={handleToggle}
-          type="button"
-        >
-          <BadgeSelectDropdownSpanStyled>
-            {activeDropDownItem}
-          </BadgeSelectDropdownSpanStyled>
-          <BadgeSelectDropdownTogglerArrow $open={isOpen} />
-        </BadgeSelectDropdownTrigger>
+  useEffect(() => {
+    const dropdownEl = dropdownRef.current;
 
-        {dropdownTransition(
-          (style, item) =>
-            item && (
-              <BadgeSelectDropdownList
-                $open={isOpen && !!item}
-                // style={style}
-              >
-                {children}
-              </BadgeSelectDropdownList>
-            )
-        )}
-      </BadgeSelectDropdownWrapper>
-    </BadgeSelectDropdownProvider>
+    if (!dropdownEl) return;
+
+    const blurListener = () => setIsOpen(false);
+
+    const clickListener = (event: Event) => {
+      if (!dropdownEl.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('click', clickListener);
+    window.addEventListener('blur', blurListener);
+
+    return () => {
+      document.removeEventListener('click', clickListener);
+      window.removeEventListener('blur', blurListener);
+    };
+  }, []);
+
+  const handleToggle = useCallback(() => {
+    setIsOpen((prev) => !prev);
+  }, []);
+
+  return (
+    <S.BadgeSelectDropdownStyled ref={dropdownRef}>
+      <S.BadgeSelectDropdownTrigger
+        $active={isOpen}
+        onClick={handleToggle}
+        type="button"
+      >
+        <S.BadgeSelectDropdownSpanStyled>
+          {value}
+        </S.BadgeSelectDropdownSpanStyled>
+
+        <S.BadgeSelectDropdownTogglerArrow $open={isOpen} />
+      </S.BadgeSelectDropdownTrigger>
+
+      {dropdownTransition(
+        (style, item) =>
+          item && (
+            <S.BadgeSelectDropdownListWrapper style={style}>
+              <S.BadgeSelectDropdownList $open={isOpen}>
+                {options.map((option) => {
+                  const onChangeHandler = () => {
+                    setIsOpen(false);
+                    onChange(option);
+                  };
+
+                  return (
+                    <S.BadgeSelectDropdownListItemStyled
+                      key={option}
+                      onClick={onChangeHandler}
+                      $active={option === value}
+                    >
+                      <S.BadgeSelectDropdownSpanStyled>
+                        {option}
+                      </S.BadgeSelectDropdownSpanStyled>
+                    </S.BadgeSelectDropdownListItemStyled>
+                  );
+                })}
+              </S.BadgeSelectDropdownList>
+            </S.BadgeSelectDropdownListWrapper>
+          )
+      )}
+    </S.BadgeSelectDropdownStyled>
   );
 };
 
-export * from './item';
 export * from './styled';
-export * from './context';

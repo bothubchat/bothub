@@ -1,4 +1,4 @@
-import { animated, AnimatedProps } from '@react-spring/web';
+import { animated } from '@react-spring/web';
 import { css, styled } from 'styled-components';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { colorToRgba } from '@/ui/utils/colorToRgba';
@@ -21,21 +21,25 @@ export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
   padding: 6px 12px;
   border-radius: 14px;
   transition: background-color 0.2s;
+  max-width: 100%;
+  color: ${({ theme }) => theme.colors.base.white};
   background-color: ${({ theme, $active }) =>
     $active
       ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
       : theme.colors.grayScale.gray3};
-  color: ${({ theme }) => theme.colors.base.white};
-  max-width: 100%;
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayScale.gray2};
   }
 `;
 
-export const BadgeSelectDropdownList: React.FC<
-  AnimatedProps<React.ComponentProps<'ul'>> & { $open: boolean }
-> = styled(animated.ul)`
+export const BadgeSelectDropdownListWrapper = styled(animated.div)``;
+
+export type BadgeSelectDropdownListProps = {
+  $open: boolean;
+};
+
+export const BadgeSelectDropdownList = styled.ul<BadgeSelectDropdownListProps>`
   max-height: 192px;
   overflow-y: auto;
   padding: 0;
@@ -43,24 +47,23 @@ export const BadgeSelectDropdownList: React.FC<
   display: none;
   color: white;
   position: absolute;
-  z-index: 1;
-  top: 38px;
+  z-index: ${({ theme }) => theme.zIndex.select};
+  top: 8px;
   left: 50%;
   transform: translateX(-50%);
   transform-origin: top center;
-
   padding: 8px;
   border: 1px solid;
   border-radius: 8px;
   border-color: ${({ theme }) => theme.colors.grayScale.gray2};
   background: ${({ theme }) => colorToRgba(theme.colors.grayScale.gray4, 0.75)};
   backdrop-filter: blur(16px);
+  flex-direction: column;
+  gap: 1px;
 
   ${({ $open }) => css`
     display: ${$open && 'flex'};
   `}
-  flex-direction: column;
-  gap: 1px;
 
   &::-webkit-scrollbar {
     width: 4px;
@@ -76,17 +79,34 @@ export const BadgeSelectDropdownList: React.FC<
   }
 `;
 
-export const BadgeSelectDropdownWrapper = styled.div`
+export const BadgeSelectDropdownStyled = styled.div`
   display: inline-block;
   position: relative;
-  width: 100%;
+  max-width: 100%;
 `;
 
 export const BadgeSelectDropdownTogglerArrow = styled(ArrowDownIcon).attrs({
   size: 16
 })<{ $open: boolean }>`
-  transform: ${({ $open }) =>
-    $open === true ? 'rotateZ(-180deg)' : 'rotateZ(0)'};
   pointer-events: none;
   transition: transform 0.2s ease-in-out;
+  transform: ${({ $open }) =>
+    $open === true ? 'rotateZ(-180deg)' : 'rotateZ(0)'};
+`;
+
+export const BadgeSelectDropdownListItemStyled = styled.li<{
+  $active: boolean;
+}>`
+  list-style: none;
+  white-space: nowrap;
+  padding: 10px;
+  border-radius: 8px;
+
+  ${({ theme, $active }) => css`
+    background: ${$active && theme.colors.grayScale.gray2};
+  `}
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
