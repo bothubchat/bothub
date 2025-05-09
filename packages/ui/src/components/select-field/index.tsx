@@ -94,7 +94,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   children,
   ...props
 }) => {
-  const { multiple = false } = props;
+  const { multiple = false, onChange, onValueChange } = props;
 
   const {
     x,
@@ -117,7 +117,9 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     placement: initialPlacement,
     multiple,
     onClose,
-    onSelectClick
+    onSelectClick,
+    onChange,
+    onValueChange
   });
 
   const theme = useTheme();

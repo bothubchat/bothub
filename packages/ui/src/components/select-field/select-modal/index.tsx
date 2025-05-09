@@ -219,7 +219,7 @@ export const SelectModal = ({
     (styles, item) =>
       item && (
         <Portal>
-          <S.AnimatedSelectFieldBlock
+          <S.SelectModalStyled
             $contentWidth={contentWidth}
             ref={contentRef}
             style={{
@@ -248,7 +248,7 @@ export const SelectModal = ({
               ...styles
             }}
           >
-            <S.SelectFieldBlockPositionWrapper
+            <S.SelectModalPositionWrapper
               $blur={blur}
               $placement={placement}
               style={{
@@ -259,20 +259,20 @@ export const SelectModal = ({
                 })
               }}
             >
-              <S.SelectFieldBlockContent>
-                <S.SelectFieldGroups $size={size}>
+              <S.SelectModalContent>
+                <S.SelectModalGroups $size={size}>
                   {!!tabs && (
-                    <S.SelectFieldTabsContainer>
-                      <S.SelectFieldTabs
+                    <S.SelectModalTabsContainer>
+                      <S.SelectModalTabs
                         tabs={tabs.tabs}
                         component="button"
                         onClick={onTabClick}
                         defaultTabId={tabs.defaultTabId}
                       />
-                    </S.SelectFieldTabsContainer>
+                    </S.SelectModalTabsContainer>
                   )}
                   {search && (
-                    <S.SelectFieldSearch
+                    <S.SelectModalSearch
                       placeholder={searchPlaceholder}
                       value={searchValue}
                       onChange={handleSearchChange}
@@ -335,10 +335,10 @@ export const SelectModal = ({
                       />
                     </SelectFieldGroup>
                   )}
-                </S.SelectFieldGroups>
-              </S.SelectFieldBlockContent>
-            </S.SelectFieldBlockPositionWrapper>
-          </S.AnimatedSelectFieldBlock>
+                </S.SelectModalGroups>
+              </S.SelectModalContent>
+            </S.SelectModalPositionWrapper>
+          </S.SelectModalStyled>
         </Portal>
       )
   );

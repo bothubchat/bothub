@@ -5,11 +5,11 @@ import { ScrollableTabs } from '../../scrollable-tabs';
 import { TextField } from '../../text-field';
 import { SearchSimpleIcon } from '@/ui/icons';
 
-export interface SelectFieldBlockProps {
+export interface SelectModalStyledProps {
   $contentWidth?: number;
 }
 
-export const SelectFieldBlock = styled.div<SelectFieldBlockProps>`
+export const SelectModalStyled = styled(animated.div)<SelectModalStyledProps>`
   display: flex;
   position: absolute;
   z-index: ${({ theme }) => theme.zIndex.select};
@@ -19,14 +19,12 @@ export const SelectFieldBlock = styled.div<SelectFieldBlockProps>`
   box-sizing: border-box;
 `;
 
-export const AnimatedSelectFieldBlock = animated(SelectFieldBlock);
-
-export interface SelectFieldBlockPositionWrapperProps {
+export interface SelectModalPositionWrapperProps {
   $blur: boolean;
   $placement: SelectFieldPlacement;
 }
 
-export const SelectFieldBlockPositionWrapper = styled.div<SelectFieldBlockPositionWrapperProps>`
+export const SelectModalPositionWrapper = styled.div<SelectModalPositionWrapperProps>`
   display: flex;
   position: absolute;
   width: 100%;
@@ -64,16 +62,16 @@ export const SelectFieldBlockPositionWrapper = styled.div<SelectFieldBlockPositi
   }}
 `;
 
-export const SelectFieldBlockContent = styled.div`
+export const SelectModalContent = styled.div`
   display: flex;
   width: 100%;
 `;
 
-export interface SelectFieldGroupsProps {
+export interface SelectModalGroupsProps {
   $size: SelectFieldSize;
 }
 
-export const SelectFieldGroups = styled.div<SelectFieldGroupsProps>`
+export const SelectModalGroups = styled.div<SelectModalGroupsProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -90,16 +88,16 @@ export const SelectFieldGroups = styled.div<SelectFieldGroupsProps>`
   }}px;
 `;
 
-export const SelectFieldTabsContainer = styled.div`
+export const SelectModalTabsContainer = styled.div`
   width: 100%;
   padding-right: 8px;
 `;
 
-export const SelectFieldTabs = styled(ScrollableTabs).attrs({
+export const SelectModalTabs = styled(ScrollableTabs).attrs({
   variant: 'secondary'
 })``;
 
-export const SelectFieldSearch = styled(TextField).attrs({
+export const SelectModalSearch = styled(TextField).attrs({
   fullWidth: true,
   startIcon: <SearchSimpleIcon />,
   variant: 'secondary'
