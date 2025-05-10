@@ -1,16 +1,7 @@
-import { animated } from '@react-spring/web';
-import { css, styled } from 'styled-components';
+import { styled } from 'styled-components';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { colorToRgba } from '@/ui/utils/colorToRgba';
 import { Typography } from '../typography';
-
-export const BadgeSelectDropdownSpanStyled = styled(Typography).attrs({
-  variant: 'body-s-medium'
-})`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
 
 export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
   border: none;
@@ -33,56 +24,12 @@ export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
   }
 `;
 
-export const BadgeSelectDropdownListWrapper = styled(animated.div)``;
-
-export type BadgeSelectDropdownListProps = {
-  $open: boolean;
-};
-
-export const BadgeSelectDropdownList = styled.ul<BadgeSelectDropdownListProps>`
-  max-height: 192px;
-  overflow-y: auto;
-  padding: 0;
-  margin: 0;
-  display: none;
-  color: white;
-  position: absolute;
-  z-index: ${({ theme }) => theme.zIndex.select};
-  top: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  transform-origin: top center;
-  padding: 8px;
-  border: 1px solid;
-  border-radius: 8px;
-  border-color: ${({ theme }) => theme.colors.grayScale.gray2};
-  background: ${({ theme }) => colorToRgba(theme.colors.grayScale.gray4, 0.75)};
-  backdrop-filter: blur(16px);
-  flex-direction: column;
-  gap: 1px;
-
-  ${({ $open }) => css`
-    display: ${$open && 'flex'};
-  `}
-
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: ${({ theme }) => theme.colors.accent.primary};
-    border-radius: 2px;
-  }
-
-  &::-webkit-scrollbar-corner {
-    display: none;
-  }
-`;
-
-export const BadgeSelectDropdownStyled = styled.div`
-  display: inline-block;
-  position: relative;
-  max-width: 100%;
+export const BadgeSelectDropdownSpanStyled = styled(Typography).attrs({
+  variant: 'body-s-medium'
+})`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const BadgeSelectDropdownTogglerArrow = styled(ArrowDownIcon).attrs({
@@ -92,21 +39,4 @@ export const BadgeSelectDropdownTogglerArrow = styled(ArrowDownIcon).attrs({
   transition: transform 0.2s ease-in-out;
   transform: ${({ $open }) =>
     $open === true ? 'rotateZ(-180deg)' : 'rotateZ(0)'};
-`;
-
-export const BadgeSelectDropdownListItemStyled = styled.li<{
-  $active: boolean;
-}>`
-  list-style: none;
-  white-space: nowrap;
-  padding: 10px;
-  border-radius: 8px;
-
-  ${({ theme, $active }) => css`
-    background: ${$active && theme.colors.grayScale.gray2};
-  `}
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
