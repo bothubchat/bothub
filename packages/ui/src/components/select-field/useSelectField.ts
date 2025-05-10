@@ -35,6 +35,8 @@ export type UseSelectFieldProps = {
   onSelectClick?: () => void;
 } & UseSelectFieldUnionProps;
 
+export type UseSelectFieldReturnType = ReturnType<typeof useSelectField>;
+
 export const useSelectField = ({
   value: initialValue,
   multiple = false,

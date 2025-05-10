@@ -1,11 +1,5 @@
 import { useTransition } from '@react-spring/web';
-import {
-  MutableRefObject,
-  RefObject,
-  useCallback,
-  useEffect,
-  useState
-} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import * as S from './styled';
 import { Portal } from '../../portal';
 import {
@@ -13,14 +7,13 @@ import {
   SelectFieldData,
   SelectFieldDataItem,
   SelectFieldOptionClickEventHandler,
-  SelectFieldPlacement,
   SelectFieldSize
 } from '../types';
 import { SelectFieldGroup } from '../select-field-group';
 import { SelectFieldOptions } from '../option';
 import { filterData } from './filterData';
 import { ITab } from '../../scrollable-tabs';
-import { ValueSetter, ValueType } from '..';
+import { UseSelectFieldReturnType } from '..';
 
 export type SelectModalGeneralProps = {
   data?: SelectFieldData;
@@ -42,22 +35,8 @@ export type SelectModalGeneralProps = {
   onOptionClick?: SelectFieldOptionClickEventHandler;
 };
 
-export type SelectModalProps = {
-  x: number;
-  y: number;
-  width: number;
-  isOpen: boolean;
-  inputRef: RefObject<HTMLDivElement>;
-  contentRef: RefObject<HTMLDivElement>;
-  isKeyboardOpen: MutableRefObject<boolean>;
-  blockHeight: number | null;
-  value: ValueType;
-  multiple: boolean;
-  followContentHeight: boolean;
-  placement: SelectFieldPlacement;
-  setValue: ValueSetter;
-  handleClose(): void;
-} & SelectModalGeneralProps;
+export type SelectModalProps = SelectModalGeneralProps &
+  Omit<UseSelectFieldReturnType, 'disabled' | 'handleInputClick'>;
 
 export const SelectModal = ({
   isOpen,
