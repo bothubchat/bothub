@@ -206,9 +206,13 @@ export const SelectModal = ({
         }
       };
 
+      const open = openedOptions.includes(item.id);
+
       return {
         ...rest,
-        open: openedOptions.includes(item.id),
+        ...(open && {
+          open
+        }),
         onClick: onOptionClick
       };
     }

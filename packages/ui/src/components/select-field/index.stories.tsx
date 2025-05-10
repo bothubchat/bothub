@@ -579,6 +579,7 @@ export const SmallSize: SelectFieldStory = {
   args: {
     data: [
       {
+        id: 'gpt',
         type: 'collapse',
         label: 'ChatGPT',
         icon: <Gpt35Icon />,
