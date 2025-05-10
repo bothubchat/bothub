@@ -37,7 +37,9 @@ export type UseSelectFieldProps = {
 
 export type UseSelectFieldReturnType = ReturnType<typeof useSelectField>;
 
-export const useSelectField = ({
+export const useSelectField = <
+  TriggerType extends HTMLElement = HTMLDivElement
+>({
   value: initialValue,
   multiple = false,
   followContentHeight = false,
@@ -107,11 +109,11 @@ export const useSelectField = ({
   }
 
   const isKeyboardOpen = useRef(false);
-  const inputRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<TriggerType>(null);
+  const selectModalRef = useRef<HTMLDivElement>(null);
 
-  if (followContentHeight && contentRef.current && !blockHeight) {
-    const { height } = getComputedStyle(contentRef.current.children[0]);
+  if (followContentHeight && selectModalRef.current && !blockHeight) {
+    const { height } = getComputedStyle(selectModalRef.current.children[0]);
     setBlockHeight(parseInt(height));
   }
 
@@ -122,8 +124,8 @@ export const useSelectField = ({
       if (isKeyboardOpen.current && event.type !== 'orientationchange') return;
 
       if (event.type === 'mousedown') {
-        const inputEl: HTMLDivElement | null = inputRef.current;
-        const contentEl: HTMLDivElement | null = contentRef.current;
+        const inputEl: HTMLElement | null = triggerRef.current;
+        const contentEl: HTMLDivElement | null = selectModalRef.current;
 
         if (inputEl === null || contentEl === null) {
           return;
@@ -155,7 +157,7 @@ export const useSelectField = ({
   const handleInputClick = useCallback(
     (native: boolean, event: React.MouseEvent<HTMLElement>) => {
       onSelectClick?.();
-      const inputEl: HTMLDivElement | null = inputRef.current;
+      const inputEl: HTMLElement | null = triggerRef.current;
 
       if (!inputEl || disabled) {
         return;
@@ -226,8 +228,8 @@ export const useSelectField = ({
     y,
     width,
     isOpen,
-    inputRef,
-    contentRef,
+    triggerRef,
+    selectModalRef,
     placement,
     isKeyboardOpen,
     blockHeight,

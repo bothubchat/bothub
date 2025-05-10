@@ -63,22 +63,15 @@ export const SelectField = ({
   ...useSelectFieldProps
 }: SelectFieldProps) => {
   const {
-    x,
-    y,
-    width,
     isOpen,
-    inputRef,
-    contentRef,
-    placement,
-    isKeyboardOpen,
-    blockHeight,
+    triggerRef,
     value,
     disabled,
-    followContentHeight,
     multiple,
     handleClose,
     handleInputClick,
-    setValue
+    setValue,
+    ...selectModalProps
   } = useSelectField(useSelectFieldProps);
 
   const theme = useTheme();
@@ -149,7 +142,7 @@ export const SelectField = ({
 
   return (
     <SelectFieldProvider
-      selectRef={inputRef}
+      selectRef={triggerRef}
       handleSelectClick={handleInputClick.bind(null, false)}
     >
       <S.SelectFieldStyled
@@ -179,7 +172,7 @@ export const SelectField = ({
                 $blur={blur}
                 $loading={loading}
                 $multiple={multiple && Array.isArray(value) && value.length > 0}
-                ref={inputRef}
+                ref={triggerRef}
                 onClick={handleInputClick.bind(null, false)}
               >
                 <S.SelectFieldInputLeftSide>
@@ -310,7 +303,7 @@ export const SelectField = ({
                 $loading={false}
                 $blur={blur}
                 $multiple={false}
-                ref={inputRef}
+                ref={triggerRef}
               >
                 <S.SelectFieldSkeleton />
               </S.SelectFieldInput>
@@ -319,8 +312,9 @@ export const SelectField = ({
         )}
 
         <SelectModal
+          {...selectModalProps}
           isOpen={isOpen}
-          inputRef={inputRef}
+          triggerRef={triggerRef}
           data={data}
           contentWidth={contentWidth}
           size={size}
@@ -333,15 +327,7 @@ export const SelectField = ({
           searchPlaceholder={searchPlaceholder}
           resetStyleState={resetStyleState}
           onOptionClick={onOptionClick}
-          x={x}
-          y={y}
-          width={width}
           blur={blur}
-          placement={placement}
-          contentRef={contentRef}
-          followContentHeight={followContentHeight}
-          isKeyboardOpen={isKeyboardOpen}
-          blockHeight={blockHeight}
           handleClose={handleClose}
           value={value}
           setValue={setValue}
