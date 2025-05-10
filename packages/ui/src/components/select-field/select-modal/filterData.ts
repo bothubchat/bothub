@@ -6,6 +6,8 @@ export const filterData = (
   searchValue: string
 ): SelectFieldData =>
   data.filter((item) => {
+    if (!searchValue) return true;
+
     if (typeof item === 'string') {
       return hasSubstring(item, searchValue);
     }
