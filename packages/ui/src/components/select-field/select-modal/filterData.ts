@@ -5,39 +5,36 @@ export const filterData = (
   data: SelectFieldData,
   searchValue: string
 ): SelectFieldData =>
-  data
-    .map((item) => {
-      if (typeof item === 'string') {
-        return hasSubstring(item, searchValue) ? item : null;
+  data.filter((item) => {
+    if (typeof item === 'string') {
+      return hasSubstring(item, searchValue);
+    }
+
+    if (item.label) {
+      const result = hasSubstring(item.label, searchValue);
+
+      if (result) {
+        return true;
       }
 
       if (item.type === 'collapse' && item.data) {
-        const children = item.data
-          .map((child) => {
-            if (typeof child === 'string') {
-              return hasSubstring(child, searchValue) ? child : null;
-            }
-            if (child.label) {
-              return hasSubstring(child.label, searchValue) ? child : null;
-            }
-            return child;
-          })
-          .filter((child) => child !== null);
+        let result = false;
 
-        const hasRelevantChildren = children.length > 0;
+        for (const child of item.data) {
+          if (result) break;
 
-        return hasRelevantChildren
-          ? {
-              ...item,
-              data: children
-            }
-          : null;
+          if (typeof child === 'string') {
+            result = hasSubstring(child, searchValue);
+          }
+
+          if (typeof child !== 'string' && child.label) {
+            result = hasSubstring(child.label, searchValue);
+          }
+        }
+
+        return result;
       }
+    }
 
-      if (item.label) {
-        return hasSubstring(item.label, searchValue) ? item : null;
-      }
-
-      return item;
-    })
-    .filter((item) => item !== null);
+    return false;
+  });
