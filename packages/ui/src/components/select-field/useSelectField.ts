@@ -114,11 +114,12 @@ export const useSelectField = ({
   }
 
   useEffect(() => {
-    if (isOpen) {
-      const listener = (event: Event) => {
-        if (isKeyboardOpen.current && event.type !== 'orientationchange')
-          return;
+    if (!isOpen) return;
 
+    const listener = (event: Event) => {
+      if (isKeyboardOpen.current && event.type !== 'orientationchange') return;
+
+      if (event.type === 'mousedown') {
         const inputEl: HTMLDivElement | null = inputRef.current;
         const contentEl: HTMLDivElement | null = contentRef.current;
 
@@ -131,22 +132,22 @@ export const useSelectField = ({
         ) {
           return;
         }
+      }
 
-        handleClose();
-      };
+      handleClose();
+    };
 
-      document.addEventListener('mousedown', listener);
-      document.addEventListener('scroll', listener);
-      window.addEventListener('resize', listener);
-      window.addEventListener('orientationchange', listener);
+    document.addEventListener('mousedown', listener);
+    document.addEventListener('scroll', listener);
+    window.addEventListener('resize', listener);
+    window.addEventListener('orientationchange', listener);
 
-      return () => {
-        document.removeEventListener('mousedown', listener);
-        document.removeEventListener('scroll', listener);
-        window.removeEventListener('resize', listener);
-        window.removeEventListener('orientationchange', listener);
-      };
-    }
+    return () => {
+      document.removeEventListener('mousedown', listener);
+      document.removeEventListener('scroll', listener);
+      window.removeEventListener('resize', listener);
+      window.removeEventListener('orientationchange', listener);
+    };
   }, [isOpen]);
 
   const handleInputClick = useCallback(
