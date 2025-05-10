@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   SelectFieldChangeEventHandler,
+  SelectFieldDataItem,
   SelectFieldMultiChangeEventHandler,
   SelectFieldMultiValueChangeEventHandler,
   SelectFieldPlacement,
@@ -8,27 +9,37 @@ import {
 } from './types';
 import { ValueSetter, ValueType } from '.';
 
+export interface UseSelectFieldDefaultProps {
+  multiple?: false;
+  value?: SelectFieldDataItem | null;
+  onChange?: SelectFieldChangeEventHandler;
+  onValueChange?: SelectFieldValueChangeEventHandler;
+}
+
+export interface UseSelectFieldMultiProps {
+  multiple: true;
+  value?: SelectFieldDataItem[];
+  onChange?: SelectFieldMultiChangeEventHandler;
+  onValueChange?: SelectFieldMultiValueChangeEventHandler;
+}
+
+export type UseSelectFieldUnionProps =
+  | UseSelectFieldDefaultProps
+  | UseSelectFieldMultiProps;
+
 export type UseSelectFieldProps = {
-  // for the hook
-  // general
-  value: ValueType;
-  multiple: boolean;
   followContentHeight?: boolean;
   disabled?: boolean;
   placement?: SelectFieldPlacement;
   onClose?: () => void;
   onSelectClick?: () => void;
-  onChange?: SelectFieldChangeEventHandler | SelectFieldMultiChangeEventHandler;
-  onValueChange?:
-    | SelectFieldValueChangeEventHandler
-    | SelectFieldMultiValueChangeEventHandler;
-};
+} & UseSelectFieldUnionProps;
 
 export const useSelectField = ({
   value: initialValue,
-  multiple,
+  multiple = false,
   followContentHeight = false,
-  disabled,
+  disabled = false,
   placement: initialPlacement = 'bottom-left',
   onClose,
   onSelectClick,
@@ -218,6 +229,9 @@ export const useSelectField = ({
     isKeyboardOpen,
     blockHeight,
     value,
+    disabled,
+    followContentHeight,
+    multiple,
     handleInputClick,
     handleClose,
     setValue

@@ -22,17 +22,7 @@ import { filterData } from './filterData';
 import { ITab } from '../../scrollable-tabs';
 import { ValueSetter, ValueType } from '..';
 
-export type SelectModalProps = {
-  // for the component
-  x: number;
-  y: number;
-  width: number;
-  isOpen: boolean;
-  inputRef: RefObject<HTMLDivElement>;
-  contentRef: RefObject<HTMLDivElement>;
-  isKeyboardOpen: MutableRefObject<boolean>;
-  blockHeight: number | null;
-  // general
+export type SelectModalGeneralProps = {
   data?: SelectFieldData;
   contentWidth?: number;
   size?: SelectFieldSize;
@@ -42,21 +32,32 @@ export type SelectModalProps = {
   after?: SelectFieldData;
   tabs?: {
     tabs: ITab[];
-    onTabClick?: (id: string | null) => void;
     defaultTabId?: string;
+    onTabClick?: (id: string | null) => void;
   };
   search?: boolean;
   searchPlaceholder?: string;
   resetStyleState?: ResetStyleStateType;
-  placement: SelectFieldPlacement;
   blur?: boolean;
-  followContentHeight: boolean;
+  onOptionClick?: SelectFieldOptionClickEventHandler;
+};
+
+export type SelectModalProps = {
+  x: number;
+  y: number;
+  width: number;
+  isOpen: boolean;
+  inputRef: RefObject<HTMLDivElement>;
+  contentRef: RefObject<HTMLDivElement>;
+  isKeyboardOpen: MutableRefObject<boolean>;
+  blockHeight: number | null;
   value: ValueType;
   multiple: boolean;
-  onOptionClick?: SelectFieldOptionClickEventHandler;
-  handleClose(): void;
+  followContentHeight: boolean;
+  placement: SelectFieldPlacement;
   setValue: ValueSetter;
-};
+  handleClose(): void;
+} & SelectModalGeneralProps;
 
 export const SelectModal = ({
   isOpen,

@@ -1,50 +1,24 @@
 import { useCallback, useState } from 'react';
 import * as S from './styled';
 import {
-  SelectFieldChangeEventHandler,
   SelectFieldDataItem,
   SelectFieldInputChangeEventHandler,
-  SelectFieldInputType,
-  SelectFieldMultiChangeEventHandler,
-  SelectFieldMultiValueChangeEventHandler,
-  SelectFieldValueChangeEventHandler
+  SelectFieldInputType
 } from './types';
 import { useTheme } from '@/ui/theme';
 import { Skeleton } from '@/ui/components/skeleton';
 import { IconProvider } from '../icon';
 import { SelectFieldProvider } from './context';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
-import { SelectModal, SelectModalProps } from './select-modal';
+import { SelectModalGeneralProps, SelectModal } from './select-modal';
 import { useSelectField, UseSelectFieldProps } from './useSelectField';
 
-export interface SelectFieldDefaultProps {
-  multiple?: false;
-  value?: SelectFieldDataItem | null;
-  onChange?: SelectFieldChangeEventHandler;
-  onValueChange?: SelectFieldValueChangeEventHandler;
-}
-
-export interface SelectFieldMultiProps {
-  multiple: true;
-  value?: SelectFieldDataItem[];
-  onChange?: SelectFieldMultiChangeEventHandler;
-  onValueChange?: SelectFieldMultiValueChangeEventHandler;
-}
-
-export type ValueType = SelectFieldDataItem | SelectFieldDataItem[] | null;
-
-export type ValueSetter = (value: ValueType) => void;
-
-export type SelectFieldProps = (
-  | SelectFieldDefaultProps
-  | SelectFieldMultiProps
-) & {
+export type SelectFieldProps = {
   className?: string;
   label?: string | boolean | React.ReactNode;
   placeholder?: string;
   fullWidth?: boolean;
   error?: string;
-  disabled?: boolean;
   skeleton?: boolean;
   enableInput?: boolean;
   inputType?: SelectFieldInputType;
@@ -54,25 +28,22 @@ export type SelectFieldProps = (
   padding?: [number, number];
   onInputChange?: SelectFieldInputChangeEventHandler;
   onPointerLeave?: React.PointerEventHandler<HTMLDivElement>;
-} & React.PropsWithChildren &
-  Omit<SelectModalProps, 'isOpen' | 'x' | 'y' | 'width'> &
-  UseSelectFieldProps;
+} & SelectModalGeneralProps &
+  UseSelectFieldProps &
+  React.PropsWithChildren;
 
-export const SelectField: React.FC<SelectFieldProps> = ({
+export const SelectField = ({
   className,
   label,
-  value: initialValue,
   placeholder,
   data,
   fullWidth = false,
   contentWidth,
   error,
-  disabled = false,
   skeleton = false,
   blur = false,
   size = 'small',
   disableSelect = false,
-  placement: initialPlacement,
   disableScrollbar = false,
   before,
   after,
@@ -84,18 +55,13 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   tabs,
   search,
   searchPlaceholder,
-  followContentHeight,
   resetStyleState,
+  children,
   onOptionClick,
   onInputChange,
-  onSelectClick,
-  onClose,
   onPointerLeave,
-  children,
-  ...props
-}) => {
-  const { multiple = false, onChange, onValueChange } = props;
-
+  ...useSelectFieldProps
+}: SelectFieldProps) => {
   const {
     x,
     y,
@@ -107,20 +73,13 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     isKeyboardOpen,
     blockHeight,
     value,
+    disabled,
+    followContentHeight,
+    multiple,
     handleClose,
     handleInputClick,
     setValue
-  } = useSelectField({
-    value: initialValue,
-    followContentHeight,
-    disabled,
-    placement: initialPlacement,
-    multiple,
-    onClose,
-    onSelectClick,
-    onChange,
-    onValueChange
-  });
+  } = useSelectField(useSelectFieldProps);
 
   const theme = useTheme();
 
