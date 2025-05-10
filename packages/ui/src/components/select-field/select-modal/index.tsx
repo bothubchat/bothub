@@ -52,8 +52,8 @@ export const SelectModal = ({
   searchPlaceholder,
   resetStyleState,
   placement,
-  inputRef,
-  contentRef,
+  triggerRef,
+  selectModalRef,
   blur = false,
   x,
   y,
@@ -119,8 +119,8 @@ export const SelectModal = ({
   );
 
   const calculateMaxHeight = useCallback(() => {
-    if (inputRef.current && placement !== 'bottom-left' && isOpen) {
-      const { top } = inputRef.current.getBoundingClientRect();
+    if (triggerRef.current && placement !== 'bottom-left' && isOpen) {
+      const { top } = triggerRef.current.getBoundingClientRect();
 
       setModalMaxHeight(top - 20);
     } else {
@@ -128,7 +128,7 @@ export const SelectModal = ({
         setModalMaxHeight(null);
       }, 175);
     }
-  }, [inputRef.current, placement, isOpen]);
+  }, [triggerRef.current, placement, isOpen]);
 
   useEffect(() => {
     calculateMaxHeight();
@@ -205,7 +205,7 @@ export const SelectModal = ({
         <Portal>
           <S.SelectModalStyled
             $contentWidth={contentWidth}
-            ref={contentRef}
+            ref={selectModalRef}
             style={{
               ...(x !== 0 && {
                 ...(placement !== 'top-right' && {
