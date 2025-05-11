@@ -6,5 +6,5 @@
   "singleAttributePerLine": true,
   "trailingComma": "none",
   "bracketSameLine": false,
-  "endOfLine": "auto"
+  "endOfLine": "lf"
 }

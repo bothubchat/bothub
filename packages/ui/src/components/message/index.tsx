@@ -57,6 +57,7 @@ export interface MessageProps {
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
+  disableDownload?: boolean;
   copyPlainText?: string | null;
   copyTgText?: string | null;
   editText?: string | null;
@@ -67,6 +68,7 @@ export interface MessageProps {
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
+  downloadTooltipLabel?: string | null;
   typing?: boolean;
   timestamp?: string | number;
   timestampPosition?: MessageTimestampPosition;
@@ -86,6 +88,7 @@ export interface MessageProps {
   onReport?: MessageActionEventHandler;
   onNextVersion?: MessageVersionEventHandler;
   onPrevVersion?: MessageVersionEventHandler;
+  onDownload?: () => void;
 }
 
 export const Message: React.FC<MessageProps> = ({
@@ -103,12 +106,14 @@ export const Message: React.FC<MessageProps> = ({
   disableDelete = false,
   disableUpdate = false,
   disableCopy = false,
+  disableDownload = true,
   copyPlainText,
   copyTgText,
   editText,
   resendText,
   deleteText,
   onReportText,
+  downloadTooltipLabel,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
   updateTooltipLabel,
@@ -131,7 +136,8 @@ export const Message: React.FC<MessageProps> = ({
   onUpdate,
   onReport,
   onNextVersion,
-  onPrevVersion
+  onPrevVersion,
+  onDownload
 }) => {
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
@@ -383,6 +389,8 @@ export const Message: React.FC<MessageProps> = ({
             {!skeleton && (
               <MessageActions
                 id={id}
+                onDownload={onDownload}
+                disableDownload={disableDownload}
                 message={content}
                 variant={variant}
                 skeleton={skeleton}
@@ -397,6 +405,7 @@ export const Message: React.FC<MessageProps> = ({
                 resendText={resendText}
                 deleteText={deleteText}
                 onReportText={onReportText}
+                downloadTooltipLabel={downloadTooltipLabel}
                 submitEditTooltipLabel={submitEditTooltipLabel}
                 discardEditTooltipLabel={discardEditTooltipLabel}
                 updateTooltipLabel={updateTooltipLabel}

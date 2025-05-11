@@ -234,7 +234,9 @@ export const MessageBlock = styled.div<MessageBlockProps>`
     `}
 `;
 
-export const MessageBlockBottomPanel = styled.div<{ $variant: MessageVariant }>`
+export const MessageBlockBottomPanel = styled.div<{
+  $variant: MessageVariant;
+}>`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -255,7 +257,9 @@ export const MessageBlockBottomPanel = styled.div<{ $variant: MessageVariant }>`
   }}
 `;
 
-export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
+export const MessageBlockTransaction = styled.div<{
+  $top?: boolean;
+}>`
   ${({ $top }) =>
     $top
       ? adaptive({
@@ -266,7 +270,7 @@ export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
             display: none;
           `,
           mobile: css`
-            display: block;
+            display: 'block';
           `
         })
       : adaptive({
@@ -277,7 +281,7 @@ export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
             display: block;
           `,
           mobile: css`
-            display: none;
+            display: 'none';
           `
         })}
 `;
@@ -300,7 +304,7 @@ export const MessageBlockContent = styled.div<{
       case 'user':
         return '8px';
       case 'assistant':
-        return '0px 8px 8px 0px';
+        return '0px 8px 0px 0px';
     }
   }};
   max-width: 100%;
