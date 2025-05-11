@@ -263,6 +263,7 @@ export * from './report';
 export * from './qwen';
 export * from './sidebar-toggle-left';
 export * from './sidebar-toggle-right';
+export * from './video-camera';
 export * from './music-note';
 export * from './add-profile';
 export * from './token-counter';
