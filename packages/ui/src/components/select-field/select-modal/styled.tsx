@@ -55,19 +55,16 @@ export const SelectModalPositionWrapper = styled.div<SelectModalPositionWrapperP
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   ${({ $placement }) => {
-    switch ($placement) {
-      case 'bottom-left':
-        return css`
-          top: 0px;
-          margin-top: 10px;
-        `;
-      case 'top-left':
-      case 'top-right':
-        return css`
-          bottom: 0px;
-          margin-bottom: 10px;
-        `;
+    if ($placement.includes('top')) {
+      return css`
+        bottom: 0px;
+        margin-bottom: 10px;
+      `;
     }
+    return css`
+      top: 0px;
+      margin-top: 10px;
+    `;
   }}
 `;
 
