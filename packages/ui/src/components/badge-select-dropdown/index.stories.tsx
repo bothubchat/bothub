@@ -1,13 +1,17 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { BadgeSelectDropdown } from '.';
+import { BadgeSelectDropdown, Variant } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 
 export type BadgeSelectDropdownMeta = Meta<typeof BadgeSelectDropdown>;
 
 export type BadgeSelectDropdownStory = StoryObj<typeof BadgeSelectDropdown>;
 
-const BadgeSelectDropdownStoryComponent = () => {
+const BadgeSelectDropdownStoryComponent = ({
+  variant
+}: {
+  variant?: Variant;
+}) => {
   const [value, setValue] = useState('Very long option label');
 
   return (
@@ -21,12 +25,17 @@ const BadgeSelectDropdownStoryComponent = () => {
         'Model 4'
       ]}
       onChange={setValue}
+      variant={variant}
     />
   );
 };
 
-export const Basic: BadgeSelectDropdownStory = {
+export const Primary: BadgeSelectDropdownStory = {
   render: () => <BadgeSelectDropdownStoryComponent />
+};
+
+export const Secondary: BadgeSelectDropdownStory = {
+  render: () => <BadgeSelectDropdownStoryComponent variant="secondary" />
 };
 
 export default {

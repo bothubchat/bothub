@@ -2,8 +2,12 @@ import { styled } from 'styled-components';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { colorToRgba } from '@/ui/utils/colorToRgba';
 import { Typography } from '../typography';
+import { Variant } from '.';
 
-export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
+export const BadgeSelectDropdownTrigger = styled.button<{
+  $active: boolean;
+  $variant: Variant;
+}>`
   border: none;
   display: flex;
   align-items: center;
@@ -14,10 +18,14 @@ export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
   transition: background-color 0.2s;
   max-width: 100%;
   color: ${({ theme }) => theme.colors.base.white};
-  background-color: ${({ theme, $active }) =>
-    $active
-      ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
-      : theme.colors.grayScale.gray3};
+  background-color: ${({ theme, $active, $variant }) => {
+    if ($variant === 'primary') {
+      return $active
+        ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
+        : theme.colors.grayScale.gray3;
+    }
+    return $active ? theme.colors.grayScale.gray3 : 'unset';
+  }};
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayScale.gray2};

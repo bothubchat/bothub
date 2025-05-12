@@ -7,9 +7,12 @@ import {
   UseSelectFieldProps
 } from '../select-field';
 
+export type Variant = 'primary' | 'secondary';
+
 export type BadgeSelectDropdownProps = {
   options: string[];
-  value?: SelectFieldDataItem | null;
+  value: SelectFieldDataItem | null;
+  variant?: 'primary' | 'secondary';
   onChange(value: string): void;
 } & Omit<
   UseSelectFieldProps,
@@ -18,8 +21,9 @@ export type BadgeSelectDropdownProps = {
 
 export const BadgeSelectDropdown = ({
   options,
-  onChange,
   value: initialValue,
+  variant = 'primary',
+  onChange,
   ...useSelectFieldProps
 }: BadgeSelectDropdownProps) => {
   const onChangeHandler: SelectFieldChangeEventHandler = (value) => {
@@ -59,6 +63,7 @@ export const BadgeSelectDropdown = ({
     <>
       <S.BadgeSelectDropdownTrigger
         $active={isOpen}
+        $variant={variant}
         onClick={(e) => handleInputClick(false, e)}
         type="button"
         ref={triggerRef}
