@@ -1,7 +1,8 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import { BadgeSelectDropdown, Variant } from '.';
+import { BadgeSelectDropdown } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
+import { Variant } from './types';
 
 export type BadgeSelectDropdownMeta = Meta<typeof BadgeSelectDropdown>;
 

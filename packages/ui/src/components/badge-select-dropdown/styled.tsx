@@ -2,7 +2,7 @@ import { styled } from 'styled-components';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { colorToRgba } from '@/ui/utils/colorToRgba';
 import { Typography } from '../typography';
-import { Variant } from '.';
+import { Variant } from './types';
 
 export const BadgeSelectDropdownTrigger = styled.button<{
   $active: boolean;

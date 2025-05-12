@@ -6,13 +6,12 @@ import {
   useSelectField,
   UseSelectFieldProps
 } from '../select-field';
-
-export type Variant = 'primary' | 'secondary';
+import { Variant } from './types';
 
 export type BadgeSelectDropdownProps = {
   options: string[];
   value: SelectFieldDataItem | null;
-  variant?: 'primary' | 'secondary';
+  variant?: Variant;
   onChange(value: string): void;
 } & Omit<
   UseSelectFieldProps,
