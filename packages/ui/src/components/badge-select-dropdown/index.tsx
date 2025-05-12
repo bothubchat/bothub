@@ -1,5 +1,7 @@
 import * as S from './styled';
 import {
+  SelectFieldChangeEventHandler,
+  SelectFieldDataItem,
   SelectModal,
   useSelectField,
   UseSelectFieldProps
@@ -7,12 +9,25 @@ import {
 
 export type BadgeSelectDropdownProps = {
   options: string[];
-} & UseSelectFieldProps;
+  value?: SelectFieldDataItem | null;
+  onChange(value: string): void;
+} & Omit<
+  UseSelectFieldProps,
+  'onChange' | 'multiple' | 'onValueChange' | 'value'
+>;
 
 export const BadgeSelectDropdown = ({
   options,
+  onChange,
+  value: initialValue,
   ...useSelectFieldProps
 }: BadgeSelectDropdownProps) => {
+  const onChangeHandler: SelectFieldChangeEventHandler = (value) => {
+    if (typeof value === 'string') {
+      onChange(value);
+    }
+  };
+
   const {
     isOpen,
     setValue,
@@ -20,7 +35,12 @@ export const BadgeSelectDropdown = ({
     value,
     handleInputClick,
     ...selectModalProps
-  } = useSelectField<HTMLButtonElement>(useSelectFieldProps);
+  } = useSelectField<HTMLButtonElement>({
+    ...useSelectFieldProps,
+    value: initialValue,
+    multiple: false,
+    onChange: onChangeHandler
+  });
 
   let label = '';
   if (typeof value === 'string') {

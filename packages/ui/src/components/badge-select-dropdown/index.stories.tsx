@@ -2,7 +2,6 @@ import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { BadgeSelectDropdown } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
-import { SelectFieldChangeEventHandler } from '../select-field';
 
 export type BadgeSelectDropdownMeta = Meta<typeof BadgeSelectDropdown>;
 
@@ -10,12 +9,6 @@ export type BadgeSelectDropdownStory = StoryObj<typeof BadgeSelectDropdown>;
 
 const BadgeSelectDropdownStoryComponent = () => {
   const [value, setValue] = useState('Very long option label');
-
-  const setValueHandler: SelectFieldChangeEventHandler = (value) => {
-    if (typeof value === 'string') {
-      setValue(value);
-    }
-  };
 
   return (
     <BadgeSelectDropdown
@@ -27,7 +20,7 @@ const BadgeSelectDropdownStoryComponent = () => {
         'Model 3',
         'Model 4'
       ]}
-      onChange={setValueHandler}
+      onChange={setValue}
     />
   );
 };
