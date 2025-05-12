@@ -157,6 +157,26 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
             }
           `}
         `;
+      case 'gradient':
+        return css`
+          background: ${$color ?? theme.colors.gradient.elite20};
+          box-shadow: 0px 0px 0px 1px ${theme.colors.gradient.elite20} inset;
+          animation: ${reverseBoxShadowAnimation(theme.colors.gradient.elite20)}
+            0.3s linear forwards;
+
+          ${!$disabled &&
+          !$skeleton &&
+          css`
+            &:hover {
+              background: ${$color ?? theme.colors.gradient.elite20};
+              animation: ${boxShadowAnimation(theme.colors.gradient.elite20)}
+                0.3s linear forwards;
+            }
+            &:active {
+              background: ${$color ?? theme.colors.gradient.elite20};
+            }
+          `}
+        `;
       case 'success':
         return css`
           background: ${$disabled || $skeleton
@@ -197,6 +217,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
     switch ($variant) {
       case 'primary':
       case 'primary-transparent':
+      case 'gradient':
       case 'primary-outline':
       case 'secondary':
       case 'success':
@@ -232,6 +253,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
       case 'primary':
       case 'primary-transparent':
       case 'primary-outline':
+      case 'gradient':
       case 'secondary':
       case 'success':
         if ($icon) {

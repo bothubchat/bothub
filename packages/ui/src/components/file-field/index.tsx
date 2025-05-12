@@ -28,7 +28,7 @@ export interface FileFieldProps
   extends Omit<React.ComponentProps<'div'>, 'onChange'> {
   label?: React.ReactNode;
   placeholder?: string;
-  error?: string;
+  error?: string | boolean;
   files?: File[];
   disabled?: boolean;
   fullWidth?: boolean;

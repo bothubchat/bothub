@@ -121,21 +121,16 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
   }, []);
 
   useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) =>
-      e.key === ' ' && (videoPlayed ? handlePause : handleStart)();
-
     const handleDocumentFullscreenChange = () => {
       setVideoFullScreen(document.fullscreenElement !== null);
     };
 
     window.addEventListener('fullscreenchange', handleDocumentFullscreenChange);
-    window.addEventListener('keyup', handleKeyPress);
     return () => {
       window.removeEventListener(
         'fullscreenchange',
         handleDocumentFullscreenChange
       );
-      window.removeEventListener('keyup', handleKeyPress);
     };
   }, [videoPlayed]);
 
