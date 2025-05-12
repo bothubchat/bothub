@@ -157,9 +157,10 @@ export const useSelectField = <
   const handleInputClick = useCallback(
     (native: boolean, event: React.MouseEvent<HTMLElement>) => {
       onSelectClick?.();
-      const inputEl: HTMLElement | null = triggerRef.current;
+      const triggerEl: HTMLElement | null = triggerRef.current;
+      const selectModalEl: HTMLDivElement | null = selectModalRef.current;
 
-      if (!inputEl || disabled) {
+      if (!triggerEl || !selectModalEl || disabled) {
         return;
       }
       if (native) {
@@ -169,14 +170,19 @@ export const useSelectField = <
       const windowHeight =
         window.innerHeight || document.documentElement.clientHeight;
 
-      const rect = inputEl.getBoundingClientRect();
-      const { width, height } = rect;
+      const { width, height, top, bottom, left, right } =
+        triggerEl.getBoundingClientRect();
+      const { width: modalWidth } = selectModalEl.getBoundingClientRect();
 
       let newPlacement = placement;
 
-      if (rect.top - 186 < 0) {
-        newPlacement = 'bottom-left';
-      } else if (rect.bottom + 186 > windowHeight) {
+      if (top - 186 < 0) {
+        if (newPlacement === 'bottom-left') {
+          newPlacement = 'bottom-left';
+        } else {
+          newPlacement = 'bottom-center';
+        }
+      } else if (bottom + 186 > windowHeight) {
         if (initialPlacement === 'top-right') {
           newPlacement = 'top-right';
         } else {
@@ -191,16 +197,20 @@ export const useSelectField = <
 
       switch (newPlacement) {
         case 'bottom-left':
-          x = rect.left + window.scrollX;
-          y = rect.top + window.scrollY + height;
+          x = left + window.scrollX;
+          y = top + window.scrollY + height;
+          break;
+        case 'bottom-center':
+          x = Math.floor((left + right) / 2 + window.scrollX - modalWidth / 2);
+          y = top + window.scrollY + height;
           break;
         case 'top-left':
-          x = rect.left + window.scrollX;
-          y = rect.top + window.scrollY;
+          x = left + window.scrollX;
+          y = top + window.scrollY;
           break;
         case 'top-right':
-          x = rect.left + window.scrollX + width;
-          y = rect.top + window.scrollY;
+          x = left + window.scrollX + width;
+          y = top + window.scrollY;
           break;
       }
 

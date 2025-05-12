@@ -1,4 +1,3 @@
-import { useTransition } from '@react-spring/web';
 import { useCallback, useEffect, useState } from 'react';
 import * as S from './styled';
 import { Portal } from '../../portal';
@@ -71,13 +70,6 @@ export const SelectModal = ({
   const [openedOptions, setOpenedOptions] = useState<(string | number)[]>([]);
   const [scrollTop, setScrollTop] = useState([0, 0, 0]);
   const [searchValue, setSearchValue] = useState('');
-
-  const transitions = useTransition(isOpen, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-    config: { tension: 250, friction: 20 }
-  });
 
   const handleScrollTopChange = (value: number, index: number) => {
     setScrollTop((prev) => prev.map((v, i) => (i === index ? value : v)));
@@ -199,132 +191,128 @@ export const SelectModal = ({
     return item;
   });
 
-  return transitions(
-    (styles, item) =>
-      item && (
-        <Portal>
-          <S.SelectModalStyled
-            $contentWidth={contentWidth}
-            ref={selectModalRef}
-            style={{
-              ...(x !== 0 && {
-                ...(placement !== 'top-right' && {
-                  left: `${x}px`
-                }),
-                ...(placement === 'top-right' && {
-                  ...(typeof contentWidth === 'undefined' && {
-                    left: `calc(${x}px - ${width})`
-                  }),
-                  ...(typeof contentWidth === 'number' && {
-                    left: `calc(${x}px - ${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`})`
-                  })
-                })
-              }),
-              ...(y !== 0 && {
-                top: `${y}px`
-              }),
+  return (
+    <Portal>
+      <S.SelectModalStyled
+        $isOpen={isOpen}
+        $contentWidth={contentWidth}
+        ref={selectModalRef}
+        style={{
+          ...(x !== 0 && {
+            ...(placement !== 'top-right' && {
+              left: `${x}px`
+            }),
+            ...(placement === 'top-right' && {
               ...(typeof contentWidth === 'undefined' && {
-                width: `${width}px`
+                left: `calc(${x}px - ${width})`
               }),
               ...(typeof contentWidth === 'number' && {
-                width: `${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`}`
-              }),
-              ...styles
-            }}
-          >
-            <S.SelectModalPositionWrapper
-              $blur={blur}
-              $placement={placement}
-              style={{
-                ...(followContentHeight &&
-                  blockHeight && { height: blockHeight }),
-                ...(modalMaxHeight && {
-                  maxHeight: modalMaxHeight
-                })
-              }}
-            >
-              <S.SelectModalContent>
-                <S.SelectModalGroups $size={size}>
-                  {!!tabs && (
-                    <S.SelectModalTabsContainer>
-                      <S.SelectModalTabs
-                        tabs={tabs.tabs}
-                        component="button"
-                        onClick={onTabClick}
-                        defaultTabId={tabs.defaultTabId}
-                      />
-                    </S.SelectModalTabsContainer>
-                  )}
-                  {search && (
-                    <S.SelectModalSearch
-                      placeholder={searchPlaceholder}
-                      value={searchValue}
-                      onChange={handleSearchChange}
-                      onClick={() => {
-                        isKeyboardOpen.current = true;
-                      }}
-                      onBlur={() =>
-                        setTimeout(() => {
-                          isKeyboardOpen.current = false;
-                        }, 500)
-                      }
-                    />
-                  )}
-                  {before && (
-                    <SelectFieldGroup
-                      scrollTop={scrollTop[0]}
-                      onScrollTopChange={(val) => handleScrollTopChange(val, 0)}
-                      $size={size}
-                      $disableScrollbar={disableScrollbar}
-                      $followContentHeight={!!blockHeight}
-                    >
-                      <SelectFieldOptions
-                        value={value}
-                        data={filterData(before, searchValue)}
-                        size={size}
-                        disableSelect={disableSelect}
-                        onOptionClick={handleOptionClick}
-                      />
-                    </SelectFieldGroup>
-                  )}
-                  <SelectFieldGroup
-                    scrollTop={scrollTop[1]}
-                    onScrollTopChange={(val) => handleScrollTopChange(val, 1)}
-                    $size={size}
-                    $disableScrollbar={disableScrollbar}
-                    $followContentHeight={!!blockHeight}
-                  >
-                    <SelectFieldOptions
-                      value={value}
-                      data={filterData(data, searchValue)}
-                      size={size}
-                      disableSelect={disableSelect}
-                      onOptionClick={handleOptionClick}
-                    />
-                  </SelectFieldGroup>
-                  {after && (
-                    <SelectFieldGroup
-                      scrollTop={scrollTop[2]}
-                      onScrollTopChange={(val) => handleScrollTopChange(val, 2)}
-                      $size={size}
-                      $disableScrollbar={disableScrollbar}
-                      $followContentHeight={!!blockHeight}
-                    >
-                      <SelectFieldOptions
-                        value={value}
-                        data={filterData(after, searchValue)}
-                        size={size}
-                        disableSelect={disableSelect}
-                        onOptionClick={handleOptionClick}
-                      />
-                    </SelectFieldGroup>
-                  )}
-                </S.SelectModalGroups>
-              </S.SelectModalContent>
-            </S.SelectModalPositionWrapper>
-          </S.SelectModalStyled>
-        </Portal>
-      )
+                left: `calc(${x}px - ${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`})`
+              })
+            })
+          }),
+          ...(y !== 0 && {
+            top: `${y}px`
+          }),
+          ...(typeof contentWidth === 'undefined' && {
+            width: `${width}px`
+          }),
+          ...(typeof contentWidth === 'number' && {
+            width: `${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`}`
+          })
+        }}
+      >
+        <S.SelectModalPositionWrapper
+          $blur={blur}
+          $placement={placement}
+          style={{
+            ...(followContentHeight && blockHeight && { height: blockHeight }),
+            ...(modalMaxHeight && {
+              maxHeight: modalMaxHeight
+            })
+          }}
+        >
+          <S.SelectModalContent>
+            <S.SelectModalGroups $size={size}>
+              {!!tabs && (
+                <S.SelectModalTabsContainer>
+                  <S.SelectModalTabs
+                    tabs={tabs.tabs}
+                    component="button"
+                    onClick={onTabClick}
+                    defaultTabId={tabs.defaultTabId}
+                  />
+                </S.SelectModalTabsContainer>
+              )}
+              {search && (
+                <S.SelectModalSearch
+                  placeholder={searchPlaceholder}
+                  value={searchValue}
+                  onChange={handleSearchChange}
+                  onClick={() => {
+                    isKeyboardOpen.current = true;
+                  }}
+                  onBlur={() =>
+                    setTimeout(() => {
+                      isKeyboardOpen.current = false;
+                    }, 500)
+                  }
+                />
+              )}
+              {before && (
+                <SelectFieldGroup
+                  scrollTop={scrollTop[0]}
+                  onScrollTopChange={(val) => handleScrollTopChange(val, 0)}
+                  $size={size}
+                  $disableScrollbar={disableScrollbar}
+                  $followContentHeight={!!blockHeight}
+                >
+                  <SelectFieldOptions
+                    value={value}
+                    data={filterData(before, searchValue)}
+                    size={size}
+                    disableSelect={disableSelect}
+                    onOptionClick={handleOptionClick}
+                  />
+                </SelectFieldGroup>
+              )}
+              <SelectFieldGroup
+                scrollTop={scrollTop[1]}
+                onScrollTopChange={(val) => handleScrollTopChange(val, 1)}
+                $size={size}
+                $disableScrollbar={disableScrollbar}
+                $followContentHeight={!!blockHeight}
+              >
+                <SelectFieldOptions
+                  value={value}
+                  data={filterData(data, searchValue)}
+                  size={size}
+                  disableSelect={disableSelect}
+                  onOptionClick={handleOptionClick}
+                />
+              </SelectFieldGroup>
+              {after && (
+                <SelectFieldGroup
+                  scrollTop={scrollTop[2]}
+                  onScrollTopChange={(val) => handleScrollTopChange(val, 2)}
+                  $size={size}
+                  $disableScrollbar={disableScrollbar}
+                  $followContentHeight={!!blockHeight}
+                >
+                  <SelectFieldOptions
+                    value={value}
+                    data={filterData(after, searchValue)}
+                    size={size}
+                    disableSelect={disableSelect}
+                    onOptionClick={handleOptionClick}
+                  />
+                </SelectFieldGroup>
+              )}
+            </S.SelectModalGroups>
+          </S.SelectModalContent>
+        </S.SelectModalPositionWrapper>
+      </S.SelectModalStyled>
+    </Portal>
   );
 };
 

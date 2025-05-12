@@ -25,6 +25,7 @@ const BadgeSelectDropdownStoryComponent = ({
         'Model 4'
       ]}
       onChange={setValue}
+      placement="bottom-center"
       variant={variant}
     />
   );

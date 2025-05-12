@@ -60,7 +60,11 @@ export type SelectFieldData = SelectFieldDataItem[];
 
 export type SelectFieldSize = 'small' | 'md' | 'large';
 
-export type SelectFieldPlacement = 'bottom-left' | 'top-left' | 'top-right';
+export type SelectFieldPlacement =
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'top-left'
+  | 'top-right';
 
 export type SelectFieldInputType = 'text' | 'search';
 

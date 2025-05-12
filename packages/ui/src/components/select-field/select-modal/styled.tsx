@@ -7,6 +7,7 @@ import { SearchSimpleIcon } from '@/ui/icons';
 
 export interface SelectModalStyledProps {
   $contentWidth?: number;
+  $isOpen: boolean;
 }
 
 export const SelectModalStyled = styled(animated.div)<SelectModalStyledProps>`
@@ -17,6 +18,14 @@ export const SelectModalStyled = styled(animated.div)<SelectModalStyledProps>`
   min-width: 200px;
   width: 100%;
   box-sizing: border-box;
+  transition: opacity 0.2s;
+
+  ${({ $isOpen }) =>
+    !$isOpen &&
+    css`
+      opacity: 0;
+      pointer-events: none;
+    `}
 `;
 
 export interface SelectModalPositionWrapperProps {
