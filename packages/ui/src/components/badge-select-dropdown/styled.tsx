@@ -36,7 +36,7 @@ export const BadgeSelectDropdownList: React.FC<
   top: 38px;
   left: 0;
   transform-origin: top center;
-
+  z-index: 2;
   padding: 8px;
   border: 1px solid;
   border-radius: 8px;
