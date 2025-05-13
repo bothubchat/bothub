@@ -11,6 +11,7 @@ export const BadgeSelectDropdownSpanStyled = styled(Typography).attrs({
 export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
   border: none;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   cursor: pointer;
   column-gap: 8px;
