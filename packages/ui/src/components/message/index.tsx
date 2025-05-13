@@ -294,7 +294,7 @@ export const Message: React.FC<MessageProps> = ({
             data-date={timestamp}
           >
             <MessageContent $variant={variant}>
-              {(name || transaction) && (
+              {name && (
                 <MessageTop>
                   {typeof name === 'string' && (
                     <MessageSender>
@@ -303,9 +303,6 @@ export const Message: React.FC<MessageProps> = ({
                     </MessageSender>
                   )}
                   {typeof name !== 'string' && <div />}
-                  <MessageBlockTransaction $top>
-                    {transaction}
-                  </MessageBlockTransaction>
                 </MessageTop>
               )}
               {typeof name !== 'string' && name}
