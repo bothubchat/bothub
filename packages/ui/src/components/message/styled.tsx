@@ -257,33 +257,8 @@ export const MessageBlockBottomPanel = styled.div<{
   }}
 `;
 
-export const MessageBlockTransaction = styled.div<{
-  $top?: boolean;
-}>`
-  ${({ $top }) =>
-    $top
-      ? adaptive({
-          desktop: css`
-            display: none;
-          `,
-          tablet: css`
-            display: none;
-          `,
-          mobile: css`
-            display: 'block';
-          `
-        })
-      : adaptive({
-          desktop: css`
-            display: block;
-          `,
-          tablet: css`
-            display: block;
-          `,
-          mobile: css`
-            display: 'none';
-          `
-        })}
+export const MessageBlockTransaction = styled.div`
+  display: block;
 `;
 
 export const MessageBlockScrollbarWrapper = styled(Scrollbar).attrs({
