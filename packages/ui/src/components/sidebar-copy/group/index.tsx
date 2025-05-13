@@ -10,6 +10,7 @@ import {
 } from './styled';
 import { useSidebar } from '../context';
 import { FolderIcon } from '@/ui/icons/folder';
+import { SidebarGroupSkeleton } from './skeleton';
 
 export interface SidebarGroupDefaultProps {
   name: string;
@@ -60,14 +61,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   }, []);
 
   if (props.skeleton) {
-    return (
-      <SidebarGroupStyled>
-        <SidebarGroupBox>
-          <SidebarGroupName />
-        </SidebarGroupBox>
-        <SidebarGroupList>{children}</SidebarGroupList>
-      </SidebarGroupStyled>
-    );
+    return <SidebarGroupSkeleton>{children}</SidebarGroupSkeleton>;
   }
 
   if (!sidebarOpen) {

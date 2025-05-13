@@ -46,8 +46,8 @@ export const SidebarChatIconStyled = styled(SidebarChatIcon)``;
 
 export const SidebarChatIconSkeleton = styled(Skeleton)`
   aspect-ratio: 1/1;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     width: 18px;
     height: 18px;
@@ -55,5 +55,5 @@ export const SidebarChatIconSkeleton = styled(Skeleton)`
 `;
 
 export const SidebarChatSkeleton = styled(Skeleton)`
-  width: 100%;
+  margin-left: 8px;
 `;

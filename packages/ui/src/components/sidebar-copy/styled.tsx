@@ -50,7 +50,8 @@ export const SidebarWrapper = styled.div<{
   height: 100%;
   overflow: hidden;
   margin: 0 16px;
-  padding-right: ${({ $isScrollable, $isOpen }) => ($isScrollable && $isOpen ? 20 : 26)}px;
+  padding-right: ${({ $isScrollable, $isOpen }) =>
+    $isScrollable && $isOpen ? 20 : 26}px;
 `;
 
 export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
@@ -69,7 +70,9 @@ export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
   height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  ${({ $isOpen }) => !$isOpen && `
+  ${({ $isOpen }) =>
+    !$isOpen &&
+    `
     scrollbar-width: none;
     padding-right: 6px;
   `}

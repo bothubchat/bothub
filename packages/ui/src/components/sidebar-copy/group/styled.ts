@@ -3,6 +3,7 @@ import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons';
 import { colorToRgba } from '@/ui/utils';
+import { Skeleton } from '@/ui/components/skeleton';
 
 export const SidebarGroupStyled = styled.div`
   position: relative;
@@ -87,4 +88,26 @@ export const SidebarGroupButton = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+`;
+
+export const SidebarGroupSkeletonStyled = styled(Skeleton)``;
+
+export const SidebarGroupIconSkeleton = styled(Skeleton)`
+  aspect-ratio: 1/1;
+  width: 24px;
+  height: 24px;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    width: 22px;
+    height: 22px;
+  }
+`;
+export const SidebarGroupSkeletonContainer = styled(Typography).attrs({
+  component: 'div',
+  variant: 'body-l-medium'
+})`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  height: fit-content;
 `;

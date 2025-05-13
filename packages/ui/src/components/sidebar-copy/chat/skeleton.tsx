@@ -7,10 +7,9 @@ import {
 
 export const SidebarChatSkeleton: React.FC = () => (
   <SidebarChatStyled>
-    <SidebarChatIconSkeleton />
     <SidebarChatName>
+      <SidebarChatIconSkeleton />
       <SidebarChatSkeletonStyled />
     </SidebarChatName>
-    <SidebarChatIconSkeleton />
   </SidebarChatStyled>
 );
