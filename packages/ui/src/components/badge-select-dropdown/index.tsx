@@ -33,9 +33,9 @@ export const BadgeSelectDropdown = ({
 
   const {
     isOpen,
-    setValue,
     triggerRef,
     value,
+    setValue,
     handleInputClick,
     ...selectModalProps
   } = useSelectField<HTMLButtonElement>({

@@ -13,6 +13,7 @@ import { SelectFieldOptions } from '../option';
 import { filterData } from './filterData';
 import { ITab } from '../../scrollable-tabs';
 import { UseSelectFieldReturnType } from '..';
+import { SearchSimpleIcon } from '@/ui/icons';
 
 export type SelectModalGeneralProps = {
   data?: SelectFieldData;
@@ -27,7 +28,12 @@ export type SelectModalGeneralProps = {
     defaultTabId?: string;
     onTabClick?: (id: string | null) => void;
   };
-  search?: boolean;
+  search?:
+    | {
+        icon?: React.ReactNode;
+        onChange?: (value: string) => void;
+      }
+    | boolean;
   searchPlaceholder?: string;
   resetStyleState?: ResetStyleStateType;
   blur?: boolean;
@@ -79,7 +85,13 @@ export const SelectModal = ({
     React.ChangeEventHandler<HTMLInputElement>
   >(
     (event) => {
-      setSearchValue(event.currentTarget.value.trim());
+      const { value } = event.currentTarget;
+
+      if (typeof search === 'object' && search.onChange) {
+        search.onChange(value);
+      } else {
+        setSearchValue(value.trim());
+      }
     },
     [setSearchValue]
   );
@@ -246,6 +258,11 @@ export const SelectModal = ({
               )}
               {search && (
                 <S.SelectModalSearch
+                  startIcon={
+                    (typeof search === 'object' && search.icon) || (
+                      <SearchSimpleIcon />
+                    )
+                  }
                   placeholder={searchPlaceholder}
                   value={searchValue}
                   onChange={handleSearchChange}

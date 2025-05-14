@@ -3,7 +3,6 @@ import { animated } from '@react-spring/web';
 import { SelectFieldPlacement, SelectFieldSize } from '../types';
 import { ScrollableTabs } from '../../scrollable-tabs';
 import { TextField } from '../../text-field';
-import { SearchSimpleIcon } from '@/ui/icons';
 
 export interface SelectModalStyledProps {
   $contentWidth?: number;
@@ -105,7 +104,6 @@ export const SelectModalTabs = styled(ScrollableTabs).attrs({
 
 export const SelectModalSearch = styled(TextField).attrs({
   fullWidth: true,
-  startIcon: <SearchSimpleIcon />,
   variant: 'secondary'
 })`
   padding-right: 8px;
