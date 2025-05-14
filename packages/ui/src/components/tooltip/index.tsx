@@ -141,7 +141,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     return [x, y];
   }, [placement, align, hoveredElement]);
 
-  useEffect(() => {
+  const updatePosition = useCallback(() => {
     if (hoveredElement) {
       setCoords(getTooltipPosition());
     }
@@ -293,6 +293,16 @@ export const Tooltip: React.FC<TooltipProps> = ({
     }
   };
 
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<Element>): void => {
+      if (!isDisabled && e.currentTarget instanceof Element) {
+        sethoveredElement(e.currentTarget);
+        updatePosition();
+      }
+    },
+    [isDisabled, updatePosition]
+  );
+
   useEffect(() => {
     window.addEventListener('mouseup', handleMouseUp);
 
@@ -307,6 +317,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       handleTooltipMouseLeave={handleMouseLeave}
       handleTooltipMouseUp={handleMouseUp}
       handleTooltipMouseDown={handleMouseDown}
+      handleTooltipPointerMove={handlePointerMove}
     >
       <Portal>{tooltipNode}</Portal>
       {children}
