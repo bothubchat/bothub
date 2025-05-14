@@ -105,33 +105,22 @@ export const DescriptionCardBackground = styled.div<{
   left: 0px;
   right: 0px;
   pointer-events: none;
-  ${({ theme, $variant, $bgVariant }) => {
+  ${({ theme, $variant }) => {
     switch ($variant) {
       case 'tertiary':
         return css`
           background-color: ${theme.colors.grayScale.gray4};
         `;
       default:
-        return css`
-          background-position: right bottom;
-          background-repeat: no-repeat;
-          @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-            left: ${() => {
-              switch ($bgVariant) {
-                case 'article':
-                  return '65px';
-                case 'fav':
-                  return '10px';
-                case 'referral':
-                  return '75px';
-                case 'tg':
-                  return '0px';
-              }
-            }};
-          }
-        `;
     }
   }}
+`;
+
+export const DescriptionCardBackgroundImage = styled.img`
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  pointer-events: none;
 `;
 
 export interface DescriptionCardTitleProps extends TypographyProps {
@@ -142,6 +131,7 @@ export const DescriptionCardTitle = styled(Typography).attrs({
   variant: 'body-xl-semibold',
   component: 'h3'
 })`
+  z-index: 1;
   color: ${({ theme }) => theme.default.colors.base.white};
 `;
 

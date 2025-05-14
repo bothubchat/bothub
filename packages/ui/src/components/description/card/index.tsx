@@ -8,7 +8,8 @@ import {
   DescriptionCardText,
   DescriptionCardTitle,
   DescriptionCardTertiaryTitle,
-  DescriptionCardTertiaryText
+  DescriptionCardTertiaryText,
+  DescriptionCardBackgroundImage
 } from './styled';
 import {
   TDescriptionCard,
@@ -97,10 +98,15 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
               : {}
           }
         >
-          <DescriptionCardBackground
-            $bgVariant={bgDescriptionCard}
-            $variant={variant}
-          />
+          {variant === 'tertiary' ? (
+            <DescriptionCardBackground
+              $bgVariant={bgDescriptionCard}
+              $variant={variant}
+            />
+          ) : (
+            <DescriptionCardBackgroundImage />
+          )}
+
           <DescriptionCardContent $variant={variant}>
             {variant === 'tertiary' && icon}
             {variant !== 'tertiary' &&
