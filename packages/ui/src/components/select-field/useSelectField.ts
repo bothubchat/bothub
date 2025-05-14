@@ -108,6 +108,22 @@ export const useSelectField = <
     [value, setValue] = [initialValue, setInitialValue];
   }
 
+  const setValueHandler = (value: ValueType) => {
+    setValue(value);
+
+    if (onChange) {
+      if (multiple) {
+        (onChange as SelectFieldMultiChangeEventHandler)(
+          value as SelectFieldDataItem[]
+        );
+      } else {
+        (onChange as SelectFieldChangeEventHandler)(
+          value as SelectFieldDataItem | null
+        );
+      }
+    }
+  };
+
   const isKeyboardOpen = useRef(false);
   const triggerRef = useRef<TriggerType>(null);
   const selectModalRef = useRef<HTMLDivElement>(null);
@@ -249,6 +265,6 @@ export const useSelectField = <
     multiple,
     handleInputClick,
     handleClose,
-    setValue
+    setValue: setValueHandler
   };
 };
