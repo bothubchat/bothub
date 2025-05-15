@@ -8,17 +8,17 @@ export const TextHideIcon = icon(({ ...props }) => (
     {...props}
   >
     <IconConsumer>
-      {({ fill } = {}) => (
+      {({ fill, stroke } = {}) => (
         <>
           <rect
             width="30"
             height="20"
             rx="4"
-            fill={fill ? '#FFFFFF' : '#073CA4'}
+            fill={fill ?? '#073CA4'}
           />
           <path
             d="M10 12L15 8L20 12"
-            stroke={fill ?? '#4785FF'}
+            stroke={stroke ?? '#4785FF'}
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"

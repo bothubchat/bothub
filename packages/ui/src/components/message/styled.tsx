@@ -22,6 +22,7 @@ export interface MessageStyledProps {
 
 export const MessageStyledWrapper = styled.div<MessageStyledProps>`
   display: flex;
+  align-items: flex-start;
   width: 100%;
   ${({ $variant }) => {
     switch ($variant) {
