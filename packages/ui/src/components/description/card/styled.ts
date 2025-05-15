@@ -1,11 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Typography, TypographyProps } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
-import {
-  DescriptionCardVariant,
-  TDescriptionCard,
-  TDescriptionCardBackground
-} from './types';
+import { DescriptionCardVariant, TDescriptionCard } from './types';
 
 export interface DescriptionCardBorderWrapperProps {
   $variant: DescriptionCardVariant;
@@ -96,7 +92,6 @@ export const DescriptionCardContent = styled.div<{
 
 export const DescriptionCardBackground = styled.div<{
   $variant: DescriptionCardVariant;
-  $bgVariant?: TDescriptionCardBackground;
 }>`
   position: absolute;
   width: 100%;
@@ -114,13 +109,6 @@ export const DescriptionCardBackground = styled.div<{
       default:
     }
   }}
-`;
-
-export const DescriptionCardBackgroundImage = styled.img`
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  pointer-events: none;
 `;
 
 export interface DescriptionCardTitleProps extends TypographyProps {

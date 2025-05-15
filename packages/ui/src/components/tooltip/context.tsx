@@ -3,16 +3,12 @@ import React, { useContext } from 'react';
 export interface TooltipContextValue {
   handleTooltipMouseEnter: React.MouseEventHandler<Element>;
   handleTooltipMouseLeave: React.MouseEventHandler<Element>;
-  handleTooltipMouseUp: React.MouseEventHandler<Element>;
-  handleTooltipMouseDown: React.MouseEventHandler<Element>;
   handleTooltipPointerMove: React.PointerEventHandler<Element>;
 }
 
 export const TooltipContext = React.createContext<TooltipContextValue>({
   handleTooltipMouseEnter: () => {},
   handleTooltipMouseLeave: () => {},
-  handleTooltipMouseUp: () => {},
-  handleTooltipMouseDown: () => {},
   handleTooltipPointerMove: () => {}
 });
 

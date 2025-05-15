@@ -90,8 +90,6 @@ export const RangeField: React.FC<RangeFieldProps> = ({
             {({
               handleTooltipMouseEnter,
               handleTooltipMouseLeave,
-              handleTooltipMouseDown,
-              handleTooltipMouseUp,
               handleTooltipPointerMove
             }) => (
               <RangeFieldRange
@@ -114,8 +112,6 @@ export const RangeField: React.FC<RangeFieldProps> = ({
                     {...props}
                     key={key}
                     $disabled={disabled}
-                    onPointerDown={handleTooltipMouseDown}
-                    onPointerUp={handleTooltipMouseUp}
                     onPointerMove={handleTooltipPointerMove}
                     onPointerEnter={handleTooltipMouseEnter}
                     onPointerLeave={handleTooltipMouseLeave}

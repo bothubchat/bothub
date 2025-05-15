@@ -5,5 +5,3 @@ export type DescriptionCardVariant =
   | 'quaternary';
 
 export type TDescriptionCard = 'collaborate' | 'products';
-
-export type TDescriptionCardBackground = 'article' | 'fav' | 'referral' | 'tg';

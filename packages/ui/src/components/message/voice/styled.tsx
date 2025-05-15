@@ -62,10 +62,7 @@ export const MessageVoiceWaves = styled.svg`
 export const MessageVoiceDurationText = styled(Typography).attrs({
   variant: 'body-s-medium'
 })`
-  color: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.default.colors.base.black
-      : theme.default.colors.base.white};
+  color: ${({ theme }) => theme.colors.base.white};
   user-select: none;
 `;
 
@@ -87,10 +84,7 @@ export const MessageVoiceText = styled(Typography).attrs({
   variant: 'body-m-regular'
 })<MessageVoiceTextProps>`
   width: 100%;
-  color: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.default.colors.base.black
-      : theme.default.colors.base.white};
+  color: ${({ theme }) => theme.colors.base.white};
   &::selection {
     ${({ $messageColor }) => {
       switch ($messageColor) {

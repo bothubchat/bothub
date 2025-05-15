@@ -198,15 +198,12 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
         </MessageVoiceDurationText>
         <MessageVoiceToggleTextButton onClick={handleTextToggle}>
           <IconProvider
-            {...(assitantStyle
-              ? { stroke: 'white' }
-              : color === 'default'
-                ? {}
-                : color === 'green'
-                  ? { fill: theme.colors.gpt3 }
-                  : color === 'purple'
-                    ? { fill: theme.colors.gpt4 }
-                    : { fill: color })}
+            fill={theme.colors.accent.strong}
+            stroke={
+              theme.mode === 'light'
+                ? theme.default.colors.base.white
+                : theme.colors.accent.primaryLight
+            }
           >
             {isTextShowed && <MessageVoiceHideTextIcon />}
             {!isTextShowed && <MessageVoiceShowTextIcon />}

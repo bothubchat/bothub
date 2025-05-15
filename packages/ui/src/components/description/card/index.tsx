@@ -8,14 +8,9 @@ import {
   DescriptionCardText,
   DescriptionCardTitle,
   DescriptionCardTertiaryTitle,
-  DescriptionCardTertiaryText,
-  DescriptionCardBackgroundImage
+  DescriptionCardTertiaryText
 } from './styled';
-import {
-  TDescriptionCard,
-  DescriptionCardVariant,
-  TDescriptionCardBackground
-} from './types';
+import { TDescriptionCard, DescriptionCardVariant } from './types';
 import { LinksIcon } from '@/ui/icons/links';
 import { useTheme } from '@/ui/theme';
 
@@ -29,7 +24,6 @@ export interface DescriptionCardProps
   text?: React.ReactNode | string;
   variant?: DescriptionCardVariant;
   descriptionCardType?: TDescriptionCard;
-  bgDescriptionCard?: TDescriptionCardBackground;
   children?: React.ReactNode;
 }
 
@@ -37,7 +31,6 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
   icon = <LinksIcon />,
   title,
   descriptionCardType,
-  bgDescriptionCard,
   text,
   children,
   variant = 'main',
@@ -98,13 +91,8 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
               : {}
           }
         >
-          {variant === 'tertiary' ? (
-            <DescriptionCardBackground
-              $bgVariant={bgDescriptionCard}
-              $variant={variant}
-            />
-          ) : (
-            <DescriptionCardBackgroundImage />
+          {variant === 'tertiary' && (
+            <DescriptionCardBackground $variant={variant} />
           )}
 
           <DescriptionCardContent $variant={variant}>
