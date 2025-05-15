@@ -273,6 +273,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
       )
   );
 
+  useEffect(() => {
+    updatePosition();
+  }, [hoveredElement, updatePosition]);
+
   const handleMouseEnter = (e: React.MouseEvent<Element, MouseEvent>): void => {
     if (!isDisabled && e.currentTarget instanceof Element) {
       sethoveredElement(e.currentTarget);
