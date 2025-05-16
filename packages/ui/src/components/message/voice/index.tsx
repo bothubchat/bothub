@@ -23,6 +23,7 @@ export interface MessageVoiceProps extends React.ComponentProps<'div'> {
   src: string;
   waveData: number[];
   duration: number;
+  assitantStyle?: boolean;
 }
 
 export const MessageVoice: React.FC<MessageVoiceProps> = ({
@@ -31,6 +32,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   duration,
   tabIndex = 0,
   children,
+  assitantStyle,
   ...props
 }) => {
   const theme = useTheme();
@@ -109,7 +111,10 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   );
 
   return (
-    <MessageVoiceStyled {...props}>
+    <MessageVoiceStyled
+      $assitantStyle={assitantStyle}
+      {...props}
+    >
       <MessageVoiceAudio
         ref={audioRef}
         src={src}
@@ -193,13 +198,12 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
         </MessageVoiceDurationText>
         <MessageVoiceToggleTextButton onClick={handleTextToggle}>
           <IconProvider
-            {...(color === 'default'
-              ? {}
-              : color === 'green'
-                ? { fill: theme.colors.gpt3 }
-                : color === 'purple'
-                  ? { fill: theme.colors.gpt4 }
-                  : { fill: color })}
+            fill={theme.colors.accent.strong}
+            stroke={
+              theme.mode === 'light'
+                ? theme.default.colors.base.white
+                : theme.colors.accent.primaryLight
+            }
           >
             {isTextShowed && <MessageVoiceHideTextIcon />}
             {!isTextShowed && <MessageVoiceShowTextIcon />}

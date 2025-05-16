@@ -5,14 +5,23 @@ import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { TextReadIcon } from '@/ui/icons/text-read';
 import { TextHideIcon } from '@/ui/icons/text-hide';
+import { colorToRgba } from '@/ui/utils';
 
-export const MessageVoiceStyled = styled.div`
+export const MessageVoiceStyled = styled.div<{ $assitantStyle?: boolean }>`
   display: inline-flex;
+  border-radius: 10px 10px 0px 0px;
+  ${({ theme, $assitantStyle }) =>
+    $assitantStyle &&
+    css`
+      background: ${theme.mode === 'light'
+        ? colorToRgba(theme.colors.accent.primaryLight, 0.2)
+        : 'transparent'};
+    `}
+  padding: ${({ theme }) => (theme.mode === 'light' ? '8px' : '1px 0px')};
   width: min-content;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
-  padding: 1px 0px;
 `;
 
 export const MessageVoiceAudio = styled.audio`
@@ -53,7 +62,7 @@ export const MessageVoiceWaves = styled.svg`
 export const MessageVoiceDurationText = styled(Typography).attrs({
   variant: 'body-s-medium'
 })`
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => theme.colors.base.white};
   user-select: none;
 `;
 
@@ -75,7 +84,7 @@ export const MessageVoiceText = styled(Typography).attrs({
   variant: 'body-m-regular'
 })<MessageVoiceTextProps>`
   width: 100%;
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => theme.colors.base.white};
   &::selection {
     ${({ $messageColor }) => {
       switch ($messageColor) {

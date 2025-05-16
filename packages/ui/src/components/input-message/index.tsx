@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-  useLayoutEffect
-} from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useTransition } from '@react-spring/web';
 import { useOnClickOutside } from '@/ui/utils/useOnClickOutside';
 import {
@@ -309,8 +303,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   );
 
   const handleClick = useCallback(() => {
-    textareaRef.current?.focus();
-  }, []);
+    if (!disabled && autoFocus) {
+      textareaRef.current?.focus();
+    }
+  }, [disabled, autoFocus]);
 
   const handleUploadFileClick = useCallback<
     React.MouseEventHandler<HTMLDivElement>
@@ -383,33 +379,32 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   }, [isVoiceRecording, stopVoiceRecording]);
 
   const handleInput = useCallback(() => {
-    const textareaEl: HTMLElement | null = textareaRef.current;
-
-    if (textareaEl === null) {
-      return;
-    }
+    const textareaEl = textareaRef.current;
+    if (textareaEl === null) return;
 
     textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 18px)';
     textareaEl.style.height = `${textareaEl.scrollHeight}px`;
-    textareaEl.focus();
-
     setTextareaHeight(`${textareaEl.scrollHeight}px`);
-  }, [message]);
+  }, [message, autoFocus]);
 
   useEffect(() => {
     handleInput();
   }, [handleInput]);
 
   useEffect(() => {
-    const textareaEl: HTMLElement | null = textareaRef.current;
-    const focused = document.activeElement === textareaEl;
+    const textareaEl = textareaRef.current;
+    if (!textareaEl || disabled) return;
 
-    if (textareaEl && autoFocus) {
+    const shouldFocus = !disabled && autoFocus;
+
+    setIsFocus(shouldFocus);
+
+    if (shouldFocus) {
       textareaEl.focus();
-    } else if (!focused) {
-      setIsFocus(false);
+    } else if (document.activeElement === textareaEl) {
+      textareaEl.blur();
     }
-  }, [disabled]);
+  }, [disabled, autoFocus]);
 
   useEffect(() => {
     const textareaEl: HTMLElement | null = textareaRef.current;
@@ -430,22 +425,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       setFiles(initialFiles);
     }
   }, [initialFiles]);
-
-  if (typeof window !== 'undefined') {
-    useLayoutEffect(() => {
-      const textareaEl: HTMLElement | null = textareaRef.current;
-
-      if (textareaEl === null) {
-        return;
-      }
-
-      textareaEl.style.height = `${textareaEl.scrollHeight}px`;
-      textareaEl.scrollTop = textareaEl.scrollHeight;
-      if (autoFocus) {
-        textareaEl.focus();
-      }
-    }, [message, autoFocus]);
-  }
 
   useEffect(() => {
     const mediaRecorder = voiceMediaRecorderRef.current;
