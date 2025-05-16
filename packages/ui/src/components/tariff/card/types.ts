@@ -1,3 +1,3 @@
-export type TariffCardColor = 'gray' | 'blue' | 'blue-lilac';
-
 export type TariffCardVariant = 'primary' | 'secondary';
+
+export type TariffType = 'BASIC' | 'PREMIUM' | 'ELITE' | 'DELUXE' | 'FREE';

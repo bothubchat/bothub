@@ -46,6 +46,7 @@ export const defaultTheme: DefaultTheme = {
       premium: 'linear-gradient(90deg, #4785FF 0%, #7740F2 100%)',
       deluxe: 'linear-gradient(90deg, #5728FF 0%, #A750FF 100%)',
       elite: 'linear-gradient(90deg, #1C64F2 0%, #D41CF2 100%)',
+      enterprise: 'linear-gradient(90deg, #6E1AFF -0.39%, #D967FF 99.61%)',
       elite20:
         'linear-gradient(90deg, rgba(28,100,242,0.2) 0%, rgba(212,28,242,0.2) 100%)'
     },
