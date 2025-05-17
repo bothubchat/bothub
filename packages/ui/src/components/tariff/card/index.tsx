@@ -46,18 +46,18 @@ export const TariffCard: React.FC<
   TariffCardProps | TariffCardEnterpriseProps
 > = (props) => {
   const handleClick = (e: React.MouseEvent) => {
-    e.preventDefault();
     if (props.variant !== 'ENTERPRISE') {
+      e.preventDefault();
       props.onClick?.(e);
     }
   };
 
   return (
     <TariffCardIsPopular
-      $active={props.variant === 'PREMIUM'}
+      $active={props.variant === 'PREMIUM' && !!props.popularText}
       $variant={props.variant}
     >
-      {props.variant === 'PREMIUM' && (
+      {props.variant === 'PREMIUM' && !!props.popularText && (
         <TariffCardIsPopularContainer>
           <TariffCardStarUnfilledIcon
             fill="#fff"

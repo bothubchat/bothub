@@ -69,7 +69,10 @@ export const Basic: TariffListStory = {
           description="Для команд и бизнеса, с личным кабинетом и индивидуальными консультациями"
           label="Enterprise"
           button={
-            <TariffCardEnterpriseButton endIcon={<TariffCardArrow />}>
+            <TariffCardEnterpriseButton
+              href="https://bothub.chat"
+              endIcon={<TariffCardArrow />}
+            >
               Обсудить
             </TariffCardEnterpriseButton>
           }
