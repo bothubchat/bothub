@@ -3,11 +3,11 @@ import { Typography } from '@/ui/components/typography';
 import { Badge } from '@/ui/components/badge';
 import { TariffType } from './types';
 import { colorToRgba } from '@/ui/utils';
-import { Button } from '../../button';
+import { Button } from '@/ui/components/button';
 import { ArrowNarrowRightIcon, StarUnfilledIcon } from '@/ui/icons';
 
 export const TariffCardIsPopular = styled.div<{
-  $active: boolean;
+  $active?: boolean;
   $variant: TariffType | 'ENTERPRISE';
 }>`
   display: flex;
@@ -19,7 +19,13 @@ export const TariffCardIsPopular = styled.div<{
     css`
       background: ${({ theme }) => theme.colors.gradient.premium};
       padding: 2px 3px;
-      border-radius: 22px;
+      border-radius: 21px;
+      @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+        border-radius: 19px;
+      }
+      @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+        border-radius: 15px;
+      }
     `}
 `;
 
@@ -46,10 +52,16 @@ export const TariffCardIsPopularText = styled(Typography).attrs({
 `;
 
 export const TariffCardBackground = styled.div`
-  border-radius: 20px;
   width: 100%;
   height: 100%;
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+  border-radius: 20px;
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    border-radius: 18px;
+  }
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    border-radius: 14px;
+  }
 `;
 
 export const TariffCardStyled = styled.div<{
@@ -74,8 +86,9 @@ export const TariffCardStyled = styled.div<{
     border-radius: 14px;
   }
   &:hover {
-    ${({ theme, $variant }) =>
+    ${({ theme, $variant, $active }) =>
       $variant !== 'ENTERPRISE' &&
+      !$active &&
       `background: ${colorToRgba(theme.colors.accent.primary, 0.2)}`};
   }
   ${({ theme, $active }) =>
