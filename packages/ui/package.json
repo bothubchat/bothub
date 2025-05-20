@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.35.1-develop-14c7ef85-7118-4285-acf4-9a5305293f90",
+  "version": "2.35.1-fix-input-ios-audio-612cadc3-80f3-4192-b849-2b7cbe890069",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
