@@ -17,7 +17,8 @@ export const MessageVoiceStyled = styled.div<{ $assitantStyle?: boolean }>`
         ? colorToRgba(theme.colors.accent.primaryLight, 0.2)
         : 'transparent'};
     `}
-  padding: ${({ theme }) => (theme.mode === 'light' ? '8px' : '1px 0px')};
+  padding: ${({ theme, $assitantStyle }) =>
+    theme.mode === 'light' && $assitantStyle ? '8px' : '1px 0px'};
   width: min-content;
   flex-direction: column;
   align-items: flex-start;
