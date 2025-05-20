@@ -48,10 +48,6 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   const [currentTime, setCurrentTime] = useState<number | null>(null);
 
   const handleToggle = useCallback(() => {
-    if (isLoading) {
-      return;
-    }
-
     const audioEl = audioRef.current;
 
     if (!audioEl) {
@@ -63,7 +59,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
     } else {
       audioEl.pause();
     }
-  }, [isPlayed, audioRef.current, isLoading]);
+  }, [isPlayed, audioRef.current]);
 
   const handleTimeUpdate = useCallback(() => {
     const audioEl = audioRef.current;
@@ -127,9 +123,8 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       <MessageVoiceMain
         $loading={isLoading}
         tabIndex={tabIndex}
-        onClick={handleToggle}
       >
-        <MessageVoiceToggleButton>
+        <MessageVoiceToggleButton onClick={handleToggle}>
           <IconProvider
             {...(color === 'default'
               ? {}

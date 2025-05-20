@@ -142,6 +142,7 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   padding: 0px;
   &::placeholder {
     color: ${({ theme }) => theme.colors.grayScale.gray1};
+    padding-bottom: 1px;
   }
   &::-webkit-scrollbar {
     display: none;
