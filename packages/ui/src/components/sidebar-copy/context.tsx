@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 export interface SidebarContextValue {
   isOpen: boolean;
   isEdit: boolean;
+  scrollbarElement: Element | null;
   setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -10,6 +11,7 @@ export interface SidebarContextValue {
 export const SidebarContext = React.createContext<SidebarContextValue>({
   isOpen: false,
   isEdit: false,
+  scrollbarElement: null,
   setIsEdit() {},
   setIsOpen() {}
 });

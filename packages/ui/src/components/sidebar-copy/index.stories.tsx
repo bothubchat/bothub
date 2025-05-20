@@ -266,12 +266,7 @@ export const Basic: SidebarStory = {
         <SidebarEditButton variant="secondary" />
       </>
     ),
-    children: (
-      <Chats
-        loading
-        actions={<ChatsActions />}
-      />
-    )
+    children: <Chats actions={<ChatsActions />} />
   }
 };
 

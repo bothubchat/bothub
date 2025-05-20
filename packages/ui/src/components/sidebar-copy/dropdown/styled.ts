@@ -28,9 +28,11 @@ export const SidebarDropdownToggler = styled.button`
   align-items: center;
 `;
 
-export const SidebarDropdownContent = styled.div`
-  position: absolute;
+export const SidebarDropdownContent = styled.div<{ $opacity: number }>`
+  position: fixed;
+  visibility: ${({ $opacity }) => ($opacity > 0 ? 'visible' : 'hidden')};
   transform-origin: top right;
+  width: fit-content;
   margin-top: 16px;
   top: 16px;
   right: -2px;
@@ -45,6 +47,7 @@ export const SidebarDropdownContent = styled.div`
     z-index: -1;
     width: 100%;
     height: 100%;
+    top: 0px;
     right: 0px;
     background: rgba(
       ${({ theme }) => colorToRgba(theme.colors.grayScale.gray4)},
