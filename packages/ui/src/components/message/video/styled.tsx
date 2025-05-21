@@ -1,5 +1,6 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
+import { Button } from '@/ui/components/button';
 
 export const MessageVideoControls = styled.div<{
   $isVisible?: boolean;
@@ -87,7 +88,7 @@ export const MessageVideoControlsButtons = styled.div<{
   $isFullScreen?: boolean;
 }>`
   display: grid;
-  grid-template-columns: auto auto 1fr auto;
+  grid-template-columns: auto auto 1fr auto auto;
   gap: 8px;
   align-items: center;
 `;
@@ -176,3 +177,7 @@ export const MessageVideoVolumeContainer = styled.div`
     }
   }
 `;
+
+export const MessageVideoDownload = styled(Button).attrs({
+  variant: 'text'
+})``;
