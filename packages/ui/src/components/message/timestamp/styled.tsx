@@ -37,12 +37,7 @@ export interface TimestampTextProp {
 export const TimestampText = styled(Typography).attrs({
   variant: 'body-s-regular'
 })<TimestampTextProp>`
-  color: ${({ theme, $variant, $color }) => {
-    if (theme.mode === 'dark' || $variant === 'user' || $color !== 'default') {
-      return theme.default.colors.base.white;
-    }
-    return theme.default.colors.base.black;
-  }} !important;
+  color: ${({ theme }) => theme.colors.base.white} !important;
   ${adaptive({
     desktop: css`
       font-size: 12px;

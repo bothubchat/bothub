@@ -5,20 +5,11 @@ import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { TextReadIcon } from '@/ui/icons/text-read';
 import { TextHideIcon } from '@/ui/icons/text-hide';
-import { colorToRgba } from '@/ui/utils';
 
-export const MessageVoiceStyled = styled.div<{ $assitantStyle?: boolean }>`
+export const MessageVoiceStyled = styled.div`
   display: inline-flex;
   border-radius: 10px 10px 0px 0px;
-  ${({ theme, $assitantStyle }) =>
-    $assitantStyle &&
-    css`
-      background: ${theme.mode === 'light'
-        ? colorToRgba(theme.colors.accent.primaryLight, 0.2)
-        : 'transparent'};
-    `}
-  padding: ${({ theme, $assitantStyle }) =>
-    theme.mode === 'light' && $assitantStyle ? '8px' : '1px 0px'};
+  padding: 1px 0px;
   width: min-content;
   flex-direction: column;
   align-items: flex-start;

@@ -33,7 +33,7 @@ import {
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
-import { getTgMarkdown } from '@/ui/utils';
+import { colorToRgba, getTgMarkdown } from '@/ui/utils';
 import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
@@ -224,7 +224,10 @@ export const Message: React.FC<MessageProps> = ({
     case 'user':
       switch (color) {
         case 'default':
-          hexColor = theme.colors.accent.primary;
+          hexColor =
+            theme.mode === 'dark'
+              ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
+              : colorToRgba(theme.colors.accent.primaryLight, 0.2);
           break;
         case 'green':
           hexColor = theme.colors.gpt3;
