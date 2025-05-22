@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from 'styled-components';
 import {
   MessageInlineCodeStyled,
   MessageInlineCodeStyledProps
@@ -14,9 +15,10 @@ export const MessageInlineCode: React.FC<MessageInlineCodeProps> = ({
   ...props
 }) => {
   const { variant, color } = useMessage();
-
+  const theme = useTheme();
   return (
     <MessageInlineCodeStyled
+      key={theme.mode}
       $messageVariant={variant}
       $messageColor={color}
       {...props}
