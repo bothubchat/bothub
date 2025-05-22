@@ -6,6 +6,7 @@ import React, {
   useCallback
 } from 'react';
 import hljs from 'highlight.js/lib/common';
+import DOMPurify from 'dompurify';
 
 export interface HighlightProps {
   children: ReactNode;
@@ -36,15 +37,15 @@ export const Highlight: React.FC<HighlightProps> = ({
   }, [className, children, highlightCode]);
 
   if (innerHTML) {
+    const safeHTML = DOMPurify.sanitize(children as string);
     const props = {
       ref: elRef,
       className,
-      dangerouslySetInnerHTML: { __html: children as string }
+      dangerouslySetInnerHTML: { __html: safeHTML }
     };
     if (Element) {
       return <Element {...props} />;
     }
-
     return (
       <div
         {...props}
