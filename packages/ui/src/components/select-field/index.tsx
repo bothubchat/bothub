@@ -314,7 +314,6 @@ export const SelectField = ({
         <SelectModal
           {...selectModalProps}
           isOpen={isOpen}
-          triggerRef={triggerRef}
           data={data}
           contentWidth={contentWidth}
           size={size}
@@ -326,12 +325,12 @@ export const SelectField = ({
           search={search}
           searchPlaceholder={searchPlaceholder}
           resetStyleState={resetStyleState}
-          onOptionClick={onOptionClick}
           blur={blur}
-          handleClose={handleClose}
           value={value}
-          setValue={setValue}
           multiple={multiple}
+          onOptionClick={onOptionClick}
+          handleClose={handleClose}
+          setValue={setValue}
         />
 
         {error && <S.SelectFieldErrorText>{error}</S.SelectFieldErrorText>}

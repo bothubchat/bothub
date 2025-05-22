@@ -18,6 +18,7 @@ import { SearchSimpleIcon } from '@/ui/icons';
 export type SelectModalGeneralProps = {
   data?: SelectFieldData;
   contentWidth?: number;
+  contentHeight?: number;
   size?: SelectFieldSize;
   disableSelect?: boolean;
   disableScrollbar?: boolean;
@@ -41,12 +42,16 @@ export type SelectModalGeneralProps = {
 };
 
 export type SelectModalProps = SelectModalGeneralProps &
-  Omit<UseSelectFieldReturnType, 'disabled' | 'handleInputClick'>;
+  Omit<
+    UseSelectFieldReturnType,
+    'disabled' | 'handleInputClick' | 'maxHeight' | 'triggerRef'
+  >;
 
 export const SelectModal = ({
   isOpen,
   data = [],
   contentWidth,
+  contentHeight,
   size = 'small',
   disableSelect = false,
   disableScrollbar = false,
@@ -57,22 +62,18 @@ export const SelectModal = ({
   searchPlaceholder,
   resetStyleState,
   placement,
-  triggerRef,
   selectModalRef,
   blur = false,
   x,
   y,
   width,
   isKeyboardOpen,
-  followContentHeight,
-  blockHeight,
   value,
   multiple,
   onOptionClick,
   handleClose,
   setValue
 }: SelectModalProps) => {
-  const [modalMaxHeight, setModalMaxHeight] = useState<number | null>(null);
   const [openedOptions, setOpenedOptions] = useState<(string | number)[]>([]);
   const [scrollTop, setScrollTop] = useState([0, 0, 0]);
   const [searchValue, setSearchValue] = useState('');
@@ -121,26 +122,6 @@ export const SelectModal = ({
     },
     [value, setValue, multiple, onOptionClick, disableSelect]
   );
-
-  const calculateMaxHeight = useCallback(() => {
-    if (triggerRef.current && placement !== 'bottom-left' && isOpen) {
-      const { top } = triggerRef.current.getBoundingClientRect();
-
-      setModalMaxHeight(top - 20);
-    } else {
-      setTimeout(() => {
-        setModalMaxHeight(null);
-      }, 175);
-    }
-  }, [triggerRef.current, placement, isOpen]);
-
-  useEffect(() => {
-    calculateMaxHeight();
-
-    window.addEventListener('resize', calculateMaxHeight);
-
-    return () => window.removeEventListener('resize', calculateMaxHeight);
-  }, [calculateMaxHeight]);
 
   useEffect(() => {
     setOpenedOptions([]);
@@ -238,9 +219,8 @@ export const SelectModal = ({
           $blur={blur}
           $placement={placement}
           style={{
-            ...(followContentHeight && blockHeight && { height: blockHeight }),
-            ...(modalMaxHeight && {
-              maxHeight: modalMaxHeight
+            ...(contentHeight && {
+              maxHeight: contentHeight
             })
           }}
         >
@@ -282,7 +262,7 @@ export const SelectModal = ({
                   onScrollTopChange={(val) => handleScrollTopChange(val, 0)}
                   $size={size}
                   $disableScrollbar={disableScrollbar}
-                  $followContentHeight={!!blockHeight}
+                  $followContentHeight={!!contentHeight}
                 >
                   <SelectFieldOptions
                     value={value}
@@ -298,7 +278,7 @@ export const SelectModal = ({
                 onScrollTopChange={(val) => handleScrollTopChange(val, 1)}
                 $size={size}
                 $disableScrollbar={disableScrollbar}
-                $followContentHeight={!!blockHeight}
+                $followContentHeight={!!contentHeight}
               >
                 <SelectFieldOptions
                   value={value}
@@ -314,7 +294,7 @@ export const SelectModal = ({
                   onScrollTopChange={(val) => handleScrollTopChange(val, 2)}
                   $size={size}
                   $disableScrollbar={disableScrollbar}
-                  $followContentHeight={!!blockHeight}
+                  $followContentHeight={!!contentHeight}
                 >
                   <SelectFieldOptions
                     value={value}

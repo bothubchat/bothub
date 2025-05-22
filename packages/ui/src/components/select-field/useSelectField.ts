@@ -28,9 +28,9 @@ export type UseSelectFieldUnionProps =
   | UseSelectFieldMultiProps;
 
 export type UseSelectFieldProps = {
-  followContentHeight?: boolean;
   disabled?: boolean;
   placement?: SelectFieldPlacement;
+  contentHeight?: number;
   onClose?: () => void;
   onSelectClick?: () => void;
 } & UseSelectFieldUnionProps;
@@ -42,9 +42,9 @@ export const useSelectField = <
 >({
   value: initialValue,
   multiple = false,
-  followContentHeight = false,
   disabled = false,
   placement: initialPlacement = 'bottom-left',
+  contentHeight,
   onClose,
   onSelectClick,
   onChange,
@@ -54,8 +54,8 @@ export const useSelectField = <
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [width, setWidth] = useState(0);
+  const [maxHeight, setMaxHeight] = useState<number | undefined>(contentHeight);
   const [placement, setPlacement] = useState(initialPlacement);
-  const [blockHeight, setBlockHeight] = useState<number | null>(null);
 
   const setInitialValue = useCallback(
     (item: ValueType) => {
@@ -128,10 +128,35 @@ export const useSelectField = <
   const triggerRef = useRef<TriggerType>(null);
   const selectModalRef = useRef<HTMLDivElement>(null);
 
-  if (followContentHeight && selectModalRef.current && !blockHeight) {
-    const { height } = getComputedStyle(selectModalRef.current.children[0]);
-    setBlockHeight(parseInt(height));
-  }
+  useEffect(() => {
+    const listener = () => {
+      const trigger = triggerRef.current;
+
+      if (!trigger || !maxHeight || !contentHeight) return;
+
+      if (placement.includes('top')) {
+        const { top } = trigger.getBoundingClientRect();
+        const modalMaxHeight = top - 20;
+
+        if (modalMaxHeight < contentHeight) {
+          setMaxHeight(modalMaxHeight);
+        }
+      } else {
+        const { bottom } = trigger.getBoundingClientRect();
+        const modalMaxHeight = window.innerHeight - bottom - 20;
+
+        if (modalMaxHeight < contentHeight) {
+          setMaxHeight(modalMaxHeight);
+        }
+      }
+    };
+
+    listener();
+
+    window.addEventListener('resize', listener);
+
+    return () => window.removeEventListener('resize', listener);
+  }, [triggerRef.current, maxHeight, placement, contentHeight]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -258,11 +283,10 @@ export const useSelectField = <
     selectModalRef,
     placement,
     isKeyboardOpen,
-    blockHeight,
     value,
     disabled,
-    followContentHeight,
     multiple,
+    contentHeight: maxHeight,
     handleInputClick,
     handleClose,
     setValue: setValueHandler
