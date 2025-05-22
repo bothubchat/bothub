@@ -193,7 +193,7 @@ export const SelectModal = ({
         style={{
           ...(x !== 0 && {
             ...(placement !== 'top-right' && {
-              left: `${x}px`
+              left: x
             }),
             ...(placement === 'top-right' && {
               ...(typeof contentWidth === 'undefined' && {
@@ -205,13 +205,16 @@ export const SelectModal = ({
             })
           }),
           ...(y !== 0 && {
-            top: `${y}px`
+            top: y
           }),
           ...(typeof contentWidth === 'undefined' && {
-            width: `${width}px`
+            width
           }),
           ...(typeof contentWidth === 'number' && {
-            width: `${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`}`
+            width:
+              contentWidth > width
+                ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)`
+                : width
           })
         }}
       >
