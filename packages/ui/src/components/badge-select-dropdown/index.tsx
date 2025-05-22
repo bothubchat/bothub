@@ -79,7 +79,6 @@ export const BadgeSelectDropdown = ({
         isOpen={isOpen}
         setValue={setValue}
         value={value}
-        triggerRef={triggerRef}
         {...selectModalProps}
       />
     </>
