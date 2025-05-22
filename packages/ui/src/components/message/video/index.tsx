@@ -19,7 +19,7 @@ import { DownloadImgIcon } from '@/ui/icons';
 
 export type MessageVideoProps = {
   src: string;
-  downloadVideo: () => void;
+  downloadVideo?: () => void;
 };
 
 const formatTime = (time: number) => {
