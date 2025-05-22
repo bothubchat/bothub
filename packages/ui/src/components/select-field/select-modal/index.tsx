@@ -223,7 +223,7 @@ export const SelectModal = ({
           $placement={placement}
           style={{
             ...(contentHeight && {
-              maxHeight: contentHeight
+              maxHeight: `calc(var(--bothub-scale, 1) * ${contentHeight}px)`
             })
           }}
         >
