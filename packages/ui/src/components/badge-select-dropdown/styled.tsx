@@ -8,7 +8,10 @@ export const BadgeSelectDropdownSpanStyled = styled(Typography).attrs({
   variant: 'body-s-medium'
 })``;
 
-export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
+export const BadgeSelectDropdownTrigger = styled.button<{
+  $active: boolean;
+  $colorButtonOpened?: string;
+}>`
   border: none;
   display: flex;
   justify-content: space-between;
@@ -18,9 +21,9 @@ export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
   min-width: 98px;
   padding: 6px 12px;
   border-radius: 14px;
-  background: ${({ theme, $active }) =>
+  background: ${({ theme, $active, $colorButtonOpened }) =>
     $active
-      ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
+      ? $colorButtonOpened || colorToRgba(theme.colors.accent.primaryLight, 0.5)
       : theme.colors.grayScale.gray3};
   color: ${({ theme }) => theme.colors.base.white};
 `;
