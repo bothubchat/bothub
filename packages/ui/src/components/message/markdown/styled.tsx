@@ -40,7 +40,8 @@ export const MessageMarkdownLine = React.memo(
   styled(ReactMarkdown)<MessageMarkdownStyledProps>`
     display: block;
     width: 100%;
-    color: ${({ theme }) => theme.colors.base.white};
+    color: ${({ theme }) =>
+      theme.mode === 'dark' ? theme.colors.base.white : '#a1a19a'};
     font-weight: 400;
     font-size: 16px;
     line-height: 22px;
