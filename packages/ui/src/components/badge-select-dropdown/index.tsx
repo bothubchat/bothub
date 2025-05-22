@@ -9,14 +9,16 @@ import {
 } from './styled';
 import { BadgeSelectDropdownProvider } from './context';
 
-interface IBadgeSelectDropdown {
+type IBadgeSelectDropdown = React.ComponentProps<'div'> & {
   activeDropDownItem: string;
-  children: React.ReactNode;
-}
+  colorButtonOpened?: string;
+} & React.PropsWithChildren;
 
 export const BadgeSelectDropdown: React.FC<IBadgeSelectDropdown> = ({
   children,
-  activeDropDownItem
+  activeDropDownItem,
+  colorButtonOpened,
+  ...props
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -61,10 +63,14 @@ export const BadgeSelectDropdown: React.FC<IBadgeSelectDropdown> = ({
 
   return (
     <BadgeSelectDropdownProvider setIsOpen={setIsOpen}>
-      <BadgeSelectDropdownWrapper ref={dropdownRef}>
+      <BadgeSelectDropdownWrapper
+        ref={dropdownRef}
+        {...props}
+      >
         <BadgeSelectDropdownTrigger
           $active={isOpen}
           onClick={handleToggle}
+          $colorButtonOpened={colorButtonOpened}
           type="button"
         >
           <BadgeSelectDropdownSpanStyled>
