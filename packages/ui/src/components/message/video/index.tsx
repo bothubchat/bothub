@@ -5,6 +5,7 @@ import {
   MessageVideoControls,
   MessageVideoControlsButton,
   MessageVideoControlsButtons,
+  MessageVideoDownload,
   MessageVideoStyled,
   MessageVideoTimeLine,
   MessageVideoTimeText
@@ -14,9 +15,11 @@ import { MinWindowIcon } from '@/ui/icons/min-window';
 import { PauseButtonIcon } from '@/ui/icons/pause-button';
 import { PlayButtonIcon } from '@/ui/icons/play-button';
 import { MessageVideoVolume } from './volume';
+import { DownloadImgIcon } from '@/ui/icons';
 
 export type MessageVideoProps = {
   src: string;
+  downloadVideo: () => void;
 };
 
 const formatTime = (time: number) => {
@@ -25,7 +28,10 @@ const formatTime = (time: number) => {
   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 };
 
-export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
+export const MessageVideo: React.FC<MessageVideoProps> = ({
+  src,
+  downloadVideo
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoPlayed, setVideoPlayed] = useState(false);
   const [videoCurrentTime, setVideoCurrentTime] = useState('00:00');
@@ -180,6 +186,16 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
           <MessageVideoTimeText>
             {videoCurrentTime} / {videoDuration}
           </MessageVideoTimeText>
+          {downloadVideo && (
+            <MessageVideoDownload
+              iconFill="#fff"
+              disableHoverColor
+              iconSize={iconSize}
+              onClick={downloadVideo}
+            >
+              <DownloadImgIcon />
+            </MessageVideoDownload>
+          )}
           <MessageVideoControlsButton onClick={handleFullscreen}>
             {videoFullScreen ? (
               <MinWindowIcon
