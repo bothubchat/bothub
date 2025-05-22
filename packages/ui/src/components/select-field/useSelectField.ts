@@ -134,20 +134,20 @@ export const useSelectField = <
 
       if (!trigger || !maxHeight || !contentHeight) return;
 
+      let modalMaxHeight = contentHeight;
+
+      const { top, bottom } = trigger.getBoundingClientRect();
+
       if (placement.includes('top')) {
-        const { top } = trigger.getBoundingClientRect();
-        const modalMaxHeight = top - 20;
-
-        if (modalMaxHeight < contentHeight) {
-          setMaxHeight(modalMaxHeight);
-        }
+        modalMaxHeight = top - 20;
       } else {
-        const { bottom } = trigger.getBoundingClientRect();
-        const modalMaxHeight = window.innerHeight - bottom - 20;
+        modalMaxHeight = window.innerHeight - bottom - 20;
+      }
 
-        if (modalMaxHeight < contentHeight) {
-          setMaxHeight(modalMaxHeight);
-        }
+      if (modalMaxHeight < contentHeight) {
+        setMaxHeight(modalMaxHeight);
+      } else {
+        setMaxHeight(contentHeight);
       }
     };
 
