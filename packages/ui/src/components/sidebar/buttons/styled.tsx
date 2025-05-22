@@ -2,7 +2,6 @@ import { css, styled } from 'styled-components';
 import { Button, ButtonVariant } from '@/ui/components/button';
 import { TrashIcon } from '@/ui/icons/trash';
 import { adaptive } from '@/ui/adaptive';
-import { AddChatIcon } from '@/ui/icons/add-chat';
 import { AddGroupIcon } from '@/ui/icons/add-group';
 import { ManageChatIcon } from '@/ui/icons/manage-chat';
 import { SearchSimpleIcon } from '@/ui/icons/search-simple';
@@ -34,10 +33,6 @@ export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
 export const SidebarDeleteButton = styled(Button).attrs({
   fullWidth: true,
   startIcon: <TrashIcon />
-})``;
-
-export const SidebarCreateChatButton = styled(Button).attrs({
-  children: <AddChatIcon />
 })``;
 
 export const SidebarAddGroupButton = styled(Button).attrs({

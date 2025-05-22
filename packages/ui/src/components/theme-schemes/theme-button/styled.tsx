@@ -23,17 +23,17 @@ export const ThemeButtonStyled = styled.button<ThemeButtonStyledProps>`
   &:hover {
     cursor: pointer;
   }
-  outline: 2px solid
+  outline: 1px solid
     ${({ theme, $active }) =>
-      !$active ? theme.colors.grayScale.gray2 : 'transparent'};
+      !$active ? theme.default.colors.grayScale.gray2 : 'transparent'};
   position: relative;
   &::before {
     content: '';
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
+    width: calc(100% + 2px);
+    height: calc(100% + 2px);
     position: absolute;
-    top: -2px;
-    left: -2px;
+    top: -1px;
+    left: -1px;
     background: ${({ theme }) => theme.colors.premiumGradient};
     border-radius: 20px;
     z-index: -1;

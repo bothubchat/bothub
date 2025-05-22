@@ -5,8 +5,13 @@ import { StoryDecorator } from '@/ui/story-decorator';
 export type ThemeSchemesStory = StoryObj<typeof ThemeSchemes>;
 export type ThemeSchemesMeta = Meta<typeof ThemeSchemes>;
 
-export const Basic: StoryObj = {
-  args: {}
+export const Basic: ThemeSchemesStory = {
+  args: {
+    customTitle: 'Пользовательская тема',
+    standardTitle: 'Стандартная тема',
+    colorfulTitle: 'Цветная тема',
+    activeScheme: 'iris'
+  }
 };
 
 export default {

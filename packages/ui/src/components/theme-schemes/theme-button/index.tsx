@@ -19,18 +19,22 @@ export interface ThemeButtonProps {
   theme: Pick<Theme, 'colors' | 'mode'>;
   active?: boolean;
   hasActions?: boolean;
+  onClick: ThemeButtonEventHandler;
   onEdit?: ThemeButtonEventHandler;
   onDelete?: ThemeButtonEventHandler;
 }
 
 export const ThemeButton: React.FC<ThemeButtonProps> = React.memo(
-  ({ theme, active, hasActions, onEdit, onDelete }) => {
+  ({ theme, active, hasActions, onClick, onEdit, onDelete }) => {
     const standardTheme = useTheme();
 
     return (
       <ThemeProvider theme={{ ...standardTheme, ...theme }}>
         <ThemeButtonWrapperStyled>
-          <ThemeButtonStyled $active={active}>
+          <ThemeButtonStyled
+            $active={active}
+            onClick={onClick}
+          >
             <ThemeButtonIconStyled>
               <IconProvider
                 fill={

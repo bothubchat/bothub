@@ -284,7 +284,10 @@ export const SidebarUserInfoUpdateTariffButton = styled.button`
 export const SidebarUserInfoUpdateTariffButtonText = styled(Typography).attrs({
   variant: 'body-m-medium'
 })`
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) =>
+    theme.mode === 'light' && theme.bright
+      ? theme.colors.base.black
+      : theme.colors.base.white};
   margin-inline: auto;
 `;
 

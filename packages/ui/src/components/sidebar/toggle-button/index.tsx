@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { SidebarToggleButtonStyled } from './styled';
 import { useSidebar } from '../context';
 import { IconProvider } from '@/ui/components/icon';
@@ -15,6 +15,8 @@ export const SidebarToggleButton: React.FC<SidebarToggleButtonProps> = (
   const theme = useTheme();
   const { isOpen, setIsOpen } = useSidebar();
 
+  const fill = useMemo(() => theme.colors.grayScale.gray1, [theme]);
+
   const handleToggle = useCallback(() => {
     setIsOpen(!isOpen);
   }, [isOpen]);
@@ -26,7 +28,7 @@ export const SidebarToggleButton: React.FC<SidebarToggleButtonProps> = (
       onClick={handleToggle}
     >
       <IconProvider
-        fill={theme.colors.grayScale.gray1}
+        fill={fill}
         size={24}
       >
         {isOpen ? <SidebarToggleLeft /> : <SidebarToggleRight />}

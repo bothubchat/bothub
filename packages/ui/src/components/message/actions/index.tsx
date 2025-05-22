@@ -12,6 +12,10 @@ import { UpdateIcon } from '@/ui/icons/update';
 import { ResendIcon } from '@/ui/icons/resend';
 import { EditIcon } from '@/ui/icons/edit';
 import { TrashIcon } from '@/ui/icons/trash';
+import { ThumbDownIcon } from '@/ui/icons/thumb-down';
+import { CheckSmallIcon } from '@/ui/icons/check-small';
+import { CloseIcon } from '@/ui/icons/close';
+import { CopyIcon } from '@/ui/icons/copy';
 
 import * as S from './styled';
 import {
@@ -24,12 +28,12 @@ import {
 import { MenuOption } from './menu-option';
 import { CopyButton } from './copy-button';
 import { ActionButton } from './action-button';
-import { CheckSmallIcon } from '@/ui/icons/check-small';
-import { CloseIcon } from '@/ui/icons/close';
-import { CopyIcon } from '@/ui/icons/copy';
+
 import { useScrollbarRef } from '../list';
 import { ModalOption } from './types';
-import { ThumbDownIcon } from '@/ui/icons/thumb-down';
+
+import { IconProvider } from '@/ui/components/icon';
+import { useTheme } from '@/ui/theme';
 
 type MessageActionsProps = {
   id?: string;
@@ -100,6 +104,8 @@ export const MessageActions = ({
   onTgCopy,
   onCopy
 }: MessageActionsProps) => {
+  const theme = useTheme();
+
   const [menuShown, setMenuShown] = useState(false);
   const [timeoutId, setTimeoutId] = useState<number>();
   const [invertedX, setInvertedX] = useState<boolean>(false);
@@ -232,159 +238,161 @@ export const MessageActions = ({
     >
       {!editing ? (
         <>
-          {modalEnabled() && (
-            <S.MessageActionsMenuStyled
-              ref={messageActionsMenuRef}
-              onBlur={() => {
-                setMenuShown(false);
-              }}
-            >
-              <ActionButton
-                onMouseEnter={handleButtonHoverIn}
-                onMouseLeave={handleButtonHoverOut}
-                onClick={handleButtonClick}
+          <IconProvider
+            fill={
+              theme.scheme === 'standard'
+                ? theme.colors.grayScale.gray1
+                : theme.colors.accent.primary
+            }
+          >
+            {modalEnabled() && (
+              <S.MessageActionsMenuStyled
+                ref={messageActionsMenuRef}
+                onBlur={() => {
+                  setMenuShown(false);
+                }}
               >
-                <MenuDotIcon size={18} />
-              </ActionButton>
-              {modalTransition(
-                (style, show) =>
-                  show && (
-                    <S.MessageActionsMenuModal
-                      style={style}
-                      key="message-actions-modal"
-                      onMouseEnter={handleButtonHoverIn}
-                      onMouseLeave={handleButtonHoverOut}
-                      $variant={variant}
-                      $invertedX={invertedX}
-                      $invertedY={invertedY}
-                    >
-                      {!disableCopy && copyPlainText && onPlainTextCopy && (
-                        <MenuOption onClick={handlePlainTextCopy}>
-                          <S.MessageActionsMenuModalOptionContent>
-                            <CopyIcon fill="#616D8D" />
-                            <S.MessageActionsButtonText>
-                              {copyPlainText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
-                      {!disableCopy && copyTgText && onTgCopy && (
-                        <MenuOption onClick={handleTgCopy}>
-                          <S.MessageActionsMenuModalOptionContent>
-                            <CopyIcon fill="#616D8D" />
-                            <S.MessageActionsButtonText>
-                              {copyTgText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
-                      {!disableResend &&
-                        variant === 'user' &&
-                        resendText &&
-                        onResend && (
+                <ActionButton
+                  onMouseEnter={handleButtonHoverIn}
+                  onMouseLeave={handleButtonHoverOut}
+                  onClick={handleButtonClick}
+                >
+                  <MenuDotIcon size={18} />
+                </ActionButton>
+                {modalTransition(
+                  (style, show) =>
+                    show && (
+                      <S.MessageActionsMenuModal
+                        style={style}
+                        key="message-actions-modal"
+                        onMouseEnter={handleButtonHoverIn}
+                        onMouseLeave={handleButtonHoverOut}
+                        $variant={variant}
+                        $invertedX={invertedX}
+                        $invertedY={invertedY}
+                      >
+                        {!disableCopy && copyPlainText && onPlainTextCopy && (
+                          <MenuOption onClick={handlePlainTextCopy}>
+                            <S.MessageActionsMenuModalOptionContent>
+                              <CopyIcon />
+                              <S.MessageActionsButtonText>
+                                {copyPlainText}
+                              </S.MessageActionsButtonText>
+                            </S.MessageActionsMenuModalOptionContent>
+                          </MenuOption>
+                        )}
+                        {!disableCopy && copyTgText && onTgCopy && (
+                          <MenuOption onClick={handleTgCopy}>
+                            <S.MessageActionsMenuModalOptionContent>
+                              <CopyIcon />
+                              <S.MessageActionsButtonText>
+                                {copyTgText}
+                              </S.MessageActionsButtonText>
+                            </S.MessageActionsMenuModalOptionContent>
+                          </MenuOption>
+                        )}
+                        {!disableResend &&
+                          variant === 'user' &&
+                          resendText &&
+                          onResend && (
+                            <MenuOption
+                              onClick={() => {
+                                handleOptionClick('resend');
+                              }}
+                            >
+                              <S.MessageActionsMenuModalOptionContent>
+                                <ResendIcon />
+                                <S.MessageActionsButtonText>
+                                  {resendText}
+                                </S.MessageActionsButtonText>
+                              </S.MessageActionsMenuModalOptionContent>
+                            </MenuOption>
+                          )}
+                        {!disableEdit && editText && onEdit && (
                           <MenuOption
                             onClick={() => {
-                              handleOptionClick('resend');
+                              handleOptionClick('edit');
                             }}
                           >
                             <S.MessageActionsMenuModalOptionContent>
-                              <ResendIcon fill="#616D8D" />
+                              <EditIcon />
                               <S.MessageActionsButtonText>
-                                {resendText}
+                                {editText}
                               </S.MessageActionsButtonText>
                             </S.MessageActionsMenuModalOptionContent>
                           </MenuOption>
                         )}
-                      {!disableEdit && editText && onEdit && (
-                        <MenuOption
-                          onClick={() => {
-                            handleOptionClick('edit');
-                          }}
-                        >
-                          <S.MessageActionsMenuModalOptionContent>
-                            <EditIcon />
-                            <S.MessageActionsButtonText>
-                              {editText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
-                      {!disableDelete && deleteText && onDelete && (
-                        <MenuOption
-                          onClick={() => {
-                            handleOptionClick('delete');
-                          }}
-                        >
-                          <S.MessageActionsMenuModalOptionContent>
-                            <TrashIcon />
-                            <S.MessageActionsButtonText>
-                              {deleteText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
-                      {!disableDelete &&
-                        onReportText &&
-                        onReport &&
-                        variant !== 'user' && (
-                          <MenuOption onClick={handleReportClick}>
+                        {!disableDelete && deleteText && onDelete && (
+                          <MenuOption
+                            onClick={() => {
+                              handleOptionClick('delete');
+                            }}
+                          >
                             <S.MessageActionsMenuModalOptionContent>
-                              <ThumbDownIcon
-                                fill="#616D8D"
-                                size={18}
-                              />
+                              <TrashIcon />
                               <S.MessageActionsButtonText>
-                                {onReportText}
+                                {deleteText}
                               </S.MessageActionsButtonText>
                             </S.MessageActionsMenuModalOptionContent>
                           </MenuOption>
                         )}
-                    </S.MessageActionsMenuModal>
-                  )
-              )}
-            </S.MessageActionsMenuStyled>
-          )}
-          {!modalEnabled() && !disableDelete && (
-            <ActionButton
-              id={id}
-              message={message}
-              onClick={onDelete}
-              tooltipLabel={deleteText}
-            >
-              <TrashIcon size={20} />
-            </ActionButton>
-          )}
-          {!disableUpdate && variant !== 'user' && (
-            <ActionButton
-              id={id}
-              message={message}
-              onClick={onUpdate}
-              tooltipLabel={updateTooltipLabel}
-            >
-              <UpdateIcon size={18} />
-            </ActionButton>
-          )}
-          {!disableCopy && (
-            <CopyButton
-              onCopy={onCopy}
-              tooltipLabel={copyTooltipLabel}
-            />
-          )}
-          {!modalEnabled() &&
-            !disableDelete &&
-            onReportText &&
-            onReport &&
-            variant !== 'user' && (
+                        {!disableDelete &&
+                          onReportText &&
+                          onReport &&
+                          variant !== 'user' && (
+                            <MenuOption onClick={handleReportClick}>
+                              <S.MessageActionsMenuModalOptionContent>
+                                <ThumbDownIcon size={18} />
+                                <S.MessageActionsButtonText>
+                                  {onReportText}
+                                </S.MessageActionsButtonText>
+                              </S.MessageActionsMenuModalOptionContent>
+                            </MenuOption>
+                          )}
+                      </S.MessageActionsMenuModal>
+                    )
+                )}
+              </S.MessageActionsMenuStyled>
+            )}
+            {!modalEnabled() && !disableDelete && (
               <ActionButton
-                tooltipLabel={onReportText}
-                onClick={handleReportClick}
+                id={id}
+                message={message}
+                onClick={onDelete}
+                tooltipLabel={deleteText}
               >
-                <ThumbDownIcon
-                  fill="#616D8D"
-                  size={18}
-                />
+                <TrashIcon size={20} />
               </ActionButton>
             )}
+            {!disableUpdate && variant !== 'user' && (
+              <ActionButton
+                id={id}
+                message={message}
+                onClick={onUpdate}
+                tooltipLabel={updateTooltipLabel}
+              >
+                <UpdateIcon size={18} />
+              </ActionButton>
+            )}
+            {!disableCopy && (
+              <CopyButton
+                onCopy={onCopy}
+                tooltipLabel={copyTooltipLabel}
+              />
+            )}
+            {!modalEnabled() &&
+              !disableDelete &&
+              onReportText &&
+              onReport &&
+              variant !== 'user' && (
+                <ActionButton
+                  tooltipLabel={onReportText}
+                  onClick={handleReportClick}
+                >
+                  <ThumbDownIcon size={18} />
+                </ActionButton>
+              )}
+          </IconProvider>
         </>
       ) : (
         <S.MessageEditButtonsStyled>

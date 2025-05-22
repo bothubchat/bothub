@@ -8,7 +8,7 @@ import { FolderIcon } from '@/ui/icons/folder';
 import { Checkbox } from '@/ui/components/checkbox';
 import { adaptive } from '@/ui/adaptive';
 import { SidebarDropdownStyled } from '../dropdown';
-import { colorToRgba } from '@/ui/utils/colorToRgba';
+import { colorToRgba } from '@/ui/utils/colors';
 
 export const SidebarGroupsStyled = styled.div`
   display: flex;

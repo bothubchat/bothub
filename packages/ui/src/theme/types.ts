@@ -1,5 +1,7 @@
 export interface Theme {
   mode: ThemeMode;
+  scheme: ColorSchemeNames;
+  bright: boolean;
   colors: ThemeColors;
   tablet: ThemeTablet;
   mobile: ThemeMobile;
@@ -14,21 +16,24 @@ export interface ColorScheme {
   dark: Theme;
 }
 
-export type ColorSchemeNames =
-  | 'standard'
-  | 'strawberry'
-  | 'rose'
-  | 'orange'
-  | 'milktea'
-  | 'banana'
-  | 'apple'
-  | 'swamp'
-  | 'aquamarine'
-  | 'mountain'
-  | 'lake'
-  | 'iris'
-  | 'peony'
-  | 'custom';
+export const ColorSchemeNamesArray = [
+  'standard',
+  'strawberry',
+  'rose',
+  'orange',
+  'milktea',
+  'banana',
+  'apple',
+  'swamp',
+  'aquamarine',
+  'mountain',
+  'lake',
+  'iris',
+  'peony',
+  'custom'
+] as const;
+
+export type ColorSchemeNames = (typeof ColorSchemeNamesArray)[number];
 
 export type ColorSchemes = {
   [key in ColorSchemeNames]: ColorScheme;

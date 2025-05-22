@@ -38,6 +38,11 @@ export const TimestampText = styled(Typography).attrs({
   variant: 'body-s-regular'
 })<TimestampTextProp>`
   color: ${({ theme, $variant, $color }) => {
+    if (theme.bright) {
+      return theme.mode === 'dark'
+        ? theme.colors.base.black
+        : theme.colors.base.white;
+    }
     if (theme.mode === 'dark' || $variant === 'user' || $color !== 'default') {
       return theme.default.colors.base.white;
     }
