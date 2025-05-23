@@ -9,6 +9,7 @@ import { Tooltip } from '@/ui/components/tooltip';
 import { MessageMultilineCodeCopyButton } from './copy';
 import { MessageMultilineCodeContent } from './content';
 import { useMessage } from '../../../context';
+import { useTheme } from '@/ui/theme';
 
 export interface MessageMultilineCodeProps {
   className?: string;
@@ -30,9 +31,9 @@ export const MessageMultilineCode: React.FC<MessageMultilineCodeProps> = ({
   const languageName: string =
     className?.replace(classNameRegexp, '$1') ?? 'text';
   const codeClassName: string = classNameMatch ? classNameMatch[1] : '';
-
+  const theme = useTheme();
   return (
-    <MessageMultilineCodeStyled>
+    <MessageMultilineCodeStyled key={theme.mode}>
       {!onlyCode && (
         <MessageMultilineCodeHead
           $messageVariant={variant}
