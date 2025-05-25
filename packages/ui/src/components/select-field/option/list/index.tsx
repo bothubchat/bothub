@@ -14,6 +14,7 @@ import {
   SelectFieldRadio,
   SelectFieldRadioDescription,
   SelectFieldRadioLabel,
+  SelectFieldRadioLabelWrapper,
   SelectFieldRadioTitleAndRadio
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
@@ -27,6 +28,7 @@ import {
   SelectFieldOptionText
 } from '../select-field-option/styled';
 import { SelectFieldOption } from '../select-field-option';
+import { StarsIcon } from '@/ui/icons';
 
 export type SelectFieldOptionClickEventHandler = (
   item: SelectFieldDataItem
@@ -34,6 +36,7 @@ export type SelectFieldOptionClickEventHandler = (
 
 export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
   value: SelectFieldDataItem | SelectFieldDataItem[] | null;
+  best_model?: boolean;
   data: SelectFieldData;
   size: SelectFieldSize;
   disableSelect?: boolean;
@@ -42,6 +45,7 @@ export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
 
 export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
   value,
+  best_model,
   data,
   size,
   disableSelect = false,
@@ -165,9 +169,12 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                         <IconProvider size={18}>{item.icon}</IconProvider>
                       )}
                       {item.label && (
-                        <SelectFieldRadioLabel>
-                          {item.label}
-                        </SelectFieldRadioLabel>
+                        <SelectFieldRadioLabelWrapper>
+                          <SelectFieldRadioLabel>
+                            {item.label}
+                          </SelectFieldRadioLabel>
+                          {best_model && <StarsIcon size={18} />}
+                        </SelectFieldRadioLabelWrapper>
                       )}
                       <Radio
                         type="radio"

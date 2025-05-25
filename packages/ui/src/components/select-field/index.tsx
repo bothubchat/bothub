@@ -91,6 +91,7 @@ export type SelectFieldProps = (
   disableScrollbar?: boolean;
   before?: SelectFieldData;
   after?: SelectFieldData;
+  best_model?: boolean;
   enableInput?: boolean;
   inputType?: SelectFieldInputType;
   inputValue?: string;
@@ -117,6 +118,7 @@ export type SelectFieldProps = (
 export const SelectField: React.FC<SelectFieldProps> = ({
   className,
   label,
+  best_model,
   value: initialValue,
   placeholder,
   data = [],
@@ -795,6 +797,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                         $followContentHeight={!!blockHeight}
                       >
                         <SelectFieldOptions
+                          best_model={best_model}
                           value={value}
                           data={filterData(data, searchValue)}
                           size={size}
