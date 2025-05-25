@@ -44,6 +44,7 @@ export const MultilevelMenu: React.FC<IMultilevelMenu> = ({ config }) => {
         {menuItems &&
           menuItems.map((menuItem, indexMenuItem) => (
             <MultiLevelMenuAccordion
+              accordionIndex={indexMenuItem}
               openAccordion={indexMenuItem === openAccordion}
               handleAccordionToggle={() => handleAccordionToggle(indexMenuItem)}
               handleCloseAccordion={handleCloseAccordion}
