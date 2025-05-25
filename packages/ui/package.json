@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.36.2-develop-867d4b7e-2c80-4236-ab05-ab58bf206d9a",
+  "version": "2.36.2-fix-transcribation-dashboard-ui-58a552db-f84d-4068-946d-ba92162b61a1",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
