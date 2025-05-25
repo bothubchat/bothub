@@ -37,6 +37,7 @@ type MessageActionsProps = {
   message?: string;
   variant?: MessageVariant;
   skeleton?: boolean;
+  disableModal?: boolean;
   disableResend?: boolean;
   disableEdit?: boolean;
   disableDelete?: boolean;
@@ -72,6 +73,7 @@ type MessageActionsProps = {
 
 export const MessageActions = ({
   id,
+  disableModal,
   message,
   variant = 'user',
   skeleton,
@@ -124,7 +126,9 @@ export const MessageActions = ({
       case 'assistant':
         return !disableEdit;
       case 'user':
-        return !disableEdit || !disableDelete || !disableResend;
+        return disableModal
+          ? false
+          : !disableEdit || !disableDelete || !disableResend;
     }
   };
 
