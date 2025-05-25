@@ -159,9 +159,12 @@ export const MultiLevelMenuSecondLevelWrapper: React.FC<
   padding-left: 18px;
   flex-grow: 1;
 `;
-export const MultiLevelMenuSecondLevelContentWrapper = styled.div<{$columnsCount: number}>`
+export const MultiLevelMenuSecondLevelContentWrapper = styled.div<{
+  $columnsCount: number;
+}>`
   display: grid;
-  grid-template-columns: ${({$columnsCount})=>`repeat(${$columnsCount}, 1fr)`};
+  grid-template-columns: ${({ $columnsCount }) =>
+    `repeat(${$columnsCount}, 1fr)`};
   column-gap: 16px;
   height: auto;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {

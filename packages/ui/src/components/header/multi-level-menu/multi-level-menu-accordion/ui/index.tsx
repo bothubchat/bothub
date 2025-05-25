@@ -48,13 +48,13 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleMouseEnter = (item: TFirstLevelItem,index: number) => {
+  const handleMouseEnter = (item: TFirstLevelItem, index: number) => {
     setSelectedItem(undefined);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
     timeoutRef.current = setTimeout(() => {
-      setSelectedItem({...item, index});
+      setSelectedItem({ ...item, index });
     }, 200);
   };
 
@@ -106,7 +106,15 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                 (style, item) =>
                   item && (
                     <MultiLevelMenuSecondLevelWrapper style={style}>
-                      <MultiLevelMenuSecondLevelContentWrapper $columnsCount={accordionIndex === 0 && selectedItem && selectedItem.index === 1 ? 2 : 1}>
+                      <MultiLevelMenuSecondLevelContentWrapper
+                        $columnsCount={
+                          accordionIndex === 0 &&
+                          selectedItem &&
+                          selectedItem.index === 1
+                            ? 2
+                            : 1
+                        }
+                      >
                         {selectedItem &&
                           selectedItem.children &&
                           selectedItem.children.map(
