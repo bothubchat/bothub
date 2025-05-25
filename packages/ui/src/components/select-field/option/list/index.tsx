@@ -36,7 +36,6 @@ export type SelectFieldOptionClickEventHandler = (
 
 export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
   value: SelectFieldDataItem | SelectFieldDataItem[] | null;
-  best_model?: boolean;
   data: SelectFieldData;
   size: SelectFieldSize;
   disableSelect?: boolean;
@@ -45,7 +44,6 @@ export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
 
 export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
   value,
-  best_model,
   data,
   size,
   disableSelect = false,
@@ -173,7 +171,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                           <SelectFieldRadioLabel>
                             {item.label}
                           </SelectFieldRadioLabel>
-                          {best_model && <StarsIcon size={18} />}
+                          {item.best_model && <StarsIcon size={18} />}
                         </SelectFieldRadioLabelWrapper>
                       )}
                       <Radio

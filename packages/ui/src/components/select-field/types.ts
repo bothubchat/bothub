@@ -47,6 +47,7 @@ export type SelectFieldDataItemComplex = {
   open?: boolean;
   backgroundHoverColor?: 'gradient' | 'primary';
   data?: SelectFieldDataItem[];
+  best_model?: boolean;
   noSelect?: boolean;
   description?: string;
   selected?: boolean;
