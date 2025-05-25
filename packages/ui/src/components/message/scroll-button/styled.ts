@@ -17,9 +17,7 @@ export const MessageListScrollButton = styled.button`
   border-color: ${({ theme }) => theme.colors.grayScale.gray2};
   background: ${({ theme }) => theme.colors.grayScale.gray4};
   box-shadow: 0px 0px 1px 0px rgba(255, 255, 255, 0.4) inset;
-  @media (min-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    display: none;
-  }
+  cursor: pointer;
 `;
 
 export const MessageListArrowNarrowDownIcon = styled(ArrowNarrowDownIcon)`

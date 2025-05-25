@@ -116,7 +116,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [textareaHeight, setTextareaHeight] = useState(
-    'calc(var(--bothub-scale, 1) * 18px)'
+    'calc(var(--bothub-scale, 1) * 22px)'
   );
 
   const [message, setMessage] =
@@ -251,9 +251,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const handleSend = useCallback<React.MouseEventHandler<HTMLButtonElement>>(
     (event) => {
       event.stopPropagation();
-
       onSend?.(message, files);
-      setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
+      setMessage?.('');
+      setFiles?.([]);
+      setTextareaHeight('calc(var(--bothub-scale, 1) * 22px)');
     },
     [message, files, onSend, setMessage, setFiles]
   );
@@ -295,7 +296,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         if (newLineKey !== keyboardEvent && keyboardEvent !== '') {
           event.preventDefault();
           onSend?.(message, files);
-          setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
+          setTextareaHeight('calc(var(--bothub-scale, 1) * 22px)');
         }
       }
     },
@@ -382,7 +383,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     const textareaEl = textareaRef.current;
     if (textareaEl === null) return;
 
-    textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 18px)';
+    textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 22px)';
     textareaEl.style.height = `${textareaEl.scrollHeight}px`;
     setTextareaHeight(`${textareaEl.scrollHeight}px`);
   }, [message, autoFocus]);

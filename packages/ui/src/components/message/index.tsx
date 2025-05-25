@@ -52,6 +52,7 @@ export interface MessageProps {
   tags?: React.ReactNode;
   avatar?: React.ReactNode;
   transaction?: React.ReactNode;
+  disableModal?: boolean;
   disableResend?: boolean;
   disableEdit?: boolean;
   disableDelete?: boolean;
@@ -101,6 +102,7 @@ export const Message: React.FC<MessageProps> = ({
   tags,
   avatar,
   transaction,
+  disableModal = false,
   disableResend = false,
   disableEdit = false,
   disableDelete = false,
@@ -394,6 +396,7 @@ export const Message: React.FC<MessageProps> = ({
                 message={content}
                 variant={variant}
                 skeleton={skeleton}
+                disableModal={disableModal}
                 disableResend={disableResend}
                 disableEdit={disableEdit}
                 disableDelete={disableDelete}
