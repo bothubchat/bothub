@@ -11,7 +11,8 @@ import { MessageMultilineCodeContent } from './content';
 import { useMessage } from '../../../context';
 import { useTheme } from '@/ui/theme';
 
-export interface MessageMultilineCodeProps {
+export interface MessageMultilineCodeProps
+  extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   copyLabel?: string;
   children: string;
@@ -22,7 +23,8 @@ export const MessageMultilineCode: React.FC<MessageMultilineCodeProps> = ({
   className,
   copyLabel,
   children,
-  onlyCode = false
+  onlyCode = false,
+  ...props
 }) => {
   const { variant, color } = useMessage();
 
@@ -33,7 +35,10 @@ export const MessageMultilineCode: React.FC<MessageMultilineCodeProps> = ({
   const codeClassName: string = classNameMatch ? classNameMatch[1] : '';
   const theme = useTheme();
   return (
-    <MessageMultilineCodeStyled key={theme.mode}>
+    <MessageMultilineCodeStyled
+      {...props}
+      key={theme.mode}
+    >
       {!onlyCode && (
         <MessageMultilineCodeHead
           $messageVariant={variant}
