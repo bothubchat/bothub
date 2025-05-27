@@ -95,7 +95,10 @@ export const MultiLevelMenuSecondLevelLiHover = styled.div`
   transition: background 0.2s ease-in-out;
 `;
 
-export const MultiLevelMenuSecondLevelLi = styled.li<{ $even?: boolean }>`
+export const MultiLevelMenuSecondLevelLi = styled.li<{
+  $even?: boolean;
+  $nthChildCount: number;
+}>`
   position: relative;
   list-style: none;
   padding-top: 8px;
@@ -105,11 +108,11 @@ export const MultiLevelMenuSecondLevelLi = styled.li<{ $even?: boolean }>`
   &:last-child {
     border-bottom: none;
   }
-  ${({ $even, theme }) =>
+  ${({ $even, theme, $nthChildCount }) =>
     $even
       ? `
       @media (min-width: ${theme.tablet.maxWidth}) {
-        &:nth-last-child(-n + 2) {
+        &:nth-last-child(-n + ${$nthChildCount}) {
           border-bottom: none;
         }
       }
