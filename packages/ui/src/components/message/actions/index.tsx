@@ -44,6 +44,7 @@ type MessageActionsProps = {
   disableUpdate?: boolean;
   disableCopy?: boolean;
   disableDownload?: boolean;
+  editOutOfMenu?: boolean;
   editText?: string | null;
   copyTgText?: string | null;
   copyPlainText?: string | null;
@@ -83,6 +84,7 @@ export const MessageActions = ({
   disableUpdate,
   disableCopy,
   disableDownload,
+  editOutOfMenu,
   editText,
   copyTgText,
   copyPlainText,
@@ -306,7 +308,7 @@ export const MessageActions = ({
                             </S.MessageActionsMenuModalOptionContent>
                           </MenuOption>
                         )}
-                      {!disableEdit && editText && onEdit && (
+                      {!editOutOfMenu && !disableEdit && editText && onEdit && (
                         <MenuOption
                           onClick={() => {
                             handleOptionClick('edit');
@@ -373,6 +375,18 @@ export const MessageActions = ({
               tooltipLabel={updateTooltipLabel}
             >
               <UpdateIcon size={18} />
+            </ActionButton>
+          )}
+          {editOutOfMenu && (
+            <ActionButton
+              id={id}
+              message={message}
+              onClick={() => {
+                handleOptionClick('edit');
+              }}
+              tooltipLabel={editText}
+            >
+              <EditIcon size={18} />
             </ActionButton>
           )}
           {!disableCopy && (
