@@ -1,1 +1,1 @@
-export type ArrowsSize = 'sm' | 'md';
+export type ArrowsSize = 'sm' | 'md' | 'none';

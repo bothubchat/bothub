@@ -7,10 +7,12 @@ import { ArrowsSize } from './types';
 type SliderProps = {
   arrowsSize?: ArrowsSize;
   gap?: number;
+  justifyContentSlider?: 'space-between';
 } & PropsWithChildren;
 
 export const Slider = ({
   arrowsSize = 'md',
+  justifyContentSlider,
   gap = 10,
   children
 }: SliderProps) => {
@@ -29,11 +31,12 @@ export const Slider = ({
         $arrowsSize={arrowsSize}
       >
         <S.SliderIconContainer onClick={onScrollLeft}>
-          <ArrowDownIcon />
+          <ArrowDownIcon opacity={arrowsSize === 'none' ? 0 : 100} />
         </S.SliderIconContainer>
       </S.SliderArrow>
 
       <S.SliderWrapper
+        $justifyContentSlider={justifyContentSlider}
         ref={scrollbarRef}
         $gap={gap}
       >
@@ -46,7 +49,7 @@ export const Slider = ({
         $isLeftArrow={false}
       >
         <S.SliderIconContainer onClick={onScrollRight}>
-          <ArrowDownIcon />
+          <ArrowDownIcon opacity={arrowsSize === 'none' ? 0 : 100} />
         </S.SliderIconContainer>
       </S.SliderArrow>
     </S.SliderContainer>

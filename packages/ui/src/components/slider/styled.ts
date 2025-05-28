@@ -7,10 +7,18 @@ export const SliderContainer = styled.div`
   position: relative;
 `;
 
-export const SliderWrapper = styled(Scrollbar)<{ $gap: number }>`
+export const SliderWrapper = styled(Scrollbar)<{
+  $gap: number;
+  $justifyContentSlider?: 'space-between';
+}>`
   display: flex;
   gap: ${({ $gap }) => $gap}px;
   scrollbar-width: none;
+  ${({ $justifyContentSlider }) =>
+    $justifyContentSlider &&
+    css`
+      justify-content: ${$justifyContentSlider};
+    `}
 `;
 
 export const SliderArrow = styled.div<{
@@ -45,6 +53,15 @@ export const SliderArrow = styled.div<{
             theme.mode === 'light'
               ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
               : 'linear-gradient(-90deg, #12182500 0%, #121825 100%)'};
+        `;
+      case 'none':
+        return css`
+          width: 42px;
+
+          background: ${({ theme }) =>
+            theme.mode === 'light'
+              ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
+              : 'linear-gradient(-90deg, rgba(18, 24, 37, 0) -5.7%, #121825 94.56%)'};
         `;
       case 'md':
         return css`
