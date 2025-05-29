@@ -251,6 +251,10 @@ export const MessageBlockBottomPanel = styled.div<{
       case 'assistant':
         return css`
           margin-left: 52px;
+
+          @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+            margin-left: 0;
+          }
         `;
       default:
         return css``;
@@ -321,7 +325,7 @@ export const MessageBlockTextArea = styled.span.attrs({
 export const MessageButtonsStyled = styled.div`
   margin-left: 48px;
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-    margin-left: 0;
+    margin-left: 12px;
   }
 `;
 
