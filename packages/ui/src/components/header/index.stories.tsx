@@ -33,8 +33,7 @@ import {
 } from '@/ui/icons';
 import { Button } from '../button';
 import { MenuDropdown } from '../menu-dropdown';
-import { MultilevelMenu } from './multi-level-menu';
-import { menuItems } from './multi-level-menu/config';
+import { HeaderMenuNav } from './menu-nav';
 
 export type HeaderMeta = Meta<typeof Header>;
 
@@ -47,7 +46,7 @@ export const Basic: HeaderStory = {
         <Logo />
       </HeaderLogoLink>
     ),
-    nav: <MultilevelMenu config={menuItems} />,
+    nav: <HeaderMenuNav />,
     lang: (
       <HeaderLangDropdown lang="ru">
         <HeaderLangDropdownList>
