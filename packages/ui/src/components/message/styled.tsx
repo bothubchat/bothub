@@ -289,6 +289,7 @@ export const MessageBlockContent = styled.div<{
 
 export const MessageBlockTextArea = styled.span.attrs({
   role: 'textbox',
+
   contentEditable: true,
   suppressContentEditableWarning: true
 })`
@@ -319,6 +320,9 @@ export const MessageBlockTextArea = styled.span.attrs({
 
 export const MessageButtonsStyled = styled.div`
   margin-left: 48px;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    margin-left: 0;
+  }
 `;
 
 export const MessageTransaction = styled(Typography).attrs({
