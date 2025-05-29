@@ -81,11 +81,10 @@ export const HeaderMenuNavMainLink = styled.a<{
   $active?: boolean;
 }>`
   padding: 12px 14px;
-  display: grid;
+  display: flex;
   min-width: 250px;
   align-items: center;
-  grid-template-columns: 1fr auto;
-  gap: 8px;
+  gap: 10px;
   border-radius: 10px;
   cursor: pointer;
   white-space: nowrap;
@@ -109,7 +108,9 @@ export const HeaderMenuNavMainLink = styled.a<{
 
 export const HeaderMenuNavTextLink = styled(Typography).attrs({
   variant: 'body-m-semibold'
-})``;
+})`
+  width: 100%;
+`;
 
 export const HeaderMenuNavArrowIcon = styled(ArrowDownIcon)`
   rotate: -90deg;

@@ -14,11 +14,20 @@ import {
   HeaderMenuNavItemArrowIcon,
   HeaderMenuNavItemBgIcon
 } from './styled';
-import { items, MenuItem } from './config';
+import {
+  items,
+  MenuItem,
+  MenuItemChild,
+  MenuItemCollapse,
+  MenuItems
+} from './config';
+import { IconProvider } from '../../icon';
 
 export const HeaderMenuNav: React.FC = () => {
-  const [parent, setParent] = useState<MenuItem | null>(null);
-  const [child, setChild] = useState<MenuItem | null>(null);
+  const [parent, setParent] = useState<MenuItems | null>(null);
+  const [child, setChild] = useState<
+    MenuItemChild | (MenuItem & MenuItemCollapse) | null
+  >(null);
   const [hovered, setHovered] = useState<boolean>(false);
   const [showContent, setShowContent] = useState(false);
   const [springsChildContent, animationChildContent] = useSpring(() => ({
@@ -124,29 +133,39 @@ export const HeaderMenuNav: React.FC = () => {
                   onMouseEnter={() => setChild(item)}
                   key={item.id}
                 >
+                  <IconProvider size={18}>{item.icon}</IconProvider>
                   <HeaderMenuNavTextLink>{item.label}</HeaderMenuNavTextLink>
                   <HeaderMenuNavArrowIcon />
                 </HeaderMenuNavMainLink>
               ))}
             </HeaderMenuNavContentList>
           )}
-          {parent !== null && child !== null && child?.children?.length && (
-            <HeaderMenuNavContentChildList
-              $columns={child?.columns}
-              style={springsChildContent}
-            >
-              {child.children.map((item) => (
-                <>
-                  <HeaderMenuNavMainLink key={item.id}>
-                    <HeaderMenuNavTextLink>{item.label}</HeaderMenuNavTextLink>
-                    <HeaderMenuNavItemBgIcon>
-                      <HeaderMenuNavItemArrowIcon />
-                    </HeaderMenuNavItemBgIcon>
-                  </HeaderMenuNavMainLink>
-                </>
-              ))}
-            </HeaderMenuNavContentChildList>
-          )}
+          {parent !== null &&
+            child !== null &&
+            child?.type === 'collapse' &&
+            child?.children?.length && (
+              <HeaderMenuNavContentChildList
+                $columns={child?.columns}
+                style={springsChildContent}
+              >
+                {child.children.map((item) => (
+                  <>
+                    <HeaderMenuNavMainLink
+                      style={{ minWidth: 406 }}
+                      key={item.id}
+                    >
+                      <IconProvider size={18}>{item.icon}</IconProvider>
+                      <HeaderMenuNavTextLink>
+                        {item.label}
+                      </HeaderMenuNavTextLink>
+                      <HeaderMenuNavItemBgIcon>
+                        <HeaderMenuNavItemArrowIcon />
+                      </HeaderMenuNavItemBgIcon>
+                    </HeaderMenuNavMainLink>
+                  </>
+                ))}
+              </HeaderMenuNavContentChildList>
+            )}
         </HeaderMenuNavContent>
       ))}
     </HeaderMenuNavStyled>
