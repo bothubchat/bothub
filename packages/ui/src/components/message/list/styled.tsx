@@ -28,7 +28,7 @@ export const MessagesScrollbarWrapper = styled(Scrollbar).attrs({
     `,
     mobile: css`
       padding: 24px 16px;
-      padding-bottom: 156px;
+      padding-bottom: 78px;
     `
   })}
 `;
