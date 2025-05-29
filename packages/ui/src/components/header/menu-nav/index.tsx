@@ -22,6 +22,7 @@ import {
   MenuItems
 } from './config';
 import { IconProvider } from '../../icon';
+import { Divider } from '../../divider';
 
 export const HeaderMenuNav: React.FC = () => {
   const [parent, setParent] = useState<MenuItems | null>(null);
@@ -135,7 +136,8 @@ export const HeaderMenuNav: React.FC = () => {
                 >
                   <IconProvider size={18}>{item.icon}</IconProvider>
                   <HeaderMenuNavTextLink>{item.label}</HeaderMenuNavTextLink>
-                  <HeaderMenuNavArrowIcon />
+                  {item.type === 'collapse' && <HeaderMenuNavArrowIcon />}
+                  {item.type === 'link' && <HeaderMenuNavItemArrowIcon />}
                 </HeaderMenuNavMainLink>
               ))}
             </HeaderMenuNavContentList>
@@ -148,22 +150,29 @@ export const HeaderMenuNav: React.FC = () => {
                 $columns={child?.columns}
                 style={springsChildContent}
               >
-                {child.children.map((item) => (
-                  <>
-                    <HeaderMenuNavMainLink
-                      style={{ minWidth: 406 }}
-                      key={item.id}
-                    >
-                      <IconProvider size={18}>{item.icon}</IconProvider>
-                      <HeaderMenuNavTextLink>
-                        {item.label}
-                      </HeaderMenuNavTextLink>
-                      <HeaderMenuNavItemBgIcon>
-                        <HeaderMenuNavItemArrowIcon />
-                      </HeaderMenuNavItemBgIcon>
-                    </HeaderMenuNavMainLink>
-                  </>
-                ))}
+                {child.children.map((item, index) => {
+                  switch (item.type) {
+                    case 'link':
+                      return (
+                        <HeaderMenuNavMainLink
+                          key={item.id}
+                          style={{ minWidth: 406 }}
+                        >
+                          <IconProvider size={18}>{item.icon}</IconProvider>
+                          <HeaderMenuNavTextLink>
+                            {item.label}
+                          </HeaderMenuNavTextLink>
+                          <HeaderMenuNavItemBgIcon>
+                            <HeaderMenuNavItemArrowIcon />
+                          </HeaderMenuNavItemBgIcon>
+                        </HeaderMenuNavMainLink>
+                      );
+                    case 'divider':
+                      return <Divider key={index} />;
+                    default:
+                      return null;
+                  }
+                })}
               </HeaderMenuNavContentChildList>
             )}
         </HeaderMenuNavContent>

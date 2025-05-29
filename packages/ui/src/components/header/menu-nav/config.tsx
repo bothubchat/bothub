@@ -30,7 +30,14 @@ export interface MenuItemCollapse {
   columns?: 1 | 2;
   children: Array<MenuItemChild>;
 }
-export type MenuItemChild = MenuItem & (MenuItemButton | MenuItemLink);
+
+export type MenuItemChild =
+  | (MenuItem & (MenuItemButton | MenuItemLink))
+  | MenuItemDivider;
+
+export interface MenuItemDivider {
+  type: 'divider';
+}
 
 export type MenuItems = {
   id: string;
@@ -122,6 +129,12 @@ export const items: MenuItems[] = [
             href: '/'
           },
           {
+            type: 'divider'
+          },
+          {
+            type: 'divider'
+          },
+          {
             id: 'speech',
             label: 'Доклад  (1000 - 2000 слов)',
             type: 'link',
@@ -132,6 +145,12 @@ export const items: MenuItems[] = [
             label: 'Реферат  (1500 - 3000 слов)',
             type: 'link',
             href: '/'
+          },
+          {
+            type: 'divider'
+          },
+          {
+            type: 'divider'
           },
           {
             id: 'coursework',
@@ -146,6 +165,12 @@ export const items: MenuItems[] = [
             href: '/'
           },
           {
+            type: 'divider'
+          },
+          {
+            type: 'divider'
+          },
+          {
             id: 'blog-post',
             label: 'Блог-пост  (600 - 1200 слов)',
             type: 'link',
@@ -158,6 +183,12 @@ export const items: MenuItems[] = [
             href: '/'
           },
           {
+            type: 'divider'
+          },
+          {
+            type: 'divider'
+          },
+          {
             id: 'social-media-post',
             label: 'Пост для соцсетей  (50 - 300 слов)',
             type: 'link',
@@ -168,6 +199,12 @@ export const items: MenuItems[] = [
             label: 'Рекламный текст  (500 - 1500 слов)',
             type: 'link',
             href: '/'
+          },
+          {
+            type: 'divider'
+          },
+          {
+            type: 'divider'
           },
           {
             id: 'case',
@@ -195,7 +232,51 @@ export const items: MenuItems[] = [
   {
     id: 'prices',
     label: 'Цены',
-    children: []
+    children: [
+      {
+        id: 'plans',
+        label: 'Планы',
+        icon: <DashboardIcon />,
+        type: 'collapse',
+        children: [
+          {
+            id: 'elite',
+            label: 'Elite — 30 000 000 Caps',
+            icon: <DashboardIcon />,
+            type: 'link',
+            href: '/'
+          },
+          {
+            id: 'deluxe',
+            label: 'Deluxe — 7 500 000 Caps',
+            icon: <DashboardIcon />,
+            type: 'link',
+            href: '/'
+          },
+          {
+            id: 'premium',
+            label: 'Premium — 3 000 000 Caps',
+            icon: <DashboardIcon />,
+            type: 'link',
+            href: '/'
+          },
+          {
+            id: 'basic',
+            label: 'Basic — 1 000 000 Caps',
+            icon: <DashboardIcon />,
+            type: 'link',
+            href: '/'
+          }
+        ]
+      },
+      {
+        id: 'models',
+        label: 'На модели',
+        icon: <DashboardIcon />,
+        type: 'link',
+        href: '/'
+      }
+    ]
   },
   {
     id: 'models',

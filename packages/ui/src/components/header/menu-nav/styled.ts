@@ -56,7 +56,8 @@ export const HeaderMenuNavContentChildList = styled(animated.div)<{
   display: grid;
   grid-template-columns: ${({ $columns = 1 }) => `repeat(${$columns}, 1fr)`};
   flex-direction: column;
-  gap: 8px;
+  row-gap: 8px;
+  column-gap: 16px;
   transition: all;
   width: 100%;
 `;
@@ -71,6 +72,7 @@ export const HeaderMenuNavItemArrowIcon = styled(ArrowNarrowDownIcon).attrs({
 export const HeaderMenuNavItemBgIcon = styled.div`
   width: 30px;
   height: 30px;
+  aspect-ratio: 1;
   border-radius: 50%;
   display: flex;
   align-items: center;
