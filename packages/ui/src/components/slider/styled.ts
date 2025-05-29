@@ -54,15 +54,6 @@ export const SliderArrow = styled.div<{
               ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
               : 'linear-gradient(-90deg, #12182500 0%, #121825 100%)'};
         `;
-      case 'none':
-        return css`
-          width: 42px;
-
-          background: ${({ theme }) =>
-            theme.mode === 'light'
-              ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
-              : 'linear-gradient(-90deg, rgba(18, 24, 37, 0) -5.7%, #121825 94.56%)'};
-        `;
       case 'md':
         return css`
           width: 80px;

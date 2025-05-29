@@ -31,7 +31,7 @@ export const Slider = ({
         $arrowsSize={arrowsSize}
       >
         <S.SliderIconContainer onClick={onScrollLeft}>
-          <ArrowDownIcon opacity={arrowsSize === 'none' ? 0 : 100} />
+          <ArrowDownIcon />
         </S.SliderIconContainer>
       </S.SliderArrow>
 
@@ -49,7 +49,7 @@ export const Slider = ({
         $isLeftArrow={false}
       >
         <S.SliderIconContainer onClick={onScrollRight}>
-          <ArrowDownIcon opacity={arrowsSize === 'none' ? 0 : 100} />
+          <ArrowDownIcon />
         </S.SliderIconContainer>
       </S.SliderArrow>
     </S.SliderContainer>
