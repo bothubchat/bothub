@@ -9,16 +9,10 @@ export const SliderContainer = styled.div`
 
 export const SliderWrapper = styled(Scrollbar)<{
   $gap: number;
-  $justifyContentSlider?: 'space-between';
 }>`
   display: flex;
   gap: ${({ $gap }) => $gap}px;
   scrollbar-width: none;
-  ${({ $justifyContentSlider }) =>
-    $justifyContentSlider &&
-    css`
-      justify-content: ${$justifyContentSlider};
-    `}
 `;
 
 export const SliderArrow = styled.div<{
