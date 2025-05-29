@@ -65,11 +65,17 @@ export const items: MenuItems[] = [
             href: '/'
           },
           {
+            type: 'divider'
+          },
+          {
             id: 'image-generation',
             label: 'Генерация изображений',
             icon: <ImageGenerationIcon />,
             type: 'link',
             href: '/'
+          },
+          {
+            type: 'divider'
           },
           {
             id: 'code-generation',
@@ -79,11 +85,17 @@ export const items: MenuItems[] = [
             href: '/'
           },
           {
+            type: 'divider'
+          },
+          {
             id: 'table-analysis',
             label: 'Анализ таблиц',
             icon: <CodeGenerationIcon />,
             type: 'link',
             href: '/'
+          },
+          {
+            type: 'divider'
           },
           {
             id: 'speech-synthesis',
@@ -93,6 +105,9 @@ export const items: MenuItems[] = [
             href: '/'
           },
           {
+            type: 'divider'
+          },
+          {
             id: 'proofreading',
             label: 'Орфография и пунктуация',
             icon: <CodeGenerationIcon />,
@@ -100,11 +115,17 @@ export const items: MenuItems[] = [
             href: '/'
           },
           {
+            type: 'divider'
+          },
+          {
             id: 'task-solution',
             label: 'Решение задач',
             icon: <CodeGenerationIcon />,
             type: 'link',
             href: '/'
+          },
+          {
+            type: 'divider'
           },
           { id: 'all', label: 'Все инструменты', type: 'link', href: '/' }
         ]
