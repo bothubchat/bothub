@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.37.2-fix-messages-action-buttons-00dcf14a-25db-4ae5-9cfb-f9866e92b745",
+  "version": "2.37.2-fix-messages-action-buttons-6c8d0502-75c5-4388-9d09-1f47af694085",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
@@ -56,6 +56,7 @@
     "dompurify": "^3.2.6",
     "highlight.js": "^11.11.0",
     "katex": "^0.16.10",
+    "mp4box": "^0.5.4",
     "normalize.css": "^8.0.1",
     "react-markdown": "^8.0.7",
     "react-slider": "^2.0.6",
