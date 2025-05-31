@@ -56,7 +56,6 @@
     "dompurify": "^3.2.6",
     "highlight.js": "^11.11.0",
     "katex": "^0.16.10",
-    "mp4box": "^0.5.4",
     "normalize.css": "^8.0.1",
     "react-markdown": "^8.0.7",
     "react-slider": "^2.0.6",
