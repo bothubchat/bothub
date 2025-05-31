@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.37.2-develop-5f3ce9a8-5408-4574-ac41-ef961f753677",
+  "version": "2.37.2-fix-messages-action-buttons-0c669ef9-6080-498d-af59-fc59dcf073ed",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
