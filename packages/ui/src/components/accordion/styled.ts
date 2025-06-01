@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
+import { colorToRgba } from '@/ui/utils';
 
 type IsOpenProps = {
   $isOpen: boolean;
@@ -15,14 +16,21 @@ export const AccordionStyled = styled.div`
   position: relative;
 `;
 
-export const AccordionHead = styled.div<IsOpenProps>`
+export const AccordionHead = styled.div<
+  IsOpenProps & {
+    $variant: 'with-icon' | 'default';
+  }
+>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   padding: 18px;
   cursor: pointer;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border: ${({ theme, $variant }) =>
+    $variant === 'with-icon'
+      ? 'none'
+      : `1px solid ${theme.colors.grayScale.gray2}`};
   border-radius: 20px;
   transition:
     border-bottom 0.3s,
@@ -46,7 +54,11 @@ export const AccordionHead = styled.div<IsOpenProps>`
     position: absolute;
     top: 0;
     left: 0;
-    background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+    background-color: ${({ theme, $variant }) =>
+      $variant === 'with-icon'
+        ? colorToRgba(theme.colors.grayScale.gray4, 0.75)
+        : theme.colors.grayScale.gray4};
+
     opacity: 0.5;
   }
 `;
@@ -65,19 +77,32 @@ export const AccordionArrow = styled(ArrowDownIcon).attrs<IsOpenProps>({
   transition: transform 0.2s ease-in-out;
 `;
 
-export const AccordionBody = styled.div<IsOpenProps>`
-  background-color: ${({ theme }) => theme.colors.grayScale.gray3};
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+export const AccordionBody = styled.div<
+  IsOpenProps & {
+    $variant: 'with-icon' | 'default';
+  }
+>`
+  background-color: ${({ theme, $variant }) =>
+    $variant === 'with-icon'
+      ? colorToRgba(theme.colors.grayScale.gray4, 0.75)
+      : theme.colors.grayScale.gray3};
+
+  border: ${({ theme, $variant }) =>
+    $variant === 'with-icon'
+      ? 'none'
+      : `1px solid ${theme.colors.grayScale.gray2}`};
+
   border-top: 0;
   border-radius: 0 0 20px 20px;
   transition:
     max-height 0.3s,
     padding 0.3s,
     opacity 0.3s;
-  ${({ $isOpen }) =>
+  ${({ $isOpen, $variant }) =>
     $isOpen
       ? css`
           padding: 18px;
+          ${$variant === 'with-icon' ? 'padding-top: 0px;' : ''}
           max-height: auto;
         `
       : css`
