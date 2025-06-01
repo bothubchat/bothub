@@ -54,12 +54,8 @@ export const AccordionHead = styled.div<
     position: absolute;
     top: 0;
     left: 0;
-    background-color: ${({ theme, $variant }) =>
-      $variant === 'with-icon'
-        ? colorToRgba(theme.colors.grayScale.gray4, 0.75)
-        : theme.colors.grayScale.gray4};
-
-    opacity: 0.5;
+    background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+    opacity: ${({ $variant }) => ($variant === 'with-icon' ? '0.75' : '0.5')};
   }
 `;
 

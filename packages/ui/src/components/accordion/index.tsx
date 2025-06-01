@@ -10,7 +10,7 @@ import {
 
 export interface AccordionProps extends React.ComponentProps<'div'> {
   label: string | React.ReactNode;
-  variant: 'with-icon' | 'default';
+  variant?: 'with-icon' | 'default';
   fullWidth?: boolean;
 }
 
