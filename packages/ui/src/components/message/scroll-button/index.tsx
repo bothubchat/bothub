@@ -1,21 +1,26 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   MessageListScrollButton,
   MessageListArrowNarrowDownIcon
 } from './styled';
-import { MessagesContext } from '../list/context';
+
 import { ScrollbarRef } from '../..';
 
 interface IScrollButton {
   scrollbarRef: React.RefObject<ScrollbarRef>;
 }
 export const ScrollButton: React.FC<IScrollButton> = ({ scrollbarRef }) => {
-  const { setScroll } = useContext(MessagesContext);
   const [isAtBottom, setIsAtBottom] = useState(false);
   const [isScrollable, setIsScrollable] = useState(false);
 
   const handleScrollToBottom = () => {
-    setScroll({ side: 'bottom' });
+    const element = scrollbarRef.current?.element;
+    if (element) {
+      element.scrollTo({
+        top: element.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   };
 
   useEffect(() => {

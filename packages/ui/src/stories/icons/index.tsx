@@ -264,7 +264,8 @@ import {
   VideoCameraIcon,
   VideoGenerationIcon,
   VeoModelIcon,
-  RunwayIcon
+  RunwayIcon,
+  QueueSelectIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -578,6 +579,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="VeoModelIcon">{VeoModelIcon}</IconItem>
         <IconItem name="VideoGenerationIcon">{VideoGenerationIcon}</IconItem>
         <IconItem name="RunwayIcon">{RunwayIcon}</IconItem>
+        <IconItem name="QueueSelectIcon">{QueueSelectIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
