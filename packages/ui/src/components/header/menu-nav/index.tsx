@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useSpring, useTransition } from '@react-spring/web';
+import { useCallback, useRef, useState } from 'react';
+import { useSpring } from '@react-spring/web';
 import {
   HeaderMenuNavStyled,
   HeaderMenuNavList,
@@ -12,7 +12,8 @@ import {
   HeaderMenuNavContentChildList,
   HeaderMenuNavArrowIcon,
   HeaderMenuNavItemArrowIcon,
-  HeaderMenuNavItemBgIcon
+  HeaderMenuNavItemBgIcon,
+  HeaderMenuNavMainLinkContainer
 } from './styled';
 import {
   items,
@@ -29,11 +30,16 @@ export const HeaderMenuNav: React.FC = () => {
   const [child, setChild] = useState<
     MenuItemChild | (MenuItem & MenuItemCollapse) | null
   >(null);
-  const [hovered, setHovered] = useState<boolean>(false);
-  const [showContent, setShowContent] = useState(false);
+  const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [springsContent, animationContent] = useSpring(() => ({
+    from: {}
+  }));
   const [springsChildContent, animationChildContent] = useSpring(() => ({
     from: { opacity: 0, transform: 'translateX(-50px)' }
   }));
+  // const [springsSubChildContent, animationSubChildContent] = useSpring(() => ({
+  //   from: { opacity: 0, transform: 'translateX(-50px)' }
+  // }));
 
   const startAnimnation = useCallback(
     (side: 'left' | 'right') => {
@@ -51,9 +57,33 @@ export const HeaderMenuNav: React.FC = () => {
     [animationChildContent]
   );
 
+  const handleOpen = useCallback(() => {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
+    timeout.current = setTimeout(() => {
+      animationContent.start({
+        from: { opacity: 0, display: 'none' },
+        to: { opacity: 1 }
+      });
+    }, 500);
+  }, [animationContent]);
+
+  const handleClose = useCallback(() => {
+    if (timeout.current) {
+      clearTimeout(timeout.current);
+    }
+    timeout.current = setTimeout(() => {
+      animationContent.start({
+        from: { opacity: 1 },
+        to: { opacity: 0 }
+      });
+    }, 500);
+  }, [animationContent]);
+
   const handleMouseEnter = useCallback(
     (id: string) => {
-      setHovered(true);
+      handleOpen();
       const prevIndex = items.findIndex((item) => item.id === parent?.id);
       const nextIndex = items.findIndex((item) => item.id === id);
       if (nextIndex < prevIndex) {
@@ -67,40 +97,14 @@ export const HeaderMenuNav: React.FC = () => {
       }
       setChild(items[nextIndex].children[0]);
     },
-    [items, parent, startAnimnation]
+    [items, parent, startAnimnation, animationContent, handleOpen]
   );
 
-  const handleMouseLeave = () => {
-    setHovered(false);
-  };
-
-  const animationContent = useTransition(showContent, {
-    from: {
-      opacity: 0
-    },
-    enter: {
-      opacity: 1
-    },
-    leave: {
-      opacity: 0
-    }
-  });
-
-  useEffect(() => {
-    const timeOut = setTimeout(
-      () => {
-        setShowContent(hovered);
-      },
-      hovered ? 0 : 200
-    );
-
-    return () => {
-      clearTimeout(timeOut);
-    };
-  }, [hovered]);
-
   return (
-    <HeaderMenuNavStyled onMouseLeave={handleMouseLeave}>
+    <HeaderMenuNavStyled
+      onMouseLeave={handleClose}
+      onMouseEnter={handleOpen}
+    >
       <HeaderMenuNavList>
         {items.map((item) => (
           <HeaderMenuNavItem
@@ -111,53 +115,48 @@ export const HeaderMenuNav: React.FC = () => {
           </HeaderMenuNavItem>
         ))}
       </HeaderMenuNavList>
-      {animationContent((style, showContent) => (
-        <HeaderMenuNavContent
-          style={style}
-          onMouseEnter={() => {
-            setHovered(true);
-          }}
-          onPointerDown={() => {
-            setHovered(true);
-          }}
-          hidden={!showContent || !parent}
-        >
-          {parent !== null && parent?.children?.length && (
-            <HeaderMenuNavContentList
+      <HeaderMenuNavContent style={springsContent}>
+        {parent !== null && parent?.children?.length && (
+          <HeaderMenuNavContentList style={springsChildContent}>
+            {parent.children.map(
+              (item) =>
+                item.type !== 'divider' && (
+                  <HeaderMenuNavMainLink
+                    $active={child?.id === item.id}
+                    onPointerDown={() => setChild(item)}
+                    onMouseEnter={() => setChild(item)}
+                    key={item.id}
+                  >
+                    <HeaderMenuNavMainLinkContainer>
+                      <IconProvider size={18}>{item.icon}</IconProvider>
+                      <HeaderMenuNavTextLink>
+                        {item.label}
+                      </HeaderMenuNavTextLink>
+                      {item.type === 'collapse' && <HeaderMenuNavArrowIcon />}
+                      {item.type === 'link' && <HeaderMenuNavItemArrowIcon />}
+                    </HeaderMenuNavMainLinkContainer>
+                  </HeaderMenuNavMainLink>
+                )
+            )}
+          </HeaderMenuNavContentList>
+        )}
+        {parent !== null &&
+          child !== null &&
+          child?.type === 'collapse' &&
+          child?.children?.length && (
+            <HeaderMenuNavContentChildList
+              $columns={child?.columns}
               style={springsChildContent}
-              hidden={!showContent}
             >
-              {parent.children.map((item) => (
-                <HeaderMenuNavMainLink
-                  $active={child?.id === item.id}
-                  onPointerDown={() => setChild(item)}
-                  onMouseEnter={() => setChild(item)}
-                  key={item.id}
-                >
-                  <IconProvider size={18}>{item.icon}</IconProvider>
-                  <HeaderMenuNavTextLink>{item.label}</HeaderMenuNavTextLink>
-                  {item.type === 'collapse' && <HeaderMenuNavArrowIcon />}
-                  {item.type === 'link' && <HeaderMenuNavItemArrowIcon />}
-                </HeaderMenuNavMainLink>
-              ))}
-            </HeaderMenuNavContentList>
-          )}
-          {parent !== null &&
-            child !== null &&
-            child?.type === 'collapse' &&
-            child?.children?.length && (
-              <HeaderMenuNavContentChildList
-                $columns={child?.columns}
-                style={springsChildContent}
-              >
-                {child.children.map((item, index) => {
-                  switch (item.type) {
-                    case 'link':
-                      return (
-                        <HeaderMenuNavMainLink
-                          key={item.id}
-                          style={{ minWidth: 406 }}
-                        >
+              {child.children.map((item, index) => {
+                switch (item.type) {
+                  case 'link':
+                    return (
+                      <HeaderMenuNavMainLink
+                        key={item.id}
+                        style={{ minWidth: 406 }}
+                      >
+                        <HeaderMenuNavMainLinkContainer>
                           <IconProvider size={18}>{item.icon}</IconProvider>
                           <HeaderMenuNavTextLink>
                             {item.label}
@@ -165,18 +164,31 @@ export const HeaderMenuNav: React.FC = () => {
                           <HeaderMenuNavItemBgIcon>
                             <HeaderMenuNavItemArrowIcon />
                           </HeaderMenuNavItemBgIcon>
-                        </HeaderMenuNavMainLink>
-                      );
-                    case 'divider':
-                      return <Divider key={index} />;
-                    default:
-                      return null;
-                  }
-                })}
-              </HeaderMenuNavContentChildList>
-            )}
-        </HeaderMenuNavContent>
-      ))}
+                        </HeaderMenuNavMainLinkContainer>
+                        {item.description && (
+                          <HeaderMenuNavTextLink>
+                            {item.description}
+                          </HeaderMenuNavTextLink>
+                        )}
+                      </HeaderMenuNavMainLink>
+                    );
+                  case 'divider':
+                    return <Divider key={index} />;
+                  default:
+                    return null;
+                }
+              })}
+            </HeaderMenuNavContentChildList>
+          )}
+        {parent !== null &&
+          child !== null &&
+          child?.type === 'link' &&
+          child?.children && (
+            <HeaderMenuNavContentChildList>
+              {child.children}
+            </HeaderMenuNavContentChildList>
+          )}
+      </HeaderMenuNavContent>
     </HeaderMenuNavStyled>
   );
 };

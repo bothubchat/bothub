@@ -58,7 +58,7 @@ export const HeaderMenuNavContentChildList = styled(animated.div)<{
   flex-direction: column;
   row-gap: 8px;
   column-gap: 16px;
-  transition: all;
+
   width: 100%;
 `;
 
@@ -86,6 +86,7 @@ export const HeaderMenuNavMainLink = styled.a<{
   display: flex;
   min-width: 250px;
   align-items: center;
+  flex-direction: column;
   gap: 10px;
   border-radius: 10px;
   cursor: pointer;
@@ -106,6 +107,13 @@ export const HeaderMenuNavMainLink = styled.a<{
     }`}
   }
   `}
+`;
+
+export const HeaderMenuNavMainLinkContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
 `;
 
 export const HeaderMenuNavTextLink = styled(Typography).attrs({

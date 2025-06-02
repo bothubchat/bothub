@@ -7,6 +7,7 @@ import {
   StarsIcon,
   TextGenerationIcon
 } from '@/ui/icons';
+import { Banner } from './banner';
 
 export interface MenuItem {
   id: string;
@@ -21,7 +22,9 @@ export interface MenuItemButton {
 
 export interface MenuItemLink {
   type: 'link';
+  label?: string | React.ReactNode;
   href: string;
+  description?: string;
   children?: React.ReactNode;
 }
 
@@ -243,9 +246,10 @@ export const items: MenuItems[] = [
       },
       {
         id: 'dashboard',
-        label: 'ИИ Инструменты',
+        label: 'Дашборд',
         icon: <DashboardIcon />,
         type: 'link',
+        children: <Banner />,
         href: '/'
       }
     ]
@@ -253,6 +257,68 @@ export const items: MenuItems[] = [
   {
     id: 'prices',
     label: 'Цены',
+    children: [
+      {
+        id: 'plans',
+        label: 'Планы',
+        icon: <DashboardIcon />,
+        type: 'collapse',
+        children: [
+          {
+            id: 'elite',
+            label: 'Elite — 30 000 000 Caps',
+            icon: <DashboardIcon />,
+            description: 'Хватит, чтобы сгенерировать 12 000 страниц текста',
+            type: 'link',
+            href: '/'
+          },
+          {
+            type: 'divider'
+          },
+          {
+            id: 'deluxe',
+            label: 'Deluxe — 7 500 000 Caps',
+            icon: <DashboardIcon />,
+            description: 'Хватит, чтобы сгенерировать 12 000 страниц текста',
+            type: 'link',
+            href: '/'
+          },
+          {
+            type: 'divider'
+          },
+          {
+            id: 'premium',
+            label: 'Premium — 3 000 000 Caps',
+            description: 'Хватит, чтобы сгенерировать 12 000 страниц текста',
+            icon: <DashboardIcon />,
+            type: 'link',
+            href: '/'
+          },
+          {
+            type: 'divider'
+          },
+          {
+            id: 'basic',
+            label: 'Basic — 1 000 000 Caps',
+            description: 'Хватит, чтобы сгенерировать 12 000 страниц текста',
+            icon: <DashboardIcon />,
+            type: 'link',
+            href: '/'
+          }
+        ]
+      },
+      {
+        id: 'models',
+        label: 'На модели',
+        icon: <DashboardIcon />,
+        type: 'link',
+        href: '/'
+      }
+    ]
+  },
+  {
+    id: 'models',
+    label: 'Модели',
     children: [
       {
         id: 'plans',
@@ -298,11 +364,6 @@ export const items: MenuItems[] = [
         href: '/'
       }
     ]
-  },
-  {
-    id: 'models',
-    label: 'Модели',
-    children: []
   },
   {
     id: 'business',
