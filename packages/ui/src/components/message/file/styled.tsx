@@ -34,7 +34,7 @@ export const MessageFileName = styled(Typography).attrs({
       return theme.colors.base.white;
     }
 
-    return theme.default.colors.base.white;
+    return theme.colors.base.white;
   }};
 `;
 
@@ -55,7 +55,7 @@ export const MessageFileSize = styled(Typography).attrs({
       return theme.colors.base.white;
     }
 
-    return theme.default.colors.base.white;
+    return theme.colors.base.white;
   }};
 `;
 
