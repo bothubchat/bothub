@@ -18,7 +18,7 @@ export const AccordionStyled = styled.div`
 
 export const AccordionHead = styled.div<
   IsOpenProps & {
-    $variant: 'with-icon' | 'default';
+    $isDefaultVariant: boolean;
   }
 >`
   display: flex;
@@ -27,10 +27,8 @@ export const AccordionHead = styled.div<
   gap: 10px;
   padding: 18px;
   cursor: pointer;
-  border: ${({ theme, $variant }) =>
-    $variant === 'with-icon'
-      ? 'none'
-      : `1px solid ${theme.colors.grayScale.gray2}`};
+  border: ${({ theme, $isDefaultVariant }) =>
+    !$isDefaultVariant && `1px solid ${theme.colors.grayScale.gray2}`};
   border-radius: 20px;
   transition:
     border-bottom 0.3s,
@@ -55,7 +53,8 @@ export const AccordionHead = styled.div<
     top: 0;
     left: 0;
     background-color: ${({ theme }) => theme.colors.grayScale.gray4};
-    opacity: ${({ $variant }) => ($variant === 'with-icon' ? '0.75' : '0.5')};
+    opacity: ${({ $isDefaultVariant }) =>
+      !$isDefaultVariant ? '0.75' : '0.5'};
   }
 `;
 
@@ -75,18 +74,16 @@ export const AccordionArrow = styled(ArrowDownIcon).attrs<IsOpenProps>({
 
 export const AccordionBody = styled.div<
   IsOpenProps & {
-    $variant: 'with-icon' | 'default';
+    $isDefaultVariant: boolean;
   }
 >`
-  background-color: ${({ theme, $variant }) =>
-    $variant === 'with-icon'
+  background-color: ${({ theme, $isDefaultVariant }) =>
+    !$isDefaultVariant
       ? colorToRgba(theme.colors.grayScale.gray4, 0.75)
       : theme.colors.grayScale.gray3};
 
-  border: ${({ theme, $variant }) =>
-    $variant === 'with-icon'
-      ? 'none'
-      : `1px solid ${theme.colors.grayScale.gray2}`};
+  border: ${({ theme, $isDefaultVariant }) =>
+    !$isDefaultVariant && `1px solid ${theme.colors.grayScale.gray2}`};
 
   border-top: 0;
   border-radius: 0 0 20px 20px;
@@ -94,11 +91,11 @@ export const AccordionBody = styled.div<
     max-height 0.3s,
     padding 0.3s,
     opacity 0.3s;
-  ${({ $isOpen, $variant }) =>
+  ${({ $isOpen, $isDefaultVariant }) =>
     $isOpen
       ? css`
           padding: 18px;
-          ${$variant === 'with-icon' ? 'padding-top: 0px;' : ''}
+          ${!$isDefaultVariant ? 'padding-top: 0px;' : ''}
           max-height: auto;
         `
       : css`

@@ -29,7 +29,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   return (
     <AccordionStyled {...props}>
       <AccordionHead
-        $variant={variant}
+        $isDefaultVariant={variant === 'default'}
         $isOpen={isOpen}
         onClick={toggle}
       >
@@ -38,7 +38,7 @@ export const Accordion: React.FC<AccordionProps> = ({
       </AccordionHead>
 
       <AccordionBody
-        $variant={variant}
+        $isDefaultVariant={variant === 'default'}
         $isOpen={isOpen}
       >
         {typeof children === 'string' ? (

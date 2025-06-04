@@ -28,6 +28,7 @@ export interface MessagesRef {
 export interface MessagesProps extends React.PropsWithChildren {
   className?: string;
   scrollButton?: boolean;
+  variant?: 'dashboard' | 'main';
   fullWidth?: boolean;
   startRef?: (node?: Element | null | undefined) => void;
   scrollShadows?: ScrollbarShadowsProps;
@@ -38,6 +39,7 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(
     {
       scrollButton = false,
       fullWidth = false,
+      variant = 'main',
       className,
       startRef,
       scrollShadows,
@@ -79,7 +81,12 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(
               </MessagesContainer>
             </MessagesContent>
           </MessagesScrollbarWrapper>
-          {scrollButton && <ScrollButton scrollbarRef={scrollbarRef} />}
+          {scrollButton && (
+            <ScrollButton
+              variant={variant}
+              scrollbarRef={scrollbarRef}
+            />
+          )}
         </MessagesStyled>
       </MessagesProvider>
     );
