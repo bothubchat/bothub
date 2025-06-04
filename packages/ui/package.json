@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.38.0",
+  "version": "2.38.0-fix-scroll-button-1e3db668-328a-478f-a0ce-cf9c9ce5cb01",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
