@@ -8,7 +8,7 @@ export type ColorPickerStory = StoryObj<typeof ColorPicker>;
 
 export const Basic: ColorPickerStory = {
   args: {
-    initialColor: '#1C64F2',
+    color: '#FFFFFF',
     label: 'Акцентный цвет',
     preview: true
   }
@@ -16,6 +16,10 @@ export const Basic: ColorPickerStory = {
 
 export default {
   title: 'Components/ColorPicker',
-  component: ColorPicker,
+  component: (props) => (
+    <div style={{ display: 'flex', height: '100vh', alignItems: 'center' }}>
+      <ColorPicker {...props} />
+    </div>
+  ),
   decorators: [StoryDecorator()]
 } as ColorPickerMeta;

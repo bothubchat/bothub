@@ -208,7 +208,7 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
     if ($active) {
       return css`
         border-radius: 10px;
-        background-color: ${theme.mode === 'dark'
+        background-color: ${theme.bright
           ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
           : theme.colors.accent.primaryLight};
         transition: background-color 0.3s ease-out;

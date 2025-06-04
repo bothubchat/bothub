@@ -41,9 +41,7 @@ export const SidebarAddGroupButton = styled(Button).attrs({
   ${({ variant, theme }) =>
     variant === 'secondary' &&
     css`
-      background: ${theme.mode === 'dark'
-        ? theme.colors.grayScale.gray3
-        : theme.colors.grayScale.gray4};
+      background-color: ${theme.colors.base.black};
       svg path {
         stroke: ${theme.colors.accent.primary};
       }

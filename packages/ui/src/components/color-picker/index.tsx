@@ -9,35 +9,27 @@ import {
 } from './styled';
 
 import { ColorPickerMenu } from './menu';
-import { useTheme } from '@/ui/theme';
 
 export type ColorPickerChangeEventHandler = (color: string) => unknown;
 
 export interface ColorPickerProps {
   label?: string;
   preview?: boolean;
-  initialColor?: string;
+  color?: string;
   onChange?: ColorPickerChangeEventHandler;
 }
 
 export const ColorPicker: React.FC<ColorPickerProps> = ({
   label,
   preview = true,
-  initialColor,
+  color = '#1c64f2',
   onChange
 }) => {
-  const theme = useTheme();
-
   const ref = useRef<HTMLDivElement>(null);
 
   const [open, setOpen] = useState<boolean>(false);
 
-  const [color, setColor] = useState<string>(
-    (initialColor ?? theme.colors.accent.primary).toUpperCase()
-  );
-
   const handleChange = useCallback((color: string) => {
-    setColor(color);
     onChange?.(color);
   }, []);
 
@@ -49,15 +41,16 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
         onClick={() => setOpen(!open)}
       >
         <ColorPickerHex>{color}</ColorPickerHex>
-        {preview && <ColorPickerPreview $color={color} />}
+        {preview && <ColorPickerPreview style={{ backgroundColor: color }} />}
       </ColorPickerBottom>
-      <ColorPickerMenu
-        open={open}
-        initialColor={initialColor}
-        parentRef={ref}
-        onChange={handleChange}
-        onClose={() => setOpen(false)}
-      />
+      {open && (
+        <ColorPickerMenu
+          color={color}
+          parentRef={ref}
+          onChange={handleChange}
+          onClose={() => setOpen(false)}
+        />
+      )}
     </ColorPickerStyled>
   );
 };

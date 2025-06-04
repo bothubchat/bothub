@@ -77,16 +77,14 @@ export type ColorPickerMenuChangeEventHandler = (hex: string) => unknown;
 export type ColorPickerMenuEventHandler = () => unknown;
 
 export interface ColorPickerMenuProps {
-  open?: boolean;
-  initialColor?: string;
+  color?: string;
   parentRef?: React.MutableRefObject<HTMLDivElement | null>;
   onChange?: ColorPickerMenuChangeEventHandler;
   onClose?: ColorPickerMenuEventHandler;
 }
 
 export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
-  open,
-  initialColor,
+  color,
   parentRef,
   onChange,
   onClose
@@ -97,8 +95,10 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
   const [saturation, setSaturation] = useState<number>(100); // [0 - 100] %
   const [brightness, setBrightness] = useState<number>(100); // [0 - 100] %
   const [hexColor, setHexColor] = useState<string>(
-    (initialColor ?? theme.colors.accent.primary).toUpperCase()
+    (color ?? theme.colors.accent.primary).toUpperCase()
   );
+
+  const [centeredX, setCenteredX] = useState<boolean>(false);
 
   const initial = useRef<boolean>(true);
 
@@ -164,9 +164,20 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!initial.current || !initialColor) return;
-    const rgb = getRgbFromHex(initialColor);
+    const rect = parentRef?.current?.getBoundingClientRect?.();
+    if (window.innerWidth - (rect?.right ?? 0) <= 250) {
+      setCenteredX(true);
+      return;
+    }
+    setCenteredX(false);
+  }, []);
+
+  useEffect(() => {
+    if (!initial.current || !color) return;
+
+    const rgb = getRgbFromHex(color);
     const [h, s, v] = getHsvFromRgb(rgb);
+
     setHue(h);
     setSaturation(s);
     setBrightness(v);
@@ -203,25 +214,32 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
   const colorPositionY = `${100 - brightness}%`;
 
   return (
-    <ColorPickerMenuStyled $open={open}>
+    <ColorPickerMenuStyled $centeredX={centeredX}>
       <ColorPickerMenuHeader>
         <ColorPickerMenuHeaderLeft>
           <ColorPickerMenuHeaderHexCode>
             {hexColor}
           </ColorPickerMenuHeaderHexCode>
-          <ColorPickerMenuPreview $color={hexColor} />
+          <ColorPickerMenuPreview style={{ backgroundColor: hexColor }} />
         </ColorPickerMenuHeaderLeft>
         <ColorPickerMenuCloseButton onClick={onClose} />
       </ColorPickerMenuHeader>
       <ColorPickerMenuArea
         ref={colorAreaRef}
-        $hueColor={hueColor}
+        style={{
+          background: `
+          linear-gradient(to right, white, ${hueColor}), 
+          linear-gradient(to top, black, transparent)
+        `
+        }}
         // @ts-ignore
         onMouseDown={(e) => handleMouseDown(e, handleColorChange)}
       >
         <ColorPickerMenuSelector
-          $x={colorPositionX}
-          $y={colorPositionY}
+          style={{
+            top: colorPositionY,
+            left: colorPositionX
+          }}
         />
       </ColorPickerMenuArea>
       <ColorPickerMenuHueSlider
@@ -230,8 +248,10 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
         onMouseDown={(e) => handleMouseDown(e, handleHueChange)}
       >
         <ColorPickerMenuSelector
-          $x={huePosition}
-          $y="50%"
+          style={{
+            top: '50%',
+            left: huePosition
+          }}
         />
       </ColorPickerMenuHueSlider>
     </ColorPickerMenuStyled>

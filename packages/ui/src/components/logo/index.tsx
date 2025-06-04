@@ -11,13 +11,14 @@ export const Logo: React.FC<LogoProps> = ({ size = 29 }) => {
 
   // @TODO: Fix colors, they change in design
 
-  const botFill = useMemo(
-    () =>
-      theme.mode === 'dark' || theme.scheme === 'standard'
-        ? theme.default.colors.base.white
-        : theme.colors.accent.primary,
-    [theme]
-  );
+  const botFill = useMemo(() => {
+    if (theme.mode === 'light' && theme.scheme === 'standard') {
+      return '#133985';
+    }
+    return theme.mode === 'dark'
+      ? theme.default.colors.base.white
+      : theme.colors.accent.primary;
+  }, [theme]);
 
   const hubFill = useMemo(
     () =>

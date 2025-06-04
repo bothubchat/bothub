@@ -216,39 +216,16 @@ export const Message: React.FC<MessageProps> = ({
   let hexColor: string;
   switch (variant) {
     case 'user':
-      switch (color) {
-        case 'default':
-          hexColor = theme.colors.accent.primary;
-          break;
-        case 'green':
-          hexColor = theme.colors.gpt3;
-          break;
-        case 'purple':
-          hexColor = theme.colors.gpt4;
-          break;
-        default:
-          hexColor = color;
-          break;
-      }
+      hexColor =
+        theme.scheme === 'custom'
+          ? theme.colors.message.user.background
+          : theme.colors.accent.primary;
       break;
     case 'assistant':
-      switch (color) {
-        case 'default':
-          hexColor =
-            theme.mode === 'dark'
-              ? theme.colors.grayScale.gray2
-              : theme.colors.grayScale.gray3;
-          break;
-        case 'green':
-          hexColor = theme.colors.gpt3;
-          break;
-        case 'purple':
-          hexColor = theme.colors.gpt4;
-          break;
-        default:
-          hexColor = color;
-          break;
-      }
+      hexColor =
+        theme.mode === 'dark'
+          ? theme.colors.grayScale.gray2
+          : theme.colors.grayScale.gray3;
       break;
   }
 

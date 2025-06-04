@@ -15,7 +15,7 @@ export const ColorPickerStyled = styled.div`
 export const ColorPickerLabel = styled(Typography).attrs({
   variant: 'body-l-medium'
 })`
-  color: ${({ theme }) => theme.colors.grayScale.gray6};
+  color: ${({ theme }) => theme.colors.base.white};
 `;
 
 export const ColorPickerHex = styled(Typography).attrs({
@@ -32,16 +32,11 @@ export const ColorPickerHex = styled(Typography).attrs({
   color: ${({ theme }) => theme.colors.base.white};
 `;
 
-export interface ColorPickerPreviewProps {
-  $color: string;
-}
-
-export const ColorPickerPreview = styled.div<ColorPickerPreviewProps>`
+export const ColorPickerPreview = styled.div`
   width: 60px;
   height: 36px;
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background-color: ${({ $color }) => $color};
 `;
 
 export interface ColorPickerBottomProps {

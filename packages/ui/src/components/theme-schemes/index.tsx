@@ -5,7 +5,8 @@ import {
   useTheme,
   THEMES,
   Theme,
-  defaultTheme
+  defaultTheme,
+  ColorSchemeNamesArray
 } from '@/ui/theme';
 import { ThemeSchemesSection } from './section';
 import { ThemeSchemesStyled } from './styled';
@@ -61,6 +62,7 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
     <ThemeSchemesStyled>
       <ThemeSchemesSection
         title={customTitle}
+        active={scheme === 'custom'}
         onClick={() => handleClick('custom')}
       >
         <ThemeButton
@@ -74,6 +76,7 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
       </ThemeSchemesSection>
       <ThemeSchemesSection
         title={standardTitle}
+        active={scheme === 'standard'}
         onClick={() => handleClick('standard')}
       >
         <ThemeButton
@@ -84,6 +87,7 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
       </ThemeSchemesSection>
       <ThemeSchemesSection
         title={colorfulTitle}
+        active={ColorSchemeNamesArray.slice(2).includes(scheme)}
         onClick={() => handleClick('strawberry')}
       >
         <ThemeButton

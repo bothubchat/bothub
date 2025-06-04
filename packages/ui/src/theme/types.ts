@@ -1,14 +1,24 @@
-export interface Theme {
+export type Theme = ThemeDefined | ThemeCustom;
+
+export interface ThemeBase {
   mode: ThemeMode;
-  scheme: ColorSchemeNames;
   bright: boolean;
-  colors: ThemeColors;
   tablet: ThemeTablet;
   mobile: ThemeMobile;
   zIndex: ThemeZIndex;
   header: ThemeHeader;
   dashboard: ThemeDashboard;
   default: DefaultTheme;
+}
+
+export interface ThemeDefined extends ThemeBase {
+  scheme: Omit<ColorSchemeNames, 'custom'>;
+  colors: ThemeColors;
+}
+
+export interface ThemeCustom extends ThemeBase {
+  scheme: 'custom';
+  colors: ThemeCustomColors;
 }
 
 export interface ColorScheme {
@@ -18,6 +28,7 @@ export interface ColorScheme {
 
 export const ColorSchemeNamesArray = [
   'standard',
+  'custom',
   'strawberry',
   'rose',
   'orange',
@@ -29,8 +40,7 @@ export const ColorSchemeNamesArray = [
   'mountain',
   'lake',
   'iris',
-  'peony',
-  'custom'
+  'peony'
 ] as const;
 
 export type ColorSchemeNames = (typeof ColorSchemeNamesArray)[number];
@@ -39,7 +49,7 @@ export type ColorSchemes = {
   [key in ColorSchemeNames]: ColorScheme;
 };
 
-export type DefaultTheme = Omit<Theme, 'default'>;
+export type DefaultTheme = Omit<ThemeDefined, 'default'>;
 
 export type ThemeMode = 'dark' | 'light';
 
@@ -96,6 +106,23 @@ export interface ThemeColors {
   green: string;
   gpt3: string;
   gpt4: string;
+}
+
+export interface ThemeCustomColors extends ThemeColors {
+  background: string;
+  message: {
+    assistant: {
+      text: string;
+    };
+    user: {
+      background: string;
+      text: string;
+    };
+  };
+  interface: {
+    text: string;
+  };
+  icon: string;
 }
 
 export interface ThemeZIndex {

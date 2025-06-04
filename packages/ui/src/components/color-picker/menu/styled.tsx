@@ -1,4 +1,4 @@
-import { keyframes, styled } from 'styled-components';
+import { css, keyframes, styled } from 'styled-components';
 
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
@@ -18,11 +18,11 @@ const ColorPickerMenuAnimation = keyframes`
 `;
 
 export interface ColorPickerMenuStyledProps {
-  $open?: boolean;
+  $centeredX?: boolean;
 }
 
 export const ColorPickerMenuStyled = styled.div<ColorPickerMenuStyledProps>`
-  display: ${({ $open }) => ($open ? 'flex' : 'none')};
+  display: flex;
   flex-direction: column;
   gap: 6px;
   width: 256px;
@@ -32,7 +32,7 @@ export const ColorPickerMenuStyled = styled.div<ColorPickerMenuStyledProps>`
   border-radius: 10px;
   position: absolute;
   bottom: 40px;
-  left: calc(100% + 8px);
+  left: ${({ $centeredX }) => ($centeredX ? `0` : css`calc(100% + 8px)`)};
   animation: ${ColorPickerMenuAnimation} 0.1s ease-out;
   z-index: ${({ theme }) => theme.zIndex.menu};
   user-select: none;
@@ -65,16 +65,11 @@ export const ColorPickerMenuHeaderLeft = styled.div`
   gap: 10px;
 `;
 
-export interface ColorPickerMenuPreviewProps {
-  $color: string;
-}
-
-export const ColorPickerMenuPreview = styled.div<ColorPickerMenuPreviewProps>`
+export const ColorPickerMenuPreview = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background-color: ${({ $color }) => $color};
 `;
 
 export const ColorPickerMenuCloseButton = styled(Button).attrs({
@@ -82,19 +77,11 @@ export const ColorPickerMenuCloseButton = styled(Button).attrs({
   variant: 'text'
 })``;
 
-export interface ColorPickerMenuAreaProps {
-  $hueColor: string;
-}
-
-export const ColorPickerMenuArea = styled.div<ColorPickerMenuAreaProps>`
+export const ColorPickerMenuArea = styled.div`
   position: relative;
   width: 100%;
   height: 240px;
   cursor: pointer;
-  background: ${({ $hueColor }) => `
-    linear-gradient(to right, white, ${$hueColor}), 
-    linear-gradient(to top, black, transparent)
-  `};
   background-blend-mode: multiply;
 `;
 
@@ -117,19 +104,12 @@ export const ColorPickerMenuHueSlider = styled.div`
   );
 `;
 
-export interface ColorPickerMenuSelectorProps {
-  $x: string;
-  $y: string;
-}
-
 export const ColorPickerMenuSelector = styled.div.attrs({
   children: <SelectorIcon />
-})<ColorPickerMenuSelectorProps>`
+})`
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  left: ${({ $x }) => $x};
-  top: ${({ $y }) => $y};
   transform: translate(-50%, -50%);
 `;
