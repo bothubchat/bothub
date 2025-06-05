@@ -125,6 +125,13 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                                   selectedItem.children &&
                                   selectedItem.children.length % 2 === 0
                                 }
+                                $nthChildCount={
+                                  accordionIndex === 0 &&
+                                  selectedItem &&
+                                  selectedItem.index === 1
+                                    ? 2
+                                    : 1
+                                }
                                 key={indexChildrenItem}
                               >
                                 <MultiLevelMenuSecondLevelLiHover

@@ -62,6 +62,7 @@ export interface MessageProps {
   copyPlainText?: string | null;
   copyTgText?: string | null;
   editText?: string | null;
+  editOutOfMenu?: boolean;
   resendText?: string | null;
   deleteText?: string | null;
   onReportText?: string | null;
@@ -109,6 +110,7 @@ export const Message: React.FC<MessageProps> = ({
   disableUpdate = false,
   disableCopy = false,
   disableDownload = true,
+  editOutOfMenu = false,
   copyPlainText,
   copyTgText,
   editText,
@@ -402,6 +404,7 @@ export const Message: React.FC<MessageProps> = ({
                 disableDelete={disableDelete}
                 disableUpdate={disableUpdate}
                 disableCopy={disableCopy}
+                editOutOfMenu={editOutOfMenu}
                 copyPlainText={copyPlainText}
                 copyTgText={copyTgText}
                 editText={editText}
