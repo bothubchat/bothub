@@ -16,6 +16,7 @@ import { PauseButtonIcon } from '@/ui/icons/pause-button';
 import { PlayButtonIcon } from '@/ui/icons/play-button';
 import { MessageVideoVolume } from './volume';
 import { DownloadImgIcon } from '@/ui/icons';
+import { getVideoMimeType } from '@/ui/utils/getVideoMimeType';
 
 export type MessageVideoProps = {
   src: string;
@@ -41,6 +42,8 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
   const [timeLineMouseMove, setTimeLineMouseMove] = useState(false);
   const videoContainer = useRef<HTMLDivElement>(null);
   const iconSize = videoFullScreen ? 28 : 24;
+
+  const mimeType = getVideoMimeType(src);
 
   const handleStart = useCallback(() => {
     if (videoRef.current) {
@@ -157,7 +160,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
       >
         <MessageSourceStyled
           src={src}
-          type="video/mp4"
+          type={mimeType}
         />
       </MessageVideoStyled>
       <MessageVideoControls
