@@ -106,6 +106,13 @@ export const WithCustomInputStyles: TextFieldStory = {
   }
 };
 
+export const Clearable: TextFieldStory = {
+  args: {
+    ...Basic.args,
+    clearable: true
+  }
+};
+
 export default {
   title: 'UI Components/Fields/Text',
   component: TextField,
