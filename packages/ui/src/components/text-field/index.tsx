@@ -49,6 +49,7 @@ export interface TextFieldProps
   autoComplete?: React.ComponentProps<'input'>['autoComplete'];
   inputStyles?: React.CSSProperties;
   clearable?: boolean;
+  bigClearButton?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -82,6 +83,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   autoComplete,
   inputStyles,
   clearable = false,
+  bigClearButton = false,
   ...props
 }) => {
   const theme = useTheme();
@@ -150,8 +152,6 @@ export const TextField: React.FC<TextFieldProps> = ({
     })
   };
 
-  console.log(type, value);
-
   return (
     <TextFieldStyled
       {...props}
@@ -217,7 +217,10 @@ export const TextField: React.FC<TextFieldProps> = ({
             autoComplete={autoComplete}
           />
           {(clearable || (type === 'search' && value)) && (
-            <TextFieldClearButton onClick={handleClear} />
+            <TextFieldClearButton
+              $big={bigClearButton}
+              onClick={handleClear}
+            />
           )}
           {type !== 'search' && endIcon && (
             <IconProvider {...iconProps}>{endIcon}</IconProvider>
