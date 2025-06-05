@@ -176,7 +176,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                       )}
                       <Radio
                         type="radio"
-                        checked={item.selected}
+                        checked={!!item.selected}
                         name={item.radioName}
                         disabled={item.disabled}
                         icon={item.disabled ? item.end : undefined}
