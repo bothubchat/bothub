@@ -9,13 +9,15 @@ import {
 } from './styled';
 
 export interface AccordionProps extends React.ComponentProps<'div'> {
-  label: string;
+  label: string | React.ReactNode;
+  variant?: 'with-icon' | 'default';
   fullWidth?: boolean;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
   label,
   children,
+  variant = 'default',
   ...props
 }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +29,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   return (
     <AccordionStyled {...props}>
       <AccordionHead
+        $isDefaultVariant={variant === 'default'}
         $isOpen={isOpen}
         onClick={toggle}
       >
@@ -34,7 +37,10 @@ export const Accordion: React.FC<AccordionProps> = ({
         <AccordionArrow $isOpen={isOpen} />
       </AccordionHead>
 
-      <AccordionBody $isOpen={isOpen}>
+      <AccordionBody
+        $isDefaultVariant={variant === 'default'}
+        $isOpen={isOpen}
+      >
         {typeof children === 'string' ? (
           <AccordionText $isOpen={isOpen}>{children}</AccordionText>
         ) : (
