@@ -56,6 +56,7 @@ export interface TextFieldProps
   onMouseEnter?: React.MouseEventHandler<HTMLInputElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLInputElement>;
   onValueChange?: TextFieldValueChangeEventHandler;
+  onClearButtonClick?: () => void;
 }
 
 export const TextField: React.FC<TextFieldProps> = ({
@@ -77,6 +78,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   onMouseEnter,
   onMouseLeave,
   onValueChange,
+  onClearButtonClick,
   readonly = false,
   variant = 'primary',
   autoFocus,
@@ -136,6 +138,10 @@ export const TextField: React.FC<TextFieldProps> = ({
     if (inputEl !== null) {
       inputEl.value = '';
       onValueChange?.('');
+    }
+
+    if (onClearButtonClick) {
+      onClearButtonClick();
     }
   }, [onChange]);
 
