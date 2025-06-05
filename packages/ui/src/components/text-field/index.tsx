@@ -47,6 +47,7 @@ export interface TextFieldProps
   variant?: Variant;
   autoFocus?: boolean;
   autoComplete?: React.ComponentProps<'input'>['autoComplete'];
+  inputStyles?: React.CSSProperties;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
@@ -78,6 +79,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   variant = 'primary',
   autoFocus,
   autoComplete,
+  inputStyles,
   ...props
 }) => {
   const theme = useTheme();
@@ -169,6 +171,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           $disabled={disabled}
           $skeleton={false}
           $variant={variant}
+          style={inputStyles}
         >
           {(type === 'search' || startIcon) && (
             <IconProvider {...iconProps}>

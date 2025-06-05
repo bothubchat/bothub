@@ -96,6 +96,16 @@ export const Color: TextFieldStory = {
   }
 };
 
+export const WithCustomInputStyles: TextFieldStory = {
+  args: {
+    ...Basic.args,
+    inputStyles: {
+      border: 'none',
+      borderRadius: '20px'
+    }
+  }
+};
+
 export default {
   title: 'UI Components/Fields/Text',
   component: TextField,
