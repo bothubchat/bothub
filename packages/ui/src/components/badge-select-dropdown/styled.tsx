@@ -23,8 +23,12 @@ export const BadgeSelectDropdownTrigger = styled.button<{
   border-radius: 14px;
   background: ${({ theme, $active, $colorButtonOpened }) =>
     $active
-      ? $colorButtonOpened || colorToRgba(theme.colors.accent.primaryLight, 0.5)
-      : theme.colors.grayScale.gray3};
+      ? $colorButtonOpened || theme.mode === 'light'
+        ? theme.colors.grayScale.gray2
+        : colorToRgba(theme.colors.accent.primaryLight, 0.5)
+      : theme.mode === 'light'
+        ? theme.colors.grayScale.gray4
+        : theme.colors.grayScale.gray3};
   color: ${({ theme }) => theme.colors.base.white};
 `;
 
@@ -47,9 +51,11 @@ export const BadgeSelectDropdownList: React.FC<
   background: ${({ theme }) => colorToRgba(theme.colors.grayScale.gray4, 0.75)};
   backdrop-filter: blur(16px);
 
-  ${({ $open }) => css`
-    display: ${$open && 'flex'};
-  `}
+  ${({ $open }) =>
+    $open &&
+    css`
+      display: flex;
+    `}
   flex-direction: column;
   gap: 1px;
 `;

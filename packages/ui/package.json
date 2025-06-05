@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.38.1",
+  "version": "2.38.1-fix-dropdown-switcher-3a591346-2339-4b4b-b8db-16ab4e4ca368",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
