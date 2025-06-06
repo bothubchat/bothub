@@ -47,12 +47,16 @@ export interface TextFieldProps
   variant?: Variant;
   autoFocus?: boolean;
   autoComplete?: React.ComponentProps<'input'>['autoComplete'];
+  inputStyles?: React.CSSProperties;
+  clearable?: boolean;
+  bigClearButton?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLInputElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLInputElement>;
   onValueChange?: TextFieldValueChangeEventHandler;
+  onClearButtonClick?: () => void;
 }
 
 export const TextField: React.FC<TextFieldProps> = ({
@@ -74,10 +78,14 @@ export const TextField: React.FC<TextFieldProps> = ({
   onMouseEnter,
   onMouseLeave,
   onValueChange,
+  onClearButtonClick,
   readonly = false,
   variant = 'primary',
   autoFocus,
   autoComplete,
+  inputStyles,
+  clearable = false,
+  bigClearButton = false,
   ...props
 }) => {
   const theme = useTheme();
@@ -131,6 +139,10 @@ export const TextField: React.FC<TextFieldProps> = ({
       inputEl.value = '';
       onValueChange?.('');
     }
+
+    if (onClearButtonClick) {
+      onClearButtonClick();
+    }
   }, [onChange]);
 
   const iconProps: IconProviderProps = {
@@ -169,6 +181,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           $disabled={disabled}
           $skeleton={false}
           $variant={variant}
+          style={inputStyles}
         >
           {(type === 'search' || startIcon) && (
             <IconProvider {...iconProps}>
@@ -209,8 +222,11 @@ export const TextField: React.FC<TextFieldProps> = ({
             autoFocus={autoFocus}
             autoComplete={autoComplete}
           />
-          {type === 'search' && value && (
-            <TextFieldClearButton onClick={handleClear} />
+          {(clearable || (type === 'search' && value)) && (
+            <TextFieldClearButton
+              $big={bigClearButton}
+              onClick={handleClear}
+            />
           )}
           {type !== 'search' && endIcon && (
             <IconProvider {...iconProps}>{endIcon}</IconProvider>
