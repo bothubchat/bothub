@@ -28,7 +28,7 @@ export const AccordionHead = styled.div<
   padding: 18px;
   cursor: pointer;
   border: ${({ theme, $isDefaultVariant }) =>
-    !$isDefaultVariant && `1px solid ${theme.colors.grayScale.gray2}`};
+    $isDefaultVariant && `1px solid ${theme.colors.grayScale.gray2}`};
   border-radius: 20px;
   transition:
     border-bottom 0.3s,
@@ -83,7 +83,7 @@ export const AccordionBody = styled.div<
       : theme.colors.grayScale.gray3};
 
   border: ${({ theme, $isDefaultVariant }) =>
-    !$isDefaultVariant && `1px solid ${theme.colors.grayScale.gray2}`};
+    $isDefaultVariant && `1px solid ${theme.colors.grayScale.gray2}`};
 
   border-top: 0;
   border-radius: 0 0 20px 20px;
