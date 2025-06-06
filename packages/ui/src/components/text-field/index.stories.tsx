@@ -96,6 +96,23 @@ export const Color: TextFieldStory = {
   }
 };
 
+export const WithCustomInputStyles: TextFieldStory = {
+  args: {
+    ...Basic.args,
+    inputStyles: {
+      border: 'none',
+      borderRadius: '20px'
+    }
+  }
+};
+
+export const Clearable: TextFieldStory = {
+  args: {
+    ...Basic.args,
+    clearable: true
+  }
+};
+
 export default {
   title: 'UI Components/Fields/Text',
   component: TextField,
