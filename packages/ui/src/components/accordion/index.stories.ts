@@ -15,6 +15,7 @@ export const Basic: AccordionStory = {
 
 export const WithALotOfText: AccordionStory = {
   args: {
+    variant: 'with-icon',
     label: 'Какие сферы бизнеса могут воспользоваться ChatGPT? '.repeat(3),
     children: 'Какие сферы бизнеса могут воспользоваться ChatGPT? '.repeat(10)
   }
