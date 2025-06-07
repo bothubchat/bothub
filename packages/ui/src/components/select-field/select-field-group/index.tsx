@@ -7,17 +7,9 @@ import {
 } from 'react';
 import * as S from './styled';
 
-type SelectFieldGroupProps = {
-  scrollTop: number;
-  onScrollTopChange: (value: number) => void;
-} & S.SelectFieldGroupContentProps &
-  PropsWithChildren;
+type SelectFieldGroupProps = S.SelectFieldGroupContentProps & PropsWithChildren;
 
-export const SelectFieldGroup = ({
-  scrollTop,
-  onScrollTopChange,
-  ...rest
-}: SelectFieldGroupProps) => {
+export const SelectFieldGroup = (props: SelectFieldGroupProps) => {
   const [showTopShadow, setShowTopShadow] = useState(false);
   const [showBottomShadow, setShowBottomShadow] = useState(false);
 
@@ -34,17 +26,13 @@ export const SelectFieldGroup = ({
       setShowBottomShadow(
         Math.floor(scrollHeight - scrollTop - clientHeight) > 1
       );
-
-      onScrollTopChange(scrollTop);
     }
-  }, [contentRef.current, onScrollTopChange]);
+  }, [contentRef.current]);
 
   useEffect(() => {
     const el = contentRef.current;
 
     if (!el) return;
-
-    el.scrollTop = scrollTop;
 
     const onResize = new ResizeObserver(() => {
       handleShadowsDisplay();
@@ -60,7 +48,7 @@ export const SelectFieldGroup = ({
       onResize.disconnect();
       el.removeEventListener('scroll', handleShadowsDisplay);
     };
-  }, [contentRef.current, scrollTop]);
+  }, [contentRef.current]);
 
   return (
     <S.SelectFieldGroupStyled>
@@ -70,7 +58,7 @@ export const SelectFieldGroup = ({
       />
       <S.SelectFieldGroupContent
         ref={contentRef}
-        {...rest}
+        {...props}
       />
       <S.Shadow $show={showBottomShadow} />
     </S.SelectFieldGroupStyled>

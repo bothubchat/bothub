@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import * as S from './styled';
 import { Portal } from '../../portal';
 import {
@@ -70,14 +70,7 @@ export const SelectModal = ({
   setValue
 }: SelectModalProps) => {
   const [openedOptions, setOpenedOptions] = useState<(string | number)[]>([]);
-  const scrollTop = useRef([0, 0, 0]);
   const [searchValue, setSearchValue] = useState('');
-
-  const handleScrollTopChange = (value: number, index: number) => {
-    scrollTop.current = scrollTop.current.map((v, i) =>
-      i === index ? value : v
-    );
-  };
 
   const handleSearchChange = useCallback<
     React.ChangeEventHandler<HTMLInputElement>
@@ -118,13 +111,11 @@ export const SelectModal = ({
 
   useEffect(() => {
     setOpenedOptions([]);
-    scrollTop.current = [0, 0, 0];
     setSearchValue('');
   }, [resetStyleState]);
 
   const onTabClick = useCallback(
     (id: string | null) => {
-      scrollTop.current = [0, 0, 0];
       setOpenedOptions([]);
 
       if (tabs && tabs.onTabClick) {
@@ -250,8 +241,6 @@ export const SelectModal = ({
               )}
               {before && (
                 <SelectFieldGroup
-                  scrollTop={scrollTop.current[0]}
-                  onScrollTopChange={(val) => handleScrollTopChange(val, 0)}
                   $size={size}
                   $disableScrollbar={disableScrollbar}
                   $followContentHeight={!!contentHeight}
@@ -266,8 +255,6 @@ export const SelectModal = ({
                 </SelectFieldGroup>
               )}
               <SelectFieldGroup
-                scrollTop={scrollTop.current[1]}
-                onScrollTopChange={(val) => handleScrollTopChange(val, 1)}
                 $size={size}
                 $disableScrollbar={disableScrollbar}
                 $followContentHeight={!!contentHeight}
@@ -282,8 +269,6 @@ export const SelectModal = ({
               </SelectFieldGroup>
               {after && (
                 <SelectFieldGroup
-                  scrollTop={scrollTop.current[2]}
-                  onScrollTopChange={(val) => handleScrollTopChange(val, 2)}
                   $size={size}
                   $disableScrollbar={disableScrollbar}
                   $followContentHeight={!!contentHeight}
