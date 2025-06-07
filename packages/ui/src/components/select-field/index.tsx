@@ -55,7 +55,6 @@ export const SelectField = ({
   tabs,
   search,
   searchPlaceholder,
-  resetStyleState,
   children,
   onOptionClick,
   onInputChange,
@@ -324,7 +323,6 @@ export const SelectField = ({
           tabs={tabs}
           search={search}
           searchPlaceholder={searchPlaceholder}
-          resetStyleState={resetStyleState}
           blur={blur}
           value={value}
           multiple={multiple}

@@ -1,8 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import * as S from './styled';
 import { Portal } from '../../portal';
 import {
-  ResetStyleStateType,
   SelectFieldData,
   SelectFieldDataItem,
   SelectFieldOptionClickEventHandler,
@@ -31,7 +30,6 @@ export type SelectModalGeneralProps = {
   };
   search?: boolean;
   searchPlaceholder?: string;
-  resetStyleState?: ResetStyleStateType;
   blur?: boolean;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 };
@@ -55,7 +53,6 @@ export const SelectModal = ({
   tabs,
   search,
   searchPlaceholder,
-  resetStyleState,
   placement,
   selectModalRef,
   blur = false,
@@ -107,10 +104,6 @@ export const SelectModal = ({
     },
     [value, setValue, multiple, onOptionClick, disableSelect]
   );
-
-  useEffect(() => {
-    setSearchValue('');
-  }, [resetStyleState]);
 
   const onTabClick = useCallback(
     (id: string | null) => {

@@ -68,8 +68,6 @@ export type SelectFieldPlacement =
 
 export type SelectFieldInputType = 'text' | 'search';
 
-export type ResetStyleStateType = string | number | boolean | null;
-
 export type ValueType = SelectFieldDataItem | SelectFieldDataItem[] | null;
 
 export type ValueSetter = (value: ValueType) => void;
