@@ -29,12 +29,7 @@ export type SelectModalGeneralProps = {
     defaultTabId?: string;
     onTabClick?: (id: string | null) => void;
   };
-  search?:
-    | {
-        icon?: React.ReactNode;
-        onChange?: (value: string) => void;
-      }
-    | boolean;
+  search?: boolean;
   searchPlaceholder?: string;
   resetStyleState?: ResetStyleStateType;
   blur?: boolean;
@@ -88,11 +83,7 @@ export const SelectModal = ({
     (event) => {
       const { value } = event.currentTarget;
 
-      if (typeof search === 'object' && search.onChange) {
-        search.onChange(value);
-      } else {
-        setSearchValue(value.trim());
-      }
+      setSearchValue(value.trim());
     },
     [setSearchValue]
   );
@@ -241,11 +232,7 @@ export const SelectModal = ({
               )}
               {search && (
                 <S.SelectModalSearch
-                  startIcon={
-                    (typeof search === 'object' && search.icon) || (
-                      <SearchSimpleIcon />
-                    )
-                  }
+                  startIcon={<SearchSimpleIcon />}
                   placeholder={searchPlaceholder}
                   value={searchValue}
                   onChange={handleSearchChange}
