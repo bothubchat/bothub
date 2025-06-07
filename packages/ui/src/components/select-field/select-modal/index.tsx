@@ -69,7 +69,6 @@ export const SelectModal = ({
   handleClose,
   setValue
 }: SelectModalProps) => {
-  const [openedOptions, setOpenedOptions] = useState<(string | number)[]>([]);
   const [searchValue, setSearchValue] = useState('');
 
   const handleSearchChange = useCallback<
@@ -110,63 +109,17 @@ export const SelectModal = ({
   );
 
   useEffect(() => {
-    setOpenedOptions([]);
     setSearchValue('');
   }, [resetStyleState]);
 
   const onTabClick = useCallback(
     (id: string | null) => {
-      setOpenedOptions([]);
-
       if (tabs && tabs.onTabClick) {
         tabs.onTabClick(id);
       }
     },
     [tabs]
   );
-
-  const onOpenedOptionChange = useCallback(
-    (itemId: string | number) =>
-      setOpenedOptions((prev) =>
-        prev.includes(itemId)
-          ? prev.filter((id) => id !== itemId)
-          : [...prev, itemId]
-      ),
-    [openedOptions]
-  );
-
-  data = data.map((item) => {
-    if (
-      typeof item === 'object' &&
-      item.type === 'collapse' &&
-      item.id &&
-      !item.disabled
-    ) {
-      const { onClick, ...rest } = item;
-
-      const onOptionClick = () => {
-        if (onClick) {
-          onClick(item);
-        }
-
-        if (item.id) {
-          onOpenedOptionChange(item.id);
-        }
-      };
-
-      const open = openedOptions.includes(item.id);
-
-      return {
-        ...rest,
-        ...(open && {
-          open
-        }),
-        onClick: onOptionClick
-      };
-    }
-
-    return item;
-  });
 
   return (
     <Portal>
