@@ -11,7 +11,7 @@ import {
 import { SelectFieldGroup } from '../select-field-group';
 import { SelectFieldOptions } from '../option';
 import { filterData } from './filterData';
-import { ITab } from '../../scrollable-tabs';
+import { ScrollableTabsProps } from '../../scrollable-tabs';
 import { UseSelectFieldReturnType } from '..';
 import { SearchSimpleIcon } from '@/ui/icons';
 
@@ -24,11 +24,7 @@ export type SelectModalGeneralProps = {
   disableScrollbar?: boolean;
   before?: SelectFieldData;
   after?: SelectFieldData;
-  tabs?: {
-    tabs: ITab[];
-    defaultTabId?: string;
-    onTabClick?: (id: string | null) => void;
-  };
+  tabs?: Omit<ScrollableTabsProps, 'variant' | 'component'>;
   search?: boolean;
   searchPlaceholder?: string;
   resetStyleState?: ResetStyleStateType;
@@ -127,8 +123,8 @@ export const SelectModal = ({
       scrollTop.current = [0, 0, 0];
       setOpenedOptions([]);
 
-      if (tabs && tabs.onTabClick) {
-        tabs.onTabClick(id);
+      if (tabs && tabs.onClick) {
+        tabs.onClick(id);
       }
     },
     [tabs]

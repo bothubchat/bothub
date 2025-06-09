@@ -3,7 +3,7 @@ import * as S from './styled';
 import { Slider } from '../slider';
 import { ITab, Variant } from './types';
 
-type ScrollableTabsProps = {
+export type ScrollableTabsProps = {
   variant?: Variant;
   component: 'a' | 'button';
   tabs: ITab[];
