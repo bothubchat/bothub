@@ -81,6 +81,7 @@ export type SelectFieldProps = (
   data?: SelectFieldData;
   fullWidth?: boolean;
   contentWidth?: number;
+  fieldBlockPositionWrapper?: 'inherit';
   error?: string;
   disabled?: boolean;
   skeleton?: boolean;
@@ -121,6 +122,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   placeholder,
   data = [],
   fullWidth = false,
+  fieldBlockPositionWrapper,
   contentWidth,
   error,
   disabled = false,
@@ -730,6 +732,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
               >
                 <SelectFieldBlockPositionWrapper
                   $blur={blur}
+                  $width={fieldBlockPositionWrapper}
                   $placement={placement}
                   style={{
                     ...(followContentHeight &&
