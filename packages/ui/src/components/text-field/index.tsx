@@ -222,7 +222,7 @@ export const TextField: React.FC<TextFieldProps> = ({
             autoFocus={autoFocus}
             autoComplete={autoComplete}
           />
-          {(clearable || (type === 'search' && value)) && (
+          {(clearable || type === 'search') && value && (
             <TextFieldClearButton
               $big={bigClearButton}
               onClick={handleClear}
