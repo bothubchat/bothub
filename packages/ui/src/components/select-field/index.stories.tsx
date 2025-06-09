@@ -628,6 +628,7 @@ export const ResetStyleState: SelectFieldStory = {
           data={WithSearch.args?.data}
           resetStyleState={shouldResetStyleState}
           placement="top-right"
+          search
         />
         <Button
           type="button"

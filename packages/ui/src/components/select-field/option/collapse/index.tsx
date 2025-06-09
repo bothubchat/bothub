@@ -61,8 +61,8 @@ export const SelectFieldCollapseOption = ({
   }
 
   useLayoutEffect(() => {
-    if (typeof item !== 'string' && typeof item.open === 'boolean') {
-      setIsOpen(item.open);
+    if (typeof item !== 'string') {
+      setIsOpen(Boolean(item.open));
     }
   }, [item]);
 

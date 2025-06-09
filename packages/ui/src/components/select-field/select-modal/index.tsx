@@ -70,8 +70,8 @@ export const SelectModal = ({
   setValue
 }: SelectModalProps) => {
   const [openedOptions, setOpenedOptions] = useState<(string | number)[]>([]);
-  const scrollTop = useRef([0, 0, 0]);
   const [searchValue, setSearchValue] = useState('');
+  const scrollTop = useRef([0, 0, 0]);
 
   const handleScrollTopChange = (value: number, index: number) => {
     scrollTop.current = scrollTop.current.map((v, i) =>
