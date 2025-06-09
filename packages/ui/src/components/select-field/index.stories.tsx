@@ -544,7 +544,7 @@ export const WithTabs: SelectFieldStory = {
           icon: <SpellingIcon />
         }
       ],
-      onTabClick(id) {
+      onClick(id) {
         alert(id);
       },
       defaultTabId: 'code'
