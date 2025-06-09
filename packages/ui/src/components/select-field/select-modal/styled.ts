@@ -99,7 +99,8 @@ export const SelectModalTabsContainer = styled.div`
 `;
 
 export const SelectModalTabs = styled(ScrollableTabs).attrs({
-  variant: 'secondary'
+  variant: 'secondary',
+  component: 'button'
 })``;
 
 export const SelectModalSearch = styled(TextField).attrs({

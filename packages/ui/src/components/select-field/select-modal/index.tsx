@@ -221,10 +221,8 @@ export const SelectModal = ({
               {!!tabs && (
                 <S.SelectModalTabsContainer>
                   <S.SelectModalTabs
-                    tabs={tabs.tabs}
-                    component="button"
+                    {...tabs}
                     onClick={onTabClick}
-                    defaultTabId={tabs.defaultTabId}
                   />
                 </S.SelectModalTabsContainer>
               )}

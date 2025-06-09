@@ -4,9 +4,9 @@ import { Slider } from '../slider';
 import { ITab, Variant } from './types';
 
 export type ScrollableTabsProps = {
-  variant?: Variant;
-  component: 'a' | 'button';
   tabs: ITab[];
+  variant?: Variant;
+  component?: 'a' | 'button';
   selectedTab?: string;
   defaultTabId?: string;
   onClick?(id: string | null): void;
