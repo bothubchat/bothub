@@ -2,7 +2,6 @@ import { css, styled } from 'styled-components';
 import { ArrowNarrowDownIcon } from '@/ui/icons';
 
 export const MessageListScrollButton = styled.button<{
-  $variant: 'main' | 'dashboard';
   $visible: boolean;
 }>`
   opacity: 0;
@@ -13,7 +12,7 @@ export const MessageListScrollButton = styled.button<{
   align-items: center;
   justify-content: center;
   padding: 10px;
-  bottom: ${({ $variant }) => ($variant === 'main' ? 0 : '60px')};
+  bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
   size: 38px;
@@ -37,6 +36,10 @@ export const MessageListScrollButton = styled.button<{
   }
 
   transition: all 0.1s linear;
+
+  @media (max-width: 1101px) {
+    bottom: 60px;
+  }
 `;
 
 export const MessageListArrowNarrowDownIcon = styled(ArrowNarrowDownIcon)`

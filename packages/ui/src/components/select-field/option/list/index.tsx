@@ -164,11 +164,13 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                   >
                     <SelectFieldRadioTitleAndRadio>
                       {item.icon && (
-                        <IconProvider size={18}>{item.icon}</IconProvider>
+                        <IconProvider size={size === 'large' ? 24 : 16}>
+                          {item.icon}
+                        </IconProvider>
                       )}
                       {item.label && (
                         <SelectFieldRadioLabelWrapper>
-                          <SelectFieldRadioLabel>
+                          <SelectFieldRadioLabel $size={size}>
                             {item.label}
                           </SelectFieldRadioLabel>
                           {item.best_model && <StarsIcon size={18} />}
