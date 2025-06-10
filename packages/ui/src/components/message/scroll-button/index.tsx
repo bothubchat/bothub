@@ -8,12 +8,8 @@ import { ScrollbarRef } from '../..';
 
 interface IScrollButton {
   scrollbarRef: React.RefObject<ScrollbarRef>;
-  variant: 'main' | 'dashboard';
 }
-export const ScrollButton: React.FC<IScrollButton> = ({
-  scrollbarRef,
-  variant
-}) => {
+export const ScrollButton: React.FC<IScrollButton> = ({ scrollbarRef }) => {
   const [isAtBottom, setIsAtBottom] = useState(false);
   const [isScrollable, setIsScrollable] = useState(false);
 
@@ -53,7 +49,6 @@ export const ScrollButton: React.FC<IScrollButton> = ({
   if (isAtBottom || !isScrollable) return null;
   return (
     <MessageListScrollButton
-      $variant={variant}
       $visible={!isAtBottom && isScrollable}
       onClick={handleScrollToBottom}
       type="button"
