@@ -6,8 +6,9 @@ export const MessagesStyled = styled.div`
   display: flex;
   position: relative;
   width: 100%;
-  @media (width <= ${({ theme }) => theme.mobile.maxWidth}) {
-    --bothub-scale: 0.92;
+  & span,
+  & p {
+    --bothub-scale: 1;
   }
 `;
 
