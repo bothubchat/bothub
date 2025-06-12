@@ -146,7 +146,9 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               <>
                 <SelectFieldRadioTitleAndRadio>
                   {item.label && (
-                    <SelectFieldRadioLabel>{item.label}</SelectFieldRadioLabel>
+                    <SelectFieldRadioLabel $size={size}>
+                      {item.label}
+                    </SelectFieldRadioLabel>
                   )}
                   <Radio
                     type="radio"
