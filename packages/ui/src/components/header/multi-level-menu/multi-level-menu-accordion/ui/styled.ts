@@ -95,7 +95,10 @@ export const MultiLevelMenuSecondLevelLiHover = styled.div`
   transition: background 0.2s ease-in-out;
 `;
 
-export const MultiLevelMenuSecondLevelLi = styled.li<{ $even?: boolean }>`
+export const MultiLevelMenuSecondLevelLi = styled.li<{
+  $even?: boolean;
+  $nthChildCount: number;
+}>`
   position: relative;
   list-style: none;
   padding-top: 8px;
@@ -105,11 +108,11 @@ export const MultiLevelMenuSecondLevelLi = styled.li<{ $even?: boolean }>`
   &:last-child {
     border-bottom: none;
   }
-  ${({ $even, theme }) =>
+  ${({ $even, theme, $nthChildCount }) =>
     $even
       ? `
       @media (min-width: ${theme.tablet.maxWidth}) {
-        &:nth-last-child(-n + 2) {
+        &:nth-last-child(-n + ${$nthChildCount}) {
           border-bottom: none;
         }
       }
@@ -159,9 +162,12 @@ export const MultiLevelMenuSecondLevelWrapper: React.FC<
   padding-left: 18px;
   flex-grow: 1;
 `;
-export const MultiLevelMenuSecondLevelContentWrapper = styled.div`
+export const MultiLevelMenuSecondLevelContentWrapper = styled.div<{
+  $columnsCount: number;
+}>`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: ${({ $columnsCount }) =>
+    `repeat(${$columnsCount}, 1fr)`};
   column-gap: 16px;
   height: auto;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {

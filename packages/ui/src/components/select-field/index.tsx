@@ -57,6 +57,7 @@ export const SelectField = ({
   searchPlaceholder,
   resetStyleState,
   children,
+  fieldBlockPositionWrapperWidth,
   onOptionClick,
   onInputChange,
   onPointerLeave,
@@ -331,6 +332,7 @@ export const SelectField = ({
           onOptionClick={onOptionClick}
           handleClose={handleClose}
           setValue={setValue}
+          fieldBlockPositionWrapperWidth={fieldBlockPositionWrapperWidth}
         />
 
         {error && <S.SelectFieldErrorText>{error}</S.SelectFieldErrorText>}

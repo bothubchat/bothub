@@ -33,7 +33,7 @@ import {
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
-import { getTgMarkdown } from '@/ui/utils';
+import { colorToRgba, getTgMarkdown } from '@/ui/utils';
 import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
@@ -52,6 +52,7 @@ export interface MessageProps {
   tags?: React.ReactNode;
   avatar?: React.ReactNode;
   transaction?: React.ReactNode;
+  disableModal?: boolean;
   disableResend?: boolean;
   disableEdit?: boolean;
   disableDelete?: boolean;
@@ -61,6 +62,7 @@ export interface MessageProps {
   copyPlainText?: string | null;
   copyTgText?: string | null;
   editText?: string | null;
+  editOutOfMenu?: boolean;
   resendText?: string | null;
   deleteText?: string | null;
   onReportText?: string | null;
@@ -101,12 +103,14 @@ export const Message: React.FC<MessageProps> = ({
   tags,
   avatar,
   transaction,
+  disableModal = false,
   disableResend = false,
   disableEdit = false,
   disableDelete = false,
   disableUpdate = false,
   disableCopy = false,
   disableDownload = true,
+  editOutOfMenu = false,
   copyPlainText,
   copyTgText,
   editText,
@@ -224,7 +228,10 @@ export const Message: React.FC<MessageProps> = ({
     case 'user':
       switch (color) {
         case 'default':
-          hexColor = theme.colors.accent.primary;
+          hexColor =
+            theme.mode === 'dark'
+              ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
+              : colorToRgba(theme.colors.accent.primaryLight, 0.2);
           break;
         case 'green':
           hexColor = theme.colors.gpt3;
@@ -294,7 +301,7 @@ export const Message: React.FC<MessageProps> = ({
             data-date={timestamp}
           >
             <MessageContent $variant={variant}>
-              {(name || transaction) && (
+              {name && (
                 <MessageTop>
                   {typeof name === 'string' && (
                     <MessageSender>
@@ -303,9 +310,6 @@ export const Message: React.FC<MessageProps> = ({
                     </MessageSender>
                   )}
                   {typeof name !== 'string' && <div />}
-                  <MessageBlockTransaction $top>
-                    {transaction}
-                  </MessageBlockTransaction>
                 </MessageTop>
               )}
               {typeof name !== 'string' && name}
@@ -394,11 +398,13 @@ export const Message: React.FC<MessageProps> = ({
                 message={content}
                 variant={variant}
                 skeleton={skeleton}
+                disableModal={disableModal}
                 disableResend={disableResend}
                 disableEdit={disableEdit}
                 disableDelete={disableDelete}
                 disableUpdate={disableUpdate}
                 disableCopy={disableCopy}
+                editOutOfMenu={editOutOfMenu}
                 copyPlainText={copyPlainText}
                 copyTgText={copyTgText}
                 editText={editText}

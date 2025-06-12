@@ -56,7 +56,7 @@ import {
   WebSearchIcon,
   XlsBigIcon
 } from '@/ui/icons';
-import { Typography } from '../../typography';
+import { Typography } from '@/ui/components/typography';
 import { MessageSearchResults } from '../search-results';
 import { MessageVideo } from '../video';
 

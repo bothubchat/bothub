@@ -49,6 +49,7 @@ export interface ThemeGradientColors {
   light: string;
   premium: string;
   deluxe: string;
+  enterprise: string;
   elite: string;
   elite20: string;
 }

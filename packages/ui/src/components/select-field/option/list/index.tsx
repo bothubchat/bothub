@@ -14,6 +14,7 @@ import {
   SelectFieldRadio,
   SelectFieldRadioDescription,
   SelectFieldRadioLabel,
+  SelectFieldRadioLabelWrapper,
   SelectFieldRadioTitleAndRadio
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
@@ -27,6 +28,7 @@ import {
   SelectFieldOptionText
 } from '../select-field-option/styled';
 import { SelectFieldOption } from '../select-field-option';
+import { StarsIcon } from '@/ui/icons';
 
 export type SelectFieldOptionClickEventHandler = (
   item: SelectFieldDataItem
@@ -183,7 +185,37 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                     onPointerLeave={handleTooltipMouseLeave}
                     onMouseEnter={handleTooltipMouseEnter}
                     onMouseLeave={handleTooltipMouseLeave}
-                  />
+                    onClick={onClick}
+                  >
+                    <SelectFieldRadioTitleAndRadio>
+                      {item.icon && (
+                        <IconProvider size={size === 'large' ? 24 : 16}>
+                          {item.icon}
+                        </IconProvider>
+                      )}
+                      {item.label && (
+                        <SelectFieldRadioLabelWrapper>
+                          <SelectFieldRadioLabel $size={size}>
+                            {item.label}
+                          </SelectFieldRadioLabel>
+                          {item.best_model && <StarsIcon size={18} />}
+                        </SelectFieldRadioLabelWrapper>
+                      )}
+                      <Radio
+                        type="radio"
+                        checked={!!item.selected}
+                        name={item.radioName}
+                        disabled={item.disabled}
+                        icon={item.disabled ? item.end : undefined}
+                      />
+                    </SelectFieldRadioTitleAndRadio>
+
+                    {item.description && (
+                      <SelectFieldRadioDescription>
+                        {item.description}
+                      </SelectFieldRadioDescription>
+                    )}
+                  </SelectFieldRadio>
                 )}
               </TooltipConsumer>
             </Tooltip>

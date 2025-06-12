@@ -29,6 +29,7 @@ export type SelectModalGeneralProps = {
   searchPlaceholder?: string;
   resetStyleState?: ResetStyleStateType;
   blur?: boolean;
+  fieldBlockPositionWrapperWidth?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 };
 
@@ -61,6 +62,7 @@ export const SelectModal = ({
   isKeyboardOpen,
   value,
   multiple,
+  fieldBlockPositionWrapperWidth,
   onOptionClick,
   handleClose,
   setValue
@@ -210,6 +212,7 @@ export const SelectModal = ({
         <S.SelectModalPositionWrapper
           $blur={blur}
           $placement={placement}
+          $width={fieldBlockPositionWrapperWidth}
           style={{
             ...(contentHeight && {
               maxHeight: `calc(var(--bothub-scale, 1) * ${contentHeight}px)`

@@ -10,9 +10,10 @@ import { Variant } from './types';
 
 export type BadgeSelectDropdownProps = {
   options: string[];
-  value: SelectFieldDataItem | null;
+  value?: SelectFieldDataItem | null;
   variant?: Variant;
-  onChange(value: string): void;
+  colorButtonOpened?: string;
+  onChange?(value: string): void;
 } & Omit<
   UseSelectFieldProps,
   'onChange' | 'multiple' | 'onValueChange' | 'value'
@@ -22,11 +23,12 @@ export const BadgeSelectDropdown = ({
   options,
   value: initialValue,
   variant = 'primary',
+  colorButtonOpened,
   onChange,
   ...useSelectFieldProps
 }: BadgeSelectDropdownProps) => {
   const onChangeHandler: SelectFieldChangeEventHandler = (value) => {
-    if (typeof value === 'string') {
+    if (typeof value === 'string' && onChange) {
       onChange(value);
     }
   };
@@ -61,11 +63,12 @@ export const BadgeSelectDropdown = ({
   return (
     <>
       <S.BadgeSelectDropdownTrigger
+        ref={triggerRef}
         $active={isOpen}
         $variant={variant}
-        onClick={(e) => handleInputClick(false, e)}
+        $colorButtonOpened={colorButtonOpened}
         type="button"
-        ref={triggerRef}
+        onClick={(e) => handleInputClick(false, e)}
       >
         <S.BadgeSelectDropdownSpanStyled>
           {label}

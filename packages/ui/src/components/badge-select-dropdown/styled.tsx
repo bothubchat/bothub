@@ -7,9 +7,11 @@ import { Variant } from './types';
 export const BadgeSelectDropdownTrigger = styled.button<{
   $active: boolean;
   $variant: Variant;
+  $colorButtonOpened?: string;
 }>`
   border: none;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   cursor: pointer;
   column-gap: 8px;
@@ -17,8 +19,16 @@ export const BadgeSelectDropdownTrigger = styled.button<{
   border-radius: 14px;
   transition: background-color 0.2s;
   max-width: 100%;
+  background: ${({ theme, $active, $colorButtonOpened }) =>
+    $active
+      ? $colorButtonOpened || theme.mode === 'light'
+        ? theme.colors.grayScale.gray2
+        : colorToRgba(theme.colors.accent.primaryLight, 0.5)
+      : theme.mode === 'light'
+        ? theme.colors.grayScale.gray4
+        : theme.colors.grayScale.gray3};
   color: ${({ theme }) => theme.colors.base.white};
-  background-color: ${({ theme, $active, $variant }) => {
+  /* background-color: ${({ theme, $active, $variant }) => {
     if ($variant === 'primary') {
       return $active
         ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
@@ -29,7 +39,7 @@ export const BadgeSelectDropdownTrigger = styled.button<{
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayScale.gray2};
-  }
+  } */
 `;
 
 export const BadgeSelectDropdownSpanStyled = styled(Typography).attrs({

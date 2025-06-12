@@ -27,6 +27,7 @@ import { IconProvider } from '@/ui/components/icon';
 
 interface IMultiLevelMenuAccordion {
   menuItem: TMenuItem;
+  accordionIndex: number;
   openAccordion: boolean;
   handleAccordionToggle: () => void;
   handleCloseAccordion: () => void;
@@ -34,6 +35,7 @@ interface IMultiLevelMenuAccordion {
 
 export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
   menuItem,
+  accordionIndex,
   openAccordion,
   handleCloseAccordion,
   handleAccordionToggle
@@ -46,13 +48,13 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const handleMouseEnter = (item: TFirstLevelItem) => {
+  const handleMouseEnter = (item: TFirstLevelItem, index: number) => {
     setSelectedItem(undefined);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
     timeoutRef.current = setTimeout(() => {
-      setSelectedItem(item);
+      setSelectedItem({ ...item, index });
     }, 200);
   };
 
@@ -92,7 +94,7 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                 {menuItem.children &&
                   menuItem.children.map((item, indexItem) => (
                     <MultiLevelMenuFirstLevelItem
-                      onMouseEnter={() => handleMouseEnter(item)}
+                      onMouseEnter={() => handleMouseEnter(item, indexItem)}
                       firstLevelItem={item}
                       key={indexItem}
                       selectedItemTitle={selectedItem?.title}
@@ -104,7 +106,15 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                 (style, item) =>
                   item && (
                     <MultiLevelMenuSecondLevelWrapper style={style}>
-                      <MultiLevelMenuSecondLevelContentWrapper>
+                      <MultiLevelMenuSecondLevelContentWrapper
+                        $columnsCount={
+                          accordionIndex === 0 &&
+                          selectedItem &&
+                          selectedItem.index === 1
+                            ? 2
+                            : 1
+                        }
+                      >
                         {selectedItem &&
                           selectedItem.children &&
                           selectedItem.children.map(
@@ -114,6 +124,13 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                                   selectedItem &&
                                   selectedItem.children &&
                                   selectedItem.children.length % 2 === 0
+                                }
+                                $nthChildCount={
+                                  accordionIndex === 0 &&
+                                  selectedItem &&
+                                  selectedItem.index === 1
+                                    ? 2
+                                    : 1
                                 }
                                 key={indexChildrenItem}
                               >

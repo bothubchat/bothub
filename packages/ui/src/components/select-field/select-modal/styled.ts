@@ -30,12 +30,13 @@ export const SelectModalStyled = styled(animated.div)<SelectModalStyledProps>`
 export interface SelectModalPositionWrapperProps {
   $blur: boolean;
   $placement: SelectFieldPlacement;
+  $width?: string;
 }
 
 export const SelectModalPositionWrapper = styled.div<SelectModalPositionWrapperProps>`
   display: flex;
   position: absolute;
-  width: 100%;
+  width: ${({ $width }) => $width || '100%'};
   box-sizing: border-box;
   padding: 6px 0 6px 8px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};

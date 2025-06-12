@@ -266,7 +266,12 @@ import {
   SortAlphabetBottomTopIcon,
   PauseIcon,
   PlayIcon,
-  Restore2Icon
+  Restore2Icon,
+  VideoGenerationIcon,
+  VeoModelIcon,
+  RunwayIcon,
+  QueueSelectIcon,
+  AppleIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -476,6 +481,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="GoogleIcon">{GoogleIcon}</IconItem>
         <IconItem name="YandexIcon">{YandexIcon}</IconItem>
         <IconItem name="VKIcon">{VKIcon}</IconItem>
+        <IconItem name="AppleIcon">{AppleIcon}</IconItem>
         <IconItem name="ResendIcon">{ResendIcon}</IconItem>
         <IconItem name="AddChatIcon">{AddChatIcon}</IconItem>
         <IconItem name="AddGroupIcon">{AddGroupIcon}</IconItem>
@@ -587,6 +593,10 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         </IconItem>
         <IconItem name="PauseIcon">{PauseIcon}</IconItem>
         <IconItem name="PlayIcon">{PlayIcon}</IconItem>
+        <IconItem name="VeoModelIcon">{VeoModelIcon}</IconItem>
+        <IconItem name="VideoGenerationIcon">{VideoGenerationIcon}</IconItem>
+        <IconItem name="RunwayIcon">{RunwayIcon}</IconItem>
+        <IconItem name="QueueSelectIcon">{QueueSelectIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

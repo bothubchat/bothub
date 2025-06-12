@@ -37,12 +37,14 @@ type MessageActionsProps = {
   message?: string;
   variant?: MessageVariant;
   skeleton?: boolean;
+  disableModal?: boolean;
   disableResend?: boolean;
   disableEdit?: boolean;
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
   disableDownload?: boolean;
+  editOutOfMenu?: boolean;
   editText?: string | null;
   copyTgText?: string | null;
   copyPlainText?: string | null;
@@ -72,6 +74,7 @@ type MessageActionsProps = {
 
 export const MessageActions = ({
   id,
+  disableModal,
   message,
   variant = 'user',
   skeleton,
@@ -81,6 +84,7 @@ export const MessageActions = ({
   disableUpdate,
   disableCopy,
   disableDownload,
+  editOutOfMenu,
   editText,
   copyTgText,
   copyPlainText,
@@ -124,7 +128,9 @@ export const MessageActions = ({
       case 'assistant':
         return !disableEdit;
       case 'user':
-        return !disableEdit || !disableDelete || !disableResend;
+        return disableModal
+          ? false
+          : !disableEdit || !disableDelete || !disableResend;
     }
   };
 
@@ -302,7 +308,7 @@ export const MessageActions = ({
                             </S.MessageActionsMenuModalOptionContent>
                           </MenuOption>
                         )}
-                      {!disableEdit && editText && onEdit && (
+                      {!editOutOfMenu && !disableEdit && editText && onEdit && (
                         <MenuOption
                           onClick={() => {
                             handleOptionClick('edit');
@@ -369,6 +375,18 @@ export const MessageActions = ({
               tooltipLabel={updateTooltipLabel}
             >
               <UpdateIcon size={18} />
+            </ActionButton>
+          )}
+          {editOutOfMenu && (
+            <ActionButton
+              id={id}
+              message={message}
+              onClick={() => {
+                handleOptionClick('edit');
+              }}
+              tooltipLabel={editText}
+            >
+              <EditIcon size={18} />
             </ActionButton>
           )}
           {!disableCopy && (

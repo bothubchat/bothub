@@ -110,10 +110,17 @@ export const SelectFieldRadioTitleAndRadio = styled.label`
   cursor: inherit;
 `;
 
-export const SelectFieldRadioLabel = styled(Typography).attrs({
-  variant: 'body-m-semibold'
-})`
+export const SelectFieldRadioLabel = styled(Typography).attrs<{
+  $size: SelectFieldSize;
+}>((props) => ({
+  variant: props.$size === 'large' ? 'body-m-semibold' : 'input-sm'
+}))``;
+
+export const SelectFieldRadioLabelWrapper = styled.div`
+  display: flex;
   width: 100%;
+  align-items: start;
+  gap: 5px;
 `;
 
 export const SelectFieldRadioDescription = styled(Typography).attrs({

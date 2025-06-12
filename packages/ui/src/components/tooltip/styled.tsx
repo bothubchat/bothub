@@ -105,6 +105,7 @@ export const TooltipStyled = styled(animated.div)<TooltipStyledProps>`
 
 export interface TooltipBlockProps {
   $variant: TooltipVariant;
+  $contentWidth?: number;
 }
 
 export const TooltipBlock = styled.span<TooltipBlockProps>`
@@ -121,7 +122,8 @@ export const TooltipBlock = styled.span<TooltipBlockProps>`
   overflow: hidden;
   border-radius: 6px;
   box-sizing: border-box;
-  max-width: 260px;
+  max-width: ${({ $contentWidth }) =>
+    $contentWidth ? `${$contentWidth}px` : '260px'};
 `;
 
 export const TooltipLabel = styled(Typography).attrs({
