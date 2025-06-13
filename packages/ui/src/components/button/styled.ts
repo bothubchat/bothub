@@ -332,6 +332,10 @@ export const ButtonText = styled.span<ButtonTextProps>`
       return theme.colors.grayScale.gray1;
     }
 
+    if (theme.scheme === 'custom') {
+      return theme.colors.custom.interface.text;
+    }
+
     switch ($variant) {
       case 'primary':
       case 'primary-transparent':

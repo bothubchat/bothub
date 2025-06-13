@@ -5,7 +5,7 @@ import {
   createGlobalStyle
 } from 'styled-components';
 import { THEMES } from './themes';
-import { ColorSchemeNames, ThemeCustom, ThemeMode } from './types';
+import { ColorSchemeNames, Theme, ThemeMode } from './types';
 
 export const StorybookGlobalStyle = createGlobalStyle`
   body {
@@ -17,7 +17,7 @@ export interface ThemeProviderProps extends React.PropsWithChildren {
   scheme?: ColorSchemeNames;
   mode?: ThemeMode;
   sbMode?: boolean;
-  customTheme?: ThemeCustom | null;
+  customTheme?: Theme | null;
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = React.memo(

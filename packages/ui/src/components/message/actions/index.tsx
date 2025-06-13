@@ -2,6 +2,7 @@ import {
   MutableRefObject,
   useCallback,
   useEffect,
+  useMemo,
   useRef,
   useState
 } from 'react';
@@ -34,6 +35,7 @@ import { ModalOption } from './types';
 
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
+import { colorToRgba } from '@/ui/utils';
 
 type MessageActionsProps = {
   id?: string;
@@ -115,7 +117,17 @@ export const MessageActions = ({
 
   const useScrollRef = useScrollbarRef();
 
-  const modalEnabled = () => {
+  const iconColor = useMemo(() => {
+    if (theme.scheme === 'custom') {
+      return colorToRgba(theme.colors.custom.icon, 0.75);
+    }
+
+    return theme.scheme === 'standard' || theme.mode === 'light'
+      ? theme.colors.grayScale.gray1
+      : theme.colors.accent.primary;
+  }, [theme]);
+
+  const modalEnabled = useMemo(() => {
     if (skeleton) {
       return false;
     }
@@ -125,14 +137,14 @@ export const MessageActions = ({
       case 'user':
         return !disableEdit || !disableDelete || !disableResend;
     }
-  };
+  }, [disableEdit, disableDelete, disableResend]);
 
   const handleInvertedModalState = () => {
     const scrollHeight = useScrollRef?.current?.element?.scrollHeight ?? 0;
     const scrollWidth = messageRef?.current?.scrollWidth ?? 0;
     const offsetTop = messageActionsRef.current?.offsetTop ?? 0;
     const offsetLeft = messageActionsRef.current?.offsetLeft ?? 0;
-    setInvertedY(scrollHeight - offsetTop <= 260);
+    setInvertedY(scrollHeight - offsetTop <= 300);
     setInvertedX(
       (variant === 'assistant' && scrollWidth - offsetLeft <= 160) ||
         (variant === 'user' && offsetLeft <= 160)
@@ -238,14 +250,8 @@ export const MessageActions = ({
     >
       {!editing ? (
         <>
-          <IconProvider
-            fill={
-              theme.scheme === 'standard'
-                ? theme.colors.grayScale.gray1
-                : theme.colors.accent.primary
-            }
-          >
-            {modalEnabled() && (
+          <IconProvider fill={iconColor}>
+            {modalEnabled && (
               <S.MessageActionsMenuStyled
                 ref={messageActionsMenuRef}
                 onBlur={() => {
@@ -354,7 +360,7 @@ export const MessageActions = ({
                 )}
               </S.MessageActionsMenuStyled>
             )}
-            {!modalEnabled() && !disableDelete && (
+            {!modalEnabled && !disableDelete && (
               <ActionButton
                 id={id}
                 message={message}
@@ -380,7 +386,7 @@ export const MessageActions = ({
                 tooltipLabel={copyTooltipLabel}
               />
             )}
-            {!modalEnabled() &&
+            {!modalEnabled &&
               !disableDelete &&
               onReportText &&
               onReport &&
@@ -404,7 +410,7 @@ export const MessageActions = ({
           >
             <CheckSmallIcon
               size={20}
-              fill="#1c64f2"
+              fill={theme.colors.accent.primary}
             />
           </ActionButton>
           <ActionButton
@@ -413,7 +419,7 @@ export const MessageActions = ({
           >
             <CloseIcon
               size={14}
-              fill="#616D8D"
+              fill={theme.colors.grayScale.gray2}
             />
           </ActionButton>
         </S.MessageEditButtonsStyled>

@@ -9,6 +9,7 @@ import {
   ThemeButtonDeleteAction,
   ThemeButtonEditAction,
   ThemeButtonIconStyled,
+  ThemeButtonOutlineStyled,
   ThemeButtonStyled,
   ThemeButtonWrapperStyled
 } from './styled';
@@ -31,23 +32,22 @@ export const ThemeButton: React.FC<ThemeButtonProps> = React.memo(
     return (
       <ThemeProvider theme={{ ...standardTheme, ...theme }}>
         <ThemeButtonWrapperStyled>
-          <ThemeButtonStyled
-            $active={active}
-            onClick={onClick}
-          >
-            <ThemeButtonIconStyled>
-              <IconProvider
-                fill={
-                  theme.mode === 'dark'
-                    ? theme.colors.accent.primaryLight
-                    : theme.colors.accent.primary
-                }
-                size={28}
-              >
-                <HappyRobotIcon />
-              </IconProvider>
-            </ThemeButtonIconStyled>
-          </ThemeButtonStyled>
+          <ThemeButtonOutlineStyled $active={active}>
+            <ThemeButtonStyled onClick={onClick}>
+              <ThemeButtonIconStyled>
+                <IconProvider
+                  fill={
+                    theme.mode === 'dark'
+                      ? theme.colors.accent.primaryLight
+                      : theme.colors.accent.primary
+                  }
+                  size={28}
+                >
+                  <HappyRobotIcon />
+                </IconProvider>
+              </ThemeButtonIconStyled>
+            </ThemeButtonStyled>
+          </ThemeButtonOutlineStyled>
           {hasActions && (
             <ThemeButtonActions>
               <ThemeButtonEditAction onClick={onEdit} />

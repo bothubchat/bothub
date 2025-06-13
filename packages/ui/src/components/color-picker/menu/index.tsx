@@ -3,7 +3,7 @@ import {
   ColorPickerMenuArea,
   ColorPickerMenuCloseButton,
   ColorPickerMenuHeader,
-  ColorPickerMenuHeaderHexCode,
+  ColorPickerMenuHeaderHexCodeInput,
   ColorPickerMenuHeaderLeft,
   ColorPickerMenuHueSlider,
   ColorPickerMenuPreview,
@@ -11,67 +11,10 @@ import {
   ColorPickerMenuStyled
 } from './styled';
 import { useTheme } from '@/ui/theme';
-import { getRgbFromHex, getHsvFromRgb } from '@/ui/utils/colors';
-
-const rgbToHex = (x: number): string => {
-  const hex = Math.round(x * 255).toString(16);
-  return `${hex.length === 1 ? '0' : ''}${hex}`;
-};
-
-const hsvToRgb = ({
-  h,
-  s,
-  v
-}: {
-  h: number;
-  s: number;
-  v: number;
-}): { r: number; g: number; b: number } => {
-  let r: number;
-  let g: number;
-  let b: number;
-
-  const hueSector = Math.floor(h / 60);
-  const remainder = h / 60 - hueSector;
-  const minValue = v * (1 - s);
-  const midValue1 = v * (1 - remainder * s);
-  const midValue2 = v * (1 - (1 - remainder) * s);
-
-  switch (hueSector % 6) {
-    case 0:
-      r = v;
-      g = midValue2;
-      b = minValue;
-      break;
-    case 1:
-      r = midValue1;
-      g = v;
-      b = minValue;
-      break;
-    case 2:
-      r = minValue;
-      g = v;
-      b = midValue2;
-      break;
-    case 3:
-      r = minValue;
-      g = midValue1;
-      b = v;
-      break;
-    case 4:
-      r = midValue2;
-      g = minValue;
-      b = v;
-      break;
-    case 5:
-    default:
-      r = v;
-      g = minValue;
-      b = midValue1;
-      break;
-  }
-  return { r, g, b };
-};
+import { hexToRgb } from '@/ui/utils/colors/hexToRgb';
+import { hsvToRgb } from '@/ui/utils/colors/hsvToRgb';
+import { rgbToHex } from '@/ui/utils/colors/rgbToHex';
+import { rgbToHsv } from '@/ui/utils/colors/rgbToHsv';
 
 export type ColorPickerMenuChangeEventHandler = (hex: string) => unknown;
 export type ColorPickerMenuEventHandler = () => unknown;
@@ -163,6 +106,31 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
     }
   }, []);
 
+  const handleColorInput = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const val = e.target.value.toUpperCase();
+      if (/^#[\dABCDEF]{0,6}$/.test(val)) {
+        if (val.length === 7) {
+          const rgb = hexToRgb(val);
+          const [h, s, v] = rgbToHsv(rgb);
+
+          setHue(h);
+          setSaturation(s);
+          setBrightness(v);
+
+          return;
+        }
+
+        setHexColor(val);
+      }
+    },
+    []
+  );
+
+  const handleFocusInput = useCallback(() => {
+    setHexColor('#');
+  }, []);
+
   useEffect(() => {
     const rect = parentRef?.current?.getBoundingClientRect?.();
     if (window.innerWidth - (rect?.right ?? 0) <= 250) {
@@ -175,8 +143,8 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
   useEffect(() => {
     if (!initial.current || !color) return;
 
-    const rgb = getRgbFromHex(color);
-    const [h, s, v] = getHsvFromRgb(rgb);
+    const rgb = hexToRgb(color);
+    const [h, s, v] = rgbToHsv(rgb);
 
     setHue(h);
     setSaturation(s);
@@ -189,13 +157,9 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
       return;
     }
 
-    const { r, g, b } = hsvToRgb({
-      h: hue,
-      s: saturation / 100,
-      v: brightness / 100
-    });
+    const rgb = hsvToRgb([hue, saturation, brightness]);
 
-    const hex = `#${rgbToHex(r)}${rgbToHex(g)}${rgbToHex(b)}`.toUpperCase();
+    const hex = rgbToHex(rgb);
 
     setHexColor(hex);
     onChange?.(hex);
@@ -217,9 +181,11 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
     <ColorPickerMenuStyled $centeredX={centeredX}>
       <ColorPickerMenuHeader>
         <ColorPickerMenuHeaderLeft>
-          <ColorPickerMenuHeaderHexCode>
-            {hexColor}
-          </ColorPickerMenuHeaderHexCode>
+          <ColorPickerMenuHeaderHexCodeInput
+            value={hexColor}
+            onInput={handleColorInput}
+            onFocus={handleFocusInput}
+          />
           <ColorPickerMenuPreview style={{ backgroundColor: hexColor }} />
         </ColorPickerMenuHeaderLeft>
         <ColorPickerMenuCloseButton onClick={onClose} />

@@ -1,4 +1,4 @@
-export const getHsvFromRgb = (
+export const rgbToHsv = (
   colors: [number, number, number]
 ): [number, number, number] => {
   const [r, g, b] = colors.map((num) => num / 255);

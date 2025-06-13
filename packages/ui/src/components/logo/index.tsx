@@ -9,8 +9,6 @@ export interface LogoProps {
 export const Logo: React.FC<LogoProps> = ({ size = 29 }) => {
   const theme = useTheme();
 
-  // @TODO: Fix colors, they change in design
-
   const botFill = useMemo(() => {
     if (theme.mode === 'light' && theme.scheme === 'standard') {
       return '#133985';
@@ -20,13 +18,17 @@ export const Logo: React.FC<LogoProps> = ({ size = 29 }) => {
       : theme.colors.accent.primary;
   }, [theme]);
 
-  const hubFill = useMemo(
-    () =>
-      theme.mode === 'light' || theme.scheme === 'standard'
-        ? theme.default.colors.base.white
-        : theme.colors.base.black,
-    [theme]
-  );
+  const hubFill = useMemo(() => {
+    if (theme.scheme === 'custom') {
+      return theme.bright
+        ? theme.default.colors.base.black
+        : theme.default.colors.base.white;
+    }
+
+    return theme.mode === 'light' || theme.scheme === 'standard'
+      ? theme.default.colors.base.white
+      : theme.colors.base.black;
+  }, [theme]);
 
   return (
     <LogoStyled

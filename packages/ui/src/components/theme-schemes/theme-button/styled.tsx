@@ -7,45 +7,36 @@ export const ThemeButtonWrapperStyled = styled.div`
   display: flex;
   align-items: center;
   gap: 14px;
-  width: fit-content;
-  height: fit-content;
 `;
 
-export interface ThemeButtonStyledProps {
+export interface ThemeButtonOutlineStyledProps {
   $active?: boolean;
 }
 
-export const ThemeButtonStyled = styled.button<ThemeButtonStyledProps>`
+export const ThemeButtonOutlineStyled = styled.div<ThemeButtonOutlineStyledProps>`
+  border: 1px solid transparent;
+  ${({ $active }) =>
+    $active
+      ? css`
+          background: ${({ theme }) => theme.colors.premiumGradient};
+        `
+      : css`
+          border-color: ${({ theme }) => theme.colors.grayScale.gray2};
+        `}
+  border-radius: 20px;
+`;
+
+export const ThemeButtonStyled = styled.button`
   all: unset;
   padding: 8px;
-  border-radius: 20px;
-  background-color: ${({ theme }) => theme.colors.base.black};
+  border-radius: 18px;
+  background-color: ${({ theme }) =>
+    theme.scheme === 'custom'
+      ? theme.colors.custom.background
+      : theme.colors.base.black};
   &:hover {
     cursor: pointer;
   }
-  outline: 1px solid
-    ${({ theme, $active }) =>
-      !$active ? theme.default.colors.grayScale.gray2 : 'transparent'};
-  position: relative;
-  &::before {
-    content: '';
-    width: calc(100% + 2px);
-    height: calc(100% + 2px);
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    background: ${({ theme }) => theme.colors.premiumGradient};
-    border-radius: 20px;
-    z-index: -1;
-    opacity: 0;
-  }
-  ${({ $active }) =>
-    $active &&
-    css`
-      &::before {
-        opacity: 1;
-      }
-    `}
 `;
 
 export const ThemeButtonIconStyled = styled.div`

@@ -1,10 +1,10 @@
 import { css, keyframes, styled } from 'styled-components';
 
-import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 
 import { CloseIcon } from '@/ui/icons/close';
 import { SelectorIcon } from '@/ui/icons/selector';
+import { TextField } from '@/ui/components/text-field';
 
 const ColorPickerMenuAnimation = keyframes`
   from {
@@ -46,17 +46,23 @@ export const ColorPickerMenuHeader = styled.div`
   align-items: center;
 `;
 
-export const ColorPickerMenuHeaderHexCode = styled(Typography).attrs({
-  variant: 'body-s-medium'
+export const ColorPickerMenuHeaderHexCodeInput = styled(TextField).attrs({
+  variant: 'secondary'
 })`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 81px;
+  height: 28px;
   padding-block: 4px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+  label {
+    background: none;
+
+    input {
+      text-align: center;
+      font-weight: 600;
+    }
+  }
 `;
 
 export const ColorPickerMenuHeaderLeft = styled.div`

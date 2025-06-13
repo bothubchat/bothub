@@ -98,7 +98,6 @@ export const SidebarGroupName = styled(Typography).attrs({
   variant: 'body-l-medium',
   component: 'div'
 })<SidebarGroupNameProps>`
-  color: ${({ theme }) => theme.colors.base.white};
   display: flex;
   cursor: ${({ $skeleton }) => ($skeleton ? 'not-allowed' : 'pointer')};
   padding: 8px;

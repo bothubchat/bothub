@@ -5,7 +5,9 @@ export interface ThemePreviewScreenVersionProps {
   $screen: 'desktop' | 'tablet' | 'mobile';
 }
 
-export const ThemePreviewScreenVersion = styled.g<ThemePreviewScreenVersionProps>`
+export const ThemePreviewScreenVersion = styled.span<ThemePreviewScreenVersionProps>`
+  display: flex;
+  justify-content: center;
   ${({ $screen }) =>
     adaptive({
       variant: 'dashboard',

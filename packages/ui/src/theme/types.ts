@@ -1,24 +1,14 @@
-export type Theme = ThemeDefined | ThemeCustom;
-
-export interface ThemeBase {
+export interface Theme {
   mode: ThemeMode;
   bright: boolean;
+  scheme: ColorSchemeNames;
+  colors: ThemeColors;
   tablet: ThemeTablet;
   mobile: ThemeMobile;
   zIndex: ThemeZIndex;
   header: ThemeHeader;
   dashboard: ThemeDashboard;
   default: DefaultTheme;
-}
-
-export interface ThemeDefined extends ThemeBase {
-  scheme: Omit<ColorSchemeNames, 'custom'>;
-  colors: ThemeColors;
-}
-
-export interface ThemeCustom extends ThemeBase {
-  scheme: 'custom';
-  colors: ThemeCustomColors;
 }
 
 export interface ColorScheme {
@@ -49,7 +39,7 @@ export type ColorSchemes = {
   [key in ColorSchemeNames]: ColorScheme;
 };
 
-export type DefaultTheme = Omit<ThemeDefined, 'default'>;
+export type DefaultTheme = Omit<Theme, 'default'>;
 
 export type ThemeMode = 'dark' | 'light';
 
@@ -93,7 +83,9 @@ export interface ThemeGradientColors {
   elite20: string;
 }
 
-export interface ThemeColors {
+export type ThemeColors = ThemeDefinedColors & ThemeCustomColors;
+
+export interface ThemeDefinedColors {
   base: ThemeBaseColors;
   accent: ThemeAccentColors;
   grayScale: ThemeGrayScaleColors;
@@ -108,21 +100,23 @@ export interface ThemeColors {
   gpt4: string;
 }
 
-export interface ThemeCustomColors extends ThemeColors {
-  background: string;
-  message: {
-    assistant: {
+export interface ThemeCustomColors {
+  custom: {
+    background: string;
+    message: {
+      assistant: {
+        text: string;
+      };
+      user: {
+        background: string;
+        text: string;
+      };
+    };
+    interface: {
       text: string;
     };
-    user: {
-      background: string;
-      text: string;
-    };
+    icon: string;
   };
-  interface: {
-    text: string;
-  };
-  icon: string;
 }
 
 export interface ThemeZIndex {

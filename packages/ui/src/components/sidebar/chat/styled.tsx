@@ -30,7 +30,9 @@ export const SidebarChatRight = styled.div`
 export const SidebarChatIconStyled = styled(SidebarChatIcon)`
   ${({ theme }) => css`
     path {
-      stroke: ${theme.colors.grayScale.gray1};
+      stroke: ${theme.scheme === 'custom'
+        ? theme.colors.custom.icon
+        : theme.colors.grayScale.gray1};
     }
   `}
   display: none;
@@ -208,9 +210,11 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
     if ($active) {
       return css`
         border-radius: 10px;
-        background-color: ${theme.bright
+        background-color: ${theme.scheme === 'standard'
           ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
-          : theme.colors.accent.primaryLight};
+          : theme.bright
+            ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
+            : theme.colors.accent.primaryLight};
         transition: background-color 0.3s ease-out;
         ${SidebarChatIconStyled} {
           path {

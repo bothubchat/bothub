@@ -1,6 +1,6 @@
-export const getRgbFromHex = (hex: string): [number, number, number] => {
+export const hexToRgb = (hex: string): [number, number, number] => {
   if (!/#[\d, a-fA-F]{8}|#[\d, a-fA-F]{6}|#[\d, a-fA-F]{3}/.test(hex)) {
-    throw new Error('Invalid HEX. Source: getRgbFromHex function');
+    throw new Error('Invalid HEX. Source: hexToRgb function');
   }
 
   let execValue: Array<string> | null;
@@ -14,7 +14,7 @@ export const getRgbFromHex = (hex: string): [number, number, number] => {
   }
 
   if (execValue === null) {
-    throw new Error('No execValue. Source: getRgbFromHex function');
+    throw new Error('No execValue. Source: hexToRgb function');
   }
 
   const [r, g, b] = execValue

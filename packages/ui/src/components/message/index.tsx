@@ -218,7 +218,7 @@ export const Message: React.FC<MessageProps> = ({
     case 'user':
       hexColor =
         theme.scheme === 'custom'
-          ? theme.colors.message.user.background
+          ? theme.colors.custom.message.user.background
           : theme.colors.accent.primary;
       break;
     case 'assistant':
@@ -350,6 +350,7 @@ export const Message: React.FC<MessageProps> = ({
                     <MessageTimestamp
                       time={timestamp}
                       position={timestampPosition}
+                      color={hexColor}
                     />
                   )}
                 </MessageBlock>

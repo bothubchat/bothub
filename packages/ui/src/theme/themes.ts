@@ -40,7 +40,23 @@ export const defaultTheme: DefaultTheme = {
     aqua: '#1CB2F2',
     green: '#1ABB34',
     gpt3: '#28A08C',
-    gpt4: '#735FFA'
+    gpt4: '#735FFA',
+    custom: {
+      background: '#0E0C15',
+      message: {
+        user: {
+          background: '#1C64F2',
+          text: '#FFFFFF'
+        },
+        assistant: {
+          text: '#FFFFFF'
+        }
+      },
+      icon: '#313E62',
+      interface: {
+        text: '#FFFFFF'
+      }
+    }
   },
   tablet: {
     maxWidth: '1060px'
@@ -122,6 +138,22 @@ const standardLight: Theme = {
       gray5: '#4B5770',
       gray6: '#DDE8F3',
       gray7: '#DFE2E5'
+    },
+    custom: {
+      background: '#FFFFFF',
+      message: {
+        user: {
+          background: '#1C64F2',
+          text: '#FFFFFF'
+        },
+        assistant: {
+          text: '#0E0C15'
+        }
+      },
+      icon: '#CDD5DA',
+      interface: {
+        text: '#0E0C15'
+      }
     }
   }
 };
