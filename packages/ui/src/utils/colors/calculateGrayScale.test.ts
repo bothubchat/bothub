@@ -3,7 +3,10 @@ import { calculateGrayScale } from './calculateGrayScale';
 
 describe('Calculates grayScale', () => {
   test('Default gray1 - #616D8D', () => {
-    const grayScale = calculateGrayScale('#616D8D');
+    const grayScale = calculateGrayScale({
+      newGray1: '#616D8D',
+      interfaceBackground: '#000'
+    });
 
     expect(grayScale).toHaveProperty('gray1');
     expect(grayScale).toHaveProperty('gray2');

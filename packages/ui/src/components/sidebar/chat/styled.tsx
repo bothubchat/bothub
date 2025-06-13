@@ -210,11 +210,7 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
     if ($active) {
       return css`
         border-radius: 10px;
-        background-color: ${theme.scheme === 'standard'
-          ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
-          : theme.bright
-            ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
-            : theme.colors.accent.primaryLight};
+        background-color: ${colorToRgba(theme.colors.accent.primaryLight, 0.5)};
         transition: background-color 0.3s ease-out;
         ${SidebarChatIconStyled} {
           path {

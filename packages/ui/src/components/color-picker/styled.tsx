@@ -14,9 +14,7 @@ export const ColorPickerStyled = styled.div`
 
 export const ColorPickerLabel = styled(Typography).attrs({
   variant: 'body-l-medium'
-})`
-  color: ${({ theme }) => theme.colors.base.white};
-`;
+})``;
 
 export const ColorPickerHex = styled(Typography).attrs({
   variant: 'body-l-medium'

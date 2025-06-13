@@ -5,6 +5,7 @@ import { adaptive } from '@/ui/adaptive';
 import { AddGroupIcon } from '@/ui/icons/add-group';
 import { ManageChatIcon } from '@/ui/icons/manage-chat';
 import { SearchSimpleIcon } from '@/ui/icons/search-simple';
+import { isBright } from '@/ui/utils';
 
 export interface SidebarButtonsStyledProps {
   $open: boolean;
@@ -41,7 +42,10 @@ export const SidebarAddGroupButton = styled(Button).attrs({
   ${({ variant, theme }) =>
     variant === 'secondary' &&
     css`
-      background-color: ${theme.colors.base.black};
+      background-color: ${isBright(theme.colors.grayScale.gray4) ||
+      theme.mode === 'light'
+        ? theme.default.colors.base.white
+        : theme.default.colors.base.black};
       svg path {
         stroke: ${theme.bright && theme.mode === 'light'
           ? theme.default.colors.base.black

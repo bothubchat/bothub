@@ -108,13 +108,13 @@ export const defaultTheme: DefaultTheme = {
   }
 };
 
-const standardDark: Theme = {
+export const standardDark: Theme = {
   ...defaultTheme,
   mode: 'dark',
   default: defaultTheme
 };
 
-const standardLight: Theme = {
+export const standardLight: Theme = {
   ...defaultTheme,
   mode: 'light',
   default: defaultTheme,

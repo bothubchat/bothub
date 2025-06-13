@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { LogoStyled } from './styled';
 import { useTheme } from '@/ui/theme';
+import { isBright } from '@/ui/utils/colors';
 
 export interface LogoProps {
   size?: number;
@@ -10,8 +11,8 @@ export const Logo: React.FC<LogoProps> = ({ size = 29 }) => {
   const theme = useTheme();
 
   const botFill = useMemo(() => {
-    if (theme.mode === 'light' && theme.scheme === 'standard') {
-      return '#133985';
+    if (theme.scheme === 'custom' && isBright(theme.colors.grayScale.gray4)) {
+      return theme.default.colors.base.black;
     }
     return theme.mode === 'dark'
       ? theme.default.colors.base.white

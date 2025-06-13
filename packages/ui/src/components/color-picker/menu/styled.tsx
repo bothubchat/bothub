@@ -5,6 +5,7 @@ import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
 import { SelectorIcon } from '@/ui/icons/selector';
 import { TextField } from '@/ui/components/text-field';
+import { isBright } from '@/ui/utils';
 
 const ColorPickerMenuAnimation = keyframes`
   from {
@@ -61,6 +62,12 @@ export const ColorPickerMenuHeaderHexCodeInput = styled(TextField).attrs({
     input {
       text-align: center;
       font-weight: 600;
+
+      ${({ theme }) =>
+        isBright(theme.colors.grayScale.gray4) &&
+        css`
+          color: ${theme.default.colors.base.black};
+        `}
     }
   }
 `;

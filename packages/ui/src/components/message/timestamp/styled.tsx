@@ -34,7 +34,7 @@ export const TimestampText = styled(Typography).attrs({
   variant: 'body-s-regular'
 })<TimestampTextProp>`
   color: ${({ theme, $color }) => {
-    if (isBright($color)) {
+    if (theme.bright || isBright($color)) {
       return theme.mode === 'dark'
         ? theme.colors.base.black
         : theme.colors.base.white;
