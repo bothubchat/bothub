@@ -5,6 +5,7 @@ import {
   MessageVideoControls,
   MessageVideoControlsButton,
   MessageVideoControlsButtons,
+  MessageVideoDownload,
   MessageVideoStyled,
   MessageVideoTimeLine,
   MessageVideoTimeText
@@ -14,9 +15,12 @@ import { MinWindowIcon } from '@/ui/icons/min-window';
 import { PauseButtonIcon } from '@/ui/icons/pause-button';
 import { PlayButtonIcon } from '@/ui/icons/play-button';
 import { MessageVideoVolume } from './volume';
+import { DownloadImgIcon } from '@/ui/icons';
+import { getVideoMimeType } from '@/ui/utils/getVideoMimeType';
 
 export type MessageVideoProps = {
   src: string;
+  downloadVideo?: () => void;
 };
 
 const formatTime = (time: number) => {
@@ -25,7 +29,10 @@ const formatTime = (time: number) => {
   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 };
 
-export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
+export const MessageVideo: React.FC<MessageVideoProps> = ({
+  src,
+  downloadVideo
+}) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoPlayed, setVideoPlayed] = useState(false);
   const [videoCurrentTime, setVideoCurrentTime] = useState('00:00');
@@ -35,6 +42,8 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
   const [timeLineMouseMove, setTimeLineMouseMove] = useState(false);
   const videoContainer = useRef<HTMLDivElement>(null);
   const iconSize = videoFullScreen ? 28 : 24;
+
+  const mimeType = getVideoMimeType(src);
 
   const handleStart = useCallback(() => {
     if (videoRef.current) {
@@ -121,21 +130,16 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
   }, []);
 
   useEffect(() => {
-    const handleKeyPress = (e: KeyboardEvent) =>
-      e.key === ' ' && (videoPlayed ? handlePause : handleStart)();
-
     const handleDocumentFullscreenChange = () => {
       setVideoFullScreen(document.fullscreenElement !== null);
     };
 
     window.addEventListener('fullscreenchange', handleDocumentFullscreenChange);
-    window.addEventListener('keyup', handleKeyPress);
     return () => {
       window.removeEventListener(
         'fullscreenchange',
         handleDocumentFullscreenChange
       );
-      window.removeEventListener('keyup', handleKeyPress);
     };
   }, [videoPlayed]);
 
@@ -156,7 +160,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
       >
         <MessageSourceStyled
           src={src}
-          type="video/mp4"
+          type={mimeType}
         />
       </MessageVideoStyled>
       <MessageVideoControls
@@ -185,6 +189,16 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({ src }) => {
           <MessageVideoTimeText>
             {videoCurrentTime} / {videoDuration}
           </MessageVideoTimeText>
+          {downloadVideo && (
+            <MessageVideoDownload
+              iconFill="#fff"
+              disableHoverColor
+              iconSize={iconSize}
+              onClick={downloadVideo}
+            >
+              <DownloadImgIcon />
+            </MessageVideoDownload>
+          )}
           <MessageVideoControlsButton onClick={handleFullscreen}>
             {videoFullScreen ? (
               <MinWindowIcon

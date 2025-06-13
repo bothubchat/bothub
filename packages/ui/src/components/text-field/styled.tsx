@@ -221,11 +221,17 @@ export const TextFieldColorPreview = styled.span<TextFieldColorPreviewProps>`
   border-radius: 4px;
 `;
 
-export const TextFieldClearButton = styled(Button).attrs({
+export interface TextFieldClearButtonProps {
+  $big: boolean;
+}
+
+export const TextFieldClearButton = styled(
+  Button
+).attrs<TextFieldClearButtonProps>(({ $big }) => ({
   variant: 'text',
-  iconSize: 12,
+  iconSize: $big ? 16 : 12,
   children: <CloseIcon />
-})``;
+}))``;
 
 export const TextFieldErrorText = styled(Typography).attrs({
   variant: 'input-sm'

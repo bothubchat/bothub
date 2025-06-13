@@ -28,6 +28,7 @@ export interface TooltipProps extends React.PropsWithChildren {
   align?: TooltipAlign;
   inverted?: boolean;
   label?: React.ReactNode;
+  contentWidth?: number;
   disabled?: boolean;
   disableHiddenAnimation?: boolean;
   markdown?: boolean;
@@ -42,6 +43,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   align = 'auto',
   inverted = false,
   label,
+  contentWidth,
   disabled = false,
   disableHiddenAnimation = false,
   markdown = false,
@@ -139,7 +141,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     return [x, y];
   }, [placement, align, hoveredElement]);
 
-  useEffect(() => {
+  const updatePosition = useCallback(() => {
     if (hoveredElement) {
       setCoords(getTooltipPosition());
     }
@@ -228,7 +230,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
               inverted={inverted}
             />
           )}
-          <TooltipBlock $variant={variant}>
+          <TooltipBlock
+            $contentWidth={contentWidth}
+            $variant={variant}
+          >
             {typeof label === 'string' && !markdown && (
               <TooltipLabel>
                 {label.slice(0, 272)}
@@ -268,6 +273,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
       )
   );
 
+  useEffect(() => {
+    updatePosition();
+  }, [hoveredElement, updatePosition]);
+
   const handleMouseEnter = (e: React.MouseEvent<Element, MouseEvent>): void => {
     if (!isDisabled && e.currentTarget instanceof Element) {
       sethoveredElement(e.currentTarget);
@@ -278,21 +287,21 @@ export const Tooltip: React.FC<TooltipProps> = ({
     sethoveredElement(null);
   };
 
-  const handleMouseUp = (): void => {
-    sethoveredElement(null);
-  };
-
-  const handleMouseDown = (e: React.MouseEvent<Element, MouseEvent>): void => {
-    if (!isDisabled && e.currentTarget instanceof Element) {
-      sethoveredElement(e.currentTarget);
-    }
-  };
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<Element>): void => {
+      if (!isDisabled && e.currentTarget instanceof Element) {
+        sethoveredElement(e.currentTarget);
+        updatePosition();
+      }
+    },
+    [isDisabled, updatePosition]
+  );
 
   useEffect(() => {
-    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, []);
 
@@ -300,8 +309,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     <TooltipProvider
       handleTooltipMouseEnter={handleMouseEnter}
       handleTooltipMouseLeave={handleMouseLeave}
-      handleTooltipMouseUp={handleMouseUp}
-      handleTooltipMouseDown={handleMouseDown}
+      handleTooltipPointerMove={handlePointerMove}
     >
       <Portal>{tooltipNode}</Portal>
       {children}

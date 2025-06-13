@@ -33,7 +33,7 @@ import {
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
-import { getTgMarkdown } from '@/ui/utils';
+import { colorToRgba, getTgMarkdown } from '@/ui/utils';
 import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
@@ -52,14 +52,17 @@ export interface MessageProps {
   tags?: React.ReactNode;
   avatar?: React.ReactNode;
   transaction?: React.ReactNode;
+  disableModal?: boolean;
   disableResend?: boolean;
   disableEdit?: boolean;
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
+  disableDownload?: boolean;
   copyPlainText?: string | null;
   copyTgText?: string | null;
   editText?: string | null;
+  editOutOfMenu?: boolean;
   resendText?: string | null;
   deleteText?: string | null;
   onReportText?: string | null;
@@ -67,6 +70,7 @@ export interface MessageProps {
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
+  downloadTooltipLabel?: string | null;
   typing?: boolean;
   timestamp?: string | number;
   timestampPosition?: MessageTimestampPosition;
@@ -86,6 +90,7 @@ export interface MessageProps {
   onReport?: MessageActionEventHandler;
   onNextVersion?: MessageVersionEventHandler;
   onPrevVersion?: MessageVersionEventHandler;
+  onDownload?: () => void;
 }
 
 export const Message: React.FC<MessageProps> = ({
@@ -98,17 +103,21 @@ export const Message: React.FC<MessageProps> = ({
   tags,
   avatar,
   transaction,
+  disableModal = false,
   disableResend = false,
   disableEdit = false,
   disableDelete = false,
   disableUpdate = false,
   disableCopy = false,
+  disableDownload = true,
+  editOutOfMenu = false,
   copyPlainText,
   copyTgText,
   editText,
   resendText,
   deleteText,
   onReportText,
+  downloadTooltipLabel,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
   updateTooltipLabel,
@@ -131,7 +140,8 @@ export const Message: React.FC<MessageProps> = ({
   onUpdate,
   onReport,
   onNextVersion,
-  onPrevVersion
+  onPrevVersion,
+  onDownload
 }) => {
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
@@ -219,7 +229,9 @@ export const Message: React.FC<MessageProps> = ({
       hexColor =
         theme.scheme === 'custom'
           ? theme.colors.custom.message.user.background
-          : theme.colors.accent.primary;
+          : theme.mode === 'dark'
+            ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
+            : colorToRgba(theme.colors.accent.primaryLight, 0.2);
       break;
     case 'assistant':
       hexColor =
@@ -265,7 +277,7 @@ export const Message: React.FC<MessageProps> = ({
             data-date={timestamp}
           >
             <MessageContent $variant={variant}>
-              {(name || transaction) && (
+              {name && (
                 <MessageTop>
                   {typeof name === 'string' && (
                     <MessageSender>
@@ -274,9 +286,6 @@ export const Message: React.FC<MessageProps> = ({
                     </MessageSender>
                   )}
                   {typeof name !== 'string' && <div />}
-                  <MessageBlockTransaction $top>
-                    {transaction}
-                  </MessageBlockTransaction>
                 </MessageTop>
               )}
               {typeof name !== 'string' && name}
@@ -361,20 +370,25 @@ export const Message: React.FC<MessageProps> = ({
             {!skeleton && (
               <MessageActions
                 id={id}
+                onDownload={onDownload}
+                disableDownload={disableDownload}
                 message={content}
                 variant={variant}
                 skeleton={skeleton}
+                disableModal={disableModal}
                 disableResend={disableResend}
                 disableEdit={disableEdit}
                 disableDelete={disableDelete}
                 disableUpdate={disableUpdate}
                 disableCopy={disableCopy}
+                editOutOfMenu={editOutOfMenu}
                 copyPlainText={copyPlainText}
                 copyTgText={copyTgText}
                 editText={editText}
                 resendText={resendText}
                 deleteText={deleteText}
                 onReportText={onReportText}
+                downloadTooltipLabel={downloadTooltipLabel}
                 submitEditTooltipLabel={submitEditTooltipLabel}
                 discardEditTooltipLabel={discardEditTooltipLabel}
                 updateTooltipLabel={updateTooltipLabel}

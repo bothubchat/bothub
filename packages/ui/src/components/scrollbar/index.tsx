@@ -67,7 +67,6 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
     const lockedMode = !!scrollLocked;
     const [sticky, setSticky] = useState<boolean>(defaultStickyBottom);
     const [previousScrollTop, setPreviousScrollTop] = useState<number>(0);
-
     const scrollShadowsSize = scrollShadows?.size ?? 60;
 
     const handleScroll = useCallback(

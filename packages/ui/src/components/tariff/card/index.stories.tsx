@@ -1,13 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { StoryDecorator } from '@/ui/story-decorator';
-import {
-  TariffCard,
-  TariffCardGiveCaps,
-  TariffCardGiveCapsBadge,
-  TariffCardGiveCapsText,
-  TariffCardModel,
-  TariffCardModels
-} from '.';
+import { TariffCard, TariffCardEnterpriseButton } from '.';
 
 export type TariffCardMeta = Meta<typeof TariffCard>;
 
@@ -15,44 +8,59 @@ export type TariffCardStory = StoryObj<typeof TariffCard>;
 
 export const Basic: TariffCardStory = {
   args: {
-    name: 'Premium',
-    giveCaps: (
-      <TariffCardGiveCaps>
-        <TariffCardGiveCapsText>Вы получаете</TariffCardGiveCapsText>
-        <TariffCardGiveCapsBadge>3 000 000 Caps</TariffCardGiveCapsBadge>
-      </TariffCardGiveCaps>
-    ),
-    price: '600',
+    label: 'Basic',
+    price: '3 900',
+    caps: '9 500 000',
+    selected: true,
     currency: '₽',
-    details: 'Подробнее о стоимости токенов',
-    purchase: 'Приобрести',
-    validityPeriod: '(срок действия пакета не ограничен, токены не сгорают)',
-    color: 'blue-lilac',
-    children: (
-      <TariffCardModels label="Доступные модели:">
-        <TariffCardModel
-          name="ChatGPT 4"
-          tokens="100 000 Токенов"
-        />
-        <TariffCardModel
-          name="ChatGPT 4-32k"
-          tokens="50 000 Токенов"
-        />
-        <TariffCardModel
-          name="Claude v2.0"
-          tokens="200 000 Токенов"
-        />
-        <TariffCardModel
-          name="Midjourney 5"
-          tokens="300 Caps/Генерация"
-        />
-      </TariffCardModels>
-    )
+    extraText: 'Вы получаете',
+    variant: 'BASIC',
+    description:
+      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя'
+  }
+};
+
+export const Premium: TariffCardStory = {
+  args: {
+    label: 'Premium',
+    price: '3 900',
+    caps: '9 500 000',
+    selected: true,
+    popularText: 'Самый популярный',
+    currency: '₽',
+    extraText: 'Вы получаете',
+    variant: 'PREMIUM',
+    description:
+      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя'
+  }
+};
+
+export const Deluxe: TariffCardStory = {
+  args: {
+    label: 'Deluxe',
+    price: '3 900',
+    caps: '9 500 000',
+    currency: '₽',
+    extraText: 'Вы получаете',
+    variant: 'DELUXE',
+    description:
+      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя'
+  }
+};
+
+export const Enterprise: TariffCardStory = {
+  args: {
+    label: 'Enterprise',
+    extraText: 'Давайте обсудим!',
+    variant: 'ENTERPRISE',
+    button: <TariffCardEnterpriseButton>Обсудить</TariffCardEnterpriseButton>,
+    description:
+      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя'
   }
 };
 
 export default {
   title: 'Components/Tariff/Card',
   component: TariffCard,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator({ scale: 'main' })]
 } as TariffCardMeta;

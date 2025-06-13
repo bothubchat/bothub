@@ -18,7 +18,6 @@ export const Products: DescriptionCardStory = {
   args: {
     title: 'ChatGPT: Удобство в Telegram',
     text: 'Создайте потрясающий опыт взаимодействия с искусственным интеллектом, используя Midjourney и ChatGPT для различных потребностей.',
-    bgDescriptionCard: 'fav',
     descriptionCardType: 'products',
     children: (
       <>
@@ -33,7 +32,6 @@ export const Collaborate: DescriptionCardStory = {
   args: {
     title: 'ChatGPT: Удобство в Telegram',
     text: 'Создайте потрясающий опыт взаимодействия с искусственным интеллектом, используя Midjourney и ChatGPT для различных потребностей.',
-    bgDescriptionCard: 'fav',
     descriptionCardType: 'collaborate',
     children: (
       <>

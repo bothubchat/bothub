@@ -40,16 +40,12 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   const audioRef = useRef<HTMLAudioElement>(null);
   const wavesRef = useRef<SVGSVGElement>(null);
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isPlayed, setIsPlayed] = useState(false);
   const [isTextShowed, setIsTextShowed] = useState(false);
   const [currentTime, setCurrentTime] = useState<number | null>(null);
 
   const handleToggle = useCallback(() => {
-    if (isLoading) {
-      return;
-    }
-
     const audioEl = audioRef.current;
 
     if (!audioEl) {
@@ -61,7 +57,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
     } else {
       audioEl.pause();
     }
-  }, [isPlayed, audioRef.current, isLoading]);
+  }, [isPlayed, audioRef.current]);
 
   const handleTimeUpdate = useCallback(() => {
     const audioEl = audioRef.current;
@@ -122,12 +118,19 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       <MessageVoiceMain
         $loading={isLoading}
         tabIndex={tabIndex}
-        onClick={handleToggle}
       >
-        <MessageVoiceToggleButton>
+        <MessageVoiceToggleButton onClick={handleToggle}>
           <IconProvider
             {...(color === 'default'
-              ? {}
+              ? theme.mode === 'dark'
+                ? {
+                    fill: theme.default.colors.base.white,
+                    stroke: theme.colors.accent.primary
+                  }
+                : {
+                    fill: theme.colors.accent.primaryLight,
+                    stroke: theme.default.colors.base.white
+                  }
               : color === 'green'
                 ? { fill: theme.colors.gpt3 }
                 : color === 'purple'
@@ -150,9 +153,8 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
             <rect
               width="145"
               height="36"
-              opacity="0.6"
               {...(color === 'default' && {
-                fill: isPlayed || currentTime !== null ? '#4785FF' : '#A4C1FA'
+                fill: '#A4C1FA'
               })}
               {...(color !== 'default' && {
                 fill: theme.default.colors.base.white
@@ -161,7 +163,11 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
             {currentTime !== null && (
               <StyledRect
                 height="36"
-                fill={theme.default.colors.base.white}
+                fill={
+                  theme.mode === 'dark'
+                    ? theme.default.colors.base.white
+                    : theme.colors.accent.primaryLight
+                }
                 style={{
                   width: 145 * (currentTime / duration)
                 }}
@@ -193,13 +199,12 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
         </MessageVoiceDurationText>
         <MessageVoiceToggleTextButton onClick={handleTextToggle}>
           <IconProvider
-            {...(color === 'default'
-              ? {}
-              : color === 'green'
-                ? { fill: theme.colors.gpt3 }
-                : color === 'purple'
-                  ? { fill: theme.colors.gpt4 }
-                  : { fill: color })}
+            fill={
+              theme.mode === 'light'
+                ? theme.colors.accent.primaryLight
+                : theme.colors.accent.primary
+            }
+            stroke={theme.default.colors.base.white}
           >
             {isTextShowed && <MessageVoiceHideTextIcon />}
             {!isTextShowed && <MessageVoiceShowTextIcon />}

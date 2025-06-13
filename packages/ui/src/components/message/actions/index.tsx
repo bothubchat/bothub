@@ -17,6 +17,7 @@ import { ThumbDownIcon } from '@/ui/icons/thumb-down';
 import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { CloseIcon } from '@/ui/icons/close';
 import { CopyIcon } from '@/ui/icons/copy';
+import { DownloadImgIcon } from '@/ui/icons/download-img';
 
 import * as S from './styled';
 import {
@@ -42,17 +43,21 @@ type MessageActionsProps = {
   message?: string;
   variant?: MessageVariant;
   skeleton?: boolean;
+  disableModal?: boolean;
   disableResend?: boolean;
   disableEdit?: boolean;
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
+  disableDownload?: boolean;
+  editOutOfMenu?: boolean;
   editText?: string | null;
   copyTgText?: string | null;
   copyPlainText?: string | null;
   resendText?: string | null;
   deleteText?: string | null;
   onReportText?: string | null;
+  downloadTooltipLabel?: string | null;
   submitEditTooltipLabel?: string | null;
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
@@ -70,10 +75,12 @@ type MessageActionsProps = {
   onPlainTextCopy?: MessagePlainTextCopyEventHandler;
   onTgCopy?: MessageTgCopyEventHandler;
   onCopy?: MessageActionEventHandler;
+  onDownload?: () => void;
 };
 
 export const MessageActions = ({
   id,
+  disableModal,
   message,
   variant = 'user',
   skeleton,
@@ -82,12 +89,15 @@ export const MessageActions = ({
   disableDelete,
   disableUpdate,
   disableCopy,
+  disableDownload,
+  editOutOfMenu,
   editText,
   copyTgText,
   copyPlainText,
   resendText,
   deleteText,
   onReportText,
+  downloadTooltipLabel,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
   updateTooltipLabel,
@@ -104,7 +114,8 @@ export const MessageActions = ({
   onReport,
   onPlainTextCopy,
   onTgCopy,
-  onCopy
+  onCopy,
+  onDownload
 }: MessageActionsProps) => {
   const theme = useTheme();
 
@@ -135,7 +146,9 @@ export const MessageActions = ({
       case 'assistant':
         return !disableEdit;
       case 'user':
-        return !disableEdit || !disableDelete || !disableResend;
+        return disableModal
+          ? false
+          : !disableEdit || !disableDelete || !disableResend;
     }
   }, [disableEdit, disableDelete, disableResend]);
 
@@ -314,20 +327,23 @@ export const MessageActions = ({
                               </S.MessageActionsMenuModalOptionContent>
                             </MenuOption>
                           )}
-                        {!disableEdit && editText && onEdit && (
-                          <MenuOption
-                            onClick={() => {
-                              handleOptionClick('edit');
-                            }}
-                          >
-                            <S.MessageActionsMenuModalOptionContent>
-                              <EditIcon />
-                              <S.MessageActionsButtonText>
-                                {editText}
-                              </S.MessageActionsButtonText>
-                            </S.MessageActionsMenuModalOptionContent>
-                          </MenuOption>
-                        )}
+                        {!editOutOfMenu &&
+                          !disableEdit &&
+                          editText &&
+                          onEdit && (
+                            <MenuOption
+                              onClick={() => {
+                                handleOptionClick('edit');
+                              }}
+                            >
+                              <S.MessageActionsMenuModalOptionContent>
+                                <EditIcon />
+                                <S.MessageActionsButtonText>
+                                  {editText}
+                                </S.MessageActionsButtonText>
+                              </S.MessageActionsMenuModalOptionContent>
+                            </MenuOption>
+                          )}
                         {!disableDelete && deleteText && onDelete && (
                           <MenuOption
                             onClick={() => {
@@ -380,6 +396,18 @@ export const MessageActions = ({
                 <UpdateIcon size={18} />
               </ActionButton>
             )}
+            {editOutOfMenu && (
+              <ActionButton
+                id={id}
+                message={message}
+                onClick={() => {
+                  handleOptionClick('edit');
+                }}
+                tooltipLabel={editText}
+              >
+                <EditIcon size={18} />
+              </ActionButton>
+            )}
             {!disableCopy && (
               <CopyButton
                 onCopy={onCopy}
@@ -423,6 +451,14 @@ export const MessageActions = ({
             />
           </ActionButton>
         </S.MessageEditButtonsStyled>
+      )}
+      {!disableDownload && (
+        <ActionButton
+          tooltipLabel={downloadTooltipLabel}
+          onClick={onDownload}
+        >
+          <DownloadImgIcon size={18} />
+        </ActionButton>
       )}
     </S.MessageActionsStyled>
   );

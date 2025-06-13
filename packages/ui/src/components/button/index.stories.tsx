@@ -68,6 +68,13 @@ export const Help: ButtonStory = {
   }
 };
 
+export const Gradient: ButtonStory = {
+  args: {
+    ...Basic.args,
+    variant: 'gradient'
+  }
+};
+
 export const WithTooltip: ButtonStory = {
   args: {
     children: 'Click Me',

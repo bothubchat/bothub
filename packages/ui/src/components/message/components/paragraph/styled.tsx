@@ -52,11 +52,11 @@ export const MessageParagraphStyled = styled(
           return css`
             background: ${({ theme }) =>
               theme.mode === 'light'
-                ? theme.default.colors.base.white
+                ? theme.colors.accent.primaryLight
                 : theme.colors.base.white};
             color: ${({ theme }) =>
               theme.mode === 'light'
-                ? theme.default.colors.accent.primary
+                ? theme.default.colors.base.white
                 : theme.colors.accent.primary};
           `;
         case 'assistant':

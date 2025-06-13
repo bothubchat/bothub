@@ -3,7 +3,6 @@
   "version": "2.32.3-feat-personalization-a339b493-04cb-413f-9d70-0ded5b999951",
   "description": "Bothub UI Components",
   "keywords": [
-    "bothub",
     "bot",
     "chat",
     "chatgpt",
@@ -54,6 +53,7 @@
     "@floating-ui/react-dom": "^2.1.0",
     "@react-spring/web": "^9.7.4",
     "date-fns": "^3.6.0",
+    "dompurify": "^3.2.6",
     "highlight.js": "^11.11.0",
     "katex": "^0.16.10",
     "normalize.css": "^8.0.1",

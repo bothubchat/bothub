@@ -227,8 +227,46 @@ import {
   SetchelIcon,
   ArticleIcon,
   AssemblyIcon,
+  DataVisualisationIcon,
+  DocumentAnalisysIcon,
+  ProblemSolvmentIcon,
+  SettingAnalisysIcon,
+  TranslationIcon,
+  StarsIcon,
+  ArticlesIcon,
+  BlogPostIcon,
+  BookIcon,
+  BowTieIcon,
+  CaseStudyIcon,
+  CommentsIcon,
+  GuideIcon,
+  MarketingIcon,
+  PostIcon,
+  ReviewIcon,
+  ScientificArticleIcon,
+  SellingTextIcon,
+  TextBookIcon,
+  WindIcon,
   SidebarToggleRight,
-  SidebarToggleLeft
+  SidebarToggleLeft,
+  AcademyIcon,
+  DeepSeekIcon,
+  GridHorizontalIcon,
+  GridVerticalIcon,
+  GrokIcon,
+  QwenIcon,
+  ReportIcon,
+  StarGradientIcon,
+  MusicNoteIcon,
+  CustomerSupportIcon,
+  AddProfileIcon,
+  TokenCounterIcon,
+  VideoCameraIcon,
+  VideoGenerationIcon,
+  VeoModelIcon,
+  RunwayIcon,
+  QueueSelectIcon,
+  AppleIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -437,6 +475,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="GoogleIcon">{GoogleIcon}</IconItem>
         <IconItem name="YandexIcon">{YandexIcon}</IconItem>
         <IconItem name="VKIcon">{VKIcon}</IconItem>
+        <IconItem name="AppleIcon">{AppleIcon}</IconItem>
         <IconItem name="ResendIcon">{ResendIcon}</IconItem>
         <IconItem name="AddChatIcon">{AddChatIcon}</IconItem>
         <IconItem name="AddGroupIcon">{AddGroupIcon}</IconItem>
@@ -500,6 +539,49 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="ExclamationIcon">{ExclamationIcon}</IconItem>
         <IconItem name="SetchelIcon">{SetchelIcon}</IconItem>
         <IconItem name="ArticleIcon">{ArticleIcon}</IconItem>
+        <IconItem name="DataVisualisationIcon">
+          {DataVisualisationIcon}
+        </IconItem>
+        <IconItem name="DocumentAnalisysIcon">{DocumentAnalisysIcon}</IconItem>
+        <IconItem name="ProblemSolvmentIcon">{ProblemSolvmentIcon}</IconItem>
+        <IconItem name="TranslationIcon">{TranslationIcon}</IconItem>
+        <IconItem name="StarsIcon">{StarsIcon}</IconItem>
+        <IconItem name="SettingAnalisysIcon">{SettingAnalisysIcon}</IconItem>
+        <IconItem name="AcademyIcon">{AcademyIcon}</IconItem>
+        <IconItem name="ArticlesIcon">{ArticlesIcon}</IconItem>
+        <IconItem name="BlogPostIcon">{BlogPostIcon}</IconItem>
+        <IconItem name="BookIcon">{BookIcon}</IconItem>
+        <IconItem name="BowTieIcon">{BowTieIcon}</IconItem>
+        <IconItem name="CaseStudyIcon">{CaseStudyIcon}</IconItem>
+        <IconItem name="CommentsIcon">{CommentsIcon}</IconItem>
+        <IconItem name="GuideIcon">{GuideIcon}</IconItem>
+        <IconItem name="MarketingIcon">{MarketingIcon}</IconItem>
+        <IconItem name="PostIcon">{PostIcon}</IconItem>
+        <IconItem name="ReportIcon">{ReportIcon}</IconItem>
+        <IconItem name="ReviewIcon">{ReviewIcon}</IconItem>
+        <IconItem name="ScientificArticleIcon">
+          {ScientificArticleIcon}
+        </IconItem>
+        <IconItem name="SellingTextIcon">{SellingTextIcon}</IconItem>
+        <IconItem name="TextBookIcon">{TextBookIcon}</IconItem>
+        <IconItem name="WindIcon">{WindIcon}</IconItem>
+        <IconItem name="GrokIcon">{GrokIcon}</IconItem>
+        <IconItem name="DeepSeekIcon">{DeepSeekIcon}</IconItem>
+        <IconItem name="AcademyIcon">{AcademyIcon}</IconItem>
+        <IconItem name="GridVerticalIcon">{GridVerticalIcon}</IconItem>
+        <IconItem name="GridHorizontalIcon">{GridHorizontalIcon}</IconItem>
+        <IconItem name="StarGradientIcon">{StarGradientIcon}</IconItem>
+        <IconItem name="ReportIcon">{ReportIcon}</IconItem>
+        <IconItem name="QwenIcon">{QwenIcon}</IconItem>
+        <IconItem name="VideoCameraIcon">{VideoCameraIcon}</IconItem>
+        <IconItem name="CustomerSupportIcon">{CustomerSupportIcon}</IconItem>
+        <IconItem name="TokenCounterIcon">{TokenCounterIcon}</IconItem>
+        <IconItem name="AddProfileIcon">{AddProfileIcon}</IconItem>
+        <IconItem name="MusicNoteIcon">{MusicNoteIcon}</IconItem>
+        <IconItem name="VeoModelIcon">{VeoModelIcon}</IconItem>
+        <IconItem name="VideoGenerationIcon">{VideoGenerationIcon}</IconItem>
+        <IconItem name="RunwayIcon">{RunwayIcon}</IconItem>
+        <IconItem name="QueueSelectIcon">{QueueSelectIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

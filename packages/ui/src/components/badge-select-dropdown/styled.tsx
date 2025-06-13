@@ -8,19 +8,27 @@ export const BadgeSelectDropdownSpanStyled = styled(Typography).attrs({
   variant: 'body-s-medium'
 })``;
 
-export const BadgeSelectDropdownTrigger = styled.button<{ $active: boolean }>`
+export const BadgeSelectDropdownTrigger = styled.button<{
+  $active: boolean;
+  $colorButtonOpened?: string;
+}>`
   border: none;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   cursor: pointer;
   column-gap: 8px;
   min-width: 98px;
   padding: 6px 12px;
   border-radius: 14px;
-  background: ${({ theme, $active }) =>
+  background: ${({ theme, $active, $colorButtonOpened }) =>
     $active
-      ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
-      : theme.colors.grayScale.gray3};
+      ? $colorButtonOpened || theme.mode === 'light'
+        ? theme.colors.grayScale.gray2
+        : colorToRgba(theme.colors.accent.primaryLight, 0.5)
+      : theme.mode === 'light'
+        ? theme.colors.grayScale.gray4
+        : theme.colors.grayScale.gray3};
   color: ${({ theme }) => theme.colors.base.white};
 `;
 
@@ -35,7 +43,7 @@ export const BadgeSelectDropdownList: React.FC<
   top: 38px;
   left: 0;
   transform-origin: top center;
-
+  z-index: 2;
   padding: 8px;
   border: 1px solid;
   border-radius: 8px;
@@ -43,9 +51,11 @@ export const BadgeSelectDropdownList: React.FC<
   background: ${({ theme }) => colorToRgba(theme.colors.grayScale.gray4, 0.75)};
   backdrop-filter: blur(16px);
 
-  ${({ $open }) => css`
-    display: ${$open && 'flex'};
-  `}
+  ${({ $open }) =>
+    $open &&
+    css`
+      display: flex;
+    `}
   flex-direction: column;
   gap: 1px;
 `;

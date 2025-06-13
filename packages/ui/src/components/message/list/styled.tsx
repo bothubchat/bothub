@@ -4,9 +4,11 @@ import { adaptive } from '@/ui/adaptive';
 
 export const MessagesStyled = styled.div`
   display: flex;
+  position: relative;
   width: 100%;
-  @media (width <= ${({ theme }) => theme.mobile.maxWidth}) {
-    --bothub-scale: 0.92;
+  & span,
+  & p {
+    --bothub-scale: 1;
   }
 `;
 
@@ -27,7 +29,7 @@ export const MessagesScrollbarWrapper = styled(Scrollbar).attrs({
     `,
     mobile: css`
       padding: 24px 16px;
-      padding-bottom: 156px;
+      padding-bottom: 78px;
     `
   })}
 `;
@@ -38,11 +40,12 @@ export const MessagesContent = styled.div`
   justify-content: center;
 `;
 
-export const MessagesContainer = styled.div`
+export const MessagesContainer = styled.div<{ $fullWidth: boolean }>`
   display: flex;
   flex-direction: column;
   width: inherit;
-  max-width: ${({ theme }) => theme.dashboard.chat.containerWidth};
+  max-width: ${({ theme, $fullWidth }) =>
+    $fullWidth ? 'none' : theme.dashboard.chat.containerWidth};
 `;
 
 export const MessagesStart = styled.div`

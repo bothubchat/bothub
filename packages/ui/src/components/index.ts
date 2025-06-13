@@ -64,7 +64,6 @@ export * from './date-badge';
 export * from './slider';
 export * from './scrollable-tabs';
 export * from './badge-select-dropdown';
-export * from './multi-level-menu';
 export * from './theme-cards';
 export * from './theme-schemes';
 export * from './theme-preview';

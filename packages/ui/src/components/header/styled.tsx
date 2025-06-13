@@ -180,6 +180,7 @@ export const HeaderContainerContent = styled.div<HeaderContainerContentProps>`
 export const HeaderLeft = styled.div`
   display: flex;
   align-items: center;
+  position: relative;
   gap: 18px;
   ${adaptive({
     variant: 'dashboard',

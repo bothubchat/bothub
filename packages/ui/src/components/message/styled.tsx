@@ -22,6 +22,7 @@ export interface MessageStyledProps {
 
 export const MessageStyledWrapper = styled.div<MessageStyledProps>`
   display: flex;
+  align-items: flex-start;
   width: 100%;
   ${({ $variant }) => {
     switch ($variant) {
@@ -234,7 +235,9 @@ export const MessageBlock = styled.div<MessageBlockProps>`
     `}
 `;
 
-export const MessageBlockBottomPanel = styled.div<{ $variant: MessageVariant }>`
+export const MessageBlockBottomPanel = styled.div<{
+  $variant: MessageVariant;
+}>`
   display: flex;
   align-items: center;
   gap: 10px;
@@ -248,6 +251,10 @@ export const MessageBlockBottomPanel = styled.div<{ $variant: MessageVariant }>`
       case 'assistant':
         return css`
           margin-left: 52px;
+
+          @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+            margin-left: 0;
+          }
         `;
       default:
         return css``;
@@ -255,31 +262,8 @@ export const MessageBlockBottomPanel = styled.div<{ $variant: MessageVariant }>`
   }}
 `;
 
-export const MessageBlockTransaction = styled.div<{ $top?: boolean }>`
-  ${({ $top }) =>
-    $top
-      ? adaptive({
-          desktop: css`
-            display: none;
-          `,
-          tablet: css`
-            display: none;
-          `,
-          mobile: css`
-            display: block;
-          `
-        })
-      : adaptive({
-          desktop: css`
-            display: block;
-          `,
-          tablet: css`
-            display: block;
-          `,
-          mobile: css`
-            display: none;
-          `
-        })}
+export const MessageBlockTransaction = styled.div`
+  display: block;
 `;
 
 export const MessageBlockScrollbarWrapper = styled(Scrollbar).attrs({
@@ -300,7 +284,7 @@ export const MessageBlockContent = styled.div<{
       case 'user':
         return '8px';
       case 'assistant':
-        return '0px 8px 8px 0px';
+        return '0px 8px 0px 0px';
     }
   }};
   max-width: 100%;
@@ -309,6 +293,7 @@ export const MessageBlockContent = styled.div<{
 
 export const MessageBlockTextArea = styled.span.attrs({
   role: 'textbox',
+
   contentEditable: true,
   suppressContentEditableWarning: true
 })`
@@ -339,6 +324,9 @@ export const MessageBlockTextArea = styled.span.attrs({
 
 export const MessageButtonsStyled = styled.div`
   margin-left: 48px;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    margin-left: 12px;
+  }
 `;
 
 export const MessageTransaction = styled(Typography).attrs({
