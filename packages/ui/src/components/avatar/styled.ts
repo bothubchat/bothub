@@ -25,15 +25,23 @@ export const AvatarObject = styled.object.attrs({ type: 'image/jpeg' })`
   height: inherit;
 `;
 
-export const AvatarImage = styled.img`
-  display: inline-flex;
-  width: inherit;
-  height: inherit;
-  background: ${({ theme }) => theme.colors.grayScale.gray1};
-`;
-
 export const AvatarSkeleton = styled(Skeleton).attrs({
   variant: 'circular',
   width: 40,
   height: 40
 })``;
+
+export const AvatarBg = styled.div<{ $size: number }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: ${({ theme }) =>
+    theme.mode === 'light'
+      ? theme.colors.grayScale.gray1
+      : theme.colors.grayScale.gray3};
+  ${({ $size }) => css`
+    width: ${$size}px;
+    height: ${$size}px;
+  `}
+`;
