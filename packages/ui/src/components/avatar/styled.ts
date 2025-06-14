@@ -32,7 +32,9 @@ export const AvatarSkeleton = styled(Skeleton).attrs({
 })``;
 
 export const AvatarBg = styled.div<{ $size: number }>`
-  display: flex;
+  display: inline-flex;
+  overflow: hidden;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   border-radius: 50%;

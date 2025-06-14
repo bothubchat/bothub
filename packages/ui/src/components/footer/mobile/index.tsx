@@ -17,6 +17,7 @@ export type FooterMobileButtonActiveProp = 'menu' | 'chats' | 'settings' | null;
 
 export interface FooterMobileProps {
   isPreset?: boolean;
+  src?: string;
   tariffPlan?: TariffPlan;
   activeButton?: FooterMobileButtonActiveProp;
   onMenuClick: FooterMobileButtonClickHandler;
@@ -29,6 +30,7 @@ export interface FooterMobileProps {
 export const FooterMobile: React.FC<FooterMobileProps> = React.memo(
   ({
     isPreset,
+    src,
     tariffPlan,
     activeButton,
     onMenuClick,
@@ -69,15 +71,12 @@ export const FooterMobile: React.FC<FooterMobileProps> = React.memo(
             }
           />
         </FooterMobileButton>
-        <FooterMobileButton
-          $iconSize={44}
+        <SidebarUserInfoAvatar
           onClick={onUserClick}
-        >
-          <SidebarUserInfoAvatar
-            tariffPlan={tariffPlan}
-            size={44}
-          />
-        </FooterMobileButton>
+          size={48}
+          src={src}
+          tariffPlan={tariffPlan}
+        />
       </FooterMobileStyled>
     );
   }
