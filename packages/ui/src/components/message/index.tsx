@@ -226,18 +226,50 @@ export const Message: React.FC<MessageProps> = ({
   let hexColor: string;
   switch (variant) {
     case 'user':
-      hexColor =
-        theme.scheme === 'custom'
-          ? theme.colors.custom.message.user.background
-          : theme.mode === 'dark'
-            ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
-            : colorToRgba(theme.colors.accent.primaryLight, 0.2);
+      switch (color) {
+        case 'default':
+          if (theme.scheme === 'custom') {
+            hexColor = theme.colors.custom.message.user.background;
+            break;
+          }
+          if (theme.scheme === 'standard') {
+            hexColor =
+              theme.mode === 'dark'
+                ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
+                : colorToRgba(theme.colors.accent.primaryLight, 0.2);
+            break;
+          }
+          hexColor = theme.colors.accent.primary;
+          break;
+        case 'green':
+          hexColor = theme.colors.gpt3;
+          break;
+        case 'purple':
+          hexColor = theme.colors.gpt4;
+          break;
+        default:
+          hexColor = color;
+          break;
+      }
       break;
     case 'assistant':
-      hexColor =
-        theme.mode === 'dark'
-          ? theme.colors.grayScale.gray2
-          : theme.colors.grayScale.gray3;
+      switch (color) {
+        case 'default':
+          hexColor =
+            theme.mode === 'dark'
+              ? theme.colors.grayScale.gray2
+              : theme.colors.grayScale.gray3;
+          break;
+        case 'green':
+          hexColor = theme.colors.gpt3;
+          break;
+        case 'purple':
+          hexColor = theme.colors.gpt4;
+          break;
+        default:
+          hexColor = color;
+          break;
+      }
       break;
   }
 
