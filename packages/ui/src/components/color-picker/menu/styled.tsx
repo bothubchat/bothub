@@ -27,7 +27,7 @@ export const ColorPickerMenuStyled = styled.div<ColorPickerMenuStyledProps>`
   flex-direction: column;
   gap: 6px;
   width: 256px;
-  background-color: ${({ theme }) => theme.colors.base.black};
+  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   padding: 8px;
   border-radius: 10px;
