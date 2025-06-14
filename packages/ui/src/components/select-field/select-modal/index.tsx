@@ -214,9 +214,9 @@ export const SelectModal = ({
           $placement={placement}
           $width={fieldBlockPositionWrapperWidth}
           style={{
-            ...(contentHeight && {
-              maxHeight: `calc(var(--bothub-scale, 1) * ${contentHeight}px)`
-            })
+            height:
+              contentHeight &&
+              `calc(var(--bothub-scale, 1) * ${contentHeight}px)`
           }}
         >
           <S.SelectModalContent>

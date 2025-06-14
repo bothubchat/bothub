@@ -571,7 +571,8 @@ export const WithSearch: SelectFieldStory = {
       }
     ],
     search: true,
-    searchPlaceholder: 'Поиск...'
+    searchPlaceholder: 'Поиск...',
+    contentHeight: 300
   }
 };
 

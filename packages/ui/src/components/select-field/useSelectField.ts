@@ -54,7 +54,7 @@ export const useSelectField = <
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [width, setWidth] = useState(0);
-  const [maxHeight, setMaxHeight] = useState<number | undefined>(contentHeight);
+  const [height, setHeight] = useState<number | undefined>(contentHeight);
   const [placement, setPlacement] = useState(initialPlacement);
 
   const setInitialValue = useCallback(
@@ -132,7 +132,7 @@ export const useSelectField = <
     const listener = () => {
       const trigger = triggerRef.current;
 
-      if (!trigger || !maxHeight || !contentHeight) return;
+      if (!trigger || !height || !contentHeight) return;
 
       let modalMaxHeight = contentHeight;
 
@@ -145,9 +145,9 @@ export const useSelectField = <
       }
 
       if (modalMaxHeight < contentHeight) {
-        setMaxHeight(modalMaxHeight);
+        setHeight(modalMaxHeight);
       } else {
-        setMaxHeight(contentHeight);
+        setHeight(contentHeight);
       }
     };
 
@@ -156,7 +156,7 @@ export const useSelectField = <
     window.addEventListener('resize', listener);
 
     return () => window.removeEventListener('resize', listener);
-  }, [triggerRef.current, maxHeight, placement, contentHeight]);
+  }, [triggerRef.current, height, placement, contentHeight]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -286,7 +286,7 @@ export const useSelectField = <
     value,
     disabled,
     multiple,
-    contentHeight: maxHeight,
+    contentHeight: height,
     handleInputClick,
     handleClose,
     setValue: setValueHandler
