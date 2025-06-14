@@ -56,7 +56,9 @@ export const Avatar: React.FC<AvatarProps> = ({
           <UserProfileIcon />
         </IconProvider>
       )}
-
+      {isChildren && !isSkeleton && (
+        <IconProvider size={size}>{children}</IconProvider>
+      )}
       {isSkeleton && <AvatarSkeleton />}
     </AvatarBg>
   );
