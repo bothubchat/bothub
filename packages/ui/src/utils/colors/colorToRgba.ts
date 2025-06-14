@@ -1,14 +1,23 @@
+import { rgbToHex } from './rgbToHex';
+
 export function colorToRgba(color: string, alpha = 1): string {
   if (alpha < 0 || alpha > 1) {
     throw new Error('Alpha value must be between 0 and 1');
   }
 
+  const newAlpha = Math.round(alpha * 255).toString(16);
+
+  let r: number;
+  let g: number;
+  let b: number;
+
   // If color is already in RGBA, only change alpha
   if (color.startsWith('rgba(')) {
     const rgbaMatch = color.match(/rgba\((\d+), ?(\d+), ?(\d+), ?(\d+)\)/);
     if (rgbaMatch) {
-      const [, r, g, b] = rgbaMatch;
-      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      [, r, g, b] = rgbaMatch.map((num) => Number.parseInt(num));
+
+      return `#${rgbToHex([r, g, b])}${newAlpha}`;
     }
   }
 
@@ -16,8 +25,9 @@ export function colorToRgba(color: string, alpha = 1): string {
   if (color.startsWith('rgb(')) {
     const rgbMatch = color.match(/rgb\((\d+), ?(\d+), ?(\d+)\)/);
     if (rgbMatch) {
-      const [, r, g, b] = rgbMatch;
-      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      [, r, g, b] = rgbMatch.map((num) => Number.parseInt(num));
+
+      return `#${rgbToHex([r, g, b])}${newAlpha}`;
     }
     throw new Error('Invalid RGB format. Expected rgb(r, g, b)');
   }
@@ -46,16 +56,7 @@ export function colorToRgba(color: string, alpha = 1): string {
       );
     }
 
-    // Convert HEX -> RGB
-    const r = Number.parseInt(hex.substring(0, 2), 16);
-    const g = Number.parseInt(hex.substring(2, 4), 16);
-    const b = Number.parseInt(hex.substring(4, 6), 16);
-
-    if (Number.isNaN(r) || Number.isNaN(g) || Number.isNaN(b)) {
-      throw new Error('Invalid HEX color');
-    }
-
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    return `#${hex}${newAlpha}`;
   }
 
   throw new Error(

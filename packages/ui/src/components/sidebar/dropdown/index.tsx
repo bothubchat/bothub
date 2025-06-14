@@ -9,6 +9,7 @@ import {
 import { SidebarDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
+import { isBright } from '@/ui/utils';
 
 export interface SidebarDropdownProps
   extends React.ComponentProps<typeof SidebarDropdownStyled> {}
@@ -82,7 +83,13 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
         {...props}
         ref={dropdownRef}
       >
-        <IconProvider fill={theme.colors.base.white}>
+        <IconProvider
+          fill={
+            isBright(theme.colors.grayScale.gray4)
+              ? theme.default.colors.base.black
+              : theme.default.colors.base.white
+          }
+        >
           <SidebarDropdownToggler
             $open={isOpen}
             onClick={handleToggle}

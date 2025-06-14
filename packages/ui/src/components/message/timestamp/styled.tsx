@@ -1,11 +1,8 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
-import {
-  MessageColor,
-  MessageTimestampPosition,
-  MessageVariant
-} from '../types';
+import { MessageColor, MessageTimestampPosition } from '../types';
+import { isBright } from '@/ui/utils';
 
 export interface TimestampProps {
   $timestampPosition?: MessageTimestampPosition;
@@ -31,13 +28,21 @@ export const TimestampStyled = styled.div<TimestampProps>`
 `;
 
 export interface TimestampTextProp {
-  $variant: MessageVariant;
   $color: MessageColor;
 }
 export const TimestampText = styled(Typography).attrs({
   variant: 'body-s-regular'
 })<TimestampTextProp>`
-  color: ${({ theme }) => theme.colors.base.white} !important;
+  color: ${({ theme, $color }) => {
+    if (theme.bright || isBright($color)) {
+      return theme.mode === 'dark'
+        ? theme.colors.base.black
+        : theme.colors.base.white;
+    }
+    return theme.mode === 'dark'
+      ? theme.colors.base.white
+      : theme.colors.base.black;
+  }} !important;
   ${adaptive({
     desktop: css`
       font-size: 12px;

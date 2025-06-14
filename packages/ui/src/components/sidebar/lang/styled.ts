@@ -21,6 +21,7 @@ export const SidebarLangDropdownTogglerText = styled(Typography)`
   font-weight: 700;
   line-height: 22px;
   pointer-events: none;
+  color: ${({ theme }) => theme.colors.base.white};
 `;
 
 export const SidebarLangDropdownTogglerArrow = styled(ArrowDownIcon).attrs({

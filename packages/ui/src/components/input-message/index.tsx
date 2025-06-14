@@ -658,6 +658,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           <InputMessageSendButton
             disabled={disabled || sendDisabled}
             onClick={handleSend}
+            {...(theme.bright && { iconFill: theme.default.colors.base.black })}
           >
             <InputMessageSendIcon />
           </InputMessageSendButton>
@@ -666,6 +667,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             {...(isVoiceRecording && {
               color: theme.colors.critic
             })}
+            {...(theme.bright && { iconFill: theme.default.colors.base.black })}
             disabled={disabled || sendDisabled}
             onClick={
               !isVoiceRecording ? handleVoiceRecordStart : handleVoiceRecordEnd

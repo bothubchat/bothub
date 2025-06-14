@@ -8,7 +8,7 @@ import { FolderIcon } from '@/ui/icons/folder';
 import { Checkbox } from '@/ui/components/checkbox';
 import { adaptive } from '@/ui/adaptive';
 import { SidebarDropdownStyled } from '../dropdown';
-import { colorToRgba } from '@/ui/utils/colorToRgba';
+import { colorToRgba } from '@/ui/utils/colors';
 
 export const SidebarGroupsStyled = styled.div`
   display: flex;
@@ -98,7 +98,6 @@ export const SidebarGroupName = styled(Typography).attrs({
   variant: 'body-l-medium',
   component: 'div'
 })<SidebarGroupNameProps>`
-  color: ${({ theme }) => theme.colors.base.white};
   display: flex;
   cursor: ${({ $skeleton }) => ($skeleton ? 'not-allowed' : 'pointer')};
   padding: 8px;

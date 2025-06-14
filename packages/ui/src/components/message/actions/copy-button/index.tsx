@@ -8,6 +8,7 @@ import { ActionButton } from '../action-button';
 import { MessageActionEventHandler } from '../../types';
 
 import { MessageActionsButtonIconStyled } from './styled';
+import { useTheme } from '@/ui/theme';
 
 export const CopyButton = ({
   onCopy,
@@ -16,17 +17,10 @@ export const CopyButton = ({
   onCopy?: MessageActionEventHandler;
   tooltipLabel?: string | null;
 }) => {
+  const theme = useTheme();
+
   const [copied, setCopied] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
-
-  const handleClick = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    setCopied(true);
-    onCopy?.({});
-    setTimeoutId(setTimeout(() => setCopied(false), 1000));
-  };
 
   const copySpring = useSpring({
     opacity: copied ? 0 : 1,
@@ -40,6 +34,15 @@ export const CopyButton = ({
       duration: 250
     }
   });
+
+  const handleClick = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    setCopied(true);
+    onCopy?.({});
+    setTimeoutId(setTimeout(() => setCopied(false), 1000));
+  };
 
   useEffect(
     () => () => {
@@ -61,7 +64,11 @@ export const CopyButton = ({
         </MessageActionsButtonIconStyled>
       ) : (
         <MessageActionsButtonIconStyled style={markSpring}>
-          <CheckSmallIcon fill="#4785FF" />
+          <CheckSmallIcon
+            {...(theme.scheme === 'custom' && {
+              fill: theme.colors.custom.icon
+            })}
+          />
         </MessageActionsButtonIconStyled>
       )}
     </ActionButton>
