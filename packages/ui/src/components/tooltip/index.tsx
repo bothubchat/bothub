@@ -312,12 +312,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
     window.addEventListener('mouseleave', handleGlobalMouseLeave);
     window.addEventListener('scroll', handleGlobalScroll, true);
-    document.addEventListener('scroll', handleGlobalScroll, true);
 
     return () => {
       window.removeEventListener('mouseleave', handleGlobalMouseLeave);
       window.removeEventListener('scroll', handleGlobalScroll, true);
-      document.removeEventListener('scroll', handleGlobalScroll, true);
     };
   }, [hideTooltip]);
 
