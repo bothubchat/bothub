@@ -228,10 +228,18 @@ export const Message: React.FC<MessageProps> = ({
     case 'user':
       switch (color) {
         case 'default':
-          hexColor =
-            theme.mode === 'dark'
-              ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
-              : colorToRgba(theme.colors.accent.primaryLight, 0.2);
+          if (theme.scheme === 'custom') {
+            hexColor = theme.colors.custom.message.user.background;
+            break;
+          }
+          if (theme.scheme === 'standard') {
+            hexColor =
+              theme.mode === 'dark'
+                ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
+                : colorToRgba(theme.colors.accent.primaryLight, 0.2);
+            break;
+          }
+          hexColor = theme.colors.accent.primary;
           break;
         case 'green':
           hexColor = theme.colors.gpt3;
@@ -383,6 +391,7 @@ export const Message: React.FC<MessageProps> = ({
                     <MessageTimestamp
                       time={timestamp}
                       position={timestampPosition}
+                      color={hexColor}
                     />
                   )}
                 </MessageBlock>
