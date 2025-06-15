@@ -4,7 +4,16 @@ export const StyledLine = styled.div`
   width: 100%;
   height: 2px;
   border-radius: 2px;
-  background-color: #fff;
+  background-color: ${({ theme }) => {
+    if (theme.bright) {
+      return theme.mode === 'dark'
+        ? theme.colors.base.black
+        : theme.colors.base.white;
+    }
+    return theme.mode === 'dark'
+      ? theme.colors.base.white
+      : theme.colors.base.black;
+  }};
   position: absolute;
   left: 0;
   transition:
