@@ -147,6 +147,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
     }
   }, [hoveredElement, getTooltipPosition]);
 
+  const hideTooltip = useCallback(() => {
+    sethoveredElement(null);
+  }, []);
+
   const top: string[] = [`${coords[1]}px`];
   if (placementY !== 0) {
     top.push(`calc(var(--bothub-scale, 1) * ${placementY}px)`);
@@ -298,12 +302,22 @@ export const Tooltip: React.FC<TooltipProps> = ({
   );
 
   useEffect(() => {
-    window.addEventListener('mouseleave', handleMouseLeave);
+    const handleGlobalMouseLeave = () => {
+      hideTooltip();
+    };
+
+    const handleGlobalScroll = () => {
+      hideTooltip();
+    };
+
+    window.addEventListener('mouseleave', handleGlobalMouseLeave);
+    window.addEventListener('scroll', handleGlobalScroll, true);
 
     return () => {
-      window.removeEventListener('mouseleave', handleMouseLeave);
+      window.removeEventListener('mouseleave', handleGlobalMouseLeave);
+      window.removeEventListener('scroll', handleGlobalScroll, true);
     };
-  }, []);
+  }, [hideTooltip]);
 
   return (
     <TooltipProvider

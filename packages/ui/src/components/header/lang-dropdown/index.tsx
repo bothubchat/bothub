@@ -31,6 +31,31 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
     setIsOpen(!isOpen);
   }, [isOpen]);
 
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleScrollEvent = (event: Event) => {
+      const dropdownEl = dropdownRef.current;
+      const scrollTarget = event.target as Element;
+
+      if (dropdownEl && dropdownEl.contains(scrollTarget)) {
+        return;
+      }
+
+      handleClose();
+    };
+
+    window.addEventListener('scroll', handleScrollEvent, true);
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollEvent, true);
+    };
+  }, [isOpen]);
+
   useEffect(() => {
     const dropdownEl: HTMLDivElement | null = dropdownRef.current;
 

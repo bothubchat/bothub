@@ -457,6 +457,25 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   }, [isOpen]);
 
   useEffect(() => {
+    if (!isOpen) return;
+
+    const handleScrollEvent = (event: Event) => {
+      const dropdownEl = contentRef.current;
+      const scrollTarget = event.target as Element;
+      if (dropdownEl && dropdownEl.contains(scrollTarget)) {
+        return;
+      }
+      handleClose();
+    };
+
+    window.addEventListener('scroll', handleScrollEvent, true);
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollEvent, true);
+    };
+  }, [isOpen, handleClose]);
+
+  useEffect(() => {
     if (isOpen) {
       const listener = (e: Event) => {
         if (isKeyboardOpen.current && e.type !== 'orientationchange') return;
