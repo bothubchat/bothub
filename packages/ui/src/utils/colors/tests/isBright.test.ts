@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { isBright } from './isBright';
+import { isBright } from '../isBright';
 
 describe('Determines brightness', () => {
   test('Pure red - #FF0000', () => {

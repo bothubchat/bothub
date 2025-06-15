@@ -1,5 +1,5 @@
 import { expect, test, describe } from 'vitest';
-import { rgbToHex } from './rgbToHex';
+import { rgbToHex } from '../rgbToHex';
 
 describe('Converts RGB to HEX', () => {
   test('rgb(12, 18, 25)', () => {

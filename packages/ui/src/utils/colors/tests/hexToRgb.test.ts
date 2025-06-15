@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { hexToRgb } from './hexToRgb';
+import { hexToRgb } from '../hexToRgb';
 
 describe('Transforms HEX to RGB', () => {
   test('#123456 format', () => {

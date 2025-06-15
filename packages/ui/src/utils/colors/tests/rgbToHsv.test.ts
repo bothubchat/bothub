@@ -1,6 +1,6 @@
 import { expect, test, describe } from 'vitest';
 
-import { rgbToHsv } from './rgbToHsv';
+import { rgbToHsv } from '../rgbToHsv';
 
 describe('Transforms RGB to HSV', () => {
   test('rgb(12, 18, 25)', () => {

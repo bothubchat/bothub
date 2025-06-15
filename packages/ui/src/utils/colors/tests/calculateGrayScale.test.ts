@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { calculateGrayScale } from './calculateGrayScale';
+import { calculateGrayScale } from '../calculateGrayScale';
 
 describe('Calculates grayScale', () => {
   test('Default gray1 - #616D8D', () => {

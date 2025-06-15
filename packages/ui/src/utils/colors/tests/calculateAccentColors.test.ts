@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { calculateAccentColors } from './calculateAccentColors';
+import { calculateAccentColors } from '../calculateAccentColors';
 
 describe('Calculates accent colors', () => {
   test('Standard accent primary - #1C64F2', () => {
