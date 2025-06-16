@@ -12,7 +12,7 @@ export const MessageListScrollButton = styled.button<{
   align-items: center;
   justify-content: center;
   padding: 10px;
-  bottom: 16px;
+  bottom: 60px;
   left: 50%;
   transform: translateX(-50%);
   size: 38px;
@@ -36,10 +36,6 @@ export const MessageListScrollButton = styled.button<{
   }
 
   transition: all 0.1s linear;
-
-  @media (max-width: 1101px) {
-    bottom: 60px;
-  }
 `;
 
 export const MessageListArrowNarrowDownIcon = styled(ArrowNarrowDownIcon)`
