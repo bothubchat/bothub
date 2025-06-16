@@ -251,6 +251,16 @@ export const MessageActions = ({
   });
 
   useEffect(() => {
+    const handleGlobalClose = () => {
+      setMenuShown(false);
+    };
+    window.addEventListener('scroll', handleGlobalClose, true);
+    return () => {
+      window.removeEventListener('scroll', handleGlobalClose, true);
+    };
+  }, [menuShown]);
+
+  useEffect(() => {
     if (timeoutId) {
       window.clearTimeout(timeoutId);
     }

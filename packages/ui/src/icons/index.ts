@@ -275,3 +275,4 @@ export * from './veo-model';
 export * from './runway';
 export * from './queue-select';
 export * from './apple';
+export * from './mail-colored';
