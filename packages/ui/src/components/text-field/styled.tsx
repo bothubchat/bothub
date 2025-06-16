@@ -233,9 +233,7 @@ export const TextFieldClearButton = styled(
   children: <CloseIcon />
 }))``;
 
-export const TextFieldShowpassButton = styled.button<{
-  $showPassword?: boolean;
-}>`
+export const TextFieldShowpassButton = styled.button`
   padding: 0;
   margin: 0;
   background-color: transparent;

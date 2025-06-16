@@ -235,7 +235,6 @@ export const TextField: React.FC<TextFieldProps> = ({
           />
           {!!value && type === 'password' && (
             <TextFieldShowpassButton
-              $showPassword={showPassword}
               onClick={handlePasswordToggle}
               type="button"
             >
