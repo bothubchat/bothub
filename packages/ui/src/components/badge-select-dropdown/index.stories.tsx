@@ -2,6 +2,8 @@ import { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import { BadgeSelectDropdown, BadgeSelectDropdownProps } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
+import { SelectFieldDataItem } from '../select-field';
+import { Gpt35Icon } from '@/ui/icons';
 
 export type BadgeSelectDropdownMeta = Meta<typeof BadgeSelectDropdown>;
 
@@ -10,17 +12,38 @@ export type BadgeSelectDropdownStory = StoryObj<typeof BadgeSelectDropdown>;
 const BadgeSelectDropdownStoryComponent = (
   props: Omit<BadgeSelectDropdownProps, 'options'>
 ) => {
-  const [value, setValue] = useState('Very long option label');
+  const [value, setValue] = useState<SelectFieldDataItem | null>(
+    'Very long option label'
+  );
 
   return (
     <BadgeSelectDropdown
       value={value}
       options={[
-        'Very long option label',
-        'Model 1',
-        'Model 2',
-        'Model 3',
-        'Model 4'
+        {
+          icon: <Gpt35Icon />,
+          label: 'Model 1'
+        },
+        {
+          icon: <Gpt35Icon />,
+          label: 'Model 2'
+        },
+        {
+          icon: <Gpt35Icon />,
+          label: 'Model 3'
+        },
+        {
+          icon: <Gpt35Icon />,
+          label: 'Model 4'
+        },
+        {
+          icon: <Gpt35Icon />,
+          label: 'Model 5'
+        },
+        {
+          icon: <Gpt35Icon />,
+          label: 'Model 6'
+        }
       ]}
       onChange={setValue}
       placement="bottom-center"

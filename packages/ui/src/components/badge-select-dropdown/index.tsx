@@ -9,11 +9,11 @@ import {
 import { Variant } from './types';
 
 export type BadgeSelectDropdownProps = {
-  options: string[];
+  options: SelectFieldDataItem[];
   value?: SelectFieldDataItem | null;
   variant?: Variant;
   colorButtonOpened?: string;
-  onChange?(value: string): void;
+  onChange?: SelectFieldChangeEventHandler;
 } & Omit<
   UseSelectFieldProps,
   'onChange' | 'multiple' | 'onValueChange' | 'value'
@@ -27,12 +27,6 @@ export const BadgeSelectDropdown = ({
   onChange,
   ...useSelectFieldProps
 }: BadgeSelectDropdownProps) => {
-  const onChangeHandler: SelectFieldChangeEventHandler = (value) => {
-    if (typeof value === 'string' && onChange) {
-      onChange(value);
-    }
-  };
-
   const {
     isOpen,
     triggerRef,
@@ -44,7 +38,7 @@ export const BadgeSelectDropdown = ({
     ...useSelectFieldProps,
     value: initialValue,
     multiple: false,
-    onChange: onChangeHandler
+    onChange
   });
 
   let label = '';
