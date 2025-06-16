@@ -233,6 +233,18 @@ export const TextFieldClearButton = styled(
   children: <CloseIcon />
 }))``;
 
+export const TextFieldShowpassButton = styled.button<{
+  $showPassword?: boolean;
+}>`
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  position: relative;
+`;
+
 export const TextFieldErrorText = styled(Typography).attrs({
   variant: 'input-sm'
 })`
