@@ -332,7 +332,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
       }
     `}
 
-  transition: background-color 0.3s ease-out, 
+  transition: background 0.3s ease-out, 
               opacity 0.3s ease-out,
               box-shadow 0.2s ease-in-out, 
               transform 0.3s ease-out;
@@ -354,18 +354,9 @@ export const ButtonText = styled.span<ButtonTextProps>`
       return theme.colors.grayScale.gray1;
     }
 
-    if (theme.scheme === 'custom') {
-      return theme.colors.custom.interface.text;
-    }
-
     switch ($variant) {
       case 'primary':
       case 'primary-transparent':
-        if (theme.bright) {
-          return theme.mode === 'dark'
-            ? theme.colors.base.black
-            : theme.colors.base.white;
-        }
         return theme.default.colors.base.white;
       case 'primary-outline':
         return theme.mode === 'light'

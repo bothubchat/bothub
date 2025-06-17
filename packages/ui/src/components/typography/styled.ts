@@ -431,10 +431,7 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
 
 export const TypographyStyled = styled.span<TypographyStyledProps>`
   margin: 0px;
-  color: ${({ theme }) =>
-    theme.scheme === 'custom'
-      ? theme.colors.custom.interface.text
-      : theme.colors.base.white};
+  color: ${({ theme }) => theme.colors.base.white};
   font-weight: normal;
   text-decoration: none;
   text-align: ${({ $align }) => $align};

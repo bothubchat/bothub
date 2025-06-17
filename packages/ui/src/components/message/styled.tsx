@@ -335,10 +335,10 @@ export const MessageTransaction = styled(Typography).attrs({
   text-transform: uppercase;
   color: ${({ theme }) => {
     if (theme.mode === 'light') {
-      return theme.colors.grayScale.gray1;
+      return theme.colors.accent.primary;
     }
 
-    return theme.default.colors.base.white;
+    return theme.colors.grayScale.gray6;
   }};
 `;
 

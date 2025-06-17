@@ -82,21 +82,6 @@ export const MessageActionsMenuModalOption = styled.button`
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayScale.gray2};
-    &:hover {
-      svg {
-        path,
-        circle {
-          fill: ${({ theme }) => {
-            if (theme.scheme === 'custom') {
-              return theme.colors.custom.icon;
-            }
-            return theme.mode === 'dark'
-              ? theme.colors.accent.primaryLight
-              : theme.colors.grayScale.gray2;
-          }};
-        }
-      }
-    }
   }
   &:active {
     filter: brightness(0.8);
@@ -118,7 +103,11 @@ export const MessageActionsButton = styled.button`
     svg {
       path,
       circle {
-        filter: brightness(1.2);
+        fill: ${({ theme }) =>
+          theme.mode === 'dark'
+            ? theme.colors.grayScale.gray6
+            : theme.colors.grayScale.gray2};
+        transition: all 100ms ease-out;
       }
     }
   }
@@ -126,13 +115,7 @@ export const MessageActionsButton = styled.button`
     svg {
       path,
       circle {
-        fill: ${({ theme }) => {
-          if (theme.scheme === 'custom') {
-            return theme.colors.custom.icon;
-          }
-          return theme.colors.accent.primaryLight;
-        }};
-        opacity: 0.75;
+        fill: #4785ff;
         transition: all 100ms ease-out;
       }
     }

@@ -9,7 +9,7 @@ import { SidebarChatIcon } from '@/ui/icons/sidebar-chat';
 import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { Checkbox } from '@/ui/components/checkbox';
 import { Tooltip } from '@/ui/components/tooltip';
-import { colorToRgba } from '@/ui/utils/colors';
+import { colorToRgba } from '@/ui/utils/colorToRgba';
 
 export interface SidebarChatLeftProps {
   $sidebarOpen?: boolean;
@@ -30,9 +30,7 @@ export const SidebarChatRight = styled.div`
 export const SidebarChatIconStyled = styled(SidebarChatIcon)`
   ${({ theme }) => css`
     path {
-      stroke: ${theme.scheme === 'custom'
-        ? theme.colors.custom.icon
-        : theme.colors.grayScale.gray1};
+      stroke: ${theme.colors.grayScale.gray1};
     }
   `}
   display: none;
