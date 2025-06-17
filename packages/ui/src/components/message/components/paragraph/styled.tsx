@@ -14,19 +14,7 @@ export const MessageParagraphStyled = styled(
 )<MessageParagraphStyledProps>`
   color: ${({ theme, $variant, $color }) => {
     if ($variant === 'user') {
-      if (theme.scheme === 'custom') {
-        return theme.colors.custom.message.user.text;
-      }
-
-      return theme.bright
-        ? theme.mode === 'dark'
-          ? theme.colors.base.black
-          : theme.colors.base.white
-        : theme.default.colors.base.white;
-    }
-
-    if (theme.scheme === 'custom') {
-      return theme.colors.custom.message.assistant.text;
+      return theme.colors.base.white;
     }
 
     if ($color === 'default') {

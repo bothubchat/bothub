@@ -21,4 +21,3 @@ export const SidebarButtons: React.FC<SidebarCreateChatButtonProps> = ({
 };
 
 export * from './styled';
-export * from './create-chat';

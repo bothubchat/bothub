@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { colorToRgba } from '@/ui/utils/colors';
+import { colorToRgba } from '@/ui/utils/colorToRgba';
 
 export const DateBadgeStyled = styled.div`
   display: flex;

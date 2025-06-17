@@ -263,8 +263,6 @@ export * from './report';
 export * from './qwen';
 export * from './sidebar-toggle-left';
 export * from './sidebar-toggle-right';
-export * from './system';
-export * from './selector';
 export * from './video-camera';
 export * from './music-note';
 export * from './add-profile';
