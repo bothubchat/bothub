@@ -24,7 +24,6 @@ export const HeaderLangDropdownItem: React.FC<HeaderLangDropdownItemProps> = ({
     <HeaderLangDropdownItemStyled
       {...props}
       onClick={handleClick}
-      data-test={`lang-${props.children}`}
     />
   );
 };
