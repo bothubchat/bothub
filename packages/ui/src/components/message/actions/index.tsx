@@ -282,8 +282,12 @@ export const MessageActions = ({
                 }}
               >
                 <ActionButton
-                  onMouseEnter={handleButtonHoverIn}
-                  onMouseLeave={handleButtonHoverOut}
+                  onMouseEnter={
+                    'ontouchstart' in window ? undefined : handleButtonHoverIn
+                  }
+                  onMouseLeave={
+                    'ontouchstart' in window ? undefined : handleButtonHoverOut
+                  }
                   onClick={handleButtonClick}
                 >
                   <MenuDotIcon size={18} />
