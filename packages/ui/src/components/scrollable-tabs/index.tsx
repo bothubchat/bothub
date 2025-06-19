@@ -43,6 +43,7 @@ export const ScrollableTabs = ({
           $selected={id === selected}
           onClick={() => onTabChange(id)}
           href={component === 'a' ? href : undefined}
+          data-test={label}
         >
           {icon}
           <S.ScrollableTabsTabLabel $variant={variant}>

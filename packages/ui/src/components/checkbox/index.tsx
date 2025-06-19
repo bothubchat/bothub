@@ -19,6 +19,7 @@ export interface CheckboxProps
   rowReverse?: boolean;
   skeleton?: boolean;
   fullWidth?: boolean;
+  dataTest?: string;
   onValueChange?: CheckboxValueChangeEventHandler;
   onPointerLeave?: React.PointerEventHandler<HTMLLabelElement>;
 }
@@ -29,6 +30,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   skeleton = false,
   rowReverse,
   fullWidth = false,
+  dataTest,
   onValueChange,
   onPointerLeave,
   ...props
@@ -52,6 +54,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       onMouseEnter={handleTooltipMouseEnter}
       onMouseLeave={handleTooltipMouseLeave}
       onPointerLeave={onPointerLeave}
+      data-test={dataTest}
     >
       {!skeleton && (
         <>
