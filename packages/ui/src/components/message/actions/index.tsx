@@ -178,8 +178,8 @@ export const MessageActions = ({
 
   const handleButtonClick = useCallback(() => {
     handleInvertedModalState();
-    setMenuShown(!menuShown);
-  }, [menuShown]);
+    setMenuShown((prev) => !prev);
+  }, []);
 
   const handleOptionClick = useCallback(
     (option: ModalOption) => {
@@ -282,8 +282,12 @@ export const MessageActions = ({
                 }}
               >
                 <ActionButton
-                  onMouseEnter={handleButtonHoverIn}
-                  onMouseLeave={handleButtonHoverOut}
+                  onMouseEnter={
+                    'ontouchstart' in window ? undefined : handleButtonHoverIn
+                  }
+                  onMouseLeave={
+                    'ontouchstart' in window ? undefined : handleButtonHoverOut
+                  }
                   onClick={handleButtonClick}
                 >
                   <MenuDotIcon size={18} />
