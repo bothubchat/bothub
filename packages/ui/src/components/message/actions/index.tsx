@@ -178,8 +178,8 @@ export const MessageActions = ({
 
   const handleButtonClick = useCallback(() => {
     handleInvertedModalState();
-    setMenuShown(!menuShown);
-  }, [menuShown]);
+    setMenuShown((prev) => !prev);
+  }, []);
 
   const handleOptionClick = useCallback(
     (option: ModalOption) => {
