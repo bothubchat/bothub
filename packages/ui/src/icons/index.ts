@@ -276,3 +276,4 @@ export * from './runway';
 export * from './queue-select';
 export * from './apple';
 export * from './mail-colored';
+export * from './shield';
