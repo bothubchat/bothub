@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-import { useSpring } from '@react-spring/web';
+import { SpringValue, useSpring } from '@react-spring/web';
 import {
   HeaderMenuNavStyled,
   HeaderMenuNavList,
@@ -22,26 +22,22 @@ import {
   MenuItemCollapse,
   MenuItems
 } from './config';
-import { IconProvider } from '../../icon';
-import { Divider } from '../../divider';
+import { IconProvider } from '@/ui/components/icon';
+import { Divider } from '@/ui/components/divider';
 
 export const HeaderMenuNav: React.FC = () => {
   const [parent, setParent] = useState<MenuItems | null>(null);
   const [child, setChild] = useState<
     MenuItemChild | (MenuItem & MenuItemCollapse) | null
   >(null);
-  const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [springsContent, animationContent] = useSpring(() => ({
-    from: {}
-  }));
+  const closeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const [springsChildContent, animationChildContent] = useSpring(() => ({
     from: { opacity: 0, transform: 'translateX(-50px)' }
   }));
-  // const [springsSubChildContent, animationSubChildContent] = useSpring(() => ({
-  //   from: { opacity: 0, transform: 'translateX(-50px)' }
-  // }));
 
-  const startAnimnation = useCallback(
+  const startAnimation = useCallback(
     (side: 'left' | 'right') => {
       animationChildContent.start({
         from: {
@@ -57,89 +53,93 @@ export const HeaderMenuNav: React.FC = () => {
     [animationChildContent]
   );
 
-  const handleOpen = useCallback(() => {
-    if (timeout.current) {
-      clearTimeout(timeout.current);
+  const clearTimeouts = useCallback(() => {
+    if (closeTimeout.current) {
+      clearTimeout(closeTimeout.current);
+      closeTimeout.current = null;
     }
-    timeout.current = setTimeout(() => {
-      animationContent.start({
-        from: { opacity: 0, display: 'none' },
-        to: { opacity: 1 }
-      });
-    }, 500);
-  }, [animationContent]);
+    if (hoverTimeout.current) {
+      clearTimeout(hoverTimeout.current);
+      hoverTimeout.current = null;
+    }
+  }, []);
 
   const handleClose = useCallback(() => {
-    if (timeout.current) {
-      clearTimeout(timeout.current);
-    }
-    timeout.current = setTimeout(() => {
-      animationContent.start({
-        from: { opacity: 1 },
-        to: { opacity: 0 }
-      });
-    }, 500);
-  }, [animationContent]);
+    clearTimeouts();
+    closeTimeout.current = setTimeout(() => {
+      setParent(null);
+      setChild(null);
+    }, 300);
+  }, [clearTimeouts]);
 
-  const handleMouseEnter = useCallback(
+  const handleMouseEnterParent = useCallback(
     (id: string) => {
-      handleOpen();
-      const prevIndex = items.findIndex((item) => item.id === parent?.id);
-      const nextIndex = items.findIndex((item) => item.id === id);
-      if (nextIndex < prevIndex) {
-        startAnimnation('right');
-      } else {
-        startAnimnation('left');
-      }
-      setParent(items[nextIndex]);
-      if (!items[nextIndex].children) {
-        return;
-      }
-      setChild(items[nextIndex].children[0]);
+      clearTimeouts();
+
+      hoverTimeout.current = setTimeout(() => {
+        const prevIndex = items.findIndex((item) => item.id === parent?.id);
+        const nextIndex = items.findIndex((item) => item.id === id);
+
+        if (nextIndex !== -1) {
+          if (prevIndex !== -1 && nextIndex < prevIndex) {
+            startAnimation('right');
+          } else {
+            startAnimation('left');
+          }
+
+          setParent(items[nextIndex]);
+
+          // Устанавливаем первый дочерний элемент, если он есть
+          if (
+            items[nextIndex].children &&
+            items[nextIndex].children.length > 0
+          ) {
+            setChild(items[nextIndex].children[0]);
+          } else {
+            setChild(null);
+          }
+        }
+      }, 50);
     },
-    [items, parent, startAnimnation, animationContent, handleOpen]
+    [parent, startAnimation, clearTimeouts]
   );
 
+  const handleMouseEnterChild = useCallback(
+    (item: MenuItemChild | (MenuItem & MenuItemCollapse)) => {
+      clearTimeouts();
+      setChild(item);
+    },
+    [clearTimeouts]
+  );
+
+  const handleMouseEnterContent = useCallback(() => {
+    clearTimeouts();
+  }, [clearTimeouts]);
+
   return (
-    <HeaderMenuNavStyled
-      onMouseLeave={handleClose}
-      onMouseEnter={handleOpen}
-    >
+    <HeaderMenuNavStyled onMouseLeave={handleClose}>
       <HeaderMenuNavList>
         {items.map((item) => (
           <HeaderMenuNavItem
             key={item.id}
-            onMouseEnter={() => handleMouseEnter(item.id)}
+            onMouseEnter={() => handleMouseEnterParent(item.id)}
           >
             <HeaderMenuNavLabel>{item.label}</HeaderMenuNavLabel>
           </HeaderMenuNavItem>
         ))}
       </HeaderMenuNavList>
-      <HeaderMenuNavContent style={springsContent}>
-        {parent !== null && parent?.children?.length && (
-          <HeaderMenuNavContentList style={springsChildContent}>
-            {parent.children.map(
-              (item) =>
-                item.type !== 'divider' && (
-                  <HeaderMenuNavMainLink
-                    $active={child?.id === item.id}
-                    onPointerDown={() => setChild(item)}
-                    onMouseEnter={() => setChild(item)}
-                    key={item.id}
-                  >
-                    <HeaderMenuNavMainLinkContainer>
-                      <IconProvider size={18}>{item.icon}</IconProvider>
-                      <HeaderMenuNavTextLink>
-                        {item.label}
-                      </HeaderMenuNavTextLink>
-                      {item.type === 'collapse' && <HeaderMenuNavArrowIcon />}
-                      {item.type === 'link' && <HeaderMenuNavItemArrowIcon />}
-                    </HeaderMenuNavMainLinkContainer>
-                  </HeaderMenuNavMainLink>
-                )
-            )}
-          </HeaderMenuNavContentList>
-        )}
+
+      <HeaderMenuNavContent
+        $open={parent !== null}
+        onMouseEnter={handleMouseEnterContent}
+      >
+        <HeaderFirstLevelSubMenu
+          parent={parent}
+          child={child}
+          handleMouseEnterChild={handleMouseEnterChild}
+          springsChildContent={springsChildContent}
+        />
+
         {parent !== null &&
           child !== null &&
           child?.type === 'collapse' &&
@@ -147,48 +147,127 @@ export const HeaderMenuNav: React.FC = () => {
             <HeaderMenuNavContentChildList
               $columns={child?.columns}
               style={springsChildContent}
+              onMouseEnter={handleMouseEnterContent}
             >
-              {child.children.map((item, index) => {
-                switch (item.type) {
-                  case 'link':
-                    return (
-                      <HeaderMenuNavMainLink
-                        key={item.id}
-                        style={{ minWidth: 406 }}
-                      >
-                        <HeaderMenuNavMainLinkContainer>
-                          <IconProvider size={18}>{item.icon}</IconProvider>
-                          <HeaderMenuNavTextLink>
-                            {item.label}
-                          </HeaderMenuNavTextLink>
-                          <HeaderMenuNavItemBgIcon>
-                            <HeaderMenuNavItemArrowIcon />
-                          </HeaderMenuNavItemBgIcon>
-                        </HeaderMenuNavMainLinkContainer>
-                        {item.description && (
-                          <HeaderMenuNavTextLink>
-                            {item.description}
-                          </HeaderMenuNavTextLink>
-                        )}
-                      </HeaderMenuNavMainLink>
-                    );
-                  case 'divider':
-                    return <Divider key={index} />;
-                  default:
-                    return null;
-                }
-              })}
+              <HeaderCollapseSubMenu
+                springsChildContent={springsChildContent}
+                child={child}
+                parent={parent}
+                handleMouseEnterContent={handleMouseEnterContent}
+              />
             </HeaderMenuNavContentChildList>
           )}
-        {parent !== null &&
-          child !== null &&
-          child?.type === 'link' &&
-          child?.children && (
-            <HeaderMenuNavContentChildList>
-              {child.children}
-            </HeaderMenuNavContentChildList>
-          )}
+
+        <HeaderLinkSubMenu
+          parent={parent}
+          child={child}
+          handleMouseEnterContent={handleMouseEnterContent}
+        />
       </HeaderMenuNavContent>
     </HeaderMenuNavStyled>
   );
 };
+
+const HeaderLinkSubMenu: React.FC<{
+  parent: MenuItems | null;
+  child?: MenuItemChild | (MenuItem & MenuItemCollapse) | null;
+  handleMouseEnterContent: () => void;
+}> = ({ parent, child, handleMouseEnterContent }) =>
+  parent !== null &&
+  child !== null &&
+  child?.type === 'link' &&
+  child?.children && (
+    <HeaderMenuNavContentChildList onMouseEnter={handleMouseEnterContent}>
+      {child.children}
+    </HeaderMenuNavContentChildList>
+  );
+
+const HeaderCollapseSubMenu: React.FC<{
+  parent: MenuItems | null;
+  child?: MenuItemChild | (MenuItem & MenuItemCollapse) | null;
+  handleMouseEnterContent: () => void;
+  springsChildContent: {
+    opacity: SpringValue<number>;
+    transform: SpringValue<string>;
+  };
+}> = ({ parent, child, handleMouseEnterContent, springsChildContent }) =>
+  parent !== null &&
+  child !== null &&
+  child?.type === 'collapse' &&
+  child?.children?.length && (
+    <HeaderMenuNavContentChildList
+      $columns={child?.columns}
+      style={springsChildContent}
+      onMouseEnter={handleMouseEnterContent}
+    >
+      {child.children.map((item, index) => {
+        switch (item.type) {
+          case 'link':
+            return (
+              <HeaderMenuNavMainLink
+                key={item.id}
+                style={{ minWidth: 406 }}
+                onMouseEnter={handleMouseEnterContent}
+              >
+                <HeaderMenuNavMainLinkContainer>
+                  <IconProvider size={18}>{item.icon}</IconProvider>
+                  <HeaderMenuNavTextLink>{item.label}</HeaderMenuNavTextLink>
+                  <HeaderMenuNavItemBgIcon>
+                    <HeaderMenuNavItemArrowIcon />
+                  </HeaderMenuNavItemBgIcon>
+                </HeaderMenuNavMainLinkContainer>
+                {item.description && (
+                  <HeaderMenuNavTextLink>
+                    {item.description}
+                  </HeaderMenuNavTextLink>
+                )}
+              </HeaderMenuNavMainLink>
+            );
+          case 'divider':
+            return <Divider key={`child-divider-${index}`} />;
+          default:
+            return null;
+        }
+      })}
+    </HeaderMenuNavContentChildList>
+  );
+
+const HeaderFirstLevelSubMenu: React.FC<{
+  parent: MenuItems | null;
+  child?: MenuItemChild | (MenuItem & MenuItemCollapse) | null;
+  handleMouseEnterChild: (
+    item: MenuItemChild | (MenuItem & MenuItemCollapse)
+  ) => void;
+  springsChildContent: {
+    opacity: SpringValue<number>;
+    transform: SpringValue<string>;
+  };
+}> = ({ parent, child, handleMouseEnterChild, springsChildContent }) =>
+  parent?.children?.length && (
+    <HeaderMenuNavContentList style={springsChildContent}>
+      {parent.children.map((item) => {
+        if (item.type === 'divider') {
+          return <Divider key={`divider-${Math.random()}`} />;
+        }
+
+        return (
+          <HeaderMenuNavMainLink
+            $active={
+              child?.type !== 'divider' &&
+              child?.type !== 'button' &&
+              child?.id === item.id
+            }
+            onMouseEnter={() => handleMouseEnterChild(item)}
+            key={item.id}
+          >
+            <HeaderMenuNavMainLinkContainer>
+              <IconProvider size={18}>{item.icon}</IconProvider>
+              <HeaderMenuNavTextLink>{item.label}</HeaderMenuNavTextLink>
+              {item.type === 'collapse' && <HeaderMenuNavArrowIcon />}
+              {item.type === 'link' && <HeaderMenuNavItemArrowIcon />}
+            </HeaderMenuNavMainLinkContainer>
+          </HeaderMenuNavMainLink>
+        );
+      })}
+    </HeaderMenuNavContentList>
+  );

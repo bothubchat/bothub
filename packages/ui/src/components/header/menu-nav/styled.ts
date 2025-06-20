@@ -11,7 +11,11 @@ export const HeaderMenuNavStyled = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  position: relative;
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    position: relative;
+    bottom: -30px;
+    padding-top: 89px;
+  }
 `;
 
 export const HeaderMenuNavList = styled.ul`
@@ -20,6 +24,10 @@ export const HeaderMenuNavList = styled.ul`
   padding: 0;
   width: 100%;
   gap: 20px;
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    flex-direction: column;
+    gap: 10px;
+  }
 `;
 
 export const HeaderMenuNavItem = styled.li`
@@ -30,8 +38,8 @@ export const HeaderMenuNavLabel = styled(Typography).attrs({
   variant: 'body-m-semibold'
 })``;
 
-export const HeaderMenuNavContent = styled(animated.div)`
-  display: flex;
+export const HeaderMenuNavContent = styled.div<{ $open?: boolean }>`
+  display: ${({ $open }) => ($open ? 'flex' : 'none')};
   background: ${({ theme }) => theme.colors.base.black};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 17px;
@@ -42,6 +50,12 @@ export const HeaderMenuNavContent = styled(animated.div)`
   padding: 16px;
   width: max-content;
   overflow: hidden;
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    position: static;
+    flex-direction: column;
+    top: 30px;
+    padding: 0;
+  }
 `;
 
 export const HeaderMenuNavContentList = styled(animated.div)`
@@ -58,7 +72,6 @@ export const HeaderMenuNavContentChildList = styled(animated.div)<{
   flex-direction: column;
   row-gap: 8px;
   column-gap: 16px;
-
   width: 100%;
 `;
 
