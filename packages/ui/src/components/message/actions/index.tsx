@@ -479,7 +479,7 @@ export const MessageActions = ({
           <DownloadImgIcon size={18} />
         </ActionButton>
       )}
-      {disableEncryption === false && (
+      {!disableEncryption && (
         <ActionButton tooltipLabel={encryptionTooltipLabel}>
           <ShieldIcon size={18} />
         </ActionButton>
