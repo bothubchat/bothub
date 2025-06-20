@@ -82,6 +82,7 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
         <SidebarMenuToggleButton
           disabled={disabled}
           onClick={handleToggle}
+          data-test="sidebar-toggle-button"
         >
           {isOpen ? (
             <CloseIcon

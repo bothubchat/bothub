@@ -161,6 +161,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                     onMouseEnter={handleTooltipMouseEnter}
                     onMouseLeave={handleTooltipMouseLeave}
                     onClick={onClick}
+                    data-test={item.label}
                   >
                     <SelectFieldRadioTitleAndRadio>
                       {item.icon && (

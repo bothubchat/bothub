@@ -108,6 +108,7 @@ export type SelectFieldProps = (
   followContentHeight?: boolean;
   contentHeight?: number;
   resetStyleState?: boolean;
+  dataTest?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onSelectClick?: () => void;
@@ -145,6 +146,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   followContentHeight = false,
   contentHeight,
   resetStyleState,
+  dataTest,
   onOptionClick,
   onInputChange,
   onSelectClick,
@@ -580,6 +582,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                 $multiple={multiple && Array.isArray(value) && value.length > 0}
                 ref={inputRef}
                 onClick={handleInputClick.bind(null, false)}
+                data-test={dataTest}
               >
                 <SelectFieldInputLeftSide>
                   {(!value || (Array.isArray(value) && value.length === 0)) && (

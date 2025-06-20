@@ -56,6 +56,7 @@ export const TariffCard: React.FC<
     <TariffCardIsPopular
       $active={props.variant === 'PREMIUM' && !!props.popularText}
       $variant={props.variant}
+      data-test={props.variant}
     >
       {props.variant === 'PREMIUM' && !!props.popularText && (
         <TariffCardIsPopularContainer>
