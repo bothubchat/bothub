@@ -304,7 +304,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   );
 
   const handleClick = useCallback(() => {
-    if (!disabled && autoFocus) {
+    if (!disabled) {
       textareaRef.current?.focus();
     }
   }, [disabled, autoFocus]);

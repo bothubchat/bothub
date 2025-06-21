@@ -45,11 +45,11 @@ export const SidebarAddGroupButton = styled(Button).attrs({
       background-color: ${isBright(theme.colors.grayScale.gray4) ||
       theme.mode === 'light'
         ? theme.default.colors.base.white
-        : theme.default.colors.base.black};
+        : theme.default.colors.grayScale.gray3};
       svg path {
         stroke: ${theme.bright && theme.mode === 'light'
           ? theme.default.colors.base.black
-          : theme.colors.accent.primary};
+          : theme.colors.accent.primaryLight};
       }
     `}
 `;
