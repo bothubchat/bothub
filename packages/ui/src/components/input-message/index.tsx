@@ -654,7 +654,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           </InputMessageToggleSendStyled>
         )}
         {rightActions}
-        {!voice || message || files.length > 0 ? (
+        {!voice || message ? (
           <InputMessageSendButton
             disabled={disabled || sendDisabled}
             onClick={handleSend}
