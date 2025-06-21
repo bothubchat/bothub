@@ -34,6 +34,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       {...props}
       $size={size}
       $children={isChildren}
+      $variant={variant}
       className={className}
       style={style}
     >
@@ -50,7 +51,10 @@ export const Avatar: React.FC<AvatarProps> = ({
       {isSkeleton && <AvatarSkeleton />}
     </AvatarStyled>
   ) : (
-    <AvatarBg $size={size}>
+    <AvatarBg
+      $size={size}
+      $variant={variant}
+    >
       {!isSkeleton && !isChildren && (
         <IconProvider size={size / 2}>
           <UserProfileIcon />
