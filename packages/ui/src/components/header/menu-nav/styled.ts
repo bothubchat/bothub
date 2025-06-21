@@ -11,10 +11,11 @@ export const HeaderMenuNavStyled = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     position: relative;
-    bottom: -30px;
-    padding-top: 89px;
+    z-index: 10;
+    padding: 30px 40px;
+    height: auto;
   }
 `;
 
@@ -22,9 +23,10 @@ export const HeaderMenuNavList = styled.ul`
   display: flex;
   list-style: none;
   padding: 0;
+  margin: 0;
   width: 100%;
   gap: 20px;
-  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     flex-direction: column;
     gap: 10px;
   }
@@ -32,11 +34,23 @@ export const HeaderMenuNavList = styled.ul`
 
 export const HeaderMenuNavItem = styled.li`
   cursor: pointer;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export const HeaderMenuNavLabel = styled(Typography).attrs({
   variant: 'body-m-semibold'
-})``;
+})`
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+`;
 
 export const HeaderMenuNavContent = styled.div<{ $open?: boolean }>`
   display: ${({ $open }) => ($open ? 'flex' : 'none')};
@@ -48,14 +62,8 @@ export const HeaderMenuNavContent = styled.div<{ $open?: boolean }>`
   gap: 12px;
   left: 0px;
   padding: 16px;
-  width: max-content;
+  width: fit-content;
   overflow: hidden;
-  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    position: static;
-    flex-direction: column;
-    top: 30px;
-    padding: 0;
-  }
 `;
 
 export const HeaderMenuNavContentList = styled(animated.div)`

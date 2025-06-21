@@ -223,7 +223,7 @@ export const AdminDashboard: HeaderStory = {
 export default {
   title: 'Components/Header',
   component: Header,
-  decorators: [StoryDecorator()],
+  decorators: [StoryDecorator({ scale: 'main' })],
   argTypes: {
     variant: {
       table: {

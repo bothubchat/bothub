@@ -1,10 +1,10 @@
 import { useCallback, useRef, useState } from 'react';
 import { SpringValue, useSpring } from '@react-spring/web';
+import { useMediaQuery } from '@uidotdev/usehooks';
 import {
   HeaderMenuNavStyled,
   HeaderMenuNavList,
   HeaderMenuNavItem,
-  HeaderMenuNavLabel,
   HeaderMenuNavContent,
   HeaderMenuNavContentList,
   HeaderMenuNavMainLink,
@@ -13,7 +13,8 @@ import {
   HeaderMenuNavArrowIcon,
   HeaderMenuNavItemArrowIcon,
   HeaderMenuNavItemBgIcon,
-  HeaderMenuNavMainLinkContainer
+  HeaderMenuNavMainLinkContainer,
+  HeaderMenuNavLabel
 } from './styled';
 import {
   items,
@@ -24,9 +25,17 @@ import {
 } from './config';
 import { IconProvider } from '@/ui/components/icon';
 import { Divider } from '@/ui/components/divider';
+import { useTheme } from '@/ui/theme';
+import { ArrowDownIcon } from '@/ui/icons';
 
 export const HeaderMenuNav: React.FC = () => {
   const [parent, setParent] = useState<MenuItems | null>(null);
+  const theme = useTheme();
+  const [isTablet, isMobile] = [
+    useMediaQuery(`(max-width: ${theme.tablet.maxWidth})`),
+    useMediaQuery(`(max-width: ${theme.mobile.maxWidth})`)
+  ];
+  const isDesktop = !isTablet && !isMobile;
   const [child, setChild] = useState<
     MenuItemChild | (MenuItem & MenuItemCollapse) | null
   >(null);
@@ -89,7 +98,6 @@ export const HeaderMenuNav: React.FC = () => {
 
           setParent(items[nextIndex]);
 
-          // Устанавливаем первый дочерний элемент, если он есть
           if (
             items[nextIndex].children &&
             items[nextIndex].children.length > 0
@@ -122,48 +130,95 @@ export const HeaderMenuNav: React.FC = () => {
         {items.map((item) => (
           <HeaderMenuNavItem
             key={item.id}
+            onClick={() => {
+              if (isMobile && item.id === parent?.id) {
+                handleClose();
+              } else {
+                handleMouseEnterParent(item.id);
+              }
+            }}
             onMouseEnter={() => handleMouseEnterParent(item.id)}
           >
-            <HeaderMenuNavLabel>{item.label}</HeaderMenuNavLabel>
+            <HeaderMenuNavLabel>
+              {item.label}{' '}
+              {!isDesktop && item.children && item.children.length > 0 && (
+                <ArrowDownIcon />
+              )}
+            </HeaderMenuNavLabel>
+
+            {isMobile && item.id === parent?.id && (
+              <div onMouseEnter={handleMouseEnterContent}>
+                <HeaderFirstLevelSubMenu
+                  parent={parent}
+                  child={child}
+                  handleMouseEnterChild={handleMouseEnterChild}
+                  springsChildContent={springsChildContent}
+                />
+
+                {parent !== null &&
+                  child !== null &&
+                  child?.type === 'collapse' &&
+                  child?.children?.length && (
+                    <HeaderMenuNavContentChildList
+                      $columns={child?.columns}
+                      style={springsChildContent}
+                      onMouseEnter={handleMouseEnterContent}
+                    >
+                      <HeaderCollapseSubMenu
+                        springsChildContent={springsChildContent}
+                        child={child}
+                        parent={parent}
+                        handleMouseEnterContent={handleMouseEnterContent}
+                      />
+                    </HeaderMenuNavContentChildList>
+                  )}
+                <HeaderLinkSubMenu
+                  parent={parent}
+                  child={child}
+                  handleMouseEnterContent={handleMouseEnterContent}
+                />
+              </div>
+            )}
           </HeaderMenuNavItem>
         ))}
       </HeaderMenuNavList>
 
-      <HeaderMenuNavContent
-        $open={parent !== null}
-        onMouseEnter={handleMouseEnterContent}
-      >
-        <HeaderFirstLevelSubMenu
-          parent={parent}
-          child={child}
-          handleMouseEnterChild={handleMouseEnterChild}
-          springsChildContent={springsChildContent}
-        />
+      {isDesktop && (
+        <HeaderMenuNavContent
+          $open={parent !== null}
+          onMouseEnter={handleMouseEnterContent}
+        >
+          <HeaderFirstLevelSubMenu
+            parent={parent}
+            child={child}
+            handleMouseEnterChild={handleMouseEnterChild}
+            springsChildContent={springsChildContent}
+          />
 
-        {parent !== null &&
-          child !== null &&
-          child?.type === 'collapse' &&
-          child?.children?.length && (
-            <HeaderMenuNavContentChildList
-              $columns={child?.columns}
-              style={springsChildContent}
-              onMouseEnter={handleMouseEnterContent}
-            >
-              <HeaderCollapseSubMenu
-                springsChildContent={springsChildContent}
-                child={child}
-                parent={parent}
-                handleMouseEnterContent={handleMouseEnterContent}
-              />
-            </HeaderMenuNavContentChildList>
-          )}
-
-        <HeaderLinkSubMenu
-          parent={parent}
-          child={child}
-          handleMouseEnterContent={handleMouseEnterContent}
-        />
-      </HeaderMenuNavContent>
+          {parent !== null &&
+            child !== null &&
+            child?.type === 'collapse' &&
+            child?.children?.length && (
+              <HeaderMenuNavContentChildList
+                $columns={child?.columns}
+                style={springsChildContent}
+                onMouseEnter={handleMouseEnterContent}
+              >
+                <HeaderCollapseSubMenu
+                  springsChildContent={springsChildContent}
+                  child={child}
+                  parent={parent}
+                  handleMouseEnterContent={handleMouseEnterContent}
+                />
+              </HeaderMenuNavContentChildList>
+            )}
+          <HeaderLinkSubMenu
+            parent={parent}
+            child={child}
+            handleMouseEnterContent={handleMouseEnterContent}
+          />
+        </HeaderMenuNavContent>
+      )}
     </HeaderMenuNavStyled>
   );
 };
