@@ -37,6 +37,7 @@ import { ModalOption } from './types';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { colorToRgba } from '@/ui/utils';
+import { ShieldIcon } from '@/ui/icons';
 
 type MessageActionsProps = {
   id?: string;
@@ -50,6 +51,7 @@ type MessageActionsProps = {
   disableUpdate?: boolean;
   disableCopy?: boolean;
   disableDownload?: boolean;
+  disableEncryption?: boolean;
   editOutOfMenu?: boolean;
   editText?: string | null;
   copyTgText?: string | null;
@@ -62,6 +64,7 @@ type MessageActionsProps = {
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
+  encryptionTooltipLabel?: string | null;
   editing?: boolean;
   editedText?: string;
   messageRef?: MutableRefObject<HTMLDivElement | null>;
@@ -90,6 +93,7 @@ export const MessageActions = ({
   disableUpdate,
   disableCopy,
   disableDownload,
+  disableEncryption,
   editOutOfMenu,
   editText,
   copyTgText,
@@ -100,6 +104,7 @@ export const MessageActions = ({
   downloadTooltipLabel,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
+  encryptionTooltipLabel,
   updateTooltipLabel,
   copyTooltipLabel,
   editing,
@@ -178,8 +183,8 @@ export const MessageActions = ({
 
   const handleButtonClick = useCallback(() => {
     handleInvertedModalState();
-    setMenuShown(!menuShown);
-  }, [menuShown]);
+    setMenuShown((prev) => !prev);
+  }, []);
 
   const handleOptionClick = useCallback(
     (option: ModalOption) => {
@@ -282,8 +287,12 @@ export const MessageActions = ({
                 }}
               >
                 <ActionButton
-                  onMouseEnter={handleButtonHoverIn}
-                  onMouseLeave={handleButtonHoverOut}
+                  onMouseEnter={
+                    'ontouchstart' in window ? undefined : handleButtonHoverIn
+                  }
+                  onMouseLeave={
+                    'ontouchstart' in window ? undefined : handleButtonHoverOut
+                  }
                   onClick={handleButtonClick}
                 >
                   <MenuDotIcon size={18} />
@@ -468,6 +477,11 @@ export const MessageActions = ({
           onClick={onDownload}
         >
           <DownloadImgIcon size={18} />
+        </ActionButton>
+      )}
+      {!disableEncryption && (
+        <ActionButton tooltipLabel={encryptionTooltipLabel}>
+          <ShieldIcon size={18} />
         </ActionButton>
       )}
     </S.MessageActionsStyled>

@@ -51,20 +51,29 @@ export const Avatar: React.FC<AvatarProps> = ({
       {isSkeleton && <AvatarSkeleton />}
     </AvatarStyled>
   ) : (
-    <AvatarBg
+    <AvatarStyled
+      {...props}
       $size={size}
+      $children={isChildren}
       $variant={variant}
+      className={className}
+      style={style}
     >
-      {!isSkeleton && !isChildren && (
-        <IconProvider size={size / 2}>
-          <UserProfileIcon />
-        </IconProvider>
-      )}
-      {isChildren && !isSkeleton && (
-        <IconProvider size={size}>{children}</IconProvider>
-      )}
-      {isSkeleton && <AvatarSkeleton />}
-    </AvatarBg>
+      <AvatarBg
+        $size={size}
+        $variant={variant}
+      >
+        {!isSkeleton && !isChildren && (
+          <IconProvider size={size / 2}>
+            <UserProfileIcon />
+          </IconProvider>
+        )}
+        {isChildren && !isSkeleton && (
+          <IconProvider size={size}>{children}</IconProvider>
+        )}
+        {isSkeleton && <AvatarSkeleton />}
+      </AvatarBg>
+    </AvatarStyled>
   );
 };
 

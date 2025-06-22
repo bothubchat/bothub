@@ -73,7 +73,7 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
   });
 
   return (
-    <MultiLevelMenuLi>
+    <MultiLevelMenuLi data-test={menuItem.accordion_title}>
       <MultiLevelMenuHeader
         onClick={handleAccordionToggle}
         $active={openAccordion}
@@ -133,6 +133,7 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                                     : 1
                                 }
                                 key={indexChildrenItem}
+                                data-test={childrenItem.title}
                               >
                                 <MultiLevelMenuSecondLevelLiHover
                                   onClick={handleCloseAccordion}

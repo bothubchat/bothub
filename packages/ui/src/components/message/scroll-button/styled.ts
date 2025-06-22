@@ -6,9 +6,8 @@ export const MessageListScrollButton = styled.button<{
 }>`
   display: flex;
   justify-content: center;
-  align-items: center;
-  position: absolute;
-  bottom: 60px;
+  padding: 10px;
+  bottom: 75px;
   left: 50%;
   width: 38px;
   height: 38px;

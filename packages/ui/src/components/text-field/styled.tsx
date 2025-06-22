@@ -195,13 +195,23 @@ export const TextFieldInput = styled.input<VariantProps>`
     caret-color: ${({ theme }) => theme.colors.base.white};
     -webkit-background-clip: text;
     -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
-    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray4} inset !important;
+    box-shadow: 0 0 0 100px
+      ${({ theme }) =>
+        theme.mode === 'light'
+          ? theme.default.colors.base.white
+          : theme.colors.grayScale.gray4}
+      inset !important;
   }
   &:-webkit-autofill:focus {
     caret-color: ${({ theme }) => theme.colors.base.white};
     -webkit-background-clip: text;
     -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
-    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray4} inset !important;
+    box-shadow: 0 0 0 100px
+      ${({ theme }) =>
+        theme.mode === 'light'
+          ? theme.default.colors.base.white
+          : theme.colors.grayScale.gray4}
+      inset !important;
   }
   &::-webkit-search-decoration,
   &::-webkit-search-cancel-button,
@@ -249,6 +259,16 @@ export const TextFieldClearButton = styled(
   iconSize: $big ? 16 : 12,
   children: <CloseIcon />
 }))``;
+
+export const TextFieldShowpassButton = styled.button`
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+
+  position: relative;
+`;
 
 export const TextFieldErrorText = styled(Typography).attrs({
   variant: 'input-sm'

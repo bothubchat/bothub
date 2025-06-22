@@ -162,7 +162,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
               {buttons}
               {buttonsModal}
               {!isOpen && <SidebarMenu>{menu}</SidebarMenu>}
-              <SidebarToggle>{toggle}</SidebarToggle>
+              <SidebarToggle data-test="sidebar-toggle">{toggle}</SidebarToggle>
             </SidebarToolbar>
             <SidebarSearchContainer>{search}</SidebarSearchContainer>
             <SidebarDivider />
