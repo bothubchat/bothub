@@ -1,4 +1,4 @@
-import { ThemeGrayScaleColors } from '@/ui/theme';
+import { THEMES, ThemeGrayScaleColors } from '@/ui/theme';
 import { hexToRgb } from './hexToRgb';
 import { rgbToHsv } from './rgbToHsv';
 import { rgbToHex } from './rgbToHex';
@@ -7,21 +7,20 @@ import { isBright } from './isBright';
 
 const grayScaleHsv = {
   dark: {
-    gray1: [224, 31.2, 55.3],
-    gray2: [224, 50, 38.4],
-    gray3: [224, 50, 26.7],
-    gray5: [221, 33, 43.9],
-    gray6: [221, 25.4, 72.5],
-    gray7: [221, 51.6, 12.2]
+    gray1: rgbToHsv(hexToRgb(THEMES.standard.dark.colors.grayScale.gray1)),
+    gray2: rgbToHsv(hexToRgb(THEMES.standard.dark.colors.grayScale.gray2)),
+    gray3: rgbToHsv(hexToRgb(THEMES.standard.dark.colors.grayScale.gray3)),
+    gray5: rgbToHsv(hexToRgb(THEMES.standard.dark.colors.grayScale.gray5)),
+    gray6: rgbToHsv(hexToRgb(THEMES.standard.dark.colors.grayScale.gray6)),
+    gray7: rgbToHsv(hexToRgb(THEMES.standard.dark.colors.grayScale.gray7))
   },
   light: {
-    gray1: [205, 9.9, 75.3],
-    gray2: [203, 6, 85.5],
-    gray3: [207, 3.9, 89.4],
-    gray4: [210, 0.8, 96.9],
-    gray5: [221, 33, 43.9],
-    gray6: [210, 9.1, 95.3],
-    gray7: [210, 2.6, 89.8]
+    gray1: rgbToHsv(hexToRgb(THEMES.standard.light.colors.grayScale.gray1)),
+    gray2: rgbToHsv(hexToRgb(THEMES.standard.light.colors.grayScale.gray2)),
+    gray3: rgbToHsv(hexToRgb(THEMES.standard.light.colors.grayScale.gray3)),
+    gray5: rgbToHsv(hexToRgb(THEMES.standard.light.colors.grayScale.gray5)),
+    gray6: rgbToHsv(hexToRgb(THEMES.standard.light.colors.grayScale.gray6)),
+    gray7: rgbToHsv(hexToRgb(THEMES.standard.light.colors.grayScale.gray7))
   }
 };
 
