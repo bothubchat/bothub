@@ -1,9 +1,11 @@
 import { css, styled } from 'styled-components';
 import { Skeleton } from '@/ui/components/skeleton';
+import { AvatarVariant } from './types';
 
 export interface AvatarStyledProps {
   $size: number;
   $children: boolean;
+  $variant: AvatarVariant;
 }
 
 export const AvatarStyled = styled.span<AvatarStyledProps>`
@@ -31,14 +33,19 @@ export const AvatarSkeleton = styled(Skeleton).attrs({
   height: 40
 })``;
 
-export const AvatarBg = styled.div<{ $size: number }>`
+export interface AvatarBgProps {
+  $size: number;
+  $variant: AvatarVariant;
+}
+
+export const AvatarBg = styled.div<AvatarBgProps>`
   display: inline-flex;
   overflow: hidden;
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: ${({ theme }) =>
+  background-color: ${({ theme }) =>
     theme.mode === 'light'
       ? theme.colors.grayScale.gray1
       : theme.colors.grayScale.gray3};

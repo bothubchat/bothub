@@ -23,6 +23,8 @@ export interface ThemeSchemesProps {
   colorfulTitle?: string;
   activeScheme: ColorSchemeNames;
   customTheme?: Pick<Theme, 'colors'>;
+  editTooltipText?: string | null;
+  resetTooltipText?: string | null;
   onClick?: ThemeSchemesClickEventHandler;
   onEditCustom?: ThemeSchemesEventHandler;
   onResetCustom?: ThemeSchemesEventHandler;
@@ -34,6 +36,8 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
   colorfulTitle,
   activeScheme,
   customTheme,
+  editTooltipText,
+  resetTooltipText,
   onClick,
   onEditCustom,
   onResetCustom
@@ -69,6 +73,8 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
           theme={custom}
           active={scheme === 'custom'}
           hasActions={scheme === 'custom'}
+          editTooltipText={editTooltipText}
+          resetTooltipText={resetTooltipText}
           onClick={() => handleClick('custom')}
           onEdit={onEditCustom}
           onDelete={onResetCustom}

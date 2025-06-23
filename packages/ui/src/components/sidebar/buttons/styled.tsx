@@ -39,19 +39,36 @@ export const SidebarDeleteButton = styled(Button).attrs({
 export const SidebarAddGroupButton = styled(Button).attrs({
   children: <AddGroupIcon />
 })<{ variant: ButtonVariant }>`
-  ${({ variant, theme }) =>
-    variant === 'secondary' &&
-    css`
-      background-color: ${isBright(theme.colors.grayScale.gray4) ||
-      theme.mode === 'light'
-        ? theme.default.colors.base.white
-        : theme.default.colors.grayScale.gray3};
+  ${({ variant, theme }) => {
+    if (variant !== 'secondary') {
+      return css``;
+    }
+
+    const stroke = css`
       svg path {
         stroke: ${theme.bright && theme.mode === 'light'
           ? theme.default.colors.base.black
-          : theme.colors.accent.primaryLight};
+          : theme.colors.accent.primary};
       }
-    `}
+    `;
+
+    if (theme.scheme === 'custom') {
+      return css`
+        background-color: ${theme.bright
+          ? theme.default.colors.base.white
+          : theme.colors.grayScale.gray4};
+        ${stroke}
+      `;
+    }
+
+    return css`
+      background-color: ${isBright(theme.colors.grayScale.gray4) ||
+      theme.mode === 'light'
+        ? theme.default.colors.base.white
+        : theme.default.colors.base.black};
+      ${stroke}
+    `;
+  }}
 `;
 
 export const SidebarEditButton = styled(Button).attrs({
