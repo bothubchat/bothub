@@ -1,4 +1,6 @@
 import { styled } from 'styled-components';
+import { Typography } from '../typography';
+import { colorToRgba } from '@/ui/utils';
 
 export const DropzoneFieldStyled = styled.div<{
   $fullWidth: boolean;
@@ -9,7 +11,8 @@ export const DropzoneFieldStyled = styled.div<{
   justify-content: stretch;
   gap: 20px;
 
-  background-color: rgba(18, 24, 37, 0.5); // gray4-50
+  background-color: ${({ theme }) =>
+    colorToRgba(theme.colors.grayScale.gray4, 0.75)};
   padding: 20px;
   border-radius: 20px;
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' vector-effect='non-scaling-stroke' stroke='%23222B44FF' stroke-width='4' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
@@ -25,14 +28,29 @@ export const DropzoneFieldStyled = styled.div<{
   }
 `;
 
+export const DropzoneFieldLabels = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const DropzoneFieldRightLabelsContainer = styled.div`
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const DropzoneFieldRightLabel = styled(Typography).attrs({
+  variant: 'body-xs-medium'
+})`
+  color: ${({ theme }) => theme.colors.grayScale.gray1};
+`;
+
 export const DropzoneFieldInput = styled.input`
   cursor: pointer;
   position: absolute;
   opacity: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  inset: 0;
   z-index: 30;
 `;
 
@@ -40,11 +58,8 @@ export const DropzoneFieldPlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 150px;
   position: relative;
-
-  border-radius: 20px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  padding: 20px;
 `;
 
 export const DropzoneFieldFilesStyled = styled.div`

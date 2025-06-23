@@ -18,27 +18,13 @@ export const Label = () => {
   return (
     <DropzoneField
       accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-      showFiles={false}
       files={files}
       onChange={(files) => setFiles(files)}
-      label={
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between'
-          }}
-        >
-          <Typography variant="body-m-regular">
-            Перетащите документ сюда:
-          </Typography>
-          <Typography
-            variant="body-xs-medium"
-            style={{ color: theme.colors.grayScale.gray1 }}
-          >
-            Макс. размер: 20 MB
-          </Typography>
-        </div>
-      }
+      leftLabel="Перетащите документ сюда:"
+      rightLabels={[
+        'Допустимые форматы: .xlsx (до 20MB)',
+        'Доступны: 5/5 очередей'
+      ]}
       placeholder={
         <div
           style={{

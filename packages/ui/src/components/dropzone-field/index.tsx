@@ -1,20 +1,12 @@
 import { forwardRef, useCallback, useId, useState } from 'react';
-import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
-import { FileIcon } from '@/ui/components/file-icon';
-import { CloseIcon } from '@/ui/icons';
-import {
-  DropzoneFieldFile,
-  DropzoneFieldFilesStyled,
-  DropzoneFieldInput,
-  DropzoneFieldPlaceholder,
-  DropzoneFieldStyled
-} from './styled';
+import * as S from './styled';
 
 export type DropzoneFieldChangeEventHandler = (files: File[]) => void;
 
 export type DropzoneFieldProps = {
-  label?: React.ReactNode;
+  leftLabel?: string;
+  rightLabels?: string[];
   placeholder?: React.ReactNode;
   error?: string;
   files?: File[];
@@ -23,21 +15,20 @@ export type DropzoneFieldProps = {
   onChange?: DropzoneFieldChangeEventHandler;
   multiple?: boolean;
   accept?: string;
-  showFiles?: boolean;
   id?: string;
 } & Omit<React.ComponentProps<'div'>, 'placeholder' | 'onChange'>;
 
 export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
   (
     {
-      label,
+      leftLabel,
+      rightLabels,
       placeholder,
       files: initialFiles,
       onChange,
       fullWidth = false,
       disabled = false,
       multiple = true,
-      showFiles = true,
       accept,
       ...props
     },
@@ -76,13 +67,6 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
       [files, setFiles, multiple]
     );
 
-    const handleFileDelete = useCallback(
-      (file: File) => {
-        setFiles(files.filter(({ name }) => name !== file.name));
-      },
-      [files, setFiles]
-    );
-
     const handleDrop = useCallback(
       (e: React.DragEvent) => {
         e.preventDefault();
@@ -115,7 +99,7 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
     }, []);
 
     return (
-      <DropzoneFieldStyled
+      <S.DropzoneFieldStyled
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -123,17 +107,22 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
         data-dragged={isDragActive}
         {...props}
       >
-        {label && (
-          <label htmlFor={id}>
-            {typeof label === 'string' ? (
-              <Typography variant="body-m-regular">{label}</Typography>
-            ) : (
-              label
-            )}
-          </label>
-        )}
+        <S.DropzoneFieldLabels>
+          {leftLabel && (
+            <Typography variant="body-m-regular">{leftLabel}</Typography>
+          )}
+          {!!rightLabels && (
+            <S.DropzoneFieldRightLabelsContainer>
+              {rightLabels.map((label) => (
+                <S.DropzoneFieldRightLabel key={label}>
+                  {label}
+                </S.DropzoneFieldRightLabel>
+              ))}
+            </S.DropzoneFieldRightLabelsContainer>
+          )}
+        </S.DropzoneFieldLabels>
 
-        <DropzoneFieldInput
+        <S.DropzoneFieldInput
           id={id}
           type="file"
           multiple={multiple}
@@ -142,48 +131,11 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
           disabled={disabled}
           ref={ref}
         />
-        <DropzoneFieldPlaceholder>
-          {showFiles && files.length > 0 ? (
-            <DropzoneFieldFiles
-              files={files}
-              onDelete={handleFileDelete}
-            />
-          ) : (
-            <>
-              {placeholder ? (
-                typeof placeholder === 'string' ? (
-                  <Typography variant="body-l-semibold">
-                    {placeholder}
-                  </Typography>
-                ) : (
-                  placeholder
-                )
-              ) : null}
-            </>
-          )}
-        </DropzoneFieldPlaceholder>
-      </DropzoneFieldStyled>
+
+        {!!placeholder && (
+          <S.DropzoneFieldPlaceholder>{placeholder}</S.DropzoneFieldPlaceholder>
+        )}
+      </S.DropzoneFieldStyled>
     );
   }
-);
-
-type DropzoneFieldFilesProps = {
-  files: File[];
-  onDelete: (file: File) => void;
-};
-
-const DropzoneFieldFiles = ({ files, onDelete }: DropzoneFieldFilesProps) => (
-  <DropzoneFieldFilesStyled>
-    {files.map((file) => (
-      <DropzoneFieldFile key={file.name}>
-        <FileIcon filename={file.name} />
-        <Typography variant="body-s-regular">{file.name}</Typography>
-        <Button
-          onClick={() => onDelete(file)}
-          variant="text"
-          startIcon={<CloseIcon />}
-        />
-      </DropzoneFieldFile>
-    ))}
-  </DropzoneFieldFilesStyled>
 );

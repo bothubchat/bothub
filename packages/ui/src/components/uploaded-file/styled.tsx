@@ -2,13 +2,15 @@ import styled from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Progress } from '@/ui/components/progress';
 import { UploadedFileStatus } from './types';
+import { colorToRgba } from '@/ui/utils';
 
 export const UploadedFileStyled = styled.div<{
   $fullWidth?: boolean;
 }>`
   ${({ $fullWidth }) => ($fullWidth ? 'width: 100%;' : '')}
   padding: 12px 16px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray7};
+  background-color: ${({ theme }) =>
+    colorToRgba(theme.colors.grayScale.gray4, 0.75)};
   border-radius: 10px;
   display: flex;
   flex-direction: column;
