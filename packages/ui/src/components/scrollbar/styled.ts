@@ -59,14 +59,19 @@ export const ScrollbarContent = styled.div<ScrollbarContentProps>`
         `}
       }
       &::-webkit-scrollbar-thumb {
-        background: ${theme.colors.accent.primaryLight};
+        background: ${theme.mode === 'light'
+          ? theme.colors.accent.primary
+          : theme.colors.accent.primaryLight};
         ${$variant === 'secondary' &&
         css`
           border-radius: ${`${$size / 2}px`};
         `}
       }
       &::-webkit-scrollbar-track {
-        background: ${({ theme }) => theme.colors.grayScale.gray5};
+        background: ${({ theme }) =>
+          theme.mode === 'light'
+            ? theme.colors.grayScale.gray4
+            : theme.colors.grayScale.gray5};
         ${$variant === 'secondary' &&
         css`
           border-radius: ${`${$size / 2}px`};

@@ -21,7 +21,8 @@ import {
   MessageTop,
   MessageAvatar,
   MessageStyledWithBottomPanel,
-  MessageButtonsStyled
+  MessageButtonsStyled,
+  MessageAvatarWrapper
 } from './styled';
 import {
   MessageActionEventHandler,
@@ -325,7 +326,9 @@ export const Message: React.FC<MessageProps> = ({
                 </MessageTop>
               )}
               {typeof name !== 'string' && name}
-              <MessageAvatar>{avatar}</MessageAvatar>
+              <MessageAvatarWrapper $variant={variant}>
+                <MessageAvatar>{avatar}</MessageAvatar>
+              </MessageAvatarWrapper>
 
               <MessageBlockWrapper>
                 <MessageBlock
@@ -403,6 +406,9 @@ export const Message: React.FC<MessageProps> = ({
             </MessageContent>
           </MessageStyled>
           <MessageBlockBottomPanel $variant={variant}>
+            {transaction && (
+              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
+            )}
             {!skeleton && (
               <MessageActions
                 id={id}
@@ -446,9 +452,7 @@ export const Message: React.FC<MessageProps> = ({
                 onCopy={handleRichTextCopy}
               />
             )}
-            {transaction && (
-              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
-            )}
+
             <MessageVersions
               id={id}
               version={version}

@@ -136,7 +136,7 @@ export const standardLight: Theme = {
       gray2: '#CDD5DA',
       gray3: '#DBE0E4',
       gray4: '#F5F6F7',
-      gray5: '#4B5770',
+      gray5: '#ADB5BD',
       gray6: '#DDE8F3',
       gray7: '#DFE2E5'
     },

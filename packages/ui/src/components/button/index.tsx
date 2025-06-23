@@ -93,7 +93,16 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
       } else {
         switch (variant) {
           case 'primary':
-            iconFill = theme.default.colors.base.white;
+            if (theme.scheme === 'custom') {
+              iconFill = theme.colors.custom.interface.text;
+              break;
+            }
+
+            iconFill = theme.bright
+              ? theme.mode === 'dark'
+                ? theme.colors.base.black
+                : theme.default.colors.base.black
+              : theme.default.colors.base.white;
             break;
           default:
             iconFill = theme.colors.base.white;

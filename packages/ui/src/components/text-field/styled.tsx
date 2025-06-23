@@ -96,7 +96,16 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
         background: ${theme.colors.grayScale.gray3};
       `;
     }
+
     if ($focus) {
+      if (theme.scheme === 'custom') {
+        return css`
+        background: ${theme.colors.grayScale.gray2};
+        > svg path {
+          fill: ${theme.colors.accent.primary};
+      `;
+      }
+
       return css`
         background: ${theme.mode === 'light'
           ? $variant === 'primary'
@@ -110,6 +119,14 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
             ? theme.default.colors.accent.primary
             : theme.colors.base.white};
         }
+      `;
+    }
+
+    if (theme.scheme === 'custom') {
+      return css`
+        background: ${theme.colors.grayScale.gray7};
+        > svg path {
+          fill: ${theme.colors.grayScale.gray1};
       `;
     }
 
