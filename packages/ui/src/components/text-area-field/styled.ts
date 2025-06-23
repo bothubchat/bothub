@@ -73,6 +73,10 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
       return theme.colors.grayScale.gray3;
     }
 
+    if (theme.scheme === 'custom') {
+      return theme.colors.grayScale.gray7;
+    }
+
     return theme.mode === 'light'
       ? theme.default.colors.base.white
       : theme.colors.grayScale.gray4;

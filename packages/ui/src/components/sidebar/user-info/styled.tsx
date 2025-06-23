@@ -3,6 +3,7 @@ import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 import { LogoutIcon } from '@/ui/icons/logout';
+import { colorToRgba } from '@/ui/utils';
 
 export interface SidebarUserInfoStyledProps {
   $open: boolean;
@@ -263,13 +264,22 @@ export const SidebarUserInfoUpdateTariffButton = styled.button`
   padding: 6px 18px 6px 6px;
   box-shadow: inset 0 1px 1px 0 #ffffff60;
   background: ${({ theme }) => {
-    if (theme.mode === 'dark') {
-      return css`
-        ${theme.colors.gradient.basic}
-      `;
+    if (theme.scheme === 'standard') {
+      return theme.mode === 'dark'
+        ? css`
+            ${theme.colors.gradient.basic}
+          `
+        : css`
+            ${theme.colors.gradient.light}
+          `;
     }
-    return css`
-      ${theme.colors.gradient.light}
+    return theme.mode === 'dark'
+      ? css`
+    linear-gradient(90deg, ${theme.colors.base.black} 0%, ${colorToRgba(theme.colors.accent.primary, 0.75)} 100%); 
+    `
+      : css`
+    linear-gradient(90deg, ${theme.colors.accent.primary} 0%, ${colorToRgba(theme.colors.accent.primary, 0.3)} 100%);
+
     `;
   }};
 
