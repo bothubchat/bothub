@@ -5,6 +5,7 @@ export const MessageListScrollButton = styled.button<{
   $visible: boolean;
 }>`
   display: flex;
+  position: absolute;
   justify-content: center;
   padding: 10px;
   bottom: 75px;
