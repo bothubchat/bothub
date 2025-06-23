@@ -72,6 +72,10 @@ export const HeaderMenuNavContentList = styled(animated.div)`
   gap: 8px;
 `;
 
+export const HeaderMenuNavContentMobile = styled.div`
+  margin-top: 10px;
+`;
+
 export const HeaderMenuNavContentChildList = styled(animated.div)<{
   $columns?: number;
 }>`

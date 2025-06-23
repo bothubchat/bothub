@@ -14,7 +14,8 @@ import {
   HeaderMenuNavItemArrowIcon,
   HeaderMenuNavItemBgIcon,
   HeaderMenuNavMainLinkContainer,
-  HeaderMenuNavLabel
+  HeaderMenuNavLabel,
+  HeaderMenuNavContentMobile
 } from './styled';
 import {
   items,
@@ -130,16 +131,19 @@ export const HeaderMenuNav: React.FC = () => {
         {items.map((item) => (
           <HeaderMenuNavItem
             key={item.id}
-            onClick={() => {
-              if (isMobile && item.id === parent?.id) {
-                handleClose();
-              } else {
-                handleMouseEnterParent(item.id);
-              }
-            }}
             onMouseEnter={() => handleMouseEnterParent(item.id)}
           >
-            <HeaderMenuNavLabel>
+            <HeaderMenuNavLabel
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (isMobile && item.id === parent?.id) {
+                  handleClose();
+                } else {
+                  handleMouseEnterParent(item.id);
+                }
+              }}
+            >
               {item.label}{' '}
               {!isDesktop && item.children && item.children.length > 0 && (
                 <ArrowDownIcon />
@@ -147,7 +151,10 @@ export const HeaderMenuNav: React.FC = () => {
             </HeaderMenuNavLabel>
 
             {isMobile && item.id === parent?.id && (
-              <div onMouseEnter={handleMouseEnterContent}>
+              <HeaderMenuNavContentMobile
+                key={item.id}
+                onMouseEnter={handleMouseEnterContent}
+              >
                 <HeaderFirstLevelSubMenu
                   parent={parent}
                   child={child}
@@ -177,7 +184,7 @@ export const HeaderMenuNav: React.FC = () => {
                   child={child}
                   handleMouseEnterContent={handleMouseEnterContent}
                 />
-              </div>
+              </HeaderMenuNavContentMobile>
             )}
           </HeaderMenuNavItem>
         ))}
