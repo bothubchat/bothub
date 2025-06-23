@@ -75,6 +75,7 @@ export type SelectFieldProps = (
   | SelectFieldDefaultProps
   | SelectFieldMultiProps
 ) & {
+  openedModel?: string;
   className?: string;
   label?: string | boolean | React.ReactNode;
   placeholder?: string;
@@ -117,6 +118,7 @@ export type SelectFieldProps = (
 } & React.PropsWithChildren;
 
 export const SelectField: React.FC<SelectFieldProps> = ({
+  openedModel,
   className,
   label,
   value: initialValue,
@@ -404,10 +406,10 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   }
 
   useEffect(() => {
-    setOpenedOptions([]);
+    setOpenedOptions(openedModel ? [openedModel] : []);
     setScrollTop([0, 0, 0]);
     setSearchValue('');
-  }, [resetStyleState]);
+  }, [resetStyleState, openedModel]);
 
   const [modalMaxHeight, setModalMaxHeight] = useState<number | null>(null);
 
@@ -528,7 +530,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
 
       return {
         ...rest,
-        open: openedOptions.includes(item.id),
+        open: openedOptions.includes(item.id) || item.open,
         onClick: onOptionClick
       };
     }
