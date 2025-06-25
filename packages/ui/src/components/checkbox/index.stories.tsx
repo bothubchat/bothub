@@ -3,6 +3,7 @@ import { StoryDecorator } from '@/ui/story-decorator';
 import { Checkbox, CheckboxLabel } from '.';
 import { Tooltip } from '@/ui/components/tooltip';
 import { Button } from '@/ui/components/button';
+import { CloseIcon } from '@/ui/icons';
 
 export type CheckboxMeta = Meta<typeof Checkbox>;
 
@@ -38,6 +39,14 @@ export const DisabledChecked: CheckboxStory = {
   args: {
     ...Disabled.args,
     checked: true
+  }
+};
+
+export const Custom: CheckboxStory = {
+  args: {
+    ...Basic.args,
+    icon: <CloseIcon />,
+    checkedColor: 'white'
   }
 };
 
