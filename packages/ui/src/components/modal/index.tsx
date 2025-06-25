@@ -65,7 +65,10 @@ export const Modal: React.FC<ModalProps> = ({
                   ) : (
                     title
                   )}
-                  <ModalCloseButton onClick={onClose}>
+                  <ModalCloseButton
+                    onClick={onClose}
+                    data-test="close modal"
+                  >
                     <ModalCloseButtonIcon size={24} />
                   </ModalCloseButton>
                   <ModalWindowBodyContent>

@@ -150,14 +150,25 @@ export const MessageTags = styled.div``;
 
 export const MessageTag = styled(Badge)``;
 
-export const MessageAvatar = styled(Avatar)`
+export interface MessageAvatarWrapperProps {
+  $variant: MessageVariant;
+}
+
+export const MessageAvatarWrapper = styled.div<MessageAvatarWrapperProps>`
   grid-area: avatar;
   align-self: flex-end;
   user-select: none;
-  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-    display: none;
-  }
+  ${({ $variant }) =>
+    $variant === 'user' &&
+    adaptive({
+      variant: 'dashboard',
+      mobile: css`
+        display: none;
+      `
+    })}
 `;
+
+export const MessageAvatar = styled(Avatar)``;
 
 export interface MessageBlockProps {
   $variant: MessageVariant;
@@ -335,10 +346,10 @@ export const MessageTransaction = styled(Typography).attrs({
   text-transform: uppercase;
   color: ${({ theme }) => {
     if (theme.mode === 'light') {
-      return theme.colors.accent.primary;
+      return theme.colors.grayScale.gray1;
     }
 
-    return theme.colors.grayScale.gray6;
+    return theme.default.colors.base.white;
   }};
 `;
 

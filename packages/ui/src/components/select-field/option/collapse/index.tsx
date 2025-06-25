@@ -61,10 +61,13 @@ export const SelectFieldCollapseOption: React.FC<
     }, [item]);
   }
 
+  const label = typeof item === 'string' ? item : (item.label ?? item.value);
+
   return (
     <SelectFieldCollapseOptionStyled
       {...props}
       $size={size}
+      data-test={label}
     >
       <SelectFieldCollapseOptionHead
         $disabled={isDisabled}
@@ -86,8 +89,7 @@ export const SelectFieldCollapseOption: React.FC<
             $size={size}
             $bold={typeof item === 'object' && item.bold}
           >
-            {typeof item === 'string' && item}
-            {typeof item !== 'string' && (item.label ?? item.value)}
+            {label}
           </SelectFieldCollapseOptionText>
         </SelectFieldCollapseOptionHeadSide>
         <SelectFieldCollapseOptionHeadSide $size={size}>

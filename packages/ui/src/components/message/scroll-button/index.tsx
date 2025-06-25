@@ -52,6 +52,7 @@ export const ScrollButton: React.FC<IScrollButton> = ({ scrollbarRef }) => {
       $visible={!isAtBottom && isScrollable}
       onClick={handleScrollToBottom}
       type="button"
+      data-test="scroll-button"
     >
       <MessageListArrowNarrowDownIcon size={18} />
     </MessageListScrollButton>

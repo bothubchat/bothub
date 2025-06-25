@@ -304,7 +304,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   );
 
   const handleClick = useCallback(() => {
-    if (!disabled && autoFocus) {
+    if (!disabled) {
       textareaRef.current?.focus();
     }
   }, [disabled, autoFocus]);
@@ -654,10 +654,12 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           </InputMessageToggleSendStyled>
         )}
         {rightActions}
-        {!voice || message || files.length > 0 ? (
+        {!voice || message ? (
           <InputMessageSendButton
             disabled={disabled || sendDisabled}
             onClick={handleSend}
+            {...(theme.bright && { iconFill: theme.default.colors.base.black })}
+            data-test="submit-message"
           >
             <InputMessageSendIcon />
           </InputMessageSendButton>
@@ -666,10 +668,12 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             {...(isVoiceRecording && {
               color: theme.colors.critic
             })}
+            {...(theme.bright && { iconFill: theme.default.colors.base.black })}
             disabled={disabled || sendDisabled}
             onClick={
               !isVoiceRecording ? handleVoiceRecordStart : handleVoiceRecordEnd
             }
+            data-test="submit-message"
           >
             {isVoiceRecording ? (
               <InputMessageSendIcon />
