@@ -45,7 +45,7 @@ export const DisabledChecked: CheckboxStory = {
 export const Custom: CheckboxStory = {
   args: {
     ...Basic.args,
-    icon: <CloseIcon />,
+    checkedIcon: <CloseIcon />,
     checkedColor: 'white'
   }
 };

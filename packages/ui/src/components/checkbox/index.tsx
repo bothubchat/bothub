@@ -19,7 +19,7 @@ export interface CheckboxProps
   rowReverse?: boolean;
   skeleton?: boolean;
   fullWidth?: boolean;
-  icon?: React.ReactNode;
+  checkedIcon?: React.ReactNode;
   checkedColor?: string;
   onValueChange?: CheckboxValueChangeEventHandler;
   onPointerLeave?: React.PointerEventHandler<HTMLLabelElement>;
@@ -31,7 +31,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   skeleton = false,
   rowReverse,
   fullWidth = false,
-  icon,
+  checkedIcon,
   checkedColor,
   onValueChange,
   onPointerLeave,
@@ -66,7 +66,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             onChange={handleChange}
           />
           <CheckboxBlock $checkedColor={checkedColor}>
-            {icon || <CheckboxCheckedIcon />}
+            {checkedIcon || <CheckboxCheckedIcon />}
           </CheckboxBlock>
         </>
       )}
