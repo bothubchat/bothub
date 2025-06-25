@@ -20,6 +20,7 @@ import {
 import { useTooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
 import { InfoIcon } from '@/ui/icons/info';
+import { isBright } from '@/ui/utils/colors';
 
 export type ButtonProps = Omit<
   React.ComponentProps<'button'>,
@@ -93,7 +94,27 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
       } else {
         switch (variant) {
           case 'primary':
-            iconFill = theme.default.colors.base.white;
+            if (theme.scheme === 'custom') {
+              if (isBright(theme.colors.accent.primary)) {
+                iconFill = isBright(theme.colors.custom.interface.text)
+                  ? theme.mode === 'dark'
+                    ? theme.colors.base.black
+                    : theme.default.colors.base.black
+                  : theme.colors.custom.interface.text;
+              }
+
+              iconFill = isBright(theme.colors.custom.interface.text)
+                ? theme.colors.custom.interface.text
+                : theme.default.colors.base.white;
+
+              break;
+            }
+
+            iconFill = theme.bright
+              ? theme.mode === 'dark'
+                ? theme.colors.base.black
+                : theme.default.colors.base.black
+              : theme.default.colors.base.white;
             break;
           default:
             iconFill = theme.colors.base.white;

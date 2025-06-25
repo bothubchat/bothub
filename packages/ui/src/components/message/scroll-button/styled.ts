@@ -4,23 +4,21 @@ import { ArrowNarrowDownIcon } from '@/ui/icons';
 export const MessageListScrollButton = styled.button<{
   $visible: boolean;
 }>`
-  opacity: 0;
-  pointer-events: none;
-  z-index: 1;
-  position: absolute;
   display: flex;
-  align-items: center;
+  position: absolute;
   justify-content: center;
   padding: 10px;
-  bottom: 60px;
+  bottom: 75px;
   left: 50%;
-  transform: translateX(-50%);
-  size: 38px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  border: 2px solid;
-  border-color: ${({ theme }) => theme.colors.grayScale.gray2};
+  border: 2px solid ${({ theme }) => theme.colors.grayScale.gray2};
   background: ${({ theme }) => theme.colors.grayScale.gray4};
-  box-shadow: 0px 0px 1px 0px rgba(255, 255, 255, 0.4) inset;
+  opacity: 0;
+  z-index: ${({ theme }) => theme.zIndex.header};
+  transform: translateX(-50%);
+  pointer-events: none;
   cursor: pointer;
 
   ${({ $visible }) =>

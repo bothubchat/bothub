@@ -1,6 +1,7 @@
 import { css, keyframes, styled } from 'styled-components';
 import React from 'react';
 import { ButtonCorner, ButtonSize, ButtonVariant } from './types';
+import { isBright } from '@/ui/utils/colors';
 
 const boxShadowAnimation = (initialColor: string) => keyframes`
   0% {
@@ -72,7 +73,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         return css`
           background: ${$color ??
           ($disabled || $skeleton
-            ? theme.default.colors.grayScale.gray2
+            ? theme.colors.grayScale.gray3
             : theme.colors.accent.primary)};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: 1;
@@ -92,7 +93,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         return css`
           background: ${$color ??
           ($disabled || $skeleton
-            ? theme.default.colors.grayScale.gray2
+            ? theme.colors.grayScale.gray3
             : theme.colors.accent.primary)};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: ${$disabled || $skeleton ? 1 : 0.5};
@@ -109,7 +110,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
       case 'primary-outline':
         return css`
           background: ${$disabled || $skeleton
-            ? theme.default.colors.grayScale.gray2
+            ? theme.colors.grayScale.gray3
             : 'rgba(255, 255, 255, 0)'};
 
           box-shadow: ${$disabled || $skeleton
@@ -354,13 +355,23 @@ export const ButtonText = styled.span<ButtonTextProps>`
       return theme.colors.grayScale.gray1;
     }
 
-    if (theme.scheme === 'custom') {
-      return theme.colors.custom.interface.text;
-    }
-
     switch ($variant) {
       case 'primary':
       case 'primary-transparent':
+        if (theme.scheme === 'custom') {
+          if (theme.bright) {
+            return isBright(theme.colors.custom.interface.text)
+              ? theme.mode === 'dark'
+                ? theme.colors.base.black
+                : theme.default.colors.base.black
+              : theme.colors.custom.interface.text;
+          }
+
+          return isBright(theme.colors.custom.interface.text)
+            ? theme.colors.custom.interface.text
+            : theme.default.colors.base.white;
+        }
+
         if (theme.bright) {
           return theme.mode === 'dark'
             ? theme.colors.base.black

@@ -267,7 +267,8 @@ import {
   RunwayIcon,
   QueueSelectIcon,
   AppleIcon,
-  MailColoredIcon
+  MailColoredIcon,
+  ShieldIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -584,6 +585,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="RunwayIcon">{RunwayIcon}</IconItem>
         <IconItem name="QueueSelectIcon">{QueueSelectIcon}</IconItem>
         <IconItem name="MailColoredIcon">{MailColoredIcon}</IconItem>
+        <IconItem name="ShieldIcon">{ShieldIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

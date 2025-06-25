@@ -96,7 +96,16 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
         background: ${theme.colors.grayScale.gray3};
       `;
     }
+
     if ($focus) {
+      if (theme.scheme === 'custom') {
+        return css`
+        background: ${theme.colors.grayScale.gray2};
+        > svg path {
+          fill: ${theme.colors.accent.primary};
+      `;
+      }
+
       return css`
         background: ${theme.mode === 'light'
           ? $variant === 'primary'
@@ -110,6 +119,14 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
             ? theme.default.colors.accent.primary
             : theme.colors.base.white};
         }
+      `;
+    }
+
+    if (theme.scheme === 'custom') {
+      return css`
+        background: ${theme.colors.grayScale.gray7};
+        > svg path {
+          fill: ${theme.colors.grayScale.gray1};
       `;
     }
 
@@ -178,13 +195,23 @@ export const TextFieldInput = styled.input<VariantProps>`
     caret-color: ${({ theme }) => theme.colors.base.white};
     -webkit-background-clip: text;
     -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
-    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray4} inset !important;
+    box-shadow: 0 0 0 100px
+      ${({ theme }) =>
+        theme.mode === 'light'
+          ? theme.default.colors.base.white
+          : theme.colors.grayScale.gray4}
+      inset !important;
   }
   &:-webkit-autofill:focus {
     caret-color: ${({ theme }) => theme.colors.base.white};
     -webkit-background-clip: text;
     -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
-    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray4} inset !important;
+    box-shadow: 0 0 0 100px
+      ${({ theme }) =>
+        theme.mode === 'light'
+          ? theme.default.colors.base.white
+          : theme.colors.grayScale.gray4}
+      inset !important;
   }
   &::-webkit-search-decoration,
   &::-webkit-search-cancel-button,

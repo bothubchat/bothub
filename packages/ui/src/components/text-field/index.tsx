@@ -237,6 +237,7 @@ export const TextField: React.FC<TextFieldProps> = ({
             <TextFieldShowpassButton
               onClick={handlePasswordToggle}
               type="button"
+              data-test="show-password"
             >
               <EyeIcon
                 fill={theme.colors.grayScale.gray1}

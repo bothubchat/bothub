@@ -18,6 +18,10 @@ export const MessageParagraphStyled = styled(
         return theme.colors.custom.message.user.text;
       }
 
+      if (theme.scheme === 'standard') {
+        return theme.colors.base.white;
+      }
+
       return theme.bright
         ? theme.mode === 'dark'
           ? theme.colors.base.black

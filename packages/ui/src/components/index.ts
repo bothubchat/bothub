@@ -68,3 +68,4 @@ export * from './theme-cards';
 export * from './theme-schemes';
 export * from './theme-preview';
 export * from './color-picker';
+export * from './theme-switcher';

@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.39.0",
+  "version": "2.39.4-fix-voice-color-fde7a1a4-35ca-431c-b3f7-73d9d9b68b14",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
