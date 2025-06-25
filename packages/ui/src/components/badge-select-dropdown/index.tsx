@@ -13,6 +13,7 @@ export type BadgeSelectDropdownProps = {
   value?: SelectFieldDataItem | null;
   variant?: Variant;
   colorButtonOpened?: string;
+  className?: string;
   onChange?: SelectFieldChangeEventHandler;
 } & Omit<
   UseSelectFieldProps,
@@ -24,6 +25,7 @@ export const BadgeSelectDropdown = ({
   value: initialValue,
   variant = 'primary',
   colorButtonOpened,
+  className,
   onChange,
   ...useSelectFieldProps
 }: BadgeSelectDropdownProps) => {
@@ -63,6 +65,7 @@ export const BadgeSelectDropdown = ({
         $colorButtonOpened={colorButtonOpened}
         type="button"
         onClick={(e) => handleInputClick(false, e)}
+        className={className}
       >
         <S.BadgeSelectDropdownSpanStyled>
           {label}
