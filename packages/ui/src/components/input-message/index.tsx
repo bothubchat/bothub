@@ -32,7 +32,8 @@ import { IconProvider } from '@/ui/components/icon';
 import {
   formatUploadFiles,
   getPreviewUrlForFile,
-  formatSeconds
+  formatSeconds,
+  isFileTypeAccepted
 } from './utils';
 import { AttachFileIcon } from '@/ui/icons/attach-file';
 import { useTheme } from '@/ui/theme';
@@ -193,7 +194,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         uploadFiles?.map(getPreviewUrlForFile)
       );
       for (const [idx, file] of uploadFiles.entries()) {
-        const isValidFile = uploadFileAccept?.includes(file.type) ?? true;
+        const isValidFile = isFileTypeAccepted(file.type, uploadFileAccept);
 
         if (isValidFile) {
           newFiles.push({
