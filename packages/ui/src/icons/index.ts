@@ -278,3 +278,5 @@ export * from './apple';
 export * from './mail-colored';
 export * from './shield';
 export * from './stars-gradient';
+export * from './fire';
+export * from './brain';

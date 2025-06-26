@@ -269,7 +269,9 @@ import {
   AppleIcon,
   MailColoredIcon,
   ShieldIcon,
-  StarsGradientIcon
+  StarsGradientIcon,
+  FireIcon,
+  BrainIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -588,6 +590,8 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="MailColoredIcon">{MailColoredIcon}</IconItem>
         <IconItem name="ShieldIcon">{ShieldIcon}</IconItem>
         <IconItem name="StarsGradientIcon">{StarsGradientIcon}</IconItem>
+        <IconItem name="FireIcon">{FireIcon}</IconItem>
+        <IconItem name="BrainIcon">{BrainIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
