@@ -6,10 +6,6 @@ export const MessagesStyled = styled.div`
   display: flex;
   position: relative;
   width: 100%;
-  & span,
-  & p {
-    --bothub-scale: 1;
-  }
 `;
 
 export const MessagesScrollbarWrapper = styled(Scrollbar).attrs({

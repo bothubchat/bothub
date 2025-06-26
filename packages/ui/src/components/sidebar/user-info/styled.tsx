@@ -61,7 +61,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
                 ? theme.colors.grayScale.gray3
                 : theme.colors.grayScale.gray2};
             border-radius: 18px;
-            background: ${theme.mode === 'light'
+            background: ${theme.mode === 'light' && theme.scheme === 'standard'
               ? theme.default.colors.base.white
               : theme.colors.grayScale.gray4};
           `,
@@ -85,7 +85,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
           `,
           tablet: css`
             border-radius: 10px;
-            background: ${theme.mode === 'light'
+            background: ${theme.mode === 'light' && theme.scheme === 'standard'
               ? theme.default.colors.base.white
               : theme.colors.grayScale.gray4};
             border: 1px solid
@@ -104,7 +104,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
   transition: border-width 0.3s ease-out,
               border-color 0.3s ease-out,
               border-radius 0.3s ease-out,
-              background 0.3s ease-out;
+              background-color 0.3s ease-out;
 `;
 
 export const SidebarUserInfoContent = styled.div`

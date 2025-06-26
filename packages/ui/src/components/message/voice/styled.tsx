@@ -5,6 +5,7 @@ import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { TextReadIcon } from '@/ui/icons/text-read';
 import { TextHideIcon } from '@/ui/icons/text-hide';
+import { isBright } from '@/ui/utils';
 
 export const MessageVoiceStyled = styled.div`
   display: inline-flex;
@@ -54,7 +55,14 @@ export const MessageVoiceWaves = styled.svg`
 export const MessageVoiceDurationText = styled(Typography).attrs({
   variant: 'body-s-medium'
 })`
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) =>
+    theme.bright ||
+    (theme.scheme === 'custom' &&
+      isBright(theme.colors.custom.message.user.background))
+      ? theme.mode === 'dark'
+        ? theme.colors.base.black
+        : theme.default.colors.base.black
+      : theme.default.colors.base.white};
   user-select: none;
 `;
 
