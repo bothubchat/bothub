@@ -1,4 +1,4 @@
-import { StoryObj, Meta } from '@storybook/react';
+import { StoryObj, Meta } from '@storybook/react-vite';
 import { DateBadge } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 

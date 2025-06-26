@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { BadgeSelectDropdown, BadgeSelectDropdownListItem } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
