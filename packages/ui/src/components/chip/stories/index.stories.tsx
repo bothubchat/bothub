@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Chip, ChipImage } from '@/ui/components/chip';
 import { StoryDecorator } from '@/ui/story-decorator';
 import image from './assets/image.png';
