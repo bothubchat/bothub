@@ -33,12 +33,12 @@ import {
   SidebarLangDropdownItem,
   SidebarGroupEmpty,
   SidebarGroupCheckbox,
-  SidebarThemeSwitcher,
   SidebarUserInfoSkeleton,
   SidebarUserInfoUpdateTariffBadgeText,
   SidebarUserInfoUpdateTariffBadge,
   SidebarUserInfoUpdateTariffButtonText
 } from '.';
+import { ThemeSwitcher } from '../theme-switcher';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
   ChatsIcon,
@@ -65,7 +65,7 @@ export const Basic: SidebarStory = {
         <SidebarLogo />
       </SidebarLogoLink>
     ),
-    themeSwitcher: <SidebarThemeSwitcher />,
+    themeSwitcher: <ThemeSwitcher />,
     menu: (
       <SidebarMenuNav>
         <SidebarMenuNavLink

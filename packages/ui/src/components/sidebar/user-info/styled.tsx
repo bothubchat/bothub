@@ -263,9 +263,26 @@ export const SidebarUserInfoUpdateTariffButton = styled.button`
   border-radius: 8px;
   padding: 6px 18px 6px 6px;
   box-shadow: inset 0 1px 1px 0 #ffffff60;
-  background: ${({ theme }) => css`
-      linear-gradient(${theme.mode === 'dark' ? '90deg' : '270deg'}, ${colorToRgba(theme.colors.accent.primary, 0.3)} 0%, ${colorToRgba(theme.colors.accent.primary, 0.75)} 100%);
-    `};
+  background: ${({ theme }) => {
+    if (theme.scheme === 'standard') {
+      return theme.mode === 'dark'
+        ? css`
+            ${theme.colors.gradient.basic}
+          `
+        : css`
+            ${theme.colors.gradient.light}
+          `;
+    }
+    return theme.mode === 'dark'
+      ? css`
+    linear-gradient(90deg, ${theme.colors.base.black} 0%, ${colorToRgba(theme.colors.accent.primary, 0.75)} 100%); 
+    `
+      : css`
+    linear-gradient(90deg, ${theme.colors.accent.primary} 0%, ${colorToRgba(theme.colors.accent.primary, 0.3)} 100%);
+
+    `;
+  }};
+
   font-weight: 500;
   &:hover {
     filter: brightness(0.8);

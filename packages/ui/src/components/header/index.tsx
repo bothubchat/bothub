@@ -146,5 +146,4 @@ export * from './user-info';
 export * from './menu';
 export * from './types';
 export * from './context';
-export * from './theme-switcher';
 export * from './multi-level-menu';

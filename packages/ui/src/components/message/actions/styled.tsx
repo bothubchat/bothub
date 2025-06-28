@@ -92,7 +92,7 @@ export const MessageActionsMenuModalOption = styled.button`
             }
             return theme.mode === 'dark'
               ? theme.colors.accent.primaryLight
-              : theme.colors.grayScale.gray2;
+              : theme.default.colors.base.white;
           }};
         }
       }
