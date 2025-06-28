@@ -29,8 +29,10 @@ export type SelectModalGeneralProps = {
   searchPlaceholder?: string;
   resetStyleState?: ResetStyleStateType;
   blur?: boolean;
-  fieldBlockPositionWrapperWidth?: string;
+  modalWidth?: string;
   openedModel?: string;
+  selectedColor?: string;
+  compactWidth?: boolean;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 };
 
@@ -63,8 +65,10 @@ export const SelectModal = ({
   isKeyboardOpen,
   value,
   multiple,
-  fieldBlockPositionWrapperWidth,
+  modalWidth,
   openedModel,
+  selectedColor,
+  compactWidth,
   onOptionClick,
   handleClose,
   setValue
@@ -214,7 +218,8 @@ export const SelectModal = ({
         <S.SelectModalPositionWrapper
           $blur={blur}
           $placement={placement}
-          $width={fieldBlockPositionWrapperWidth}
+          $width={modalWidth}
+          $compactWidth={compactWidth}
           style={{
             height:
               contentHeight &&
@@ -261,6 +266,7 @@ export const SelectModal = ({
                     size={size}
                     disableSelect={disableSelect}
                     onOptionClick={handleOptionClick}
+                    selectedColor={selectedColor}
                   />
                 </SelectFieldGroup>
               )}
@@ -277,6 +283,7 @@ export const SelectModal = ({
                   size={size}
                   disableSelect={disableSelect}
                   onOptionClick={handleOptionClick}
+                  selectedColor={selectedColor}
                 />
               </SelectFieldGroup>
               {after && (
@@ -293,6 +300,7 @@ export const SelectModal = ({
                     size={size}
                     disableSelect={disableSelect}
                     onOptionClick={handleOptionClick}
+                    selectedColor={selectedColor}
                   />
                 </SelectFieldGroup>
               )}

@@ -62,7 +62,6 @@ export const useSelectField = <
       if (multiple && Array.isArray(item)) {
         const items = item;
 
-        onChange?.(items);
         (onValueChange as SelectFieldMultiValueChangeEventHandler)?.(
           items
             .map((item) => {
@@ -81,8 +80,6 @@ export const useSelectField = <
       }
 
       if (!multiple && item && !Array.isArray(item)) {
-        (onChange as SelectFieldChangeEventHandler)?.(item);
-
         const onValueChangeTyped =
           onValueChange as SelectFieldValueChangeEventHandler;
 
@@ -111,16 +108,14 @@ export const useSelectField = <
   const setValueHandler = (value: ValueType) => {
     setValue(value);
 
-    if (onChange) {
-      if (multiple) {
-        (onChange as SelectFieldMultiChangeEventHandler)(
-          value as SelectFieldDataItem[]
-        );
-      } else {
-        (onChange as SelectFieldChangeEventHandler)(
-          value as SelectFieldDataItem | null
-        );
-      }
+    if (!onChange) return;
+
+    if (multiple && Array.isArray(value)) {
+      onChange(value);
+    }
+
+    if (!multiple && !Array.isArray(value)) {
+      (onChange as SelectFieldChangeEventHandler)(value);
     }
   };
 

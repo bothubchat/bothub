@@ -7,6 +7,7 @@ import {
   UseSelectFieldProps
 } from '../select-field';
 import { Variant } from './types';
+import { useTheme } from '@/ui/theme';
 
 export type BadgeSelectDropdownProps = {
   options: SelectFieldDataItem[];
@@ -14,6 +15,7 @@ export type BadgeSelectDropdownProps = {
   variant?: Variant;
   colorButtonOpened?: string;
   className?: string;
+  compactWidth?: boolean;
   onChange?: SelectFieldChangeEventHandler;
 } & Omit<
   UseSelectFieldProps,
@@ -26,9 +28,12 @@ export const BadgeSelectDropdown = ({
   variant = 'primary',
   colorButtonOpened,
   className,
+  compactWidth,
   onChange,
   ...useSelectFieldProps
 }: BadgeSelectDropdownProps) => {
+  const theme = useTheme();
+
   const {
     isOpen,
     triggerRef,
@@ -79,6 +84,8 @@ export const BadgeSelectDropdown = ({
         isOpen={isOpen}
         setValue={setValue}
         value={value}
+        compactWidth={compactWidth}
+        selectedColor={theme.colors.grayScale.gray2}
         {...selectModalProps}
       />
     </>
