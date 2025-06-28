@@ -246,6 +246,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                 size={size}
                 disableSelect={disableSelect}
                 onOptionClick={onOptionClick}
+                selectedColor={selectedColor}
               />
             )
           };
@@ -300,6 +301,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           selected,
           disabled,
           size,
+          selectedColor,
           onClick: handleOptionClick.bind(null, item)
         };
 
