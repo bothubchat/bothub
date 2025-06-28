@@ -156,7 +156,7 @@ export const useSelectField = <
     window.addEventListener('resize', listener);
 
     return () => window.removeEventListener('resize', listener);
-  }, [triggerRef.current, height, placement, contentHeight]);
+  }, [triggerRef.current, height, placement, contentHeight, isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
