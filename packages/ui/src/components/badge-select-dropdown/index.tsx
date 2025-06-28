@@ -14,6 +14,7 @@ export type BadgeSelectDropdownProps = {
   variant?: Variant;
   colorButtonOpened?: string;
   className?: string;
+  compactWidth?: boolean;
   onChange?: SelectFieldChangeEventHandler;
 } & Omit<
   UseSelectFieldProps,
@@ -26,6 +27,7 @@ export const BadgeSelectDropdown = ({
   variant = 'primary',
   colorButtonOpened,
   className,
+  compactWidth,
   onChange,
   ...useSelectFieldProps
 }: BadgeSelectDropdownProps) => {
@@ -79,6 +81,7 @@ export const BadgeSelectDropdown = ({
         isOpen={isOpen}
         setValue={setValue}
         value={value}
+        compactWidth={compactWidth}
         {...selectModalProps}
       />
     </>
