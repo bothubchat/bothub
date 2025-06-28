@@ -39,6 +39,7 @@ export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
   data: SelectFieldData;
   size: SelectFieldSize;
   disableSelect?: boolean;
+  selectedColor?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 }
 
@@ -47,6 +48,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
   data,
   size,
   disableSelect = false,
+  selectedColor,
   onOptionClick,
   ...props
 }) => {
@@ -80,6 +82,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               $selected={selected}
               $disabled={false}
               $size={size}
+              $selectedColor={selectedColor}
               key={index}
               onClick={handleOptionClick.bind(null, item)}
             >

@@ -31,6 +31,7 @@ export type SelectModalGeneralProps = {
   blur?: boolean;
   modalWidth?: string;
   openedModel?: string;
+  selectedColor?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 };
 
@@ -65,6 +66,7 @@ export const SelectModal = ({
   multiple,
   modalWidth,
   openedModel,
+  selectedColor,
   onOptionClick,
   handleClose,
   setValue
@@ -261,6 +263,7 @@ export const SelectModal = ({
                     size={size}
                     disableSelect={disableSelect}
                     onOptionClick={handleOptionClick}
+                    selectedColor={selectedColor}
                   />
                 </SelectFieldGroup>
               )}
@@ -277,6 +280,7 @@ export const SelectModal = ({
                   size={size}
                   disableSelect={disableSelect}
                   onOptionClick={handleOptionClick}
+                  selectedColor={selectedColor}
                 />
               </SelectFieldGroup>
               {after && (
@@ -293,6 +297,7 @@ export const SelectModal = ({
                     size={size}
                     disableSelect={disableSelect}
                     onOptionClick={handleOptionClick}
+                    selectedColor={selectedColor}
                   />
                 </SelectFieldGroup>
               )}

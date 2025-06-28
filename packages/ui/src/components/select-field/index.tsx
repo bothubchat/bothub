@@ -60,6 +60,7 @@ export const SelectField = ({
   children,
   modalWidth,
   dataTest,
+  selectedColor,
   onOptionClick,
   onInputChange,
   onPointerLeave,
@@ -336,6 +337,7 @@ export const SelectField = ({
           handleClose={handleClose}
           setValue={setValue}
           modalWidth={modalWidth}
+          selectedColor={selectedColor}
         />
 
         {error && <S.SelectFieldErrorText>{error}</S.SelectFieldErrorText>}
