@@ -29,7 +29,7 @@ export type SelectModalGeneralProps = {
   searchPlaceholder?: string;
   resetStyleState?: ResetStyleStateType;
   blur?: boolean;
-  fieldBlockPositionWrapperWidth?: string;
+  modalWidth?: string;
   openedModel?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 };
@@ -63,7 +63,7 @@ export const SelectModal = ({
   isKeyboardOpen,
   value,
   multiple,
-  fieldBlockPositionWrapperWidth,
+  modalWidth,
   openedModel,
   onOptionClick,
   handleClose,
@@ -214,7 +214,7 @@ export const SelectModal = ({
         <S.SelectModalPositionWrapper
           $blur={blur}
           $placement={placement}
-          $width={fieldBlockPositionWrapperWidth}
+          $width={modalWidth}
           style={{
             height:
               contentHeight &&

@@ -58,7 +58,7 @@ export const SelectField = ({
   searchPlaceholder,
   resetStyleState,
   children,
-  fieldBlockPositionWrapperWidth,
+  modalWidth,
   dataTest,
   onOptionClick,
   onInputChange,
@@ -335,7 +335,7 @@ export const SelectField = ({
           onOptionClick={onOptionClick}
           handleClose={handleClose}
           setValue={setValue}
-          fieldBlockPositionWrapperWidth={fieldBlockPositionWrapperWidth}
+          modalWidth={modalWidth}
         />
 
         {error && <S.SelectFieldErrorText>{error}</S.SelectFieldErrorText>}
