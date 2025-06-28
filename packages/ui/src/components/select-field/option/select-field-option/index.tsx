@@ -10,6 +10,7 @@ export type SelectFieldOptionProps = {
   selected: boolean;
   disabled: boolean;
   size: SelectFieldSize;
+  selectedColor?: string;
 } & ComponentProps<'div'>;
 
 export const SelectFieldOption = ({
@@ -17,6 +18,7 @@ export const SelectFieldOption = ({
   selected,
   disabled,
   size,
+  selectedColor,
   ...rest
 }: SelectFieldOptionProps) => {
   const theme = useTheme();
@@ -27,6 +29,7 @@ export const SelectFieldOption = ({
       $disabled={disabled}
       $size={size}
       $backgroundHoverColor={item.backgroundHoverColor}
+      $selectedColor={selectedColor}
       {...rest}
     >
       <SelectFieldOptionSide>
