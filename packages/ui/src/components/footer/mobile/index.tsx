@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ChatsIcon } from '@/ui/icons/chats';
 import { MenuIcon } from '@/ui/icons/menu';
 import { SettingsIcon } from '@/ui/icons/settings';
@@ -10,6 +10,7 @@ import {
 import { useTheme } from '@/ui/theme';
 import { SidebarUserInfoAvatar } from '@/ui/components/sidebar';
 import { TariffPlan } from '@/ui/components/types';
+import { isBright } from '@/ui/utils';
 
 export type FooterMobileButtonClickHandler = () => unknown;
 
@@ -17,6 +18,7 @@ export type FooterMobileButtonActiveProp = 'menu' | 'chats' | 'settings' | null;
 
 export interface FooterMobileProps {
   isPreset?: boolean;
+  src?: string;
   tariffPlan?: TariffPlan;
   activeButton?: FooterMobileButtonActiveProp;
   onMenuClick: FooterMobileButtonClickHandler;
@@ -29,6 +31,7 @@ export interface FooterMobileProps {
 export const FooterMobile: React.FC<FooterMobileProps> = React.memo(
   ({
     isPreset,
+    src,
     tariffPlan,
     activeButton,
     onMenuClick,
@@ -39,6 +42,13 @@ export const FooterMobile: React.FC<FooterMobileProps> = React.memo(
   }) => {
     const theme = useTheme();
 
+    const inactiveFill = useMemo(() => {
+      if (isBright(theme.colors.grayScale.gray4)) {
+        return theme.default.colors.base.black;
+      }
+      return theme.colors.base.white;
+    }, [theme]);
+
     return (
       <FooterMobileStyled $isPreset={isPreset}>
         <FooterMobileButton onClick={onMenuClick}>
@@ -46,7 +56,7 @@ export const FooterMobile: React.FC<FooterMobileProps> = React.memo(
             fill={
               activeButton === 'menu'
                 ? theme.colors.accent.primary
-                : theme.colors.base.white
+                : inactiveFill
             }
           />
         </FooterMobileButton>
@@ -55,7 +65,7 @@ export const FooterMobile: React.FC<FooterMobileProps> = React.memo(
             fill={
               activeButton === 'chats'
                 ? theme.colors.accent.primary
-                : theme.colors.base.white
+                : inactiveFill
             }
           />
         </FooterMobileButton>
@@ -65,19 +75,16 @@ export const FooterMobile: React.FC<FooterMobileProps> = React.memo(
             fill={
               activeButton === 'settings'
                 ? theme.colors.accent.primary
-                : theme.colors.base.white
+                : inactiveFill
             }
           />
         </FooterMobileButton>
-        <FooterMobileButton
-          $iconSize={44}
+        <SidebarUserInfoAvatar
           onClick={onUserClick}
-        >
-          <SidebarUserInfoAvatar
-            tariffPlan={tariffPlan}
-            size={44}
-          />
-        </FooterMobileButton>
+          size={48}
+          src={src}
+          tariffPlan={tariffPlan}
+        />
       </FooterMobileStyled>
     );
   }

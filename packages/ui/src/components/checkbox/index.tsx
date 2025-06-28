@@ -21,6 +21,7 @@ export interface CheckboxProps
   fullWidth?: boolean;
   checkedIcon?: React.ReactNode;
   checkedColor?: string;
+  dataTest?: string;
   onValueChange?: CheckboxValueChangeEventHandler;
   onPointerLeave?: React.PointerEventHandler<HTMLLabelElement>;
 }
@@ -33,6 +34,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   fullWidth = false,
   checkedIcon,
   checkedColor,
+  dataTest,
   onValueChange,
   onPointerLeave,
   ...props
@@ -56,6 +58,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       onMouseEnter={handleTooltipMouseEnter}
       onMouseLeave={handleTooltipMouseLeave}
       onPointerLeave={onPointerLeave}
+      data-test={dataTest}
     >
       {!skeleton && (
         <>

@@ -18,6 +18,7 @@ import { formatSeconds } from './utils';
 import { useMessage } from '../context';
 import { useTheme } from '@/ui/theme';
 import { IconProvider } from '@/ui/components/icon';
+import { isBright } from '@/ui/utils';
 
 export interface MessageVoiceProps extends React.ComponentProps<'div'> {
   src: string;
@@ -153,12 +154,20 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
             <rect
               width="145"
               height="36"
-              {...(color === 'default' && {
-                fill: '#A4C1FA'
-              })}
-              {...(color !== 'default' && {
-                fill: theme.default.colors.base.white
-              })}
+              {...{
+                fill:
+                  color === 'default'
+                    ? theme.scheme === 'standard'
+                      ? '#A4C1FA'
+                      : theme.bright ||
+                          (theme.scheme === 'custom' &&
+                            isBright(
+                              theme.colors.custom.message.user.background
+                            ))
+                        ? theme.colors.accent.strongDown
+                        : theme.colors.accent.primaryLight
+                    : theme.default.colors.base.white
+              }}
             />
             {currentTime !== null && (
               <StyledRect

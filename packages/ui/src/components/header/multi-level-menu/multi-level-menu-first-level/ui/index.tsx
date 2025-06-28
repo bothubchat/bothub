@@ -19,7 +19,10 @@ interface IMultiLevelMenuFirstLevelItem {
 export const MultiLevelMenuFirstLevelItem: React.FC<
   IMultiLevelMenuFirstLevelItem
 > = ({ firstLevelItem, linkIcon_hidden, onMouseEnter, selectedItemTitle }) => (
-  <MultiLevelFirstLevelMenuLi $gotChild={!!firstLevelItem.children}>
+  <MultiLevelFirstLevelMenuLi
+    $gotChild={!!firstLevelItem.children}
+    data-test={firstLevelItem.title}
+  >
     <MultiLevelMenuFirstLevelHeader
       onMouseEnter={onMouseEnter}
       $active={firstLevelItem.title === selectedItemTitle}

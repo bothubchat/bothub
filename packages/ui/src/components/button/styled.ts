@@ -1,6 +1,7 @@
 import { css, keyframes, styled } from 'styled-components';
 import React from 'react';
 import { ButtonCorner, ButtonSize, ButtonVariant } from './types';
+import { isBright } from '@/ui/utils/colors';
 
 const boxShadowAnimation = (initialColor: string) => keyframes`
   0% {
@@ -76,7 +77,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         return css`
           background: ${$color ??
           ($disabled || $skeleton
-            ? theme.default.colors.grayScale.gray2
+            ? theme.colors.grayScale.gray3
             : theme.colors.accent.primary)};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: 1;
@@ -96,7 +97,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         return css`
           background: ${$color ??
           ($disabled || $skeleton
-            ? theme.default.colors.grayScale.gray2
+            ? theme.colors.grayScale.gray3
             : theme.colors.accent.primary)};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: ${$disabled || $skeleton ? 1 : 0.5};
@@ -113,7 +114,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
       case 'primary-outline':
         return css`
           background: ${$disabled || $skeleton
-            ? theme.default.colors.grayScale.gray2
+            ? theme.colors.grayScale.gray3
             : 'rgba(255, 255, 255, 0)'};
 
           box-shadow: ${$disabled || $skeleton
@@ -336,7 +337,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
       }
     `}
 
-  transition: background 0.3s ease-out, 
+  transition: background-color 0.3s ease-out, 
               opacity 0.3s ease-out,
               box-shadow 0.2s ease-in-out, 
               transform 0.3s ease-out;
@@ -361,6 +362,25 @@ export const ButtonText = styled.span<ButtonTextProps>`
     switch ($variant) {
       case 'primary':
       case 'primary-transparent':
+        if (theme.scheme === 'custom') {
+          if (theme.bright) {
+            return isBright(theme.colors.custom.interface.text)
+              ? theme.mode === 'dark'
+                ? theme.colors.base.black
+                : theme.default.colors.base.black
+              : theme.colors.custom.interface.text;
+          }
+
+          return isBright(theme.colors.custom.interface.text)
+            ? theme.colors.custom.interface.text
+            : theme.default.colors.base.white;
+        }
+
+        if (theme.bright) {
+          return theme.mode === 'dark'
+            ? theme.colors.base.black
+            : theme.colors.base.white;
+        }
         return theme.default.colors.base.white;
       case 'primary-outline':
         return theme.mode === 'light'

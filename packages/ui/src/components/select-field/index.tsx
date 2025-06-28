@@ -26,6 +26,7 @@ export type SelectFieldProps = {
   clearable?: boolean;
   loading?: boolean;
   padding?: [number, number];
+  dataTest?: string;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onPointerLeave?: React.PointerEventHandler<HTMLDivElement>;
 } & SelectModalGeneralProps &
@@ -58,6 +59,7 @@ export const SelectField = ({
   resetStyleState,
   children,
   fieldBlockPositionWrapperWidth,
+  dataTest,
   onOptionClick,
   onInputChange,
   onPointerLeave,
@@ -175,6 +177,7 @@ export const SelectField = ({
                 $multiple={multiple && Array.isArray(value) && value.length > 0}
                 ref={triggerRef}
                 onClick={handleInputClick.bind(null, false)}
+                data-test={dataTest}
               >
                 <S.SelectFieldInputLeftSide>
                   {(!value || (Array.isArray(value) && value.length === 0)) && (

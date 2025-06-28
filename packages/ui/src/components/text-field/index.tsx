@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import {
   TextFieldErrorText,
   TextFieldInput,
@@ -9,13 +9,15 @@ import {
   TextFieldClearButton,
   TextFieldColorPreview,
   TextFieldColor,
-  TextFieldColorInput
+  TextFieldColorInput,
+  TextFieldShowpassButton
 } from './styled';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { SearchCircleIcon } from '@/ui/icons/search-circle';
 import { TextFieldType, Variant } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
+import { EyeIcon } from '@/ui/icons';
 
 export type TextFieldValueChangeEventHandler = (value: string) => unknown;
 
@@ -94,6 +96,7 @@ export const TextField: React.FC<TextFieldProps> = ({
 
   const [isFocus, setIsFocus] = useState(false);
   const [isHover, setIsHover] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleFocus = useCallback(
     (event: React.FocusEvent<HTMLInputElement>) => {
@@ -142,6 +145,10 @@ export const TextField: React.FC<TextFieldProps> = ({
     onClearButtonClick?.();
   }, [onChange]);
 
+  const handlePasswordToggle = useCallback(() => {
+    setShowPassword((prev) => !prev);
+  }, []);
+
   const iconProps: IconProviderProps = {
     size: 16,
     ...(disabled && {
@@ -154,6 +161,13 @@ export const TextField: React.FC<TextFieldProps> = ({
           : theme.colors.base.white
     })
   };
+  const getInputType = () => {
+    if (type === 'password') return showPassword ? 'text' : 'password';
+    if (type === 'color') return 'text';
+    return type;
+  };
+
+  const inputType = useMemo(() => getInputType(), [type, showPassword]);
 
   return (
     <TextFieldStyled
@@ -201,10 +215,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           <TextFieldInput
             ref={inputRef}
             value={value}
-            {...(type === 'color' && {
-              type: 'text'
-            })}
-            {...(type !== 'color' && { type })}
+            type={inputType}
             name={name}
             readOnly={readonly}
             defaultValue={defaultValue}
@@ -219,6 +230,18 @@ export const TextField: React.FC<TextFieldProps> = ({
             autoFocus={autoFocus}
             autoComplete={autoComplete}
           />
+          {!!value && type === 'password' && (
+            <TextFieldShowpassButton
+              onClick={handlePasswordToggle}
+              type="button"
+              data-test="show-password"
+            >
+              <EyeIcon
+                fill={theme.colors.grayScale.gray1}
+                size={16}
+              />
+            </TextFieldShowpassButton>
+          )}
           {(clearable || type === 'search') && value && (
             <TextFieldClearButton
               $big={bigClearButton}

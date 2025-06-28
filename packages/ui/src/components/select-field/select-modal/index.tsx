@@ -30,6 +30,7 @@ export type SelectModalGeneralProps = {
   resetStyleState?: ResetStyleStateType;
   blur?: boolean;
   fieldBlockPositionWrapperWidth?: string;
+  openedModel?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 };
 
@@ -63,6 +64,7 @@ export const SelectModal = ({
   value,
   multiple,
   fieldBlockPositionWrapperWidth,
+  openedModel,
   onOptionClick,
   handleClose,
   setValue
@@ -115,10 +117,10 @@ export const SelectModal = ({
   );
 
   useEffect(() => {
-    setOpenedOptions([]);
+    setOpenedOptions(openedModel ? [openedModel] : []);
     scrollTop.current = [0, 0, 0];
     setSearchValue('');
-  }, [resetStyleState]);
+  }, [resetStyleState, openedModel]);
 
   const onTabClick = useCallback(
     (id: string | null) => {

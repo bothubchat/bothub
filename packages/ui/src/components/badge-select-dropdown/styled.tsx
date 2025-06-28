@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
-import { colorToRgba } from '@/ui/utils/colorToRgba';
+import { colorToRgba } from '@/ui/utils/colors';
 import { Typography } from '../typography';
 import { Variant } from './types';
 

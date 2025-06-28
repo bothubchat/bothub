@@ -25,6 +25,7 @@ export const SidebarUserInfoAvatar: React.FC<SidebarUserInfoAvatarProps> = ({
       size={!size ? (isOpen ? 40 : 34) : size}
       onMouseEnter={handleTooltipMouseEnter}
       onMouseLeave={handleTooltipMouseLeave}
+      data-test="user-avatar"
     />
   );
 };

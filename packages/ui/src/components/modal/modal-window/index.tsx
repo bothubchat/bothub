@@ -50,7 +50,10 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
               ) : (
                 title
               )}
-              <S.ModalWindowCloseButton onClick={onClose}>
+              <S.ModalWindowCloseButton
+                onClick={onClose}
+                data-test="close modal"
+              >
                 <S.ModalWindowCloseButtonIcon size={24} />
               </S.ModalWindowCloseButton>
               <S.ModalWindowBodyContent>
