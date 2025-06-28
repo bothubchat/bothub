@@ -32,6 +32,7 @@ export type SelectModalGeneralProps = {
   modalWidth?: string;
   openedModel?: string;
   selectedColor?: string;
+  compactWidth?: boolean;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 };
 
@@ -67,6 +68,7 @@ export const SelectModal = ({
   modalWidth,
   openedModel,
   selectedColor,
+  compactWidth,
   onOptionClick,
   handleClose,
   setValue
@@ -217,6 +219,7 @@ export const SelectModal = ({
           $blur={blur}
           $placement={placement}
           $width={modalWidth}
+          $compactWidth={compactWidth}
           style={{
             height:
               contentHeight &&
