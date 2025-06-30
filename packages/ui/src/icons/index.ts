@@ -280,3 +280,5 @@ export * from './shield';
 export * from './stars-gradient';
 export * from './fire';
 export * from './brain';
+export * from './mj-purple';
+export * from './claude-black';
