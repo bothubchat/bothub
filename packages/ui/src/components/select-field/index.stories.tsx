@@ -544,7 +544,7 @@ export const WithTabs: SelectFieldStory = {
           icon: <SpellingIcon />
         }
       ],
-      onTabClick(id) {
+      onClick(id) {
         alert(id);
       },
       defaultTabId: 'code'
@@ -571,7 +571,8 @@ export const WithSearch: SelectFieldStory = {
       }
     ],
     search: true,
-    searchPlaceholder: 'Поиск...'
+    searchPlaceholder: 'Поиск...',
+    contentHeight: 300
   }
 };
 
@@ -579,6 +580,7 @@ export const SmallSize: SelectFieldStory = {
   args: {
     data: [
       {
+        id: 'gpt',
         type: 'collapse',
         label: 'ChatGPT',
         icon: <Gpt35Icon />,
@@ -627,6 +629,7 @@ export const ResetStyleState: SelectFieldStory = {
           data={WithSearch.args?.data}
           resetStyleState={shouldResetStyleState}
           placement="top-right"
+          search
         />
         <Button
           type="button"
