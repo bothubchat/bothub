@@ -45,6 +45,7 @@ export interface MessageImageNativeProps {
 }
 
 export const MessageImageNative = styled(Image)<MessageImageNativeProps>`
+  image-orientation: from-image;
   ${({ $loading }) =>
     $loading &&
     css`
