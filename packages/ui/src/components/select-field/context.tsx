@@ -20,4 +20,4 @@ export const SelectFieldProvider: React.FC<
 
 export const SelectFieldConsumer = SelectFieldContext.Consumer;
 
-export const useSelectField = () => useContext(SelectFieldContext);
+export const useSelectFieldContext = () => useContext(SelectFieldContext);
