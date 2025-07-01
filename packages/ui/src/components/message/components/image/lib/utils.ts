@@ -1,101 +1,199 @@
-export const getImageOrientation = (file: Blob): Promise<number> =>
+export const getExifOrientation = (blob: Blob): Promise<number> =>
   new Promise((resolve) => {
     const reader = new FileReader();
     reader.onload = (e) => {
-      try {
-        const arrayBuffer = e.target?.result as ArrayBuffer;
-        if (!arrayBuffer) {
-          resolve(1);
-          return;
-        }
+      const arrayBuffer = e.target?.result as ArrayBuffer;
+      const dataView = new DataView(arrayBuffer);
 
-        const view = new DataView(arrayBuffer);
-        if (view.getUint16(0, false) !== 0xffd8) {
-          resolve(1);
-          return;
-        }
+      if (dataView.getUint16(0, false) !== 0xffd8) {
+        resolve(1);
+        return;
+      }
 
-        const length = view.byteLength;
-        let offset = 2;
+      const length = dataView.byteLength;
+      let offset = 2;
 
-        while (offset < length) {
-          if (offset + 2 > length) break;
+      while (offset < length) {
+        const marker = dataView.getUint16(offset, false);
+        offset += 2;
 
-          const marker = view.getUint16(offset, false);
+        if (marker === 0xffe1) {
+          const exifLength = dataView.getUint16(offset, false);
+          const exifEnd = offset + exifLength;
           offset += 2;
 
-          if (marker === 0xffe1) {
-            if (offset + 2 > length) break;
+          if (offset + 4 > exifEnd) {
+            resolve(1);
+            return;
+          }
 
-            offset += 2;
+          if (dataView.getUint32(offset, false) !== 0x45786966) {
+            resolve(1);
+            return;
+          }
 
-            if (offset + 4 > length) break;
+          const tiffOffset = offset + 6;
 
-            if (view.getUint32(offset, false) !== 0x45786966) {
-              resolve(1);
-              return;
-            }
+          if (tiffOffset + 8 > exifEnd) {
+            resolve(1);
+            return;
+          }
 
-            const tiffOffset = offset + 6;
-            if (tiffOffset + 8 > length) break;
+          const littleEndian = dataView.getUint16(tiffOffset, false) === 0x4949;
+          const firstIFDOffset = dataView.getUint32(
+            tiffOffset + 4,
+            littleEndian
+          );
 
-            const littleEndian = view.getUint16(tiffOffset, false) === 0x4949;
-            const firstIFDOffset = view.getUint32(tiffOffset + 4, littleEndian);
+          const ifdStart = tiffOffset + firstIFDOffset;
 
-            const ifdStart = tiffOffset + firstIFDOffset;
-            if (ifdStart + 2 > length) break;
+          if (ifdStart + 2 > exifEnd) {
+            resolve(1);
+            return;
+          }
 
-            const tagCount = view.getUint16(ifdStart, littleEndian);
+          const tagCount = dataView.getUint16(ifdStart, littleEndian);
 
-            for (let i = 0; i < tagCount; i++) {
-              const tagOffset = ifdStart + 2 + i * 12;
-              if (tagOffset + 12 > length) break;
+          if (ifdStart + 2 + tagCount * 12 > exifEnd) {
+            resolve(1);
+            return;
+          }
 
-              if (view.getUint16(tagOffset, littleEndian) === 0x0112) {
-                const orientation = view.getUint16(tagOffset + 8, littleEndian);
-                resolve(orientation);
+          for (let i = 0; i < tagCount; i++) {
+            const tagOffset = ifdStart + 2 + i * 12;
+            const tag = dataView.getUint16(tagOffset, littleEndian);
+
+            if (tag === 0x0112) {
+              if (tagOffset + 10 > exifEnd) {
+                resolve(1);
                 return;
               }
+
+              const orientation = dataView.getUint16(
+                tagOffset + 8,
+                littleEndian
+              );
+              resolve(orientation);
+              return;
             }
           }
-          const markerHighByte = Math.floor(marker / 256);
-          if (markerHighByte !== 0xff) break;
 
-          if (offset + 2 > length) break;
-          offset += view.getUint16(offset, false);
+          offset = exifEnd;
+          continue;
         }
 
-        resolve(1);
-      } catch (error) {
-        console.error('Error reading EXIF data:', error);
-        resolve(1);
-      }
-    };
+        const markerHighByte = Math.floor(marker / 256);
+        if (markerHighByte !== 0xff) break;
 
-    reader.onerror = () => {
+        if (offset + 2 > length) break;
+
+        offset += dataView.getUint16(offset, false);
+      }
+
       resolve(1);
     };
 
-    reader.readAsArrayBuffer(file);
+    reader.onerror = () => resolve(1);
+    reader.readAsArrayBuffer(blob);
   });
 
-export const getTransformStyle = (orientation: number): React.CSSProperties => {
+export const applyExifTransform = (
+  canvas: HTMLCanvasElement,
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  orientation: number
+) => {
+  const { width, height } = img;
+
   switch (orientation) {
     case 2:
-      return { transform: 'scaleX(-1)' };
+      // Горизонтальное отражение
+      canvas.width = width;
+      canvas.height = height;
+      ctx.transform(-1, 0, 0, 1, width, 0);
+      break;
     case 3:
-      return { transform: 'rotate(180deg)' };
+      // Поворот на 180°
+      canvas.width = width;
+      canvas.height = height;
+      ctx.transform(-1, 0, 0, -1, width, height);
+      break;
     case 4:
-      return { transform: 'scaleY(-1)' };
+      // Вертикальное отражение
+      canvas.width = width;
+      canvas.height = height;
+      ctx.transform(1, 0, 0, -1, 0, height);
+      break;
     case 5:
-      return { transform: 'rotate(90deg) scaleX(-1)' };
+      // Поворот на 90° + горизонтальное отражение
+      canvas.width = height;
+      canvas.height = width;
+      ctx.transform(0, 1, 1, 0, 0, 0);
+      break;
     case 6:
-      return { transform: 'rotate(90deg)' };
+      // Поворот на 90° по часовой стрелке
+      canvas.width = height;
+      canvas.height = width;
+      ctx.transform(0, 1, -1, 0, height, 0);
+      break;
     case 7:
-      return { transform: 'rotate(-90deg) scaleX(-1)' };
+      // Поворот на 90° + вертикальное отражение
+      canvas.width = height;
+      canvas.height = width;
+      ctx.transform(0, -1, -1, 0, height, width);
+      break;
     case 8:
-      return { transform: 'rotate(-90deg)' };
+      // Поворот на 90° против часовой стрелки
+      canvas.width = height;
+      canvas.height = width;
+      ctx.transform(0, -1, 1, 0, 0, width);
+      break;
     default:
-      return {};
+      // Нормальная ориентация
+      canvas.width = width;
+      canvas.height = height;
+      break;
   }
+};
+
+export const createCorrectedImage = async (blob: Blob): Promise<string> => {
+  const orientation = await getExifOrientation(blob);
+
+  if (orientation === 1) {
+    return URL.createObjectURL(blob);
+  }
+
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+
+      if (!ctx) {
+        resolve(URL.createObjectURL(blob));
+        return;
+      }
+
+      applyExifTransform(canvas, ctx, img, orientation);
+      ctx.drawImage(img, 0, 0);
+
+      canvas.toBlob(
+        (correctedBlob) => {
+          if (correctedBlob) {
+            resolve(URL.createObjectURL(correctedBlob));
+          } else {
+            resolve(URL.createObjectURL(blob));
+          }
+        },
+        'image/jpeg',
+        0.92
+      );
+    };
+
+    img.onerror = () => {
+      resolve(URL.createObjectURL(blob));
+    };
+
+    img.src = URL.createObjectURL(blob);
+  });
 };
