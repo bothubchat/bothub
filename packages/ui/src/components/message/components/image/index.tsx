@@ -8,7 +8,6 @@ import { ImageProps } from '@/ui/components/image';
 import { MessageImageProvider } from './context';
 import { useTheme } from '@/ui/theme';
 import { useMessage } from '@/ui/components/message/context';
-import { createCorrectedImage } from './lib/utils';
 
 export interface MessageImageProps extends Omit<ImageProps, 'ref'> {
   src: string;
@@ -43,13 +42,7 @@ export const MessageImage: React.FC<MessageImageProps> = ({
     if (fetchImage) {
       fetch(src)
         .then((response) => response.blob())
-        .then(async (blob) => {
-          const correctedImageUrl = await createCorrectedImage(blob);
-          setImageUrl(correctedImageUrl);
-        })
-        .catch(() => {
-          setImageUrl(src);
-        });
+        .then((image) => setImageUrl(URL.createObjectURL(image)));
     }
   }, [src, fetchImage]);
 
