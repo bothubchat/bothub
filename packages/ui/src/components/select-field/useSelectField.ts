@@ -57,65 +57,48 @@ export const useSelectField = <
   const [height, setHeight] = useState<number | undefined>(contentHeight);
   const [placement, setPlacement] = useState(initialPlacement);
 
-  const setInitialValue = useCallback(
-    (item: ValueType) => {
-      if (multiple && Array.isArray(item)) {
-        const items = item;
+  const [value, setValue] = useState<ValueType>(
+    initialValue || (multiple ? [] : null)
+  ) as [ValueType, ValueSetter];
 
-        (onValueChange as SelectFieldMultiValueChangeEventHandler)?.(
-          items
-            .map((item) => {
-              if (typeof item === 'string') {
-                return item;
-              }
+  const setValueHandler = (item: ValueType) => {
+    setValue(item);
 
-              if (typeof item.value === 'string') {
-                return item.value;
-              }
+    if (multiple && Array.isArray(item)) {
+      onChange?.(item);
 
-              return '';
-            })
-            .filter((item) => !!item)
-        );
-      }
+      (onValueChange as SelectFieldMultiValueChangeEventHandler)?.(
+        item
+          .map((item) => {
+            if (typeof item === 'string') {
+              return item;
+            }
 
-      if (!multiple && item && !Array.isArray(item)) {
-        const onValueChangeTyped =
-          onValueChange as SelectFieldValueChangeEventHandler;
+            if (typeof item.value === 'string') {
+              return item.value;
+            }
 
-        if (item) {
-          if (typeof item === 'string') {
-            onValueChangeTyped?.(item);
-          } else if (typeof item.value === 'string') {
-            onValueChangeTyped?.(item.value);
-          }
-        } else {
-          onValueChangeTyped?.(null);
-        }
-      }
-    },
-    [multiple, onChange, onValueChange]
-  );
-
-  let [value, setValue] = useState<ValueType>(multiple ? [] : null) as [
-    ValueType,
-    ValueSetter
-  ];
-  if (typeof initialValue !== 'undefined') {
-    [value, setValue] = [initialValue, setInitialValue];
-  }
-
-  const setValueHandler = (value: ValueType) => {
-    setValue(value);
-
-    if (!onChange) return;
-
-    if (multiple && Array.isArray(value)) {
-      onChange(value);
+            return '';
+          })
+          .filter((item) => !!item)
+      );
     }
 
-    if (!multiple && !Array.isArray(value)) {
-      (onChange as SelectFieldChangeEventHandler)(value);
+    if (!multiple && item && !Array.isArray(item)) {
+      (onChange as SelectFieldChangeEventHandler)?.(item);
+
+      const onValueChangeTyped =
+        onValueChange as SelectFieldValueChangeEventHandler;
+
+      if (item) {
+        if (typeof item === 'string') {
+          onValueChangeTyped?.(item);
+        } else if (typeof item.value === 'string') {
+          onValueChangeTyped?.(item.value);
+        }
+      } else {
+        onValueChangeTyped?.(null);
+      }
     }
   };
 
