@@ -30,6 +30,7 @@ export const MessageImage: React.FC<MessageImageProps> = ({
   progress = false,
   fetchImage = false,
   disableSkeleton = false,
+  style,
   ...props
 }) => {
   const theme = useTheme();
@@ -44,7 +45,21 @@ export const MessageImage: React.FC<MessageImageProps> = ({
         .then((response) => response.blob())
         .then((image) => setImageUrl(URL.createObjectURL(image)));
     }
-  }, [src]);
+  }, [src, fetchImage]);
+
+  useEffect(
+    () => () => {
+      if (imageUrl && imageUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(imageUrl);
+      }
+    },
+    [imageUrl]
+  );
+
+  const finalStyle = {
+    ...style,
+    imageOrientation: 'from-image' as const
+  };
 
   return (
     <MessageImageProvider
@@ -74,14 +89,11 @@ export const MessageImage: React.FC<MessageImageProps> = ({
           $progress={progress}
           $loading={isLoading && !disableSkeleton}
           {...props}
-          {...(fetchImage &&
-            imageUrl && {
-              src: imageUrl
-            })}
-          {...(!fetchImage && { src })}
+          style={finalStyle}
+          src={imageUrl || src}
           width={width ?? 300}
           height={height ?? 300}
-          onLoad={setIsLoading.bind(null, false)}
+          onLoad={() => setIsLoading(false)}
         />
         {!progress && buttons}
       </MessageImageStyled>
