@@ -1,6 +1,10 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.39.4-fix-inverted-photo-e35188cb-580e-40b2-a480-4a86b6df5f5e",
+<<<<<<< HEAD
+  "version": "2.40.3-develop-da8da19f-20b2-4b2e-aa8d-0a21a68c0749",
+=======
+  "version": "2.40.6-develop-eb377410-ace9-4474-9a2a-b4f3147287af",
+>>>>>>> 9d3bb3f0ec07398d0a2bfd4531f3dd94759f7b7a
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
