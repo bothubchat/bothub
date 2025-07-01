@@ -8,7 +8,7 @@ import { ImageProps } from '@/ui/components/image';
 import { MessageImageProvider } from './context';
 import { useTheme } from '@/ui/theme';
 import { useMessage } from '@/ui/components/message/context';
-import { getImageOrientation, getTransformStyle } from './lib/utils';
+import { createCorrectedImage } from './lib/utils';
 
 export interface MessageImageProps extends Omit<ImageProps, 'ref'> {
   src: string;
@@ -31,7 +31,6 @@ export const MessageImage: React.FC<MessageImageProps> = ({
   progress = false,
   fetchImage = false,
   disableSkeleton = false,
-  style,
   ...props
 }) => {
   const theme = useTheme();
@@ -39,34 +38,19 @@ export const MessageImage: React.FC<MessageImageProps> = ({
 
   const [isLoading, setIsLoading] = useState(true);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [transformStyle, setTransformStyle] = useState<React.CSSProperties>({});
 
   useEffect(() => {
-    const loadImage = async () => {
-      try {
-        let blob: Blob;
-
-        if (fetchImage) {
-          const response = await fetch(src);
-          blob = await response.blob();
-          const blobUrl = URL.createObjectURL(blob);
-          setImageUrl(blobUrl);
-        } else {
-          const response = await fetch(src);
-          blob = await response.blob();
-        }
-        const orientation = await getImageOrientation(blob);
-        const transform = getTransformStyle(orientation);
-        setTransformStyle(transform);
-      } catch (error) {
-        console.error('Error loading image:', error);
-        if (!fetchImage) {
-          setImageUrl(null);
-        }
-      }
-    };
-
-    loadImage();
+    if (fetchImage) {
+      fetch(src)
+        .then((response) => response.blob())
+        .then(async (blob) => {
+          const correctedImageUrl = await createCorrectedImage(blob);
+          setImageUrl(correctedImageUrl);
+        })
+        .catch(() => {
+          setImageUrl(src);
+        });
+    }
   }, [src, fetchImage]);
 
   useEffect(
@@ -77,12 +61,6 @@ export const MessageImage: React.FC<MessageImageProps> = ({
     },
     [imageUrl]
   );
-
-  const finalStyle = {
-    ...style,
-    ...transformStyle,
-    imageOrientation: 'from-image' as const
-  };
 
   return (
     <MessageImageProvider
@@ -112,11 +90,14 @@ export const MessageImage: React.FC<MessageImageProps> = ({
           $progress={progress}
           $loading={isLoading && !disableSkeleton}
           {...props}
-          style={finalStyle}
-          src={imageUrl || src}
+          {...(fetchImage &&
+            imageUrl && {
+              src: imageUrl
+            })}
+          {...(!fetchImage && { src })}
           width={width ?? 300}
           height={height ?? 300}
-          onLoad={() => setIsLoading(false)}
+          onLoad={setIsLoading.bind(null, false)}
         />
         {!progress && buttons}
       </MessageImageStyled>
