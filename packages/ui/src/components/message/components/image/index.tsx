@@ -30,7 +30,6 @@ export const MessageImage: React.FC<MessageImageProps> = ({
   progress = false,
   fetchImage = false,
   disableSkeleton = false,
-  style,
   ...props
 }) => {
   const theme = useTheme();
@@ -55,11 +54,6 @@ export const MessageImage: React.FC<MessageImageProps> = ({
     },
     [imageUrl]
   );
-
-  const finalStyle = {
-    ...style,
-    imageOrientation: 'from-image' as const
-  };
 
   return (
     <MessageImageProvider
@@ -89,11 +83,14 @@ export const MessageImage: React.FC<MessageImageProps> = ({
           $progress={progress}
           $loading={isLoading && !disableSkeleton}
           {...props}
-          style={finalStyle}
-          src={imageUrl || src}
+          {...(fetchImage &&
+            imageUrl && {
+              src: imageUrl
+            })}
+          {...(!fetchImage && { src })}
           width={width ?? 300}
           height={height ?? 300}
-          onLoad={() => setIsLoading(false)}
+          onLoad={setIsLoading.bind(null, false)}
         />
         {!progress && buttons}
       </MessageImageStyled>
