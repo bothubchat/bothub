@@ -1,20 +1,38 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Progress } from '@/ui/components/progress';
 import { UploadedFileStatus } from './types';
 import { colorToRgba } from '@/ui/utils';
 
-export const UploadedFileStyled = styled.div<{
-  $fullWidth?: boolean;
-}>`
+type IsPrimary = {
+  $isPrimary: boolean;
+};
+
+export const UploadedFileStyled = styled.div<
+  {
+    $fullWidth?: boolean;
+  } & IsPrimary
+>`
   ${({ $fullWidth }) => ($fullWidth ? 'width: 100%;' : '')}
-  padding: 12px 16px;
-  background-color: ${({ theme }) =>
-    colorToRgba(theme.colors.grayScale.gray4, 0.75)};
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+
+  ${({ $isPrimary, theme }) =>
+    $isPrimary
+      ? css`
+          padding: 12px 16px;
+          gap: 10px;
+          border-radius: 10px;
+          background-color: ${colorToRgba(theme.colors.grayScale.gray4, 0.75)};
+        `
+      : css`
+          width: 430px;
+          padding: 14px 16px;
+          gap: 8px;
+          border: 1px solid ${theme.colors.grayScale.gray2};
+          border-radius: 20px;
+          background-color: ${theme.colors.base.black};
+        `}
 `;
 
 export const UploadedFileHeader = styled.div`
@@ -84,9 +102,11 @@ export const UploadedFileFooter = styled.div`
 
 export const UploadedFileProgressBar = styled(Progress).attrs({
   fullWidth: true
-})<{
-  $error: boolean;
-}>`
+})<
+  {
+    $error: boolean;
+  } & IsPrimary
+>`
   & > div {
     height: 6px;
     border-radius: 4px;
@@ -94,8 +114,12 @@ export const UploadedFileProgressBar = styled(Progress).attrs({
 
     & > div {
       border-radius: 4px;
-      background-color: ${({ theme, $error }) =>
-        $error ? theme.colors.critic : theme.colors.accent.primary};
+      background: ${({ theme, $error, $isPrimary }) =>
+        $error
+          ? theme.colors.critic
+          : $isPrimary
+            ? theme.colors.accent.primary
+            : theme.colors.gradient.elite};
     }
   }
 `;

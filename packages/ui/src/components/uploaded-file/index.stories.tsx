@@ -26,6 +26,9 @@ export const All = () => (
 
     <Typography variant="body-s-medium">{Error.name}</Typography>
     <Error />
+
+    <Typography variant="body-s-medium">{Secondary.name}</Typography>
+    <Secondary />
   </div>
 );
 
@@ -85,6 +88,17 @@ export const Error = () => (
     onRetry={() => {}}
     status="error"
     errorLabel="Ошибка"
+  />
+);
+
+export const Secondary = () => (
+  <UploadedFile
+    variant="secondary"
+    filename="Table Name.xls"
+    progress={66}
+    status="in-progress"
+    onDelete={() => {}}
+    onPause={() => {}}
   />
 );
 
