@@ -57,7 +57,7 @@ export const useSelectField = <
   const [height, setHeight] = useState<number | undefined>(contentHeight);
   const [placement, setPlacement] = useState(initialPlacement);
 
-  const setInitialValue = useCallback(
+  const setExternalValue = useCallback(
     (item: ValueType) => {
       if (multiple && Array.isArray(item)) {
         const onValueChangeTyped =
@@ -97,18 +97,22 @@ export const useSelectField = <
     [multiple, onChange, onValueChange]
   );
 
-  const setValueHandler = (value: ValueType) => {
-    setValue(value);
-    setInitialValue(value);
-  };
-
   let [value, setValue] = useState<ValueType>(multiple ? [] : null) as [
     ValueType,
     ValueSetter
   ];
   if (typeof initialValue !== 'undefined') {
-    [value, setValue] = [initialValue, setInitialValue];
+    [value, setValue] = [initialValue, setExternalValue];
   }
+
+  const setValueHandler = (value: ValueType) => {
+    if (setValue === setExternalValue) {
+      setValue(value);
+    } else {
+      setValue(value);
+      setExternalValue(value);
+    }
+  };
 
   const isKeyboardOpen = useRef(false);
   const triggerRef = useRef<TriggerType>(null);
