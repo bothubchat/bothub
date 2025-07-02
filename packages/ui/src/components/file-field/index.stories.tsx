@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FileField, FileFieldLabel } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { UploadIcon } from '@/ui/icons';
