@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.41.2",
+  "version": "2.42.0-fix-deps-f5fbe246-e8b2-4cc7-b1d9-afee5b508c0f",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
@@ -60,9 +60,9 @@
     "highlight.js": "^11.11.0",
     "katex": "^0.16.10",
     "normalize.css": "^8.0.1",
+    "rc-slider": "^11.1.8",
     "react-markdown": "^8.0.7",
     "rehype-katex": "^7.0.0",
-    "rc-slider": "^11.1.8",
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",
     "tslib": "^2.6.2",
