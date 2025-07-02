@@ -55,7 +55,9 @@ export const Basic: SelectFieldStory = {
       'ChatGPT',
       'Midjourney',
       'o3-mini'
-    ]
+    ],
+    onValueChange: (value: unknown) => console.log('onValueChange', value),
+    onChange: (value: unknown) => console.log('onChange', value)
   }
 };
 

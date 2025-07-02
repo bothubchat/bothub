@@ -57,50 +57,58 @@ export const useSelectField = <
   const [height, setHeight] = useState<number | undefined>(contentHeight);
   const [placement, setPlacement] = useState(initialPlacement);
 
-  const [value, setValue] = useState<ValueType>(
-    initialValue || (multiple ? [] : null)
-  ) as [ValueType, ValueSetter];
-
-  const setValueHandler = (item: ValueType) => {
-    setValue(item);
-
-    if (multiple && Array.isArray(item)) {
-      onChange?.(item);
-
-      (onValueChange as SelectFieldMultiValueChangeEventHandler)?.(
-        item
-          .map((item) => {
-            if (typeof item === 'string') {
-              return item;
-            }
-
-            if (typeof item.value === 'string') {
-              return item.value;
-            }
-
-            return '';
-          })
-          .filter((item) => !!item)
-      );
-    }
-
-    if (!multiple && item && !Array.isArray(item)) {
-      (onChange as SelectFieldChangeEventHandler)?.(item);
-
-      const onValueChangeTyped =
-        onValueChange as SelectFieldValueChangeEventHandler;
-
-      if (item) {
-        if (typeof item === 'string') {
-          onValueChangeTyped?.(item);
-        } else if (typeof item.value === 'string') {
-          onValueChangeTyped?.(item.value);
-        }
-      } else {
-        onValueChangeTyped?.(null);
+  const setInitialValue = useCallback(
+    (item: ValueType) => {
+      if (multiple && Array.isArray(item)) {
+        const onValueChangeTyped =
+          onValueChange as SelectFieldMultiValueChangeEventHandler;
+        const items = item;
+        onChange?.(item);
+        onValueChangeTyped?.(
+          items
+            .map((item) => {
+              if (typeof item === 'string') {
+                return item;
+              }
+              if (typeof item.value === 'string') {
+                return item.value;
+              }
+              return '';
+            })
+            .filter((item) => !!item)
+        );
       }
-    }
+      if (!multiple && !Array.isArray(item)) {
+        (onChange as SelectFieldChangeEventHandler)?.(item);
+
+        const onValueChangeTyped =
+          onValueChange as SelectFieldValueChangeEventHandler;
+        if (item) {
+          if (typeof item === 'string') {
+            onValueChangeTyped?.(item);
+          } else if (typeof item.value === 'string') {
+            onValueChangeTyped?.(item.value);
+          }
+        } else {
+          onValueChangeTyped?.(null);
+        }
+      }
+    },
+    [multiple, onChange, onValueChange]
+  );
+
+  const setValueHandler = (value: ValueType) => {
+    setValue(value);
+    setInitialValue(value);
   };
+
+  let [value, setValue] = useState<ValueType>(multiple ? [] : null) as [
+    ValueType,
+    ValueSetter
+  ];
+  if (typeof initialValue !== 'undefined') {
+    [value, setValue] = [initialValue, setInitialValue];
+  }
 
   const isKeyboardOpen = useRef(false);
   const triggerRef = useRef<TriggerType>(null);
