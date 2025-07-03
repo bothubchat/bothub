@@ -34,6 +34,7 @@ export type UploadedFileProps = {
   status?: UploadedFileStatus;
   doneLabel?: React.ReactNode;
   errorLabel?: React.ReactNode;
+  className?: string;
   onDelete?: () => void;
   onPause?: () => void;
   onResume?: () => void;
@@ -48,6 +49,7 @@ export const UploadedFile = (props: UploadedFileProps) => {
     doneLabel,
     errorLabel,
     variant = 'primary',
+    className,
     onDelete,
     onPause,
     onResume,
@@ -62,6 +64,7 @@ export const UploadedFile = (props: UploadedFileProps) => {
     <UploadedFileStyled
       $fullWidth={isPrimary ? typedProps.fullWidth : undefined}
       $isPrimary={isPrimary}
+      className={className}
     >
       <UploadedFileHeader>
         {isPrimary ? (
