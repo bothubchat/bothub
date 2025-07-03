@@ -1,20 +1,23 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import {
   ColorSchemeNames,
   useTheme,
   THEMES,
-  Theme,
-  defaultTheme,
-  ColorSchemeNamesArray
+  ColorSchemeNamesArray,
+  ThemeMode,
+  ThemeColors
 } from '@/ui/theme';
 import { ThemeSchemesSection } from './section';
-import { ThemeSchemesStyled } from './styled';
+import { ThemeAddButton, ThemeSchemesStyled } from './styled';
 import { ThemeButton } from './theme-button';
 
 export type ThemeSchemesEventHandler = () => unknown;
 export type ThemeSchemesClickEventHandler = (
   scheme: ColorSchemeNames
+) => unknown;
+export type ThemeSchemesCustomThemeClickEventHandler = (
+  index: number
 ) => unknown;
 
 export interface ThemeSchemesProps {
@@ -22,12 +25,15 @@ export interface ThemeSchemesProps {
   standardTitle?: string;
   colorfulTitle?: string;
   activeScheme: ColorSchemeNames;
-  customTheme?: Pick<Theme, 'colors'>;
+  customColorsArray: Array<Record<ThemeMode, ThemeColors>>;
+  customThemeIndex: number;
   editTooltipText?: string | null;
   resetTooltipText?: string | null;
+  onAddTheme?: ThemeSchemesEventHandler;
+  onCustomClick?: ThemeSchemesCustomThemeClickEventHandler;
   onClick?: ThemeSchemesClickEventHandler;
-  onEditCustom?: ThemeSchemesEventHandler;
-  onResetCustom?: ThemeSchemesEventHandler;
+  onEditCustom?: ThemeSchemesCustomThemeClickEventHandler;
+  onResetCustom?: ThemeSchemesCustomThemeClickEventHandler;
 }
 
 export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
@@ -35,9 +41,12 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
   standardTitle,
   colorfulTitle,
   activeScheme,
-  customTheme,
+  customColorsArray,
+  customThemeIndex,
   editTooltipText,
   resetTooltipText,
+  onAddTheme,
+  onCustomClick,
   onClick,
   onEditCustom,
   onResetCustom
@@ -45,14 +54,6 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
   const theme = useTheme();
 
   const [scheme, setScheme] = useState<ColorSchemeNames>(activeScheme);
-
-  const custom = useMemo(
-    () => ({
-      ...defaultTheme,
-      ...customTheme
-    }),
-    [customTheme]
-  );
 
   const handleClick = useCallback(
     (scheme: ColorSchemeNames) => {
@@ -62,23 +63,32 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
     [onClick]
   );
 
+  const handleCustomClick = useCallback((index: number) => {
+    setScheme('custom');
+    onCustomClick?.(index);
+  }, []);
+
   return (
     <ThemeSchemesStyled>
       <ThemeSchemesSection
         title={customTitle}
         active={scheme === 'custom'}
-        onClick={() => handleClick('custom')}
+        onClick={() => handleCustomClick(0)}
       >
-        <ThemeButton
-          theme={custom}
-          active={scheme === 'custom'}
-          hasActions={scheme === 'custom'}
-          editTooltipText={editTooltipText}
-          resetTooltipText={resetTooltipText}
-          onClick={() => handleClick('custom')}
-          onEdit={onEditCustom}
-          onDelete={onResetCustom}
-        />
+        {customColorsArray?.map((themeColors, idx) => (
+          <ThemeButton
+            key={`theme-button-custom-${idx}`}
+            theme={{ colors: themeColors[theme.mode], mode: theme.mode }}
+            active={scheme === 'custom' && customThemeIndex === idx}
+            hasActions={scheme === 'custom' && customThemeIndex === idx}
+            editTooltipText={editTooltipText}
+            resetTooltipText={resetTooltipText}
+            onClick={() => handleCustomClick(idx)}
+            onEdit={() => onEditCustom?.(idx)}
+            onDelete={() => onResetCustom?.(idx)}
+          />
+        ))}
+        <ThemeAddButton onClick={onAddTheme} />
       </ThemeSchemesSection>
       <ThemeSchemesSection
         title={standardTitle}
