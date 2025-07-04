@@ -33,7 +33,7 @@ export interface ThemeSchemesProps {
   onCustomClick?: ThemeSchemesCustomThemeClickEventHandler;
   onClick?: ThemeSchemesClickEventHandler;
   onEditCustom?: ThemeSchemesCustomThemeClickEventHandler;
-  onResetCustom?: ThemeSchemesCustomThemeClickEventHandler;
+  onDeleteCustom?: ThemeSchemesCustomThemeClickEventHandler;
 }
 
 export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
@@ -49,7 +49,7 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
   onCustomClick,
   onClick,
   onEditCustom,
-  onResetCustom
+  onDeleteCustom
 }) => {
   const theme = useTheme();
 
@@ -80,12 +80,12 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
             key={`theme-button-custom-${idx}`}
             theme={{ colors: themeColors[theme.mode], mode: theme.mode }}
             active={scheme === 'custom' && customThemeIndex === idx}
-            hasActions={scheme === 'custom' && customThemeIndex === idx}
+            hasActions
             editTooltipText={editTooltipText}
             resetTooltipText={resetTooltipText}
             onClick={() => handleCustomClick(idx)}
             onEdit={() => onEditCustom?.(idx)}
-            onDelete={() => onResetCustom?.(idx)}
+            onDelete={() => onDeleteCustom?.(idx)}
           />
         ))}
         <ThemeAddButton onClick={onAddTheme} />

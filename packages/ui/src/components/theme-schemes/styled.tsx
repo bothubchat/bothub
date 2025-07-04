@@ -19,12 +19,12 @@ export const ThemeAddButton = styled.button.attrs({
   children: <Plus2Icon />
 })`
   all: unset;
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 13px;
+  margin: 13px 14px;
   border-radius: 26px;
   background-color: ${({ theme }) => theme.colors.grayScale.gray3};
   &:hover {
