@@ -2,6 +2,7 @@ import * as S from './styled';
 import {
   SelectFieldChangeEventHandler,
   SelectFieldDataItem,
+  SelectFieldValueChangeEventHandler,
   SelectModal,
   useSelectField,
   UseSelectFieldProps
@@ -17,6 +18,7 @@ export type BadgeSelectDropdownProps = {
   className?: string;
   compactWidth?: boolean;
   onChange?: SelectFieldChangeEventHandler;
+  onValueChange?: SelectFieldValueChangeEventHandler;
 } & Omit<
   UseSelectFieldProps,
   'onChange' | 'multiple' | 'onValueChange' | 'value'
@@ -29,7 +31,6 @@ export const BadgeSelectDropdown = ({
   colorButtonOpened,
   className,
   compactWidth,
-  onChange,
   ...useSelectFieldProps
 }: BadgeSelectDropdownProps) => {
   const theme = useTheme();
@@ -44,8 +45,7 @@ export const BadgeSelectDropdown = ({
   } = useSelectField<HTMLButtonElement>({
     ...useSelectFieldProps,
     value: initialValue,
-    multiple: false,
-    onChange
+    multiple: false
   });
 
   let label = '';
