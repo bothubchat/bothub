@@ -1,99 +1,95 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useTransition } from '@react-spring/web';
+import * as S from './styled';
 import {
-  BadgeSelectDropdownWrapper,
-  BadgeSelectDropdownTrigger,
-  BadgeSelectDropdownSpanStyled,
-  BadgeSelectDropdownTogglerArrow,
-  BadgeSelectDropdownList
-} from './styled';
-import { BadgeSelectDropdownProvider } from './context';
+  SelectFieldChangeEventHandler,
+  SelectFieldDataItem,
+  SelectModal,
+  useSelectField,
+  UseSelectFieldProps
+} from '../select-field';
+import { Variant } from './types';
+import { useTheme } from '@/ui/theme';
 
-type IBadgeSelectDropdown = React.ComponentProps<'div'> & {
-  activeDropDownItem: string;
+export type BadgeSelectDropdownProps = {
+  options: SelectFieldDataItem[];
+  value?: SelectFieldDataItem | null;
+  variant?: Variant;
   colorButtonOpened?: string;
-} & React.PropsWithChildren;
+  className?: string;
+  compactWidth?: boolean;
+  onChange?: SelectFieldChangeEventHandler;
+} & Omit<
+  UseSelectFieldProps,
+  'onChange' | 'multiple' | 'onValueChange' | 'value'
+>;
 
-export const BadgeSelectDropdown: React.FC<IBadgeSelectDropdown> = ({
-  children,
-  activeDropDownItem,
+export const BadgeSelectDropdown = ({
+  options,
+  value: initialValue,
+  variant = 'primary',
   colorButtonOpened,
-  ...props
-}) => {
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  className,
+  compactWidth,
+  onChange,
+  ...useSelectFieldProps
+}: BadgeSelectDropdownProps) => {
+  const theme = useTheme();
 
-  const handleToggle = useCallback(() => {
-    setIsOpen(!isOpen);
-  }, [isOpen]);
-
-  useEffect(() => {
-    const dropdownEl: HTMLDivElement | null = dropdownRef.current;
-
-    if (dropdownEl !== null) {
-      const clickListener = (event: Event) => {
-        if (!dropdownEl.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      const blurListener = () => setIsOpen(false);
-
-      document.addEventListener('click', clickListener);
-      window.addEventListener('blur', blurListener);
-
-      return () => {
-        document.removeEventListener('click', clickListener);
-        window.removeEventListener('blur', blurListener);
-      };
-    }
-  }, []);
-
-  const dropdownTransition = useTransition(isOpen, {
-    from: {
-      opacity: 0,
-      transform: 'scale(0)'
-    },
-    enter: {
-      opacity: isOpen ? 1 : 0.5,
-      transform: `scale(${isOpen ? 1 : 0.999})`
-    },
-    leave: { opacity: 0, transform: 'scale(0.999)' },
-    config: { duration: 150 }
+  const {
+    isOpen,
+    triggerRef,
+    value,
+    setValue,
+    handleInputClick,
+    ...selectModalProps
+  } = useSelectField<HTMLButtonElement>({
+    ...useSelectFieldProps,
+    value: initialValue,
+    multiple: false,
+    onChange
   });
 
+  let label = '';
+  if (typeof value === 'string') {
+    label = value;
+  }
+  if (
+    value &&
+    typeof value !== 'string' &&
+    !Array.isArray(value) &&
+    value.label
+  ) {
+    label = value.label;
+  }
+
   return (
-    <BadgeSelectDropdownProvider setIsOpen={setIsOpen}>
-      <BadgeSelectDropdownWrapper
-        ref={dropdownRef}
-        {...props}
+    <>
+      <S.BadgeSelectDropdownTrigger
+        ref={triggerRef}
+        $active={isOpen}
+        $variant={variant}
+        $colorButtonOpened={colorButtonOpened}
+        type="button"
+        onClick={(e) => handleInputClick(false, e)}
+        className={className}
       >
-        <BadgeSelectDropdownTrigger
-          $active={isOpen}
-          onClick={handleToggle}
-          $colorButtonOpened={colorButtonOpened}
-          type="button"
-        >
-          <BadgeSelectDropdownSpanStyled>
-            {activeDropDownItem}
-          </BadgeSelectDropdownSpanStyled>
-          <BadgeSelectDropdownTogglerArrow $open={isOpen} />
-        </BadgeSelectDropdownTrigger>
-        {dropdownTransition(
-          (style, item) =>
-            item && (
-              <BadgeSelectDropdownList
-                $open={isOpen && !!item}
-                style={style}
-              >
-                {children}
-              </BadgeSelectDropdownList>
-            )
-        )}
-      </BadgeSelectDropdownWrapper>
-    </BadgeSelectDropdownProvider>
+        <S.BadgeSelectDropdownSpanStyled>
+          {label}
+        </S.BadgeSelectDropdownSpanStyled>
+
+        <S.BadgeSelectDropdownTogglerArrow $open={isOpen} />
+      </S.BadgeSelectDropdownTrigger>
+
+      <SelectModal
+        data={options}
+        isOpen={isOpen}
+        setValue={setValue}
+        value={value}
+        compactWidth={compactWidth}
+        selectedColor={theme.colors.grayScale.gray2}
+        {...selectModalProps}
+      />
+    </>
   );
 };
 
-export * from './item';
 export * from './styled';
-export * from './context';

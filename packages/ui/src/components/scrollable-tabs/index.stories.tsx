@@ -57,7 +57,8 @@ export const Primary: ScrollableTabsStory = {
 export const Secondary: ScrollableTabsStory = {
   args: {
     ...Primary.args,
-    variant: 'secondary'
+    variant: 'secondary',
+    component: 'button'
   }
 };
 
