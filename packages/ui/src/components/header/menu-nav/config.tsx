@@ -7,7 +7,7 @@ import {
   StarsIcon,
   TextGenerationIcon
 } from '@/ui/icons';
-import { Banner } from './banner';
+import { Banner } from './banner/ui';
 
 export interface MenuItem {
   id: string;
