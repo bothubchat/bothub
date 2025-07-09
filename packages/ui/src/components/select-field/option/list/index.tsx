@@ -39,6 +39,7 @@ export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
   data: SelectFieldData;
   size: SelectFieldSize;
   disableSelect?: boolean;
+  selectedColor?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 }
 
@@ -47,6 +48,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
   data,
   size,
   disableSelect = false,
+  selectedColor,
   onOptionClick,
   ...props
 }) => {
@@ -80,6 +82,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               $selected={selected}
               $disabled={false}
               $size={size}
+              $selectedColor={selectedColor}
               key={index}
               onClick={handleOptionClick.bind(null, item)}
             >
@@ -137,13 +140,41 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
             handleOptionClick(item);
           };
 
-          return (
+          const key = item.id ?? item.value ?? `radio-${index}`;
+          const props = {
+            $selected: item.selected,
+            $disabled: item.disabled,
+            onClick,
+            children: (
+              <>
+                <SelectFieldRadioTitleAndRadio>
+                  {item.label && (
+                    <SelectFieldRadioLabel $size={size}>
+                      {item.label}
+                    </SelectFieldRadioLabel>
+                  )}
+                  <Radio
+                    type="radio"
+                    checked={item.selected ?? false}
+                    name={item.radioName}
+                    disabled={item.disabled}
+                    icon={item.disabled ? item.end : undefined}
+                  />
+                </SelectFieldRadioTitleAndRadio>
+
+                {item.description && (
+                  <SelectFieldRadioDescription>
+                    {item.description}
+                  </SelectFieldRadioDescription>
+                )}
+              </>
+            )
+          };
+
+          return item.tooltip || (item.label && item.label.length > 64) ? (
             <Tooltip
-              key={item.id ?? item.value ?? `radio-${index}`}
-              {...(typeof item.tooltip === 'object' && item.tooltip)}
-              {...(typeof item.tooltip !== 'object' && {
-                disabled: true
-              })}
+              key={key}
+              {...item.tooltip}
               {...(item.label &&
                 item.label.length > 64 && {
                   placement: 'top-left',
@@ -154,21 +185,23 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               <TooltipConsumer>
                 {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                   <SelectFieldRadio
-                    $selected={item.selected}
-                    $disabled={item.disabled}
+                    {...props}
                     onPointerDown={handleTooltipMouseEnter}
                     onPointerLeave={handleTooltipMouseLeave}
                     onMouseEnter={handleTooltipMouseEnter}
                     onMouseLeave={handleTooltipMouseLeave}
                     onClick={onClick}
+                    data-test={item.label}
                   >
                     <SelectFieldRadioTitleAndRadio>
                       {item.icon && (
-                        <IconProvider size={18}>{item.icon}</IconProvider>
+                        <IconProvider size={size === 'large' ? 24 : 16}>
+                          {item.icon}
+                        </IconProvider>
                       )}
                       {item.label && (
                         <SelectFieldRadioLabelWrapper>
-                          <SelectFieldRadioLabel>
+                          <SelectFieldRadioLabel $size={size}>
                             {item.label}
                           </SelectFieldRadioLabel>
                           {item.best_model && <StarsIcon size={18} />}
@@ -176,7 +209,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                       )}
                       <Radio
                         type="radio"
-                        checked={item.selected}
+                        checked={!!item.selected}
                         name={item.radioName}
                         disabled={item.disabled}
                         icon={item.disabled ? item.end : undefined}
@@ -192,17 +225,37 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                 )}
               </TooltipConsumer>
             </Tooltip>
+          ) : (
+            <SelectFieldRadio
+              key={key}
+              {...props}
+            />
           );
         }
 
         if (item.type === 'collapse' && item.data) {
-          return (
+          const props = {
+            size,
+            item,
+            onClick: item.onClick,
+            icon: item.disabled ? item.end : undefined,
+            children: (
+              <SelectFieldOptions
+                value={value}
+                data={item.data ?? []}
+                size={size}
+                disableSelect={disableSelect}
+                onOptionClick={onOptionClick}
+                selectedColor={selectedColor}
+              />
+            )
+          };
+          const key = item.id ?? item.value ?? `collapse-${index}`;
+
+          return item.tooltip || (item.label && item.label.length > 64) ? (
             <Tooltip
-              key={item.id ?? item.value ?? `collapse-${index}`}
-              {...(typeof item.tooltip === 'object' && item.tooltip)}
-              {...(typeof item.tooltip !== 'object' && {
-                disabled: true
-              })}
+              key={key}
+              {...item.tooltip}
               {...(item.label &&
                 item.label.length > 64 && {
                   placement: 'top-left',
@@ -213,26 +266,20 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               <TooltipConsumer>
                 {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                   <SelectFieldCollapseOption
-                    size={size}
-                    item={item}
+                    {...props}
                     onPointerDown={handleTooltipMouseEnter}
                     onPointerLeave={handleTooltipMouseLeave}
                     onMouseEnter={handleTooltipMouseEnter}
                     onMouseLeave={handleTooltipMouseLeave}
-                    onClick={item.onClick}
-                    icon={item.disabled ? item.end : undefined}
-                  >
-                    <SelectFieldOptions
-                      value={value}
-                      data={item.data ?? []}
-                      size={size}
-                      disableSelect={disableSelect}
-                      onOptionClick={onOptionClick}
-                    />
-                  </SelectFieldCollapseOption>
+                  />
                 )}
               </TooltipConsumer>
             </Tooltip>
+          ) : (
+            <SelectFieldCollapseOption
+              key={key}
+              {...props}
+            />
           );
         }
 
@@ -254,6 +301,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           selected,
           disabled,
           size,
+          selectedColor,
           onClick: handleOptionClick.bind(null, item)
         };
 

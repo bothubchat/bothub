@@ -150,14 +150,25 @@ export const MessageTags = styled.div``;
 
 export const MessageTag = styled(Badge)``;
 
-export const MessageAvatar = styled(Avatar)`
+export interface MessageAvatarWrapperProps {
+  $variant: MessageVariant;
+}
+
+export const MessageAvatarWrapper = styled.div<MessageAvatarWrapperProps>`
   grid-area: avatar;
   align-self: flex-end;
   user-select: none;
-  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-    display: none;
-  }
+  ${({ $variant }) =>
+    $variant === 'user' &&
+    adaptive({
+      variant: 'dashboard',
+      mobile: css`
+        display: none;
+      `
+    })}
 `;
+
+export const MessageAvatar = styled(Avatar)``;
 
 export interface MessageBlockProps {
   $variant: MessageVariant;
@@ -251,6 +262,10 @@ export const MessageBlockBottomPanel = styled.div<{
       case 'assistant':
         return css`
           margin-left: 52px;
+
+          @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+            margin-left: 0;
+          }
         `;
       default:
         return css``;
@@ -289,6 +304,7 @@ export const MessageBlockContent = styled.div<{
 
 export const MessageBlockTextArea = styled.span.attrs({
   role: 'textbox',
+
   contentEditable: true,
   suppressContentEditableWarning: true
 })`
@@ -319,6 +335,9 @@ export const MessageBlockTextArea = styled.span.attrs({
 
 export const MessageButtonsStyled = styled.div`
   margin-left: 48px;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    margin-left: 12px;
+  }
 `;
 
 export const MessageTransaction = styled(Typography).attrs({
@@ -327,10 +346,10 @@ export const MessageTransaction = styled(Typography).attrs({
   text-transform: uppercase;
   color: ${({ theme }) => {
     if (theme.mode === 'light') {
-      return theme.colors.accent.primary;
+      return theme.colors.grayScale.gray1;
     }
 
-    return theme.colors.grayScale.gray6;
+    return theme.default.colors.base.white;
   }};
 `;
 

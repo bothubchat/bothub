@@ -25,6 +25,7 @@ export interface MessageMarkdownProps {
     typeof MessageMarkdownLine
   >['components'];
   disableTyping?: boolean;
+  forceMarkdown?: boolean;
 }
 
 export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
@@ -33,12 +34,13 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
       children,
       components = {},
       componentsOverride = {},
-      disableTyping = false
+      disableTyping = false,
+      forceMarkdown = false
     },
     ref
   ) => {
     const { typing, variant, color } = useMessage();
-    const isDisabled = variant === 'user';
+    const isDisabled = forceMarkdown ? false : variant === 'user';
 
     const formattedChildren = useMemo(() => {
       if (typeof children === 'string' && !isDisabled) {

@@ -21,20 +21,23 @@ export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  will-change: transform;
+
   ${({ $disableScrollbar, $size, $followContentHeight }) =>
     !$disableScrollbar &&
     css`
       &::-webkit-scrollbar {
         width: 4px;
       }
+
       &::-webkit-scrollbar-thumb {
         background: ${({ theme }) => theme.colors.accent.primary};
         border-radius: 2px;
       }
+
       &::-webkit-scrollbar-corner {
         display: none;
       }
+
       max-height: ${() => {
         if ($followContentHeight) {
           return '100%';
@@ -62,8 +65,13 @@ export const Shadow = styled.div<ShadowProps>`
   height: 50px;
   z-index: 1;
   transition: opacity 0.2s;
-  opacity: ${({ $show }) => ($show ? 1 : 0)};
   pointer-events: none;
+
+  ${({ $show }) =>
+    !$show &&
+    css`
+      opacity: 0;
+    `}
 
   ${({ $onTop = false, theme }) => {
     const color =

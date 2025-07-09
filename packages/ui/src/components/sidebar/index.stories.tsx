@@ -33,12 +33,12 @@ import {
   SidebarLangDropdownItem,
   SidebarGroupEmpty,
   SidebarGroupCheckbox,
-  SidebarThemeSwitcher,
   SidebarUserInfoSkeleton,
   SidebarUserInfoUpdateTariffBadgeText,
   SidebarUserInfoUpdateTariffBadge,
   SidebarUserInfoUpdateTariffButtonText
 } from '.';
+import { ThemeSwitcher } from '../theme-switcher';
 import { Tooltip } from '@/ui/components/tooltip';
 import {
   ChatsIcon,
@@ -52,7 +52,6 @@ import {
   OrganizationIcon,
   SimpleGearIcon
 } from '@/ui/icons';
-import { BothubAppBannerMini } from '@/ui/components/banner';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
 
@@ -65,7 +64,7 @@ export const Basic: SidebarStory = {
         <SidebarLogo />
       </SidebarLogoLink>
     ),
-    themeSwitcher: <SidebarThemeSwitcher />,
+    themeSwitcher: <ThemeSwitcher />,
     menu: (
       <SidebarMenuNav>
         <SidebarMenuNavLink
@@ -195,13 +194,6 @@ export const Basic: SidebarStory = {
           </Tooltip>
         )}
       </SidebarConsumer>
-    ),
-    banner: (
-      <BothubAppBannerMini
-        title="Скачать приложение"
-        text="Теперь доступно для Android, iOS и ПК"
-        href="https://bothubq.com"
-      />
     ),
     children: (
       <SidebarGroups>

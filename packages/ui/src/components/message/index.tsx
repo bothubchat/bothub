@@ -21,7 +21,8 @@ import {
   MessageTop,
   MessageAvatar,
   MessageStyledWithBottomPanel,
-  MessageButtonsStyled
+  MessageButtonsStyled,
+  MessageAvatarWrapper
 } from './styled';
 import {
   MessageActionEventHandler,
@@ -59,9 +60,11 @@ export interface MessageProps {
   disableUpdate?: boolean;
   disableCopy?: boolean;
   disableDownload?: boolean;
+  disableEncryption?: boolean;
   copyPlainText?: string | null;
   copyTgText?: string | null;
   editText?: string | null;
+  editOutOfMenu?: boolean;
   resendText?: string | null;
   deleteText?: string | null;
   onReportText?: string | null;
@@ -70,6 +73,7 @@ export interface MessageProps {
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
   downloadTooltipLabel?: string | null;
+  encryptionTooltipLabel?: string | null;
   typing?: boolean;
   timestamp?: string | number;
   timestampPosition?: MessageTimestampPosition;
@@ -109,6 +113,8 @@ export const Message: React.FC<MessageProps> = ({
   disableUpdate = false,
   disableCopy = false,
   disableDownload = true,
+  disableEncryption = true,
+  editOutOfMenu = false,
   copyPlainText,
   copyTgText,
   editText,
@@ -120,6 +126,7 @@ export const Message: React.FC<MessageProps> = ({
   discardEditTooltipLabel,
   updateTooltipLabel,
   copyTooltipLabel,
+  encryptionTooltipLabel,
   typing = false,
   timestamp,
   timestampPosition = 'right',
@@ -226,10 +233,18 @@ export const Message: React.FC<MessageProps> = ({
     case 'user':
       switch (color) {
         case 'default':
-          hexColor =
-            theme.mode === 'dark'
-              ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
-              : colorToRgba(theme.colors.accent.primaryLight, 0.2);
+          if (theme.scheme === 'custom') {
+            hexColor = theme.colors.custom.message.user.background;
+            break;
+          }
+          if (theme.scheme === 'standard') {
+            hexColor =
+              theme.mode === 'dark'
+                ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
+                : colorToRgba(theme.colors.accent.primaryLight, 0.2);
+            break;
+          }
+          hexColor = theme.colors.accent.primary;
           break;
         case 'green':
           hexColor = theme.colors.gpt3;
@@ -311,7 +326,9 @@ export const Message: React.FC<MessageProps> = ({
                 </MessageTop>
               )}
               {typeof name !== 'string' && name}
-              <MessageAvatar>{avatar}</MessageAvatar>
+              <MessageAvatarWrapper $variant={variant}>
+                <MessageAvatar>{avatar}</MessageAvatar>
+              </MessageAvatarWrapper>
 
               <MessageBlockWrapper>
                 <MessageBlock
@@ -381,6 +398,7 @@ export const Message: React.FC<MessageProps> = ({
                     <MessageTimestamp
                       time={timestamp}
                       position={timestampPosition}
+                      color={hexColor}
                     />
                   )}
                 </MessageBlock>
@@ -388,6 +406,9 @@ export const Message: React.FC<MessageProps> = ({
             </MessageContent>
           </MessageStyled>
           <MessageBlockBottomPanel $variant={variant}>
+            {transaction && (
+              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
+            )}
             {!skeleton && (
               <MessageActions
                 id={id}
@@ -402,6 +423,8 @@ export const Message: React.FC<MessageProps> = ({
                 disableDelete={disableDelete}
                 disableUpdate={disableUpdate}
                 disableCopy={disableCopy}
+                disableEncryption={disableEncryption}
+                editOutOfMenu={editOutOfMenu}
                 copyPlainText={copyPlainText}
                 copyTgText={copyTgText}
                 editText={editText}
@@ -413,6 +436,7 @@ export const Message: React.FC<MessageProps> = ({
                 discardEditTooltipLabel={discardEditTooltipLabel}
                 updateTooltipLabel={updateTooltipLabel}
                 copyTooltipLabel={copyTooltipLabel}
+                encryptionTooltipLabel={encryptionTooltipLabel}
                 editing={isEditing}
                 editedText={editedText}
                 messageRef={messageRef}
@@ -428,9 +452,7 @@ export const Message: React.FC<MessageProps> = ({
                 onCopy={handleRichTextCopy}
               />
             )}
-            {transaction && (
-              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
-            )}
+
             <MessageVersions
               id={id}
               version={version}

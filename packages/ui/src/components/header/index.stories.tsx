@@ -9,9 +9,9 @@ import {
   HeaderNav,
   HeaderNavLink,
   HeaderUser,
-  HeaderUserButton,
-  HeaderThemeSwitcher
+  HeaderUserButton
 } from '.';
+import { ThemeSwitcher } from '../theme-switcher';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Logo } from '@/ui/components/logo';
 import {
@@ -139,7 +139,7 @@ export const Dashboard: HeaderStory = {
         </HeaderNavLink>
       </HeaderNav>
     ),
-    themeSwitcher: <HeaderThemeSwitcher />
+    themeSwitcher: <ThemeSwitcher />
   }
 };
 
@@ -169,7 +169,7 @@ export const DashboardTablet: HeaderStory = {
         </Button>
       </HeaderNav>
     ),
-    themeSwitcher: <HeaderThemeSwitcher />
+    themeSwitcher: <ThemeSwitcher />
   }
 };
 

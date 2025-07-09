@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import {
   TextFieldErrorText,
   TextFieldInput,
@@ -9,13 +9,15 @@ import {
   TextFieldClearButton,
   TextFieldColorPreview,
   TextFieldColor,
-  TextFieldColorInput
+  TextFieldColorInput,
+  TextFieldShowpassButton
 } from './styled';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { SearchCircleIcon } from '@/ui/icons/search-circle';
 import { TextFieldType, Variant } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
+import { EyeIcon } from '@/ui/icons';
 
 export type TextFieldValueChangeEventHandler = (value: string) => unknown;
 
@@ -47,12 +49,16 @@ export interface TextFieldProps
   variant?: Variant;
   autoFocus?: boolean;
   autoComplete?: React.ComponentProps<'input'>['autoComplete'];
+  inputStyles?: React.CSSProperties;
+  clearable?: boolean;
+  bigClearButton?: boolean;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
   onMouseEnter?: React.MouseEventHandler<HTMLInputElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLInputElement>;
   onValueChange?: TextFieldValueChangeEventHandler;
+  onClearButtonClick?: () => void;
 }
 
 export const TextField: React.FC<TextFieldProps> = ({
@@ -74,10 +80,14 @@ export const TextField: React.FC<TextFieldProps> = ({
   onMouseEnter,
   onMouseLeave,
   onValueChange,
+  onClearButtonClick,
   readonly = false,
   variant = 'primary',
   autoFocus,
   autoComplete,
+  inputStyles,
+  clearable = false,
+  bigClearButton = false,
   ...props
 }) => {
   const theme = useTheme();
@@ -86,6 +96,7 @@ export const TextField: React.FC<TextFieldProps> = ({
 
   const [isFocus, setIsFocus] = useState(false);
   const [isHover, setIsHover] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleFocus = useCallback(
     (event: React.FocusEvent<HTMLInputElement>) => {
@@ -131,7 +142,15 @@ export const TextField: React.FC<TextFieldProps> = ({
       inputEl.value = '';
       onValueChange?.('');
     }
+
+    if (onClearButtonClick) {
+      onClearButtonClick();
+    }
   }, [onChange]);
+
+  const handlePasswordToggle = useCallback(() => {
+    setShowPassword((prev) => !prev);
+  }, []);
 
   const iconProps: IconProviderProps = {
     size: 16,
@@ -145,6 +164,13 @@ export const TextField: React.FC<TextFieldProps> = ({
           : theme.colors.base.white
     })
   };
+  const getInputType = () => {
+    if (type === 'password') return showPassword ? 'text' : 'password';
+    if (type === 'color') return 'text';
+    return type;
+  };
+
+  const inputType = useMemo(() => getInputType(), [type, showPassword]);
 
   return (
     <TextFieldStyled
@@ -169,6 +195,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           $disabled={disabled}
           $skeleton={false}
           $variant={variant}
+          style={inputStyles}
         >
           {(type === 'search' || startIcon) && (
             <IconProvider {...iconProps}>
@@ -191,10 +218,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           <TextFieldInput
             ref={inputRef}
             value={value}
-            {...(type === 'color' && {
-              type: 'text'
-            })}
-            {...(type !== 'color' && { type })}
+            type={inputType}
             name={name}
             readOnly={readonly}
             defaultValue={defaultValue}
@@ -209,8 +233,23 @@ export const TextField: React.FC<TextFieldProps> = ({
             autoFocus={autoFocus}
             autoComplete={autoComplete}
           />
-          {type === 'search' && value && (
-            <TextFieldClearButton onClick={handleClear} />
+          {!!value && type === 'password' && (
+            <TextFieldShowpassButton
+              onClick={handlePasswordToggle}
+              type="button"
+              data-test="show-password"
+            >
+              <EyeIcon
+                fill={theme.colors.grayScale.gray1}
+                size={16}
+              />
+            </TextFieldShowpassButton>
+          )}
+          {(clearable || type === 'search') && value && (
+            <TextFieldClearButton
+              $big={bigClearButton}
+              onClick={handleClear}
+            />
           )}
           {type !== 'search' && endIcon && (
             <IconProvider {...iconProps}>{endIcon}</IconProvider>

@@ -7,7 +7,9 @@ export const SliderContainer = styled.div`
   position: relative;
 `;
 
-export const SliderWrapper = styled(Scrollbar)<{ $gap: number }>`
+export const SliderWrapper = styled(Scrollbar)<{
+  $gap: number;
+}>`
   display: flex;
   gap: ${({ $gap }) => $gap}px;
   scrollbar-width: none;

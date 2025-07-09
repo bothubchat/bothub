@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as S from './styled';
 import { Slider } from '../slider';
 import { ITab, Variant } from './types';
 
-type ScrollableTabsProps = {
-  variant?: Variant;
-  component: 'a' | 'button';
+export type ScrollableTabsProps = {
   tabs: ITab[];
+  variant?: Variant;
+  component?: 'a' | 'button';
+  selectedTab?: string;
   defaultTabId?: string;
   onClick?(id: string | null): void;
 };
@@ -15,10 +16,19 @@ export const ScrollableTabs = ({
   tabs,
   variant = 'primary',
   component = 'a',
+  selectedTab,
   defaultTabId,
   onClick
 }: ScrollableTabsProps) => {
-  const [selected, setSelected] = useState<string | null>(defaultTabId || null);
+  const [selected, setSelected] = useState<string | null>(
+    selectedTab || defaultTabId || null
+  );
+
+  useEffect(() => {
+    if (selectedTab) {
+      setSelected(selectedTab);
+    }
+  }, [selectedTab]);
 
   const onTabChange = (id: string) => {
     const newValue = id === selected ? null : id;
@@ -43,6 +53,7 @@ export const ScrollableTabs = ({
           $selected={id === selected}
           onClick={() => onTabChange(id)}
           href={component === 'a' ? href : undefined}
+          data-test={label}
         >
           {icon}
           <S.ScrollableTabsTabLabel $variant={variant}>
