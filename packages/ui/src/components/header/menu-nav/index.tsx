@@ -17,19 +17,13 @@ import {
   HeaderMenuNavLabel,
   HeaderMenuNavContentMobile
 } from './styled';
-import {
-  items,
-  MenuItem,
-  MenuItemChild,
-  MenuItemCollapse,
-  MenuItems
-} from './config';
+import { MenuItem, MenuItemChild, MenuItemCollapse, MenuItems } from './config';
 import { IconProvider } from '@/ui/components/icon';
 import { Divider } from '@/ui/components/divider';
 import { useTheme } from '@/ui/theme';
 import { ArrowDownIcon } from '@/ui/icons';
 
-export const HeaderMenuNav: React.FC = () => {
+export const HeaderMenuNav: React.FC<{ items: MenuItems[] }> = ({ items }) => {
   const [parent, setParent] = useState<MenuItems | null>(null);
   const theme = useTheme();
   const [isTablet, isMobile] = [
@@ -333,3 +327,5 @@ const HeaderFirstLevelSubMenu: React.FC<{
       })}
     </HeaderMenuNavContentList>
   );
+
+export * from './config';
