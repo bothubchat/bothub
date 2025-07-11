@@ -17,6 +17,7 @@ export type BadgeSelectDropdownProps = {
   colorButtonOpened?: string;
   className?: string;
   compactWidth?: boolean;
+  modalStyles?: React.CSSProperties;
   onChange?: SelectFieldChangeEventHandler;
   onValueChange?: SelectFieldValueChangeEventHandler;
 } & Omit<
@@ -31,6 +32,7 @@ export const BadgeSelectDropdown = ({
   colorButtonOpened,
   className,
   compactWidth,
+  modalStyles,
   ...useSelectFieldProps
 }: BadgeSelectDropdownProps) => {
   const theme = useTheme();
@@ -86,6 +88,7 @@ export const BadgeSelectDropdown = ({
         value={value}
         compactWidth={compactWidth}
         selectedColor={theme.colors.grayScale.gray2}
+        modalStyles={modalStyles}
         {...selectModalProps}
       />
     </>
