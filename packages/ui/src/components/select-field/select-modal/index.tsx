@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './styled';
 import { Portal } from '../../portal';
 import {
@@ -33,6 +33,7 @@ export type SelectModalGeneralProps = {
   openedModel?: string;
   selectedColor?: string;
   compactWidth?: boolean;
+  modalStyles?: React.CSSProperties;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 };
 
@@ -69,6 +70,7 @@ export const SelectModal = ({
   openedModel,
   selectedColor,
   compactWidth,
+  modalStyles,
   onOptionClick,
   handleClose,
   setValue
@@ -188,6 +190,7 @@ export const SelectModal = ({
         $contentWidth={contentWidth}
         ref={selectModalRef}
         style={{
+          ...modalStyles,
           ...(x !== 0 && {
             ...(placement !== 'top-right' && {
               left: x
