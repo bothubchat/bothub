@@ -1,19 +1,25 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as S from './styled';
-import { Portal } from '../../portal';
+
+import { SearchSimpleIcon } from '@/ui/icons';
+
+import { Portal } from '@/ui/components/portal';
+import { ScrollableTabsProps } from '@/ui/components/scrollable-tabs';
+
+import { SelectFieldGroup } from '../select-field-group';
+import { SelectFieldOptions } from '../option';
+
+import { filterData } from './filterData';
+
+import { UseSelectFieldReturnType } from '..';
 import {
   ResetStyleStateType,
   SelectFieldData,
   SelectFieldDataItem,
+  SelectFieldInputChangeEventHandler,
   SelectFieldOptionClickEventHandler,
   SelectFieldSize
 } from '../types';
-import { SelectFieldGroup } from '../select-field-group';
-import { SelectFieldOptions } from '../option';
-import { filterData } from './filterData';
-import { ScrollableTabsProps } from '../../scrollable-tabs';
-import { UseSelectFieldReturnType } from '..';
-import { SearchSimpleIcon } from '@/ui/icons';
 
 export type SelectModalGeneralProps = {
   data?: SelectFieldData;
@@ -27,6 +33,7 @@ export type SelectModalGeneralProps = {
   tabs?: Omit<ScrollableTabsProps, 'variant' | 'component'>;
   search?: boolean;
   searchPlaceholder?: string;
+  onSearch?: SelectFieldInputChangeEventHandler;
   resetStyleState?: ResetStyleStateType;
   blur?: boolean;
   modalWidth?: string;
@@ -69,6 +76,7 @@ export const SelectModal = ({
   openedModel,
   selectedColor,
   compactWidth,
+  onSearch,
   onOptionClick,
   handleClose,
   setValue
@@ -88,10 +96,10 @@ export const SelectModal = ({
   >(
     (event) => {
       const { value } = event.currentTarget;
-
-      setSearchValue(value.trim());
+      onSearch?.(value);
+      setSearchValue(value);
     },
-    [setSearchValue]
+    [onSearch, setSearchValue]
   );
 
   const handleOptionClick = useCallback(
@@ -277,7 +285,7 @@ export const SelectModal = ({
               >
                 <SelectFieldOptions
                   value={value}
-                  data={filterData(data, searchValue)}
+                  data={onSearch ? data : filterData(data, searchValue)}
                   size={size}
                   disableSelect={disableSelect}
                   onOptionClick={handleOptionClick}
@@ -285,22 +293,16 @@ export const SelectModal = ({
                 />
               </SelectFieldGroup>
               {after && (
-                <SelectFieldGroup
-                  scrollTop={scrollTop.current[2]}
-                  onScrollTopChange={(val) => handleScrollTopChange(val, 2)}
-                  $size={size}
-                  $disableScrollbar={disableScrollbar}
-                  $followContentHeight={!!contentHeight}
-                >
+                <S.SelectModalAfter>
                   <SelectFieldOptions
                     value={value}
-                    data={filterData(after, searchValue)}
+                    data={after}
                     size={size}
                     disableSelect={disableSelect}
                     onOptionClick={handleOptionClick}
                     selectedColor={selectedColor}
                   />
-                </SelectFieldGroup>
+                </S.SelectModalAfter>
               )}
             </S.SelectModalGroups>
           </S.SelectModalContent>
