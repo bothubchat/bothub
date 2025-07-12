@@ -115,3 +115,7 @@ export const SelectModalSearch = styled(TextField).attrs({
 })`
   padding-right: 8px;
 `;
+
+export const SelectModalAfter = styled.div`
+  width: calc(100% - 6px);
+`;
