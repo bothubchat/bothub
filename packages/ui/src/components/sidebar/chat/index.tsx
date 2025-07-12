@@ -12,9 +12,14 @@ import {
   SidebarChatIconStyled,
   SidebarChatIconContainer,
   SidebarChatWithOutlineStyled,
-  SidebarChatWithBackgroundStyled
+  SidebarChatWithBackgroundStyled,
+  SidebarChatContent,
+  SidebarChatProgress,
+  SidebarChatProgressValue,
+  SidebarChatProgressIcon
 } from './styled';
 import { TooltipConsumer } from '@/ui/components/tooltip';
+import { Typography } from '../../typography';
 
 export interface SidebarChatDefaultProps {
   color: string;
@@ -30,6 +35,10 @@ export interface SidebarChatDefaultProps {
   checkbox?: React.ReactNode;
   dragging?: boolean;
   isDefault?: boolean;
+  progress?: {
+    value: number;
+    max: number;
+  };
 }
 
 export interface SidebarChatSkeletonProps {
@@ -88,6 +97,12 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
             $draggble={(!props.skeleton && props.isDndOverflow) || false}
             $active={(!props.skeleton && props.active) ?? false}
             $skeleton={!!props.skeleton}
+            $isProgress={!props.skeleton && !!props.progress}
+            $progressDone={
+              !props.skeleton &&
+              !!props.progress &&
+              props.progress.value === props.progress.max
+            }
             ref={!props.skeleton && props.edit ? setNodeRef : undefined}
             onClick={
               !props.skeleton
@@ -97,63 +112,86 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
                 : undefined
             }
           >
-            {!props.skeleton && props.edit ? (
-              <SidebarChatDragHandle {...draggable} />
-            ) : (
-              <SidebarChatIconContainer $isDefault={props.isDefault}>
-                {!props.skeleton && props.icon ? (
-                  props.icon
+            <SidebarChatContent>
+              {!props.skeleton && !props.progress ? (
+                props.edit ? (
+                  <SidebarChatDragHandle {...draggable} />
                 ) : (
-                  <SidebarChatIconStyled />
-                )}
-              </SidebarChatIconContainer>
+                  <SidebarChatIconContainer $isDefault={props.isDefault}>
+                    {!props.skeleton && props.icon ? (
+                      props.icon
+                    ) : (
+                      <SidebarChatIconStyled />
+                    )}
+                  </SidebarChatIconContainer>
+                )
+              ) : null}
+              {!props.skeleton && props.progress && (
+                <SidebarChatProgressValue>
+                  {(() => {
+                    const percent = Math.floor(
+                      (props.progress.value / props.progress.max) * 100
+                    );
+                    if (percent === 100) {
+                      return <SidebarChatProgressIcon />;
+                    }
+                    return (
+                      <Typography variant="body-s-medium">{`${percent}%`}</Typography>
+                    );
+                  })()}
+                </SidebarChatProgressValue>
+              )}
+              {!props.skeleton && (
+                <SidebarChatTooltip
+                  label={props.name}
+                  placement="center-right"
+                  placementX={15}
+                  disabled={!!props.name.length}
+                >
+                  <TooltipConsumer>
+                    {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                      <SidebarChatIconStyled
+                        onClick={onClick as React.MouseEventHandler<Element>}
+                        onMouseEnter={handleTooltipMouseEnter}
+                        onMouseLeave={handleTooltipMouseLeave}
+                      />
+                    )}
+                  </TooltipConsumer>
+                </SidebarChatTooltip>
+              )}
+              <SidebarChatLeft {...draggable}>
+                <SidebarChatNameTooltip
+                  label={!props.skeleton && props?.name}
+                  placement="top-left"
+                  disabled={disableTooltip}
+                >
+                  <TooltipConsumer>
+                    {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                      <SidebarChatName
+                        ref={ref}
+                        onMouseEnter={handleTooltipMouseEnter}
+                        onMouseLeave={handleTooltipMouseLeave}
+                      >
+                        {!props.skeleton ? (
+                          props.name
+                        ) : (
+                          <SidebarChatNameSkeleton />
+                        )}
+                      </SidebarChatName>
+                    )}
+                  </TooltipConsumer>
+                </SidebarChatNameTooltip>
+              </SidebarChatLeft>
+              {!props.skeleton && props.caps && (
+                <SidebarChatCaps>{props.caps}</SidebarChatCaps>
+              )}
+              {!props.skeleton && !props.edit && props.actions}
+              {!props.skeleton && props.edit && props.checkbox}
+            </SidebarChatContent>
+
+            {!props.skeleton && props.progress && (
+              <SidebarChatProgress {...props.progress} />
             )}
-            {!props.skeleton && (
-              <SidebarChatTooltip
-                label={props.name}
-                placement="center-right"
-                placementX={15}
-                disabled={!!props.name.length}
-              >
-                <TooltipConsumer>
-                  {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                    <SidebarChatIconStyled
-                      onClick={onClick as React.MouseEventHandler<Element>}
-                      onMouseEnter={handleTooltipMouseEnter}
-                      onMouseLeave={handleTooltipMouseLeave}
-                    />
-                  )}
-                </TooltipConsumer>
-              </SidebarChatTooltip>
-            )}
-            <SidebarChatLeft {...draggable}>
-              <SidebarChatNameTooltip
-                label={!props.skeleton && props?.name}
-                placement="top-left"
-                disabled={disableTooltip}
-              >
-                <TooltipConsumer>
-                  {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                    <SidebarChatName
-                      ref={ref}
-                      onMouseEnter={handleTooltipMouseEnter}
-                      onMouseLeave={handleTooltipMouseLeave}
-                    >
-                      {!props.skeleton ? (
-                        props.name
-                      ) : (
-                        <SidebarChatNameSkeleton />
-                      )}
-                    </SidebarChatName>
-                  )}
-                </TooltipConsumer>
-              </SidebarChatNameTooltip>
-            </SidebarChatLeft>
-            {!props.skeleton && props.caps && (
-              <SidebarChatCaps>{props.caps}</SidebarChatCaps>
-            )}
-            {!props.skeleton && !props.edit && props.actions}
-            {!props.skeleton && props.edit && props.checkbox}
           </SidebarChatStyled>
         </SidebarChatWithBackgroundStyled>
       </SidebarChatWithOutlineStyled>
