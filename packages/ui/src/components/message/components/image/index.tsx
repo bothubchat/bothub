@@ -44,7 +44,16 @@ export const MessageImage: React.FC<MessageImageProps> = ({
         .then((response) => response.blob())
         .then((image) => setImageUrl(URL.createObjectURL(image)));
     }
-  }, [src]);
+  }, [src, fetchImage]);
+
+  useEffect(
+    () => () => {
+      if (imageUrl && imageUrl.startsWith('blob:')) {
+        URL.revokeObjectURL(imageUrl);
+      }
+    },
+    [imageUrl]
+  );
 
   return (
     <MessageImageProvider

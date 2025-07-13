@@ -51,6 +51,7 @@ export const MessageImageNative = styled(Image)<MessageImageNativeProps>`
       display: none;
     `}
   max-width: inherit;
+  object-fit: cover;
   cursor: ${({ $progress, $clickable }) => {
     if ($progress) {
       return 'progress';

@@ -63,6 +63,7 @@ export const SelectField = ({
   selectedColor,
   compactWidth,
   modalStyles,
+  openedModel,
   onOptionClick,
   onInputChange,
   onPointerLeave,
@@ -342,6 +343,7 @@ export const SelectField = ({
           selectedColor={selectedColor}
           compactWidth={compactWidth}
           modalStyles={modalStyles}
+          openedModel={openedModel}
         />
 
         {error && <S.SelectFieldErrorText>{error}</S.SelectFieldErrorText>}

@@ -224,9 +224,7 @@ export const SelectModal = ({
           $width={modalWidth}
           $compactWidth={compactWidth}
           style={{
-            height:
-              contentHeight &&
-              `calc(var(--bothub-scale, 1) * ${contentHeight}px)`
+            height: `calc(var(--bothub-scale, 1) * ${contentHeight}px)`
           }}
         >
           <S.SelectModalContent>

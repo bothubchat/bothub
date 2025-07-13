@@ -57,32 +57,32 @@ export const useSelectField = <
   const [height, setHeight] = useState<number | undefined>(contentHeight);
   const [placement, setPlacement] = useState(initialPlacement);
 
-  const setInitialValue = useCallback(
+  const setExternalValue = useCallback(
     (item: ValueType) => {
       if (multiple && Array.isArray(item)) {
+        const onValueChangeTyped =
+          onValueChange as SelectFieldMultiValueChangeEventHandler;
         const items = item;
-
-        (onValueChange as SelectFieldMultiValueChangeEventHandler)?.(
+        onChange?.(item);
+        onValueChangeTyped?.(
           items
             .map((item) => {
               if (typeof item === 'string') {
                 return item;
               }
-
               if (typeof item.value === 'string') {
                 return item.value;
               }
-
               return '';
             })
             .filter((item) => !!item)
         );
       }
+      if (!multiple && !Array.isArray(item)) {
+        (onChange as SelectFieldChangeEventHandler)?.(item);
 
-      if (!multiple && item && !Array.isArray(item)) {
         const onValueChangeTyped =
           onValueChange as SelectFieldValueChangeEventHandler;
-
         if (item) {
           if (typeof item === 'string') {
             onValueChangeTyped?.(item);
@@ -102,20 +102,15 @@ export const useSelectField = <
     ValueSetter
   ];
   if (typeof initialValue !== 'undefined') {
-    [value, setValue] = [initialValue, setInitialValue];
+    [value, setValue] = [initialValue, setExternalValue];
   }
 
   const setValueHandler = (value: ValueType) => {
-    setValue(value);
-
-    if (!onChange) return;
-
-    if (multiple && Array.isArray(value)) {
-      onChange(value);
-    }
-
-    if (!multiple && !Array.isArray(value)) {
-      (onChange as SelectFieldChangeEventHandler)(value);
+    if (setValue === setExternalValue) {
+      setValue(value);
+    } else {
+      setValue(value);
+      setExternalValue(value);
     }
   };
 

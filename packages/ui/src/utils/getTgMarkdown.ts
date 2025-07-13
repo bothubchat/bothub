@@ -40,7 +40,6 @@ export const getTgMarkdown = (markdown: string): string => {
 
     return mdastToTgMarkdown(ast);
   } catch (error) {
-    console.error('Error converting to Telegram markdown:', error);
     return markdown;
   }
 };
