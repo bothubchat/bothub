@@ -63,6 +63,7 @@ export const SelectField = ({
   selectedColor,
   compactWidth,
   openedModel,
+  onSearch,
   onOptionClick,
   onInputChange,
   onPointerLeave,
@@ -166,7 +167,7 @@ export const SelectField = ({
           <S.SelectFieldLabel>{label}</S.SelectFieldLabel>
         )}
         {typeof label !== 'string' && !skeleton && label}
-        {children && children}
+        {children}
         {!children && (
           <>
             {!skeleton && (
@@ -335,6 +336,7 @@ export const SelectField = ({
           blur={blur}
           value={value}
           multiple={multiple}
+          onSearch={onSearch}
           onOptionClick={onOptionClick}
           handleClose={handleClose}
           setValue={setValue}
