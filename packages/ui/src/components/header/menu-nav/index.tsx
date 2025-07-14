@@ -15,15 +15,24 @@ import {
   HeaderMenuNavItemBgIcon,
   HeaderMenuNavMainLinkContainer,
   HeaderMenuNavLabel,
-  HeaderMenuNavContentMobile
+  HeaderMenuNavContentMobile,
+  HeaderMenuNavLink
 } from './styled';
-import { MenuItem, MenuItemChild, MenuItemCollapse, MenuItems } from './config';
+import {
+  config,
+  MenuItem,
+  MenuItemChild,
+  MenuItemCollapse,
+  MenuItems
+} from './config';
 import { IconProvider } from '@/ui/components/icon';
 import { Divider } from '@/ui/components/divider';
 import { useTheme } from '@/ui/theme';
 import { ArrowDownIcon } from '@/ui/icons';
 
-export const HeaderMenuNav: React.FC<{ items: MenuItems[] }> = ({ items }) => {
+export const HeaderMenuNav: React.FC<{ items: MenuItems[] }> = ({
+  items = config
+}) => {
   const [parent, setParent] = useState<MenuItems | null>(null);
   const theme = useTheme();
   const [isTablet, isMobile] = [
@@ -122,29 +131,30 @@ export const HeaderMenuNav: React.FC<{ items: MenuItems[] }> = ({ items }) => {
   return (
     <HeaderMenuNavStyled onMouseLeave={handleClose}>
       <HeaderMenuNavList>
-        {items.map((item) => (
+        {items?.map((item) => (
           <HeaderMenuNavItem
             key={item.id}
             onMouseEnter={() => handleMouseEnterParent(item.id)}
           >
             <HeaderMenuNavLabel
+              variant={isDesktop ? 'body-m-semibold' : 'body-l-semibold'}
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                if (isMobile && item.id === parent?.id) {
+                if (!isDesktop && item.id === parent?.id) {
                   handleClose();
                 } else {
                   handleMouseEnterParent(item.id);
                 }
               }}
             >
-              {item.label}{' '}
+              {item.label}
               {!isDesktop && item.children && item.children.length > 0 && (
                 <ArrowDownIcon />
               )}
             </HeaderMenuNavLabel>
 
-            {isMobile && item.id === parent?.id && (
+            {!isDesktop && item.id === parent?.id && (
               <HeaderMenuNavContentMobile
                 key={item.id}
                 onMouseEnter={handleMouseEnterContent}
@@ -260,9 +270,8 @@ const HeaderCollapseSubMenu: React.FC<{
         switch (item.type) {
           case 'link':
             return (
-              <HeaderMenuNavMainLink
+              <HeaderMenuNavLink
                 key={item.id}
-                style={{ minWidth: 406 }}
                 onMouseEnter={handleMouseEnterContent}
               >
                 <HeaderMenuNavMainLinkContainer>
@@ -277,7 +286,7 @@ const HeaderCollapseSubMenu: React.FC<{
                     {item.description}
                   </HeaderMenuNavTextLink>
                 )}
-              </HeaderMenuNavMainLink>
+              </HeaderMenuNavLink>
             );
           case 'divider':
             return <Divider key={`child-divider-${index}`} />;

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { css, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon, ArrowNarrowDownIcon } from '@/ui/icons';
@@ -11,7 +11,7 @@ export const HeaderMenuNavStyled = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     position: relative;
     z-index: 10;
     padding: 30px 40px;
@@ -26,7 +26,7 @@ export const HeaderMenuNavList = styled.ul`
   margin: 0;
   width: 100%;
   gap: 20px;
-  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     flex-direction: column;
     gap: 10px;
   }
@@ -41,10 +41,12 @@ export const HeaderMenuNavItem = styled.li`
   }
 `;
 
-export const HeaderMenuNavLabel = styled(Typography).attrs({
-  variant: 'body-m-semibold'
-})`
-  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+export const HeaderMenuNavLabel = styled(Typography).attrs<{
+  variant?: string;
+}>(({ variant = 'body-m-semibold' }) => ({
+  variant
+}))`
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     display: flex;
     width: 100%;
     justify-content: space-between;
@@ -73,7 +75,12 @@ export const HeaderMenuNavContentList = styled(animated.div)`
 `;
 
 export const HeaderMenuNavContentMobile = styled.div`
-  margin-top: 10px;
+  margin-top: 14px;
+  display: flex;
+  gap: 14px;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    flex-direction: column;
+  }
 `;
 
 export const HeaderMenuNavContentChildList = styled(animated.div)<{
@@ -106,10 +113,12 @@ export const HeaderMenuNavItemBgIcon = styled.div`
 
 export const HeaderMenuNavMainLink = styled.a<{
   $active?: boolean;
+  $minWidth?: number;
+  $subLink?: boolean;
 }>`
   padding: 12px 14px;
   display: flex;
-  min-width: 250px;
+  min-width: ${({ $minWidth }) => $minWidth ?? 250}px;
   align-items: center;
   flex-direction: column;
   gap: 10px;
@@ -118,20 +127,42 @@ export const HeaderMenuNavMainLink = styled.a<{
   white-space: nowrap;
   transition: background 0.2s ease-in-out;
   ${({ $active, theme }) =>
-    $active
-      ? `
+    $active &&
+    `
     outline: 1px solid ${theme.colors.grayScale.gray3};
     background: ${theme.colors.gradient.elite20};
-  `
-      : `
-  &:hover {
-    outline: 1px solid ${theme.colors.grayScale.gray3};
-    background: ${colorToRgba(theme.colors.accent.primary, 0.2)};
-    ${`& ${HeaderMenuNavItemBgIcon} {
-      background: ${theme.colors.accent.primary};
-    }`}
-  }
   `}
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    width: 100%;
+  }
+`;
+
+export const HeaderMenuNavLink = styled.a<{
+  $active?: boolean;
+}>`
+  padding: 12px 14px;
+  display: flex;
+  min-width: 406px;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease-in-out;
+  ${({ theme }) => css`
+    &:hover {
+      outline: 1px solid ${theme.colors.grayScale.gray3};
+      background: ${colorToRgba(theme.colors.accent.primary, 0.2)};
+      ${`& ${HeaderMenuNavItemBgIcon} {
+          background: ${theme.colors.accent.primary};
+        }`}
+    }
+  `}
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    min-width: unset;
+    padding-right: 0;
+  }
 `;
 
 export const HeaderMenuNavMainLinkContainer = styled.div`
@@ -145,6 +176,7 @@ export const HeaderMenuNavTextLink = styled(Typography).attrs({
   variant: 'body-m-semibold'
 })`
   width: 100%;
+  white-space: wrap;
 `;
 
 export const HeaderMenuNavArrowIcon = styled(ArrowDownIcon)`
