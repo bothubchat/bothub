@@ -94,8 +94,9 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
       if (percent === 100) {
         return <SidebarChatProgressIcon />;
       }
+
       return <Typography variant="body-s-medium">{`${percent}%`}</Typography>;
-    }, []);
+    }, [props]);
 
     useEffect(() => {
       if (ref.current) {
