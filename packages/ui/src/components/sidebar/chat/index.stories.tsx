@@ -50,6 +50,15 @@ export const WithProgress: SidebarChatStory = {
   }
 };
 
+export const ProgressLoading: SidebarChatStory = {
+  args: {
+    ...Basic.args,
+    progress: {
+      loading: true
+    }
+  }
+};
+
 export default {
   title: 'Components/SidebarChat',
   component: SidebarChat,

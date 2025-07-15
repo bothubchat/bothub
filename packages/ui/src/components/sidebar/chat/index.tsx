@@ -20,6 +20,7 @@ import {
 } from './styled';
 import { TooltipConsumer } from '@/ui/components/tooltip';
 import { Typography } from '../../typography';
+import { LoaderCircularGradientIcon } from '@/ui/icons';
 
 export interface SidebarChatDefaultProps {
   color: string;
@@ -36,8 +37,9 @@ export interface SidebarChatDefaultProps {
   dragging?: boolean;
   isDefault?: boolean;
   progress?: {
-    value: number;
-    max: number;
+    value?: number;
+    max?: number;
+    loading?: boolean;
   };
 }
 
@@ -129,9 +131,16 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
               {!props.skeleton && props.progress && (
                 <SidebarChatProgressValue>
                   {(() => {
+                    if (props.progress.loading) {
+                      return <LoaderCircularGradientIcon size={18} />;
+                    }
+
                     const percent = Math.floor(
-                      (props.progress.value / props.progress.max) * 100
+                      ((props.progress.value || 0) /
+                        (props.progress.max || 1)) *
+                        100
                     );
+
                     if (percent === 100) {
                       return <SidebarChatProgressIcon />;
                     }
@@ -190,7 +199,10 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
             </SidebarChatContent>
 
             {!props.skeleton && props.progress && (
-              <SidebarChatProgress {...props.progress} />
+              <SidebarChatProgress
+                {...props.progress}
+                value={props.progress.value || 0}
+              />
             )}
           </SidebarChatStyled>
         </SidebarChatWithBackgroundStyled>
