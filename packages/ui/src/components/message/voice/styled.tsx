@@ -62,7 +62,7 @@ export const MessageVoiceDurationText = styled(Typography).attrs({
       ? theme.mode === 'dark'
         ? theme.colors.base.black
         : theme.default.colors.base.black
-      : theme.default.colors.base.black};
+      : theme.colors.base.white};
   user-select: none;
 `;
 
