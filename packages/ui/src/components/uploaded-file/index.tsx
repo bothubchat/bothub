@@ -1,4 +1,10 @@
-import { CloseIcon, PauseIcon, PlayIcon, Restore2Icon } from '@/ui/icons';
+import {
+  CloseIcon,
+  LoaderCircularGradientIcon,
+  PauseIcon,
+  PlayIcon,
+  Restore2Icon
+} from '@/ui/icons';
 import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { FileSize } from '@/ui/components/file-size';
@@ -26,6 +32,7 @@ export type Primary = {
 
 export type Secondary = {
   variant: 'secondary';
+  isLoading?: boolean;
 };
 
 export type UploadedFileProps = {
@@ -41,28 +48,25 @@ export type UploadedFileProps = {
   onRetry?: () => void;
 } & (Primary | Secondary);
 
-export const UploadedFile = (props: UploadedFileProps) => {
-  const {
-    filename,
-    progress,
-    status = 'done',
-    doneLabel,
-    errorLabel,
-    variant = 'primary',
-    className,
-    onDelete,
-    onPause,
-    onResume,
-    onRetry
-  } = props;
-
-  const isPrimary = variant === 'primary';
-
-  const typedProps = props as Primary;
+export const UploadedFile = ({
+  filename,
+  progress,
+  status = 'done',
+  doneLabel,
+  errorLabel,
+  className,
+  onDelete,
+  onPause,
+  onResume,
+  onRetry,
+  ...props
+}: UploadedFileProps) => {
+  const isSecondary = props.variant === 'secondary';
+  const isPrimary = !isSecondary;
 
   return (
     <UploadedFileStyled
-      $fullWidth={isPrimary ? typedProps.fullWidth : undefined}
+      $fullWidth={isPrimary ? props.fullWidth : undefined}
       $isPrimary={isPrimary}
       className={className}
     >
@@ -79,7 +83,7 @@ export const UploadedFile = (props: UploadedFileProps) => {
             <UploadedFileInfo>
               <Typography variant="body-s-medium">{filename}</Typography>
               <UploadedFileSize>
-                <FileSize sizeInBytes={typedProps.sizeInBytes} />
+                <FileSize sizeInBytes={props.sizeInBytes} />
               </UploadedFileSize>
             </UploadedFileInfo>
           </>
@@ -161,7 +165,11 @@ export const UploadedFile = (props: UploadedFileProps) => {
           min={0}
           max={100}
         />
-        <UploadedFileProgressValue>{progress}%</UploadedFileProgressValue>
+        {isSecondary && props.isLoading ? (
+          <LoaderCircularGradientIcon />
+        ) : (
+          <UploadedFileProgressValue>{progress}%</UploadedFileProgressValue>
+        )}
       </UploadedFileFooter>
     </UploadedFileStyled>
   );

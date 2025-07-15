@@ -29,6 +29,9 @@ export const All = () => (
 
     <Typography variant="body-s-medium">{Secondary.name}</Typography>
     <Secondary />
+
+    <Typography variant="body-s-medium">{SecondaryLoading.name}</Typography>
+    <SecondaryLoading />
   </div>
 );
 
@@ -99,6 +102,18 @@ export const Secondary = () => (
     status="in-progress"
     onDelete={() => {}}
     onPause={() => {}}
+  />
+);
+
+export const SecondaryLoading = () => (
+  <UploadedFile
+    variant="secondary"
+    filename="Table Name.xls"
+    progress={66}
+    status="in-progress"
+    onDelete={() => {}}
+    onPause={() => {}}
+    isLoading
   />
 );
 
