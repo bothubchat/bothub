@@ -149,19 +149,20 @@ export const useSelectField = <
     return () => window.removeEventListener('resize', listener);
   }, [triggerRef.current, height, placement, contentHeight, isOpen]);
 
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+    onClose?.();
+  }, []);
+
   useEffect(() => {
     if (!isOpen || !triggerRef.current) return;
 
     const scrollParent = findNearestScrollableParent(triggerRef.current);
     if (!scrollParent) return;
 
-    const listener = () => {
-      handleClose();
-    };
+    scrollParent.addEventListener('scroll', handleClose);
 
-    scrollParent.addEventListener('scroll', listener);
-
-    return () => scrollParent.removeEventListener('scroll', listener);
+    return () => scrollParent.removeEventListener('scroll', handleClose);
   }, [isOpen]);
 
   useEffect(() => {
@@ -274,11 +275,6 @@ export const useSelectField = <
     },
     [disabled, isOpen, placement, initialPlacement, onSelectClick]
   );
-
-  const handleClose = useCallback(() => {
-    setIsOpen(false);
-    onClose?.();
-  }, []);
 
   return {
     x,
