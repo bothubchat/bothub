@@ -19,6 +19,7 @@ export const SelectFieldStyled = styled.div<SelectFieldStyledProps>`
   align-items: flex-start;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
   ${({ $fullWidth }) =>
     !$fullWidth &&
     css`
