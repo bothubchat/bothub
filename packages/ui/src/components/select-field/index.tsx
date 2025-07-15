@@ -53,6 +53,7 @@ export const SelectField = ({
   inputType = 'text',
   inputValue: initialInputValue,
   clearable = false,
+  disablePortal,
   tabs,
   search,
   searchPlaceholder,
@@ -334,6 +335,7 @@ export const SelectField = ({
           searchPlaceholder={searchPlaceholder}
           resetStyleState={resetStyleState}
           blur={blur}
+          disablePortal={disablePortal}
           value={value}
           multiple={multiple}
           onSearch={onSearch}
