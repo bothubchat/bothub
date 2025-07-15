@@ -32,7 +32,7 @@ export type Primary = {
 
 export type Secondary = {
   variant: 'secondary';
-  isLoading?: boolean;
+  loading?: boolean;
 };
 
 export type UploadedFileProps = {
@@ -165,7 +165,7 @@ export const UploadedFile = ({
           min={0}
           max={100}
         />
-        {isSecondary && props.isLoading ? (
+        {isSecondary && props.loading ? (
           <LoaderCircularGradientIcon />
         ) : (
           <UploadedFileProgressValue>{progress}%</UploadedFileProgressValue>
