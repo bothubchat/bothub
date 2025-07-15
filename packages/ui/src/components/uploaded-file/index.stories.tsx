@@ -113,7 +113,7 @@ export const SecondaryLoading = () => (
     status="in-progress"
     onDelete={() => {}}
     onPause={() => {}}
-    isLoading
+    loading
   />
 );
 
