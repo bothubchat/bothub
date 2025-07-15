@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
 import {
   SidebarChatLeft,
@@ -80,6 +80,23 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
           }
         : {};
 
+    const progressValue = useMemo(() => {
+      if (props.skeleton || !props.progress) return null;
+
+      if (props.progress.loading) {
+        return <LoaderCircularGradientIcon size={18} />;
+      }
+
+      const percent = Math.floor(
+        ((props.progress.value || 0) / (props.progress.max || 1)) * 100
+      );
+
+      if (percent === 100) {
+        return <SidebarChatProgressIcon />;
+      }
+      return <Typography variant="body-s-medium">{`${percent}%`}</Typography>;
+    }, []);
+
     useEffect(() => {
       if (ref.current) {
         const { scrollWidth, offsetWidth } = ref.current!;
@@ -130,24 +147,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
               ) : null}
               {!props.skeleton && props.progress && (
                 <SidebarChatProgressValue>
-                  {(() => {
-                    if (props.progress.loading) {
-                      return <LoaderCircularGradientIcon size={18} />;
-                    }
-
-                    const percent = Math.floor(
-                      ((props.progress.value || 0) /
-                        (props.progress.max || 1)) *
-                        100
-                    );
-
-                    if (percent === 100) {
-                      return <SidebarChatProgressIcon />;
-                    }
-                    return (
-                      <Typography variant="body-s-medium">{`${percent}%`}</Typography>
-                    );
-                  })()}
+                  {progressValue}
                 </SidebarChatProgressValue>
               )}
               {!props.skeleton && (
