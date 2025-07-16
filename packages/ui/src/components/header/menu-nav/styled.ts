@@ -173,7 +173,7 @@ export const HeaderMenuNavMainLinkContainer = styled.div`
 `;
 
 export const HeaderMenuNavTextLink = styled(Typography).attrs({
-  variant: 'body-m-semibold'
+  variant: 'body-m-regular'
 })`
   width: 100%;
   white-space: wrap;
