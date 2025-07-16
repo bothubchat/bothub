@@ -181,7 +181,7 @@ export interface MessageBlockProps {
 export const MessageBlockWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: center;
   grid-area: block;
   gap: 6px;
   position: relative;
