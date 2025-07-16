@@ -40,7 +40,6 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
       : theme.colors.grayScale.gray4;
   }};
   width: 100%;
-  max-width: ${({ theme }) => theme.dashboard.chat.containerWidth};
   padding: 14px 20px;
   box-sizing: border-box;
   overflow: visible;
