@@ -1,4 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import * as S from './styled';
 
 import { SearchSimpleIcon } from '@/ui/icons';
@@ -35,6 +41,7 @@ export type SelectModalGeneralProps = {
   searchPlaceholder?: string;
   onSearch?: SelectFieldInputChangeEventHandler;
   resetStyleState?: ResetStyleStateType;
+  disablePortal?: boolean;
   blur?: boolean;
   modalWidth?: string;
   openedModel?: string;
@@ -65,6 +72,7 @@ export const SelectModal = ({
   resetStyleState,
   placement,
   selectModalRef,
+  disablePortal,
   blur = false,
   x,
   y,
@@ -110,6 +118,7 @@ export const SelectModal = ({
 
       if (typeof item === 'object' && item.noSelect) {
         item?.onClick?.(item);
+        handleClose();
         return;
       }
 
@@ -156,6 +165,11 @@ export const SelectModal = ({
     [openedOptions]
   );
 
+  const SelectModalWrapper = useMemo(
+    () => (!disablePortal ? Portal : React.Fragment),
+    [disablePortal]
+  );
+
   data = data.map((item) => {
     if (
       typeof item === 'object' &&
@@ -190,10 +204,12 @@ export const SelectModal = ({
   });
 
   return (
-    <Portal>
+    <SelectModalWrapper>
       <S.SelectModalStyled
         $isOpen={isOpen}
         $contentWidth={contentWidth}
+        $disablePortal={disablePortal}
+        $placement={placement}
         ref={selectModalRef}
         style={{
           ...(x !== 0 && {
@@ -229,7 +245,10 @@ export const SelectModal = ({
           $width={modalWidth}
           $compactWidth={compactWidth}
           style={{
-            height: `calc(var(--bothub-scale, 1) * ${contentHeight}px)`
+            ...(typeof contentHeight === 'number' &&
+              contentHeight >= 0 && {
+                height: `calc(var(--bothub-scale, 1) * ${contentHeight}px)`
+              })
           }}
         >
           <S.SelectModalContent>
@@ -308,7 +327,7 @@ export const SelectModal = ({
           </S.SelectModalContent>
         </S.SelectModalPositionWrapper>
       </S.SelectModalStyled>
-    </Portal>
+    </SelectModalWrapper>
   );
 };
 

@@ -20,9 +20,9 @@ export const defaultTheme: DefaultTheme = {
       gray2: '#313E62',
       gray3: '#222B44',
       gray4: '#121825',
-      gray5: '#4B5770',
-      gray6: '#8A99B9',
-      gray7: '#0F141F'
+      gray5: '#374151',
+      gray6: '#9CA3AF',
+      gray7: '#171E2F'
     },
     premiumGradient: 'linear-gradient(90deg, #1C64F2 -0.39%, #D41CF2 99.61%)',
     gradient: {
@@ -138,7 +138,7 @@ export const standardLight: Theme = {
       gray4: '#F5F6F7',
       gray5: '#ADB5BD',
       gray6: '#DDE8F3',
-      gray7: '#DFE2E5'
+      gray7: '#E6E9EC'
     },
     custom: {
       background: '#FFFFFF',
