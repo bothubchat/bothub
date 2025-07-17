@@ -20,7 +20,8 @@ import {
   UploadedFileIcon,
   UploadedFileSize,
   UploadedFileStatusChip,
-  UploadedFileStatusChipText
+  UploadedFileStatusChipText,
+  UploadedFileDeleteButton
 } from './styled';
 import { UploadedFileStatus } from './types';
 
@@ -42,7 +43,10 @@ export type UploadedFileProps = {
   doneLabel?: React.ReactNode;
   errorLabel?: React.ReactNode;
   className?: string;
-  onDelete?: () => void;
+  onDelete?: {
+    disabled?: boolean;
+    action: () => void;
+  };
   onPause?: () => void;
   onResume?: () => void;
   onRetry?: () => void;
@@ -148,10 +152,11 @@ export const UploadedFile = ({
             </>
           )}
           {onDelete && (
-            <Button
+            <UploadedFileDeleteButton
               variant="text"
               startIcon={<CloseIcon />}
-              onClick={() => onDelete()}
+              onClick={() => onDelete.action()}
+              disabled={onDelete.disabled}
             />
           )}
         </UploadedFileActions>

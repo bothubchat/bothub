@@ -3,6 +3,7 @@ import { Typography } from '@/ui/components/typography';
 import { Progress } from '@/ui/components/progress';
 import { UploadedFileStatus } from './types';
 import { colorToRgba } from '@/ui/utils';
+import { Button } from '../button';
 
 type IsPrimary = {
   $isPrimary: boolean;
@@ -92,6 +93,12 @@ export const UploadedFileStatusChipText = styled(Typography).attrs({
         return theme.colors.critic;
     }
   }};
+`;
+
+export const UploadedFileDeleteButton = styled(Button)`
+  &:disabled {
+    opacity: 0.4;
+  }
 `;
 
 export const UploadedFileFooter = styled.div`

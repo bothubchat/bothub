@@ -41,7 +41,9 @@ export const InProgress = () => (
     sizeInBytes={3 * 1024 * 1024}
     progress={30}
     onPause={() => {}}
-    onDelete={() => {}}
+    onDelete={{
+      action: () => {}
+    }}
     status="in-progress"
   />
 );
@@ -52,7 +54,9 @@ export const Paused = () => (
     sizeInBytes={3 * 1024 * 1024}
     progress={30}
     onResume={() => {}}
-    onDelete={() => {}}
+    onDelete={{
+      action: () => {}
+    }}
     status="paused"
   />
 );
@@ -65,7 +69,9 @@ export const Done = () => {
       filename="Table Name.xls"
       sizeInBytes={3 * 1024 * 1024}
       progress={30}
-      onDelete={() => {}}
+      onDelete={{
+        action: () => {}
+      }}
       status="done"
       doneLabel={
         <UploadedFileStatusChip>
@@ -87,7 +93,9 @@ export const Error = () => (
     filename="Table Name.xls"
     sizeInBytes={3 * 1024 * 1024}
     progress={30}
-    onDelete={() => {}}
+    onDelete={{
+      action: () => {}
+    }}
     onRetry={() => {}}
     status="error"
     errorLabel="Ошибка"
@@ -100,7 +108,9 @@ export const Secondary = () => (
     filename="Table Name.xls"
     progress={66}
     status="in-progress"
-    onDelete={() => {}}
+    onDelete={{
+      action: () => {}
+    }}
     onPause={() => {}}
   />
 );
@@ -111,7 +121,10 @@ export const SecondaryLoading = () => (
     filename="Table Name.xls"
     progress={66}
     status="in-progress"
-    onDelete={() => {}}
+    onDelete={{
+      action: () => {},
+      disabled: true
+    }}
     onPause={() => {}}
     loading
   />
