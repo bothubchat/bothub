@@ -268,7 +268,14 @@ import {
   QueueSelectIcon,
   AppleIcon,
   MailColoredIcon,
-  ShieldIcon
+  ShieldIcon,
+  StarsGradientIcon,
+  FireIcon,
+  BrainIcon,
+  ClaudeBlackIcon,
+  MjPurpleIcon,
+  VKFilledIcon,
+  TelegramFilledIcon
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -586,6 +593,13 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="QueueSelectIcon">{QueueSelectIcon}</IconItem>
         <IconItem name="MailColoredIcon">{MailColoredIcon}</IconItem>
         <IconItem name="ShieldIcon">{ShieldIcon}</IconItem>
+        <IconItem name="StarsGradientIcon">{StarsGradientIcon}</IconItem>
+        <IconItem name="FireIcon">{FireIcon}</IconItem>
+        <IconItem name="BrainIcon">{BrainIcon}</IconItem>
+        <IconItem name="ClaudeBlackIcon">{ClaudeBlackIcon}</IconItem>
+        <IconItem name="MjPurpleIcon">{MjPurpleIcon}</IconItem>
+        <IconItem name="VKFilledIcon">{VKFilledIcon}</IconItem>
+        <IconItem name="TelegramFilledIcon">{TelegramFilledIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
