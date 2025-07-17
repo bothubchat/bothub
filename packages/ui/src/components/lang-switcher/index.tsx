@@ -1,0 +1,164 @@
+import { useTransition } from '@react-spring/web';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  LangSwitcherButton,
+  LangSwitcherIcon,
+  LangSwitcherInput,
+  LangSwitcherItem,
+  LangSwitcherLabel,
+  LangSwitcherList,
+  LangSwitcherStyled
+} from './styled';
+import { SelectFieldDataItem } from '../select-field';
+
+export type LangSwitcherProps = {
+  region: string;
+  regionLabel: string;
+  lang: string;
+  dataRegions: SelectFieldDataItem[];
+  dataLanguages: SelectFieldDataItem[];
+  langLabel: string;
+  onChange: ({ lang, region }: { lang: string; region: string }) => void;
+};
+
+export const LangSwitcher: React.FC<LangSwitcherProps> = ({
+  lang,
+  langLabel,
+  region,
+  regionLabel,
+  dataRegions,
+  dataLanguages,
+  onChange
+}) => {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const currentRegion = useMemo(
+    () =>
+      dataRegions.find(
+        (item) => typeof item === 'object' && item.value === region
+      ),
+    [dataRegions, region]
+  );
+  const currentLanguage = useMemo(
+    () =>
+      dataLanguages.find(
+        (item) => typeof item === 'object' && item.value === lang
+      ),
+    [dataLanguages, lang]
+  );
+
+  const handleToggle = useCallback(() => {
+    setIsOpen(!isOpen);
+  }, [isOpen]);
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleScrollEvent = (event: Event) => {
+      const dropdownEl = dropdownRef.current;
+      const scrollTarget = event.target as Element;
+
+      if (dropdownEl && dropdownEl.contains(scrollTarget)) {
+        return;
+      }
+
+      handleClose();
+    };
+
+    window.addEventListener('scroll', handleScrollEvent, true);
+
+    return () => {
+      window.removeEventListener('scroll', handleScrollEvent, true);
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
+    const dropdownEl: HTMLDivElement | null = dropdownRef.current;
+
+    if (dropdownEl !== null) {
+      const clickListener = (event: Event) => {
+        if (!dropdownEl.contains(event.target as Node)) {
+          setIsOpen(false);
+        }
+      };
+      const blurListener = () => setIsOpen(false);
+
+      document.addEventListener('click', clickListener);
+      window.addEventListener('blur', blurListener);
+
+      return () => {
+        document.removeEventListener('click', clickListener);
+        window.removeEventListener('blur', blurListener);
+      };
+    }
+  }, []);
+
+  const handleChange = useCallback(
+    (e: SelectFieldDataItem, type: 'lang' | 'region') => {
+      if (typeof e === 'object' && e.value) {
+        onChange({
+          lang: type === 'lang' ? e.value : lang,
+          region: type === 'region' ? e.value : region
+        });
+      }
+    },
+    [onChange]
+  );
+
+  const dropdownTransition = useTransition(isOpen, {
+    from: {
+      opacity: 0,
+      transform: 'scale(0)'
+    },
+    enter: {
+      opacity: isOpen ? 1 : 0.5,
+      transform: `scale(${isOpen ? 1 : 0.999})`
+    },
+    leave: { opacity: 0, transform: 'scale(0.999)' },
+    config: { duration: 150 }
+  });
+
+  return (
+    <LangSwitcherStyled>
+      <LangSwitcherButton
+        onClick={handleToggle}
+        disableHoverColor
+        endIcon={<LangSwitcherIcon $open={isOpen} />}
+      >
+        <LangSwitcherItem>
+          {typeof currentRegion === 'object' && currentRegion.icon}
+          {'/ '}
+          {typeof currentRegion === 'object' && currentRegion.value}
+        </LangSwitcherItem>
+      </LangSwitcherButton>
+      {dropdownTransition(
+        (style, item) =>
+          item && (
+            <LangSwitcherList style={style}>
+              <LangSwitcherLabel>{langLabel}</LangSwitcherLabel>
+              <LangSwitcherInput
+                contentHeight="fit-content"
+                compactWidth
+                onOptionClick={(e) => handleChange(e, 'lang')}
+                value={currentLanguage}
+                data={dataLanguages}
+              />
+              <LangSwitcherLabel>{regionLabel}</LangSwitcherLabel>
+              <LangSwitcherInput
+                contentHeight="fit-content"
+                compactWidth
+                onOptionClick={(e) => handleChange(e, 'region')}
+                value={currentRegion}
+                data={dataRegions}
+              />
+            </LangSwitcherList>
+          )
+      )}
+    </LangSwitcherStyled>
+  );
+};
