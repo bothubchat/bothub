@@ -133,7 +133,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
         <LangSwitcherItem>
           {typeof currentRegion === 'object' && currentRegion.icon}
           {'/ '}
-          {typeof currentRegion === 'object' && currentRegion.value}
+          {typeof currentLanguage === 'object' && currentLanguage.value}
         </LangSwitcherItem>
       </LangSwitcherButton>
       {dropdownTransition(

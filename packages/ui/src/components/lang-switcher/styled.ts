@@ -5,9 +5,17 @@ import { SelectField } from '@/ui/components/select-field';
 import { Button } from '../button';
 import { ArrowDownIcon } from '@/ui/icons';
 
-export const LangSwitcherStyled = styled.div``;
+export const LangSwitcherStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  position: relative;
+`;
 
 export const LangSwitcherList = styled(animated.ul)`
+  position: absolute;
+  margin-top: 28px;
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
