@@ -84,6 +84,7 @@ export interface MessageProps {
   children?: ReactNode;
   version?: number;
   totalVersions?: number;
+  hideActions?: boolean;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
   onEdit?: MessageActionEventHandler;
@@ -137,6 +138,7 @@ export const Message: React.FC<MessageProps> = ({
   children,
   version,
   totalVersions,
+  hideActions,
   onCopy,
   onCodeCopy,
   onEdit,
@@ -409,7 +411,7 @@ export const Message: React.FC<MessageProps> = ({
             {transaction && (
               <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
             )}
-            {!skeleton && (
+            {!skeleton && !hideActions && (
               <MessageActions
                 id={id}
                 onDownload={onDownload}
