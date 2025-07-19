@@ -4,6 +4,7 @@ import { StoryDecorator } from '@/ui/story-decorator';
 import { DropzoneField } from '.';
 import { Typography } from '../typography';
 import { useTheme } from '@/ui/theme';
+import { DropzoneFieldRightLabel } from './styled';
 
 export type DropzoneFieldMeta = Meta<typeof DropzoneField>;
 
@@ -11,7 +12,7 @@ export type DropzoneFieldStory = StoryObj<typeof DropzoneField>;
 
 export const Default = () => <DropzoneField placeholder="placeholder" />;
 
-export const Label = () => {
+export const WithLabel = () => {
   const theme = useTheme();
   const [files, setFiles] = useState<File[]>([]);
 
@@ -23,7 +24,16 @@ export const Label = () => {
       leftLabel="Перетащите документ сюда:"
       rightLabels={[
         'Допустимые форматы: .xlsx (до 20MB)',
-        'Доступны: 5/5 очередей'
+        <div
+          style={{
+            display: 'flex',
+            gap: 8
+          }}
+        >
+          <DropzoneFieldRightLabel>Доступны:</DropzoneFieldRightLabel>
+          <DropzoneFieldRightLabel>5/5</DropzoneFieldRightLabel>
+          <DropzoneFieldRightLabel>очередей</DropzoneFieldRightLabel>
+        </div>
       ]}
       placeholder={
         <div

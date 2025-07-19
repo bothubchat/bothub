@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useId, useState } from 'react';
+import React, { forwardRef, useCallback, useId, useState } from 'react';
 import { Typography } from '@/ui/components/typography';
 import * as S from './styled';
 
@@ -6,7 +6,7 @@ export type DropzoneFieldChangeEventHandler = (files: File[]) => void;
 
 export type DropzoneFieldProps = {
   leftLabel?: string;
-  rightLabels?: string[];
+  rightLabels?: string[] | React.ReactNode[];
   placeholder?: React.ReactNode;
   error?: string;
   files?: File[];
@@ -113,10 +113,16 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
           )}
           {!!rightLabels && (
             <S.DropzoneFieldRightLabelsContainer>
-              {rightLabels.map((label) => (
-                <S.DropzoneFieldRightLabel key={label}>
-                  {label}
-                </S.DropzoneFieldRightLabel>
+              {rightLabels.map((label, i) => (
+                <React.Fragment key={i}>
+                  {typeof label === 'string' ? (
+                    <S.DropzoneFieldRightLabel>
+                      {label}
+                    </S.DropzoneFieldRightLabel>
+                  ) : (
+                    label
+                  )}
+                </React.Fragment>
               ))}
             </S.DropzoneFieldRightLabelsContainer>
           )}
