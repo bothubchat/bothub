@@ -53,6 +53,7 @@ export const SelectField = ({
   inputType = 'text',
   inputValue: initialInputValue,
   clearable = false,
+  disablePortal,
   tabs,
   search,
   searchPlaceholder,
@@ -64,6 +65,7 @@ export const SelectField = ({
   compactWidth,
   modalStyles,
   openedModel,
+  onSearch,
   onOptionClick,
   onInputChange,
   onPointerLeave,
@@ -167,7 +169,7 @@ export const SelectField = ({
           <S.SelectFieldLabel>{label}</S.SelectFieldLabel>
         )}
         {typeof label !== 'string' && !skeleton && label}
-        {children && children}
+        {children}
         {!children && (
           <>
             {!skeleton && (
@@ -334,8 +336,10 @@ export const SelectField = ({
           searchPlaceholder={searchPlaceholder}
           resetStyleState={resetStyleState}
           blur={blur}
+          disablePortal={disablePortal}
           value={value}
           multiple={multiple}
+          onSearch={onSearch}
           onOptionClick={onOptionClick}
           handleClose={handleClose}
           setValue={setValue}
