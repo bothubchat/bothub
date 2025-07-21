@@ -82,6 +82,7 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
             <ThemeSwitcherItem
               key={itemMode}
               onClick={() => handleClick(itemMode)}
+              data-test={`theme-${itemMode}`}
             >
               <ThemeSwitcherItemContent>
                 <IconProvider

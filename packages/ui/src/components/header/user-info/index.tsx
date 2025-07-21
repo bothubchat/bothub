@@ -94,6 +94,7 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
       <HeaderUserInfoStyled
         ref={userRef}
         $inMenu={isInMenu}
+        data-test="user-info"
       >
         <HeaderUserInfoHead
           $inMenu={isInMenu}
