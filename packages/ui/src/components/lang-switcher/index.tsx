@@ -9,23 +9,28 @@ import {
   LangSwitcherList,
   LangSwitcherStyled
 } from './styled';
-import { SelectFieldDataItem } from '../select-field';
+import {
+  SelectFieldDataItem,
+  SelectFieldDataItemComplex
+} from '../select-field';
 
 export type LangSwitcherProps = {
-  region: string;
-  regionLabel: string;
-  lang: string;
-  dataRegions: SelectFieldDataItem[];
-  dataLanguages: SelectFieldDataItem[];
-  langLabel: string;
+  region: {
+    value: string;
+    label: string;
+  };
+  lang: {
+    value: string;
+    label: string;
+  };
+  dataRegions: SelectFieldDataItemComplex[];
+  dataLanguages: SelectFieldDataItemComplex[];
   onChange: ({ lang, region }: { lang: string; region: string }) => void;
 };
 
 export const LangSwitcher: React.FC<LangSwitcherProps> = ({
   lang,
-  langLabel,
   region,
-  regionLabel,
   dataRegions,
   dataLanguages,
   onChange
@@ -36,14 +41,14 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
   const currentRegion = useMemo(
     () =>
       dataRegions.find(
-        (item) => typeof item === 'object' && item.value === region
+        (item) => typeof item === 'object' && item.value === region.value
       ),
     [dataRegions, region]
   );
   const currentLanguage = useMemo(
     () =>
       dataLanguages.find(
-        (item) => typeof item === 'object' && item.value === lang
+        (item) => typeof item === 'object' && item.value === lang.value
       ),
     [dataLanguages, lang]
   );
@@ -102,8 +107,8 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
     (e: SelectFieldDataItem, type: 'lang' | 'region') => {
       if (typeof e === 'object' && e.value) {
         onChange({
-          lang: type === 'lang' ? e.value : lang,
-          region: type === 'region' ? e.value : region
+          lang: type === 'lang' ? e.value : lang.value,
+          region: type === 'region' ? e.value : region.value
         });
       }
     },
@@ -140,7 +145,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
         (style, item) =>
           item && (
             <LangSwitcherList style={style}>
-              <LangSwitcherLabel>{langLabel}</LangSwitcherLabel>
+              <LangSwitcherLabel>{lang.label}</LangSwitcherLabel>
               <LangSwitcherInput
                 contentHeight="fit-content"
                 compactWidth
@@ -148,7 +153,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
                 value={currentLanguage}
                 data={dataLanguages}
               />
-              <LangSwitcherLabel>{regionLabel}</LangSwitcherLabel>
+              <LangSwitcherLabel>{lang.label}</LangSwitcherLabel>
               <LangSwitcherInput
                 contentHeight="fit-content"
                 compactWidth

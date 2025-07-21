@@ -9,10 +9,14 @@ export type LangSwitcherStory = StoryObj<typeof LangSwitcher>;
 
 export const Basic: LangSwitcherStory = {
   args: {
-    langLabel: 'Язык:',
-    regionLabel: 'Регион:',
-    lang: 'RU',
-    region: 'RU',
+    lang: {
+      label: 'Язык:',
+      value: 'RU'
+    },
+    region: {
+      label: 'Регион:',
+      value: 'RU'
+    },
     dataRegions: [
       {
         icon: <FlagRUIcon />,
