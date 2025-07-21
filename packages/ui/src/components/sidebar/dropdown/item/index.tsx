@@ -27,6 +27,7 @@ export const SidebarDropdownItem: React.FC<SidebarDropdownItemProps> = ({
     <SidebarDropdownItemStyled
       {...props}
       onClick={handleClick}
+      data-test={props.children}
     >
       {startIcon}
       <SidebarDropdownItemText>{props.children}</SidebarDropdownItemText>
