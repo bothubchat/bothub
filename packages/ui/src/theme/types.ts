@@ -80,6 +80,7 @@ export interface ThemeGradientColors {
   premium: string;
   deluxe: string;
   enterprise: string;
+  enterprise20: string;
   elite: string;
   elite20: string;
 }
