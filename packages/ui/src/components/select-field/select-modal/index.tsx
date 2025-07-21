@@ -30,7 +30,7 @@ import {
 export type SelectModalGeneralProps = {
   data?: SelectFieldData;
   contentWidth?: number;
-  contentHeight?: number;
+  contentHeight?: number | string;
   size?: SelectFieldSize;
   disableSelect?: boolean;
   disableScrollbar?: boolean;
@@ -248,7 +248,10 @@ export const SelectModal = ({
             ...(typeof contentHeight === 'number' &&
               contentHeight >= 0 && {
                 height: `calc(var(--bothub-scale, 1) * ${contentHeight}px)`
-              })
+              }),
+            ...(typeof contentHeight === 'string' && {
+              height: contentHeight
+            })
           }}
         >
           <S.SelectModalContent>

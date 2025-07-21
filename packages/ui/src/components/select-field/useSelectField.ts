@@ -30,7 +30,7 @@ export type UseSelectFieldUnionProps =
 export type UseSelectFieldProps = {
   disabled?: boolean;
   placement?: SelectFieldPlacement;
-  contentHeight?: number;
+  contentHeight?: number | string;
   onClose?: () => void;
   onSelectClick?: () => void;
 } & UseSelectFieldUnionProps;
@@ -54,7 +54,9 @@ export const useSelectField = <
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState<number | undefined>(contentHeight);
+  const [height, setHeight] = useState<number | undefined | string>(
+    contentHeight
+  );
   const [placement, setPlacement] = useState(initialPlacement);
 
   const setExternalValue = useCallback(
@@ -133,7 +135,9 @@ export const useSelectField = <
       } else {
         modalMaxHeight = window.innerHeight - bottom - 20;
       }
-
+      if (typeof contentHeight === 'string') {
+        return;
+      }
       if (modalMaxHeight < contentHeight) {
         setHeight(modalMaxHeight);
       } else {
