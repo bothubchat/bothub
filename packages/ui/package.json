@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.43.5-feat-docs-261382f4-c3c3-4be5-aff4-b6bf80016346",
+  "version": "2.43.5-fix-region-switcher-b9bfa69a-58de-4f6e-b45b-d415dda4c8cb",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
