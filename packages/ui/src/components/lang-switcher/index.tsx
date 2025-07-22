@@ -62,6 +62,27 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
   }, []);
 
   useEffect(() => {
+    const dropdownEl: HTMLDivElement | null = dropdownRef.current;
+
+    if (dropdownEl !== null) {
+      const clickListener = (event: Event) => {
+        if (!dropdownEl.contains(event.target as Node)) {
+          setIsOpen(false);
+        }
+      };
+      const blurListener = () => setIsOpen(false);
+
+      document.addEventListener('click', clickListener);
+      window.addEventListener('blur', blurListener);
+
+      return () => {
+        document.removeEventListener('click', clickListener);
+        window.removeEventListener('blur', blurListener);
+      };
+    }
+  }, []);
+
+  useEffect(() => {
     if (!isOpen) return;
 
     const handleScrollEvent = (event: Event) => {
@@ -129,7 +150,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
   });
 
   return (
-    <LangSwitcherStyled>
+    <LangSwitcherStyled ref={dropdownRef}>
       <LangSwitcherButton
         onClick={handleToggle}
         disableHoverColor
@@ -153,7 +174,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
                 value={currentLanguage}
                 data={dataLanguages}
               />
-              <LangSwitcherLabel>{lang.label}</LangSwitcherLabel>
+              <LangSwitcherLabel>{region.label}</LangSwitcherLabel>
               <LangSwitcherInput
                 contentHeight="fit-content"
                 compactWidth
