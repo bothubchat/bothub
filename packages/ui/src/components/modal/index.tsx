@@ -21,8 +21,9 @@ export interface ModalProps extends React.PropsWithChildren {
   title?: React.ReactNode;
   scrollbar?: boolean;
   images?: React.ReactNode;
-  onClose?: ModalCloseEventHandler;
   className?: string;
+  hideCloseButton?: boolean;
+  onClose?: ModalCloseEventHandler;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -30,9 +31,10 @@ export const Modal: React.FC<ModalProps> = ({
   title = null,
   scrollbar = false,
   children,
-  onClose,
   images,
-  className
+  className,
+  hideCloseButton = false,
+  onClose
 }) => {
   let modalNode: React.ReactNode;
 
@@ -65,12 +67,14 @@ export const Modal: React.FC<ModalProps> = ({
                   ) : (
                     title
                   )}
-                  <ModalCloseButton
-                    onClick={onClose}
-                    data-test="close modal"
-                  >
-                    <ModalCloseButtonIcon size={24} />
-                  </ModalCloseButton>
+                  {!hideCloseButton && (
+                    <ModalCloseButton
+                      onClick={onClose}
+                      data-test="close modal"
+                    >
+                      <ModalCloseButtonIcon size={24} />
+                    </ModalCloseButton>
+                  )}
                   <ModalWindowBodyContent>
                     <ModalWindowBodyScrollbarWrapper
                       overflow={scrollbar ? 'auto' : 'visible'}
