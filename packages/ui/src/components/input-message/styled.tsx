@@ -41,6 +41,7 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
   }};
   width: 100%;
   padding: 14px 20px;
+  max-width: ${({ theme }) => theme.dashboard.chat.containerWidth};
   box-sizing: border-box;
   overflow: visible;
   cursor: ${({ $disabled, $textAreaDisabled, $voiceRecording }) => {
