@@ -46,7 +46,7 @@ export const SelectField = ({
   size = 'small',
   disableSelect = false,
   disableScrollbar = false,
-  before,
+  empty,
   after,
   loading = false,
   enableInput = false,
@@ -328,7 +328,7 @@ export const SelectField = ({
           size={size}
           disableSelect={disableSelect}
           disableScrollbar={disableScrollbar}
-          before={before}
+          empty={empty}
           after={after}
           tabs={tabs}
           search={search}

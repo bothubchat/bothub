@@ -14,6 +14,9 @@ export const Logo: React.FC<LogoProps> = ({ size = 29 }) => {
     if (theme.scheme === 'custom' && isBright(theme.colors.grayScale.gray4)) {
       return theme.default.colors.base.black;
     }
+    if (theme.scheme === 'standard' && theme.mode === 'light') {
+      return '#133985';
+    }
     return theme.mode === 'dark'
       ? theme.default.colors.base.white
       : theme.colors.accent.primary;

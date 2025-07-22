@@ -8,6 +8,7 @@ import {
 } from './styled';
 import { SidebarDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
+import { Portal } from '@/ui/components/portal';
 import { useTheme } from '@/ui/theme';
 import { isBright } from '@/ui/utils';
 
@@ -57,20 +58,13 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
 
   const dropdownTransition = useTransition(isOpen, {
     from: {
-      opacity: 0,
-      transform: 'scale(0.0)'
+      opacity: 0
     },
     enter: {
-      opacity: isOpen ? 1 : 0.5,
-      backdropFilter: 'blur(2px)',
-      transform: `scale(${isOpen ? 1 : 0.999})`,
-      transition: {
-        duration: 150
-      }
+      opacity: 1
     },
     leave: {
-      opacity: 0,
-      transform: 'scale(0.999)'
+      opacity: 0
     },
     config: {
       duration: 150
@@ -97,22 +91,23 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
             <SidebarDropdownTogglerIcon />
           </SidebarDropdownToggler>
         </IconProvider>
-        {dropdownTransition(
-          (style, item) =>
-            item && (
-              <SidebarDropdownContent
-                ref={contentRef}
-                style={{
-                  ...style,
-                  transform: 'translate3d(-100%, 0, 0)',
-                  left: contentPosition.right,
-                  top: contentPosition.bottom
-                }}
-              >
-                {children}
-              </SidebarDropdownContent>
-            )
-        )}
+        <Portal>
+          {dropdownTransition(
+            (style, item) =>
+              item && (
+                <SidebarDropdownContent
+                  ref={contentRef}
+                  style={{
+                    ...style,
+                    left: contentPosition.right,
+                    top: contentPosition.bottom
+                  }}
+                >
+                  {children}
+                </SidebarDropdownContent>
+              )
+          )}
+        </Portal>
       </SidebarDropdownStyled>
     </SidebarDropdownProvider>
   );
