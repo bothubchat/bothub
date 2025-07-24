@@ -30,11 +30,11 @@ import {
 export type SelectModalGeneralProps = {
   data?: SelectFieldData;
   contentWidth?: number;
-  contentHeight?: number;
+  contentHeight?: number | string;
   size?: SelectFieldSize;
   disableSelect?: boolean;
   disableScrollbar?: boolean;
-  before?: SelectFieldData;
+  empty?: React.ReactNode;
   after?: SelectFieldData;
   tabs?: Omit<ScrollableTabsProps, 'variant' | 'component'>;
   search?: boolean;
@@ -65,7 +65,7 @@ export const SelectModal = ({
   size = 'small',
   disableSelect = false,
   disableScrollbar = false,
-  before,
+  empty,
   after,
   tabs,
   search,
@@ -93,12 +93,10 @@ export const SelectModal = ({
 }: SelectModalProps) => {
   const [openedOptions, setOpenedOptions] = useState<(string | number)[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const scrollTop = useRef([0, 0, 0]);
+  const scrollTop = useRef(0);
 
-  const handleScrollTopChange = (value: number, index: number) => {
-    scrollTop.current = scrollTop.current.map((v, i) =>
-      i === index ? value : v
-    );
+  const handleScrollTopChange = (value: number) => {
+    scrollTop.current = value;
   };
 
   const handleSearchChange = useCallback<
@@ -141,13 +139,13 @@ export const SelectModal = ({
 
   useEffect(() => {
     setOpenedOptions(openedModel ? [openedModel] : []);
-    scrollTop.current = [0, 0, 0];
+    scrollTop.current = 0;
     setSearchValue('');
   }, [resetStyleState, openedModel]);
 
   const onTabClick = useCallback(
     (id: string | null) => {
-      scrollTop.current = [0, 0, 0];
+      scrollTop.current = 0;
       setOpenedOptions([]);
 
       if (tabs && tabs.onClick) {
@@ -251,7 +249,10 @@ export const SelectModal = ({
             ...(typeof contentHeight === 'number' &&
               contentHeight >= 0 && {
                 height: `calc(var(--bothub-scale, 1) * ${contentHeight}px)`
-              })
+              }),
+            ...(typeof contentHeight === 'string' && {
+              height: contentHeight
+            })
           }}
         >
           <S.SelectModalContent>
@@ -280,40 +281,26 @@ export const SelectModal = ({
                   }
                 />
               )}
-              {before && (
+              {data.length > 0 ? (
                 <SelectFieldGroup
-                  scrollTop={scrollTop.current[0]}
-                  onScrollTopChange={(val) => handleScrollTopChange(val, 0)}
+                  scrollTop={scrollTop.current}
+                  onScrollTopChange={handleScrollTopChange}
                   $size={size}
                   $disableScrollbar={disableScrollbar}
                   $followContentHeight={!!contentHeight}
                 >
                   <SelectFieldOptions
                     value={value}
-                    data={filterData(before, searchValue)}
+                    data={onSearch ? data : filterData(data, searchValue)}
                     size={size}
                     disableSelect={disableSelect}
                     onOptionClick={handleOptionClick}
                     selectedColor={selectedColor}
                   />
                 </SelectFieldGroup>
+              ) : (
+                empty
               )}
-              <SelectFieldGroup
-                scrollTop={scrollTop.current[1]}
-                onScrollTopChange={(val) => handleScrollTopChange(val, 1)}
-                $size={size}
-                $disableScrollbar={disableScrollbar}
-                $followContentHeight={!!contentHeight}
-              >
-                <SelectFieldOptions
-                  value={value}
-                  data={onSearch ? data : filterData(data, searchValue)}
-                  size={size}
-                  disableSelect={disableSelect}
-                  onOptionClick={handleOptionClick}
-                  selectedColor={selectedColor}
-                />
-              </SelectFieldGroup>
               {after && (
                 <S.SelectModalAfter>
                   <SelectFieldOptions

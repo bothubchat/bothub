@@ -65,7 +65,7 @@ export const SidebarAddGroupButton = styled(Button).attrs({
       background-color: ${isBright(theme.colors.grayScale.gray4) ||
       theme.mode === 'light'
         ? theme.default.colors.base.white
-        : theme.default.colors.base.black};
+        : theme.default.colors.grayScale.gray3};
       ${stroke}
     `;
   }}

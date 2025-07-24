@@ -290,3 +290,4 @@ export * from './mj-purple';
 export * from './claude-black';
 export * from './vk-filled';
 export * from './tg';
+export * from './gift';

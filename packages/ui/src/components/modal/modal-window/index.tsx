@@ -10,6 +10,7 @@ export type ModalWindowlProps = {
   scrollbar?: boolean;
   images?: ReactNode;
   className?: string;
+  hideCloseButton?: boolean;
   onClose?: ModalCloseEventHandler;
 } & PropsWithChildren;
 
@@ -22,6 +23,7 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
       scrollbar = false,
       images,
       className,
+      hideCloseButton = false,
       onClose
     },
     ref
@@ -50,12 +52,14 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
               ) : (
                 title
               )}
-              <S.ModalWindowCloseButton
-                onClick={onClose}
-                data-test="close modal"
-              >
-                <S.ModalWindowCloseButtonIcon size={24} />
-              </S.ModalWindowCloseButton>
+              {!hideCloseButton && (
+                <S.ModalWindowCloseButton
+                  onClick={onClose}
+                  data-test="close modal"
+                >
+                  <S.ModalWindowCloseButtonIcon size={24} />
+                </S.ModalWindowCloseButton>
+              )}
               <S.ModalWindowBodyContent>
                 {scrollbar ? (
                   <S.ModalWindowBodyScrollbarWrapper

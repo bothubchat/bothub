@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.43.2-feat-14236-prompt-queue-75836c8b-b3cb-43c0-ba94-64d0dbb6e493",
+  "version": "2.44.1-develop-14ab8b5f-0e80-4214-a289-45a12c5c6695",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
@@ -42,10 +42,10 @@
   "sideEffects": false,
   "peerDependencies": {
     "@uidotdev/usehooks": "^2.4.1",
-    "react": ">=18.2.0",
-    "react-dom": ">=18.2.0",
-    "react-helmet": ">=6.1.0",
-    "styled-components": "^6.0.7"
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-helmet": "6.1.0",
+    "styled-components": "6.1.8"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",

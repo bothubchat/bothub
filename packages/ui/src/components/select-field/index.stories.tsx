@@ -615,7 +615,6 @@ export const LargeSize: SelectFieldStory = {
 
 export const WithBeforeAndAfter: SelectFieldStory = {
   args: {
-    before: Basic.args?.data,
     data: Basic.args?.data,
     after: Basic.args?.data
   }
