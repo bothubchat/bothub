@@ -67,6 +67,10 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
     return 'pointer';
   }};
 
+  svg path {
+    transition: fill 0.2s;
+  }
+
   ${({ theme, $disabled, $variant, $skeleton, $color }) => {
     switch ($variant) {
       case 'primary':

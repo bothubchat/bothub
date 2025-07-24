@@ -8,6 +8,7 @@ import {
   SelectFieldValueChangeEventHandler
 } from './types';
 import { ValueSetter, ValueType } from '.';
+import { findNearestScrollableParent } from '@/ui/utils';
 
 export interface UseSelectFieldDefaultProps {
   multiple?: false;
@@ -152,6 +153,22 @@ export const useSelectField = <
     return () => window.removeEventListener('resize', listener);
   }, [triggerRef.current, height, placement, contentHeight, isOpen]);
 
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+    onClose?.();
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen || !triggerRef.current) return;
+
+    const scrollParent = findNearestScrollableParent(triggerRef.current);
+    if (!scrollParent) return;
+
+    scrollParent.addEventListener('scroll', handleClose);
+
+    return () => scrollParent.removeEventListener('scroll', handleClose);
+  }, [isOpen]);
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -262,11 +279,6 @@ export const useSelectField = <
     },
     [disabled, isOpen, placement, initialPlacement, onSelectClick]
   );
-
-  const handleClose = useCallback(() => {
-    setIsOpen(false);
-    onClose?.();
-  }, []);
 
   return {
     x,

@@ -13,12 +13,14 @@ import {
 } from './styled';
 import { BadgeText } from '@/ui/components/badge';
 import { IconProvider } from '@/ui/components/icon';
-import { PdfIcon } from '@/ui/icons/pdf';
-import { TxtIcon } from '@/ui/icons/txt';
-import { WordIcon } from '@/ui/icons/word';
-import { XlsIcon } from '@/ui/icons/xls';
-import { AttachFileIcon } from '@/ui/icons/attach-file';
 import { TooltipConsumer } from '../tooltip';
+import {
+  AttachFileIcon,
+  PdfIcon,
+  TxtIcon,
+  WordIcon,
+  XlsIcon
+} from '@/ui/icons';
 
 export type FileFieldChangeEventHandler = (files: File[]) => unknown;
 

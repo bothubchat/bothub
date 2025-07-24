@@ -63,6 +63,7 @@ export const SelectField = ({
   dataTest,
   selectedColor,
   compactWidth,
+  modalStyles,
   openedModel,
   onSearch,
   onOptionClick,
@@ -345,6 +346,7 @@ export const SelectField = ({
           modalWidth={modalWidth}
           selectedColor={selectedColor}
           compactWidth={compactWidth}
+          modalStyles={modalStyles}
           openedModel={openedModel}
         />
 

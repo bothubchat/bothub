@@ -47,6 +47,7 @@ export type SelectModalGeneralProps = {
   openedModel?: string;
   selectedColor?: string;
   compactWidth?: boolean;
+  modalStyles?: React.CSSProperties;
   onOptionClick?: SelectFieldOptionClickEventHandler;
 };
 
@@ -84,6 +85,7 @@ export const SelectModal = ({
   openedModel,
   selectedColor,
   compactWidth,
+  modalStyles,
   onSearch,
   onOptionClick,
   handleClose,
@@ -210,6 +212,7 @@ export const SelectModal = ({
         $placement={placement}
         ref={selectModalRef}
         style={{
+          ...modalStyles,
           ...(x !== 0 && {
             ...(placement !== 'top-right' && {
               left: x

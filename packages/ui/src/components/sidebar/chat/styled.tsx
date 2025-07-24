@@ -1,5 +1,5 @@
 import { css, styled, keyframes } from 'styled-components';
-import { Typography } from '@/ui/components/typography';
+import { getTypographyStyles, Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { TrashIcon } from '@/ui/icons/trash';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -10,6 +10,8 @@ import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { Checkbox } from '@/ui/components/checkbox';
 import { Tooltip } from '@/ui/components/tooltip';
 import { colorToRgba } from '@/ui/utils/colors';
+import { Progress } from '../../progress';
+import { CheckSmallIcon } from '@/ui/icons';
 
 export interface SidebarChatLeftProps {
   $sidebarOpen?: boolean;
@@ -58,6 +60,26 @@ export const SidebarChatIconContainer = styled.span<SidebarChatIconContainerProp
         stroke: ${theme.colors.base.white};
       `}
   }
+`;
+
+export const SidebarChatProgressValue = styled.div`
+  color: white;
+  margin-top: 2px;
+  margin-right: 8px;
+  ${getTypographyStyles('body-s-medium')}
+`;
+
+export const SidebarChatProgressIcon = styled.div.attrs({
+  children: <CheckSmallIcon />
+})`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.accent.primary};
 `;
 
 export const SidebarChatNameBox = styled.div``;
@@ -184,12 +206,14 @@ export interface SidebarChatStyledProps {
   $active: boolean;
   $skeleton: boolean;
   $draggble: boolean;
+  $isProgress: boolean;
+  $progressDone: boolean;
 }
 
 export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
   width: 100%;
   padding: 8px;
   cursor: pointer;
@@ -197,6 +221,23 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  position: relative;
+  ${({ $progressDone, theme }) => {
+    if ($progressDone) {
+      return css`
+        &::before {
+          content: '';
+          display: block;
+          background: ${theme.colors.gradient.deluxe};
+          border-radius: 10px;
+          opacity: 0.2;
+          position: absolute;
+          inset: 0;
+          z-index: -1;
+        }
+      `;
+    }
+  }};
   ${({ $draggble, theme }) => {
     if ($draggble) {
       return css`
@@ -206,7 +247,7 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
       `;
     }
   }};
-  ${({ $active, $skeleton, theme }) => {
+  ${({ $active, $skeleton, $progressDone, theme }) => {
     if ($active) {
       return css`
         border-radius: 10px;
@@ -220,7 +261,7 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
         }
       `;
     }
-    if (!$active && !$skeleton) {
+    if (!$active && !$skeleton && !$progressDone) {
       return css`
         &:hover {
           border-radius: 10px;
@@ -233,8 +274,8 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
       `;
     }
   }}
-  ${({ $skeleton, $active }) => {
-    if ($skeleton || $active) {
+  ${({ $skeleton, $active, $isProgress }) => {
+    if ($skeleton || $active || $isProgress) {
       return css``;
     }
     return css`
@@ -254,6 +295,12 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   }}
 `;
 
+export const SidebarChatContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const SidebarChatCheckbox = styled(Checkbox)`
   margin-left: 20px;
 `;
@@ -270,3 +317,15 @@ export const SidebarChatDragHandle = styled(DragDotIcon)`
 `;
 
 export const SidebarChatNameTooltip = styled(Tooltip)``;
+
+export const SidebarChatProgress = styled(Progress).attrs({
+  fullWidth: true
+})`
+  & > div {
+    height: 3px;
+  }
+
+  & > div > div {
+    background: ${({ theme }) => theme.colors.gradient.deluxe};
+  }
+`;

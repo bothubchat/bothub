@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 export const NotificationsStyled = styled.div`
   display: flex;
   position: fixed;
-  z-index: ${({ theme }) => theme.zIndex.notifications};
+  z-index: 101;
   bottom: 0px;
   right: 0px;
   padding: 20px;

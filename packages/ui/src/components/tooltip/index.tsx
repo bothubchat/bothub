@@ -32,6 +32,7 @@ export interface TooltipProps extends React.PropsWithChildren {
   disabled?: boolean;
   disableHiddenAnimation?: boolean;
   markdown?: boolean;
+  hideOnScroll?: boolean;
 }
 
 export const Tooltip: React.FC<TooltipProps> = ({
@@ -47,7 +48,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
   disabled = false,
   disableHiddenAnimation = false,
   markdown = false,
-  children
+  children,
+  hideOnScroll = true
 }) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [hoveredElement, sethoveredElement] = useState<Element | null>();
@@ -311,11 +313,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
     };
 
     window.addEventListener('mouseleave', handleGlobalMouseLeave);
-    window.addEventListener('scroll', handleGlobalScroll, true);
+    window.addEventListener('scroll', handleGlobalScroll, hideOnScroll);
 
     return () => {
       window.removeEventListener('mouseleave', handleGlobalMouseLeave);
-      window.removeEventListener('scroll', handleGlobalScroll, true);
+      window.removeEventListener('scroll', handleGlobalScroll, hideOnScroll);
     };
   }, [hideTooltip]);
 

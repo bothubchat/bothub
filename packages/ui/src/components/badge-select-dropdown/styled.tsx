@@ -28,18 +28,6 @@ export const BadgeSelectDropdownTrigger = styled.button<{
         ? theme.colors.grayScale.gray4
         : theme.colors.grayScale.gray3};
   color: ${({ theme }) => theme.colors.base.white};
-  /* background-color: ${({ theme, $active, $variant }) => {
-    if ($variant === 'primary') {
-      return $active
-        ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
-        : theme.colors.grayScale.gray3;
-    }
-    return $active ? theme.colors.grayScale.gray3 : 'unset';
-  }};
-
-  &:hover {
-    background-color: ${({ theme }) => theme.colors.grayScale.gray2};
-  } */
 `;
 
 export const BadgeSelectDropdownSpanStyled = styled(Typography).attrs({

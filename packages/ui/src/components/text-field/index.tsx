@@ -138,14 +138,11 @@ export const TextField: React.FC<TextFieldProps> = ({
   const handleClear = useCallback(() => {
     const inputEl: HTMLInputElement | null = inputRef.current;
 
-    if (inputEl !== null) {
-      inputEl.value = '';
-      onValueChange?.('');
-    }
+    if (inputEl === null) return;
 
-    if (onClearButtonClick) {
-      onClearButtonClick();
-    }
+    inputEl.value = '';
+    onValueChange?.('');
+    onClearButtonClick?.();
   }, [onChange]);
 
   const handlePasswordToggle = useCallback(() => {

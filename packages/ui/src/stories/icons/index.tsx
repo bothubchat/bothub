@@ -262,6 +262,11 @@ import {
   AddProfileIcon,
   TokenCounterIcon,
   VideoCameraIcon,
+  SortAlphabetTopBottomIcon,
+  SortAlphabetBottomTopIcon,
+  PauseIcon,
+  PlayIcon,
+  Restore2Icon,
   VideoGenerationIcon,
   VeoModelIcon,
   RunwayIcon,
@@ -338,6 +343,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="AIIcon">{AIIcon}</IconItem>
         <IconItem name="UpdateIcon">{UpdateIcon}</IconItem>
         <IconItem name="RestoreIcon">{RestoreIcon}</IconItem>
+        <IconItem name="Restore2Icon">{Restore2Icon}</IconItem>
         <IconItem name="ChatIcon">{ChatIcon}</IconItem>
         <IconItem name="StopIcon">{StopIcon}</IconItem>
         <IconItem name="ThumbUpIcon">{ThumbUpIcon}</IconItem>
@@ -587,6 +593,15 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TokenCounterIcon">{TokenCounterIcon}</IconItem>
         <IconItem name="AddProfileIcon">{AddProfileIcon}</IconItem>
         <IconItem name="MusicNoteIcon">{MusicNoteIcon}</IconItem>
+        <IconItem name="QueueIcon">{QueueIcon}</IconItem>
+        <IconItem name="SortAlphabetTopBottomIcon">
+          {SortAlphabetTopBottomIcon}
+        </IconItem>
+        <IconItem name="SortAlphabetBottomTopIcon">
+          {SortAlphabetBottomTopIcon}
+        </IconItem>
+        <IconItem name="PauseIcon">{PauseIcon}</IconItem>
+        <IconItem name="PlayIcon">{PlayIcon}</IconItem>
         <IconItem name="VeoModelIcon">{VeoModelIcon}</IconItem>
         <IconItem name="VideoGenerationIcon">{VideoGenerationIcon}</IconItem>
         <IconItem name="RunwayIcon">{RunwayIcon}</IconItem>
