@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Progress } from '@/ui/components/progress';
 import { UploadedFileStatus } from './types';
