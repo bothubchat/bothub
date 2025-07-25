@@ -2,7 +2,7 @@ import React, { useCallback, useState, useRef } from 'react';
 import {
   ZoommableImageContainer,
   ZoommableImageWrapper,
-  ZoommableImageStyled
+  ZoommableImageStyled,
 } from './styled';
 
 export interface ZoommableImageProps {
@@ -16,7 +16,7 @@ export const ZoommableImage = ({
   imageProps,
   className,
   onZoomStart,
-  onZoomEnd
+  onZoomEnd,
 }: ZoommableImageProps) => {
   const [zoom, setZoom] = useState(1);
   const isZooming = zoom !== 1;
@@ -36,10 +36,10 @@ export const ZoommableImage = ({
 
       return {
         x: Math.max(-boundX, Math.min(boundX, x)),
-        y: Math.max(-boundY, Math.min(boundY, y))
+        y: Math.max(-boundY, Math.min(boundY, y)),
       };
     },
-    [zoom]
+    [zoom],
   );
 
   const updateTransform = useCallback(
@@ -47,13 +47,13 @@ export const ZoommableImage = ({
       if (wrapperRef.current) {
         const { x, y } = getBoundedPosition(
           positionRef.current.x,
-          positionRef.current.y
+          positionRef.current.y,
         );
         wrapperRef.current.style.transform =
           zoom !== 1 ? `translate(${x}px, ${y}px) scale(${zoom})` : '';
       }
     },
-    [getBoundedPosition]
+    [getBoundedPosition],
   );
 
   const onDoubleClick = useCallback(() => {
@@ -79,7 +79,7 @@ export const ZoommableImage = ({
       setIsDragging(true);
       lastMousePositionRef.current = { x: e.clientX, y: e.clientY };
     },
-    [isZooming]
+    [isZooming],
   );
 
   const onPointerMove = useCallback(
@@ -96,14 +96,14 @@ export const ZoommableImage = ({
 
       const newPosition = {
         x: positionRef.current.x + deltaX,
-        y: positionRef.current.y + deltaY
+        y: positionRef.current.y + deltaY,
       };
 
       positionRef.current = getBoundedPosition(newPosition.x, newPosition.y);
       lastMousePositionRef.current = { x: e.clientX, y: e.clientY };
       updateTransform(zoom);
     },
-    [updateTransform, isDragging, zoom, isZooming, getBoundedPosition]
+    [updateTransform, isDragging, zoom, isZooming, getBoundedPosition],
   );
 
   const onPointerUp = useCallback(
@@ -112,7 +112,7 @@ export const ZoommableImage = ({
       e.preventDefault();
       setIsDragging(false);
     },
-    [isZooming]
+    [isZooming],
   );
 
   return (
@@ -125,7 +125,7 @@ export const ZoommableImage = ({
         onPointerUp={onPointerUp}
         onPointerLeave={onPointerUp}
         style={{
-          cursor: isDragging ? 'grabbing' : 'grab'
+          cursor: isDragging ? 'grabbing' : 'grab',
         }}
       >
         <ZoommableImageStyled

@@ -13,7 +13,9 @@ export const TelegramFilledIcon = icon(({ ...props }) => {
     >
       <IconConsumer>
         {(
-          { fill = theme.colors.base.white } = { fill: theme.colors.base.white }
+          { fill = theme.colors.base.white } = {
+            fill: theme.colors.base.white,
+          },
         ) => (
           <>
             <g clipPath="url(#clip0_548_1140)">

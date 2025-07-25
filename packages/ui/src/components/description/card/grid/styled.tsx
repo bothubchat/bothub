@@ -18,6 +18,6 @@ export const DescriptionCardGridStyled = styled.div<DescriptionCardGridStyledPro
     `,
     mobile: css`
       grid-template-columns: 1fr;
-    `
+    `,
   }))}
 `;

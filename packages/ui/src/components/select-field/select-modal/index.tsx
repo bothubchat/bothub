@@ -3,7 +3,7 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from 'react';
 import * as S from './styled';
 
@@ -24,7 +24,7 @@ import {
   SelectFieldDataItem,
   SelectFieldInputChangeEventHandler,
   SelectFieldOptionClickEventHandler,
-  SelectFieldSize
+  SelectFieldSize,
 } from '../types';
 
 export type SelectModalGeneralProps = {
@@ -89,7 +89,7 @@ export const SelectModal = ({
   onSearch,
   onOptionClick,
   handleClose,
-  setValue
+  setValue,
 }: SelectModalProps) => {
   const [openedOptions, setOpenedOptions] = useState<(string | number)[]>([]);
   const [searchValue, setSearchValue] = useState('');
@@ -107,7 +107,7 @@ export const SelectModal = ({
       onSearch?.(value);
       setSearchValue(value);
     },
-    [onSearch, setSearchValue]
+    [onSearch, setSearchValue],
   );
 
   const handleOptionClick = useCallback(
@@ -134,7 +134,7 @@ export const SelectModal = ({
 
       handleClose();
     },
-    [value, setValue, multiple, onOptionClick, disableSelect]
+    [value, setValue, multiple, onOptionClick, disableSelect],
   );
 
   useEffect(() => {
@@ -152,7 +152,7 @@ export const SelectModal = ({
         tabs.onClick(id);
       }
     },
-    [tabs]
+    [tabs],
   );
 
   const onOpenedOptionChange = useCallback(
@@ -160,14 +160,14 @@ export const SelectModal = ({
       setOpenedOptions((prev) =>
         prev.includes(itemId)
           ? prev.filter((id) => id !== itemId)
-          : [...prev, itemId]
+          : [...prev, itemId],
       ),
-    [openedOptions]
+    [openedOptions],
   );
 
   const SelectModalWrapper = useMemo(
     () => (!disablePortal ? Portal : React.Fragment),
-    [disablePortal]
+    [disablePortal],
   );
 
   data = data.map((item) => {
@@ -194,9 +194,9 @@ export const SelectModal = ({
       return {
         ...rest,
         ...(open && {
-          open
+          open,
         }),
-        onClick: onOptionClick
+        onClick: onOptionClick,
       };
     }
 
@@ -215,29 +215,29 @@ export const SelectModal = ({
           ...modalStyles,
           ...(x !== 0 && {
             ...(placement !== 'top-right' && {
-              left: x
+              left: x,
             }),
             ...(placement === 'top-right' && {
               ...(typeof contentWidth === 'undefined' && {
-                left: `calc(${x}px - ${width})`
+                left: `calc(${x}px - ${width})`,
               }),
               ...(typeof contentWidth === 'number' && {
-                left: `calc(${x}px - ${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`})`
-              })
-            })
+                left: `calc(${x}px - ${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`})`,
+              }),
+            }),
           }),
           ...(y !== 0 && {
-            top: y
+            top: y,
           }),
           ...(typeof contentWidth === 'undefined' && {
-            width
+            width,
           }),
           ...(typeof contentWidth === 'number' && {
             width:
               contentWidth > width
                 ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)`
-                : width
-          })
+                : width,
+          }),
         }}
       >
         <S.SelectModalPositionWrapper
@@ -248,11 +248,11 @@ export const SelectModal = ({
           style={{
             ...(typeof contentHeight === 'number' &&
               contentHeight >= 0 && {
-                height: `calc(var(--bothub-scale, 1) * ${contentHeight}px)`
+                height: `calc(var(--bothub-scale, 1) * ${contentHeight}px)`,
               }),
             ...(typeof contentHeight === 'string' && {
-              height: contentHeight
-            })
+              height: contentHeight,
+            }),
           }}
         >
           <S.SelectModalContent>

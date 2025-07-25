@@ -13,7 +13,7 @@ import {
   ReferralCardPriceRange,
   ReferralCardPriceRangeText,
   ReferralCardStyled,
-  ReferralCardTop
+  ReferralCardTop,
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 

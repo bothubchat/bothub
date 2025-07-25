@@ -3,7 +3,7 @@ import {
   SidebarMenuNavIcon,
   SidebarMenuNavLinkStyled,
   SidebarMenuNavLinkStyledProps,
-  SidebarMenuNavLinkText
+  SidebarMenuNavLinkText,
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useSidebarMenu } from '../../context';
@@ -37,7 +37,7 @@ export const SidebarMenuNavLink: React.FC<SidebarMenuNavLinkProps> = ({
 
       props.onClick?.(event);
     },
-    [props.onClick]
+    [props.onClick],
   );
 
   return (

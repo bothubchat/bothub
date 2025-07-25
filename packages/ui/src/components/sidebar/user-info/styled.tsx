@@ -34,7 +34,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
       `,
       mobile: css`
         padding: 0px;
-      `
+      `,
     })}
   ${({ $open }) =>
     !$open &&
@@ -49,7 +49,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
       `,
       mobile: css`
         padding: 14px;
-      `
+      `,
     })}
   ${({ theme, $open }) =>
     $open
@@ -73,7 +73,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
           mobile: css`
             border-radius: 0px;
             border: 0px solid rgba(0, 0, 0, 0);
-          `
+          `,
         })
       : adaptive({
           variant: 'dashboard',
@@ -99,7 +99,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
               ${theme.mode === 'light'
                 ? theme.colors.grayScale.gray2
                 : theme.colors.grayScale.gray3};
-          `
+          `,
         })}
   transition: border-width 0.3s ease-out,
               border-color 0.3s ease-out,
@@ -141,7 +141,7 @@ export const SidebarUserInfoTariffContainer = styled.div<SidebarUserInfoTariffCo
       `,
       mobile: css`
         display: flex;
-      `
+      `,
     })}
 
   ${({ $open }) =>
@@ -156,7 +156,7 @@ export const SidebarUserInfoTariffContainer = styled.div<SidebarUserInfoTariffCo
       `,
       mobile: css`
         display: none;
-      `
+      `,
     })}
 `;
 
@@ -189,7 +189,7 @@ export const SidebarUserInfoUpdateTariffContainer = styled.div<SidebarUserInfoUp
           opacity: 1;
           height: auto;
           margin-top: 10px;
-        `
+        `,
       });
     }
     return adaptive({
@@ -208,7 +208,7 @@ export const SidebarUserInfoUpdateTariffContainer = styled.div<SidebarUserInfoUp
         opacity: 0;
         height: 0px;
         margin-top: 0px;
-      `
+      `,
     });
   }}
 `;
@@ -221,14 +221,14 @@ export const SidebarUserInfoText = styled.div`
 
 export const SidebarUserInfoName = styled(Typography).attrs({
   variant: 'body-m-semibold',
-  component: 'span'
+  component: 'span',
 })`
   white-space: nowrap;
 `;
 
 export const SidebarUserInfoCaps = styled(Typography).attrs({
   variant: 'body-s-medium',
-  component: 'span'
+  component: 'span',
 })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
   white-space: nowrap;
@@ -236,7 +236,7 @@ export const SidebarUserInfoCaps = styled(Typography).attrs({
 
 export const SidebarUserInfoTariff = styled(Typography).attrs({
   variant: 'body-m-medium',
-  component: 'span'
+  component: 'span',
 })`
   display: inline-flex;
   color: ${({ theme }) => theme.default.colors.base.white};
@@ -299,7 +299,7 @@ export const SidebarUserInfoUpdateTariffButton = styled.button`
 `;
 
 export const SidebarUserInfoUpdateTariffButtonText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })`
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -328,7 +328,7 @@ export interface SidebarUserInfoUpdateTariffBadgeTextProps {
 }
 
 export const SidebarUserInfoUpdateTariffBadgeText = styled(Typography).attrs({
-  variant: 'body-m-semibold'
+  variant: 'body-m-semibold',
 })<SidebarUserInfoUpdateTariffBadgeTextProps>`
   color: transparent;
   background: ${({ children, theme }) => {
@@ -362,7 +362,7 @@ export const SidebarUserInfoLogoutButtonContainer = styled.div<SidebarUserInfoLo
           `,
           mobile: css`
             display: flex;
-          `
+          `,
         })
       : adaptive({
           variant: 'dashboard',
@@ -374,7 +374,7 @@ export const SidebarUserInfoLogoutButtonContainer = styled.div<SidebarUserInfoLo
           `,
           mobile: css`
             display: none;
-          `
+          `,
         })}
 `;
 
@@ -385,7 +385,7 @@ export interface SidebarUserInfoUpdateTariffContainerProps {
 export const SidebarUserInfoLogoutButton = styled(Button).attrs(() => ({
   variant: 'text',
   iconSize: 18,
-  children: <LogoutIcon />
+  children: <LogoutIcon />,
 }))`
   svg path {
     fill: ${({ theme }) => theme.colors.critic} !important;

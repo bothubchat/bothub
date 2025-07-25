@@ -9,7 +9,7 @@ import {
   SearchResultsItemName,
   SearchResultsItemNumber,
   SearchResultsItemTitle,
-  SearchResultsList
+  SearchResultsList,
 } from './styled';
 import { MessageMarkdown } from '../markdown';
 import { markdownComponents } from '../reasoning-block/markdown-components';
@@ -42,7 +42,7 @@ export const MessageSearchResults = (props: MessageSearchResultsProps) => (
 const MessageSearchResultsItem = memo(
   ({
     result,
-    index
+    index,
   }: {
     result: MessageSearchResultsItemType;
     index: number;
@@ -109,7 +109,7 @@ const MessageSearchResultsItem = memo(
         </SearchResultsItemContent>
       </SearchResultsItemStyled>
     );
-  }
+  },
 );
 
 const SearchResultsItemDate = memo(({ date }: { date: string }) => {

@@ -6,7 +6,7 @@ export interface NotificationsContextValue {
 
 export const NotificationsContext =
   React.createContext<NotificationsContextValue>({
-    isInNotificationList: false
+    isInNotificationList: false,
   });
 
 export const NotificationsProvider: React.FC<

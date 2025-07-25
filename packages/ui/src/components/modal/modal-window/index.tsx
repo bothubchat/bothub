@@ -24,15 +24,15 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
       images,
       className,
       hideCloseButton = false,
-      onClose
+      onClose,
     },
-    ref
+    ref,
   ) => {
     const modalTransition = useTransition(open, {
       from: { opacity: 0, transform: 'scale(0.9)' },
       enter: { opacity: 1, transform: 'scale(1)' },
       leave: { opacity: 0, transform: 'scale(0.9)' },
-      config: { duration: 200 }
+      config: { duration: 200 },
     });
 
     const content = <S.ModalWindowContent>{children}</S.ModalWindowContent>;
@@ -73,7 +73,7 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
               </S.ModalWindowBodyContent>
             </S.ModalWindowBody>
           </S.ModalWindowStyled>
-        )
+        ),
     );
-  }
+  },
 );

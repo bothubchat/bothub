@@ -38,7 +38,7 @@ export const SelectFieldStyled = styled.div<SelectFieldStyledProps>`
 `;
 
 export const SelectFieldLabel = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   display: flex;
   align-items: center;
@@ -166,7 +166,7 @@ export interface SelectFieldSearchIconProps {
 }
 
 export const SelectFieldSearchIcon = styled(SearchCircleIcon).attrs({
-  size: 16
+  size: 16,
 })<SelectFieldSearchIconProps>`
   path {
     fill: ${({ theme, $focus }) => {
@@ -232,7 +232,7 @@ export const SelectFieldInputNative = styled.input`
 export const SelectFieldClearButton = styled(Button).attrs({
   variant: 'text',
   iconSize: 12,
-  children: <CloseIcon />
+  children: <CloseIcon />,
 })``;
 
 export const SelectFieldValue = styled.span`
@@ -243,7 +243,7 @@ export const SelectFieldValue = styled.span`
 `;
 
 export const SelectFieldValueText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   white-space: nowrap;
   overflow: hidden;
@@ -265,7 +265,7 @@ export const SelectFieldValueColor = styled.span<SelectFieldValueColorProps>`
 `;
 
 export const SelectFieldColorValueText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   color: ${({ theme }) => theme.colors.base.white};
   white-space: nowrap;
@@ -293,7 +293,7 @@ export interface SelectFieldPlaceholderProps {
 }
 
 export const SelectFieldPlaceholder = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })<SelectFieldPlaceholderProps>`
   color: ${({ $open, theme }) => {
     if ($open) {
@@ -311,7 +311,7 @@ export const SelectFieldArrow = styled(ArrowDownIcon).attrs({ size: 16 })`
 `;
 
 export const SelectFieldErrorText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   display: inline-flex;
   margin-top: 8px;

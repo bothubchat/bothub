@@ -7,7 +7,7 @@ import {
   SidebarChatIconContainer,
   SidebarChatStyled,
   SidebarChatTooltip,
-  SidebarChatWithOutlineStyled
+  SidebarChatWithOutlineStyled,
 } from './chat';
 import {
   SidebarChatList,
@@ -15,14 +15,14 @@ import {
   SidebarGroupName,
   SidebarGroupSkeletonIcon,
   SidebarGroupsStyled,
-  SidebarGroupStyled
+  SidebarGroupStyled,
 } from './group';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { ArrowUpIcon } from '@/ui/icons/arrow-up';
 import {
   SidebarMenuBlockScrollbarWrapper,
   SidebarMenuNav,
-  SidebarMenuStyled
+  SidebarMenuStyled,
 } from './menu';
 import { SidebarUserInfoStyled } from './user-info';
 import { SidebarEmptyGroupStyled } from './group-empty';
@@ -180,7 +180,7 @@ export const SidebarStyled = styled(animated.aside)<SidebarStyledProps>`
       `,
       mobile: css`
         border-radius: 0;
-      `
+      `,
     })}
   ${({ $isHide }) =>
     $isHide &&
@@ -251,7 +251,7 @@ export const SidebarContent = styled.div<SidebarContentProps>`
         ${SidebarMenuStyled} {
           display: none;
         }
-      `
+      `,
     })}
   ${({ $open }) =>
     !$open &&
@@ -260,7 +260,7 @@ export const SidebarContent = styled.div<SidebarContentProps>`
       mobile: css`
         opacity: 0;
         visibility: hidden;
-      `
+      `,
     })}
 `;
 
@@ -308,7 +308,7 @@ export const SidebarContentNav = styled.div<SidebarContentNavProps>`
                 `,
           mobile: css`
             display: none;
-          `
+          `,
         })
       : adaptive({
           variant: 'dashboard',
@@ -338,7 +338,7 @@ export const SidebarContentNav = styled.div<SidebarContentNavProps>`
             width: calc(100% - 36px);
             height: calc(100% - 36px);
             margin: 0 auto;
-          `
+          `,
         })}
 `;
 
@@ -354,8 +354,8 @@ export const SidebarContentNavMenuScrollbarWrapper = styled(Scrollbar).attrs({
   variant: 'secondary',
   scrollShadows: {
     top: <ScrollbarShadow side="top" />,
-    bottom: <ScrollbarShadow side="bottom" />
-  }
+    bottom: <ScrollbarShadow side="bottom" />,
+  },
 })`
   position: relative;
   height: 100%;
@@ -381,7 +381,7 @@ export const SidebarTabletThemeSwitcher = styled.div`
       justify-content: space-between;
       align-items: center;
       width: 100%;
-    `
+    `,
   })}
 `;
 export const SidebarHead = styled.div<SidebarHeadProps>`
@@ -398,7 +398,7 @@ export const SidebarHead = styled.div<SidebarHeadProps>`
     tablet: css`
       flex-direction: row-reverse;
       justify-content: ${$open ? 'space-between' : 'center'};
-    `
+    `,
   }))}
 `;
 
@@ -435,7 +435,7 @@ export const SidebarToolbar = styled.div<{
     merge: true,
     tablet: css`
       flex-direction: row;
-    `
+    `,
   })}
   ${({ $open }) =>
     !$open &&
@@ -444,7 +444,7 @@ export const SidebarToolbar = styled.div<{
       merge: true,
       desktop: css`
         flex-direction: column-reverse;
-      `
+      `,
     })}
 `;
 
@@ -455,7 +455,7 @@ export const SidebarToggle = styled.div`
     merge: true,
     tablet: css`
       display: none;
-    `
+    `,
   })}
 `;
 
@@ -508,7 +508,7 @@ export const SidebarHeader = styled.div<SidebarHeaderProps>`
     tablet: css`
       width: auto;
       display: none;
-    `
+    `,
   })}
 `;
 
@@ -535,7 +535,7 @@ export const SidebarBottom = styled.div`
     `,
     mobile: css`
       display: none;
-    `
+    `,
   })}
 `;
 
@@ -568,7 +568,7 @@ export const SidebarBody = styled.div`
     `,
     mobile: css`
       margin: 14px 0px;
-    `
+    `,
   })}
 `;
 
@@ -579,9 +579,9 @@ export const SidebarBodyScrollbarWrapper = styled(Scrollbar).attrs(
       size: 90,
       color: theme.colors.grayScale.gray4,
       top: <ScrollbarShadow side="top" />,
-      bottom: <ScrollbarShadow side="bottom" />
-    }
-  })
+      bottom: <ScrollbarShadow side="bottom" />,
+    },
+  }),
 )`
   position: relative;
   height: 100%;
@@ -622,7 +622,7 @@ export const SidebarArrowUpButton = styled(ArrowUpIcon)<{ $hidden: boolean }>`
     `,
     mobile: css`
       display: none;
-    `
+    `,
   })}
 `;
 
@@ -654,7 +654,7 @@ export const SidebarArrowDownButton = styled(ArrowDownIcon)<{
     `,
     mobile: css`
       display: none;
-    `
+    `,
   })}
 `;
 
@@ -667,7 +667,7 @@ export const SidebarHeaderRight = styled.div`
       variant: 'dashboard',
       tablet: css`
         display: none;
-      `
+      `,
     })}
   }
 `;

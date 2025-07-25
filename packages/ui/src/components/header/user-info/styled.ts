@@ -59,11 +59,11 @@ export const HeaderUserInfoInfoText = styled.span`
 `;
 
 export const HeaderUserInfoName = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })``;
 
 export const HeaderUserInfoTokens = styled(Typography).attrs({
-  variant: 'body-xs-regular'
+  variant: 'body-xs-regular',
 })``;
 
 export const HeaderUserInfoArrow = styled(ArrowDownIcon)`

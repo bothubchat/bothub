@@ -4,7 +4,7 @@ import { adaptive } from '@/ui/adaptive';
 import {
   MessageColor,
   MessageTimestampPosition,
-  MessageVariant
+  MessageVariant,
 } from '../types';
 import { isBright } from '@/ui/utils';
 
@@ -36,7 +36,7 @@ export interface TimestampTextProp {
   $variant: MessageVariant;
 }
 export const TimestampText = styled(Typography).attrs({
-  variant: 'body-s-regular'
+  variant: 'body-s-regular',
 })<TimestampTextProp>`
   color: ${({ theme, $color, $variant }) => {
     if ($variant === 'assistant') {
@@ -68,6 +68,6 @@ export const TimestampText = styled(Typography).attrs({
     `,
     mobile: css`
       font-size: 10px;
-    `
+    `,
   })};
 `;

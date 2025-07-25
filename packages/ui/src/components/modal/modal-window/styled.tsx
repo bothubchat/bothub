@@ -107,9 +107,9 @@ export const ModalWindowBodyScrollbarWrapper = styled(Scrollbar).attrs(
     scrollShadows: {
       color: theme.colors.grayScale.gray3,
       top: <ScrollbarShadow side="top" />,
-      bottom: <ScrollbarShadow side="bottom" />
-    }
-  })
+      bottom: <ScrollbarShadow side="bottom" />,
+    },
+  }),
 )`
   display: flex;
   width: 100%;

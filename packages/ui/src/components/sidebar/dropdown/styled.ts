@@ -12,7 +12,7 @@ export const SidebarDropdownStyled = styled.div`
 `;
 
 export const SidebarDropdownTogglerIcon = styled(MenuDotIcon).attrs({
-  size: 16
+  size: 16,
 })`
   pointer-events: none;
 `;
@@ -26,7 +26,7 @@ export const SidebarDropdownTogglerText = styled(Typography)`
 `;
 
 export const SidebarDropdownTogglerArrow = styled(ArrowDownIcon).attrs({
-  size: 16
+  size: 16,
 })`
   pointer-events: none;
 `;

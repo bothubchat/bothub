@@ -2,7 +2,7 @@ import './styled.d.ts';
 import React, { useMemo } from 'react';
 import {
   ThemeProvider as StyledThemeProvider,
-  createGlobalStyle
+  createGlobalStyle,
 } from 'styled-components';
 import { THEMES } from './themes';
 import { ColorSchemeNames, Theme, ThemeMode } from './types';
@@ -26,14 +26,14 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = React.memo(
     mode = 'dark',
     sbMode = false,
     customTheme = null,
-    children
+    children,
   }) => {
     const theme = useMemo(
       () =>
         scheme !== 'custom'
           ? THEMES[scheme][mode]
           : (customTheme ?? THEMES.standard[mode]),
-      [scheme, mode, customTheme]
+      [scheme, mode, customTheme],
     );
 
     return (
@@ -42,7 +42,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = React.memo(
         {sbMode && <StorybookGlobalStyle />}
       </StyledThemeProvider>
     );
-  }
+  },
 );
 
 export * from './types';

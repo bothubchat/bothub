@@ -3,7 +3,7 @@ import { SelectFieldData } from '../types';
 
 export const filterData = (
   data: SelectFieldData,
-  searchValue: string
+  searchValue: string,
 ): SelectFieldData =>
   data
     .map((item) => {
@@ -29,7 +29,7 @@ export const filterData = (
         return hasRelevantChildren
           ? {
               ...item,
-              data: children
+              data: children,
             }
           : null;
       }

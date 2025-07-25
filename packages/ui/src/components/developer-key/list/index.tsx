@@ -5,7 +5,7 @@ import {
   DeveloperKeysHeader,
   DeveloperKeysIcon,
   DeveloperKeysStyled,
-  DeveloperKeysTitle
+  DeveloperKeysTitle,
 } from './styled';
 
 export interface DeveloperKeysProps extends React.PropsWithChildren {
@@ -18,7 +18,7 @@ export const DeveloperKeys: React.FC<DeveloperKeysProps> = ({
   title,
   empty,
   add,
-  children
+  children,
 }) => (
   <DeveloperKeysStyled>
     {title && (

@@ -40,5 +40,5 @@ export const SortAlphabetAscendingIcon = icon(
         />
       </Icon>
     );
-  }
+  },
 );

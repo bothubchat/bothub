@@ -131,12 +131,12 @@ export const SelectModalTabsContainer = styled.div`
 
 export const SelectModalTabs = styled(ScrollableTabs).attrs({
   variant: 'secondary',
-  component: 'button'
+  component: 'button',
 })``;
 
 export const SelectModalSearch = styled(TextField).attrs({
   fullWidth: true,
-  variant: 'secondary'
+  variant: 'secondary',
 })`
   padding-right: 8px;
 `;

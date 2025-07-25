@@ -8,7 +8,7 @@ import {
   DescriptionCardText,
   DescriptionCardTitle,
   DescriptionCardTertiaryTitle,
-  DescriptionCardTertiaryText
+  DescriptionCardTertiaryText,
 } from './styled';
 import { TDescriptionCard, DescriptionCardVariant } from './types';
 import { LinksIcon } from '@/ui/icons/links';
@@ -51,7 +51,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
 
       props.onMouseMove?.(event);
     },
-    [props.onMouseMove]
+    [props.onMouseMove],
   );
   const handleMouseLeave = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -60,7 +60,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
 
       props.onMouseLeave?.(event);
     },
-    [props.onMouseLeave]
+    [props.onMouseLeave],
   );
 
   return (
@@ -76,7 +76,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
         style={
           variant !== 'tertiary'
             ? {
-                background: `radial-gradient(100% 100% at ${hoverX}px ${hoverY}px, ${theme.colors.accent.primary}, rgba(0, 0, 0, 0.0))`
+                background: `radial-gradient(100% 100% at ${hoverX}px ${hoverY}px, ${theme.colors.accent.primary}, rgba(0, 0, 0, 0.0))`,
               }
             : {}
         }
@@ -86,7 +86,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
           style={
             variant !== 'tertiary'
               ? {
-                  background: `radial-gradient(80% 70% at ${hoverX}px ${hoverY}px, rgba(28, 100, 242, 0.38) 9.34%, rgba(0, 0, 0, 0.00) 100%), #121825`
+                  background: `radial-gradient(80% 70% at ${hoverX}px ${hoverY}px, rgba(28, 100, 242, 0.38) 9.34%, rgba(0, 0, 0, 0.00) 100%), #121825`,
                 }
               : {}
           }

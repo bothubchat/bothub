@@ -6,7 +6,7 @@ import {
   THEMES,
   ColorSchemeNamesArray,
   ThemeMode,
-  ThemeColors
+  ThemeColors,
 } from '@/ui/theme';
 import { ThemeSchemesSection } from './section';
 import { ThemeAddButton, ThemeSchemesStyled } from './styled';
@@ -14,10 +14,10 @@ import { ThemeButton } from './theme-button';
 
 export type ThemeSchemesEventHandler = () => unknown;
 export type ThemeSchemesClickEventHandler = (
-  scheme: ColorSchemeNames
+  scheme: ColorSchemeNames,
 ) => unknown;
 export type ThemeSchemesCustomThemeClickEventHandler = (
-  index: number
+  index: number,
 ) => unknown;
 
 export interface ThemeSchemesProps {
@@ -49,7 +49,7 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
   onCustomClick,
   onClick,
   onEditCustom,
-  onDeleteCustom
+  onDeleteCustom,
 }) => {
   const theme = useTheme();
 
@@ -60,7 +60,7 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
       setScheme(scheme);
       onClick?.(scheme);
     },
-    [onClick]
+    [onClick],
   );
 
   const handleCustomClick = useCallback((index: number) => {

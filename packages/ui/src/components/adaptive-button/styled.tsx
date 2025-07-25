@@ -3,7 +3,7 @@ import {
   Button,
   ButtonSize,
   ButtonVariant,
-  ButtonText
+  ButtonText,
 } from '@/ui/components/button';
 import { Tooltip } from '@/ui/components/tooltip';
 import { adaptive } from '@/ui/adaptive';
@@ -41,7 +41,7 @@ export const AdaptiveButtonStyled = styled(Button)<AdaptiveButtonStyledProps>`
       ${ButtonText} {
         display: none;
       }
-    `
+    `,
   }))}
 `;
 
@@ -52,6 +52,6 @@ export const AdaptiveButtonTooltip = styled(Tooltip)`
     `,
     tablet: css`
       display: none;
-    `
+    `,
   })}
 `;

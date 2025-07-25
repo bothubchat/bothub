@@ -11,5 +11,5 @@ export const Basic: IconsStory = {};
 export default {
   title: 'Icons',
   component: Icons,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as IconsMeta;

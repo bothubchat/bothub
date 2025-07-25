@@ -9,7 +9,7 @@ import {
   FileFieldInput,
   FileFieldLabel,
   FileFieldPlaceholder,
-  FileFieldStyled
+  FileFieldStyled,
 } from './styled';
 import { BadgeText } from '@/ui/components/badge';
 import { IconProvider } from '@/ui/components/icon';
@@ -19,7 +19,7 @@ import {
   PdfIcon,
   TxtIcon,
   WordIcon,
-  XlsIcon
+  XlsIcon,
 } from '@/ui/icons';
 
 export type FileFieldChangeEventHandler = (files: File[]) => unknown;
@@ -59,7 +59,7 @@ export const FileField: React.FC<FileFieldProps> = ({
     (files) => {
       onChange?.(files);
     },
-    [onChange]
+    [onChange],
   );
 
   const [files, setFiles] = Array.isArray(initialFiles)
@@ -75,15 +75,15 @@ export const FileField: React.FC<FileFieldProps> = ({
           ...new Map(
             [...files, ...(event.currentTarget.files ?? [])].map((file) => [
               file.name,
-              file
-            ])
-          ).values()
+              file,
+            ]),
+          ).values(),
         ]);
       } else {
         setFiles([...(event.currentTarget.files ?? [])].slice(0, 1));
       }
     },
-    [files, setFiles, multiple]
+    [files, setFiles, multiple],
   );
 
   const handleFileDelete = useCallback(
@@ -92,7 +92,7 @@ export const FileField: React.FC<FileFieldProps> = ({
 
       setFiles(files.filter(({ name }) => name !== file.name));
     },
-    [files, setFiles]
+    [files, setFiles],
   );
 
   return (

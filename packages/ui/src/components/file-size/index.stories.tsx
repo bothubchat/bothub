@@ -12,7 +12,7 @@ export const All = () => (
     style={{
       display: 'grid',
       gap: '20px',
-      gridTemplateColumns: 'repeat(4, 1fr)'
+      gridTemplateColumns: 'repeat(4, 1fr)',
     }}
   >
     <Typography variant="body-s-medium">
@@ -36,7 +36,7 @@ export default {
   decorators: [StoryDecorator({ margin: '50px 0px' })],
   parameters: {
     variants: {
-      enable: true
-    }
-  }
+      enable: true,
+    },
+  },
 } as FileSizeMeta;

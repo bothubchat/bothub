@@ -7,11 +7,11 @@ import {
   LangSwitcherItem,
   LangSwitcherLabel,
   LangSwitcherList,
-  LangSwitcherStyled
+  LangSwitcherStyled,
 } from './styled';
 import {
   SelectFieldDataItem,
-  SelectFieldDataItemComplex
+  SelectFieldDataItemComplex,
 } from '../select-field';
 
 export type LangSwitcherProps = {
@@ -33,7 +33,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
   region,
   dataRegions,
   dataLanguages,
-  onChange
+  onChange,
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -41,16 +41,16 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
   const currentRegion = useMemo(
     () =>
       dataRegions.find(
-        (item) => typeof item === 'object' && item.value === region.value
+        (item) => typeof item === 'object' && item.value === region.value,
       ),
-    [dataRegions, region]
+    [dataRegions, region],
   );
   const currentLanguage = useMemo(
     () =>
       dataLanguages.find(
-        (item) => typeof item === 'object' && item.value === lang.value
+        (item) => typeof item === 'object' && item.value === lang.value,
       ),
-    [dataLanguages, lang]
+    [dataLanguages, lang],
   );
 
   const handleToggle = useCallback(() => {
@@ -129,24 +129,24 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
       if (typeof e === 'object' && e.value) {
         onChange({
           lang: type === 'lang' ? e.value : lang.value,
-          region: type === 'region' ? e.value : region.value
+          region: type === 'region' ? e.value : region.value,
         });
       }
     },
-    [onChange]
+    [onChange],
   );
 
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      transform: 'scale(0)'
+      transform: 'scale(0)',
     },
     enter: {
       opacity: isOpen ? 1 : 0.5,
-      transform: `scale(${isOpen ? 1 : 0.999})`
+      transform: `scale(${isOpen ? 1 : 0.999})`,
     },
     leave: { opacity: 0, transform: 'scale(0.999)' },
-    config: { duration: 150 }
+    config: { duration: 150 },
   });
 
   return (
@@ -183,7 +183,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
                 data={dataRegions}
               />
             </LangSwitcherList>
-          )
+          ),
       )}
     </LangSwitcherStyled>
   );

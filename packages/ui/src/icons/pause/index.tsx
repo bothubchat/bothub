@@ -14,8 +14,8 @@ export const PauseIcon = icon(({ ...props }) => {
       <IconConsumer>
         {(
           { fill = theme.colors.grayScale.gray1 } = {
-            fill: theme.colors.grayScale.gray1
-          }
+            fill: theme.colors.grayScale.gray1,
+          },
         ) => (
           <path
             fillRule="evenodd"

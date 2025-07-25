@@ -14,8 +14,8 @@ export const SortAlphabetTopBottomIcon = icon(({ ...props }) => {
       <IconConsumer>
         {(
           { fill = theme.colors.base.white } = {
-            fill: theme.colors.base.white
-          }
+            fill: theme.colors.base.white,
+          },
         ) => (
           <>
             <g clipPath="url(#clip0_3174_108801)">

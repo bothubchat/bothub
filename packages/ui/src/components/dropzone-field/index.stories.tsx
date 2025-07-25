@@ -27,13 +27,13 @@ export const WithLabel = () => {
         <div
           style={{
             display: 'flex',
-            gap: 8
+            gap: 8,
           }}
         >
           <DropzoneFieldRightLabel>Доступны:</DropzoneFieldRightLabel>
           <DropzoneFieldRightLabel>5/5</DropzoneFieldRightLabel>
           <DropzoneFieldRightLabel>очередей</DropzoneFieldRightLabel>
-        </div>
+        </div>,
       ]}
       placeholder={
         <div
@@ -43,7 +43,7 @@ export const WithLabel = () => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            gap: '8px'
+            gap: '8px',
           }}
         >
           <div>
@@ -65,7 +65,7 @@ export const WithLabel = () => {
           <Typography
             variant="body-s-regular"
             style={{
-              color: theme.colors.accent.primary
+              color: theme.colors.accent.primary,
             }}
           >
             <u>Шаблон</u>
@@ -79,5 +79,5 @@ export const WithLabel = () => {
 export default {
   title: 'UI Components/Fields/Dropzone',
   component: DropzoneField,
-  decorators: [StoryDecorator({ margin: '50px 0px' })]
+  decorators: [StoryDecorator({ margin: '50px 0px' })],
 } as DropzoneFieldMeta;

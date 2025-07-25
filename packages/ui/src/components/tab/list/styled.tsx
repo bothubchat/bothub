@@ -15,7 +15,7 @@ export const TabDesktopList = styled.div`
     `,
     mobile: css`
       display: none;
-    `
+    `,
   }))}
   gap: 18px;
   flex-wrap: wrap;
@@ -30,7 +30,7 @@ export const TabMobileList = styled.div`
     mobile: css`
       display: flex;
       width: 100%;
-    `
+    `,
   }))}
 `;
 
@@ -40,9 +40,9 @@ export const TabMobileListScrollbarWrapper = styled(Scrollbar).attrs(
     scrollShadows: {
       color: theme.colors.base.black,
       left: <ScrollbarShadow side="left" />,
-      right: <ScrollbarShadow side="right" />
-    }
-  })
+      right: <ScrollbarShadow side="right" />,
+    },
+  }),
 )``;
 
 export const TabMobileListContent = styled.div`

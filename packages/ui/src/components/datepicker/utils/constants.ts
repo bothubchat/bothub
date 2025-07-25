@@ -46,5 +46,5 @@ export const locales = [
   'tr-TR',
   'uk-UA',
   'vi-VN',
-  'zh-CN'
+  'zh-CN',
 ] as const;

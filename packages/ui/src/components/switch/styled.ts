@@ -14,7 +14,7 @@ export const Wrapper = styled.div`
 
 export const Checkbox = styled.input.attrs((props) => ({
   type: 'checkbox',
-  ...props
+  ...props,
 }))`
   display: none;
   height: 0;

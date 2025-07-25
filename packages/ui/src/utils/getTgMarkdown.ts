@@ -12,13 +12,13 @@ import type {
   List,
   Table,
   Text,
-  InlineCode
+  InlineCode,
 } from 'mdast';
 import {
   toMarkdown,
   Options as ToMarkdownOptions,
   defaultHandlers,
-  ConstructName
+  ConstructName,
 } from 'mdast-util-to-markdown';
 import type { Node } from 'mdast-util-to-markdown/lib/types';
 import { ListItem } from 'mdast-util-to-markdown/lib/handle/list-item';
@@ -56,10 +56,10 @@ const mdastToTgMarkdown = (ast: Node) => {
             node,
             {
               ...state,
-              stack: state.stack.concat('emphasis')
+              stack: state.stack.concat('emphasis'),
             },
-            info
-          )
+            info,
+          ),
         )
         .join('');
       const lines = content.split('\n');
@@ -93,7 +93,7 @@ const mdastToTgMarkdown = (ast: Node) => {
       if (
         parent?.type === 'heading' ||
         !!state.stack.find(
-          (nodeType: MDConstructName) => nodeType === 'heading'
+          (nodeType: MDConstructName) => nodeType === 'heading',
         )
       ) {
         return node.value;
@@ -115,7 +115,7 @@ const mdastToTgMarkdown = (ast: Node) => {
           (nodeType: MDConstructName) =>
             nodeType === 'emphasis' ||
             nodeType === 'strong' ||
-            nodeType === 'heading'
+            nodeType === 'heading',
         )
       ) {
         return node.children
@@ -138,7 +138,7 @@ const mdastToTgMarkdown = (ast: Node) => {
           (nodeType: MDConstructName) =>
             nodeType === 'emphasis' ||
             nodeType === 'strong' ||
-            nodeType === 'heading'
+            nodeType === 'heading',
         )
       ) {
         return node.children
@@ -157,9 +157,9 @@ const mdastToTgMarkdown = (ast: Node) => {
       state.containerFlow(
         {
           ...node,
-          ordered: false
+          ordered: false,
         },
-        info
+        info,
       ),
 
     listItem: (node: ListItem, parent, state, info) => {
@@ -183,9 +183,9 @@ const mdastToTgMarkdown = (ast: Node) => {
         parent,
         {
           ...state,
-          bulletCurrent: '-'
+          bulletCurrent: '-',
         },
-        info
+        info,
       );
     },
 
@@ -213,7 +213,7 @@ const mdastToTgMarkdown = (ast: Node) => {
     text: (node: Text) => node.value,
 
     // Just output a newline instead of '  \' or '\n'
-    break: () => '\n'
+    break: () => '\n',
   };
 
   const tgMarkdown = toMarkdown(ast, {
@@ -225,9 +225,9 @@ const mdastToTgMarkdown = (ast: Node) => {
     tightDefinitions: true,
     extensions: [
       {
-        handlers
-      }
-    ]
+        handlers,
+      },
+    ],
   });
 
   return tgMarkdown.replaceAll(/\n{3,}/g, '\n\n').replace(/\n$/, '');

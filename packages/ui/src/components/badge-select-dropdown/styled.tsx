@@ -31,7 +31,7 @@ export const BadgeSelectDropdownTrigger = styled.button<{
 `;
 
 export const BadgeSelectDropdownSpanStyled = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })`
   white-space: nowrap;
   overflow: hidden;
@@ -39,7 +39,7 @@ export const BadgeSelectDropdownSpanStyled = styled(Typography).attrs({
 `;
 
 export const BadgeSelectDropdownTogglerArrow = styled(ArrowDownIcon).attrs({
-  size: 16
+  size: 16,
 })<{ $open: boolean }>`
   pointer-events: none;
   transition: transform 0.2s ease-in-out;

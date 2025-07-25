@@ -26,7 +26,7 @@ export const SidebarEmptyGroupIcon = styled(DeleteChatIcon)`
 `;
 
 export const SidebarEmptyGroupText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })`
   color: ${({ theme }) =>
     theme.mode === 'dark'

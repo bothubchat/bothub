@@ -3,7 +3,7 @@ import {
   LoaderCircularGradientIcon,
   PauseIcon,
   PlayIcon,
-  Restore2Icon
+  Restore2Icon,
 } from '@/ui/icons';
 import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
@@ -21,7 +21,7 @@ import {
   UploadedFileSize,
   UploadedFileStatusChip,
   UploadedFileStatusChipText,
-  UploadedFileDeleteButton
+  UploadedFileDeleteButton,
 } from './styled';
 import { UploadedFileStatus } from './types';
 

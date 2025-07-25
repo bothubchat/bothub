@@ -7,7 +7,7 @@ import {
   BookmarksIcon,
   EmailCircleIcon,
   LockCircleIcon,
-  TrashIcon
+  TrashIcon,
 } from '@/ui/icons';
 import { Button } from '@/ui/components/button';
 import { Link } from '@/ui/components/link';
@@ -21,7 +21,7 @@ import {
   ReferralRadioTableCell,
   ReferralRadioTableHeadCell,
   ReferralRadioTableRow,
-  ReferralRadioTableSelectedCell
+  ReferralRadioTableSelectedCell,
 } from '@/ui/components/referral';
 
 export type ModalWindowMeta = Meta<typeof ModalWindow>;
@@ -74,8 +74,8 @@ export const Auth: ModalWindowStory = {
           Нет аккаунта? <Link href="#link">Регистрация</Link>
         </Typography>
       </Form>
-    )
-  }
+    ),
+  },
 };
 
 export const AuthTelegram: ModalWindowStory = {
@@ -105,8 +105,8 @@ export const AuthTelegram: ModalWindowStory = {
           </Button>
         </FormButtons>
       </Form>
-    )
-  }
+    ),
+  },
 };
 
 export const UpdateBookmark: ModalWindowStory = {
@@ -132,32 +132,32 @@ export const UpdateBookmark: ModalWindowStory = {
           data={[
             {
               color: '#1C64F2',
-              value: 'Синий'
+              value: 'Синий',
             },
             {
               color: '#FE4242',
-              value: 'Красный'
+              value: 'Красный',
             },
             {
               color: '#F29C1C',
-              value: 'Оранжевый'
+              value: 'Оранжевый',
             },
             {
               color: '#941CF2',
-              value: 'Фиолетовый'
+              value: 'Фиолетовый',
             },
             {
               color: '#1ABB34',
-              value: 'Зеленый'
+              value: 'Зеленый',
             },
             {
               color: '#1CB2F2',
-              value: 'Аква'
+              value: 'Аква',
             },
             {
               color: 'linear-gradient(90deg, #1C64F2 -0.39%, #D41CF2 99.61%)',
-              value: 'Сине-фиолетовый'
-            }
+              value: 'Сине-фиолетовый',
+            },
           ]}
           fullWidth
         />
@@ -168,8 +168,8 @@ export const UpdateBookmark: ModalWindowStory = {
           Сохранить
         </Button>
       </Form>
-    )
-  }
+    ),
+  },
 };
 
 export const DeleteBookmark: ModalWindowStory = {
@@ -200,8 +200,8 @@ export const DeleteBookmark: ModalWindowStory = {
           </Button>
         </FormButtons>
       </Form>
-    )
-  }
+    ),
+  },
 };
 
 export const CreateReferral: ModalWindowStory = {
@@ -259,8 +259,8 @@ export const CreateReferral: ModalWindowStory = {
           ))}
         </ReferralRadioGroup>
       </Form>
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -268,13 +268,13 @@ export default {
   component: ModalWindow,
   decorators: [StoryDecorator()],
   args: {
-    open: true
+    open: true,
   },
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as ModalWindowMeta;

@@ -5,7 +5,7 @@ import {
   CheckboxInput,
   CheckboxStyled,
   CheckboxBlock,
-  CheckboxBlockSkeleton
+  CheckboxBlockSkeleton,
 } from './styled';
 import { useTooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -46,7 +46,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       props.onChange?.(event);
       onValueChange?.(event.target.checked);
     },
-    [props.onChange, onValueChange]
+    [props.onChange, onValueChange],
   );
 
   return (

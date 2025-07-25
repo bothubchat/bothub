@@ -3,7 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from 'react';
 import {
   MessageBlock,
@@ -22,7 +22,7 @@ import {
   MessageAvatar,
   MessageStyledWithBottomPanel,
   MessageButtonsStyled,
-  MessageAvatarWrapper
+  MessageAvatarWrapper,
 } from './styled';
 import {
   MessageActionEventHandler,
@@ -30,7 +30,7 @@ import {
   MessageCopyEventHandler,
   MessageTimestampPosition,
   MessageVariant,
-  MessageVersionEventHandler
+  MessageVersionEventHandler,
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
@@ -148,7 +148,7 @@ export const Message: React.FC<MessageProps> = ({
   onReport,
   onNextVersion,
   onPrevVersion,
-  onDownload
+  onDownload,
 }) => {
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
@@ -161,14 +161,14 @@ export const Message: React.FC<MessageProps> = ({
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setEditedText(e.target.textContent ?? '');
     },
-    []
+    [],
   );
 
   const getRichText = useCallback(
     (html: HTMLElement) => {
       const htmlStr = new DOMParser().parseFromString(
         html.innerHTML,
-        'text/html'
+        'text/html',
       );
       const codeNodes = htmlStr.getElementsByTagName('code');
       for (const codeNode of codeNodes) {
@@ -178,16 +178,16 @@ export const Message: React.FC<MessageProps> = ({
       }
       const clipboardItem = new ClipboardItem({
         'text/plain': new Blob([content!], { type: 'text/plain' }),
-        'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' })
+        'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' }),
       });
       return [clipboardItem];
     },
-    [content]
+    [content],
   );
 
   const getPlainText = useCallback((html: HTMLElement) => {
     const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([html.innerText], { type: 'text/plain' })
+      'text/plain': new Blob([html.innerText], { type: 'text/plain' }),
     });
     return [clipboardItem];
   }, []);
@@ -196,7 +196,7 @@ export const Message: React.FC<MessageProps> = ({
     const tgMarkdown = getTgMarkdown(string);
 
     const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([tgMarkdown], { type: 'text/plain' })
+      'text/plain': new Blob([tgMarkdown], { type: 'text/plain' }),
     });
     return [clipboardItem];
   }, []);
@@ -345,7 +345,7 @@ export const Message: React.FC<MessageProps> = ({
                       color: hexColor,
                       size: 60,
                       left: <ScrollbarShadow side="left" />,
-                      right: <ScrollbarShadow side="right" />
+                      right: <ScrollbarShadow side="right" />,
                     }}
                   >
                     <MessageBlockContent
@@ -370,14 +370,14 @@ export const Message: React.FC<MessageProps> = ({
                                 width={260}
                                 opacity={[
                                   theme.mode === 'light' ? 0.1 : 0.15,
-                                  theme.mode === 'light' ? 0.225 : 0.45
+                                  theme.mode === 'light' ? 0.225 : 0.45,
                                 ]}
                                 colors={[
                                   variant === 'user'
                                     ? theme.colors.base.white
                                     : theme.mode === 'light'
                                       ? theme.default.colors.base.black
-                                      : theme.colors.grayScale.gray6
+                                      : theme.colors.grayScale.gray6,
                                 ]}
                               />
                             </MessageParagraph>

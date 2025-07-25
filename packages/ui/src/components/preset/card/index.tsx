@@ -10,7 +10,7 @@ import {
   PresetCardName,
   PresetCardNameActions,
   PresetCardStyled,
-  PresetCardTop
+  PresetCardTop,
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
@@ -36,7 +36,7 @@ export const PresetCard: React.FC<PresetCardProps> = ({
   categories,
   skeleton = false,
   loading = false,
-  onClick
+  onClick,
 }) => (
   <PresetCardStyled
     $skeleton={skeleton}
@@ -77,7 +77,7 @@ export const PresetCard: React.FC<PresetCardProps> = ({
                     <TooltipConsumer>
                       {({
                         handleTooltipMouseEnter,
-                        handleTooltipMouseLeave
+                        handleTooltipMouseLeave,
                       }) => (
                         <PresetCardName
                           onMouseEnter={handleTooltipMouseEnter}

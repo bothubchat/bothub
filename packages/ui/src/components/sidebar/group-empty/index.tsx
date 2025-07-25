@@ -1,14 +1,14 @@
 import {
   SidebarEmptyGroupIcon,
   SidebarEmptyGroupStyled,
-  SidebarEmptyGroupText
+  SidebarEmptyGroupText,
 } from './styled';
 
 interface SidebarGroupEmptyProps {
   children?: React.ReactNode | string;
 }
 export const SidebarGroupEmpty: React.FC<SidebarGroupEmptyProps> = ({
-  children
+  children,
 }) => (
   <SidebarEmptyGroupStyled>
     <SidebarEmptyGroupIcon />

@@ -32,7 +32,7 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
       accept,
       ...props
     },
-    ref
+    ref,
   ) => {
     const id = useId();
     const [isDragActive, setIsDragActive] = useState(false);
@@ -41,7 +41,7 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
       (files) => {
         onChange?.(files);
       },
-      [onChange]
+      [onChange],
     );
 
     const [files, setFiles] = Array.isArray(initialFiles)
@@ -57,35 +57,35 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
         if (multiple) {
           setFiles([
             ...new Map(
-              [...files, ...droppedFiles].map((file) => [file.name, file])
-            ).values()
+              [...files, ...droppedFiles].map((file) => [file.name, file]),
+            ).values(),
           ]);
         } else {
           setFiles([...droppedFiles].slice(0, 1));
         }
       },
-      [files, setFiles, multiple]
+      [files, setFiles, multiple],
     );
 
     const handleDrop = useCallback(
       (e: React.DragEvent) => {
         e.preventDefault();
         const droppedFiles = [...(e.dataTransfer.files ?? [])].filter((file) =>
-          accept?.includes(file.type)
+          accept?.includes(file.type),
         );
 
         if (multiple) {
           setFiles([
             ...new Map(
-              [...files, ...droppedFiles].map((file) => [file.name, file])
-            ).values()
+              [...files, ...droppedFiles].map((file) => [file.name, file]),
+            ).values(),
           ]);
         } else {
           setFiles([...droppedFiles].slice(0, 1));
         }
         setIsDragActive(false);
       },
-      [files, setFiles, multiple, accept]
+      [files, setFiles, multiple, accept],
     );
 
     const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -143,5 +143,5 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
         )}
       </S.DropzoneFieldStyled>
     );
-  }
+  },
 );

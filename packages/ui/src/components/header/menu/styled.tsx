@@ -34,7 +34,7 @@ export const HeaderMenuContent = styled(animated.div)<HeaderMenuStyledProps>`
           `,
           mobile: css`
             height: calc(100vh - ${theme.header.mobile.height});
-          `
+          `,
         });
       case 'dashboard':
         return css`
@@ -63,7 +63,7 @@ export const HeaderMenuContent = styled(animated.div)<HeaderMenuStyledProps>`
                     ? theme.dashboard.header.mobile.height
                     : parseInt(theme.dashboard.header.mobile.height) - 80}
               );
-            `
+            `,
           })}
         `;
     }

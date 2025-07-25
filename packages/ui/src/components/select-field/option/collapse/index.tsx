@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import {
   SelectFieldDataItem,
-  SelectFieldSize
+  SelectFieldSize,
 } from '@/ui/components/select-field';
 import {
   SelectFieldCollapseOptionArrow,
@@ -9,7 +9,7 @@ import {
   SelectFieldCollapseOptionHead,
   SelectFieldCollapseOptionHeadSide,
   SelectFieldCollapseOptionStyled,
-  SelectFieldCollapseOptionText
+  SelectFieldCollapseOptionText,
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
@@ -42,7 +42,7 @@ export const SelectFieldCollapseOption = ({
   const theme = useTheme();
 
   const [isOpen, setIsOpen] = useState(
-    typeof item === 'string' ? false : (item.open ?? false)
+    typeof item === 'string' ? false : (item.open ?? false),
   );
 
   const onCollapseClick = () => {
@@ -78,7 +78,7 @@ export const SelectFieldCollapseOption = ({
         $disabled={isDisabled}
         $size={size}
         {...(!isDisabled && {
-          onClick: onCollapseClick
+          onClick: onCollapseClick,
         })}
       >
         <SelectFieldCollapseOptionHeadSide $size={size}>
@@ -101,7 +101,7 @@ export const SelectFieldCollapseOption = ({
           {icon || (
             <SelectFieldCollapseOptionArrow
               style={{
-                transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)'
+                transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)',
               }}
             />
           )}

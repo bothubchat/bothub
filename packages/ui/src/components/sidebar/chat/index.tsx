@@ -16,7 +16,7 @@ import {
   SidebarChatContent,
   SidebarChatProgress,
   SidebarChatProgressValue,
-  SidebarChatProgressIcon
+  SidebarChatProgressIcon,
 } from './styled';
 import { TooltipConsumer } from '@/ui/components/tooltip';
 import { Typography } from '../../typography';
@@ -59,7 +59,7 @@ export type SidebarChatProps = (
 export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
   ({ onClick, onToggleCheckbox, ...props }) => {
     const { attributes, listeners, setNodeRef } = useDraggable({
-      id: !props.skeleton ? props.id : 'draggable-skeleton'
+      id: !props.skeleton ? props.id : 'draggable-skeleton',
     });
     const ref = useRef<HTMLDivElement>(null);
     const [disableTooltip, setDisableTooltip] = useState(true);
@@ -68,7 +68,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
       !props.skeleton && props.edit
         ? {
             ...listeners,
-            ...attributes
+            ...attributes,
           }
         : {};
 
@@ -76,7 +76,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
       !props.skeleton && props.dragging
         ? {
             height: 0,
-            opacity: 0
+            opacity: 0,
           }
         : {};
 
@@ -88,7 +88,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
       }
 
       const percent = Math.floor(
-        ((props.progress.value || 0) / (props.progress.max || 1)) * 100
+        ((props.progress.value || 0) / (props.progress.max || 1)) * 100,
       );
 
       if (percent === 100) {
@@ -209,7 +209,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
         </SidebarChatWithBackgroundStyled>
       </SidebarChatWithOutlineStyled>
     );
-  }
+  },
 );
 
 export * from './styled';

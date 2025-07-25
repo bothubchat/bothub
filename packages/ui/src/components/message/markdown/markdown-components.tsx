@@ -16,7 +16,7 @@ import {
   MessageTableCell,
   MessageTableHead,
   MessageTableRow,
-  MessageTitle
+  MessageTitle,
 } from '@/ui/components/message/components';
 import { MessageMarkdownLine } from './styled';
 
@@ -24,7 +24,7 @@ export function markdownComponents(
   components: MessageComponentsProps,
   componentsOverride?: React.ComponentProps<
     typeof MessageMarkdownLine
-  >['components']
+  >['components'],
 ): React.ComponentProps<typeof MessageMarkdownLine>['components'] {
   return {
     p: ({ children }) => <MessageParagraph wrap>{children}</MessageParagraph>,
@@ -96,7 +96,7 @@ export function markdownComponents(
         src,
         alt,
         disableSkeleton: true,
-        buttons: null
+        buttons: null,
       };
 
       return (
@@ -104,11 +104,11 @@ export function markdownComponents(
           {...imageProps}
           {...(components.image &&
             components.image.buttons && {
-              buttons: components.image.buttons(imageProps)
+              buttons: components.image.buttons(imageProps),
             })}
         />
       );
     },
-    ...componentsOverride
+    ...componentsOverride,
   };
 }

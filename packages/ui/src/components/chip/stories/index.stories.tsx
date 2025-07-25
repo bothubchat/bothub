@@ -10,15 +10,15 @@ export type ChipStory = StoryObj<typeof Chip>;
 
 export const Basic: ChipStory = {
   args: {
-    children: 'Text'
-  }
+    children: 'Text',
+  },
 };
 
 export const Input: ChipStory = {
   args: {
     ...Basic.args,
-    variant: 'input'
-  }
+    variant: 'input',
+  },
 };
 
 export const Image: ChipStory = {
@@ -29,19 +29,19 @@ export const Image: ChipStory = {
         src={image}
         alt="Chip image"
       />
-    )
-  }
+    ),
+  },
 };
 
 export const Badge: ChipStory = {
   args: {
     ...Image.args,
-    start: <BothubBadge brick>Source Image</BothubBadge>
-  }
+    start: <BothubBadge brick>Source Image</BothubBadge>,
+  },
 };
 
 export default {
   title: 'UI Components/Chip',
   component: Chip,
-  decorators: [StoryDecorator({ margin: '100px 0px' })]
+  decorators: [StoryDecorator({ margin: '100px 0px' })],
 } as ChipMeta;

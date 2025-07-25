@@ -8,12 +8,12 @@ export type DateBadgeStory = StoryObj<typeof DateBadge>;
 export const Basic: DateBadgeStory = {
   args: {
     date: 'Mon Mar 03 2025 23:23:35 GMT+0400 (Samara Standard Time)',
-    locale: 'ru'
-  }
+    locale: 'ru',
+  },
 };
 
 export default {
   title: 'UI Components/DateBadge',
   component: DateBadge,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as DateBadgeMeta;

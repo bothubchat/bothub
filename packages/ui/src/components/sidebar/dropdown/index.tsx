@@ -4,7 +4,7 @@ import {
   SidebarDropdownContent,
   SidebarDropdownStyled,
   SidebarDropdownToggler,
-  SidebarDropdownTogglerIcon
+  SidebarDropdownTogglerIcon,
 } from './styled';
 import { SidebarDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
@@ -53,22 +53,22 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
 
   const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? {
     right: 0,
-    bottom: 0
+    bottom: 0,
   };
 
   const dropdownTransition = useTransition(isOpen, {
     from: {
-      opacity: 0
+      opacity: 0,
     },
     enter: {
-      opacity: 1
+      opacity: 1,
     },
     leave: {
-      opacity: 0
+      opacity: 0,
     },
     config: {
-      duration: 150
-    }
+      duration: 150,
+    },
   });
 
   return (
@@ -100,12 +100,12 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
                   style={{
                     ...style,
                     left: contentPosition.right,
-                    top: contentPosition.bottom
+                    top: contentPosition.bottom,
                   }}
                 >
                   {children}
                 </SidebarDropdownContent>
-              )
+              ),
           )}
         </Portal>
       </SidebarDropdownStyled>

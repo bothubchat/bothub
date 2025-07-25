@@ -9,7 +9,7 @@ export const hexToRgb = (hex: string): [number, number, number] => {
     execValue = /#([\d, a-fA-F])([\d, a-fA-F])([\d, a-fA-F])/.exec(hex);
   } else {
     execValue = /#([\d, a-fA-F]{2})([\d, a-fA-F]{2})([\d, a-fA-F]{2})/.exec(
-      hex
+      hex,
     );
   }
 

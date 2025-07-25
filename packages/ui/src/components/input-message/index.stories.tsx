@@ -10,26 +10,26 @@ export type InputMessageStory = StoryObj<typeof InputMessage>;
 
 export const Basic: InputMessageStory = {
   args: {
-    uploadFileLimit: 100
-  }
+    uploadFileLimit: 100,
+  },
 };
 
 export const Voice: InputMessageStory = {
   args: {
-    voice: true
-  }
+    voice: true,
+  },
 };
 
 export const UploadFileDisabled: InputMessageStory = {
   args: {
-    uploadFileDisabled: true
-  }
+    uploadFileDisabled: true,
+  },
 };
 
 export const Disabled: InputMessageStory = {
   args: {
-    disabled: true
-  }
+    disabled: true,
+  },
 };
 
 export const WithAlternativeKeyModalTexts: InputMessageStory = {
@@ -38,12 +38,12 @@ export const WithAlternativeKeyModalTexts: InputMessageStory = {
       <h6
         style={{
           margin: 0,
-          color: '#616D8D'
+          color: '#616D8D',
         }}
       >
         <span
           style={{
-            color: '#fff'
+            color: '#fff',
           }}
         >
           Enter
@@ -51,7 +51,7 @@ export const WithAlternativeKeyModalTexts: InputMessageStory = {
         - отправить,{' '}
         <span
           style={{
-            color: '#fff'
+            color: '#fff',
           }}
         >
           Ctrl/Shift + Enter
@@ -63,12 +63,12 @@ export const WithAlternativeKeyModalTexts: InputMessageStory = {
       <h6
         style={{
           margin: 0,
-          color: '#616D8D'
+          color: '#616D8D',
         }}
       >
         <span
           style={{
-            color: '#fff'
+            color: '#fff',
           }}
         >
           Ctrl/Shift + Enter
@@ -76,7 +76,7 @@ export const WithAlternativeKeyModalTexts: InputMessageStory = {
         - отправить,{' '}
         <span
           style={{
-            color: '#fff'
+            color: '#fff',
           }}
         >
           Enter
@@ -90,8 +90,8 @@ export const WithAlternativeKeyModalTexts: InputMessageStory = {
         startIcon={<QueueIcon />}
         iconSize={24}
       />
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -99,6 +99,6 @@ export default {
   component: InputMessage,
   decorators: [StoryDecorator()],
   args: {
-    placeholder: 'Спроси о чем-нибудь...'
-  }
+    placeholder: 'Спроси о чем-нибудь...',
+  },
 } as InputMessageMeta;

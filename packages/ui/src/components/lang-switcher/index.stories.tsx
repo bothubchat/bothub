@@ -11,56 +11,56 @@ export const Basic: LangSwitcherStory = {
   args: {
     lang: {
       label: 'Язык:',
-      value: 'RU'
+      value: 'RU',
     },
     region: {
       label: 'Регион:',
-      value: 'RU'
+      value: 'RU',
     },
     dataRegions: [
       {
         icon: <FlagRUIcon />,
         value: 'RU',
-        label: 'Россия'
+        label: 'Россия',
       },
       {
         icon: <FlagKZIcon />,
         value: 'KZ',
-        label: 'Казахстан'
+        label: 'Казахстан',
       },
       {
         icon: <LanguageIcon />,
         value: 'GLOBAL',
-        label: 'Все'
-      }
+        label: 'Все',
+      },
     ],
     dataLanguages: [
       {
         value: 'RU',
-        label: 'Русский'
+        label: 'Русский',
       },
       {
         value: 'EN',
-        label: 'English'
+        label: 'English',
       },
       {
         value: 'FR',
-        label: 'Français'
+        label: 'Français',
       },
       {
         value: 'ES',
-        label: 'Español'
+        label: 'Español',
       },
       {
         value: 'PT',
-        label: 'Português'
-      }
-    ]
-  }
+        label: 'Português',
+      },
+    ],
+  },
 };
 
 export default {
   title: 'UI Components/LangSwitcher',
   component: LangSwitcher,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as LangSwitcherMeta;

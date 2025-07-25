@@ -1,6 +1,6 @@
 export const hasSubstring = (
   str: string | string[],
-  subStr: string
+  subStr: string,
 ): boolean => {
   const escapedSubStr = subStr.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
   const regExp = new RegExp(escapedSubStr, 'i');

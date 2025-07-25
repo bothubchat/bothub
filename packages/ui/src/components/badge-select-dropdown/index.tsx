@@ -6,7 +6,7 @@ import {
   SelectFieldValueChangeEventHandler,
   SelectModal,
   useSelectField,
-  UseSelectFieldProps
+  UseSelectFieldProps,
 } from '../select-field';
 import { Variant } from './types';
 import { useTheme } from '@/ui/theme';
@@ -49,7 +49,7 @@ export const BadgeSelectDropdown = memo(
     } = useSelectField<HTMLButtonElement>({
       ...useSelectFieldProps,
       value: initialValue,
-      multiple: false
+      multiple: false,
     });
 
     let label = '';
@@ -95,7 +95,7 @@ export const BadgeSelectDropdown = memo(
         />
       </>
     );
-  }
+  },
 );
 
 export * from './styled';

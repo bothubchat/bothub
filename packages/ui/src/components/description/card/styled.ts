@@ -117,14 +117,14 @@ export interface DescriptionCardTitleProps extends TypographyProps {
 
 export const DescriptionCardTitle = styled(Typography).attrs({
   variant: 'body-xl-semibold',
-  component: 'h3'
+  component: 'h3',
 })`
   z-index: 1;
   color: ${({ theme }) => theme.default.colors.base.white};
 `;
 
 export const DescriptionCardTertiaryTitle = styled(Typography).attrs({
-  variant: 'body-m-semibold'
+  variant: 'body-m-semibold',
 })`
   margin-top: 16px;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
@@ -137,7 +137,7 @@ export const DescriptionCardTertiaryTitle = styled(Typography).attrs({
 
 export const DescriptionCardText = styled(Typography).attrs({
   variant: 'body-m-regular',
-  component: 'p'
+  component: 'p',
 })`
   z-index: 2;
   color: ${({ theme }) => theme.default.colors.base.white};
@@ -146,7 +146,7 @@ export const DescriptionCardText = styled(Typography).attrs({
 
 export const DescriptionCardTertiaryText = styled(Typography).attrs({
   variant: 'body-m-regular',
-  component: 'p'
+  component: 'p',
 })`
   margin-top: 12px;
 `;
@@ -250,5 +250,5 @@ export const DescriptionCardLiStled = styled.li`
   column-gap: 16px;
 `;
 export const DescriptionCardLiContent = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })``;

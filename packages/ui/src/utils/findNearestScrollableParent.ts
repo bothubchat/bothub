@@ -1,5 +1,5 @@
 export const findNearestScrollableParent = (
-  el: HTMLElement | null
+  el: HTMLElement | null,
 ): HTMLElement | null => {
   while (el && el !== document.body) {
     const style = getComputedStyle(el);

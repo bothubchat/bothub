@@ -153,5 +153,5 @@ export const MessageActionsMenuModalOptionContent = styled.div`
 `;
 
 export const MessageActionsButtonText = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })``;

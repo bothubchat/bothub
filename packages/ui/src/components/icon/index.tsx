@@ -29,11 +29,11 @@ export const Icon: React.FC<IconProps> = ({
       width={size}
       height={size}
       {...(defaultFill === 'none' && {
-        fill: 'none'
+        fill: 'none',
       })}
       {...(enableTooltip && {
         onMouseEnter: handleTooltipMouseEnter,
-        onMouseLeave: handleTooltipMouseLeave
+        onMouseLeave: handleTooltipMouseLeave,
       })}
     />
   );

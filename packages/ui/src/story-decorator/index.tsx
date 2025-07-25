@@ -20,11 +20,11 @@ export const StoryDecorator =
       <BothubStyleSheetManager variant={props.scale ?? 'main'}>
         <BothubUIProvider
           theme={{
-            mode: themeMode
+            mode: themeMode,
           }}
           globalStyle={{
             ...props,
-            scale: props.scale ?? 'main'
+            scale: props.scale ?? 'main',
           }}
         >
           <Story />

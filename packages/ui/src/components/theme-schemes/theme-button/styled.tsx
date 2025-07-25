@@ -53,13 +53,13 @@ export const ThemeButtonActions = styled.div`
 `;
 
 const ThemeButtonAction = styled(Button).attrs({
-  variant: 'text'
+  variant: 'text',
 })``;
 
 export const ThemeButtonEditAction = styled(ThemeButtonAction).attrs({
-  children: <EditIcon />
+  children: <EditIcon />,
 })``;
 
 export const ThemeButtonDeleteAction = styled(ThemeButtonAction).attrs({
-  children: <TrashIcon />
+  children: <TrashIcon />,
 })``;

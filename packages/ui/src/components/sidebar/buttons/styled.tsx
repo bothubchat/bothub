@@ -27,17 +27,17 @@ export const SidebarButtonsStyled = styled.div<SidebarButtonsStyledProps>`
       `,
       tablet: css`
         flex-direction: row;
-      `
+      `,
     })}
 `;
 
 export const SidebarDeleteButton = styled(Button).attrs({
   fullWidth: true,
-  startIcon: <TrashIcon />
+  startIcon: <TrashIcon />,
 })``;
 
 export const SidebarAddGroupButton = styled(Button).attrs({
-  children: <AddGroupIcon />
+  children: <AddGroupIcon />,
 })<{ variant: ButtonVariant }>`
   ${({ variant, theme }) => {
     if (variant !== 'secondary') {
@@ -72,7 +72,7 @@ export const SidebarAddGroupButton = styled(Button).attrs({
 `;
 
 export const SidebarEditButton = styled(Button).attrs({
-  children: <ManageChatIcon />
+  children: <ManageChatIcon />,
 })<{ variant: ButtonVariant }>`
   ${({ variant, theme }) => {
     switch (variant) {
@@ -93,7 +93,7 @@ export const SidebarEditButton = styled(Button).attrs({
 `;
 
 export const SidebarSearchButton = styled(Button).attrs({
-  children: <SearchSimpleIcon size={16} />
+  children: <SearchSimpleIcon size={16} />,
 })<{ variant: ButtonVariant }>`
   ${({ variant, theme }) => {
     switch (variant) {

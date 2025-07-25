@@ -5,7 +5,7 @@ import {
   SelectFieldMultiChangeEventHandler,
   SelectFieldMultiValueChangeEventHandler,
   SelectFieldPlacement,
-  SelectFieldValueChangeEventHandler
+  SelectFieldValueChangeEventHandler,
 } from './types';
 import { ValueSetter, ValueType } from '.';
 import { findNearestScrollableParent } from '@/ui/utils';
@@ -39,7 +39,7 @@ export type UseSelectFieldProps = {
 export type UseSelectFieldReturnType = ReturnType<typeof useSelectField>;
 
 export const useSelectField = <
-  TriggerType extends HTMLElement = HTMLDivElement
+  TriggerType extends HTMLElement = HTMLDivElement,
 >({
   value: initialValue,
   multiple = false,
@@ -49,14 +49,14 @@ export const useSelectField = <
   onClose,
   onSelectClick,
   onChange,
-  onValueChange
+  onValueChange,
 }: UseSelectFieldProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState<number | undefined | string>(
-    contentHeight
+    contentHeight,
   );
   const [placement, setPlacement] = useState(initialPlacement);
 
@@ -78,7 +78,7 @@ export const useSelectField = <
               }
               return '';
             })
-            .filter((item) => !!item)
+            .filter((item) => !!item),
         );
       }
       if (!multiple && !Array.isArray(item)) {
@@ -97,12 +97,12 @@ export const useSelectField = <
         }
       }
     },
-    [multiple, onChange, onValueChange]
+    [multiple, onChange, onValueChange],
   );
 
   let [value, setValue] = useState<ValueType>(multiple ? [] : null) as [
     ValueType,
-    ValueSetter
+    ValueSetter,
   ];
   if (typeof initialValue !== 'undefined') {
     [value, setValue] = [initialValue, setExternalValue];
@@ -277,7 +277,7 @@ export const useSelectField = <
         setIsOpen(!isOpen);
       }
     },
-    [disabled, isOpen, placement, initialPlacement, onSelectClick]
+    [disabled, isOpen, placement, initialPlacement, onSelectClick],
   );
 
   return {
@@ -295,6 +295,6 @@ export const useSelectField = <
     contentHeight: height,
     handleInputClick,
     handleClose,
-    setValue: setValueHandler
+    setValue: setValueHandler,
   };
 };

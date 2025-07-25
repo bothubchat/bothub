@@ -7,7 +7,7 @@ import {
   TooltipLabel,
   TooltipLabelBold,
   TooltipMarkdown,
-  TooltipStyled
+  TooltipStyled,
 } from './styled';
 import { TooltipArrow } from './arrow';
 import { TooltipProvider } from './context';
@@ -16,7 +16,7 @@ import { TooltipAlign, TooltipPlacement, TooltipVariant } from './types';
 export const TooltipAnimationDuration = {
   enter: 150,
   exit: 150,
-  leaveDisabledHiddenAnimation: 0
+  leaveDisabledHiddenAnimation: 0,
 };
 
 export interface TooltipProps extends React.PropsWithChildren {
@@ -49,7 +49,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   disableHiddenAnimation = false,
   markdown = false,
   children,
-  hideOnScroll = true
+  hideOnScroll = true,
 }) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [hoveredElement, sethoveredElement] = useState<Element | null>();
@@ -198,20 +198,20 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const tooltipTransition = useTransition(!!hoveredElement, {
     from: {
       opacity: 0,
-      y: -6
+      y: -6,
     },
     enter: {
       opacity: 1,
-      y: 0
+      y: 0,
     },
     leave: {
       opacity: 0,
       y: -6,
       transition: {
-        duration: disableHiddenAnimation ? 0 : 0.3
-      }
+        duration: disableHiddenAnimation ? 0 : 0.3,
+      },
     },
-    config: { duration: TooltipAnimationDuration.enter }
+    config: { duration: TooltipAnimationDuration.enter },
   });
 
   const tooltipNode: React.ReactNode = tooltipTransition(
@@ -226,7 +226,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           style={{
             ...style,
             top: top.length <= 1 ? top[0] : `calc(${top.join(' + ')})`,
-            left: left.length <= 1 ? left[0] : `calc(${left.join(' + ')})`
+            left: left.length <= 1 ? left[0] : `calc(${left.join(' + ')})`,
           }}
         >
           {inverted && (
@@ -260,7 +260,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
                       {children}
                     </TooltipLabelBold>
                   ),
-                  code: ({ children }) => <TooltipCode>{children}</TooltipCode>
+                  code: ({ children }) => <TooltipCode>{children}</TooltipCode>,
                 }}
               >
                 {label}
@@ -276,7 +276,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             />
           )}
         </TooltipStyled>
-      )
+      ),
   );
 
   useEffect(() => {
@@ -300,7 +300,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
         updatePosition();
       }
     },
-    [isDisabled, updatePosition]
+    [isDisabled, updatePosition],
   );
 
   useEffect(() => {

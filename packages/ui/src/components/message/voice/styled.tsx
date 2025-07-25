@@ -36,7 +36,7 @@ export const MessageVoiceMain = styled.div<MessageVoiceMainProps>`
 export const MessageVoiceToggleButton = styled(Button).attrs({
   variant: 'text',
   iconSize: 36,
-  disableHoverColor: true
+  disableHoverColor: true,
 })`
   cursor: inherit;
 `;
@@ -53,7 +53,7 @@ export const MessageVoiceWaves = styled.svg`
 `;
 
 export const MessageVoiceDurationText = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })`
   color: ${({ theme }) =>
     theme.bright ||
@@ -69,7 +69,7 @@ export const MessageVoiceDurationText = styled(Typography).attrs({
 export const MessageVoiceToggleTextButton = styled(Button).attrs({
   variant: 'text',
   iconSize: 30,
-  disableHoverColor: true
+  disableHoverColor: true,
 })``;
 
 export const MessageVoiceShowTextIcon = styled(TextReadIcon)``;
@@ -81,7 +81,7 @@ export interface MessageVoiceTextProps {
 }
 
 export const MessageVoiceText = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })<MessageVoiceTextProps>`
   width: 100%;
   color: ${({ theme }) => theme.colors.base.white};

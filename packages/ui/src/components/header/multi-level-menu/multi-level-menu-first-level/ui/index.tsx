@@ -6,7 +6,7 @@ import {
   MultiLevelMenuFirstLevelHeader,
   MultiLevelMenuFirstLevelHeaderContent,
   MultiLevelMenuFirstLevelTitle,
-  MultiLevelMenuArrowRight
+  MultiLevelMenuArrowRight,
 } from './styled';
 import { MultiLevelMenuArrowRight45 } from '../../styled';
 

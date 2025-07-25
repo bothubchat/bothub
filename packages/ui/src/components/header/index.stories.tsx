@@ -9,7 +9,7 @@ import {
   HeaderNav,
   HeaderNavLink,
   HeaderUser,
-  HeaderUserButton
+  HeaderUserButton,
 } from '.';
 import { ThemeSwitcher } from '../theme-switcher';
 import { StoryDecorator } from '@/ui/story-decorator';
@@ -17,7 +17,7 @@ import { Logo } from '@/ui/components/logo';
 import {
   HeaderLangDropdown,
   HeaderLangDropdownItem,
-  HeaderLangDropdownList
+  HeaderLangDropdownList,
 } from './lang-dropdown';
 import {
   BookmarksBigIcon,
@@ -29,7 +29,7 @@ import {
   ReferalIcon,
   SettingsIcon,
   TariffIcon,
-  UserProfileIcon
+  UserProfileIcon,
 } from '@/ui/icons';
 import { Button } from '../button';
 import { MenuDropdown } from '../menu-dropdown';
@@ -62,8 +62,8 @@ export const Basic: HeaderStory = {
       <HeaderUser>
         <HeaderUserButton>Авторизация</HeaderUserButton>
       </HeaderUser>
-    )
-  }
+    ),
+  },
 };
 
 export const Authorized: HeaderStory = {
@@ -92,8 +92,8 @@ export const Authorized: HeaderStory = {
           </HeaderUserInfoList>
         </HeaderUserInfo>
       </HeaderUser>
-    )
-  }
+    ),
+  },
 };
 
 export const Dashboard: HeaderStory = {
@@ -140,8 +140,8 @@ export const Dashboard: HeaderStory = {
         </HeaderNavLink>
       </HeaderNav>
     ),
-    themeSwitcher: <ThemeSwitcher />
-  }
+    themeSwitcher: <ThemeSwitcher />,
+  },
 };
 
 export const DashboardTablet: HeaderStory = {
@@ -170,8 +170,8 @@ export const DashboardTablet: HeaderStory = {
         </Button>
       </HeaderNav>
     ),
-    themeSwitcher: <ThemeSwitcher />
-  }
+    themeSwitcher: <ThemeSwitcher />,
+  },
 };
 
 export const AdminDashboard: HeaderStory = {
@@ -217,8 +217,8 @@ export const AdminDashboard: HeaderStory = {
           Для разработчиков
         </HeaderNavLink>
       </HeaderNav>
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -228,33 +228,33 @@ export default {
   argTypes: {
     variant: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     logo: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     nav: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     lang: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     user: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     id: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as HeaderMeta;

@@ -95,8 +95,8 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
 
 export const ScrollableTabsTabLabel = styled(Typography).attrs<VariantProps>(
   (props) => ({
-    variant: props.$variant === 'primary' ? 'body-l-regular' : 'button-sm'
-  })
+    variant: props.$variant === 'primary' ? 'body-l-regular' : 'button-sm',
+  }),
 )``;
 
 export const ScrollableTabsFullWidth = styled.div`

@@ -19,6 +19,6 @@ export const SidebarToggleButtonStyled = styled.button<{ $isOpen: boolean }>`
   ${adaptive({
     mobile: css`
       display: none;
-    `
+    `,
   })}
 `;

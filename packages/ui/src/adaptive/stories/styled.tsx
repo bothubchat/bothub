@@ -5,7 +5,7 @@ import { AdaptiveVariant, adaptive } from '@/ui/adaptive';
 
 export const AdaptiveBlockText = styled(Typography).attrs({
   variant: 'h1',
-  component: 'h1'
+  component: 'h1',
 })`
   opacity: 0.3;
   transition: opacity 0.3s;
@@ -67,6 +67,6 @@ export const AdaptiveBlockStyled = styled(Block)<AdaptiveBlockStyledProps>`
       ${AdaptiveBlockTouchText} {
         opacity: 1;
       }
-    `
+    `,
   }))}
 `;

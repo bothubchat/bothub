@@ -3,7 +3,7 @@ import {
   MessageCodeCopyEventHandler,
   MessageColor,
   MessageContextCopyEventHandler,
-  MessageVariant
+  MessageVariant,
 } from './types';
 
 export interface MessageContextValue {
@@ -17,7 +17,7 @@ export interface MessageContextValue {
 export const MessageContext = React.createContext<MessageContextValue>({
   variant: 'user',
   color: 'default',
-  typing: false
+  typing: false,
 });
 
 export const MessageProvider: React.FC<

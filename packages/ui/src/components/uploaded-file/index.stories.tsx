@@ -3,7 +3,7 @@ import { StoryDecorator } from '@/ui/story-decorator';
 import {
   UploadedFile,
   UploadedFileStatusChip,
-  UploadedFileStatusChipText
+  UploadedFileStatusChipText,
 } from '.';
 import { CheckSmallIcon } from '@/ui/icons';
 import { useTheme } from '@/ui/theme';
@@ -42,7 +42,7 @@ export const InProgress = () => (
     progress={30}
     onPause={() => {}}
     onDelete={{
-      action: () => {}
+      action: () => {},
     }}
     status="in-progress"
   />
@@ -55,7 +55,7 @@ export const Paused = () => (
     progress={30}
     onResume={() => {}}
     onDelete={{
-      action: () => {}
+      action: () => {},
     }}
     status="paused"
   />
@@ -70,7 +70,7 @@ export const Done = () => {
       sizeInBytes={3 * 1024 * 1024}
       progress={30}
       onDelete={{
-        action: () => {}
+        action: () => {},
       }}
       status="done"
       doneLabel={
@@ -94,7 +94,7 @@ export const Error = () => (
     sizeInBytes={3 * 1024 * 1024}
     progress={30}
     onDelete={{
-      action: () => {}
+      action: () => {},
     }}
     onRetry={() => {}}
     status="error"
@@ -109,7 +109,7 @@ export const Secondary = () => (
     progress={66}
     status="in-progress"
     onDelete={{
-      action: () => {}
+      action: () => {},
     }}
     onPause={() => {}}
   />
@@ -123,7 +123,7 @@ export const SecondaryLoading = () => (
     status="in-progress"
     onDelete={{
       action: () => {},
-      disabled: true
+      disabled: true,
     }}
     onPause={() => {}}
     loading
@@ -136,7 +136,7 @@ export default {
   decorators: [StoryDecorator({ margin: '50px 0px' })],
   parameters: {
     variants: {
-      enable: true
-    }
-  }
+      enable: true,
+    },
+  },
 } as UploadedFileMeta;

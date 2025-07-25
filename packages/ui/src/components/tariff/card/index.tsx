@@ -17,7 +17,7 @@ import {
   TariffCardIsPopularContainer,
   TariffCardStarUnfilledIcon,
   TariffCardBackground,
-  TariffCardDiscount
+  TariffCardDiscount,
 } from './styled';
 import { TariffType } from './types';
 

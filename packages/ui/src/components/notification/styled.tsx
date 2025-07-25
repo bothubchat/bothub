@@ -77,12 +77,12 @@ export const NotificationInfo = styled.div`
 
 export const NotificationTitle = styled(Typography).attrs({
   component: 'h3',
-  variant: 'body-m-semibold'
+  variant: 'body-m-semibold',
 })``;
 
 export const NotificationText = styled(Typography).attrs({
   component: 'p',
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })`
   margin-top: 10px;
   color: ${({ theme }) =>
@@ -93,5 +93,5 @@ export const NotificationText = styled(Typography).attrs({
 
 export const NotificationCloseButton = styled(Button).attrs({
   variant: 'text',
-  children: <CloseIcon />
+  children: <CloseIcon />,
 })``;

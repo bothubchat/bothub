@@ -42,14 +42,14 @@ export const Badge: React.FC<BadgeProps> = ({
       props.onMouseEnter?.(event);
       handleTooltipMouseEnter(event);
     },
-    [props.onMouseEnter, handleTooltipMouseEnter]
+    [props.onMouseEnter, handleTooltipMouseEnter],
   );
   const handleMouseLeave = useCallback<React.MouseEventHandler<HTMLDivElement>>(
     (event) => {
       props.onMouseLeave?.(event);
       handleTooltipMouseLeave(event);
     },
-    [props.onMouseLeave, handleTooltipMouseLeave]
+    [props.onMouseLeave, handleTooltipMouseLeave],
   );
 
   return (

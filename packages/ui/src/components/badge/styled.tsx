@@ -54,7 +54,7 @@ export interface BadgeTextProps {
 }
 
 export const BadgeText = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })<BadgeTextProps>`
   color: ${({ theme, $variant }) => {
     switch ($variant) {

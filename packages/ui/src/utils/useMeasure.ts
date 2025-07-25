@@ -3,7 +3,7 @@ import { useCallback, useRef, useState } from 'react';
 export function useMeasure<T extends HTMLElement>() {
   const [dimensions, setDimensions] = useState({
     width: 0,
-    height: 0
+    height: 0,
   });
 
   const previousObserver = useRef<ResizeObserver | null>(null);

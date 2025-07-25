@@ -9,32 +9,32 @@ export type ModalStory = StoryObj<typeof Modal>;
 
 export const Auth: ModalStory = {
   args: {
-    ...modalWindowStories.Auth.args
-  }
+    ...modalWindowStories.Auth.args,
+  },
 };
 
 export const AuthTelegram: ModalStory = {
   args: {
-    ...modalWindowStories.AuthTelegram.args
-  }
+    ...modalWindowStories.AuthTelegram.args,
+  },
 };
 
 export const UpdateBookmark: ModalStory = {
   args: {
-    ...modalWindowStories.UpdateBookmark.args
-  }
+    ...modalWindowStories.UpdateBookmark.args,
+  },
 };
 
 export const DeleteBookmark: ModalStory = {
   args: {
-    ...modalWindowStories.DeleteBookmark.args
-  }
+    ...modalWindowStories.DeleteBookmark.args,
+  },
 };
 
 export const CreateReferral: ModalStory = {
   args: {
-    ...modalWindowStories.CreateReferral.args
-  }
+    ...modalWindowStories.CreateReferral.args,
+  },
 };
 
 export default {
@@ -42,13 +42,13 @@ export default {
   component: Modal,
   decorators: [StoryDecorator()],
   args: {
-    open: true
+    open: true,
   },
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as ModalMeta;

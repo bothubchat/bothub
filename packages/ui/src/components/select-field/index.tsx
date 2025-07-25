@@ -3,7 +3,7 @@ import * as S from './styled';
 import {
   SelectFieldDataItem,
   SelectFieldInputChangeEventHandler,
-  SelectFieldInputType
+  SelectFieldInputType,
 } from './types';
 import { useTheme } from '@/ui/theme';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -89,12 +89,12 @@ export const SelectField = ({
     (value: string) => {
       onInputChange?.(value);
     },
-    [onInputChange]
+    [onInputChange],
   );
 
   let [inputValue, setInputValue] = useState('') as [
     string,
-    (value: string) => void
+    (value: string) => void,
   ];
   if (typeof initialInputValue !== 'undefined') {
     [inputValue, setInputValue] = [initialInputValue, setInitialInputValue];
@@ -115,7 +115,7 @@ export const SelectField = ({
               }
 
               return value.value !== item;
-            })
+            }),
           );
         } else {
           setValue(
@@ -125,14 +125,14 @@ export const SelectField = ({
               }
 
               return value.value !== item.value;
-            })
+            }),
           );
         }
       }
 
       handleClose();
     },
-    [value]
+    [value],
   );
 
   const handleInputChange = useCallback<
@@ -141,7 +141,7 @@ export const SelectField = ({
     (event) => {
       setInputValue(event.currentTarget.value);
     },
-    [setInputValue]
+    [setInputValue],
   );
 
   const handleClear = useCallback(() => {
@@ -239,7 +239,7 @@ export const SelectField = ({
                             <TooltipConsumer>
                               {({
                                 handleTooltipMouseEnter,
-                                handleTooltipMouseLeave
+                                handleTooltipMouseLeave,
                               }) => (
                                 <S.SelectFieldColorValueText
                                   onMouseEnter={handleTooltipMouseEnter}
@@ -298,7 +298,7 @@ export const SelectField = ({
                   {loading && <S.SelectFieldLoader />}
                   <S.SelectFieldArrow
                     style={{
-                      transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)'
+                      transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)',
                     }}
                   />
                 </S.SelectFieldInputSide>

@@ -9,7 +9,7 @@ export type MessagesScrollValue =
   React.MutableRefObject<ScrollbarRef | null> | null;
 
 export const MessagesContext = React.createContext<MessagesContextValue>({
-  setScroll: () => {}
+  setScroll: () => {},
 });
 
 export const MessagesScrollContext =

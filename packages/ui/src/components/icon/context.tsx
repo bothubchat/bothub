@@ -7,7 +7,7 @@ export interface IconContextValue {
 }
 
 export const IconContext = React.createContext<IconContextValue | undefined>(
-  undefined
+  undefined,
 );
 
 export type IconProviderProps = IconContextValue & React.PropsWithChildren;

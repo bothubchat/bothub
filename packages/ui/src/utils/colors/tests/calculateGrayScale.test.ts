@@ -5,7 +5,7 @@ describe('Calculates grayScale', () => {
   test('Default gray1 - #616D8D', () => {
     const grayScale = calculateGrayScale({
       newGray1: '#616D8D',
-      interfaceBackground: '#000'
+      interfaceBackground: '#000',
     });
 
     expect(grayScale).toHaveProperty('gray1');

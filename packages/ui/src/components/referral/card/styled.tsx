@@ -24,7 +24,7 @@ export const ReferralCardStyled = styled.div`
     `,
     mobile: css`
       max-width: 100%;
-    `
+    `,
   })}
 `;
 
@@ -47,7 +47,7 @@ export const ReferralCardTop = styled.div`
     `,
     mobile: css`
       flex-direction: column;
-    `
+    `,
   })}
 `;
 
@@ -74,12 +74,12 @@ export const ReferralCardAI = styled.div`
     `,
     mobile: css`
       padding: 34px 18px;
-    `
+    `,
   })}
 `;
 
 export const ReferralCardAIName = styled(Typography).attrs({
-  variant: 'body-xl-semibold'
+  variant: 'body-xl-semibold',
 })`
   white-space: pre-wrap;
   text-align: center;
@@ -101,12 +101,12 @@ export const ReferralCardInfo = styled.div`
     `,
     mobile: css`
       padding: 16px 18px;
-    `
+    `,
   })}
 `;
 
 export const ReferralCardName = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })``;
 
 export const ReferralCardPrice = styled.div`
@@ -117,7 +117,7 @@ export const ReferralCardPrice = styled.div`
 `;
 
 export const ReferralCardPriceProgress = styled(Progress).attrs({
-  fullWidth: true
+  fullWidth: true,
 })``;
 
 export const ReferralCardPriceRange = styled.div`
@@ -128,7 +128,7 @@ export const ReferralCardPriceRange = styled.div`
 `;
 
 export const ReferralCardPriceRangeText = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
 `;
@@ -148,14 +148,14 @@ export const ReferralCardTable = styled.div`
     `,
     mobile: css`
       padding: 14px 16px;
-    `
+    `,
   })}
   ${adaptive(({ theme }) => ({
     variant: 'dashboard',
     merge: true,
     tablet: css`
       border-top: 1px solid ${theme.colors.grayScale.gray3};
-    `
+    `,
   }))}
 `;
 
@@ -165,7 +165,7 @@ export const ReferralCardTableRow = styled.div`
     variant: 'dashboard',
     tablet: css`
       justify-content: space-between;
-    `
+    `,
   })}
   @media (max-width: 600px) {
     flex-direction: column;
@@ -175,7 +175,7 @@ export const ReferralCardTableRow = styled.div`
 `;
 
 export const ReferralCardTableCell = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })`
   display: inline-flex;
   width: 100%;
@@ -205,7 +205,7 @@ export const ReferralCardBottom = styled.div`
     `,
     mobile: css`
       padding: 14px 16px;
-    `
+    `,
   })}
   @media (max-width: 600px) {
     gap: 14px;
@@ -220,7 +220,7 @@ export const ReferralCardWithdrawButton = styled(Button)`
 `;
 
 export const ReferralCardDateCreated = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
 `;

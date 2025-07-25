@@ -41,7 +41,7 @@ export const DropzoneFieldRightLabelsContainer = styled.div`
 `;
 
 export const DropzoneFieldRightLabel = styled(Typography).attrs({
-  variant: 'body-xs-medium'
+  variant: 'body-xs-medium',
 })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
 `;

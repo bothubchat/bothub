@@ -4,7 +4,7 @@ import { SidebarChat, SidebarChatCheckbox } from '.';
 import {
   SidebarDropdown,
   SidebarDropdownItem,
-  SidebarDropdownList
+  SidebarDropdownList,
 } from '../dropdown';
 import { EditIcon, Gpt35Icon, TrashIcon } from '@/ui/icons';
 
@@ -36,8 +36,8 @@ export const Basic: SidebarChatStory = {
           </SidebarDropdownItem>
         </SidebarDropdownList>
       </SidebarDropdown>
-    )
-  }
+    ),
+  },
 };
 
 export const WithProgress: SidebarChatStory = {
@@ -45,22 +45,22 @@ export const WithProgress: SidebarChatStory = {
     ...Basic.args,
     progress: {
       value: 100,
-      max: 100
-    }
-  }
+      max: 100,
+    },
+  },
 };
 
 export const ProgressLoading: SidebarChatStory = {
   args: {
     ...Basic.args,
     progress: {
-      loading: true
-    }
-  }
+      loading: true,
+    },
+  },
 };
 
 export default {
   title: 'Components/SidebarChat',
   component: SidebarChat,
-  decorators: [StoryDecorator({ scale: 'dashboard' })]
+  decorators: [StoryDecorator({ scale: 'dashboard' })],
 } as SidebarChatMeta;

@@ -35,12 +35,12 @@ export const MenuDropdownBlock = styled(animated.div)`
     `,
     tablet: css`
       right: 7px;
-    `
+    `,
   })}
 `;
 
 export const MenuDropdownBlockScrollbarWrapper = styled(Scrollbar).attrs({
-  variant: 'secondary'
+  variant: 'secondary',
 })`
   width: 100%;
   padding-right: 8px;

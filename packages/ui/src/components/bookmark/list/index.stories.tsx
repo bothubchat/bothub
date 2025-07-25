@@ -18,8 +18,8 @@ export const Basic: BookmarksStory = {
         <Bookmark>Hello World</Bookmark>
         <Bookmark>Для реферата</Bookmark>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export const Skeleton: BookmarksStory = {
@@ -33,8 +33,8 @@ export const Skeleton: BookmarksStory = {
         <Bookmark skeleton />
         <Bookmark skeleton />
       </>
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -44,13 +44,13 @@ export default {
   argTypes: {
     add: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as BookmarksMeta;

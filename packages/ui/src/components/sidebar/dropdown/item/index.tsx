@@ -20,7 +20,7 @@ export const SidebarDropdownItem: React.FC<SidebarDropdownItemProps> = ({
       onClick?.(event);
       setIsOpen(false);
     },
-    [onClick]
+    [onClick],
   );
 
   return (

@@ -36,7 +36,7 @@ export interface SelectFieldColorOptionTextProps {
 }
 
 export const SelectFieldColorOptionText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })<SelectFieldColorOptionTextProps>`
   color: ${({ theme, $selected }) =>
     $selected ? theme.default.colors.base.white : theme.colors.base.white};
@@ -116,7 +116,7 @@ export const SelectFieldOptionStyled = styled.div<SelectFieldOptionStyledProps>`
     $selected,
     $disabled,
     $selectedColor,
-    $backgroundHoverColor
+    $backgroundHoverColor,
   }) => {
     if ($disabled) {
       return css`

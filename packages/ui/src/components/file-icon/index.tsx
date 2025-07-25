@@ -3,7 +3,7 @@ import {
   PdfIcon,
   TxtIcon,
   WordIcon,
-  XlsIcon
+  XlsIcon,
 } from '@/ui/icons';
 
 export type FileIconProps = {

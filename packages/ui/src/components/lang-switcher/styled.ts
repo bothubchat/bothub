@@ -31,7 +31,7 @@ export const LangSwitcherList = styled(animated.ul)`
 `;
 
 export const LangSwitcherItem = styled(Typography).attrs({
-  variant: 'body-m-semibold'
+  variant: 'body-m-semibold',
 })`
   display: flex;
   gap: 8px;
@@ -39,7 +39,7 @@ export const LangSwitcherItem = styled(Typography).attrs({
 `;
 
 export const LangSwitcherLabel = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })`
   width: max-content;
 `;
@@ -52,7 +52,7 @@ export const LangSwitcherInput = styled(SelectField)`
 `;
 
 export const LangSwitcherButton = styled(Button).attrs({
-  variant: 'text'
+  variant: 'text',
 })``;
 
 export const LangSwitcherIcon = styled(ArrowDownIcon)<{

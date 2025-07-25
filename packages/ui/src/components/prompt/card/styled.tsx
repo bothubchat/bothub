@@ -29,7 +29,7 @@ export const PromptCardStyled = styled.div`
     `,
     mobile: css`
       padding: 10px;
-    `
+    `,
   }))}
 `;
 
@@ -41,5 +41,5 @@ export const PromptCardContent = styled.div`
 export const PromptCardCopyIcon = styled(CopyIcon)``;
 
 export const PromptCardText = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })``;
