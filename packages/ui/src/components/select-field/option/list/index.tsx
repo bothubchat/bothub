@@ -5,6 +5,10 @@ import {
   SelectFieldSize
 } from '@/ui/components/select-field/types';
 import {
+  SelectFieldCheckBox,
+  SelectFieldCheckBoxMail,
+  SelectFieldCheckBoxName,
+  SelectFieldCheckBoxWrapper,
   SelectFieldDivider,
   SelectFieldEmpty,
   SelectFieldEmptyText,
@@ -29,6 +33,8 @@ import {
 } from '../select-field-option/styled';
 import { SelectFieldOption } from '../select-field-option';
 import { StarsIcon } from '@/ui/icons';
+import { Checkbox } from '@/ui/components/checkbox';
+import { SelectFieldCheckboxGroupOption } from '../checkbox-group';
 
 export type SelectFieldOptionClickEventHandler = (
   item: SelectFieldDataItem
@@ -233,6 +239,33 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           );
         }
 
+        if (item.type === 'checkbox') {
+          const onClick = (e: React.MouseEvent) => {
+            e.preventDefault();
+            handleOptionClick(item);
+          };
+          const key = item.id ?? item.value ?? `checkbox-${index}`;
+          const includeLabel = Boolean(item.label);
+          return (
+            <SelectFieldCheckBox
+              onClick={onClick}
+              key={key}
+            >
+              <SelectFieldCheckBoxWrapper>
+                <SelectFieldCheckBoxName>
+                  {includeLabel ? item.label : item.email}
+                </SelectFieldCheckBoxName>
+                <Checkbox
+                  checked={item.selected}
+                  size={16}
+                />
+              </SelectFieldCheckBoxWrapper>
+              {includeLabel && (
+                <SelectFieldCheckBoxMail>{item.email}</SelectFieldCheckBoxMail>
+              )}
+            </SelectFieldCheckBox>
+          );
+        }
         if (item.type === 'collapse' && item.data) {
           const props = {
             size,
@@ -277,6 +310,30 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
             </Tooltip>
           ) : (
             <SelectFieldCollapseOption
+              key={key}
+              {...props}
+            />
+          );
+        }
+
+        if (item.type === 'checkbox-group' && item.data) {
+          const props = {
+            size,
+            item,
+            onClick: item.onClick,
+            icon: item.disabled ? item.end : undefined,
+            children: (
+              <SelectFieldOptions
+                value={value}
+                data={item.data ?? []}
+                size={size}
+                onOptionClick={onOptionClick}
+              />
+            )
+          };
+          const key = item.id ?? item.value ?? `checkbox-group-${index}`;
+          return (
+            <SelectFieldCheckboxGroupOption
               key={key}
               {...props}
             />

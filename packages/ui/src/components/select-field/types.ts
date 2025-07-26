@@ -29,7 +29,9 @@ export type SelectFieldItemType =
   | 'collapse'
   | 'empty'
   | 'label'
-  | 'radio';
+  | 'radio'
+  | 'checkbox'
+  | 'checkbox-group';
 
 export type SelectFieldDataItemSimple = string;
 
@@ -38,6 +40,7 @@ export type SelectFieldDataItemComplex = {
   type?: SelectFieldItemType;
   color?: string;
   value?: string;
+  email?: string;
   icon?: React.ReactNode;
   label?: string | null;
   bold?: boolean;

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import * as S from './styled';
 import {
   SelectFieldDataItem,
@@ -21,6 +21,7 @@ export type SelectFieldProps = {
   error?: string;
   skeleton?: boolean;
   enableInput?: boolean;
+  searchSampleIcon?: boolean;
   inputType?: SelectFieldInputType;
   inputValue?: string;
   clearable?: boolean;
@@ -49,6 +50,7 @@ export const SelectField = ({
   before,
   after,
   loading = false,
+  searchSampleIcon = false,
   enableInput = false,
   inputType = 'text',
   inputValue: initialInputValue,
@@ -187,9 +189,14 @@ export const SelectField = ({
                 <S.SelectFieldInputLeftSide>
                   {(!value || (Array.isArray(value) && value.length === 0)) && (
                     <>
-                      {enableInput && inputType === 'search' && (
-                        <S.SelectFieldSearchIcon $focus={isInputNativeFocus} />
-                      )}
+                      {enableInput &&
+                        inputType === 'search' &&
+                        React.createElement(
+                          searchSampleIcon
+                            ? S.SelectFieldSearchSimpleIcon
+                            : S.SelectFieldSearchIcon,
+                          { $focus: isInputNativeFocus }
+                        )}
                       {enableInput && (
                         <S.SelectFieldInputNative
                           type={inputType}

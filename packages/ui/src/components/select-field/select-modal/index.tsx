@@ -124,12 +124,25 @@ export const SelectModal = ({
 
       onOptionClick?.(item);
 
-      if (!disableSelect) {
+      if (
+        !disableSelect &&
+        !(
+          typeof item === 'object' &&
+          (item.type === 'checkbox' || item.type === 'checkbox-group')
+        )
+      ) {
         if (multiple && Array.isArray(value)) {
           setValue([...new Set([...value, item])]);
         } else {
           setValue(item);
         }
+      }
+
+      if (
+        typeof item === 'object' &&
+        (item.type === 'checkbox' || item.type === 'checkbox-group')
+      ) {
+        return;
       }
 
       handleClose();

@@ -15,6 +15,7 @@ export type CheckboxValueChangeEventHandler = (checked: boolean) => unknown;
 export interface CheckboxProps
   extends Omit<React.ComponentProps<'input'>, 'onPointerLeave'> {
   className?: string;
+  size?: number;
   label?: string | boolean | React.ReactNode;
   rowReverse?: boolean;
   skeleton?: boolean;
@@ -27,6 +28,7 @@ export interface CheckboxProps
 export const Checkbox: React.FC<CheckboxProps> = ({
   className,
   label,
+  size = 20,
   skeleton = false,
   rowReverse,
   fullWidth = false,
@@ -63,12 +65,12 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             type="checkbox"
             onChange={handleChange}
           />
-          <CheckboxBlock>
-            <CheckboxCheckedIcon />
+          <CheckboxBlock $size={size}>
+            <CheckboxCheckedIcon size={size} />
           </CheckboxBlock>
         </>
       )}
-      {skeleton && <CheckboxBlockSkeleton />}
+      {skeleton && <CheckboxBlockSkeleton $size={size} />}
       {label && skeleton && (
         <CheckboxLabel>
           <Skeleton width={200} />

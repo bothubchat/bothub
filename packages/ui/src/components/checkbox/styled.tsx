@@ -38,10 +38,13 @@ export const CheckboxStyled = styled.label<CheckboxStyledProps>`
     `}
 `;
 
-export const CheckboxBlock = styled.span`
+export const CheckboxBlock = styled.span<{ $size: number }>`
   display: inline-flex;
-  width: 20px;
-  height: 20px;
+  ${({ $size }) => css`
+    width: ${`${$size}px`};
+    height: ${`${$size}px`};
+  `}
+
   justify-content: center;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray1};
@@ -55,9 +58,11 @@ export const CheckboxBlock = styled.span`
   }
 `;
 
-export const CheckboxBlockSkeleton = styled(Skeleton)`
-  width: 20px;
-  height: 20px;
+export const CheckboxBlockSkeleton = styled(Skeleton)<{ $size: number }>`
+  ${({ $size }) => css`
+    width: ${`${$size}px`};
+    height: ${`${$size}px`};
+  `}
   border-radius: 2px;
 `;
 
@@ -69,7 +74,7 @@ export const CheckboxLabel = styled(Typography).attrs({ variant: 'input-sm' })`
   cursor: inherit;
 `;
 
-export const CheckboxCheckedIcon = styled(CheckSmallIcon).attrs({ size: 20 })`
+export const CheckboxCheckedIcon = styled(CheckSmallIcon)`
   visibility: hidden;
 `;
 
