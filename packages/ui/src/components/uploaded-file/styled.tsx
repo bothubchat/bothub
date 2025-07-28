@@ -4,6 +4,7 @@ import { Progress } from '@/ui/components/progress';
 import { UploadedFileStatus } from './types';
 import { colorToRgba } from '@/ui/utils';
 import { Button } from '../button';
+import { CloseIcon, LoaderCircularGradientIcon } from '@/ui/icons';
 
 type IsPrimary = {
   $isPrimary: boolean;
@@ -14,24 +15,31 @@ export const UploadedFileStyled = styled.div<
     $fullWidth?: boolean;
   } & IsPrimary
 >`
-  ${({ $fullWidth }) => ($fullWidth ? 'width: 100%;' : '')}
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    css`
+      width: 100%;
+    `}
   display: flex;
   flex-direction: column;
+  border-radius: 20px;
 
   ${({ $isPrimary, theme }) =>
     $isPrimary
       ? css`
           padding: 12px 16px;
           gap: 10px;
-          border-radius: 10px;
           background-color: ${colorToRgba(theme.colors.grayScale.gray4, 0.75)};
+          ${theme.mode === 'light' &&
+          css`
+            border: 1px solid ${theme.colors.grayScale.gray2};
+          `}
         `
       : css`
           width: 430px;
           padding: 14px 16px;
           gap: 8px;
           border: 1px solid ${theme.colors.grayScale.gray2};
-          border-radius: 20px;
           background-color: ${theme.colors.base.black};
         `}
 `;
@@ -59,7 +67,8 @@ export const UploadedFileInfo = styled.div`
 export const UploadedFileSize = styled(Typography).attrs({
   variant: 'body-xs-medium',
 })`
-  color: ${({ theme }) => theme.colors.grayScale.gray6};
+  color: ${({ theme }) =>
+    theme.mode === 'dark' ? theme.colors.grayScale.gray6 : '#9CA3AF'};
   text-transform: uppercase;
 `;
 
@@ -101,6 +110,12 @@ export const UploadedFileDeleteButton = styled(Button)`
   }
 `;
 
+export const UploadedFileCloseIcon = styled(CloseIcon)`
+  path {
+    fill: ${({ theme }) => theme.colors.grayScale.gray1};
+  }
+`;
+
 export const UploadedFileFooter = styled.div`
   display: flex;
   align-items: center;
@@ -129,6 +144,16 @@ export const UploadedFileProgressBar = styled(Progress).attrs({
             : theme.colors.gradient.elite};
     }
   }
+`;
+
+export const UploadedFileLoaderIcon = styled(LoaderCircularGradientIcon)`
+  ${({ theme }) =>
+    theme.mode === 'light' &&
+    css`
+      path {
+        fill: ${theme.colors.base.white};
+      }
+    `}
 `;
 
 export const UploadedFileProgressValue = styled(Typography).attrs({
