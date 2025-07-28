@@ -222,22 +222,21 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   -ms-user-select: none;
   user-select: none;
   position: relative;
-  ${({ $progressDone, theme }) => {
-    if ($progressDone) {
-      return css`
-        &::before {
-          content: '';
-          display: block;
-          background: ${theme.colors.gradient.deluxe};
-          border-radius: 10px;
-          opacity: 0.2;
-          position: absolute;
-          inset: 0;
-          z-index: -1;
-        }
-      `;
-    }
-  }};
+
+  ${({ $progressDone, theme }) =>
+    $progressDone &&
+    css`
+      &::before {
+        content: '';
+        display: block;
+        background: ${theme.colors.gradient.deluxe};
+        border-radius: 10px;
+        opacity: 0.2;
+        position: absolute;
+        inset: 0;
+      }
+    `};
+
   ${({ $draggble, theme }) => {
     if ($draggble) {
       return css`
