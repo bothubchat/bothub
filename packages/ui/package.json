@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.45.2-develop-a80efa47-0340-4e73-bce4-0689f05c4711",
+  "version": "2.45.2-fix-prompt-queue-0128d9ba-fe99-4779-a2db-792f4cc41c1c",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",

@@ -15,7 +15,14 @@ export const DropzoneFieldStyled = styled.div<{
     colorToRgba(theme.colors.grayScale.gray4, 0.75)};
   padding: 20px;
   border-radius: 20px;
-  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' vector-effect='non-scaling-stroke' stroke='%23222B44FF' stroke-width='4' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+  background-image: ${({ theme }) => {
+    const dark =
+      "data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' vector-effect='non-scaling-stroke' stroke='%23222B44FF' stroke-width='4' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e";
+    const light =
+      "data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' vector-effect='non-scaling-stroke' stroke='%23CDD5DA' stroke-width='4' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e";
+
+    return `url("${theme.mode === 'light' ? light : dark}")`;
+  }};
 
   transition: background 0.3s ease-out;
 
@@ -31,6 +38,7 @@ export const DropzoneFieldStyled = styled.div<{
 export const DropzoneFieldLabels = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
 `;
 
 export const DropzoneFieldRightLabelsContainer = styled.div`

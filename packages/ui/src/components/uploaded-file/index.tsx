@@ -1,28 +1,9 @@
-import {
-  CloseIcon,
-  LoaderCircularGradientIcon,
-  PauseIcon,
-  PlayIcon,
-  Restore2Icon,
-} from '@/ui/icons';
+import { PauseIcon, PlayIcon, Restore2Icon } from '@/ui/icons';
 import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { FileSize } from '@/ui/components/file-size';
 import { FileIcon } from '@/ui/components/file-icon';
-import {
-  UploadedFileStyled,
-  UploadedFileHeader,
-  UploadedFileInfo,
-  UploadedFileActions,
-  UploadedFileFooter,
-  UploadedFileProgressBar,
-  UploadedFileProgressValue,
-  UploadedFileIcon,
-  UploadedFileSize,
-  UploadedFileStatusChip,
-  UploadedFileStatusChipText,
-  UploadedFileDeleteButton,
-} from './styled';
+import * as S from './styled';
 import { UploadedFileStatus } from './types';
 
 export type Primary = {
@@ -69,33 +50,33 @@ export const UploadedFile = ({
   const isPrimary = !isSecondary;
 
   return (
-    <UploadedFileStyled
+    <S.UploadedFileStyled
       $fullWidth={isPrimary ? props.fullWidth : undefined}
       $isPrimary={isPrimary}
       className={className}
     >
-      <UploadedFileHeader>
+      <S.UploadedFileHeader>
         {isPrimary ? (
           <>
-            <UploadedFileIcon>
+            <S.UploadedFileIcon>
               <FileIcon
                 filename={filename}
                 size={18}
               />
-            </UploadedFileIcon>
+            </S.UploadedFileIcon>
 
-            <UploadedFileInfo>
+            <S.UploadedFileInfo>
               <Typography variant="body-s-medium">{filename}</Typography>
-              <UploadedFileSize>
+              <S.UploadedFileSize>
                 <FileSize sizeInBytes={props.sizeInBytes} />
-              </UploadedFileSize>
-            </UploadedFileInfo>
+              </S.UploadedFileSize>
+            </S.UploadedFileInfo>
           </>
         ) : (
           <Typography variant="body-m-medium">{filename}</Typography>
         )}
 
-        <UploadedFileActions>
+        <S.UploadedFileActions>
           {onPause && (
             <>
               {status === 'in-progress' && (
@@ -121,11 +102,11 @@ export const UploadedFile = ({
           {status === 'done' && (
             <>
               {typeof doneLabel === 'string' ? (
-                <UploadedFileStatusChip>
-                  <UploadedFileStatusChipText $status={status}>
+                <S.UploadedFileStatusChip>
+                  <S.UploadedFileStatusChipText $status={status}>
                     {doneLabel}
-                  </UploadedFileStatusChipText>
-                </UploadedFileStatusChip>
+                  </S.UploadedFileStatusChipText>
+                </S.UploadedFileStatusChip>
               ) : (
                 doneLabel
               )}
@@ -134,11 +115,11 @@ export const UploadedFile = ({
           {status === 'error' && (
             <>
               {typeof errorLabel === 'string' ? (
-                <UploadedFileStatusChip>
-                  <UploadedFileStatusChipText $status={status}>
+                <S.UploadedFileStatusChip>
+                  <S.UploadedFileStatusChipText $status={status}>
                     {errorLabel}
-                  </UploadedFileStatusChipText>
-                </UploadedFileStatusChip>
+                  </S.UploadedFileStatusChipText>
+                </S.UploadedFileStatusChip>
               ) : (
                 errorLabel
               )}
@@ -152,18 +133,18 @@ export const UploadedFile = ({
             </>
           )}
           {onDelete && (
-            <UploadedFileDeleteButton
+            <S.UploadedFileDeleteButton
               variant="text"
-              startIcon={<CloseIcon />}
+              startIcon={<S.UploadedFileCloseIcon />}
               onClick={() => onDelete.action()}
               disabled={onDelete.disabled}
             />
           )}
-        </UploadedFileActions>
-      </UploadedFileHeader>
+        </S.UploadedFileActions>
+      </S.UploadedFileHeader>
 
-      <UploadedFileFooter>
-        <UploadedFileProgressBar
+      <S.UploadedFileFooter>
+        <S.UploadedFileProgressBar
           $error={status === 'error'}
           $isPrimary={isPrimary}
           value={progress}
@@ -171,12 +152,12 @@ export const UploadedFile = ({
           max={100}
         />
         {isSecondary && props.loading ? (
-          <LoaderCircularGradientIcon />
+          <S.UploadedFileLoaderIcon />
         ) : (
-          <UploadedFileProgressValue>{progress}%</UploadedFileProgressValue>
+          <S.UploadedFileProgressValue>{progress}%</S.UploadedFileProgressValue>
         )}
-      </UploadedFileFooter>
-    </UploadedFileStyled>
+      </S.UploadedFileFooter>
+    </S.UploadedFileStyled>
   );
 };
 export * from './types';
