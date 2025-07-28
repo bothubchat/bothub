@@ -1,5 +1,12 @@
 import { useTransition } from '@react-spring/web';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {
   LangSwitcherButton,
   LangSwitcherIcon,
@@ -37,6 +44,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const id = useId();
 
   const currentRegion = useMemo(
     () =>
@@ -54,12 +62,53 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
   );
 
   const handleToggle = useCallback(() => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
+  }, []);
+
+  useEffect(() => {
+    const checkDropdownPosition = () => {
+      const dropdownElement = document.getElementById(id);
+      const rect = dropdownElement?.getBoundingClientRect();
+      if (!rect || !dropdownElement) return;
+      if (rect.left < 0) {
+        dropdownElement.style.transform = `translateX(${-rect.left - 4}px)`;
+      }
+      if (rect.right > window.innerWidth) {
+        dropdownElement.style.transform = `translateX(${
+          window.innerWidth - rect.right - 4
+        }px)`;
+      }
+    };
+    if (!isOpen) return;
+
+    dropdownRef.current?.addEventListener(
+      'transitionend',
+      checkDropdownPosition,
+    );
+
+    return () => {
+      dropdownRef.current?.removeEventListener(
+        'transitionend',
+        checkDropdownPosition,
+      );
+    };
   }, [isOpen]);
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
   }, []);
+
+  const handleChange = useCallback(
+    (e: SelectFieldDataItem, type: 'lang' | 'region') => {
+      if (typeof e === 'object' && e.value) {
+        onChange({
+          lang: type === 'lang' ? e.value : lang.value,
+          region: type === 'region' ? e.value : region.value,
+        });
+      }
+    },
+    [onChange],
+  );
 
   useEffect(() => {
     const dropdownEl: HTMLDivElement | null = dropdownRef.current;
@@ -124,18 +173,6 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
     }
   }, []);
 
-  const handleChange = useCallback(
-    (e: SelectFieldDataItem, type: 'lang' | 'region') => {
-      if (typeof e === 'object' && e.value) {
-        onChange({
-          lang: type === 'lang' ? e.value : lang.value,
-          region: type === 'region' ? e.value : region.value,
-        });
-      }
-    },
-    [onChange],
-  );
-
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
@@ -165,7 +202,10 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
       {dropdownTransition(
         (style, item) =>
           item && (
-            <LangSwitcherList style={style}>
+            <LangSwitcherList
+              style={style}
+              id={id}
+            >
               <LangSwitcherLabel>{lang.label}</LangSwitcherLabel>
               <LangSwitcherInput
                 contentHeight="fit-content"
