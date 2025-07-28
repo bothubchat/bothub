@@ -53,7 +53,9 @@ export const LangSwitcherInput = styled(SelectField)`
 
 export const LangSwitcherButton = styled(Button).attrs({
   variant: 'text',
-})``;
+})`
+  white-space: nowrap;
+`;
 
 export const LangSwitcherIcon = styled(ArrowDownIcon)<{
   $open: boolean;
