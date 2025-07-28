@@ -648,15 +648,18 @@ export const CheckboxGroup: SelectFieldStory = {
         data: [
           {
             type: 'checkbox',
-            label: 'o1-mini'
+            label: 'o1-mini',
+            selected: false
           },
           {
             type: 'checkbox',
-            label: 'o3-mini'
+            label: 'o3-mini',
+            selected: false
           },
           {
             type: 'checkbox',
-            label: 'o2-mini'
+            label: 'o2-mini',
+            selected: false
           }
         ]
       },

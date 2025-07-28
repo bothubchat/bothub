@@ -1,12 +1,12 @@
 import React, { useLayoutEffect, useState } from 'react';
 import {
   SelectFieldDataItem,
+  SelectFieldGroupCheckboxClickEventHandler,
   SelectFieldSize
 } from '@/ui/components/select-field';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { Checkbox } from '@/ui/components/checkbox';
-import { SelectFieldOptionClickEventHandler } from '../list';
 import {
   SelectFieldCheckboxGroupOptionHead,
   SelectFieldCheckboxGroupOptionHeadLeftSide,
@@ -32,14 +32,16 @@ export interface SelectFieldCheckboxGroupOptionProps
     > {
   size: SelectFieldSize;
   item: SelectFieldDataItem;
-  onClick?: SelectFieldOptionClickEventHandler;
+  onGroupCheckboxClick?: SelectFieldGroupCheckboxClickEventHandler;
   icon?: React.ReactNode;
 }
 
+const MAX_VISIBLE_CHILDREN = 5;
+
 export const SelectFieldCheckboxGroupOption = ({
   item,
+  onGroupCheckboxClick,
   children,
-  onClick,
   icon,
   ...props
 }: SelectFieldCheckboxGroupOptionProps) => {
@@ -48,13 +50,17 @@ export const SelectFieldCheckboxGroupOption = ({
   const [isOpen, setIsOpen] = useState(
     typeof item === 'string' ? false : (item.open ?? false)
   );
-  // const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   const onCollapseClick = () => {
     setIsOpen((isOpen) => !isOpen);
+  };
 
-    if (onClick) {
-      onClick(item);
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.stopPropagation();
+
+    if (onGroupCheckboxClick) {
+      onGroupCheckboxClick(item);
     }
   };
 
@@ -72,6 +78,45 @@ export const SelectFieldCheckboxGroupOption = ({
   }, [item]);
 
   const label = typeof item === 'string' ? item : (item.label ?? item.value);
+
+  const checkedLength =
+    typeof item === 'string'
+      ? null
+      : (() => {
+          const selectedItems =
+            item.data?.filter((el) => {
+              if (typeof el === 'string') {
+                return false;
+              }
+              return 'selected' in el && el.selected === true;
+            }) ?? [];
+
+          const totalItems =
+            item.data?.filter((el) => typeof el !== 'string').length ?? 0;
+          const selectedCount = selectedItems.length;
+
+          if (selectedCount === 0) {
+            return null;
+          }
+
+          if (selectedCount === totalItems && totalItems > 0) {
+            return 'все';
+          }
+
+          return selectedCount;
+        })();
+
+  const childrenArray = React.Children.toArray(children);
+  console.log(childrenArray);
+
+  const totalChildren = childrenArray.length;
+  const visibleChildren = showAll
+    ? childrenArray
+    : childrenArray.slice(0, MAX_VISIBLE_CHILDREN);
+  const shouldShowMoreButton = totalChildren > MAX_VISIBLE_CHILDREN;
+  const onShowMoreClick = () => {
+    setShowAll((prev) => !prev);
+  };
 
   return (
     <SelectFieldCheckboxGroupOptionStyled {...props}>
@@ -95,7 +140,7 @@ export const SelectFieldCheckboxGroupOption = ({
               {label}
             </SelectFieldCheckboxGroupOptionHeadText>
             <SelectFieldCheckboxGroupOptionHeadCounter>
-              (19)
+              {`(${checkedLength})`}
             </SelectFieldCheckboxGroupOptionHeadCounter>
           </SelectFieldCheckboxGroupOptionHeadTextWrapper>
         </SelectFieldCheckboxGroupOptionHeadLeftSide>
@@ -107,13 +152,19 @@ export const SelectFieldCheckboxGroupOption = ({
               }}
             />
           )}
-          <Checkbox size={16} />
+          <Checkbox
+            onChange={handleCheckboxChange}
+            size={16}
+          />
         </SelectFieldCheckboxGroupOptionHeadRightSide>
       </SelectFieldCheckboxGroupOptionHead>
       {isOpen && (
         <SelectFieldCheckboxGroupOptionContent>
-          {children}
-          <ShowMoreButton>showmore...</ShowMoreButton>
+          {visibleChildren}
+          {shouldShowMoreButton}
+          <ShowMoreButton onClick={onShowMoreClick}>
+            {showAll ? 'hidden...' : 'showmore...'}
+          </ShowMoreButton>
         </SelectFieldCheckboxGroupOptionContent>
       )}
     </SelectFieldCheckboxGroupOptionStyled>

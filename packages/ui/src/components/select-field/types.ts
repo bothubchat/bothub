@@ -20,6 +20,9 @@ export type SelectFieldMultiValueChangeEventHandler = (
 export type SelectFieldOptionClickEventHandler = (
   item: SelectFieldDataItem
 ) => unknown;
+export type SelectFieldGroupCheckboxClickEventHandler = (
+  item: SelectFieldDataItem
+) => unknown;
 
 export type SelectFieldInputChangeEventHandler = (value: string) => unknown;
 
@@ -56,6 +59,7 @@ export type SelectFieldDataItemComplex = {
   selected?: boolean;
   radioName?: string;
   onClick?: SelectFieldOptionClickEventHandler;
+  onGroupCheckboxClick?: SelectFieldGroupCheckboxClickEventHandler;
 };
 
 export type SelectFieldDataItem = string | SelectFieldDataItemComplex;

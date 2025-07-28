@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import {
   SelectFieldData,
   SelectFieldDataItem,
+  SelectFieldGroupCheckboxClickEventHandler,
   SelectFieldSize
 } from '@/ui/components/select-field/types';
 import {
@@ -47,6 +48,7 @@ export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
   disableSelect?: boolean;
   selectedColor?: string;
   onOptionClick?: SelectFieldOptionClickEventHandler;
+  onGroupCheckboxClick?: SelectFieldGroupCheckboxClickEventHandler;
 }
 
 export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
@@ -56,6 +58,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
   disableSelect = false,
   selectedColor,
   onOptionClick,
+  onGroupCheckboxClick,
   ...props
 }) => {
   const theme = useTheme();
@@ -327,6 +330,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                 value={value}
                 data={item.data ?? []}
                 size={size}
+                onGroupCheckboxClick={onGroupCheckboxClick}
                 onOptionClick={onOptionClick}
               />
             )

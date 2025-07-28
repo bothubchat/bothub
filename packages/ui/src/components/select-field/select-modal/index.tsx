@@ -22,6 +22,7 @@ import {
   ResetStyleStateType,
   SelectFieldData,
   SelectFieldDataItem,
+  SelectFieldGroupCheckboxClickEventHandler,
   SelectFieldInputChangeEventHandler,
   SelectFieldOptionClickEventHandler,
   SelectFieldSize
@@ -48,6 +49,7 @@ export type SelectModalGeneralProps = {
   selectedColor?: string;
   compactWidth?: boolean;
   onOptionClick?: SelectFieldOptionClickEventHandler;
+  onGroupCheckboxClick?: SelectFieldGroupCheckboxClickEventHandler;
 };
 
 export type SelectModalProps = SelectModalGeneralProps &
@@ -86,6 +88,7 @@ export const SelectModal = ({
   compactWidth,
   onSearch,
   onOptionClick,
+  onGroupCheckboxClick,
   handleClose,
   setValue
 }: SelectModalProps) => {
@@ -303,6 +306,7 @@ export const SelectModal = ({
                     data={filterData(before, searchValue)}
                     size={size}
                     disableSelect={disableSelect}
+                    onGroupCheckboxClick={onGroupCheckboxClick}
                     onOptionClick={handleOptionClick}
                     selectedColor={selectedColor}
                   />
