@@ -9,6 +9,7 @@ import { useTooltip } from '@/ui/components/tooltip';
 export interface BadgeProps extends React.ComponentProps<'div'> {
   variant?: BadgeVariant;
   icon?: React.ReactNode;
+  iconSize?: number;
   brick?: boolean;
   rounded?: boolean;
   skeleton?: boolean;
@@ -17,6 +18,7 @@ export interface BadgeProps extends React.ComponentProps<'div'> {
 export const Badge: React.FC<BadgeProps> = ({
   variant = 'info',
   icon,
+  iconSize,
   brick = false,
   rounded = true,
   skeleton = false,
@@ -63,10 +65,10 @@ export const Badge: React.FC<BadgeProps> = ({
       onMouseLeave={handleMouseLeave}
     >
       <IconProvider
-        size={variant === 'error' ? 16 : 12}
+        size={iconSize ?? 16}
         fill={iconFill}
       >
-        {variant === 'error' && (icon ?? <ErrorIcon />)}
+        {icon ?? (variant === 'error' ? <ErrorIcon /> : null)}
       </IconProvider>
       {skeleton && <BadgeSkeleton />}
       {!skeleton && (
