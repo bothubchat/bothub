@@ -19,49 +19,57 @@ import {
   ShowMoreButton,
   SelectFieldCheckboxGroupOptionHeadTextWrapper
 } from './styled';
+import {
+  SelectFieldOptionClickEventHandler,
+  SelectFieldOptions
+} from '../list';
 
-export interface SelectFieldCheckboxGroupOptionProps
-  extends React.PropsWithChildren,
-    Pick<
-      React.ComponentProps<'div'>,
-      | 'onMouseEnter'
-      | 'onMouseLeave'
-      | 'onPointerDown'
-      | 'onPointerUp'
-      | 'onPointerLeave'
-    > {
+const MAX_SHOW_ONCE = 5;
+
+export type SelectFieldCheckboxGroupOptionProps = {
+  value: SelectFieldDataItem | SelectFieldDataItem[] | null;
   size: SelectFieldSize;
   item: SelectFieldDataItem;
+  data: SelectFieldDataItem[];
   onGroupCheckboxClick?: SelectFieldGroupCheckboxClickEventHandler;
+  onOptionClick: SelectFieldOptionClickEventHandler | undefined;
   icon?: React.ReactNode;
-}
-
-const MAX_VISIBLE_CHILDREN = 5;
+};
 
 export const SelectFieldCheckboxGroupOption = ({
   item,
+  value,
+  size,
+  data,
+  onOptionClick,
   onGroupCheckboxClick,
-  children,
-  icon,
-  ...props
+  icon
 }: SelectFieldCheckboxGroupOptionProps) => {
   const theme = useTheme();
 
+  const [showAll, setShowAll] = useState(false);
   const [isOpen, setIsOpen] = useState(
     typeof item === 'string' ? false : (item.open ?? false)
   );
-  const [showAll, setShowAll] = useState(false);
+
+  const handleShowAll = () => {
+    setShowAll((prev) => !prev);
+  };
 
   const onCollapseClick = () => {
     setIsOpen((isOpen) => !isOpen);
   };
 
-  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.stopPropagation();
-
+  const handleCheckboxClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (onGroupCheckboxClick) {
       onGroupCheckboxClick(item);
     }
+  };
+
+  // Предотвращаем закрытие группы при клике на контент
+  const handleContentClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
   };
 
   let isDisabled: boolean;
@@ -79,47 +87,38 @@ export const SelectFieldCheckboxGroupOption = ({
 
   const label = typeof item === 'string' ? item : (item.label ?? item.value);
 
-  const checkedLength =
-    typeof item === 'string'
-      ? null
-      : (() => {
-          const selectedItems =
-            item.data?.filter((el) => {
-              if (typeof el === 'string') {
-                return false;
-              }
-              return 'selected' in el && el.selected === true;
-            }) ?? [];
+  const shouldShow = data.length > MAX_SHOW_ONCE;
+  const visibleData = showAll ? data : data.slice(0, MAX_SHOW_ONCE);
 
-          const totalItems =
-            item.data?.filter((el) => typeof el !== 'string').length ?? 0;
-          const selectedCount = selectedItems.length;
+  const selectedText = () => {
+    if (!data || data.length === 0) {
+      return null;
+    }
 
-          if (selectedCount === 0) {
-            return null;
-          }
+    const selectableItems = data.filter((item) => typeof item !== 'string');
+    const selectedItems = selectableItems.filter(
+      (item) => 'selected' in item && item.selected === true
+    );
 
-          if (selectedCount === totalItems && totalItems > 0) {
-            return 'все';
-          }
+    const selectedCount = selectedItems.length;
+    const totalCount = selectableItems.length;
 
-          return selectedCount;
-        })();
+    if (selectedCount === 0) {
+      return null;
+    }
 
-  const childrenArray = React.Children.toArray(children);
-  console.log(childrenArray);
+    if (selectedCount === totalCount && totalCount > 0) {
+      return 'все';
+    }
 
-  const totalChildren = childrenArray.length;
-  const visibleChildren = showAll
-    ? childrenArray
-    : childrenArray.slice(0, MAX_VISIBLE_CHILDREN);
-  const shouldShowMoreButton = totalChildren > MAX_VISIBLE_CHILDREN;
-  const onShowMoreClick = () => {
-    setShowAll((prev) => !prev);
+    return selectedCount;
   };
 
+  const isChecked =
+    typeof item !== 'string' && 'selected' in item ? item.selected : false;
+
   return (
-    <SelectFieldCheckboxGroupOptionStyled {...props}>
+    <SelectFieldCheckboxGroupOptionStyled>
       <SelectFieldCheckboxGroupOptionHead
         $disabled={isDisabled}
         {...(!isDisabled && {
@@ -140,7 +139,7 @@ export const SelectFieldCheckboxGroupOption = ({
               {label}
             </SelectFieldCheckboxGroupOptionHeadText>
             <SelectFieldCheckboxGroupOptionHeadCounter>
-              {`(${checkedLength})`}
+              {selectedText() !== null && `(${selectedText()})`}
             </SelectFieldCheckboxGroupOptionHeadCounter>
           </SelectFieldCheckboxGroupOptionHeadTextWrapper>
         </SelectFieldCheckboxGroupOptionHeadLeftSide>
@@ -152,19 +151,27 @@ export const SelectFieldCheckboxGroupOption = ({
               }}
             />
           )}
-          <Checkbox
-            onChange={handleCheckboxChange}
-            size={16}
-          />
+          <div onClick={handleCheckboxClick}>
+            <Checkbox
+              checked={isChecked}
+              size={16}
+            />
+          </div>
         </SelectFieldCheckboxGroupOptionHeadRightSide>
       </SelectFieldCheckboxGroupOptionHead>
       {isOpen && (
-        <SelectFieldCheckboxGroupOptionContent>
-          {visibleChildren}
-          {shouldShowMoreButton}
-          <ShowMoreButton onClick={onShowMoreClick}>
-            {showAll ? 'hidden...' : 'showmore...'}
-          </ShowMoreButton>
+        <SelectFieldCheckboxGroupOptionContent onClick={handleContentClick}>
+          <SelectFieldOptions
+            value={value}
+            data={visibleData}
+            size={size}
+            onOptionClick={onOptionClick}
+          />
+          {shouldShow && (
+            <ShowMoreButton onClick={handleShowAll}>
+              {showAll ? `Скрыть ` : `Показать `}
+            </ShowMoreButton>
+          )}
         </SelectFieldCheckboxGroupOptionContent>
       )}
     </SelectFieldCheckboxGroupOptionStyled>

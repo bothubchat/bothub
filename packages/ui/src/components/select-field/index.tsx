@@ -68,6 +68,7 @@ export const SelectField = ({
   openedModel,
   onSearch,
   onOptionClick,
+  onGroupCheckboxClick,
   onInputChange,
   onPointerLeave,
   ...useSelectFieldProps
@@ -347,6 +348,7 @@ export const SelectField = ({
           multiple={multiple}
           onSearch={onSearch}
           onOptionClick={onOptionClick}
+          onGroupCheckboxClick={onGroupCheckboxClick}
           handleClose={handleClose}
           setValue={setValue}
           modalWidth={modalWidth}

@@ -189,7 +189,7 @@ export const SelectModal = ({
   data = data.map((item) => {
     if (
       typeof item === 'object' &&
-      item.type === 'collapse' &&
+      (item.type === 'collapse' || item.type === 'checkbox-group') &&
       item.id &&
       !item.disabled
     ) {
@@ -306,7 +306,6 @@ export const SelectModal = ({
                     data={filterData(before, searchValue)}
                     size={size}
                     disableSelect={disableSelect}
-                    onGroupCheckboxClick={onGroupCheckboxClick}
                     onOptionClick={handleOptionClick}
                     selectedColor={selectedColor}
                   />
@@ -324,6 +323,7 @@ export const SelectModal = ({
                   data={onSearch ? data : filterData(data, searchValue)}
                   size={size}
                   disableSelect={disableSelect}
+                  onGroupCheckboxClick={onGroupCheckboxClick}
                   onOptionClick={handleOptionClick}
                   selectedColor={selectedColor}
                 />

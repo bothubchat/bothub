@@ -38,7 +38,8 @@ import { Checkbox } from '@/ui/components/checkbox';
 import { SelectFieldCheckboxGroupOption } from '../checkbox-group';
 
 export type SelectFieldOptionClickEventHandler = (
-  item: SelectFieldDataItem
+  item: SelectFieldDataItem,
+  event?: React.MouseEvent
 ) => unknown;
 
 export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
@@ -62,10 +63,9 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
   ...props
 }) => {
   const theme = useTheme();
-
   const handleOptionClick = useCallback(
-    (item: SelectFieldDataItem) => {
-      onOptionClick?.(item);
+    (item: SelectFieldDataItem, event?: React.MouseEvent) => {
+      onOptionClick?.(item, event);
     },
     [onOptionClick]
   );
@@ -320,26 +320,17 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
         }
 
         if (item.type === 'checkbox-group' && item.data) {
-          const props = {
-            size,
-            item,
-            onClick: item.onClick,
-            icon: item.disabled ? item.end : undefined,
-            children: (
-              <SelectFieldOptions
-                value={value}
-                data={item.data ?? []}
-                size={size}
-                onGroupCheckboxClick={onGroupCheckboxClick}
-                onOptionClick={onOptionClick}
-              />
-            )
-          };
           const key = item.id ?? item.value ?? `checkbox-group-${index}`;
           return (
             <SelectFieldCheckboxGroupOption
+              data={item.data ?? []}
+              size={size}
+              value={value}
+              icon={item.disabled ? item.end : undefined}
+              onGroupCheckboxClick={onGroupCheckboxClick}
+              onOptionClick={onOptionClick}
               key={key}
-              {...props}
+              item={item}
             />
           );
         }
