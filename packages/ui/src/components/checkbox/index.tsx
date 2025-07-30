@@ -5,7 +5,8 @@ import {
   CheckboxInput,
   CheckboxStyled,
   CheckboxBlock,
-  CheckboxBlockSkeleton
+  CheckboxBlockSkeleton,
+  CheckboxHalfCheckedSquare
 } from './styled';
 import { useTooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -16,6 +17,7 @@ export interface CheckboxProps
   extends Omit<React.ComponentProps<'input'>, 'onPointerLeave'> {
   className?: string;
   size?: number;
+  halfChecked?: boolean;
   label?: string | boolean | React.ReactNode;
   rowReverse?: boolean;
   skeleton?: boolean;
@@ -29,6 +31,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   className,
   label,
   size = 20,
+  halfChecked = false,
   skeleton = false,
   rowReverse,
   fullWidth = false,
@@ -62,11 +65,16 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         <>
           <CheckboxInput
             {...props}
+            $halfCheckedStyle={halfChecked}
             type="checkbox"
             onChange={handleChange}
           />
           <CheckboxBlock $size={size}>
-            <CheckboxCheckedIcon size={size} />
+            {halfChecked ? (
+              <CheckboxHalfCheckedSquare />
+            ) : (
+              <CheckboxCheckedIcon size={size} />
+            )}
           </CheckboxBlock>
         </>
       )}

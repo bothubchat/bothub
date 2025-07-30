@@ -114,6 +114,11 @@ export const SelectFieldCheckboxGroupOption = ({
   const isChecked =
     typeof item !== 'string' && 'selected' in item ? item.selected : false;
 
+  const isHalfChecked =
+    typeof item !== 'string' && 'halfSelected' in item
+      ? item.halfSelected
+      : false;
+
   return (
     <SelectFieldCheckboxGroupOptionStyled>
       <SelectFieldCheckboxGroupOptionHead
@@ -150,6 +155,7 @@ export const SelectFieldCheckboxGroupOption = ({
           )}
           <div onClick={handleCheckboxClick}>
             <Checkbox
+              halfChecked={isHalfChecked}
               checked={isChecked}
               size={16}
             />

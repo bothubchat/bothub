@@ -57,6 +57,7 @@ export type SelectFieldDataItemComplex = {
   noSelect?: boolean;
   description?: string;
   selected?: boolean;
+  halfSelected?: boolean;
   radioName?: string;
   onClick?: SelectFieldOptionClickEventHandler;
   onGroupCheckboxClick?: SelectFieldGroupCheckboxClickEventHandler;
