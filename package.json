@@ -116,7 +116,7 @@
     "rehype-katex": "^7.0.0",
     "remark-gfm": "^3.0.1",
     "remark-math": "^5.1.1",
-    "styled-components": "6.1.8",
+    "styled-components": "6.0.7",
     "stylis": "^4.3.1",
     "tsx": "^4.19.2"
   },
