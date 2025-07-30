@@ -49,7 +49,6 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     },
     [props.onChange, onValueChange]
   );
-
   return (
     <CheckboxStyled
       $disabled={props.disabled ?? false}
@@ -65,12 +64,11 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         <>
           <CheckboxInput
             {...props}
-            $halfCheckedStyle={halfChecked}
             type="checkbox"
             onChange={handleChange}
           />
           <CheckboxBlock $size={size}>
-            {halfChecked ? (
+            {!props.checked && halfChecked ? (
               <CheckboxHalfCheckedSquare />
             ) : (
               <CheckboxCheckedIcon size={size} />

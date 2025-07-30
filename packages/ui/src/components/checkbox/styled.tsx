@@ -82,45 +82,39 @@ export const CheckboxHalfCheckedSquare = styled.span`
   height: 10px;
   border-radius: 1px;
   background-color: ${({ theme }) => theme.colors.accent.primary};
-  visibility: hidden;
 `;
 
-export const CheckboxInput = styled.input<{ $halfCheckedStyle: boolean }>`
+export const CheckboxInput = styled.input`
   width: 0;
   height: 0;
   opacity: 0;
   cursor: pointer;
   position: absolute;
-  ${({ $halfCheckedStyle, theme }) => css`
-    &:checked + ${CheckboxBlock} {
-      border-color: ${$halfCheckedStyle
-        ? theme.colors.grayScale.gray1
-        : theme.colors.accent.primary};
-      background: ${$halfCheckedStyle
-        ? theme.colors.grayScale.gray3
-        : theme.colors.accent.primary};
-      ${$halfCheckedStyle ? CheckboxHalfCheckedSquare : CheckboxCheckedIcon} {
-        visibility: visible;
+  &:checked + ${CheckboxBlock} {
+    border-color: ${({ theme }) => theme.colors.accent.primary};
+    background: ${({ theme }) => theme.colors.accent.primary};
+    ${CheckboxCheckedIcon} {
+      visibility: visible;
+    }
+    ${CheckboxHalfCheckedSquare} {
+      visibility: hidden;
+    }
+  }
+  &:checked:not(:disabled) + ${CheckboxBlock}:hover {
+    border-color: ${({ theme }) => theme.colors.accent.strong};
+    background: ${({ theme }) => theme.colors.accent.strong};
+  }
+  &:disabled + ${CheckboxBlock} {
+    border-color: ${({ theme }) => theme.colors.grayScale.gray1};
+    background: ${({ theme }) => theme.colors.grayScale.gray1};
+    cursor: not-allowed;
+    ${CheckboxCheckedIcon} {
+      path {
+        fill: ${({ theme }) => theme.colors.grayScale.gray6};
       }
     }
-    &:checked:not(:disabled) + ${CheckboxBlock}:hover {
-      border-color: ${theme.colors.accent.strong};
-      background: ${$halfCheckedStyle
-        ? theme.colors.grayScale.gray3
-        : theme.colors.accent.strong};
-    }
-    &:disabled + ${CheckboxBlock} {
-      border-color: ${theme.colors.grayScale.gray1};
-      background: ${theme.colors.grayScale.gray1};
-      cursor: not-allowed;
-      ${CheckboxCheckedIcon} {
-        path {
-          fill: ${theme.colors.grayScale.gray6};
-        }
-      }
-    }
-    &:focus-visible + ${CheckboxBlock} {
-      border-color: ${theme.colors.base.white};
-    }
-  `}
+  }
+  &:focus-visible + ${CheckboxBlock} {
+    border-color: ${({ theme }) => theme.colors.base.white};
+  }
 `;
