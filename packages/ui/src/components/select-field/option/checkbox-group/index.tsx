@@ -67,11 +67,6 @@ export const SelectFieldCheckboxGroupOption = ({
     }
   };
 
-  // Предотвращаем закрытие группы при клике на контент
-  const handleContentClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
   let isDisabled: boolean;
   if (typeof item === 'string') {
     isDisabled = false;
@@ -79,11 +74,13 @@ export const SelectFieldCheckboxGroupOption = ({
     isDisabled = !!item.disabled;
   }
 
+  const itemOpen = typeof item !== 'string' ? item.open : undefined;
+
   useLayoutEffect(() => {
     if (typeof item !== 'string') {
       setIsOpen(Boolean(item.open));
     }
-  }, [item]);
+  }, [itemOpen]);
 
   const label = typeof item === 'string' ? item : (item.label ?? item.value);
 
@@ -160,7 +157,7 @@ export const SelectFieldCheckboxGroupOption = ({
         </SelectFieldCheckboxGroupOptionHeadRightSide>
       </SelectFieldCheckboxGroupOptionHead>
       {isOpen && (
-        <SelectFieldCheckboxGroupOptionContent onClick={handleContentClick}>
+        <SelectFieldCheckboxGroupOptionContent>
           <SelectFieldOptions
             value={value}
             data={visibleData}

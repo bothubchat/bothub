@@ -7,6 +7,7 @@ import {
 } from '@/ui/components/select-field/types';
 import {
   SelectFieldCheckBox,
+  SelectFieldCheckBoxLeftSide,
   SelectFieldCheckBoxMail,
   SelectFieldCheckBoxName,
   SelectFieldCheckBoxWrapper,
@@ -38,8 +39,7 @@ import { Checkbox } from '@/ui/components/checkbox';
 import { SelectFieldCheckboxGroupOption } from '../checkbox-group';
 
 export type SelectFieldOptionClickEventHandler = (
-  item: SelectFieldDataItem,
-  event?: React.MouseEvent
+  item: SelectFieldDataItem
 ) => unknown;
 
 export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
@@ -64,8 +64,8 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
 }) => {
   const theme = useTheme();
   const handleOptionClick = useCallback(
-    (item: SelectFieldDataItem, event?: React.MouseEvent) => {
-      onOptionClick?.(item, event);
+    (item: SelectFieldDataItem) => {
+      onOptionClick?.(item);
     },
     [onOptionClick]
   );
@@ -255,9 +255,20 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               key={key}
             >
               <SelectFieldCheckBoxWrapper>
-                <SelectFieldCheckBoxName>
-                  {includeLabel ? item.label : item.email}
-                </SelectFieldCheckBoxName>
+                <SelectFieldCheckBoxLeftSide>
+                  {item.icon && (
+                    <IconProvider
+                      size={16}
+                      fill={theme.colors.base.white}
+                    >
+                      {item.icon}
+                    </IconProvider>
+                  )}
+                  <SelectFieldCheckBoxName>
+                    {includeLabel ? item.label : item.email}
+                  </SelectFieldCheckBoxName>
+                </SelectFieldCheckBoxLeftSide>
+
                 <Checkbox
                   checked={item.selected}
                   size={16}

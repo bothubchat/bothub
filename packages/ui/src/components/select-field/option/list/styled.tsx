@@ -169,6 +169,12 @@ export const SelectFieldCheckBox = styled.div`
   }
 `;
 
+export const SelectFieldCheckBoxLeftSide = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
 export const SelectFieldCheckBoxWrapper = styled.div`
   display: flex;
   align-items: center;

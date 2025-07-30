@@ -189,7 +189,7 @@ export const SelectModal = ({
   data = data.map((item) => {
     if (
       typeof item === 'object' &&
-      (item.type === 'collapse' || item.type === 'checkbox-group') &&
+      item.type === 'collapse' &&
       item.id &&
       !item.disabled
     ) {
