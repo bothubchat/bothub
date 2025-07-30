@@ -110,6 +110,11 @@ export const RangeField: React.FC<RangeFieldProps> = ({
                 renderThumb={({ key, ...props }) => (
                   <RangeFieldRangeThumb
                     {...props}
+                    onBeforeInput={
+                      props.onBeforeInput as
+                        | React.InputEventHandler<HTMLSpanElement>
+                        | undefined
+                    }
                     key={key}
                     $disabled={disabled}
                     onPointerMove={handleTooltipPointerMove}
