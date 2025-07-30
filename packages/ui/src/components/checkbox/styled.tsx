@@ -10,7 +10,7 @@ export interface CheckboxStyledProps {
 }
 
 export const CheckboxStyled = styled.label<CheckboxStyledProps>`
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
