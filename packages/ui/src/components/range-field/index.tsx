@@ -112,7 +112,7 @@ export const RangeField: React.FC<RangeFieldProps> = ({
                     {...props}
                     onBeforeInput={
                       props.onBeforeInput as
-                        | React.InputEventHandler<HTMLSpanElement>
+                        | React.FormEventHandler<HTMLDivElement>
                         | undefined
                     }
                     key={key}
