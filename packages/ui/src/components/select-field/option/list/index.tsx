@@ -270,6 +270,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                 </SelectFieldCheckBoxLeftSide>
 
                 <Checkbox
+                  displayFlex
                   checked={item.selected}
                   size={16}
                 />

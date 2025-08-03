@@ -7,10 +7,11 @@ export interface CheckboxStyledProps {
   $disabled: boolean;
   $fullWidth: boolean;
   $rowReverse?: boolean;
+  $displayFlex?: boolean;
 }
 
 export const CheckboxStyled = styled.label<CheckboxStyledProps>`
-  display: flex;
+  display: ${({ $displayFlex }) => ($displayFlex ? 'flex' : 'inline-flex')};
   align-items: center;
   gap: 8px;
   cursor: pointer;

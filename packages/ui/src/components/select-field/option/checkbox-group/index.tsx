@@ -155,6 +155,7 @@ export const SelectFieldCheckboxGroupOption = ({
           )}
           <div onClick={handleCheckboxClick}>
             <Checkbox
+              displayFlex
               halfChecked={isHalfChecked}
               checked={isChecked}
               size={16}

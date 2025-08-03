@@ -16,6 +16,7 @@ export type CheckboxValueChangeEventHandler = (checked: boolean) => unknown;
 export interface CheckboxProps
   extends Omit<React.ComponentProps<'input'>, 'onPointerLeave'> {
   className?: string;
+  displayFlex?: boolean;
   size?: number;
   halfChecked?: boolean;
   label?: string | boolean | React.ReactNode;
@@ -31,6 +32,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   className,
   label,
   size = 20,
+  displayFlex = false,
   halfChecked = false,
   skeleton = false,
   rowReverse,
@@ -51,6 +53,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   );
   return (
     <CheckboxStyled
+      $displayFlex={displayFlex}
       $disabled={props.disabled ?? false}
       $fullWidth={fullWidth}
       $rowReverse={rowReverse}
