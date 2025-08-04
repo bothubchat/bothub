@@ -145,8 +145,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
                     )}
                   </SidebarChatIconContainer>
                 )
-              ) : null}
-              {!props.skeleton && props.progress && (
+              ) : (
                 <SidebarChatProgressValue>
                   {progressValue}
                 </SidebarChatProgressValue>

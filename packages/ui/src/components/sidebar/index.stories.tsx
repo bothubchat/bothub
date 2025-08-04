@@ -799,6 +799,11 @@ export const Basic: SidebarStory = {
                 onValueChange={() => {}}
               />
             }
+            progress={{
+              loading: false,
+              max: 100,
+              value: 66,
+            }}
             actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
