@@ -5,7 +5,7 @@ import {
   DashboardIcon,
   ImageGenerationIcon,
   StarsIcon,
-  TextGenerationIcon
+  TextGenerationIcon,
 } from '@/ui/icons';
 
 export interface MenuItem {
@@ -68,73 +68,73 @@ export const config: MenuItems[] = [
             label: 'Генерация текста',
             icon: <TextGenerationIcon />,
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'image-generation',
             label: 'Генерация изображений',
             icon: <ImageGenerationIcon />,
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'code-generation',
             label: 'Генерация кода',
             icon: <CodeGenerationIcon />,
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'table-analysis',
             label: 'Анализ таблиц',
             icon: <CodeGenerationIcon />,
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'speech-synthesis',
             label: 'Синтез речи',
             icon: <CodeGenerationIcon />,
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'proofreading',
             label: 'Орфография и пунктуация',
             icon: <CodeGenerationIcon />,
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'task-solution',
             label: 'Решение задач',
             icon: <CodeGenerationIcon />,
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
-          { id: 'all', label: 'Все инструменты', type: 'link', href: '/' }
-        ]
+          { id: 'all', label: 'Все инструменты', type: 'link', href: '/' },
+        ],
       },
       {
         id: 'easy-writer',
@@ -147,114 +147,114 @@ export const config: MenuItems[] = [
             id: 'poem',
             label: 'Сочинение  (350 - 500 слов)',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
             id: 'essay',
             label: 'Эссе  (500 - 1000 слов)',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'speech',
             label: 'Доклад  (1000 - 2000 слов)',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
             id: 'thesis',
             label: 'Реферат  (1500 - 3000 слов)',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'coursework',
             label: 'Курсовая работа  (5000 - 8000 слов)',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
             id: 'article',
             label: 'Информационная статья  (от 1200 слов)',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'blog-post',
             label: 'Блог-пост  (600 - 1200 слов)',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
             id: 'tutorial',
             label: 'Пошаговое руководство  (1000 - 2000 слов)',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'social-media-post',
             label: 'Пост для соцсетей  (50 - 300 слов)',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
             id: 'ads',
             label: 'Рекламный текст  (500 - 1500 слов)',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'case',
             label: 'Кейс-стади  (800 - 2000 слов)',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
             id: ' review',
             label: 'Обзор  (800 - 1500 слов)',
             type: 'link',
-            href: '/'
-          }
-        ]
+            href: '/',
+          },
+        ],
       },
       {
         id: 'dashboard',
         label: 'Дашборд',
         icon: <DashboardIcon />,
         type: 'link',
-        href: '/'
-      }
-    ]
+        href: '/',
+      },
+    ],
   },
   {
     id: 'prices',
@@ -272,10 +272,10 @@ export const config: MenuItems[] = [
             icon: <DashboardIcon />,
             description: 'Хватит, чтобы сгенерировать 12 000 страниц текста',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'deluxe',
@@ -283,10 +283,10 @@ export const config: MenuItems[] = [
             icon: <DashboardIcon />,
             description: 'Хватит, чтобы сгенерировать 12 000 страниц текста',
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'premium',
@@ -294,10 +294,10 @@ export const config: MenuItems[] = [
             description: 'Хватит, чтобы сгенерировать 12 000 страниц текста',
             icon: <DashboardIcon />,
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
-            type: 'divider'
+            type: 'divider',
           },
           {
             id: 'basic',
@@ -305,18 +305,18 @@ export const config: MenuItems[] = [
             description: 'Хватит, чтобы сгенерировать 12 000 страниц текста',
             icon: <DashboardIcon />,
             type: 'link',
-            href: '/'
-          }
-        ]
+            href: '/',
+          },
+        ],
       },
       {
         id: 'models',
         label: 'На модели',
         icon: <DashboardIcon />,
         type: 'link',
-        href: '/'
-      }
-    ]
+        href: '/',
+      },
+    ],
   },
   {
     id: 'models',
@@ -333,53 +333,53 @@ export const config: MenuItems[] = [
             label: 'Elite — 30 000 000 Caps',
             icon: <DashboardIcon />,
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
             id: 'deluxe',
             label: 'Deluxe — 7 500 000 Caps',
             icon: <DashboardIcon />,
             type: 'link',
-            href: '/'
+            href: '/',
           },
           {
             id: 'premium',
             label: 'Premium — 3 000 000 Caps',
             icon: <DashboardIcon />,
             type: 'button',
-            onClick() {}
+            onClick() {},
           },
           {
             id: 'basic',
             label: 'Basic — 1 000 000 Caps',
             icon: <DashboardIcon />,
             type: 'link',
-            href: '/'
-          }
-        ]
+            href: '/',
+          },
+        ],
       },
       {
         id: 'models',
         label: 'На модели',
         icon: <DashboardIcon />,
         type: 'link',
-        href: '/'
-      }
-    ]
+        href: '/',
+      },
+    ],
   },
   {
     id: 'business',
     label: 'Для бизнеса',
-    children: []
+    children: [],
   },
   {
     id: 'materials',
     label: 'Материалы',
-    children: []
+    children: [],
   },
   {
     id: 'company',
     label: 'Компания',
-    children: []
-  }
+    children: [],
+  },
 ];

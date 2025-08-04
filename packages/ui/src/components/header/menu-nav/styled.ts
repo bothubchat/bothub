@@ -47,7 +47,7 @@ export const HeaderMenuNavItem = styled.li`
 export const HeaderMenuNavLabel = styled(Typography).attrs<{
   variant?: string;
 }>(({ variant = 'body-m-semibold' }) => ({
-  variant
+  variant,
 }))`
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     display: flex;
@@ -99,7 +99,7 @@ export const HeaderMenuNavContentChildList = styled(animated.div)<{
 
 export const HeaderMenuNavItemArrowIcon = styled(ArrowNarrowDownIcon).attrs({
   fill: '#fff',
-  size: 18
+  size: 18,
 })`
   rotate: -135deg;
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
@@ -190,7 +190,7 @@ export const HeaderMenuNavMainLinkContainer = styled.div`
 `;
 
 export const HeaderMenuNavTextLink = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })`
   width: 100%;
   white-space: wrap;

@@ -16,7 +16,7 @@ import {
   HeaderMenuNavMainLinkContainer,
   HeaderMenuNavLabel,
   HeaderMenuNavContentMobile,
-  HeaderMenuNavLink
+  HeaderMenuNavLink,
 } from './styled';
 import { MenuItem, MenuItemChild, MenuItemCollapse, MenuItems } from './config';
 import { IconProvider } from '@/ui/components/icon';
@@ -31,7 +31,7 @@ export const HeaderMenuNav: React.FC<{
   const theme = useTheme();
   const [isTablet, isMobile] = [
     useMediaQuery(`(max-width: ${theme.tablet.maxWidth})`),
-    useMediaQuery(`(max-width: ${theme.mobile.maxWidth})`)
+    useMediaQuery(`(max-width: ${theme.mobile.maxWidth})`),
   ];
   const isDesktop = !isTablet && !isMobile;
   const [child, setChild] = useState<
@@ -41,7 +41,7 @@ export const HeaderMenuNav: React.FC<{
   const hoverTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [springsChildContent, animationChildContent] = useSpring(() => ({
-    from: { opacity: 0, transform: 'translateX(-50px)' }
+    from: { opacity: 0, transform: 'translateX(-50px)' },
   }));
 
   const startAnimation = useCallback(
@@ -49,15 +49,15 @@ export const HeaderMenuNav: React.FC<{
       animationChildContent.start({
         from: {
           opacity: 0,
-          transform: side === 'left' ? 'translateX(-50px)' : 'translateX(50px)'
+          transform: side === 'left' ? 'translateX(-50px)' : 'translateX(50px)',
         },
         to: {
           opacity: 1,
-          transform: 'translateX(0%)'
-        }
+          transform: 'translateX(0%)',
+        },
       });
     },
-    [animationChildContent]
+    [animationChildContent],
   );
 
   const clearTimeouts = useCallback(() => {
@@ -107,7 +107,7 @@ export const HeaderMenuNav: React.FC<{
         }
       }, 50);
     },
-    [parent, startAnimation, clearTimeouts]
+    [parent, startAnimation, clearTimeouts],
   );
 
   const handleMouseEnterChild = useCallback(
@@ -115,7 +115,7 @@ export const HeaderMenuNav: React.FC<{
       clearTimeouts();
       setChild(item);
     },
-    [clearTimeouts]
+    [clearTimeouts],
   );
 
   const handleMouseEnterContent = useCallback(() => {
@@ -303,7 +303,7 @@ const HeaderFirstLevelSubMenu: React.FC<{
   parent: MenuItems | null;
   child?: MenuItemChild | (MenuItem & MenuItemCollapse) | null;
   handleMouseEnterChild: (
-    item: MenuItemChild | (MenuItem & MenuItemCollapse)
+    item: MenuItemChild | (MenuItem & MenuItemCollapse),
   ) => void;
   springsChildContent: {
     opacity: SpringValue<number>;
