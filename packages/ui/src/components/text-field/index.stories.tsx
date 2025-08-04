@@ -12,22 +12,22 @@ export type TextFieldStory = StoryObj<typeof TextField>;
 export const Basic: TextFieldStory = {
   args: {
     label: 'Label',
-    placeholder: 'Placeholder'
-  }
+    placeholder: 'Placeholder',
+  },
 };
 
 export const Secondary: TextFieldStory = {
   args: {
     ...Basic.args,
-    variant: 'secondary'
-  }
+    variant: 'secondary',
+  },
 };
 
 export const Number: TextFieldStory = {
   args: {
     ...Basic.args,
-    type: 'number'
-  }
+    type: 'number',
+  },
 };
 
 export const Help: TextFieldStory = {
@@ -39,61 +39,61 @@ export const Help: TextFieldStory = {
           <Button variant="help" />
         </Tooltip>
       </TextFieldLabel>
-    )
-  }
+    ),
+  },
 };
 
 export const StartIcon: TextFieldStory = {
   args: {
     label: 'Label',
     placeholder: 'Placeholder',
-    startIcon: <EmailCircleIcon />
-  }
+    startIcon: <EmailCircleIcon />,
+  },
 };
 
 export const EndIcon: TextFieldStory = {
   args: {
     label: 'Label',
     placeholder: 'Placeholder',
-    endIcon: <EmailCircleIcon />
-  }
+    endIcon: <EmailCircleIcon />,
+  },
 };
 
 export const Error: TextFieldStory = {
   args: {
     label: 'Label',
     placeholder: 'Placeholder',
-    error: 'Error message'
-  }
+    error: 'Error message',
+  },
 };
 
 export const Search: TextFieldStory = {
   args: {
     type: 'search',
     label: 'Search',
-    placeholder: 'Search'
-  }
+    placeholder: 'Search',
+  },
 };
 
 export const Disabled: TextFieldStory = {
   args: {
     ...Basic.args,
-    disabled: true
-  }
+    disabled: true,
+  },
 };
 
 export const Skeleton: TextFieldStory = {
   args: {
     ...Basic.args,
-    skeleton: true
-  }
+    skeleton: true,
+  },
 };
 
 export const Color: TextFieldStory = {
   args: {
     ...Basic.args,
-    type: 'color'
-  }
+    type: 'color',
+  },
 };
 
 export const WithCustomInputStyles: TextFieldStory = {
@@ -101,16 +101,16 @@ export const WithCustomInputStyles: TextFieldStory = {
     ...Basic.args,
     inputStyles: {
       border: 'none',
-      borderRadius: '20px'
-    }
-  }
+      borderRadius: '20px',
+    },
+  },
 };
 
 export const Clearable: TextFieldStory = {
   args: {
     ...Basic.args,
-    clearable: true
-  }
+    clearable: true,
+  },
 };
 
 export default {
@@ -120,13 +120,13 @@ export default {
   argTypes: {
     startIcon: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     endIcon: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as TextFieldMeta;

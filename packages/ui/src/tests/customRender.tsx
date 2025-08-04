@@ -7,6 +7,6 @@ export type CustomRenderOptions = {
 
 export const customRender = (
   ui: React.ReactElement,
-  { providerProps, ...renderOptions }: CustomRenderOptions = {}
+  { providerProps, ...renderOptions }: CustomRenderOptions = {},
 ) =>
   render(<TestProvider {...providerProps}>{ui}</TestProvider>, renderOptions);

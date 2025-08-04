@@ -17,7 +17,7 @@ export const ThemeCards: React.FC<ThemeCardsProps> = ({
   titleSystem,
   initialChecked,
   isSystemDark,
-  onChange
+  onChange,
 }) => {
   const [variantChecked, setVariantChecked] =
     useState<ThemeCardVariantType | null>(initialChecked ?? null);

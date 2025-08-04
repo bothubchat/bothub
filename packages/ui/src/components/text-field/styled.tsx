@@ -253,11 +253,11 @@ export interface TextFieldClearButtonProps {
 }
 
 export const TextFieldClearButton = styled(
-  Button
+  Button,
 ).attrs<TextFieldClearButtonProps>(({ $big }) => ({
   variant: 'text',
   iconSize: $big ? 16 : 12,
-  children: <CloseIcon />
+  children: <CloseIcon />,
 }))``;
 
 export const TextFieldShowpassButton = styled.button`
@@ -271,7 +271,7 @@ export const TextFieldShowpassButton = styled.button`
 `;
 
 export const TextFieldErrorText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   display: inline-flex;
   margin-top: 8px;

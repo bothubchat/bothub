@@ -9,7 +9,7 @@ import { SidebarChatIcon } from '@/ui/icons/sidebar-chat';
 import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { Checkbox } from '@/ui/components/checkbox';
 import { Tooltip } from '@/ui/components/tooltip';
-import { colorToRgba } from '@/ui/utils/colors';
+import { colorToRgba } from '@/ui/utils';
 
 export interface SidebarChatLeftProps {
   $sidebarOpen?: boolean;
@@ -30,9 +30,7 @@ export const SidebarChatRight = styled.div`
 export const SidebarChatIconStyled = styled(SidebarChatIcon)`
   ${({ theme }) => css`
     path {
-      stroke: ${theme.scheme === 'custom'
-        ? theme.colors.custom.icon
-        : theme.colors.grayScale.gray1};
+      stroke: ${theme.colors.grayScale.gray1};
     }
   `}
   display: none;
@@ -64,7 +62,7 @@ export const SidebarChatNameBox = styled.div``;
 
 export const SidebarChatName = styled(Typography).attrs({
   variant: 'body-m-medium',
-  component: 'div'
+  component: 'div',
 })`
   overflow: hidden;
   white-space: nowrap;
@@ -77,7 +75,7 @@ export const SidebarChatName = styled(Typography).attrs({
     `,
     mobile: css`
       max-width: 130px;
-    `
+    `,
   })}
 `;
 
@@ -91,7 +89,7 @@ export const SidebarChatNameSkeleton = styled(Skeleton)`
     `,
     mobile: css`
       width: 130px;
-    `
+    `,
   })}
 `;
 
@@ -103,21 +101,21 @@ export const SidebarChatActions = styled.div`
 
 export const SidebarChatEditAction = styled(Button).attrs({
   variant: 'text',
-  children: <MenuDotIcon />
+  children: <MenuDotIcon />,
 })`
   transform: rotate(90deg);
 `;
 
 export const SidebarChatDeleteAction = styled(Button).attrs({
   variant: 'text',
-  children: <TrashIcon />
+  children: <TrashIcon />,
 })``;
 
 export const SidebarChatClosed = styled.div``;
 
 export const SidebarChatCaps = styled(Typography).attrs({
   variant: 'body-s-medium',
-  component: 'span'
+  component: 'span',
 })`
   display: inline-flex;
   padding: 4px 8px;
@@ -226,7 +224,7 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
           border-radius: 10px;
           background-color: ${colorToRgba(
             theme.colors.accent.primaryLight,
-            0.5
+            0.5,
           )};
           transition: background-color 0.3s ease-out;
         }

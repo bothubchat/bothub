@@ -9,7 +9,7 @@ export interface BothubGlobalStyleProps {
 
 export const BothubGlobalStyle: React.FC<BothubGlobalStyleProps> = ({
   margin,
-  scale = null
+  scale = null,
 }) => {
   useEffect(() => {
     const resizeListener = () => {

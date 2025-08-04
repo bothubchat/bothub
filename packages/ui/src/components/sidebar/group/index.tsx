@@ -13,7 +13,7 @@ import {
   SidebarGroupSkeletonIcon,
   SidebarGroupTooltip,
   SidebarGroupNameWithOutline,
-  SidebarGroupNameWithBg
+  SidebarGroupNameWithBg,
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { useSidebar } from '../context';
@@ -56,7 +56,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
       ? [props.open, props.onHandleOpen]
       : useState<boolean>(false);
   const { setNodeRef } = useDroppable({
-    id: !props.skeleton ? props.id : 'draggable-skeleton'
+    id: !props.skeleton ? props.id : 'draggable-skeleton',
   });
   const { isOpen: sidebarOpen } = useSidebar();
   const ref = useRef<HTMLDivElement>(null);
@@ -103,7 +103,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
                     <TooltipConsumer>
                       {({
                         handleTooltipMouseEnter,
-                        handleTooltipMouseLeave
+                        handleTooltipMouseLeave,
                       }) => (
                         <SidebarGroupDragFolder
                           onMouseEnter={handleTooltipMouseEnter}
@@ -156,7 +156,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
 };
 
 export const SidebarGroups: React.FC<{ children: React.ReactNode }> = ({
-  children
+  children,
 }) => <SidebarGroupsStyled>{children}</SidebarGroupsStyled>;
 
 export * from './styled';

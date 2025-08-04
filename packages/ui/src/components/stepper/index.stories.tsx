@@ -9,12 +9,12 @@ export type StepperStory = StoryObj<typeof Stepper>;
 export const Basic: StepperStory = {
   args: {
     activeStep: 1,
-    stepLabels: [1, 2, 3]
-  }
+    stepLabels: [1, 2, 3],
+  },
 };
 
 export default {
   title: 'UI Components/Stepper',
   component: Stepper,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as StepperMeta;

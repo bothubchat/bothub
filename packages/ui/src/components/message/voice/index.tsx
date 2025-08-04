@@ -12,7 +12,7 @@ import {
   MessageVoiceToggleButton,
   MessageVoiceToggleTextButton,
   MessageVoiceWaves,
-  StyledRect
+  StyledRect,
 } from './styled';
 import { formatSeconds } from './utils';
 import { useMessage } from '../context';
@@ -89,7 +89,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       audioEl.play();
       audioEl.currentTime = currentTime;
     },
-    [audioRef.current, duration]
+    [audioRef.current, duration],
   );
 
   const handleEnded = useCallback(() => {
@@ -102,7 +102,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
 
       setIsTextShowed(!isTextShowed);
     },
-    [isTextShowed]
+    [isTextShowed],
   );
 
   return (
@@ -126,11 +126,11 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
               ? theme.mode === 'dark'
                 ? {
                     fill: theme.default.colors.base.white,
-                    stroke: theme.colors.accent.primary
+                    stroke: theme.colors.accent.primary,
                   }
                 : {
                     fill: theme.colors.accent.primaryLight,
-                    stroke: theme.default.colors.base.white
+                    stroke: theme.default.colors.base.white,
                   }
               : color === 'green'
                 ? { fill: theme.colors.gpt3 }
@@ -162,11 +162,11 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
                       : theme.bright ||
                           (theme.scheme === 'custom' &&
                             isBright(
-                              theme.colors.custom.message.user.background
+                              theme.colors.custom.message.user.background,
                             ))
                         ? theme.colors.accent.strongDown
                         : theme.colors.accent.primaryLight
-                    : theme.default.colors.base.white
+                    : theme.default.colors.base.white,
               }}
             />
             {currentTime !== null && (
@@ -178,7 +178,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
                     : theme.colors.accent.primaryLight
                 }
                 style={{
-                  width: 145 * (currentTime / duration)
+                  width: 145 * (currentTime / duration),
                 }}
               />
             )}

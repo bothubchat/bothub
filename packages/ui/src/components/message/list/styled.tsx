@@ -9,7 +9,7 @@ export const MessagesStyled = styled.div`
 `;
 
 export const MessagesScrollbarWrapper = styled(Scrollbar).attrs({
-  variant: 'secondary'
+  variant: 'secondary',
 })`
   overflow: auto;
   height: 100%;
@@ -26,7 +26,7 @@ export const MessagesScrollbarWrapper = styled(Scrollbar).attrs({
     mobile: css`
       padding: 24px 16px;
       padding-bottom: 78px;
-    `
+    `,
   })}
 `;
 

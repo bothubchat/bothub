@@ -4,7 +4,7 @@ import {
   BookmarkListContent,
   BookmarkListScrollbarWrapper,
   BookmarksContent,
-  BookmarksStyled
+  BookmarksStyled,
 } from './styled';
 
 export interface BookmarksProps extends React.PropsWithChildren {
@@ -15,7 +15,7 @@ export interface BookmarksProps extends React.PropsWithChildren {
 export const Bookmarks: React.FC<BookmarksProps> = ({
   className,
   add,
-  children
+  children,
 }) => (
   <BookmarksStyled className={className}>
     <BookmarksContent>

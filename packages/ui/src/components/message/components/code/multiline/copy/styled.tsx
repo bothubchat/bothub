@@ -9,7 +9,7 @@ export interface MessageMultilineCodeCopyButtonStyledProps {
 }
 
 export const MessageMultilineCodeCopyButtonStyled = styled(Button).attrs({
-  variant: 'text'
+  variant: 'text',
 })<MessageMultilineCodeCopyButtonStyledProps>`
   ${({ $focus }) =>
     $focus &&

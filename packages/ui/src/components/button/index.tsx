@@ -2,20 +2,20 @@ import React, {
   forwardRef,
   useCallback,
   useImperativeHandle,
-  useRef
+  useRef,
 } from 'react';
 import { ButtonStyled, ButtonText } from './styled';
 import { useTheme } from '@/ui/theme';
 import {
   IconProvider,
   IconProviderProps,
-  isIconComponent
+  isIconComponent,
 } from '@/ui/components/icon';
 import {
   ButtonComponent,
   ButtonCorner,
   ButtonSize,
-  ButtonVariant
+  ButtonVariant,
 } from './types';
 import { useTooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -64,7 +64,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
       disableHoverColor = false,
       ...props
     },
-    ref
+    ref,
   ) => {
     const theme = useTheme();
 
@@ -125,7 +125,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
 
     const iconProps: IconProviderProps = {
       size: iconSize,
-      fill: iconFill
+      fill: iconFill,
     };
 
     const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
@@ -137,7 +137,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
         props.onMouseEnter?.(event);
         handleTooltipMouseEnter(event);
       },
-      [props.onMouseEnter, handleTooltipMouseEnter]
+      [props.onMouseEnter, handleTooltipMouseEnter],
     );
     const handleMouseLeave = useCallback<
       React.MouseEventHandler<HTMLButtonElement>
@@ -146,11 +146,11 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
         props.onMouseLeave?.(event);
         handleTooltipMouseLeave(event);
       },
-      [props.onMouseLeave, handleTooltipMouseLeave]
+      [props.onMouseLeave, handleTooltipMouseLeave],
     );
 
     useImperativeHandle(ref, () => elementRef.current as HTMLButtonElement, [
-      elementRef.current
+      elementRef.current,
     ]);
 
     return (
@@ -171,7 +171,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
         as={component}
         {...(component === 'button' && {
           type,
-          disabled
+          disabled,
         })}
         {...(component === 'a' && { href: props.href })}
         {...(component === 'label' && { htmlFor: props.htmlFor })}
@@ -212,7 +212,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
         {endIcon ? <IconProvider {...iconProps}>{endIcon}</IconProvider> : null}
       </ButtonStyled>
     );
-  }
+  },
 );
 
 export * from './types';

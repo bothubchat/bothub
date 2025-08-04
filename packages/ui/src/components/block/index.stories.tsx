@@ -19,15 +19,15 @@ export const Basic: BlockStory = {
       >
         Content
       </Typography>
-    ))
-  }
+    )),
+  },
 };
 
 export const Title: BlockStory = {
   args: {
     ...Basic.args,
-    title: 'Title'
-  }
+    title: 'Title',
+  },
 };
 
 export const Toolbar: BlockStory = {
@@ -39,15 +39,15 @@ export const Toolbar: BlockStory = {
           <Button startIcon={<Plus2Icon />}>Button</Button>
         </BlockToolbarButtons>
       </BlockToolbar>
-    )
-  }
+    ),
+  },
 };
 
 export const Rectangular: BlockStory = {
   args: {
     ...Toolbar.args,
-    variant: 'rectangular'
-  }
+    variant: 'rectangular',
+  },
 };
 
 export default {
@@ -57,8 +57,8 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as BlockMeta;

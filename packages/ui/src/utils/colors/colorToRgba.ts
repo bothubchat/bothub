@@ -52,7 +52,7 @@ export function colorToRgba(color: string, alpha = 1): string {
     // Check HEX length
     if (hex.length !== 6) {
       throw new Error(
-        'Invalid HEX format. Expected #RRGGBB, #RGB, or #RRGGBBAA'
+        'Invalid HEX format. Expected #RRGGBB, #RGB, or #RRGGBBAA',
       );
     }
 
@@ -60,6 +60,6 @@ export function colorToRgba(color: string, alpha = 1): string {
   }
 
   throw new Error(
-    'Unsupported color format. Please use HEX (#RRGGBB) or RGB (rgb(r, g, b))'
+    'Unsupported color format. Please use HEX (#RRGGBB) or RGB (rgb(r, g, b))',
   );
 }

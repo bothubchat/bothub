@@ -9,7 +9,7 @@ export interface DescriptionCardGridProps extends React.PropsWithChildren {
 export const DescriptionCardGrid: React.FC<DescriptionCardGridProps> = ({
   className,
   columns = 2,
-  children
+  children,
 }) => (
   <DescriptionCardGridStyled
     $columns={columns}

@@ -4,7 +4,7 @@ import {
   flip,
   offset,
   shift,
-  useFloating
+  useFloating,
 } from '@floating-ui/react';
 import { createPortal } from 'react-dom';
 import { DatepickerCalendar } from './calendar';
@@ -19,7 +19,7 @@ export const Datepicker = ({
   const [open, setOpen] = useState(defaultOpen);
   const { refs, floatingStyles } = useFloating({
     whileElementsMounted: autoUpdate,
-    middleware: [offset(10), flip(), shift()]
+    middleware: [offset(10), flip(), shift()],
   });
   const theme = useTheme();
 
@@ -36,7 +36,7 @@ export const Datepicker = ({
             ref={refs.setFloating}
             style={{
               ...floatingStyles,
-              zIndex: theme.zIndex.select
+              zIndex: theme.zIndex.select,
             }}
           >
             <DatepickerCalendar
@@ -46,7 +46,7 @@ export const Datepicker = ({
               }}
             />
           </div>,
-          document.body
+          document.body,
         )}
     </>
   );

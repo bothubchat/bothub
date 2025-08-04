@@ -10,7 +10,7 @@ export interface MessageParagraphStyledProps {
 }
 
 export const MessageParagraphStyled = styled(
-  Typography
+  Typography,
 )<MessageParagraphStyledProps>`
   color: ${({ theme, $variant, $color }) => {
     if ($variant === 'user') {

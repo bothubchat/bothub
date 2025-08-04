@@ -13,7 +13,7 @@ export const ReferralCardLinkStyled = styled.div`
 `;
 
 export const ReferralCardLinkText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })`
   color: ${({ theme }) => theme.colors.accent.primary};
   max-width: 288px;

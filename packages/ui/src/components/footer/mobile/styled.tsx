@@ -28,7 +28,7 @@ export const FooterMobileStyled = styled.div<{ $isPreset?: boolean }>`
     variant: 'dashboard',
     mobile: css`
       display: flex;
-    `
+    `,
   })}
 `;
 
@@ -64,7 +64,7 @@ export const FooterMobileButton = styled.button<FooterMobileButtonProps>`
 `;
 
 export const FooterMobileNewChatButton = styled(FooterMobileButton).attrs({
-  children: <AddChatIcon />
+  children: <AddChatIcon />,
 })`
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.accent.primary};

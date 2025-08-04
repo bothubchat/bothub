@@ -6,7 +6,7 @@ import {
   MenuTabsContent,
   MenuTabsItem,
   MenuTabsText,
-  MenuTabsLine
+  MenuTabsLine,
 } from './styled';
 
 type MenuTab = {
@@ -23,7 +23,7 @@ interface MenuTabsProps {
 export const MenuTabs: React.FC<MenuTabsProps> = ({
   tabs,
   defaultTab,
-  onChangeValue
+  onChangeValue,
 }) => {
   const [selectedTab, setTabs] = useState<string>(defaultTab || tabs[0].value);
   const refTabLine = useRef<HTMLDivElement>(null);
@@ -42,7 +42,7 @@ export const MenuTabs: React.FC<MenuTabsProps> = ({
 
         if (tabLine && tabsContent) {
           const childIndex = tabs.findIndex(
-            ({ value }) => value === selectedTab
+            ({ value }) => value === selectedTab,
           );
           const childTab = tabsContent.children[childIndex];
           if (childTab) {

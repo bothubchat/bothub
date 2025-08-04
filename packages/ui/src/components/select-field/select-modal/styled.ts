@@ -1,12 +1,14 @@
 import { css, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { SelectFieldPlacement, SelectFieldSize } from '../types';
-import { ScrollableTabs } from '../../scrollable-tabs';
-import { TextField } from '../../text-field';
+import { ScrollableTabs } from '@/ui/components/scrollable-tabs';
+import { TextField } from '@/ui/components/text-field';
 
 export interface SelectModalStyledProps {
   $contentWidth?: number;
   $isOpen: boolean;
+  $disablePortal?: boolean;
+  $placement: SelectFieldPlacement;
 }
 
 export const SelectModalStyled = styled(animated.div)<SelectModalStyledProps>`
@@ -18,6 +20,29 @@ export const SelectModalStyled = styled(animated.div)<SelectModalStyledProps>`
   width: 100%;
   box-sizing: border-box;
   transition: opacity 0.2s;
+
+  ${({ $disablePortal, $placement }) => {
+    if (!$disablePortal) return;
+    switch ($placement) {
+      case 'bottom-center':
+      case 'bottom-left':
+        return css`
+          top: unset !important;
+          left: 0 !important;
+          bottom: 0 !important;
+          right: unset !important;
+        `;
+      case 'top-left':
+      case 'top-right':
+      default:
+        return css`
+          top: unset !important;
+          left: 0 !important;
+          bottom: 100% !important;
+          right: unset !important;
+        `;
+    }
+  }}
 
   ${({ $isOpen }) =>
     !$isOpen &&
@@ -106,12 +131,16 @@ export const SelectModalTabsContainer = styled.div`
 
 export const SelectModalTabs = styled(ScrollableTabs).attrs({
   variant: 'secondary',
-  component: 'button'
+  component: 'button',
 })``;
 
 export const SelectModalSearch = styled(TextField).attrs({
   fullWidth: true,
-  variant: 'secondary'
+  variant: 'secondary',
 })`
   padding-right: 8px;
+`;
+
+export const SelectModalAfter = styled.div`
+  width: calc(100% - 6px);
 `;

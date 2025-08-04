@@ -4,7 +4,7 @@ import { getCalendarDays } from '../utils';
 
 export const useInfoDate = (
   date?: string | number | null,
-  locale: Locale = 'ru-RU'
+  locale: Locale = 'ru-RU',
 ) =>
   useMemo(() => {
     let dateObj = new Date();
@@ -16,11 +16,11 @@ export const useInfoDate = (
     }
     const intl = new Intl.DateTimeFormat(locale, { weekday: 'short' });
     const weekdays = [...Array(7).keys()].map((day) =>
-      intl.format(new Date(Date.UTC(2022, 4, day + 1)))
+      intl.format(new Date(Date.UTC(2022, 4, day + 1))),
     );
     const monthDays = getCalendarDays(
       dateObj.getMonth(),
-      dateObj.getFullYear()
+      dateObj.getFullYear(),
     );
 
     return { weekdays, monthDays };

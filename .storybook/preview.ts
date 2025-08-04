@@ -7,24 +7,24 @@ export const preview: Preview = {
       values: [
         {
           name: 'dark',
-          value: '#0E0C15'
+          value: '#0E0C15',
         },
         {
           name: 'light',
-          value: '#FFFFFF'
-        }
-      ]
+          value: '#FFFFFF',
+        },
+      ],
     },
     actions: {
-      argTypesRegex: '^on[A-Z].*'
+      argTypesRegex: '^on[A-Z].*',
     },
     controls: {
       matchers: {
         color: /(background|color)$/i,
-        date: /Date$/
-      }
-    }
-  }
+        date: /Date$/,
+      },
+    },
+  },
 };
 
 export default preview;

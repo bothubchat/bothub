@@ -5,7 +5,7 @@ import {
   AccordionHead,
   AccordionStyled,
   AccordionText,
-  AccordionLabel
+  AccordionLabel,
 } from './styled';
 
 export interface AccordionProps extends React.ComponentProps<'div'> {

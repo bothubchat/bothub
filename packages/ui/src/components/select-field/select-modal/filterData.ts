@@ -3,40 +3,41 @@ import { SelectFieldData } from '../types';
 
 export const filterData = (
   data: SelectFieldData,
-  searchValue: string
+  searchValue: string,
 ): SelectFieldData =>
-  data.filter((item) => {
-    if (!searchValue) return true;
-
-    if (typeof item === 'string') {
-      return hasSubstring(item, searchValue);
-    }
-
-    if (item.label) {
-      const result = hasSubstring(item.label, searchValue);
-
-      if (result) {
-        return true;
+  data
+    .map((item) => {
+      if (typeof item === 'string') {
+        return hasSubstring(item, searchValue) ? item : null;
       }
 
       if (item.type === 'collapse' && item.data) {
-        let result = false;
+        const children = item.data
+          .map((child) => {
+            if (typeof child === 'string') {
+              return hasSubstring(child, searchValue) ? child : null;
+            }
+            if (child.label) {
+              return hasSubstring(child.label, searchValue) ? child : null;
+            }
+            return child;
+          })
+          .filter((child) => child !== null);
 
-        for (const child of item.data) {
-          if (result) break;
+        const hasRelevantChildren = children.length > 0;
 
-          if (typeof child === 'string') {
-            result = hasSubstring(child, searchValue);
-          }
-
-          if (typeof child !== 'string' && child.label) {
-            result = hasSubstring(child.label, searchValue);
-          }
-        }
-
-        return result;
+        return hasRelevantChildren
+          ? {
+              ...item,
+              data: children,
+            }
+          : null;
       }
-    }
 
-    return false;
-  });
+      if (item.label) {
+        return hasSubstring(item.label, searchValue) ? item : null;
+      }
+
+      return item;
+    })
+    .filter((item) => item !== null);

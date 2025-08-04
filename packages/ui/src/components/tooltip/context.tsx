@@ -9,7 +9,7 @@ export interface TooltipContextValue {
 export const TooltipContext = React.createContext<TooltipContextValue>({
   handleTooltipMouseEnter: () => {},
   handleTooltipMouseLeave: () => {},
-  handleTooltipPointerMove: () => {}
+  handleTooltipPointerMove: () => {},
 });
 
 export const TooltipProvider: React.FC<

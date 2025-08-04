@@ -5,7 +5,7 @@ import {
   TextAreaFieldLabel,
   TextAreaFieldSkeleton,
   TextAreaFieldStyled,
-  TextAreaFieldTextArea
+  TextAreaFieldTextArea,
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 
@@ -52,14 +52,14 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
       setIsFocus(true);
       onFocus?.(event);
     },
-    [onFocus]
+    [onFocus],
   );
   const handleBlur = useCallback(
     (event: React.FocusEvent<HTMLTextAreaElement>) => {
       setIsFocus(false);
       onBlur?.(event);
     },
-    [onBlur]
+    [onBlur],
   );
 
   return (
@@ -88,8 +88,8 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
               ...props,
               disabled,
               onFocus: handleFocus,
-              onBlur: handleBlur
-            }
+              onBlur: handleBlur,
+            },
           })
         ) : (
           <TextAreaFieldBlock

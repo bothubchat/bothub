@@ -2,7 +2,7 @@ import React from 'react';
 import {
   MessageImageButtonContent,
   MessageImageButtonStyled,
-  MessageImageButtonZoneWrapper
+  MessageImageButtonZoneWrapper,
 } from './styled';
 import { ButtonProps } from '@/ui/components/button';
 

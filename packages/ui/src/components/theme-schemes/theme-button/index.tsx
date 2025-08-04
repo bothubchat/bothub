@@ -11,7 +11,7 @@ import {
   ThemeButtonIconStyled,
   ThemeButtonOutlineStyled,
   ThemeButtonStyled,
-  ThemeButtonWrapperStyled
+  ThemeButtonWrapperStyled,
 } from './styled';
 import { Tooltip, TooltipConsumer } from '../../tooltip';
 
@@ -37,7 +37,7 @@ export const ThemeButton: React.FC<ThemeButtonProps> = React.memo(
     resetTooltipText,
     onClick,
     onEdit,
-    onDelete
+    onDelete,
   }) => {
     const standardTheme = useTheme();
 
@@ -97,5 +97,5 @@ export const ThemeButton: React.FC<ThemeButtonProps> = React.memo(
         </ThemeButtonWrapperStyled>
       </ThemeProvider>
     );
-  }
+  },
 );

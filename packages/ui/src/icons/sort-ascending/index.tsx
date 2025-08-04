@@ -21,5 +21,5 @@ export const SortAscendingIcon = icon(
         />
       </Icon>
     );
-  }
+  },
 );

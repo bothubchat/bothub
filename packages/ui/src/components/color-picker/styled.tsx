@@ -13,11 +13,11 @@ export const ColorPickerStyled = styled.div`
 `;
 
 export const ColorPickerLabel = styled(Typography).attrs({
-  variant: 'body-l-medium'
+  variant: 'body-l-medium',
 })``;
 
 export const ColorPickerHex = styled(Typography).attrs({
-  variant: 'body-l-medium'
+  variant: 'body-l-medium',
 })`
   display: flex;
   justify-content: center;

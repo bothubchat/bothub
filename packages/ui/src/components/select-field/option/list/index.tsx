@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import {
   SelectFieldData,
   SelectFieldDataItem,
-  SelectFieldSize
+  SelectFieldSize,
 } from '@/ui/components/select-field/types';
 import {
   SelectFieldDivider,
@@ -15,7 +15,7 @@ import {
   SelectFieldRadioDescription,
   SelectFieldRadioLabel,
   SelectFieldRadioLabelWrapper,
-  SelectFieldRadioTitleAndRadio
+  SelectFieldRadioTitleAndRadio,
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { IconProvider } from '@/ui/components/icon';
@@ -25,13 +25,13 @@ import { SearchDataIcon } from '@/ui/icons/search-data';
 import { Radio } from '@/ui/components/radio';
 import {
   SelectFieldOptionStyled,
-  SelectFieldOptionText
+  SelectFieldOptionText,
 } from '../select-field-option/styled';
 import { SelectFieldOption } from '../select-field-option';
 import { StarsIcon } from '@/ui/icons';
 
 export type SelectFieldOptionClickEventHandler = (
-  item: SelectFieldDataItem
+  item: SelectFieldDataItem,
 ) => unknown;
 
 export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
@@ -58,7 +58,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
     (item: SelectFieldDataItem) => {
       onOptionClick?.(item);
     },
-    [onOptionClick]
+    [onOptionClick],
   );
 
   return (
@@ -84,6 +84,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               $size={size}
               $selectedColor={selectedColor}
               key={index}
+              data-test={item}
               onClick={handleOptionClick.bind(null, item)}
             >
               <SelectFieldOptionSide>
@@ -168,7 +169,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                   </SelectFieldRadioDescription>
                 )}
               </>
-            )
+            ),
           };
 
           return item.tooltip || (item.label && item.label.length > 64) ? (
@@ -179,7 +180,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                 item.label.length > 64 && {
                   placement: 'top-left',
                   label: item.label,
-                  disabled: false
+                  disabled: false,
                 })}
             >
               <TooltipConsumer>
@@ -228,6 +229,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           ) : (
             <SelectFieldRadio
               key={key}
+              data-test={item.label}
               {...props}
             />
           );
@@ -248,7 +250,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                 onOptionClick={onOptionClick}
                 selectedColor={selectedColor}
               />
-            )
+            ),
           };
           const key = item.id ?? item.value ?? `collapse-${index}`;
 
@@ -260,7 +262,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                 item.label.length > 64 && {
                   placement: 'top-left',
                   label: item.label,
-                  disabled: false
+                  disabled: false,
                 })}
             >
               <TooltipConsumer>
@@ -302,7 +304,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           disabled,
           size,
           selectedColor,
-          onClick: handleOptionClick.bind(null, item)
+          onClick: handleOptionClick.bind(null, item),
         };
 
         return item.tooltip || (item.label && item.label.length > 64) ? (
@@ -313,7 +315,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
               item.label.length > 64 && {
                 placement: 'top-left',
                 label: item.label,
-                disabled: false
+                disabled: false,
               })}
           >
             <TooltipConsumer>
@@ -322,6 +324,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                   {...props}
                   onMouseEnter={handleTooltipMouseEnter}
                   onMouseLeave={handleTooltipMouseLeave}
+                  data-test={item.label}
                 />
               )}
             </TooltipConsumer>
@@ -329,6 +332,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
         ) : (
           <SelectFieldOption
             key={key}
+            data-test={item.label}
             {...props}
           />
         );

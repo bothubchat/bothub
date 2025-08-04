@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import {
   ReferralCardLinkCopyIcon,
   ReferralCardLinkStyled,
-  ReferralCardLinkText
+  ReferralCardLinkText,
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
@@ -22,7 +22,7 @@ export const ReferralCardLink: React.FC<ReferralCardLinkProps> = ({
   className,
   tabIndex = 0,
   children,
-  onCopy
+  onCopy,
 }) => {
   const theme = useTheme();
 

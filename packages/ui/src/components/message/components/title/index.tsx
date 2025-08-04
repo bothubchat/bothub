@@ -9,7 +9,7 @@ export interface MessageTitleProps extends React.PropsWithChildren {
 
 export const MessageTitle: React.FC<MessageTitleProps> = ({
   variant,
-  children
+  children,
 }) => {
   const { variant: messageVariant, color: messageColor } = useMessage();
 

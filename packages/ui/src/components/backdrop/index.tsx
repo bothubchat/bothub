@@ -23,7 +23,7 @@ export const Backdrop: React.FC<BackdropProps> = ({
         onClick?.(event);
       }
     },
-    [onClick, backdropRef]
+    [onClick, backdropRef],
   );
 
   useEffect(() => {
@@ -41,7 +41,7 @@ export const Backdrop: React.FC<BackdropProps> = ({
   const backdropTransition = useTransition(open, {
     from: { background: 'rgba(0, 0, 0, 0)', backdropFilter: 'blur(0px)' },
     enter: { background: 'rgba(0, 0, 0, 0.55)', backdropFilter: 'blur(5px)' },
-    leave: { background: 'rgba(0, 0, 0, 0)', backdropFilter: 'blur(0px)' }
+    leave: { background: 'rgba(0, 0, 0, 0)', backdropFilter: 'blur(0px)' },
   });
 
   return backdropTransition(
@@ -53,11 +53,11 @@ export const Backdrop: React.FC<BackdropProps> = ({
           onClick={handleClick}
           style={{
             ...style,
-            ...(props.style || {})
+            ...(props.style || {}),
           }}
         >
           {children}
         </BackdropStyled>
-      )
+      ),
   );
 };

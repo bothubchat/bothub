@@ -4,7 +4,7 @@ import {
   HeaderNavDropdownItemContent,
   HeaderNavDropdownItemStyled,
   HeaderNavDropdownText,
-  HeaderNavDropdownTitle
+  HeaderNavDropdownTitle,
 } from './styled';
 import { useHeaderNavDropdown } from '../context';
 
@@ -35,7 +35,7 @@ export const HeaderNavDropdownItem: React.FC<HeaderNavDropdownItemProps> = ({
       props.onClick?.(event);
       setIsOpen(false);
     },
-    [props.onClick]
+    [props.onClick],
   );
 
   return (

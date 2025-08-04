@@ -59,14 +59,14 @@ export const AccordionHead = styled.div<
 `;
 
 export const AccordionLabel = styled(Typography).attrs({
-  variant: 'body-m-semibold'
+  variant: 'body-m-semibold',
 })`
   position: relative;
   z-index: 1;
 `;
 
 export const AccordionArrow = styled(ArrowDownIcon).attrs<IsOpenProps>({
-  size: 24
+  size: 24,
 })`
   transform: rotate(${({ $isOpen }) => ($isOpen ? '180deg' : '0deg')});
   transition: transform 0.2s ease-in-out;
@@ -108,7 +108,7 @@ export const AccordionBody = styled.div<
 
 export const AccordionText = styled(Typography).attrs<IsOpenProps>({
   variant: 'body-m-regular',
-  component: 'p'
+  component: 'p',
 })`
   white-space: pre-wrap;
   ${({ $isOpen }) =>

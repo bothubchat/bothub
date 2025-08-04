@@ -14,8 +14,8 @@ export const LockCircleIcon = icon(({ ...props }) => {
       <IconConsumer>
         {(
           { fill = theme.colors.grayScale.gray1 } = {
-            fill: theme.colors.grayScale.gray1
-          }
+            fill: theme.colors.grayScale.gray1,
+          },
         ) => (
           <>
             <g clipPath="url(#clip0_86_1748)">

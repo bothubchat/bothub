@@ -101,18 +101,18 @@ export const FileFieldBlock = styled.label<FileFieldBlockProps>`
 
 export const FileFieldIcon = styled(AttachIcon).attrs(({ theme }) => ({
   size: 16,
-  fill: theme.colors.base.white
+  fill: theme.colors.base.white,
 }))``;
 
 export const FileFieldInput = styled.input.attrs({
   type: 'file',
-  multiple: true
+  multiple: true,
 })`
   display: none;
 `;
 
 export const FileFieldPlaceholder = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
 `;
@@ -128,11 +128,11 @@ export const FileFieldFile = styled(Badge).attrs({ brick: true })``;
 export const FileFieldFileDeleteButton = styled(Button).attrs({
   variant: 'text',
   iconSize: 12,
-  children: <CloseIcon />
+  children: <CloseIcon />,
 })``;
 
 export const FileFieldErrorText = styled(Typography).attrs({
-  variant: 'input-md'
+  variant: 'input-md',
 })`
   color: ${({ theme }) => theme.colors.critic};
 `;

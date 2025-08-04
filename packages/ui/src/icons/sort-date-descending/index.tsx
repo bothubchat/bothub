@@ -40,5 +40,5 @@ export const SortDateDescendingIcon = icon(
         />
       </Icon>
     );
-  }
+  },
 );

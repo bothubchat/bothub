@@ -20,7 +20,7 @@ export function useHeaderNavDropdown(): HeaderNavDropdownContextValue {
 
   if (!value) {
     throw new Error(
-      'useHeaderNavDropdown must be used within a HeaderNavDropdownProvider.'
+      'useHeaderNavDropdown must be used within a HeaderNavDropdownProvider.',
     );
   }
 

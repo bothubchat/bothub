@@ -12,7 +12,7 @@ const grayScaleHsv = {
     gray3: rgbToHsv(hexToRgb(THEMES.standard.dark.colors.grayScale.gray3)),
     gray5: rgbToHsv(hexToRgb(THEMES.standard.dark.colors.grayScale.gray5)),
     gray6: rgbToHsv(hexToRgb(THEMES.standard.dark.colors.grayScale.gray6)),
-    gray7: rgbToHsv(hexToRgb(THEMES.standard.dark.colors.grayScale.gray7))
+    gray7: rgbToHsv(hexToRgb(THEMES.standard.dark.colors.grayScale.gray7)),
   },
   light: {
     gray1: rgbToHsv(hexToRgb(THEMES.standard.light.colors.grayScale.gray1)),
@@ -20,13 +20,13 @@ const grayScaleHsv = {
     gray3: rgbToHsv(hexToRgb(THEMES.standard.light.colors.grayScale.gray3)),
     gray5: rgbToHsv(hexToRgb(THEMES.standard.light.colors.grayScale.gray5)),
     gray6: rgbToHsv(hexToRgb(THEMES.standard.light.colors.grayScale.gray6)),
-    gray7: rgbToHsv(hexToRgb(THEMES.standard.light.colors.grayScale.gray7))
-  }
+    gray7: rgbToHsv(hexToRgb(THEMES.standard.light.colors.grayScale.gray7)),
+  },
 };
 
 export const calculateGrayScale = ({
   newGray1,
-  interfaceBackground
+  interfaceBackground,
 }: {
   newGray1: string;
   interfaceBackground: string;

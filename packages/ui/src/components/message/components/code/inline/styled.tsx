@@ -9,7 +9,7 @@ export interface MessageInlineCodeStyledProps {
 
 export const MessageInlineCodeStyled = styled(Typography).attrs({
   variant: 'body-l-regular',
-  component: 'code'
+  component: 'code',
 })<MessageInlineCodeStyledProps>`
   display: inline-flex;
   border-radius: 4px;

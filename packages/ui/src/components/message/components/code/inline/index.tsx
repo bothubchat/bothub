@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from 'styled-components';
 import {
   MessageInlineCodeStyled,
-  MessageInlineCodeStyledProps
+  MessageInlineCodeStyledProps,
 } from './styled';
 import { useMessage } from '../../../context';
 

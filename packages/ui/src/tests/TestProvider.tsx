@@ -10,7 +10,7 @@ export const TestProvider = ({ children, ...props }: TestProviderProps) => (
     {...props}
     globalStyle={{
       ...props.globalStyle,
-      scale: props.globalStyle?.scale ?? 'main'
+      scale: props.globalStyle?.scale ?? 'main',
     }}
   >
     {children}

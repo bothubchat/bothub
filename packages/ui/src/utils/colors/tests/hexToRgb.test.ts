@@ -8,13 +8,13 @@ describe('Transforms HEX to RGB', () => {
 
   test('#ABCDEF format', () => {
     expect(hexToRgb('#ABCDEF')).toEqual(
-      expect.arrayContaining([171, 205, 239])
+      expect.arrayContaining([171, 205, 239]),
     );
   });
 
   test('#ABCDEF with alpha-channel', () => {
     expect(hexToRgb('#ABCDEFAA')).toEqual(
-      expect.arrayContaining([171, 205, 239])
+      expect.arrayContaining([171, 205, 239]),
     );
   });
 

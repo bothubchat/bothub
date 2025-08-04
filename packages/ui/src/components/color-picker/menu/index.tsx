@@ -8,7 +8,7 @@ import {
   ColorPickerMenuHueSlider,
   ColorPickerMenuPreview,
   ColorPickerMenuSelector,
-  ColorPickerMenuStyled
+  ColorPickerMenuStyled,
 } from './styled';
 import { useTheme } from '@/ui/theme';
 import { hexToRgb } from '@/ui/utils/colors/hexToRgb';
@@ -30,7 +30,7 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
   color,
   parentRef,
   onChange,
-  onClose
+  onClose,
 }) => {
   const theme = useTheme();
 
@@ -38,7 +38,7 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
   const [saturation, setSaturation] = useState<number>(100); // [0 - 100] %
   const [brightness, setBrightness] = useState<number>(100); // [0 - 100] %
   const [hexColor, setHexColor] = useState<string>(
-    (color ?? theme.colors.accent.primary).toUpperCase()
+    (color ?? theme.colors.accent.primary).toUpperCase(),
   );
 
   const [centeredX, setCenteredX] = useState<boolean>(false);
@@ -70,11 +70,11 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
 
     const newSaturation = Math.max(
       0,
-      Math.min(100, Math.round((x / width) * 100))
+      Math.min(100, Math.round((x / width) * 100)),
     );
     const newBrightness = Math.max(
       0,
-      Math.min(100, Math.round(100 - (y / height) * 100))
+      Math.min(100, Math.round(100 - (y / height) * 100)),
     );
 
     setSaturation(newSaturation);
@@ -97,7 +97,7 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
     },
-    []
+    [],
   );
 
   const handleOutsideClick = useCallback((e: MouseEvent) => {
@@ -124,7 +124,7 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
         setHexColor(val);
       }
     },
-    []
+    [],
   );
 
   const handleFocusInput = useCallback(() => {
@@ -196,7 +196,7 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
           background: `
           linear-gradient(to right, white, ${hueColor}), 
           linear-gradient(to top, black, transparent)
-        `
+        `,
         }}
         // @ts-ignore
         onMouseDown={(e) => handleMouseDown(e, handleColorChange)}
@@ -204,7 +204,7 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
         <ColorPickerMenuSelector
           style={{
             top: colorPositionY,
-            left: colorPositionX
+            left: colorPositionX,
           }}
         />
       </ColorPickerMenuArea>
@@ -216,7 +216,7 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
         <ColorPickerMenuSelector
           style={{
             top: '50%',
-            left: huePosition
+            left: huePosition,
           }}
         />
       </ColorPickerMenuHueSlider>

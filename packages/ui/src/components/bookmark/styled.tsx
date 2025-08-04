@@ -5,7 +5,7 @@ import { CloseIcon } from '@/ui/icons/close';
 
 export const BookmarkName = styled(Typography).attrs({
   variant: 'body-m-semibold',
-  component: 'span'
+  component: 'span',
 })`
   max-width: 260px;
   white-space: nowrap;
@@ -16,7 +16,7 @@ export const BookmarkName = styled(Typography).attrs({
 export const BookmarkCloseButton = styled(Button).attrs({
   variant: 'text',
   iconSize: 14,
-  children: <CloseIcon />
+  children: <CloseIcon />,
 })``;
 
 const pulse = (theme: DefaultTheme) => keyframes`

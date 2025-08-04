@@ -9,14 +9,14 @@ export type TypographyStory = StoryObj<typeof Typography>;
 
 export const Basic: TypographyStory = {
   args: {
-    children: 'Typography'
-  }
+    children: 'Typography',
+  },
 };
 
 export const Skeleton: TypographyStory = {
   args: {
-    children: <BothubSkeleton />
-  }
+    children: <BothubSkeleton />,
+  },
 };
 
 export default {
@@ -26,8 +26,8 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as TypographyMeta;

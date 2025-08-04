@@ -9,12 +9,12 @@ export type DrawerStory = StoryObj<typeof Drawer>;
 export default {
   title: 'UI Components/Drawer',
   decorators: [StoryDecorator()],
-  component: Drawer
+  component: Drawer,
 } as DrawerMeta;
 
 export const Basic: DrawerStory = {
   args: {
     children: 'Text',
-    open: true
-  }
+    open: true,
+  },
 };

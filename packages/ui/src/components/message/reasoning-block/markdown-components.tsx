@@ -4,7 +4,7 @@ import {
   MessageItalic,
   MessageLink,
   MessageMultilineCodeProps,
-  MessageParagraph
+  MessageParagraph,
 } from '@/ui/components/message/components';
 import { MessageMarkdownLine } from '../markdown/styled';
 
@@ -55,6 +55,6 @@ export function markdownComponents(): Partial<
       >
         {children}
       </MessageLink>
-    )
+    ),
   };
 }

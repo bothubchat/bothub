@@ -3,7 +3,7 @@ import * as S from './styled';
 import {
   SelectFieldDataItem,
   SelectFieldInputChangeEventHandler,
-  SelectFieldInputType
+  SelectFieldInputType,
 } from './types';
 import { useTheme } from '@/ui/theme';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -46,13 +46,14 @@ export const SelectField = ({
   size = 'small',
   disableSelect = false,
   disableScrollbar = false,
-  before,
+  empty,
   after,
   loading = false,
   enableInput = false,
   inputType = 'text',
   inputValue: initialInputValue,
   clearable = false,
+  disablePortal,
   tabs,
   search,
   searchPlaceholder,
@@ -62,7 +63,9 @@ export const SelectField = ({
   dataTest,
   selectedColor,
   compactWidth,
+  modalStyles,
   openedModel,
+  onSearch,
   onOptionClick,
   onInputChange,
   onPointerLeave,
@@ -86,12 +89,12 @@ export const SelectField = ({
     (value: string) => {
       onInputChange?.(value);
     },
-    [onInputChange]
+    [onInputChange],
   );
 
   let [inputValue, setInputValue] = useState('') as [
     string,
-    (value: string) => void
+    (value: string) => void,
   ];
   if (typeof initialInputValue !== 'undefined') {
     [inputValue, setInputValue] = [initialInputValue, setInitialInputValue];
@@ -112,7 +115,7 @@ export const SelectField = ({
               }
 
               return value.value !== item;
-            })
+            }),
           );
         } else {
           setValue(
@@ -122,14 +125,14 @@ export const SelectField = ({
               }
 
               return value.value !== item.value;
-            })
+            }),
           );
         }
       }
 
       handleClose();
     },
-    [value]
+    [value],
   );
 
   const handleInputChange = useCallback<
@@ -138,7 +141,7 @@ export const SelectField = ({
     (event) => {
       setInputValue(event.currentTarget.value);
     },
-    [setInputValue]
+    [setInputValue],
   );
 
   const handleClear = useCallback(() => {
@@ -166,7 +169,7 @@ export const SelectField = ({
           <S.SelectFieldLabel>{label}</S.SelectFieldLabel>
         )}
         {typeof label !== 'string' && !skeleton && label}
-        {children && children}
+        {children}
         {!children && (
           <>
             {!skeleton && (
@@ -236,7 +239,7 @@ export const SelectField = ({
                             <TooltipConsumer>
                               {({
                                 handleTooltipMouseEnter,
-                                handleTooltipMouseLeave
+                                handleTooltipMouseLeave,
                               }) => (
                                 <S.SelectFieldColorValueText
                                   onMouseEnter={handleTooltipMouseEnter}
@@ -295,7 +298,7 @@ export const SelectField = ({
                   {loading && <S.SelectFieldLoader />}
                   <S.SelectFieldArrow
                     style={{
-                      transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)'
+                      transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)',
                     }}
                   />
                 </S.SelectFieldInputSide>
@@ -326,21 +329,24 @@ export const SelectField = ({
           size={size}
           disableSelect={disableSelect}
           disableScrollbar={disableScrollbar}
-          before={before}
+          empty={empty}
           after={after}
           tabs={tabs}
           search={search}
           searchPlaceholder={searchPlaceholder}
           resetStyleState={resetStyleState}
           blur={blur}
+          disablePortal={disablePortal}
           value={value}
           multiple={multiple}
+          onSearch={onSearch}
           onOptionClick={onOptionClick}
           handleClose={handleClose}
           setValue={setValue}
           modalWidth={modalWidth}
           selectedColor={selectedColor}
           compactWidth={compactWidth}
+          modalStyles={modalStyles}
           openedModel={openedModel}
         />
 

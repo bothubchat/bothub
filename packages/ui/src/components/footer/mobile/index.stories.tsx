@@ -11,5 +11,5 @@ export const Mobile: FooterMobileStory = {};
 export default {
   title: 'Components/Footer',
   component: FooterMobile,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as FooterMobileMeta;

@@ -8,12 +8,12 @@ export type BackgroundStory = StoryObj<typeof Background>;
 
 export const Basic: BackgroundStory = {
   args: {
-    variant: 'grid'
-  }
+    variant: 'grid',
+  },
 };
 
 export default {
   title: 'UI Components/Background',
   component: Background,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as BackgroundMeta;

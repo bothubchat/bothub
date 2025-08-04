@@ -5,7 +5,7 @@ import {
   BookmarkCardActions,
   BookmarkCardChat,
   BookmarkCardDeleteAction,
-  BookmarkCardEditAction
+  BookmarkCardEditAction,
 } from '.';
 
 export type BookmarkCardMeta = Meta<typeof BookmarkCard>;
@@ -27,15 +27,15 @@ export const Basic: BookmarkCardStory = {
         <BookmarkCardChat name="Придумать логотип" />
         <BookmarkCardChat name="Дипломная работа" />
       </>
-    )
-  }
+    ),
+  },
 };
 
 export const LongName: BookmarkCardStory = {
   args: {
     ...Basic.args,
-    name: 'Длинное название закладки Длинное название закладки Длинное название закладки Длинное название закладки Длинное название закладки Длинное название закладки'
-  }
+    name: 'Длинное название закладки Длинное название закладки Длинное название закладки Длинное название закладки Длинное название закладки Длинное название закладки',
+  },
 };
 
 export const Skeleton: BookmarkCardStory = {
@@ -46,12 +46,12 @@ export const Skeleton: BookmarkCardStory = {
         key={index}
         skeleton
       />
-    ))
-  }
+    )),
+  },
 };
 
 export default {
   title: 'Components/Bookmark/Card',
   component: BookmarkCard,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as BookmarkCardMeta;

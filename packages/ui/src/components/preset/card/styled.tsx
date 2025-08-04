@@ -45,7 +45,7 @@ export const PresetCardStyled = styled.div<PresetCardStyledProps>`
           ${PresetCardActions} {
             visibility: visible;
           }
-        `
+        `,
       })}
     `}
   `}
@@ -101,7 +101,7 @@ export const PresetCardNameActions = styled.div`
 
 export const PresetCardName = styled(Typography).attrs({
   variant: 'body-m-semibold',
-  component: 'span'
+  component: 'span',
 })``;
 
 export const PresetCardActions = styled.div`
@@ -111,19 +111,19 @@ export const PresetCardActions = styled.div`
 
 export const PresetCardAction = styled(Button).attrs({
   variant: 'text',
-  iconSize: 18
+  iconSize: 18,
 })``;
 
 export const PresetCardFavoriteAction = styled(PresetCardAction).attrs({
-  children: <StarIcon />
+  children: <StarIcon />,
 })``;
 
 export const PresetCardEditAction = styled(PresetCardAction).attrs({
-  children: <EditIcon />
+  children: <EditIcon />,
 })``;
 
 export const PresetCardDeleteAction = styled(PresetCardAction).attrs({
-  children: <CloseIcon />
+  children: <CloseIcon />,
 })``;
 
 export interface PresetCardDescriptionProps {
@@ -131,7 +131,7 @@ export interface PresetCardDescriptionProps {
 }
 
 export const PresetCardDescription = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })<PresetCardDescriptionProps>`
   margin-top: 14px;
   ${({ $skeleton }) =>
@@ -158,5 +158,5 @@ export const PresetCardCategory = styled(Badge).attrs({ variant: 'blue' })`
 `;
 
 export const PresetCardLoader = styled(LoaderCircularGradientIcon).attrs({
-  size: 18
+  size: 18,
 })``;

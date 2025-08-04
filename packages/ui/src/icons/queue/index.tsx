@@ -14,8 +14,8 @@ export const QueueIcon = icon(({ ...props }) => {
       <IconConsumer>
         {(
           { fill = theme.colors.grayScale.gray2 } = {
-            fill: theme.colors.grayScale.gray2
-          }
+            fill: theme.colors.grayScale.gray2,
+          },
         ) => (
           <>
             <g clipPath="url(#clip0_7796_186510)">

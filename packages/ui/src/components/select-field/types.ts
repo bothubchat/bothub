@@ -2,23 +2,23 @@ import React from 'react';
 import { TooltipProps } from '@/ui/components/tooltip';
 
 export type SelectFieldChangeEventHandler = (
-  item: SelectFieldDataItem | null
+  item: SelectFieldDataItem | null,
 ) => unknown;
 
 export type SelectFieldValueChangeEventHandler = (
-  value: string | null
+  value: string | null,
 ) => unknown;
 
 export type SelectFieldMultiChangeEventHandler = (
-  items: SelectFieldDataItem[]
+  items: SelectFieldDataItem[],
 ) => unknown;
 
 export type SelectFieldMultiValueChangeEventHandler = (
-  value: string[]
+  value: string[],
 ) => unknown;
 
 export type SelectFieldOptionClickEventHandler = (
-  item: SelectFieldDataItem
+  item: SelectFieldDataItem,
 ) => unknown;
 
 export type SelectFieldInputChangeEventHandler = (value: string) => unknown;

@@ -2,7 +2,7 @@ import React from 'react';
 import {
   SidebarEmptyIcon,
   SidebarEmptyStyled,
-  SidebarEmptyText
+  SidebarEmptyText,
 } from './styled';
 import { useSidebar } from '../context';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';

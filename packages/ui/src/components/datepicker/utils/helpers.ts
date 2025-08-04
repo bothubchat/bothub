@@ -4,7 +4,7 @@ import {
   isSameMonth,
   isSameYear,
   set,
-  subMonths
+  subMonths,
 } from 'date-fns';
 import { Locale } from '../types';
 
@@ -13,7 +13,7 @@ export const resetTimeInDate = (date: number | string | Date) =>
     hours: 0,
     seconds: 0,
     milliseconds: 0,
-    minutes: 0
+    minutes: 0,
   });
 
 export const getCalendarDays = (month: number, year: number) => {
@@ -56,7 +56,7 @@ export const subMonth = (value: string | number | Date) =>
 
 export const isEqualDaysOfDate = (
   date1: number | string | Date | null,
-  date2: number | string | Date | null
+  date2: number | string | Date | null,
 ) => {
   if (!date1 || !date2) return false;
   return (

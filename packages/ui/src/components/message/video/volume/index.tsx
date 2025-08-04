@@ -3,7 +3,7 @@ import { VolumeIcon } from '@/ui/icons/volume';
 import {
   MessageVideoControlsButton,
   MessageVideoVolumeContainer,
-  MessageVideoVolumeLine
+  MessageVideoVolumeLine,
 } from '../styled';
 
 type MessageVideoVolumeProps = {
@@ -13,7 +13,7 @@ type MessageVideoVolumeProps = {
 
 export const MessageVideoVolume: React.FC<MessageVideoVolumeProps> = ({
   iconSize = 16,
-  handleChangeVolume
+  handleChangeVolume,
 }) => {
   const [volumeLineMouseMove, setVolumeLineMouseMove] = useState(false);
   const [volume, setVolume] = useState(100);
@@ -30,7 +30,7 @@ export const MessageVideoVolume: React.FC<MessageVideoVolumeProps> = ({
       setVolume(progress);
       handleChangeVolume?.(progress);
     },
-    [handleChangeVolume]
+    [handleChangeVolume],
   );
 
   const handleStartMouseMove = useCallback(() => {
@@ -42,7 +42,7 @@ export const MessageVideoVolume: React.FC<MessageVideoVolumeProps> = ({
       if (!volumeLineMouseMove) return;
       handleVolumeUpdateClick(event);
     },
-    [volumeLineMouseMove]
+    [volumeLineMouseMove],
   );
 
   const handleStartMouseLeave = useCallback(() => {

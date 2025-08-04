@@ -11,5 +11,5 @@ export const Basic: ThreeDotsLoaderStory = {};
 export default {
   title: 'UI Components/Loader/Three Dots Loader',
   component: ThreeDotsLoader,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ThreeDotsLoaderMeta;

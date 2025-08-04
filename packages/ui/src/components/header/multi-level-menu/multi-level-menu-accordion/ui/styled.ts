@@ -53,7 +53,7 @@ export const MultiLevelMenuLi = styled.li`
 `;
 
 export const MultiLevelMenuTitle = styled(Typography).attrs({
-  variant: 'body-l-semibold'
+  variant: 'body-l-semibold',
 })<{ $open: boolean }>`
   transition: color 0.2s ease-in-out;
   @media (min-width: ${({ theme }) => theme.tablet.maxWidth}) {
@@ -150,7 +150,7 @@ export const MultiLevelMenuSecondLevelHeaderContent = styled.div`
 `;
 
 export const MultiLevelMenuSecondLevelDescription = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })`
   display: block;
   margin-top: 8px;
@@ -176,11 +176,11 @@ export const MultiLevelMenuSecondLevelContentWrapper = styled.div<{
   }
 `;
 export const MultiLevelMenuSecondLevelTitle = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })``;
 
 export const MultiLevelMenuSecondLevelSubTitle = styled(
-  MultiLevelMenuSecondLevelTitle
+  MultiLevelMenuSecondLevelTitle,
 )`
   color: ${({ theme }) => theme.colors.grayScale.gray6};
 `;

@@ -13,7 +13,9 @@ export const ArrowDownIcon = icon(({ ...props }) => {
     >
       <IconConsumer>
         {(
-          { fill = theme.colors.base.white } = { fill: theme.colors.base.white }
+          { fill = theme.colors.base.white } = {
+            fill: theme.colors.base.white,
+          },
         ) => (
           <path
             d="M3 6L8 10L13 6"

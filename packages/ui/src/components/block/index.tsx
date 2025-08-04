@@ -5,7 +5,7 @@ import {
   BlockBodyScrollbarWrapper,
   BlockHead,
   BlockStyled,
-  BlockTitle
+  BlockTitle,
 } from './styled';
 import { BlockVariant } from './types';
 
@@ -25,7 +25,7 @@ export const Block: React.FC<BlockProps> = ({
   background,
   variant = 'rounded',
   fullHeight = false,
-  children
+  children,
 }) => {
   const isHead = !!title;
   const isToolbar = !!toolbar;

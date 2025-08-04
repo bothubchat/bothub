@@ -5,7 +5,7 @@ import { SettingsIcon } from '@/ui/icons/settings';
 import {
   FooterMobileStyled,
   FooterMobileButton,
-  FooterMobileNewChatButton
+  FooterMobileNewChatButton,
 } from './styled';
 import { useTheme } from '@/ui/theme';
 import { SidebarUserInfoAvatar } from '@/ui/components/sidebar';
@@ -38,7 +38,7 @@ export const FooterMobile: React.FC<FooterMobileProps> = React.memo(
     onChatsClick,
     onAddChatClick,
     onSettingsClick,
-    onUserClick
+    onUserClick,
   }) => {
     const theme = useTheme();
 
@@ -87,5 +87,5 @@ export const FooterMobile: React.FC<FooterMobileProps> = React.memo(
         />
       </FooterMobileStyled>
     );
-  }
+  },
 );

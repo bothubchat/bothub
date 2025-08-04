@@ -13,7 +13,7 @@ export const Form = styled.form`
 
 export const FormText = styled(Typography).attrs({
   variant: 'body-m-medium',
-  component: 'p'
+  component: 'p',
 })`
   color: ${({ theme }) => theme.default.colors.grayScale.gray1};
   width: 100%;

@@ -7,3 +7,4 @@ export * from './getSupportedAudioMimeType';
 export * from './useMessageCopyHandler';
 export * from './hasSubstring';
 export * from './colors';
+export * from './findNearestScrollableParent';

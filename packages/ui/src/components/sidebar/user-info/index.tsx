@@ -9,7 +9,7 @@ import {
   SidebarUserInfoUpdateTariffContainer,
   SidebarUserInfoMain,
   SidebarUserInfoLogoutButtonContainer,
-  SidebarUserInfoBottom
+  SidebarUserInfoBottom,
 } from './styled';
 import { useSidebar } from '../context';
 import { SidebarUserInfoProvider } from './context';
@@ -33,7 +33,7 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
   logout,
   linkAs,
   to,
-  onClick
+  onClick,
 }) => {
   const { isOpen } = useSidebar();
 

@@ -19,6 +19,6 @@ export const ThemeSchemeSectionButtons = styled.div`
     variant: 'dashboard',
     desktop: css`
       margin-left: 34px;
-    `
+    `,
   })}
 `;

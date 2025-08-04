@@ -23,7 +23,7 @@ export const ScrollbarShadow: React.FC<ScrollbarShadowProps> = ({
     isLeft: isLeftVisible,
     isRight: isRightVisible,
     isTop: isTopVisible,
-    isBottom: isBottomVisible
+    isBottom: isBottomVisible,
   } = useScrollbar();
 
   const size: number = props.size ?? scrollShadows?.size ?? 60;
@@ -36,7 +36,7 @@ export const ScrollbarShadow: React.FC<ScrollbarShadowProps> = ({
   const isBottom: boolean = side === 'bottom';
 
   const initialStyle: Record<string, string | number> = {
-    opacity: 0
+    opacity: 0,
   };
   if (isLeft || isRight) {
     initialStyle.width = 0;
@@ -45,7 +45,7 @@ export const ScrollbarShadow: React.FC<ScrollbarShadowProps> = ({
   }
 
   const animateStyle: Record<string, string | number> = {
-    opacity: 1
+    opacity: 1,
   };
   if (isLeft || isRight) {
     initialStyle.width = size;
@@ -62,7 +62,7 @@ export const ScrollbarShadow: React.FC<ScrollbarShadowProps> = ({
   const transition = useTransition(visible, {
     from: initialStyle,
     enter: animateStyle,
-    leave: initialStyle
+    leave: initialStyle,
   });
 
   return transition(
@@ -76,11 +76,11 @@ export const ScrollbarShadow: React.FC<ScrollbarShadowProps> = ({
           <ScrollbarShadowContent
             style={{
               ...style,
-              background: `linear-gradient(to ${side}, rgba(0, 0, 0, 0), ${color})`
+              background: `linear-gradient(to ${side}, rgba(0, 0, 0, 0), ${color})`,
             }}
           />
         </ScrollbarShadowStyled>
-      )
+      ),
   );
 };
 
