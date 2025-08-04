@@ -18,21 +18,15 @@ import {
   HeaderMenuNavContentMobile,
   HeaderMenuNavLink
 } from './styled';
-import {
-  config,
-  MenuItem,
-  MenuItemChild,
-  MenuItemCollapse,
-  MenuItems
-} from './config';
+import { MenuItem, MenuItemChild, MenuItemCollapse, MenuItems } from './config';
 import { IconProvider } from '@/ui/components/icon';
 import { Divider } from '@/ui/components/divider';
 import { useTheme } from '@/ui/theme';
 import { ArrowDownIcon } from '@/ui/icons';
 
-export const HeaderMenuNav: React.FC<{ items: MenuItems[] }> = ({
-  items = config
-}) => {
+export const HeaderMenuNav: React.FC<{
+  items: MenuItems[];
+}> = ({ items }) => {
   const [parent, setParent] = useState<MenuItems | null>(null);
   const theme = useTheme();
   const [isTablet, isMobile] = [
@@ -157,7 +151,7 @@ export const HeaderMenuNav: React.FC<{ items: MenuItems[] }> = ({
             {!isDesktop && item.id === parent?.id && (
               <HeaderMenuNavContentMobile
                 key={item.id}
-                onMouseEnter={handleMouseEnterContent}
+                onPointerUp={handleMouseEnterContent}
               >
                 <HeaderFirstLevelSubMenu
                   parent={parent}
@@ -165,24 +159,12 @@ export const HeaderMenuNav: React.FC<{ items: MenuItems[] }> = ({
                   handleMouseEnterChild={handleMouseEnterChild}
                   springsChildContent={springsChildContent}
                 />
-
-                {parent !== null &&
-                  child !== null &&
-                  child?.type === 'collapse' &&
-                  child?.children?.length && (
-                    <HeaderMenuNavContentChildList
-                      $columns={child?.columns}
-                      style={springsChildContent}
-                      onMouseEnter={handleMouseEnterContent}
-                    >
-                      <HeaderCollapseSubMenu
-                        springsChildContent={springsChildContent}
-                        child={child}
-                        parent={parent}
-                        handleMouseEnterContent={handleMouseEnterContent}
-                      />
-                    </HeaderMenuNavContentChildList>
-                  )}
+                <HeaderCollapseSubMenu
+                  springsChildContent={springsChildContent}
+                  child={child}
+                  parent={parent}
+                  handleMouseEnterContent={handleMouseEnterContent}
+                />
                 <HeaderLinkSubMenu
                   parent={parent}
                   child={child}
@@ -197,6 +179,7 @@ export const HeaderMenuNav: React.FC<{ items: MenuItems[] }> = ({
       {isDesktop && (
         <HeaderMenuNavContent
           $open={parent !== null}
+          onPointerUp={handleMouseEnterContent}
           onMouseEnter={handleMouseEnterContent}
         >
           <HeaderFirstLevelSubMenu
@@ -205,24 +188,12 @@ export const HeaderMenuNav: React.FC<{ items: MenuItems[] }> = ({
             handleMouseEnterChild={handleMouseEnterChild}
             springsChildContent={springsChildContent}
           />
-
-          {parent !== null &&
-            child !== null &&
-            child?.type === 'collapse' &&
-            child?.children?.length && (
-              <HeaderMenuNavContentChildList
-                $columns={child?.columns}
-                style={springsChildContent}
-                onMouseEnter={handleMouseEnterContent}
-              >
-                <HeaderCollapseSubMenu
-                  springsChildContent={springsChildContent}
-                  child={child}
-                  parent={parent}
-                  handleMouseEnterContent={handleMouseEnterContent}
-                />
-              </HeaderMenuNavContentChildList>
-            )}
+          <HeaderCollapseSubMenu
+            springsChildContent={springsChildContent}
+            child={child}
+            parent={parent}
+            handleMouseEnterContent={handleMouseEnterContent}
+          />
           <HeaderLinkSubMenu
             parent={parent}
             child={child}
@@ -237,13 +208,16 @@ export const HeaderMenuNav: React.FC<{ items: MenuItems[] }> = ({
 const HeaderLinkSubMenu: React.FC<{
   parent: MenuItems | null;
   child?: MenuItemChild | (MenuItem & MenuItemCollapse) | null;
-  handleMouseEnterContent: () => void;
+  handleMouseEnterContent?: () => void;
 }> = ({ parent, child, handleMouseEnterContent }) =>
   parent !== null &&
   child !== null &&
-  child?.type === 'link' &&
+  (child?.type === 'link' || child?.type === 'button') &&
   child?.children && (
-    <HeaderMenuNavContentChildList onMouseEnter={handleMouseEnterContent}>
+    <HeaderMenuNavContentChildList
+      onPointerUp={handleMouseEnterContent}
+      onMouseEnter={handleMouseEnterContent}
+    >
       {child.children}
     </HeaderMenuNavContentChildList>
   );
@@ -264,6 +238,7 @@ const HeaderCollapseSubMenu: React.FC<{
     <HeaderMenuNavContentChildList
       $columns={child?.columns}
       style={springsChildContent}
+      onPointerUp={handleMouseEnterContent}
       onMouseEnter={handleMouseEnterContent}
     >
       {child.children.map((item, index) => {
@@ -272,7 +247,34 @@ const HeaderCollapseSubMenu: React.FC<{
             return (
               <HeaderMenuNavLink
                 key={item.id}
+                $height={child.height}
+                href={item.href}
                 onMouseEnter={handleMouseEnterContent}
+                onPointerUp={handleMouseEnterContent}
+              >
+                <HeaderMenuNavMainLinkContainer>
+                  <IconProvider size={18}>{item.icon}</IconProvider>
+                  <HeaderMenuNavTextLink>{item.label}</HeaderMenuNavTextLink>
+                  <HeaderMenuNavItemBgIcon>
+                    <HeaderMenuNavItemArrowIcon />
+                  </HeaderMenuNavItemBgIcon>
+                </HeaderMenuNavMainLinkContainer>
+                {item.description && (
+                  <HeaderMenuNavTextLink>
+                    {item.description}
+                  </HeaderMenuNavTextLink>
+                )}
+              </HeaderMenuNavLink>
+            );
+          case 'button':
+            return (
+              <HeaderMenuNavLink
+                key={item.id}
+                as="button"
+                $height={child.height}
+                onClick={item.onClick}
+                onMouseEnter={handleMouseEnterContent}
+                onPointerUp={handleMouseEnterContent}
               >
                 <HeaderMenuNavMainLinkContainer>
                   <IconProvider size={18}>{item.icon}</IconProvider>
@@ -317,19 +319,20 @@ const HeaderFirstLevelSubMenu: React.FC<{
 
         return (
           <HeaderMenuNavMainLink
-            $active={
-              child?.type !== 'divider' &&
-              child?.type !== 'button' &&
-              child?.id === item.id
-            }
+            $active={child?.type !== 'divider' && child?.id === item.id}
             onMouseEnter={() => handleMouseEnterChild(item)}
+            onPointerUp={() => handleMouseEnterChild(item)}
+            {...(item.type === 'button' && { onClick: item.onClick })}
             key={item.id}
+            {...(item.type === 'link' && { href: item.href })}
           >
             <HeaderMenuNavMainLinkContainer>
               <IconProvider size={18}>{item.icon}</IconProvider>
               <HeaderMenuNavTextLink>{item.label}</HeaderMenuNavTextLink>
               {item.type === 'collapse' && <HeaderMenuNavArrowIcon />}
-              {item.type === 'link' && <HeaderMenuNavItemArrowIcon />}
+              {['link', 'button'].includes(item.type) && (
+                <HeaderMenuNavItemArrowIcon />
+              )}
             </HeaderMenuNavMainLinkContainer>
           </HeaderMenuNavMainLink>
         );

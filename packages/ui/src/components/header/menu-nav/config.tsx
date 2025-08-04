@@ -11,11 +11,14 @@ import {
 export interface MenuItem {
   id: string;
   label: string;
+  height?: 'fit' | 'auto';
   icon?: React.ReactNode;
 }
 
 export interface MenuItemButton {
   type: 'button';
+  children?: React.ReactNode;
+  description?: string;
   onClick: () => void;
 }
 
@@ -23,6 +26,7 @@ export interface MenuItemLink {
   type: 'link';
   label?: string | React.ReactNode;
   href: string;
+  height?: 'fit' | 'auto';
   description?: string;
   children?: React.ReactNode;
 }
@@ -43,7 +47,7 @@ export interface MenuItemDivider {
 
 export type MenuItems = {
   id: string;
-  label: string;
+  label: string | React.ReactNode;
   children: Array<MenuItemChild | (MenuItem & MenuItemCollapse)>;
 };
 
@@ -342,8 +346,8 @@ export const config: MenuItems[] = [
             id: 'premium',
             label: 'Premium — 3 000 000 Caps',
             icon: <DashboardIcon />,
-            type: 'link',
-            href: '/'
+            type: 'button',
+            onClick() {}
           },
           {
             id: 'basic',

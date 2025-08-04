@@ -28,7 +28,10 @@ export const HeaderMenuNavList = styled.ul`
   gap: 20px;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     flex-direction: column;
-    gap: 10px;
+    gap: 30px;
+  }
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    gap: 24px;
   }
 `;
 
@@ -99,6 +102,9 @@ export const HeaderMenuNavItemArrowIcon = styled(ArrowNarrowDownIcon).attrs({
   size: 18
 })`
   rotate: -135deg;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    display: none;
+  }
 `;
 
 export const HeaderMenuNavItemBgIcon = styled.div`
@@ -120,6 +126,7 @@ export const HeaderMenuNavMainLink = styled.a<{
   display: flex;
   min-width: ${({ $minWidth }) => $minWidth ?? 250}px;
   align-items: center;
+  height: fit-content;
   flex-direction: column;
   gap: 10px;
   border-radius: 10px;
@@ -135,13 +142,20 @@ export const HeaderMenuNavMainLink = styled.a<{
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     width: 100%;
   }
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    background: inherit;
+    outline: none;
+    padding: 12px 0;
+  }
 `;
 
 export const HeaderMenuNavLink = styled.a<{
   $active?: boolean;
+  $height?: 'fit' | 'auto';
 }>`
   padding: 12px 14px;
   display: flex;
+  height: ${({ $height }) => ($height === 'fit' ? 'auto' : 'fit-content')};
   min-width: 406px;
   align-items: center;
   flex-direction: column;
@@ -149,6 +163,9 @@ export const HeaderMenuNavLink = styled.a<{
   border-radius: 10px;
   cursor: pointer;
   white-space: nowrap;
+  background: transparent;
+  outline: none;
+  border: none;
   transition: background 0.2s ease-in-out;
   ${({ theme }) => css`
     &:hover {
