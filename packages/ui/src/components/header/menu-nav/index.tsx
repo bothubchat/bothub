@@ -17,6 +17,7 @@ import {
   HeaderMenuNavLabel,
   HeaderMenuNavContentMobile,
   HeaderMenuNavLink,
+  HeaderMenuNavTextDescription,
 } from './styled';
 import { MenuItem, MenuItemChild, MenuItemCollapse, MenuItems } from './config';
 import { IconProvider } from '@/ui/components/icon';
@@ -87,7 +88,7 @@ export const HeaderMenuNav: React.FC<{
         const prevIndex = items.findIndex((item) => item.id === parent?.id);
         const nextIndex = items.findIndex((item) => item.id === id);
 
-        if (nextIndex !== -1) {
+        if (nextIndex !== -1 && prevIndex !== nextIndex) {
           if (prevIndex !== -1 && nextIndex < prevIndex) {
             startAnimation('right');
           } else {
@@ -260,9 +261,9 @@ const HeaderCollapseSubMenu: React.FC<{
                   </HeaderMenuNavItemBgIcon>
                 </HeaderMenuNavMainLinkContainer>
                 {item.description && (
-                  <HeaderMenuNavTextLink>
+                  <HeaderMenuNavTextDescription>
                     {item.description}
-                  </HeaderMenuNavTextLink>
+                  </HeaderMenuNavTextDescription>
                 )}
               </HeaderMenuNavLink>
             );
@@ -322,8 +323,8 @@ const HeaderFirstLevelSubMenu: React.FC<{
             $active={child?.type !== 'divider' && child?.id === item.id}
             onMouseEnter={() => handleMouseEnterChild(item)}
             onPointerUp={() => handleMouseEnterChild(item)}
-            {...(item.type === 'button' && { onClick: item.onClick })}
             key={item.id}
+            {...(item.type === 'button' && { onClick: item.onClick })}
             {...(item.type === 'link' && { href: item.href })}
           >
             <HeaderMenuNavMainLinkContainer>
