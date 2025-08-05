@@ -10,9 +10,9 @@ import {
 
 export interface MenuItem {
   id: string;
-  label: string;
+  label: string | React.ReactNode;
   height?: 'fit' | 'auto';
-  icon?: React.ReactNode;
+  icon?: React.ReactElement;
 }
 
 export interface MenuItemButton {
@@ -24,7 +24,6 @@ export interface MenuItemButton {
 
 export interface MenuItemLink {
   type: 'link';
-  label?: string | React.ReactNode;
   href: string;
   height?: 'fit' | 'auto';
   description?: string;
@@ -145,7 +144,8 @@ export const config: MenuItems[] = [
         children: [
           {
             id: 'poem',
-            label: 'Сочинение  (350 - 500 слов)',
+            icon: <CodeGenerationIcon />,
+            label: <span>Поэма (100 - 300 слов)</span>,
             type: 'link',
             href: '/',
           },
@@ -187,6 +187,7 @@ export const config: MenuItems[] = [
           },
           {
             id: 'article',
+            icon: <CodeGenerationIcon />,
             label: 'Информационная статья  (от 1200 слов)',
             type: 'link',
             href: '/',
@@ -205,6 +206,7 @@ export const config: MenuItems[] = [
           },
           {
             id: 'tutorial',
+            icon: <CodeGenerationIcon />,
             label: 'Пошаговое руководство  (1000 - 2000 слов)',
             type: 'link',
             href: '/',

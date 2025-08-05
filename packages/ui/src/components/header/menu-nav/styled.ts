@@ -90,7 +90,8 @@ export const HeaderMenuNavContentChildList = styled(animated.div)<{
   $columns?: number;
 }>`
   display: grid;
-  grid-template-columns: ${({ $columns = 1 }) => `repeat(${$columns}, 1fr)`};
+  grid-template-columns: ${({ $columns = 1 }) =>
+    `repeat(${$columns}, max-content)`};
   flex-direction: column;
   row-gap: 8px;
   column-gap: 16px;
@@ -157,6 +158,7 @@ export const HeaderMenuNavLink = styled.a<{
   display: flex;
   height: ${({ $height }) => ($height === 'fit' ? 'auto' : 'fit-content')};
   min-width: 406px;
+  width: 100%;
   align-items: center;
   flex-direction: column;
   gap: 10px;
@@ -185,6 +187,7 @@ export const HeaderMenuNavLink = styled.a<{
 export const HeaderMenuNavMainLinkContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   width: 100%;
 `;
@@ -194,6 +197,13 @@ export const HeaderMenuNavTextLink = styled(Typography).attrs({
 })`
   width: 100%;
   white-space: wrap;
+`;
+export const HeaderMenuNavTextDescription = styled(Typography).attrs({
+  variant: 'body-m-regular',
+})`
+  width: 100%;
+  white-space: wrap;
+  max-width: 406px;
 `;
 
 export const HeaderMenuNavArrowIcon = styled(ArrowDownIcon)`
