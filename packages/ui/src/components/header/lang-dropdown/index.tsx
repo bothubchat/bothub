@@ -15,6 +15,7 @@ import { useTheme } from '@/ui/theme';
 export interface HeaderLangDropdownProps
   extends React.ComponentProps<typeof HeaderLangDropdownStyled> {
   lang: string;
+  children?: React.ReactNode;
 }
 
 export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
