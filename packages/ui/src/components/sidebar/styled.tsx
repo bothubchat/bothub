@@ -4,7 +4,9 @@ import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 import { Logo } from '@/ui/components/logo';
 import {
+  SidebarChatContent,
   SidebarChatIconContainer,
+  SidebarChatProgressValue,
   SidebarChatStyled,
   SidebarChatTooltip,
   SidebarChatWithOutlineStyled,
@@ -150,7 +152,13 @@ export const SidebarStyled = styled(animated.aside)<SidebarStyledProps>`
           > * {
             display: none;
           }
-          ${SidebarChatIconContainer} {
+          ${SidebarChatContent} {
+            display: flex;
+            > * {
+              display: none;
+            }
+          }
+          ${SidebarChatIconContainer}, ${SidebarChatProgressValue} {
             display: inline-flex;
             width: 26px;
             height: 26px;
