@@ -43,19 +43,12 @@ export const Basic: SidebarChatStory = {
 export const WithProgress: SidebarChatStory = {
   args: {
     ...Basic.args,
-    progress: {
-      value: 100,
-      max: 100,
-    },
   },
 };
 
 export const ProgressLoading: SidebarChatStory = {
   args: {
     ...Basic.args,
-    progress: {
-      loading: true,
-    },
   },
 };
 

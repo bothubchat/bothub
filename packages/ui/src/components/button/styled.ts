@@ -78,7 +78,9 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
           background: ${$color ??
           ($disabled || $skeleton
             ? theme.colors.grayScale.gray3
-            : theme.colors.accent.primary)};
+            : theme.mode === 'dark'
+              ? theme.colors.accent.primary
+              : theme.colors.accent.primaryLight)};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: 1;
 

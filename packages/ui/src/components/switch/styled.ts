@@ -34,7 +34,7 @@ export const HiddenLabel = styled.label`
   text-indent: -9999px;
   width: var(--switch-width, ${defaultSize});
   aspect-ratio: 56 / 26;
-  background: grey;
+  background: ${({ theme }) => theme.colors.grayScale.gray2};
   display: block;
   border-radius: 100px;
   position: relative;
