@@ -33,8 +33,7 @@ import {
 } from '@/ui/icons';
 import { Button } from '../button';
 import { MenuDropdown } from '../menu-dropdown';
-import { MultilevelMenu } from './multi-level-menu';
-import { menuItems } from './multi-level-menu/config';
+import { config, HeaderMenuNav } from './menu-nav';
 
 export type HeaderMeta = Meta<typeof Header>;
 
@@ -47,7 +46,7 @@ export const Basic: HeaderStory = {
         <Logo />
       </HeaderLogoLink>
     ),
-    nav: <MultilevelMenu config={menuItems} />,
+    nav: <HeaderMenuNav items={config} />,
     lang: (
       <HeaderLangDropdown lang="ru">
         <HeaderLangDropdownList>
@@ -224,7 +223,7 @@ export const AdminDashboard: HeaderStory = {
 export default {
   title: 'Components/Header',
   component: Header,
-  decorators: [StoryDecorator()],
+  decorators: [StoryDecorator({ scale: 'main' })],
   argTypes: {
     variant: {
       table: {
