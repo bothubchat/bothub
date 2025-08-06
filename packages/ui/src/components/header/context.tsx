@@ -10,7 +10,7 @@ export interface HeaderContextValue {
 export const HeaderContext = React.createContext<HeaderContextValue>({
   variant: 'main',
   isMenuOpen: false,
-  setIsMenuOpen: () => {}
+  setIsMenuOpen: () => {},
 });
 
 export const HeaderProvider: React.FC<

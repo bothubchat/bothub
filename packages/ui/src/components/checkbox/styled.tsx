@@ -3,6 +3,8 @@ import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { Typography } from '@/ui/components/typography';
 import { Skeleton } from '@/ui/components/skeleton';
 
+export type CheckedColor = { $checkedColor?: string };
+
 export interface CheckboxStyledProps {
   $disabled: boolean;
   $fullWidth: boolean;
@@ -38,7 +40,7 @@ export const CheckboxStyled = styled.label<CheckboxStyledProps>`
     `}
 `;
 
-export const CheckboxBlock = styled.span`
+export const CheckboxBlock = styled.span<CheckedColor>`
   display: inline-flex;
   width: 20px;
   height: 20px;
@@ -51,7 +53,12 @@ export const CheckboxBlock = styled.span`
   flex-shrink: 0;
   box-sizing: border-box;
   &:hover {
-    border-color: ${({ theme }) => theme.colors.accent.primary};
+    border-color: ${({ theme, $checkedColor }) =>
+      $checkedColor || theme.colors.accent.primary};
+  }
+
+  svg {
+    visibility: hidden;
   }
 `;
 
@@ -69,32 +76,40 @@ export const CheckboxLabel = styled(Typography).attrs({ variant: 'input-sm' })`
   cursor: inherit;
 `;
 
-export const CheckboxCheckedIcon = styled(CheckSmallIcon).attrs({ size: 20 })`
-  visibility: hidden;
-`;
+export const CheckboxCheckedIcon = styled(CheckSmallIcon).attrs({ size: 20 })``;
 
-export const CheckboxInput = styled.input`
+export const CheckboxInput = styled.input<CheckedColor>`
   width: 0;
   height: 0;
   opacity: 0;
   cursor: pointer;
   position: absolute;
-  &:checked + ${CheckboxBlock} {
-    border-color: ${({ theme }) => theme.colors.accent.primary};
-    background: ${({ theme }) => theme.colors.accent.primary};
-    ${CheckboxCheckedIcon} {
+  &:checked + span {
+    ${({ theme, $checkedColor }) => {
+      const color = $checkedColor || theme.colors.accent.primary;
+      return css`
+        border-color: ${color};
+        background: ${color};
+      `;
+    }}
+    svg {
       visibility: visible;
     }
   }
   &:checked:not(:disabled) + ${CheckboxBlock}:hover {
-    border-color: ${({ theme }) => theme.colors.accent.strong};
-    background: ${({ theme }) => theme.colors.accent.strong};
+    ${({ theme, $checkedColor }) => {
+      const color = $checkedColor || theme.colors.accent.strong;
+      return css`
+        border-color: ${color};
+        background: ${color};
+      `;
+    }}
   }
   &:disabled + ${CheckboxBlock} {
     border-color: ${({ theme }) => theme.colors.grayScale.gray1};
     background: ${({ theme }) => theme.colors.grayScale.gray1};
     cursor: not-allowed;
-    ${CheckboxCheckedIcon} {
+    svg {
       path {
         fill: ${({ theme }) => theme.colors.grayScale.gray6};
       }

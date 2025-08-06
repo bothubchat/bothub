@@ -9,7 +9,7 @@ export type SingleDatepickerProps = {
   locale?: Locale;
   children: (
     setRef: UseFloatingReturn['refs']['setReference'],
-    setOpen: Dispatch<SetStateAction<boolean>>
+    setOpen: Dispatch<SetStateAction<boolean>>,
   ) => ReactNode;
   defaultOpen?: boolean;
   buttonSaveText?: string;

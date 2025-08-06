@@ -5,7 +5,7 @@ import {
   AdaptiveBlockMobileText,
   AdaptiveBlockStyled,
   AdaptiveBlockTabletText,
-  AdaptiveBlockTouchText
+  AdaptiveBlockTouchText,
 } from './styled';
 import { AdaptiveVariant } from '@/ui/adaptive';
 import { useTheme } from '@/ui/theme';
@@ -19,7 +19,7 @@ export interface AdaptiveBlockProps {
 export const AdaptiveBlock: React.FC<AdaptiveBlockProps> = ({
   variant = 'main',
   merge = false,
-  disableMiniTablet = false
+  disableMiniTablet = false,
 }) => {
   const theme = useTheme();
 

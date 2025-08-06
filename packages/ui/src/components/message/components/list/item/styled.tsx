@@ -9,7 +9,7 @@ export interface MessageListItemStyledProps {
 
 export const MessageListItemStyled = styled(Typography).attrs({
   component: 'li',
-  variant: 'body-l-regular'
+  variant: 'body-l-regular',
 })<MessageListItemStyledProps>`
   display: block;
   position: relative;

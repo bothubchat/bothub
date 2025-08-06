@@ -85,7 +85,7 @@ export const ScrollbarContent = styled.div<ScrollbarContentProps>`
           &::-webkit-scrollbar {
             display: none;
           }
-        `
+        `,
       }))}
     `;
   }}

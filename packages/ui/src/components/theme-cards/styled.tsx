@@ -12,6 +12,6 @@ export const ThemeCardsStyled = styled.div`
     variant: 'dashboard',
     mobile: css`
       flex-direction: column;
-    `
+    `,
   })}
 `;

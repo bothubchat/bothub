@@ -9,7 +9,7 @@ export interface AdaptiveContextValue {
 export const AdaptiveContext = React.createContext<AdaptiveContextValue>({
   isDesktop: false,
   isTablet: false,
-  isMobile: false
+  isMobile: false,
 });
 
 export const AdaptiveProvider: React.FC<

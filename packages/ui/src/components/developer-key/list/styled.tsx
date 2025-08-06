@@ -24,11 +24,11 @@ export const DeveloperKeysHeader = styled.div`
 
 export const DeveloperKeysTitle = styled(Typography).attrs({
   component: 'h3',
-  variant: 'h2'
+  variant: 'h2',
 })``;
 
 export const DeveloperKeysIcon = styled(GearIcon).attrs({
-  size: 50
+  size: 50,
 })`
   padding: 10px;
   border-radius: 8px;
@@ -54,7 +54,7 @@ export const DeveloperKeyList = styled.div`
     mobile: css`
       margin: 14px 0px;
       gap: 14px;
-    `
+    `,
   })}
 `;
 
@@ -66,5 +66,5 @@ export const DeveloperKeysButtons = styled.div`
 export const AddDeveloperKeyButton = styled(Button).attrs({
   size: 'md',
   startIcon: <Plus2Icon />,
-  iconSize: 18
+  iconSize: 18,
 })``;

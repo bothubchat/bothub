@@ -17,7 +17,7 @@ export const HeaderLangDropdownItem: React.FC<HeaderLangDropdownItemProps> = ({
       onClick?.(event);
       setIsOpen(false);
     },
-    [onClick]
+    [onClick],
   );
 
   return (

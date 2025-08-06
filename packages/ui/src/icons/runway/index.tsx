@@ -16,8 +16,8 @@ export const RunwayIcon = icon(({ ...props }) => {
         {(
           { fill = fillColor, stroke = strokeColor } = {
             fill: fillColor,
-            stroke: strokeColor
-          }
+            stroke: strokeColor,
+          },
         ) => (
           <>
             <svg

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import {
   UserTariffBadgeSkeleton,
   UserTariffBadgeStyled,
-  UserTariffBadgeText
+  UserTariffBadgeText,
 } from './styled';
 import { useTooltip } from '@/ui/components/tooltip';
 import { UserTariff } from './types';
@@ -25,14 +25,14 @@ export const UserTariffBadge: React.FC<UserTariffBadgeProps> = ({
       props.onMouseEnter?.(event);
       handleTooltipMouseEnter(event);
     },
-    [props.onMouseEnter, handleTooltipMouseEnter]
+    [props.onMouseEnter, handleTooltipMouseEnter],
   );
   const handleMouseLeave = useCallback<React.MouseEventHandler<HTMLDivElement>>(
     (event) => {
       props.onMouseLeave?.(event);
       handleTooltipMouseLeave(event);
     },
-    [props.onMouseLeave, handleTooltipMouseLeave]
+    [props.onMouseLeave, handleTooltipMouseLeave],
   );
 
   return (

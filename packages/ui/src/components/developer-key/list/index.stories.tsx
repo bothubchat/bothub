@@ -38,8 +38,8 @@ export const Basic: DeveloperKeysStory = {
           3315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3
         </DeveloperKey>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export const Skeleton: DeveloperKeysStory = {
@@ -52,12 +52,12 @@ export const Skeleton: DeveloperKeysStory = {
         key={index}
         skeleton
       />
-    ))
-  }
+    )),
+  },
 };
 
 export default {
   title: 'Components/DeveloperKey/List',
   component: DeveloperKeys,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as DeveloperKeysMeta;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   MessageListScrollButton,
-  MessageListArrowNarrowDownIcon
+  MessageListArrowNarrowDownIcon,
 } from './styled';
 
 import { ScrollbarRef } from '../..';
@@ -18,7 +18,7 @@ export const ScrollButton: React.FC<IScrollButton> = ({ scrollbarRef }) => {
     if (el) {
       el.scrollTo({
         top: el.scrollHeight,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
   };

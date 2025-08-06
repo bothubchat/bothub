@@ -3,20 +3,20 @@ import { MessageMultilineCodeContentProps } from './types';
 import {
   MessageMultilineCodeContentContainer,
   MessageMultilineCodeContentStyled,
-  MessageMultilineCodeLastLine
+  MessageMultilineCodeLastLine,
 } from './styled';
 
 const MessageMultilineCodeContentHighlighted = lazy(() =>
   import('./highlighted').then((module) => ({
-    default: module.MessageMultilineCodeContentHighlighted
-  }))
+    default: module.MessageMultilineCodeContentHighlighted,
+  })),
 );
 
 export const MessageMultilineCodeContent = memo(
   ({
     children,
     $messageColor,
-    className
+    className,
   }: MessageMultilineCodeContentProps) => {
     const message = children?.toString().split('\n') ?? [];
 
@@ -53,5 +53,5 @@ export const MessageMultilineCodeContent = memo(
         </Suspense>
       </MessageMultilineCodeContentContainer>
     );
-  }
+  },
 );

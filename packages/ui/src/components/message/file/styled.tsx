@@ -24,7 +24,7 @@ export interface MessageFileNameProps {
 }
 
 export const MessageFileName = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })<MessageFileNameProps>`
   color: ${({ theme, $variant, $color }) => {
     if ($variant === 'assistant') {
@@ -44,7 +44,7 @@ export interface MessageFileSizeProps {
 }
 
 export const MessageFileSize = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })<MessageFileSizeProps>`
   color: ${({ theme, $variant, $color }) => {
     if ($variant === 'assistant') {

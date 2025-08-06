@@ -30,7 +30,7 @@ export const ColorSchemeNamesArray = [
   'mountain',
   'lake',
   'iris',
-  'peony'
+  'peony',
 ] as const;
 
 export type ColorSchemeNames = (typeof ColorSchemeNamesArray)[number];
@@ -80,6 +80,7 @@ export interface ThemeGradientColors {
   premium: string;
   deluxe: string;
   enterprise: string;
+  enterprise20: string;
   elite: string;
   elite20: string;
 }

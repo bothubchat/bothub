@@ -5,7 +5,7 @@ import {
   ColorPickerHex,
   ColorPickerLabel,
   ColorPickerPreview,
-  ColorPickerStyled
+  ColorPickerStyled,
 } from './styled';
 
 import { ColorPickerMenu } from './menu';
@@ -23,7 +23,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
   label,
   preview = true,
   color = '#1c64f2',
-  onChange
+  onChange,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 

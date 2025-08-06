@@ -77,9 +77,9 @@ export const useMarkdownPlugins = ({ children }: UseMarkdownPluginsProps) => {
             displayMode: true,
             output: 'html',
             errorColor: theme.colors.orange,
-            strict: handleKatexStrict
-          }
-        ]
+            strict: handleKatexStrict,
+          },
+        ],
       ];
     }
 

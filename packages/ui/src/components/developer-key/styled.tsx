@@ -59,11 +59,11 @@ export const DeveloperKeyContent = styled.div`
 `;
 
 export const DeveloperKeyLabel = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })``;
 
 export const DeveloperKeyValue = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })`
   text-overflow: ellipsis;
   width: 100%;

@@ -3,7 +3,7 @@ import React, {
   useRef,
   ReactNode,
   ElementType,
-  useCallback
+  useCallback,
 } from 'react';
 import hljs from 'highlight.js/lib/common';
 import DOMPurify from 'dompurify';
@@ -19,7 +19,7 @@ export const Highlight: React.FC<HighlightProps> = ({
   children,
   className = '',
   element: Element,
-  innerHTML = false
+  innerHTML = false,
 }) => {
   const elRef = useRef<HTMLDivElement | HTMLPreElement>(null);
 
@@ -41,7 +41,7 @@ export const Highlight: React.FC<HighlightProps> = ({
     const props = {
       ref: elRef,
       className,
-      dangerouslySetInnerHTML: { __html: safeHTML }
+      dangerouslySetInnerHTML: { __html: safeHTML },
     };
     if (Element) {
       return <Element {...props} />;

@@ -10,76 +10,76 @@ export type ButtonStory = StoryObj<typeof Button>;
 
 export const Basic: ButtonStory = {
   args: {
-    children: 'Click Me'
-  }
+    children: 'Click Me',
+  },
 };
 
 export const PrimaryOutline: ButtonStory = {
   args: {
     variant: 'primary-outline',
-    children: 'Click Me'
-  }
+    children: 'Click Me',
+  },
 };
 
 export const StartIcon: ButtonStory = {
   args: {
     startIcon: <LanguageIcon />,
-    children: 'Click Me'
-  }
+    children: 'Click Me',
+  },
 };
 
 export const EndIcon: ButtonStory = {
   args: {
     endIcon: <LanguageIcon />,
-    children: 'Click Me'
-  }
+    children: 'Click Me',
+  },
 };
 
 export const Icon: ButtonStory = {
   args: {
-    children: <LanguageIcon />
+    children: <LanguageIcon />,
   },
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 };
 
 export const Disabled: ButtonStory = {
   args: {
     ...Basic.args,
-    disabled: true
-  }
+    disabled: true,
+  },
 };
 
 export const Skeleton: ButtonStory = {
   args: {
     ...Basic.args,
-    skeleton: true
-  }
+    skeleton: true,
+  },
 };
 
 export const Help: ButtonStory = {
   args: {
-    variant: 'help'
-  }
+    variant: 'help',
+  },
 };
 
 export const Gradient: ButtonStory = {
   args: {
     ...Basic.args,
-    variant: 'gradient'
-  }
+    variant: 'gradient',
+  },
 };
 
 export const WithTooltip: ButtonStory = {
   args: {
     children: 'Click Me',
     size: 'small',
-    variant: 'text'
+    variant: 'text',
   },
   decorators: [
     (Story) => (
@@ -90,8 +90,8 @@ export const WithTooltip: ButtonStory = {
       >
         <Story />
       </Tooltip>
-    )
-  ]
+    ),
+  ],
 };
 
 export default {
@@ -100,23 +100,23 @@ export default {
   decorators: [StoryDecorator()],
   parameters: {
     actions: {
-      disable: true
-    }
+      disable: true,
+    },
   },
   argTypes: {
     disabled: {
       type: 'boolean',
-      defaultValue: false
+      defaultValue: false,
     },
     startIcon: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     endIcon: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as ButtonMeta;

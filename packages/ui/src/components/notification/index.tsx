@@ -9,7 +9,7 @@ import {
   NotificationRight,
   NotificationStyled,
   NotificationText,
-  NotificationTitle
+  NotificationTitle,
 } from './styled';
 import { ErrorBigIcon } from '@/ui/icons/error-big';
 import { InfoBigIcon } from '@/ui/icons/info-big';
@@ -38,7 +38,7 @@ export const Notification: React.FC<NotificationProps> = ({
   notificationId = 'unknown',
   title,
   children,
-  onClose
+  onClose,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const { isInNotificationList } = useNotifications();
@@ -94,11 +94,11 @@ export const Notification: React.FC<NotificationProps> = ({
           enter: { opacity: 1, transform: 'translateX(0px)' },
           leave: { opacity: 0, transform: 'translateX(412px)' },
           config: { duration: 250 },
-          onDestroyed: handleExitComplete
+          onDestroyed: handleExitComplete,
         }
       : {
-          onDestroyed: handleExitComplete
-        }
+          onDestroyed: handleExitComplete,
+        },
   );
 
   return notificationTransition(
@@ -127,7 +127,7 @@ export const Notification: React.FC<NotificationProps> = ({
             </NotificationRight>
           </NotificationContent>
         </NotificationStyled>
-      )
+      ),
   );
 };
 

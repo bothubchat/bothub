@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   MessageBadgeProgressStyled,
-  MessageBadgeProgressStyledProps
+  MessageBadgeProgressStyledProps,
 } from './styled';
 import { useMessage } from '../context';
 import { BadgeProgressColor } from '@/ui/components/badge';

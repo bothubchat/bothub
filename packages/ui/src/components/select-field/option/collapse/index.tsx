@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import {
   SelectFieldDataItem,
-  SelectFieldSize
+  SelectFieldSize,
 } from '@/ui/components/select-field';
 import {
   SelectFieldCollapseOptionArrow,
@@ -9,7 +9,7 @@ import {
   SelectFieldCollapseOptionHead,
   SelectFieldCollapseOptionHeadSide,
   SelectFieldCollapseOptionStyled,
-  SelectFieldCollapseOptionText
+  SelectFieldCollapseOptionText,
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
@@ -31,13 +31,18 @@ export interface SelectFieldCollapseOptionProps
   icon?: React.ReactNode;
 }
 
-export const SelectFieldCollapseOption: React.FC<
-  SelectFieldCollapseOptionProps
-> = ({ size, item, children, onClick, icon, ...props }) => {
+export const SelectFieldCollapseOption = ({
+  size,
+  item,
+  children,
+  onClick,
+  icon,
+  ...props
+}: SelectFieldCollapseOptionProps) => {
   const theme = useTheme();
 
   const [isOpen, setIsOpen] = useState(
-    typeof item === 'string' ? false : (item.open ?? false)
+    typeof item === 'string' ? false : (item.open ?? false),
   );
 
   const onCollapseClick = () => {
@@ -55,11 +60,11 @@ export const SelectFieldCollapseOption: React.FC<
     isDisabled = !!item.disabled;
   }
 
-  if (typeof window !== 'undefined') {
-    useLayoutEffect(() => {
-      setIsOpen(typeof item === 'string' ? false : (item.open ?? false));
-    }, [item]);
-  }
+  useLayoutEffect(() => {
+    if (typeof item !== 'string') {
+      setIsOpen(Boolean(item.open));
+    }
+  }, [item]);
 
   const label = typeof item === 'string' ? item : (item.label ?? item.value);
 
@@ -73,7 +78,7 @@ export const SelectFieldCollapseOption: React.FC<
         $disabled={isDisabled}
         $size={size}
         {...(!isDisabled && {
-          onClick: onCollapseClick
+          onClick: onCollapseClick,
         })}
       >
         <SelectFieldCollapseOptionHeadSide $size={size}>
@@ -96,7 +101,7 @@ export const SelectFieldCollapseOption: React.FC<
           {icon || (
             <SelectFieldCollapseOptionArrow
               style={{
-                transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)'
+                transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)',
               }}
             />
           )}

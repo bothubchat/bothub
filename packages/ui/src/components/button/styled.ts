@@ -67,14 +67,27 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
     return 'pointer';
   }};
 
+  svg path {
+    transition: fill 0.2s;
+  }
+
   ${({ theme, $disabled, $variant, $skeleton, $color }) => {
     switch ($variant) {
-      case 'primary':
+      case 'primary': {
+        let backgroundColor: string;
+
+        if ($color) {
+          backgroundColor = $color;
+        } else if ($disabled || $skeleton) {
+          backgroundColor = theme.colors.grayScale.gray3;
+        } else if (theme.mode === 'light' && theme.scheme === 'standard') {
+          backgroundColor = theme.colors.accent.primaryLight;
+        } else {
+          backgroundColor = theme.colors.accent.primary;
+        }
+
         return css`
-          background: ${$color ??
-          ($disabled || $skeleton
-            ? theme.colors.grayScale.gray3
-            : theme.colors.accent.primary)};
+          background: ${backgroundColor};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: 1;
 
@@ -89,6 +102,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
             }
           `}
         `;
+      }
       case 'primary-transparent':
         return css`
           background: ${$color ??

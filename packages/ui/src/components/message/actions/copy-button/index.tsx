@@ -12,7 +12,7 @@ import { useTheme } from '@/ui/theme';
 
 export const CopyButton = ({
   onCopy,
-  tooltipLabel
+  tooltipLabel,
 }: {
   onCopy?: MessageActionEventHandler;
   tooltipLabel?: string | null;
@@ -25,14 +25,14 @@ export const CopyButton = ({
   const copySpring = useSpring({
     opacity: copied ? 0 : 1,
     config: {
-      duration: 250
-    }
+      duration: 250,
+    },
   });
   const markSpring = useSpring({
     opacity: copied ? 1 : 0,
     config: {
-      duration: 250
-    }
+      duration: 250,
+    },
   });
 
   const handleClick = () => {
@@ -50,7 +50,7 @@ export const CopyButton = ({
         clearTimeout(timeoutId);
       }
     },
-    []
+    [],
   );
 
   return (
@@ -66,7 +66,7 @@ export const CopyButton = ({
         <MessageActionsButtonIconStyled style={markSpring}>
           <CheckSmallIcon
             {...(theme.scheme === 'custom' && {
-              fill: theme.colors.custom.icon
+              fill: theme.colors.custom.icon,
             })}
           />
         </MessageActionsButtonIconStyled>

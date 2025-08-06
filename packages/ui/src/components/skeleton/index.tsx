@@ -19,7 +19,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
   height,
   fullWidth = false,
   colors,
-  opacity
+  opacity,
 }) => (
   <SkeletonStyled
     $variant={variant}

@@ -9,12 +9,12 @@ export type ThemeButtonStory = StoryObj<typeof ThemeButton>;
 
 export const Basic: ThemeButtonStory = {
   args: {
-    theme: defaultTheme
-  }
+    theme: defaultTheme,
+  },
 };
 
 export default {
   title: 'Components/ThemeButton',
   component: ThemeButton,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ThemeButtonMeta;

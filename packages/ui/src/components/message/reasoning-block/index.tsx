@@ -7,7 +7,7 @@ import {
   ReasoningBlockButtonArrow,
   ReasoningBlockContentWrapper,
   ReasoningBlockHeader,
-  ReasoningBlockStyled
+  ReasoningBlockStyled,
 } from './styled';
 import { markdownComponents } from './markdown-components';
 import { useMeasure } from '@/ui/utils/useMeasure';
@@ -23,7 +23,7 @@ export const MessageReasoningBlock = ({
   content,
   buttonText,
   isReasoning,
-  fullWidth = false
+  fullWidth = false,
 }: ReasoningBlockProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -40,7 +40,7 @@ export const MessageReasoningBlock = ({
   const { delayedVisible, mounted } = useDelayedVisible(
     isOpen,
     0,
-    animationDuration
+    animationDuration,
   );
 
   return (
@@ -69,7 +69,7 @@ export const MessageReasoningBlock = ({
           style={{
             // @ts-expect-error
             '--reasoning-block-animation-duration': `${animationDuration / 1000}s`,
-            height: isOpen && delayedVisible ? bounds.height : 0
+            height: isOpen && delayedVisible ? bounds.height : 0,
           }}
         >
           <div ref={ref}>

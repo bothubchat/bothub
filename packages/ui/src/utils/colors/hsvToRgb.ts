@@ -1,7 +1,7 @@
 export const hsvToRgb = ([h, s, v]: [number, number, number]): [
   number,
   number,
-  number
+  number,
 ] => {
   const normalizedH = ((h % 360) + 360) % 360;
 

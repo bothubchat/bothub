@@ -67,7 +67,7 @@ export const ReferralRadioHead = styled.div`
 `;
 
 export const ReferralRadioName = styled(Typography).attrs({
-  variant: 'body-m-semibold'
+  variant: 'body-m-semibold',
 })``;
 
 export const ReferralRadioRadio = styled(Radio)``;
@@ -91,14 +91,14 @@ export const ReferralRadioTableRow = styled.div`
 `;
 
 export const ReferralRadioTableCell = styled(Typography).attrs({
-  variant: 'body-m-semibold'
+  variant: 'body-m-semibold',
 })`
   display: inline-flex;
   --skeleton-width: 100px;
 `;
 
 export const ReferralRadioTableHeadCell = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })`
   display: inline-flex;
   color: ${({ theme }) => theme.colors.grayScale.gray1};

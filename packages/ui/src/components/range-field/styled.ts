@@ -34,7 +34,7 @@ export const RangeFieldStyled = styled.div<RangeFieldStyledProps>`
 `;
 
 export const RangeFieldLabel = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   display: flex;
   align-items: center;
@@ -135,7 +135,7 @@ export const RangeFieldRangeThumb = styled.span<RangeFieldRangeThumbProps>`
     tablet: css`
       width: 20px;
       height: 20px;
-    `
+    `,
   })}
   ${({ theme }) =>
     theme.mode === 'light' &&
@@ -145,7 +145,7 @@ export const RangeFieldRangeThumb = styled.span<RangeFieldRangeThumbProps>`
 `;
 
 export const RangeFieldErrorText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   display: inline-flex;
   margin-top: 8px;

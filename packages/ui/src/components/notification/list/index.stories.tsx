@@ -45,12 +45,12 @@ export const Basic: NotificationsStory = {
           Скопировано в буфер обмена
         </Notification>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export default {
   title: 'UI Components/Notification/List',
   component: Notifications,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as NotificationsMeta;

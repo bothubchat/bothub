@@ -15,7 +15,7 @@ import { useTheme } from '@/ui/theme';
 export type SidebarToggleButtonProps = ButtonProps;
 
 export const SidebarToggleButton: React.FC<SidebarToggleButtonProps> = (
-  props
+  props,
 ) => {
   const theme = useTheme();
   const { isOpen, setIsOpen } = useSidebar();

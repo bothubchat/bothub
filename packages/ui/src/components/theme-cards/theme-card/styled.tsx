@@ -29,7 +29,7 @@ export const ThemeCardTopbar = styled.div`
 `;
 
 export const ThemeCardTopbarRadio = styled(Radio).attrs({
-  onClick: (e) => e.stopPropagation()
+  onClick: (e) => e.stopPropagation(),
 })``;
 
 export const ThemeCardTopbarTitle = styled.div`
@@ -39,7 +39,7 @@ export const ThemeCardTopbarTitle = styled.div`
 `;
 
 export const ThemeCardTopbarTitleText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })``;
 
 export const ThemeCardImage = styled(Image)`
@@ -54,6 +54,6 @@ export const ThemeCardImage = styled(Image)`
     `,
     mobile: css`
       height: 140px;
-    `
+    `,
   })}
 `;

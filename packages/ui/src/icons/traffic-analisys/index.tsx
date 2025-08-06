@@ -16,8 +16,8 @@ export const TrafficAnalisysIcon = icon(({ ...props }) => {
       <IconConsumer>
         {(
           { fill = fillColor } = {
-            fill: fillColor
-          }
+            fill: fillColor,
+          },
         ) => (
           <>
             <path

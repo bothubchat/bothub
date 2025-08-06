@@ -54,7 +54,7 @@ export const RadioCircleDot = styled.span`
 `;
 
 export const RadioLabel = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })``;
 
 export const RadioInput = styled.input`

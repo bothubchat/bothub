@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { SelectFieldSize } from '../../types';
 import { SelectFieldOptionSide } from '../list/styled';
 import { Typography, TypographyProps } from '@/ui/components/typography';
+import { colorToRgba } from '@/ui/utils';
 
 export interface SelectFieldOptionTextProps {
   $selected: boolean;
@@ -35,7 +36,7 @@ export interface SelectFieldColorOptionTextProps {
 }
 
 export const SelectFieldColorOptionText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })<SelectFieldColorOptionTextProps>`
   color: ${({ theme, $selected }) =>
     $selected ? theme.default.colors.base.white : theme.colors.base.white};
@@ -60,6 +61,7 @@ export interface SelectFieldOptionStyledProps {
   $selected: boolean;
   $disabled: boolean;
   $size: SelectFieldSize;
+  $selectedColor?: string;
   $backgroundHoverColor?: 'gradient' | 'primary';
 }
 
@@ -109,7 +111,13 @@ export const SelectFieldOptionStyled = styled.div<SelectFieldOptionStyledProps>`
   -moz-user-select: none;
   -webkit-user-select: none;
 
-  ${({ theme, $selected, $disabled, $backgroundHoverColor }) => {
+  ${({
+    theme,
+    $selected,
+    $disabled,
+    $selectedColor,
+    $backgroundHoverColor,
+  }) => {
     if ($disabled) {
       return css`
         cursor: not-allowed;
@@ -137,11 +145,8 @@ export const SelectFieldOptionStyled = styled.div<SelectFieldOptionStyledProps>`
             content: '';
             opacity: 0.2;
             border: inherit;
-            left: 0;
-            top: 0;
+            inset: 0;
             z-index: -1;
-            width: 100%;
-            height: 100%;
             position: absolute;
           }
         `;
@@ -154,34 +159,24 @@ export const SelectFieldOptionStyled = styled.div<SelectFieldOptionStyledProps>`
           padding-top: 12px;
           padding-bottom: 12px;
           text-align: center;
-          &:hover::before {
-            background: ${theme.colors.accent.primary};
-            content: '';
-            opacity: 0.2;
-            border: inherit;
-            left: 0;
-            top: 0;
-            z-index: -1;
-            width: 100%;
-            height: 100%;
-            position: absolute;
+          &:hover {
+            background: ${colorToRgba(theme.colors.accent.primary, 0.2)};
           }
         `;
       default:
-        return css`
-          ${!$selected &&
-          `
-            cursor: pointer;
-            &:hover {
-              background: ${theme.mode === 'light' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)'};
-            }
-          `}
-          ${$selected &&
-          `
-            background: ${theme.colors.accent.primary};
-            cursor: default;
-          `}
-        `;
+        return $selected
+          ? css`
+              background: ${$selectedColor || theme.colors.accent.primary};
+              cursor: default;
+            `
+          : css`
+              cursor: pointer;
+              &:hover {
+                background: ${theme.mode === 'light'
+                  ? 'rgba(0, 0, 0, 0.05)'
+                  : 'rgba(255, 255, 255, 0.05)'};
+              }
+            `;
     }
   }}
 `;

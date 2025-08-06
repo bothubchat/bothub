@@ -2,7 +2,7 @@ import React from 'react';
 import {
   MessageTableCellStyled,
   MessageTableCellText,
-  MessageTableHeadCell
+  MessageTableHeadCell,
 } from './styled';
 import { useMessage } from '../../../context';
 

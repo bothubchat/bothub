@@ -3,7 +3,7 @@ import {
   useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from 'react';
 import * as S from './styled';
 
@@ -32,7 +32,7 @@ export const SelectFieldGroup = ({
       setShowTopShadow(scrollTop > 1);
 
       setShowBottomShadow(
-        Math.floor(scrollHeight - scrollTop - clientHeight) > 1
+        Math.floor(scrollHeight - scrollTop - clientHeight) > 1,
       );
 
       onScrollTopChange(scrollTop);

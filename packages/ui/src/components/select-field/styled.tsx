@@ -1,17 +1,12 @@
 import { css, styled } from 'styled-components';
-import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { Skeleton } from '@/ui/components/skeleton';
-import { SelectFieldPlacement, SelectFieldSize } from './types';
 import { Chip } from '@/ui/components/chip';
 import { LoaderCircularGradientIcon } from '@/ui/icons/loader-circular-gradient';
 import { SearchCircleIcon } from '@/ui/icons/search-circle';
 import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
-import { ScrollableTabs } from '../scrollable-tabs';
-import { TextField } from '../text-field';
-import { SearchSimpleIcon } from '@/ui/icons';
 
 export interface SelectFieldStyledProps {
   $fullWidth: boolean;
@@ -24,6 +19,7 @@ export const SelectFieldStyled = styled.div<SelectFieldStyledProps>`
   align-items: flex-start;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
   ${({ $fullWidth }) =>
     !$fullWidth &&
     css`
@@ -42,7 +38,7 @@ export const SelectFieldStyled = styled.div<SelectFieldStyledProps>`
 `;
 
 export const SelectFieldLabel = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   display: flex;
   align-items: center;
@@ -170,7 +166,7 @@ export interface SelectFieldSearchIconProps {
 }
 
 export const SelectFieldSearchIcon = styled(SearchCircleIcon).attrs({
-  size: 16
+  size: 16,
 })<SelectFieldSearchIconProps>`
   path {
     fill: ${({ theme, $focus }) => {
@@ -236,7 +232,7 @@ export const SelectFieldInputNative = styled.input`
 export const SelectFieldClearButton = styled(Button).attrs({
   variant: 'text',
   iconSize: 12,
-  children: <CloseIcon />
+  children: <CloseIcon />,
 })``;
 
 export const SelectFieldValue = styled.span`
@@ -247,7 +243,7 @@ export const SelectFieldValue = styled.span`
 `;
 
 export const SelectFieldValueText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   white-space: nowrap;
   overflow: hidden;
@@ -269,7 +265,7 @@ export const SelectFieldValueColor = styled.span<SelectFieldValueColorProps>`
 `;
 
 export const SelectFieldColorValueText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   color: ${({ theme }) => theme.colors.base.white};
   white-space: nowrap;
@@ -297,7 +293,7 @@ export interface SelectFieldPlaceholderProps {
 }
 
 export const SelectFieldPlaceholder = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })<SelectFieldPlaceholderProps>`
   color: ${({ $open, theme }) => {
     if ($open) {
@@ -314,73 +310,8 @@ export const SelectFieldArrow = styled(ArrowDownIcon).attrs({ size: 16 })`
   transition: transform 0.2s ease-in-out;
 `;
 
-export interface SelectFieldBlockProps {
-  $contentWidth?: number;
-}
-
-export const SelectFieldBlock = styled.div<SelectFieldBlockProps>`
-  display: flex;
-  position: absolute;
-  z-index: ${({ theme }) => theme.zIndex.select};
-  width: ${({ $contentWidth }) => $contentWidth}px;
-  min-width: 200px;
-  width: 100%;
-  box-sizing: border-box;
-`;
-
-export const AnimatedSelectFieldBlock = animated(SelectFieldBlock);
-
-export interface SelectFieldBlockPositionWrapperProps {
-  $blur: boolean;
-  $placement: SelectFieldPlacement;
-  $width?: 'inherit';
-}
-
-export const SelectFieldBlockPositionWrapper = styled.div<SelectFieldBlockPositionWrapperProps>`
-  display: flex;
-  position: absolute;
-  width: ${({ $width }) => $width || '100%'};
-  box-sizing: border-box;
-  padding: 6px 0 6px 8px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  border-radius: 10px;
-  background: ${({ theme, $blur }) => {
-    if ($blur) {
-      return theme.mode === 'light'
-        ? 'rgba(255, 255, 255, 0.65)'
-        : 'rgba(18, 24, 37, 0.75)';
-    }
-
-    return theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray4;
-  }};
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  ${({ $placement }) => {
-    switch ($placement) {
-      case 'bottom-left':
-        return css`
-          top: 0px;
-          margin-top: 10px;
-        `;
-      case 'top-left':
-      case 'top-right':
-        return css`
-          bottom: 0px;
-          margin-bottom: 10px;
-        `;
-    }
-  }}
-`;
-
-export const SelectFieldBlockContent = styled.div`
-  display: flex;
-  width: 100%;
-`;
-
 export const SelectFieldErrorText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   display: inline-flex;
   margin-top: 8px;
@@ -390,42 +321,4 @@ export const SelectFieldErrorText = styled(Typography).attrs({
 export const SelectFieldSkeleton = styled(Skeleton)`
   width: 100%;
   height: 18px;
-`;
-
-export interface SelectFieldGroupsProps {
-  $size: SelectFieldSize;
-}
-
-export const SelectFieldGroups = styled.div<SelectFieldGroupsProps>`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  gap: ${({ $size }) => {
-    switch ($size) {
-      case 'small':
-        return 4;
-      case 'md':
-        return 6;
-      case 'large':
-        return 8;
-    }
-  }}px;
-`;
-
-export const SelectFieldTabsContainer = styled.div`
-  width: 100%;
-  padding-right: 8px;
-`;
-
-export const SelectFieldTabs = styled(ScrollableTabs).attrs({
-  variant: 'secondary'
-})``;
-
-export const SelectFieldSearch = styled(TextField).attrs({
-  fullWidth: true,
-  startIcon: <SearchSimpleIcon />,
-  variant: 'secondary'
-})`
-  padding-right: 8px;
 `;

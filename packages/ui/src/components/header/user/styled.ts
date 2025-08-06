@@ -19,7 +19,7 @@ export const HeaderUserStyled = styled.div<HeaderUserStyledProps>`
         `,
         tablet: css`
           display: none;
-        `
+        `,
       });
 
       return css`
@@ -32,7 +32,7 @@ export const HeaderUserStyled = styled.div<HeaderUserStyledProps>`
       variant: $variant,
       mobile: css`
         display: none;
-      `
+      `,
     });
   }}
 `;

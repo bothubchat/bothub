@@ -15,7 +15,7 @@ export const Portal: React.FC<PortalProps> = ({ children, ...props }) => {
     } else {
       setElement(
         document.querySelector(String(PortalElement)) ??
-          document.getElementById(portalId)
+          document.getElementById(portalId),
       );
     }
   }, [props.element]);

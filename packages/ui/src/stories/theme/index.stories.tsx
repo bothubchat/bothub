@@ -11,5 +11,5 @@ export const Basic: ThemeStory = {};
 export default {
   title: 'Theme',
   component: Theme,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ThemeMeta;

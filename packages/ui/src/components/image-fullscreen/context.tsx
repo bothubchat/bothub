@@ -9,7 +9,7 @@ export interface ImageFullScreenContextValue {
 export const ImageFullScreenContext =
   React.createContext<ImageFullScreenContextValue>({
     data: [],
-    activeItem: null
+    activeItem: null,
   });
 
 export const ImageFullScreenProvider: React.FC<

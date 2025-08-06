@@ -4,7 +4,7 @@ import {
   HeaderNavDropdownArrow,
   HeaderNavDropdownBody,
   HeaderNavDropdownHead,
-  HeaderNavDropdownStyled
+  HeaderNavDropdownStyled,
 } from './styled';
 import { HeaderNavDropdownProvider } from './context';
 import { useHeaderMenu } from '../../menu/context';
@@ -16,7 +16,7 @@ export interface HeaderNavDropdownProps extends React.PropsWithChildren {
 
 export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({
   label,
-  children
+  children,
 }) => {
   const { variant } = useHeader();
   const { isInMenu } = useHeaderMenu();
@@ -55,17 +55,17 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      transform: 'scale(0)'
+      transform: 'scale(0)',
     },
     enter: {
       opacity: isOpen ? 1 : 0.5,
-      transform: `scale(${isOpen ? 1 : 0.999})`
+      transform: `scale(${isOpen ? 1 : 0.999})`,
     },
     leave: {
       opacity: 0,
-      transform: 'scale(0.999)'
+      transform: 'scale(0.999)',
     },
-    config: { duration: 150 }
+    config: { duration: 150 },
   });
 
   return (
@@ -84,7 +84,7 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({
           {label}
           <HeaderNavDropdownArrow
             style={{
-              transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'
+              transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)',
             }}
           />
         </HeaderNavDropdownHead>
@@ -97,7 +97,7 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({
               >
                 {children}
               </HeaderNavDropdownBody>
-            )
+            ),
         )}
       </HeaderNavDropdownStyled>
     </HeaderNavDropdownProvider>

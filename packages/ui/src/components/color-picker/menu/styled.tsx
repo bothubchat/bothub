@@ -48,7 +48,7 @@ export const ColorPickerMenuHeader = styled.div`
 `;
 
 export const ColorPickerMenuHeaderHexCodeInput = styled(TextField).attrs({
-  variant: 'secondary'
+  variant: 'secondary',
 })`
   width: 81px;
   height: 28px;
@@ -87,7 +87,7 @@ export const ColorPickerMenuPreview = styled.div`
 
 export const ColorPickerMenuCloseButton = styled(Button).attrs({
   children: <CloseIcon />,
-  variant: 'text'
+  variant: 'text',
 })``;
 
 export const ColorPickerMenuArea = styled.div`
@@ -118,7 +118,7 @@ export const ColorPickerMenuHueSlider = styled.div`
 `;
 
 export const ColorPickerMenuSelector = styled.div.attrs({
-  children: <SelectorIcon />
+  children: <SelectorIcon />,
 })`
   display: flex;
   justify-content: center;

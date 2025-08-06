@@ -46,12 +46,12 @@ export const Basic: MenuDropDownStory = {
           MidJourney
         </MenuDropdownNavLink>
       </MenuDropdownNav>
-    )
-  }
+    ),
+  },
 };
 
 export default {
   title: 'UI Components/MenuDropDown',
   component: MenuDropdown,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as MenuDropDownMeta;

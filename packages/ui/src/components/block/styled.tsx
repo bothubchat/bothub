@@ -29,14 +29,14 @@ export const BlockStyled = styled.div<BlockStyledProps>`
           `,
           tablet: css`
             border-radius: 18px;
-          `
+          `,
         });
       case 'rectangular':
         return adaptive({
           variant: 'dashboard',
           tablet: css`
             border-radius: 18px;
-          `
+          `,
         });
     }
   }}
@@ -60,7 +60,7 @@ export const BlockHead = styled.div<BlockHeadProps>`
     `,
     mobile: css`
       border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
-    `
+    `,
   })}
 
   ${({ $toolbar }) => {
@@ -75,7 +75,7 @@ export const BlockHead = styled.div<BlockHeadProps>`
         `,
         mobile: css`
           padding: 18px 16px;
-        `
+        `,
       });
     }
 
@@ -89,14 +89,14 @@ export const BlockHead = styled.div<BlockHeadProps>`
       `,
       mobile: css`
         padding: 18px 16px 12px;
-      `
+      `,
     });
   }}
 `;
 
 export const BlockTitle = styled(Typography).attrs({
   component: 'h2',
-  variant: 'body-xl-semibold'
+  variant: 'body-xl-semibold',
 })``;
 
 export const BlockToolbar = styled.div`
@@ -126,7 +126,7 @@ export const BlockBody = styled.div<BlockBodyProps>`
     `,
     tablet: css`
       padding: 24px 0px;
-    `
+    `,
   })}
   ${({ $head }) =>
     $head &&
@@ -141,8 +141,8 @@ export const BlockBodyScrollbarWrapper = styled(Scrollbar).attrs({
   scrollShadows: {
     size: 90,
     top: <ScrollbarShadow side="top" />,
-    bottom: <ScrollbarShadow side="bottom" />
-  }
+    bottom: <ScrollbarShadow side="bottom" />,
+  },
 })`
   height: 100%;
   overflow: auto;
@@ -164,7 +164,7 @@ export const BlockBodyContent = styled.div<BlockBodyContentProps>`
     `,
     mobile: css`
       padding: 0px 16px;
-    `
+    `,
   })}
   ${({ $head }) =>
     $head &&
@@ -176,7 +176,7 @@ export const BlockBodyContent = styled.div<BlockBodyContentProps>`
       `,
       tablet: css`
         padding-top: 24px !important;
-      `
+      `,
     })}
   ${({ $fullHeight }) =>
     $fullHeight &&

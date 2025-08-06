@@ -30,7 +30,7 @@ export const AvatarObject = styled.object.attrs({ type: 'image/jpeg' })`
 export const AvatarSkeleton = styled(Skeleton).attrs({
   variant: 'circular',
   width: 40,
-  height: 40
+  height: 40,
 })``;
 
 export interface AvatarBgProps {

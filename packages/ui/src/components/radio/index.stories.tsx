@@ -8,33 +8,33 @@ export type RadioStory = StoryObj<typeof Radio>;
 
 export const Basic: RadioStory = {
   args: {
-    label: 'Отправлять автоматически'
-  }
+    label: 'Отправлять автоматически',
+  },
 };
 
 export const Disabled: RadioStory = {
   args: {
     ...Basic.args,
-    disabled: true
-  }
+    disabled: true,
+  },
 };
 
 export const DisabledChecked: RadioStory = {
   args: {
     ...Disabled.args,
-    checked: true
-  }
+    checked: true,
+  },
 };
 
 export const Skeleton: RadioStory = {
   args: {
     skeleton: true,
-    label: true
-  }
+    label: true,
+  },
 };
 
 export default {
   title: 'UI Components/Radio',
   component: Radio,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as RadioMeta;

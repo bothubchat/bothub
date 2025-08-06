@@ -8,13 +8,13 @@ import {
   FooterLogoLink,
   FooterNav,
   FooterNavLink,
-  FooterText
+  FooterText,
 } from '.';
 import {
   BotCircleIcon,
   EmailCircleIcon,
   MediumCircleIcon,
-  TgCircleIcon
+  TgCircleIcon,
 } from '@/ui/icons';
 
 export type FooterMeta = Meta<typeof Footer>;
@@ -79,8 +79,8 @@ export const Basic: FooterStory = {
           </FooterNav>
         </FooterColumn>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -90,23 +90,23 @@ export default {
   argTypes: {
     id: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     logo: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     nav: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as FooterMeta;

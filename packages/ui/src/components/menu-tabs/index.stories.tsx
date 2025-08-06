@@ -11,13 +11,13 @@ export const Basic: MenuTabsStory = {
     tabs: [
       { value: 'tab1', label: 'Tab 1' },
       { value: 'tab2', label: 'Tab 2' },
-      { value: 'tab3', label: 'Tab 3' }
-    ]
-  }
+      { value: 'tab3', label: 'Tab 3' },
+    ],
+  },
 };
 
 export default {
   title: 'UI Components/MenuTabs',
   component: MenuTabs,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 };

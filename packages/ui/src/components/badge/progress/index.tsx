@@ -6,7 +6,7 @@ import {
   BadgeProgressLineFilled,
   BadgeProgressLoader,
   BadgeProgressStyled,
-  BadgeProgressText
+  BadgeProgressText,
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { BadgeProgressColor } from './types';
@@ -67,14 +67,14 @@ export const BadgeProgress: React.FC<BadgeProgressProps> = ({
       props.onMouseEnter?.(event);
       handleTooltipMouseEnter(event);
     },
-    [props.onMouseEnter, handleTooltipMouseEnter]
+    [props.onMouseEnter, handleTooltipMouseEnter],
   );
   const handleMouseLeave = useCallback<React.MouseEventHandler<HTMLDivElement>>(
     (event) => {
       props.onMouseLeave?.(event);
       handleTooltipMouseLeave(event);
     },
-    [props.onMouseLeave, handleTooltipMouseLeave]
+    [props.onMouseLeave, handleTooltipMouseLeave],
   );
 
   return (
@@ -90,7 +90,7 @@ export const BadgeProgress: React.FC<BadgeProgressProps> = ({
           {percent !== null && (
             <BadgeProgressLineFilled
               style={{
-                width: `${percent}%`
+                width: `${percent}%`,
               }}
             />
           )}

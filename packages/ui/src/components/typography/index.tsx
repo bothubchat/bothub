@@ -27,7 +27,7 @@ const TypographyComponentWithRef: ForwardRefRenderFunction<
     fullWidth = false,
     ...props
   },
-  ref
+  ref,
 ) => (
   <TypographyStyled
     {...props}

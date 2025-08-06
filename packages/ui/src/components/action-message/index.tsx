@@ -2,7 +2,7 @@ import React from 'react';
 import {
   ActionMessageBadge,
   ActionMessageContent,
-  ActionMessageStyled
+  ActionMessageStyled,
 } from './styled';
 
 export type ActionMessageProps = React.ComponentProps<'div'>;

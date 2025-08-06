@@ -4,7 +4,7 @@ import {
   RadioCircleDot,
   RadioInput,
   RadioLabel,
-  RadioStyled
+  RadioStyled,
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 
@@ -31,7 +31,7 @@ export const Radio: React.FC<RadioProps> = ({
       props.onChange?.(event);
       onValueChange?.(event.target.checked);
     },
-    [props.onChange, onValueChange]
+    [props.onChange, onValueChange],
   );
 
   return (

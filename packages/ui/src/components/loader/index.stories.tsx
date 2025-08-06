@@ -11,5 +11,5 @@ export const Basic: LoaderStory = {};
 export default {
   title: 'UI Components/Loader',
   component: Loader,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as LoaderMeta;

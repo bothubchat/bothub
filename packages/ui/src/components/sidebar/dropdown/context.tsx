@@ -20,7 +20,7 @@ export function useSidebarDropdown(): SidebarDropdownContextValue {
 
   if (!value) {
     throw new Error(
-      'useSidebarDropdown must be used within a SidebarDropdownProvider.'
+      'useSidebarDropdown must be used within a SidebarDropdownProvider.',
     );
   }
 

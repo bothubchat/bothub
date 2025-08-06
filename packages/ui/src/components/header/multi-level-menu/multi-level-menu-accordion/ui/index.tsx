@@ -16,7 +16,7 @@ import {
   MultiLevelMenuSecondLevelLiHover,
   MultiLevelMenuSecondLevelSubTitle,
   MultiLevelMenuSecondLevelWrapper,
-  MultiLevelMenuTitle
+  MultiLevelMenuTitle,
 } from './styled';
 import { TFirstLevelItem, TMenuItem } from '../../types';
 import { MultiLevelMenuFirstLevelItem } from '../../multi-level-menu-first-level';
@@ -38,12 +38,12 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
   accordionIndex,
   openAccordion,
   handleCloseAccordion,
-  handleAccordionToggle
+  handleAccordionToggle,
 }) => {
   const [selectedItem, setSelectedItem] = useState<TFirstLevelItem | undefined>(
     menuItem.children && menuItem.children[0].children
       ? menuItem.children[0]
-      : undefined
+      : undefined,
   );
 
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -62,14 +62,14 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
     from: { opacity: 0, height: 0, transform: 'translateY(-30px)' },
     enter: { opacity: 1, height: 'auto', transform: 'translateY(0)' },
     leave: { opacity: 0, height: 'auto', transform: 'translateY(-10px)' },
-    config: { duration: 200 }
+    config: { duration: 200 },
   });
 
   const secondLevelTransition = useTransition(selectedItem, {
     from: { opacity: 0, height: 0, transform: 'translateY(-10px)' },
     enter: { opacity: 1, height: 'auto', transform: 'translateY(0)' },
     leave: { opacity: 0, height: 0, transform: 'translateY(-10px)' },
-    config: { duration: 100 }
+    config: { duration: 100 },
   });
 
   return (
@@ -148,7 +148,7 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                                         <IconProvider size={18}>
                                           {childrenItem.icon
                                             ? React.createElement(
-                                                childrenItem.icon
+                                                childrenItem.icon,
                                               )
                                             : ''}
                                         </IconProvider>
@@ -171,14 +171,14 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
                                   </MultiLevelMenuSecondLevelHeader>
                                 </MultiLevelMenuSecondLevelLiHover>
                               </MultiLevelMenuSecondLevelLi>
-                            )
+                            ),
                           )}
                       </MultiLevelMenuSecondLevelContentWrapper>
                     </MultiLevelMenuSecondLevelWrapper>
-                  )
+                  ),
               )}
             </MultiLevelMenuFirstLevelWrapper>
-          )
+          ),
       )}
     </MultiLevelMenuLi>
   );
