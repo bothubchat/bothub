@@ -22,5 +22,5 @@ export const SortAlphabetDescendingIcon = icon(
         />
       </Icon>
     );
-  }
+  },
 );

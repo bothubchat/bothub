@@ -10,7 +10,7 @@ import {
   ThemeItemValue,
   ThemeList,
   ThemeStyled,
-  ThemeTitle
+  ThemeTitle,
 } from './styled';
 import { useTheme } from '@/ui/theme';
 
@@ -54,7 +54,7 @@ export const Theme: React.FC = () => {
                         key={index}
                         onClick={handleItemClick.bind(
                           null,
-                          `theme.${category}.${name}`
+                          `theme.${category}.${name}`,
                         )}
                       >
                         {previewNode}
@@ -67,7 +67,7 @@ export const Theme: React.FC = () => {
                   }
 
                   return null;
-                }
+                },
               )}
             </ThemeList>
           </ThemeGroup>

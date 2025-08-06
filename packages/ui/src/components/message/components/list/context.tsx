@@ -6,7 +6,7 @@ export interface MessageListContextValue {
 }
 
 export const MessageListContext = React.createContext<MessageListContextValue>({
-  variant: 'dot'
+  variant: 'dot',
 });
 
 export const MessageListProvider: React.FC<

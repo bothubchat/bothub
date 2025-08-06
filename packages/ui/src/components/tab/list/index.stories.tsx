@@ -18,8 +18,8 @@ export const Basic: TabsStory = {
         <Tab>Tab item #5</Tab>
         <Tab>Tab item #6</Tab>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -29,8 +29,8 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as TabsMeta;

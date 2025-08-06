@@ -12,7 +12,7 @@ export const PaginatorItem = styled.button.attrs<{
   $active?: boolean;
   $disabled?: boolean;
 }>({
-  type: 'button'
+  type: 'button',
 })`
   background: none;
   outline: none;

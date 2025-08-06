@@ -26,15 +26,15 @@ export const getPreviewUrlForFile = async (file: File) => {
 };
 
 export const formatUploadFiles = async (
-  files: File[]
+  files: File[],
 ): Promise<IInputMessageFile[]> => {
   const previewsUrls: (string | null)[] = await Promise.all(
-    files.map(getPreviewUrlForFile)
+    files.map(getPreviewUrlForFile),
   );
   const newFiles: IInputMessageFile[] = files.map((nativeFile, index) => ({
     name: nativeFile.name,
     previewUrl: previewsUrls[index],
-    native: nativeFile
+    native: nativeFile,
   }));
 
   const fileMap = new Map([...newFiles].map((file) => [file.name, file]));
@@ -57,7 +57,7 @@ export const formatSeconds = (seconds: number) => {
 
 export function isFileTypeAccepted(
   fileType: string,
-  acceptStr?: string
+  acceptStr?: string,
 ): boolean {
   if (!acceptStr || acceptStr.trim() === '') return true;
 

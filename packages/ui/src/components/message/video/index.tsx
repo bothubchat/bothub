@@ -8,7 +8,7 @@ import {
   MessageVideoDownload,
   MessageVideoStyled,
   MessageVideoTimeLine,
-  MessageVideoTimeText
+  MessageVideoTimeText,
 } from './styled';
 import { MaxWindowIcon } from '@/ui/icons/max-window';
 import { MinWindowIcon } from '@/ui/icons/min-window';
@@ -31,7 +31,7 @@ const formatTime = (time: number) => {
 
 export const MessageVideo: React.FC<MessageVideoProps> = ({
   src,
-  downloadVideo
+  downloadVideo,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoPlayed, setVideoPlayed] = useState(false);
@@ -69,7 +69,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
       const progress = (currentTime / duration) * 100;
       setVideoProgress(progress);
     },
-    []
+    [],
   );
 
   const handleVideoLoaded = useCallback(
@@ -79,7 +79,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
       const time = formatTime(duration);
       setVideoDuration(time);
     },
-    []
+    [],
   );
 
   const handleTimeUpdateClick = useCallback(
@@ -93,7 +93,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
       videoRef.current.currentTime =
         (progress / 100) * videoRef.current.duration;
     },
-    []
+    [],
   );
 
   const handleStartMouseMove = useCallback(() => {
@@ -105,7 +105,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
       if (!timeLineMouseMove) return;
       handleTimeUpdateClick(event);
     },
-    [timeLineMouseMove]
+    [timeLineMouseMove],
   );
 
   const handleStartMouseLeave = useCallback(() => {
@@ -138,7 +138,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
     return () => {
       window.removeEventListener(
         'fullscreenchange',
-        handleDocumentFullscreenChange
+        handleDocumentFullscreenChange,
       );
     };
   }, [videoPlayed]);

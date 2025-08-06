@@ -7,7 +7,7 @@ const localeMap = {
   es: 'es-ES',
   fr: 'fr-FR',
   pt: 'pt-PT',
-  en: 'en-US'
+  en: 'en-US',
 };
 
 export type DateBadgeLocaleProp = 'ru' | 'kz' | 'en' | 'es' | 'fr' | 'pt';
@@ -28,9 +28,9 @@ export const DateBadge: React.FC<DateBadgeProps> = React.memo(
         new Date(date).toLocaleDateString(localeMap[locale], {
           month: 'long',
           day: 'numeric',
-          year: 'numeric'
+          year: 'numeric',
         }),
-      [date, locale]
+      [date, locale],
     );
 
     return (
@@ -38,5 +38,5 @@ export const DateBadge: React.FC<DateBadgeProps> = React.memo(
         <DateBadgeText>{parsedDate}</DateBadgeText>
       </DateBadgeStyled>
     );
-  }
+  },
 );

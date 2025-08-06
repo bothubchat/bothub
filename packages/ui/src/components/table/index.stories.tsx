@@ -6,7 +6,7 @@ import {
   TableCell,
   TableCellText,
   TableHead,
-  TableRow
+  TableRow,
 } from '.';
 import { InfoIcon } from '@/ui/icons';
 import { Tooltip } from '@/ui/components/tooltip';
@@ -102,8 +102,8 @@ export const Basic: TableStory = {
           </TableRow>
         </TableBody>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -113,13 +113,13 @@ export default {
   argTypes: {
     head: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as TableMeta;

@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react';
 import { useMessage } from '@/ui/components/message/context';
 import {
   MessageComponentsProps,
-  MessageParagraph
+  MessageParagraph,
 } from '@/ui/components/message/components';
 import { MessageMarkdownLine, MessageMarkdownStyled } from './styled';
 import { markdownComponents } from './markdown-components';
@@ -35,9 +35,9 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
       components = {},
       componentsOverride = {},
       disableTyping = false,
-      forceMarkdown = false
+      forceMarkdown = false,
     },
-    ref
+    ref,
   ) => {
     const { typing, variant, color } = useMessage();
     const isDisabled = forceMarkdown ? false : variant === 'user';
@@ -51,7 +51,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
 
     const { remarkPlugins, rehypePlugins, singleDollarTextMath } =
       useMarkdownPlugins({
-        children: formattedChildren
+        children: formattedChildren,
       });
 
     const markdownNode = useMemo(() => {
@@ -98,7 +98,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
       singleDollarTextMath,
       remarkPlugins,
       rehypePlugins,
-      ref
+      ref,
     ]);
 
     return (
@@ -114,5 +114,5 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
         {!isDisabled && typeof children === 'string' && markdownNode}
       </>
     );
-  }
+  },
 );

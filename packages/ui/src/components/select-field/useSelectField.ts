@@ -5,9 +5,10 @@ import {
   SelectFieldMultiChangeEventHandler,
   SelectFieldMultiValueChangeEventHandler,
   SelectFieldPlacement,
-  SelectFieldValueChangeEventHandler
+  SelectFieldValueChangeEventHandler,
 } from './types';
 import { ValueSetter, ValueType } from '.';
+import { findNearestScrollableParent } from '@/ui/utils';
 
 export interface UseSelectFieldDefaultProps {
   multiple?: false;
@@ -30,7 +31,7 @@ export type UseSelectFieldUnionProps =
 export type UseSelectFieldProps = {
   disabled?: boolean;
   placement?: SelectFieldPlacement;
-  contentHeight?: number;
+  contentHeight?: number | string;
   onClose?: () => void;
   onSelectClick?: () => void;
 } & UseSelectFieldUnionProps;
@@ -38,7 +39,7 @@ export type UseSelectFieldProps = {
 export type UseSelectFieldReturnType = ReturnType<typeof useSelectField>;
 
 export const useSelectField = <
-  TriggerType extends HTMLElement = HTMLDivElement
+  TriggerType extends HTMLElement = HTMLDivElement,
 >({
   value: initialValue,
   multiple = false,
@@ -48,13 +49,15 @@ export const useSelectField = <
   onClose,
   onSelectClick,
   onChange,
-  onValueChange
+  onValueChange,
 }: UseSelectFieldProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
   const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState<number | undefined>(contentHeight);
+  const [height, setHeight] = useState<number | undefined | string>(
+    contentHeight,
+  );
   const [placement, setPlacement] = useState(initialPlacement);
 
   const setExternalValue = useCallback(
@@ -75,7 +78,7 @@ export const useSelectField = <
               }
               return '';
             })
-            .filter((item) => !!item)
+            .filter((item) => !!item),
         );
       }
       if (!multiple && !Array.isArray(item)) {
@@ -94,12 +97,12 @@ export const useSelectField = <
         }
       }
     },
-    [multiple, onChange, onValueChange]
+    [multiple, onChange, onValueChange],
   );
 
   let [value, setValue] = useState<ValueType>(multiple ? [] : null) as [
     ValueType,
-    ValueSetter
+    ValueSetter,
   ];
   if (typeof initialValue !== 'undefined') {
     [value, setValue] = [initialValue, setExternalValue];
@@ -133,7 +136,9 @@ export const useSelectField = <
       } else {
         modalMaxHeight = window.innerHeight - bottom - 20;
       }
-
+      if (typeof contentHeight === 'string') {
+        return;
+      }
       if (modalMaxHeight < contentHeight) {
         setHeight(modalMaxHeight);
       } else {
@@ -147,6 +152,22 @@ export const useSelectField = <
 
     return () => window.removeEventListener('resize', listener);
   }, [triggerRef.current, height, placement, contentHeight, isOpen]);
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+    onClose?.();
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen || !triggerRef.current) return;
+
+    const scrollParent = findNearestScrollableParent(triggerRef.current);
+    if (!scrollParent) return;
+
+    scrollParent.addEventListener('scroll', handleClose);
+
+    return () => scrollParent.removeEventListener('scroll', handleClose);
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -256,13 +277,8 @@ export const useSelectField = <
         setIsOpen(!isOpen);
       }
     },
-    [disabled, isOpen, placement, initialPlacement, onSelectClick]
+    [disabled, isOpen, placement, initialPlacement, onSelectClick],
   );
-
-  const handleClose = useCallback(() => {
-    setIsOpen(false);
-    onClose?.();
-  }, []);
 
   return {
     x,
@@ -279,6 +295,6 @@ export const useSelectField = <
     contentHeight: height,
     handleInputClick,
     handleClose,
-    setValue: setValueHandler
+    setValue: setValueHandler,
   };
 };

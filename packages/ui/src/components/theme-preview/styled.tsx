@@ -19,6 +19,6 @@ export const ThemePreviewScreenVersion = styled.span<ThemePreviewScreenVersionPr
       `,
       mobile: css`
         display: ${$screen === 'mobile' ? 'flex' : 'none'};
-      `
+      `,
     })}
 `;

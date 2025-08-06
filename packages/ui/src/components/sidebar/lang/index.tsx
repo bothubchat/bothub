@@ -6,7 +6,7 @@ import {
   SidebarLangDropdownToggler,
   SidebarLangDropdownTogglerArrow,
   SidebarLangDropdownTogglerIcon,
-  SidebarLangDropdownTogglerText
+  SidebarLangDropdownTogglerText,
 } from './styled';
 import { SidebarLangDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
@@ -14,6 +14,7 @@ import { useTheme } from '@/ui/theme';
 
 export interface SidebarLangDropdownProps
   extends React.ComponentProps<typeof SidebarLangDropdownStyled> {
+  children?: React.ReactNode;
   lang: string;
 }
 
@@ -55,14 +56,14 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      transform: 'scale(0)'
+      transform: 'scale(0)',
     },
     enter: {
       opacity: isOpen ? 1 : 0.5,
-      transform: `scale(${isOpen ? 1 : 0.999})`
+      transform: `scale(${isOpen ? 1 : 0.999})`,
     },
     leave: { opacity: 0, transform: 'scale(0.999)' },
-    config: { duration: 150 }
+    config: { duration: 150 },
   });
 
   return (
@@ -82,7 +83,7 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
             </SidebarLangDropdownTogglerText>
             <SidebarLangDropdownTogglerArrow
               style={{
-                transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'
+                transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)',
               }}
             />
           </SidebarLangDropdownToggler>
@@ -93,7 +94,7 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
               <SidebarLangDropdownContent style={style}>
                 {children}
               </SidebarLangDropdownContent>
-            )
+            ),
         )}
       </SidebarLangDropdownStyled>
     </SidebarLangDropdownProvider>

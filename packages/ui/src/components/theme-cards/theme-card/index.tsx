@@ -7,7 +7,7 @@ import {
   ThemeCardTopbar,
   ThemeCardTopbarRadio,
   ThemeCardTopbarTitle,
-  ThemeCardTopbarTitleText
+  ThemeCardTopbarTitleText,
 } from './styled';
 
 import DarkUrl from './assets/dark.svg';
@@ -21,7 +21,7 @@ import { IconProvider } from '../../icon';
 
 const darkLightUrls = {
   dark: DarkUrl,
-  light: LightUrl
+  light: LightUrl,
 };
 
 export type ThemeCardVariantType = 'dark' | 'light' | 'system';
@@ -39,16 +39,16 @@ export const ThemeCard: React.FC<ThemeCardProps> = ({
   title,
   checked = false,
   isSystemDark,
-  onClick
+  onClick,
 }) => {
   const theme = useTheme();
 
   const imageUrls = useMemo(
     () => ({
       ...darkLightUrls,
-      system: isSystemDark ? DarkUrl : LightUrl
+      system: isSystemDark ? DarkUrl : LightUrl,
     }),
-    [isSystemDark]
+    [isSystemDark],
   );
 
   const imgSrc = useMemo(() => imageUrls[variant], [imageUrls, variant]);

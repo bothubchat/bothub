@@ -43,7 +43,7 @@ export const Header = styled.div`
 `;
 
 export const Title = styled(Typography).attrs({
-  variant: 'body-xl-semibold'
+  variant: 'body-xl-semibold',
 })``;
 
 export const CloseButton = styled.button`

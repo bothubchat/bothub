@@ -18,7 +18,7 @@ export const MultiLevelFirstLevelMenuLi = styled.li<{
 `;
 
 export const MultiLevelMenuFirstLevelTitle = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })``;
 
 export const MultiLevelMenuFirstLevelHeader = styled.div<{ $active: boolean }>`

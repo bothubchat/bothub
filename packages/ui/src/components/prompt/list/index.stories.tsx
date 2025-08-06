@@ -103,8 +103,8 @@ export const Basic: PromptsStory = {
           его уникальных преимуществах и разрешая все возможные возражения.
         </PromptCard>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -114,8 +114,8 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as PromptsMeta;

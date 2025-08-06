@@ -7,7 +7,7 @@ export interface SidebarMenuContextValue {
 
 export const SidebarMenuContext = React.createContext<SidebarMenuContextValue>({
   isOpen: false,
-  setIsOpen() {}
+  setIsOpen() {},
 });
 
 export const SidebarMenuProvider: React.FC<

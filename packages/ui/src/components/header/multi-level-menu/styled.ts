@@ -13,7 +13,7 @@ import {
   BlogCircleIcon,
   NewsIcon,
   StarGradientIcon,
-  ArrowNarrowRightIcon
+  ArrowNarrowRightIcon,
 } from '@/ui/icons';
 
 export const MultiLevelMenuStyled = styled.nav`
@@ -68,7 +68,7 @@ export const MultiLevelMenuStarIconElite = styled(StarGradientIcon).attrs({
   y2: '9',
   startColor: '#1C64F2',
   endColor: '#D41CF2',
-  id: 'paint0_linear_10915_2302'
+  id: 'paint0_linear_10915_2302',
 })``;
 
 export const MultiLevelMenuStarIconDeluxe = styled(StarGradientIcon).attrs({
@@ -78,7 +78,7 @@ export const MultiLevelMenuStarIconDeluxe = styled(StarGradientIcon).attrs({
   y2: '9.00002',
   startColor: '#5728FF',
   endColor: '#A750FF',
-  id: 'paint0_linear_10915_7313'
+  id: 'paint0_linear_10915_7313',
 })``;
 
 export const MultiLevelMenuStarIconPremium = styled(StarGradientIcon).attrs({
@@ -88,7 +88,7 @@ export const MultiLevelMenuStarIconPremium = styled(StarGradientIcon).attrs({
   y2: '9.00002',
   startColor: '#4785FF',
   endColor: '#7740F2',
-  id: 'paint0_linear_10915_8101'
+  id: 'paint0_linear_10915_8101',
 })``;
 
 export const MultiLevelMenuStarIconBasic = styled(StarGradientIcon)``;
@@ -153,7 +153,7 @@ export const MultiLevelMenuArrowRight45 = styled(ArrowNarrowRightIcon)<{
   }
 `;
 export const MultiLevelMenuSecondLevelArrowRight45 = styled(
-  MultiLevelMenuArrowRight45
+  MultiLevelMenuArrowRight45,
 )`
   background: transparent;
   border-radius: 50%;

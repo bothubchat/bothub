@@ -262,13 +262,27 @@ import {
   AddProfileIcon,
   TokenCounterIcon,
   VideoCameraIcon,
+  SortAlphabetTopBottomIcon,
+  SortAlphabetBottomTopIcon,
+  PauseIcon,
+  PlayIcon,
+  Restore2Icon,
   VideoGenerationIcon,
   VeoModelIcon,
   RunwayIcon,
   QueueSelectIcon,
   AppleIcon,
   MailColoredIcon,
-  ShieldIcon
+  ShieldIcon,
+  StarsGradientIcon,
+  FireIcon,
+  BrainIcon,
+  ClaudeBlackIcon,
+  MjPurpleIcon,
+  VKFilledIcon,
+  TelegramFilledIcon,
+  ExchangeIcon,
+  TimeIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -331,6 +345,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="AIIcon">{AIIcon}</IconItem>
         <IconItem name="UpdateIcon">{UpdateIcon}</IconItem>
         <IconItem name="RestoreIcon">{RestoreIcon}</IconItem>
+        <IconItem name="Restore2Icon">{Restore2Icon}</IconItem>
         <IconItem name="ChatIcon">{ChatIcon}</IconItem>
         <IconItem name="StopIcon">{StopIcon}</IconItem>
         <IconItem name="ThumbUpIcon">{ThumbUpIcon}</IconItem>
@@ -580,12 +595,30 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TokenCounterIcon">{TokenCounterIcon}</IconItem>
         <IconItem name="AddProfileIcon">{AddProfileIcon}</IconItem>
         <IconItem name="MusicNoteIcon">{MusicNoteIcon}</IconItem>
+        <IconItem name="QueueIcon">{QueueIcon}</IconItem>
+        <IconItem name="SortAlphabetTopBottomIcon">
+          {SortAlphabetTopBottomIcon}
+        </IconItem>
+        <IconItem name="SortAlphabetBottomTopIcon">
+          {SortAlphabetBottomTopIcon}
+        </IconItem>
+        <IconItem name="PauseIcon">{PauseIcon}</IconItem>
+        <IconItem name="PlayIcon">{PlayIcon}</IconItem>
         <IconItem name="VeoModelIcon">{VeoModelIcon}</IconItem>
         <IconItem name="VideoGenerationIcon">{VideoGenerationIcon}</IconItem>
         <IconItem name="RunwayIcon">{RunwayIcon}</IconItem>
         <IconItem name="QueueSelectIcon">{QueueSelectIcon}</IconItem>
         <IconItem name="MailColoredIcon">{MailColoredIcon}</IconItem>
         <IconItem name="ShieldIcon">{ShieldIcon}</IconItem>
+        <IconItem name="StarsGradientIcon">{StarsGradientIcon}</IconItem>
+        <IconItem name="FireIcon">{FireIcon}</IconItem>
+        <IconItem name="BrainIcon">{BrainIcon}</IconItem>
+        <IconItem name="ClaudeBlackIcon">{ClaudeBlackIcon}</IconItem>
+        <IconItem name="MjPurpleIcon">{MjPurpleIcon}</IconItem>
+        <IconItem name="VKFilledIcon">{VKFilledIcon}</IconItem>
+        <IconItem name="TelegramFilledIcon">{TelegramFilledIcon}</IconItem>
+        <IconItem name="ExchangeIcon">{ExchangeIcon}</IconItem>
+        <IconItem name="TimeIcon">{TimeIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

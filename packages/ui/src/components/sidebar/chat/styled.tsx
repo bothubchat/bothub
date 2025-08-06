@@ -1,5 +1,5 @@
 import { css, styled, keyframes } from 'styled-components';
-import { Typography } from '@/ui/components/typography';
+import { getTypographyStyles, Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { TrashIcon } from '@/ui/icons/trash';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -10,6 +10,8 @@ import { DragDotIcon } from '@/ui/icons/drag-dot';
 import { Checkbox } from '@/ui/components/checkbox';
 import { Tooltip } from '@/ui/components/tooltip';
 import { colorToRgba } from '@/ui/utils/colors';
+import { Progress } from '../../progress';
+import { CheckSmallIcon } from '@/ui/icons';
 
 export interface SidebarChatLeftProps {
   $sidebarOpen?: boolean;
@@ -60,11 +62,31 @@ export const SidebarChatIconContainer = styled.span<SidebarChatIconContainerProp
   }
 `;
 
+export const SidebarChatProgressValue = styled.div`
+  color: white;
+  margin-top: 2px;
+  margin-right: 8px;
+  ${getTypographyStyles('body-s-medium')}
+`;
+
+export const SidebarChatProgressIcon = styled.div.attrs({
+  children: <CheckSmallIcon />,
+})`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.colors.accent.primary};
+`;
+
 export const SidebarChatNameBox = styled.div``;
 
 export const SidebarChatName = styled(Typography).attrs({
   variant: 'body-m-medium',
-  component: 'div'
+  component: 'div',
 })`
   overflow: hidden;
   white-space: nowrap;
@@ -77,7 +99,7 @@ export const SidebarChatName = styled(Typography).attrs({
     `,
     mobile: css`
       max-width: 130px;
-    `
+    `,
   })}
 `;
 
@@ -91,7 +113,7 @@ export const SidebarChatNameSkeleton = styled(Skeleton)`
     `,
     mobile: css`
       width: 130px;
-    `
+    `,
   })}
 `;
 
@@ -103,21 +125,21 @@ export const SidebarChatActions = styled.div`
 
 export const SidebarChatEditAction = styled(Button).attrs({
   variant: 'text',
-  children: <MenuDotIcon />
+  children: <MenuDotIcon />,
 })`
   transform: rotate(90deg);
 `;
 
 export const SidebarChatDeleteAction = styled(Button).attrs({
   variant: 'text',
-  children: <TrashIcon />
+  children: <TrashIcon />,
 })``;
 
 export const SidebarChatClosed = styled.div``;
 
 export const SidebarChatCaps = styled(Typography).attrs({
   variant: 'body-s-medium',
-  component: 'span'
+  component: 'span',
 })`
   display: inline-flex;
   padding: 4px 8px;
@@ -184,12 +206,14 @@ export interface SidebarChatStyledProps {
   $active: boolean;
   $skeleton: boolean;
   $draggble: boolean;
+  $isProgress: boolean;
+  $progressDone: boolean;
 }
 
 export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 8px;
   width: 100%;
   padding: 8px;
   cursor: pointer;
@@ -197,6 +221,22 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  position: relative;
+
+  ${({ $progressDone, theme }) =>
+    $progressDone &&
+    css`
+      &::before {
+        content: '';
+        display: block;
+        background: ${theme.colors.gradient.deluxe};
+        border-radius: 10px;
+        opacity: 0.2;
+        position: absolute;
+        inset: 0;
+      }
+    `};
+
   ${({ $draggble, theme }) => {
     if ($draggble) {
       return css`
@@ -206,7 +246,7 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
       `;
     }
   }};
-  ${({ $active, $skeleton, theme }) => {
+  ${({ $active, $skeleton, $progressDone, theme }) => {
     if ($active) {
       return css`
         border-radius: 10px;
@@ -220,21 +260,21 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
         }
       `;
     }
-    if (!$active && !$skeleton) {
+    if (!$active && !$skeleton && !$progressDone) {
       return css`
         &:hover {
           border-radius: 10px;
           background-color: ${colorToRgba(
             theme.colors.accent.primaryLight,
-            0.5
+            0.5,
           )};
           transition: background-color 0.3s ease-out;
         }
       `;
     }
   }}
-  ${({ $skeleton, $active }) => {
-    if ($skeleton || $active) {
+  ${({ $skeleton, $active, $isProgress }) => {
+    if ($skeleton || $active || $isProgress) {
       return css``;
     }
     return css`
@@ -254,6 +294,12 @@ export const SidebarChatStyled = styled.div<SidebarChatStyledProps>`
   }}
 `;
 
+export const SidebarChatContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export const SidebarChatCheckbox = styled(Checkbox)`
   margin-left: 20px;
 `;
@@ -270,3 +316,15 @@ export const SidebarChatDragHandle = styled(DragDotIcon)`
 `;
 
 export const SidebarChatNameTooltip = styled(Tooltip)``;
+
+export const SidebarChatProgress = styled(Progress).attrs({
+  fullWidth: true,
+})`
+  & > div {
+    height: 3px;
+  }
+
+  & > div > div {
+    background: ${({ theme }) => theme.colors.gradient.deluxe};
+  }
+`;

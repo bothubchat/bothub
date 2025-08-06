@@ -17,7 +17,7 @@ export const HeaderNavStyled = styled.nav<HeaderNavStyledProps>`
         `,
         mobile: css`
           gap: 30px;
-        `
+        `,
       });
 
       return css`
@@ -45,7 +45,7 @@ export const HeaderNavStyled = styled.nav<HeaderNavStyledProps>`
       merge: true,
       tablet: css`
         display: none;
-      `
+      `,
     });
 
     return css`

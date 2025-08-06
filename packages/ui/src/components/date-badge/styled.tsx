@@ -13,7 +13,7 @@ export const DateBadgeStyled = styled.div`
 `;
 
 export const DateBadgeText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })`
   color: ${({ theme }) =>
     theme.mode === 'light'

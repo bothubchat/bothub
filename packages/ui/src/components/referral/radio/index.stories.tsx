@@ -7,7 +7,7 @@ import {
   ReferralRadioTableCell,
   ReferralRadioTableHeadCell,
   ReferralRadioTableRow,
-  ReferralRadioTableSelectedCell
+  ReferralRadioTableSelectedCell,
 } from '.';
 
 export type ReferralRadioMeta = Meta<typeof ReferralRadio>;
@@ -50,8 +50,8 @@ export const Basic: ReferralRadioStory = {
           </ReferralRadioTableSelectedCell>
         </ReferralRadioTableRow>
       </ReferralRadioTable>
-    )
-  }
+    ),
+  },
 };
 
 export const Skeleton: ReferralRadioStory = {
@@ -100,12 +100,12 @@ export const Skeleton: ReferralRadioStory = {
           </ReferralRadioTableSelectedCell>
         </ReferralRadioTableRow>
       </ReferralRadioTable>
-    )
-  }
+    ),
+  },
 };
 
 export default {
   title: 'Components/Referral/Radio',
   component: ReferralRadio,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ReferralRadioMeta;

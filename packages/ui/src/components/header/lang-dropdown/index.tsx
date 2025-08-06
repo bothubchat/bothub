@@ -6,7 +6,7 @@ import {
   HeaderLangDropdownToggler,
   HeaderLangDropdownTogglerArrow,
   HeaderLangDropdownTogglerIcon,
-  HeaderLangDropdownTogglerText
+  HeaderLangDropdownTogglerText,
 } from './styled';
 import { HeaderLangDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
@@ -15,6 +15,7 @@ import { useTheme } from '@/ui/theme';
 export interface HeaderLangDropdownProps
   extends React.ComponentProps<typeof HeaderLangDropdownStyled> {
   lang: string;
+  children?: React.ReactNode;
 }
 
 export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
@@ -80,14 +81,14 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
   const dropdownTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      transform: 'scale(0)'
+      transform: 'scale(0)',
     },
     enter: {
       opacity: isOpen ? 1 : 0.5,
-      transform: `scale(${isOpen ? 1 : 0.999})`
+      transform: `scale(${isOpen ? 1 : 0.999})`,
     },
     leave: { opacity: 0, transform: 'scale(0.999)' },
-    config: { duration: 150 }
+    config: { duration: 150 },
   });
 
   return (
@@ -107,7 +108,7 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
             </HeaderLangDropdownTogglerText>
             <HeaderLangDropdownTogglerArrow
               style={{
-                transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'
+                transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)',
               }}
             />
           </HeaderLangDropdownToggler>

@@ -8,7 +8,7 @@ import { Typography } from '../../typography';
 export const HeaderLangDropdownStyled = styled.div``;
 
 export const HeaderLangDropdownTogglerIcon = styled(LanguageIcon).attrs({
-  size: 18
+  size: 18,
 })`
   pointer-events: none;
 `;
@@ -22,7 +22,7 @@ export const HeaderLangDropdownTogglerText = styled(Typography)`
 `;
 
 export const HeaderLangDropdownTogglerArrow = styled(ArrowDownIcon).attrs({
-  size: 16
+  size: 16,
 })`
   pointer-events: none;
   transition: transform 0.2s ease-in-out;

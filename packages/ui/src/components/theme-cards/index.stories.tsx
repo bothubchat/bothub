@@ -11,5 +11,5 @@ export const Basic: ThemesCardStory = {};
 export default {
   title: 'Components/ThemeCards',
   component: ThemeCards,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ThemesCardMeta;

@@ -2,7 +2,7 @@ import React from 'react';
 import { BreadcrumbsContainer, BreadcrumbsSeparator } from './styled';
 
 export const Breadcrumbs: React.FC<{ children: React.ReactNode }> = ({
-  children
+  children,
 }) => (
   <BreadcrumbsContainer>
     {React.Children.map(children, (child, index) => (

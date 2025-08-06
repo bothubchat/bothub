@@ -7,17 +7,17 @@ export type ProgressMeta = Meta<typeof Progress>;
 export type ProgressStory = StoryObj<typeof Progress>;
 
 export const Basic: ProgressStory = {
-  args: {}
+  args: {},
 };
 
 export const Skeleton: ProgressStory = {
   args: {
-    skeleton: true
-  }
+    skeleton: true,
+  },
 };
 
 export default {
   title: 'UI Components/Progress',
   component: Progress,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ProgressMeta;

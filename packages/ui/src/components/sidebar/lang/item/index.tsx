@@ -16,7 +16,7 @@ export const SidebarLangDropdownItem: React.FC<
       onClick?.(event);
       setIsOpen(false);
     },
-    [onClick]
+    [onClick],
   );
 
   return (

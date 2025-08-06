@@ -16,8 +16,8 @@ export const Basic: TariffCardStory = {
     extraText: 'Вы получаете',
     variant: 'BASIC',
     description:
-      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя'
-  }
+      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя',
+  },
 };
 
 export const Premium: TariffCardStory = {
@@ -31,8 +31,8 @@ export const Premium: TariffCardStory = {
     extraText: 'Вы получаете',
     variant: 'PREMIUM',
     description:
-      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя'
-  }
+      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя',
+  },
 };
 
 export const Deluxe: TariffCardStory = {
@@ -44,8 +44,8 @@ export const Deluxe: TariffCardStory = {
     extraText: 'Вы получаете',
     variant: 'DELUXE',
     description:
-      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя'
-  }
+      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя',
+  },
 };
 
 export const Enterprise: TariffCardStory = {
@@ -55,12 +55,12 @@ export const Enterprise: TariffCardStory = {
     variant: 'ENTERPRISE',
     button: <TariffCardEnterpriseButton>Обсудить</TariffCardEnterpriseButton>,
     description:
-      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя'
-  }
+      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя',
+  },
 };
 
 export default {
   title: 'Components/Tariff/Card',
   component: TariffCard,
-  decorators: [StoryDecorator({ scale: 'main' })]
+  decorators: [StoryDecorator({ scale: 'main' })],
 } as TariffCardMeta;

@@ -22,7 +22,7 @@ async function publish(): Promise<void> {
     const packageJsonPath = path.resolve(
       './packages/',
       packageFolderName,
-      './package.json'
+      './package.json',
     );
     // eslint-disable-next-line
     const packageJson = JSON.parse(await readFile(packageJsonPath, 'utf-8'));
@@ -38,7 +38,7 @@ async function publish(): Promise<void> {
 
     let packageVersion: string =
       (packageJson.version as string).match(
-        /^([0-9]+\.[0-9]+\.[0-9]+)/g
+        /^([0-9]+\.[0-9]+\.[0-9]+)/g,
       )?.[0] ?? packageJson.version;
     if (currentBranch !== 'main') {
       packageVersion += `-${packageTag}-${randomUUID()}`;
@@ -52,8 +52,8 @@ async function publish(): Promise<void> {
         {
           cwd: path.resolve('./packages', packageFolderName),
           stdio: 'inherit',
-          shell: true
-        }
+          shell: true,
+        },
       );
 
       process.on('close', () => resolve());

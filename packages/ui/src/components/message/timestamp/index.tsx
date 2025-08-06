@@ -10,7 +10,7 @@ export interface MessageTimestampProps {
 export const MessageTimestamp = ({
   time,
   position,
-  color
+  color,
 }: MessageTimestampProps) => {
   const { variant } = useMessage();
 

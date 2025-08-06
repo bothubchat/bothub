@@ -10,12 +10,12 @@ export const Basic: ThemeSchemesStory = {
     customTitle: 'Пользовательская тема',
     standardTitle: 'Стандартная тема',
     colorfulTitle: 'Цветная тема',
-    activeScheme: 'iris'
-  }
+    activeScheme: 'iris',
+  },
 };
 
 export default {
   title: 'Components/ThemeSchemes',
   component: ThemeSchemes,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ThemeSchemesMeta;

@@ -2,7 +2,7 @@ import React from 'react';
 import {
   ThemeSchemeSectionButtons,
   ThemeSchemeSectionRadio,
-  ThemeSchemeSectionStyled
+  ThemeSchemeSectionStyled,
 } from './styled';
 
 export type ThemeSchemesSectionEventHandler = () => unknown;

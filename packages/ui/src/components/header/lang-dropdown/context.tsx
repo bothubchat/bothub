@@ -20,7 +20,7 @@ export function useHeaderLangDropdown(): HeaderLangDropdownContextValue {
 
   if (!value) {
     throw new Error(
-      'useHeaderLangDropdown must be used within a HeaderLangDropdownProvider.'
+      'useHeaderLangDropdown must be used within a HeaderLangDropdownProvider.',
     );
   }
 

@@ -113,7 +113,7 @@ export const SelectFieldRadioTitleAndRadio = styled.label`
 export const SelectFieldRadioLabel = styled(Typography).attrs<{
   $size: SelectFieldSize;
 }>((props) => ({
-  variant: props.$size === 'large' ? 'body-m-semibold' : 'input-sm'
+  variant: props.$size === 'large' ? 'body-m-semibold' : 'input-sm',
 }))``;
 
 export const SelectFieldRadioLabelWrapper = styled.div`
@@ -124,11 +124,11 @@ export const SelectFieldRadioLabelWrapper = styled.div`
 `;
 
 export const SelectFieldRadioDescription = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })``;
 
 export const SelectFieldEmptyText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   text-align: center;
   color: ${({ theme }) => theme.colors.grayScale.gray1};
@@ -141,7 +141,7 @@ export const SelectFieldOptionSide = styled.div`
 `;
 
 export const SelectFieldOptionLabel = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })`
   padding-right: 8px;
 `;

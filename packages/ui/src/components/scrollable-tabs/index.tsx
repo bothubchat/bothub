@@ -1,16 +1,7 @@
 import { useEffect, useState } from 'react';
 import * as S from './styled';
 import { Slider } from '../slider';
-import { ITab, Variant } from './types';
-
-export type ScrollableTabsProps = {
-  tabs: ITab[];
-  variant?: Variant;
-  component?: 'a' | 'button';
-  selectedTab?: string;
-  defaultTabId?: string;
-  onClick?(id: string | null): void;
-};
+import { ScrollableTabsProps } from './types';
 
 export const ScrollableTabs = ({
   tabs,
@@ -18,10 +9,12 @@ export const ScrollableTabs = ({
   component = 'a',
   selectedTab,
   defaultTabId,
-  onClick
+  fullWidth,
+  notNullable,
+  onClick,
 }: ScrollableTabsProps) => {
   const [selected, setSelected] = useState<string | null>(
-    selectedTab || defaultTabId || null
+    selectedTab || defaultTabId || null,
   );
 
   useEffect(() => {
@@ -31,38 +24,44 @@ export const ScrollableTabs = ({
   }, [selectedTab]);
 
   const onTabChange = (id: string) => {
-    const newValue = id === selected ? null : id;
+    const newValue = id === selected ? (notNullable ? id : null) : id;
 
     setSelected(newValue);
-
-    if (onClick) {
-      onClick(newValue);
-    }
+    onClick?.(newValue);
   };
 
-  return (
-    <Slider
-      arrowsSize={variant === 'primary' ? 'md' : 'sm'}
-      gap={variant === 'primary' ? 20 : 8}
+  const tabsNode = tabs.map(({ id, label, icon, href }) => (
+    <S.ScrollableTabsTab
+      key={id}
+      as={component}
+      $variant={variant}
+      $selected={id === selected}
+      $fullWidth={fullWidth}
+      onClick={() => onTabChange(id)}
+      href={component === 'a' ? href : undefined}
+      data-test={label}
     >
-      {tabs.map(({ id, label, icon, href }) => (
-        <S.ScrollableTabsTab
-          key={id}
-          as={component}
-          $variant={variant}
-          $selected={id === selected}
-          onClick={() => onTabChange(id)}
-          href={component === 'a' ? href : undefined}
-          data-test={label}
+      {icon}
+      <S.ScrollableTabsTabLabel $variant={variant}>
+        {label}
+      </S.ScrollableTabsTabLabel>
+    </S.ScrollableTabsTab>
+  ));
+
+  return (
+    <>
+      {fullWidth ? (
+        <S.ScrollableTabsFullWidth>{tabsNode}</S.ScrollableTabsFullWidth>
+      ) : (
+        <Slider
+          arrowsSize={variant === 'primary' ? 'md' : 'sm'}
+          gap={variant === 'primary' ? 20 : 8}
         >
-          {icon}
-          <S.ScrollableTabsTabLabel $variant={variant}>
-            {label}
-          </S.ScrollableTabsTabLabel>
-        </S.ScrollableTabsTab>
-      ))}
-    </Slider>
+          {tabsNode}
+        </Slider>
+      )}
+    </>
   );
 };
 
-export type { ITab } from './types';
+export type { ITab, ScrollableTabsProps } from './types';

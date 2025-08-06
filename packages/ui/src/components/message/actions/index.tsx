@@ -4,7 +4,7 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
@@ -25,7 +25,7 @@ import {
   MessageActionEventHandler,
   MessagePlainTextCopyEventHandler,
   MessageTgCopyEventHandler,
-  MessageVariant
+  MessageVariant,
 } from '../types';
 import { MenuOption } from './menu-option';
 import { CopyButton } from './copy-button';
@@ -120,7 +120,7 @@ export const MessageActions = ({
   onPlainTextCopy,
   onTgCopy,
   onCopy,
-  onDownload
+  onDownload,
 }: MessageActionsProps) => {
   const theme = useTheme();
 
@@ -165,7 +165,7 @@ export const MessageActions = ({
     setInvertedY(scrollHeight - offsetTop <= 300);
     setInvertedX(
       (variant === 'assistant' && scrollWidth - offsetLeft <= 160) ||
-        (variant === 'user' && offsetLeft <= 160)
+        (variant === 'user' && offsetLeft <= 160),
     );
   };
 
@@ -190,7 +190,7 @@ export const MessageActions = ({
     (option: ModalOption) => {
       const data = {
         id,
-        message
+        message,
       };
       switch (option) {
         case 'edit':
@@ -206,7 +206,7 @@ export const MessageActions = ({
       }
       setMenuShown(false);
     },
-    [id, message]
+    [id, message],
   );
 
   const handleConfirmEdit = useCallback(
@@ -214,7 +214,7 @@ export const MessageActions = ({
       onEditing?.(false);
       onEdit?.({ id, message, variant });
     },
-    [id, message]
+    [id, message],
   );
   const handleDiscardEdit = useCallback(() => {
     onEditing?.(false);
@@ -239,20 +239,20 @@ export const MessageActions = ({
   const modalTransition = useTransition(menuShown, {
     from: {
       opacity: 0,
-      y: 5
+      y: 5,
     },
     enter: {
       opacity: 1,
-      y: 0
+      y: 0,
     },
     leave: {
       opacity: 0,
-      y: 0
+      y: 0,
     },
     config: {
       duration: 250,
-      easing: easings.easeOutSine
-    }
+      easing: easings.easeOutSine,
+    },
   });
 
   useEffect(() => {
@@ -391,7 +391,7 @@ export const MessageActions = ({
                             </MenuOption>
                           )}
                       </S.MessageActionsMenuModal>
-                    )
+                    ),
                 )}
               </S.MessageActionsMenuStyled>
             )}

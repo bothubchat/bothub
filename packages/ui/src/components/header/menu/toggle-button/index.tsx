@@ -11,7 +11,7 @@ export interface HeaderMenuToggleButtonProps {
 
 export const HeaderMenuToggleButton: React.FC<HeaderMenuToggleButtonProps> = ({
   isOpen,
-  onTabletOpen
+  onTabletOpen,
 }) => {
   const { variant, isMenuOpen, setIsMenuOpen } = useHeader();
 

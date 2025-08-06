@@ -8,8 +8,8 @@ export type ActionMessageStory = StoryObj<typeof ActionMessage>;
 
 export const Basic: ActionMessageStory = {
   args: {
-    children: 'Message Action'
-  }
+    children: 'Message Action',
+  },
 };
 
 export default {
@@ -19,8 +19,8 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as ActionMessageMeta;

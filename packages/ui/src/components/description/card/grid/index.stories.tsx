@@ -107,8 +107,8 @@ export const Basic: DescriptionCardGridStory = {
           }
         />
       </>
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -118,8 +118,8 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as DescriptionCardGridMeta;

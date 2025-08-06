@@ -3,7 +3,7 @@ import {
   useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from 'react';
 
 const velocityThreshold = 0.4; // px/ms
@@ -24,7 +24,7 @@ export const useCarousel = ({
   enableSwipes = true,
   slidesPerScreen = 1,
   align = 'center',
-  onSlideChange
+  onSlideChange,
 }: UseCarouselProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const dragStartXRef = useRef(0);
@@ -54,7 +54,7 @@ export const useCarousel = ({
     containerWidthRef.current = container.clientWidth;
 
     slideWidthsRef.current = Array.from(container.children).map(
-      (child) => child.clientWidth
+      (child) => child.clientWidth,
     );
 
     const containerFullWidth = container.scrollWidth;
@@ -98,7 +98,7 @@ export const useCarousel = ({
       const transform = -slidePositionVW + dragOffsetVW;
       containerRef.current.style.transform = `translateX(${transform}vw)`;
     },
-    [slidesPerScreen, align]
+    [slidesPerScreen, align],
   );
 
   useEffect(() => {
@@ -143,7 +143,7 @@ export const useCarousel = ({
       onSlideChange?.(finalIndex);
       return finalIndex;
     },
-    [updateTransform, slidesCount, onSlideChange, slidesPerScreen]
+    [updateTransform, slidesCount, onSlideChange, slidesPerScreen],
   );
 
   const goPrev = useCallback(() => {
@@ -179,7 +179,7 @@ export const useCarousel = ({
 
       updateTransform(activeSlideIndex, delta);
     },
-    [isDragging, updateTransform, activeSlideIndex]
+    [isDragging, updateTransform, activeSlideIndex],
   );
 
   const onPointerUp = useCallback(
@@ -222,8 +222,8 @@ export const useCarousel = ({
       activeSlideIndex,
       goToSlide,
       calculateVelocity,
-      updateTransform
-    ]
+      updateTransform,
+    ],
   );
 
   const ref = useCallback(
@@ -234,7 +234,7 @@ export const useCarousel = ({
         updateTransform(activeSlideIndex);
       }
     },
-    [activeSlideIndex, measureElements, updateTransform]
+    [activeSlideIndex, measureElements, updateTransform],
   );
 
   return {
@@ -252,7 +252,7 @@ export const useCarousel = ({
       onPointerMove: enableSwipes ? onPointerMove : undefined,
       onPointerUp: enableSwipes ? onPointerUp : undefined,
       onPointerLeave: enableSwipes ? onPointerUp : undefined,
-      onPointerCancel: enableSwipes ? onPointerUp : undefined
-    }
+      onPointerCancel: enableSwipes ? onPointerUp : undefined,
+    },
   };
 };

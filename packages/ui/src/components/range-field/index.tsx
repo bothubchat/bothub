@@ -7,7 +7,7 @@ import {
   RangeFieldRange,
   RangeFieldRangeThumb,
   RangeFieldSkeleton,
-  RangeFieldStyled
+  RangeFieldStyled,
 } from './styled';
 import { RangeFieldValue } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -54,7 +54,7 @@ export const RangeField: React.FC<RangeFieldProps> = ({
     (value: RangeFieldValue) => {
       setValue?.(value);
     },
-    [setValue]
+    [setValue],
   );
 
   return (
@@ -89,7 +89,7 @@ export const RangeField: React.FC<RangeFieldProps> = ({
             {({
               handleTooltipMouseEnter,
               handleTooltipMouseLeave,
-              handleTooltipPointerMove
+              handleTooltipPointerMove,
             }) => (
               <RangeFieldRange
                 {...props}
@@ -100,7 +100,7 @@ export const RangeField: React.FC<RangeFieldProps> = ({
                 $disabled={disabled}
                 disabled={disabled}
                 classNames={{
-                  track: 'custom-track'
+                  track: 'custom-track',
                 }}
                 handleRender={(node, handleProps) => (
                   <RangeFieldRangeThumb

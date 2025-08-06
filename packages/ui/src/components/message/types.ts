@@ -15,7 +15,7 @@ export type MessageTgCopyEventHandler = () => unknown;
 
 export type MessageActionEventHandler = ({
   id,
-  message
+  message,
 }: {
   id?: string;
   message?: string;
@@ -24,7 +24,7 @@ export type MessageActionEventHandler = ({
 export type MessageActionEditEventHandler = ({
   id,
   message,
-  variant
+  variant,
 }: {
   id?: string;
   message?: string;

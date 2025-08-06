@@ -10,7 +10,7 @@ export const BreadcrumbsContainer = styled.div`
 `;
 
 export const BreadcrumbsItem = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })<{ $link?: boolean }>`
   display: flex;
   color: inherit;
@@ -28,7 +28,7 @@ export const BreadcrumbsItem = styled(Typography).attrs({
 export const BreadcrumbsSeparator = styled(Typography).attrs({
   variant: 'body-m-regular',
   component: 'p',
-  children: '/'
+  children: '/',
 })`
   display: flex;
   color: inherit;

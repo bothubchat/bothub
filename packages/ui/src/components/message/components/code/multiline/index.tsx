@@ -3,7 +3,7 @@ import {
   MessageMultilineCodeBody,
   MessageMultilineCodeHead,
   MessageMultilineCodeLanguage,
-  MessageMultilineCodeStyled
+  MessageMultilineCodeStyled,
 } from './styled';
 import { Tooltip } from '@/ui/components/tooltip';
 import { MessageMultilineCodeCopyButton } from './copy';
@@ -22,7 +22,7 @@ export const MessageMultilineCode: React.FC<MessageMultilineCodeProps> = ({
   className,
   copyLabel,
   children,
-  onlyCode = false
+  onlyCode = false,
 }) => {
   const { variant, color } = useMessage();
 

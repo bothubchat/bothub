@@ -10,10 +10,10 @@ export type BadgeSelectDropdownMeta = Meta<typeof BadgeSelectDropdown>;
 export type BadgeSelectDropdownStory = StoryObj<typeof BadgeSelectDropdown>;
 
 const BadgeSelectDropdownStoryComponent = (
-  props: Omit<BadgeSelectDropdownProps, 'options'>
+  props: Omit<BadgeSelectDropdownProps, 'options'>,
 ) => {
   const [value, setValue] = useState<SelectFieldDataItem | null>(
-    'Very long option label'
+    'Very long option label',
   );
 
   return (
@@ -22,28 +22,28 @@ const BadgeSelectDropdownStoryComponent = (
       options={[
         {
           icon: <Gpt35Icon />,
-          label: 'Model 1'
+          label: 'Model 1',
         },
         {
           icon: <Gpt35Icon />,
-          label: 'Model 2'
+          label: 'Model 2',
         },
         {
           icon: <Gpt35Icon />,
-          label: 'Model 3'
+          label: 'Model 3',
         },
         {
           icon: <Gpt35Icon />,
-          label: 'Model 4'
+          label: 'Model 4',
         },
         {
           icon: <Gpt35Icon />,
-          label: 'Model 5'
+          label: 'Model 5',
         },
         {
           icon: <Gpt35Icon />,
-          label: 'Model 6'
-        }
+          label: 'Model 6',
+        },
       ]}
       onChange={setValue}
       placement="bottom-center"
@@ -53,15 +53,15 @@ const BadgeSelectDropdownStoryComponent = (
 };
 
 export const Primary: BadgeSelectDropdownStory = {
-  render: () => <BadgeSelectDropdownStoryComponent />
+  render: () => <BadgeSelectDropdownStoryComponent />,
 };
 
 export const Secondary: BadgeSelectDropdownStory = {
-  render: () => <BadgeSelectDropdownStoryComponent variant="secondary" />
+  render: () => <BadgeSelectDropdownStoryComponent variant="secondary" />,
 };
 
 export default {
   title: 'UI Components/BadgeSelectDropdown',
   component: BadgeSelectDropdown,
-  decorators: [StoryDecorator({ margin: '0 75px' })]
+  decorators: [StoryDecorator({ margin: '0 75px' })],
 } as BadgeSelectDropdownMeta;

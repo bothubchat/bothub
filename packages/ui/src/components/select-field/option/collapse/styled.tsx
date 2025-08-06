@@ -106,9 +106,9 @@ export interface SelectFieldCollapseOptionTextProps {
 }
 
 export const SelectFieldCollapseOptionText = styled(
-  Typography
+  Typography,
 ).attrs<SelectFieldCollapseOptionTextAttrsProps>((props) => ({
-  variant: props.$size === 'large' ? 'body-m-semibold' : 'input-sm'
+  variant: props.$size === 'large' ? 'body-m-semibold' : 'input-sm',
 }))<SelectFieldCollapseOptionTextProps>`
   ${({ $bold }) =>
     $bold &&
@@ -118,7 +118,7 @@ export const SelectFieldCollapseOptionText = styled(
 `;
 
 export const SelectFieldCollapseOptionArrow = styled(ArrowDownIcon).attrs({
-  size: 16
+  size: 16,
 })`
   transition: transform 0.2s ease-in-out;
 `;

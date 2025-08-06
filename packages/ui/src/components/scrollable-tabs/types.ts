@@ -8,3 +8,14 @@ export type ITab = {
 };
 
 export type Variant = 'primary' | 'secondary';
+
+export type ScrollableTabsProps = {
+  tabs: ITab[];
+  variant?: Variant;
+  component?: 'a' | 'button';
+  selectedTab?: string;
+  defaultTabId?: string;
+  fullWidth?: boolean;
+  notNullable?: boolean;
+  onClick?(id: string | null): unknown;
+};

@@ -3,7 +3,7 @@ import { Button } from '@/ui/components/button';
 
 export const MessageButton = styled(Button).attrs({
   size: 'small',
-  variant: 'secondary'
+  variant: 'secondary',
 })`
   flex-shrink: 0;
 `;

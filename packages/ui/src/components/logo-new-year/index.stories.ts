@@ -11,5 +11,5 @@ export const Basic: LogoNewYearStory = {};
 export default {
   title: 'UI Components/LogoNewYear',
   component: LogoNewYear,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as LogoNewYearMeta;

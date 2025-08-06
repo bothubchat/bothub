@@ -2,11 +2,11 @@ import React from 'react';
 import {
   MessageButtonsContent,
   MessageButtonsScrollbarWrapper,
-  MessageButtonsStyled
+  MessageButtonsStyled,
 } from './styled';
 import {
   ScrollbarShadow,
-  ScrollbarShadowProps
+  ScrollbarShadowProps,
 } from '@/ui/components/scrollbar';
 import { useTheme } from '@/ui/theme';
 
@@ -28,7 +28,7 @@ export const MessageButtons: React.FC<MessageButtonsProps> = ({
           color: theme.colors.grayScale.gray4,
           left: <ScrollbarShadow side="left" />,
           right: <ScrollbarShadow side="right" />,
-          ...scrollShadows
+          ...scrollShadows,
         }}
       >
         <MessageButtonsContent>{children}</MessageButtonsContent>
