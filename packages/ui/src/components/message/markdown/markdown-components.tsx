@@ -37,13 +37,15 @@ export function markdownComponents(
       <MessageItalic component="em">{children}</MessageItalic>
     ),
     pre: ({ children }) => <MessagePre>{children}</MessagePre>,
-    code: ({ className, inline = false, children }) => {
+    code: ({ className, children }) => {
       const code = String(children);
       if (!code) {
         return null;
       }
 
-      if (inline) {
+      const isInline = !className || !className.startsWith('language-');
+
+      if (isInline) {
         return <MessageInlineCode>{code}</MessageInlineCode>;
       }
 
