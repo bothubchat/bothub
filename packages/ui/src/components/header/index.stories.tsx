@@ -46,7 +46,12 @@ export const Basic: HeaderStory = {
         <Logo />
       </HeaderLogoLink>
     ),
-    nav: <HeaderMenuNav items={config} />,
+    nav: (
+      <HeaderMenuNav
+        isDesktop
+        items={config}
+      />
+    ),
     lang: (
       <HeaderLangDropdown lang="ru">
         <HeaderLangDropdownList>

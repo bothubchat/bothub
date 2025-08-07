@@ -1,6 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
 import { SpringValue, useSpring } from '@react-spring/web';
-import { useMediaQuery } from '@uidotdev/usehooks';
 import {
   HeaderMenuNavStyled,
   HeaderMenuNavList,
@@ -22,19 +21,13 @@ import {
 import { MenuItem, MenuItemChild, MenuItemCollapse, MenuItems } from './config';
 import { IconProvider } from '@/ui/components/icon';
 import { Divider } from '@/ui/components/divider';
-import { useTheme } from '@/ui/theme';
 import { ArrowDownIcon } from '@/ui/icons';
 
 export const HeaderMenuNav: React.FC<{
   items: MenuItems[];
-}> = ({ items }) => {
+  isDesktop: boolean;
+}> = ({ items, isDesktop }) => {
   const [parent, setParent] = useState<MenuItems | null>(null);
-  const theme = useTheme();
-  const [isTablet, isMobile] = [
-    useMediaQuery(`(max-width: ${theme.tablet.maxWidth})`),
-    useMediaQuery(`(max-width: ${theme.mobile.maxWidth})`),
-  ];
-  const isDesktop = !isTablet && !isMobile;
   const [child, setChild] = useState<
     MenuItemChild | (MenuItem & MenuItemCollapse) | null
   >(null);
