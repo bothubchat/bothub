@@ -32,7 +32,7 @@
     "./packages/*/tests",
     "./packages/*/vitest.config.ts",
     "tests.setup.ts",
-    "commitlint.config.ts",
+    "commitlint.config.ts"
   ],
-  "exclude": ["./packages/*/dist"],
+  "exclude": ["./packages/*/dist"]
 }

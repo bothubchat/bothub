@@ -1,5 +1,5 @@
 import 'katex/dist/katex.min.css';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React, { useEffect, useState } from 'react';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import {

@@ -13,6 +13,8 @@ import type {
   Table,
   Text,
   InlineCode,
+  ListItem,
+  Nodes,
 } from 'mdast';
 import {
   toMarkdown,
@@ -20,8 +22,6 @@ import {
   defaultHandlers,
   ConstructName,
 } from 'mdast-util-to-markdown';
-import type { Node } from 'mdast-util-to-markdown/lib/types';
-import { ListItem } from 'mdast-util-to-markdown/lib/handle/list-item';
 
 type MDConstructName = ConstructName | 'heading';
 
@@ -44,7 +44,7 @@ export const getTgMarkdown = (markdown: string): string => {
   }
 };
 
-const mdastToTgMarkdown = (ast: Node) => {
+const mdastToTgMarkdown = (ast: Nodes) => {
   const handlers: ToMarkdownOptions['handlers'] = {
     ...defaultHandlers,
     // > Blockquote -> __Blockquote__
