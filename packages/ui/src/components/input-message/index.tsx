@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useTransition } from '@react-spring/web';
 import { useOnClickOutside } from '@/ui/utils/useOnClickOutside';
 import {
+  InputMessageBottom,
+  InputMessageBottomGroup,
   InputMessageContent,
   InputMessageFile,
   InputMessageFiles,
@@ -17,6 +19,7 @@ import {
   InputMessageUploadFile,
   InputMessageUploadFileButton,
   InputMessageUploadFileInput,
+  InputMessageVoiceButton,
   InputMessageVoiceIcon,
   InputMessageVoiceRecord,
   InputMessageVoiceRecordDot,
@@ -520,29 +523,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       }}
     >
       <InputMessageContent>
-        {!hideUploadFile && !isVoiceRecording && (
-          <InputMessageUploadFile onClick={handleUploadFileClick}>
-            <InputMessageUploadFileInput
-              key={files.length}
-              type="file"
-              accept={uploadFileAccept}
-              multiple
-              disabled={
-                files.length >= uploadFileLimit ||
-                disabled ||
-                uploadFileDisabled
-              }
-              onChange={handleUploadFileChange}
-            />
-            <InputMessageUploadFileButton
-              disabled={
-                files.length >= uploadFileLimit ||
-                disabled ||
-                uploadFileDisabled
-              }
-            />
-          </InputMessageUploadFile>
-        )}
         <InputMessageMain>
           {isVoiceRecording && voiceRecordingTime !== null && (
             <InputMessageVoiceRecord>
@@ -621,68 +601,97 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             </>
           )}
         </InputMessageMain>
-        {!!defaultKeySendText && !!alternativeKeySendText && (
-          <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
-            <InputMessageToggleSendButton
-              onClick={(e) => {
-                e.stopPropagation();
-                setAlternativeKeyModalShown(!alternativeKeyModalShown);
-              }}
-              disabled={disabled}
-            />
-            {modalTransition(
-              (style, item) =>
-                item && (
-                  <InputMessageToggleSendModalStyled
-                    key="alternative-key-modal"
-                    style={style}
-                  >
-                    <InputMessageToggleSendModalOption
-                      active={!useAlternativeKey}
-                      onClick={handleDefaultKey}
-                    >
-                      {defaultKeySendText}
-                    </InputMessageToggleSendModalOption>
-                    <InputMessageToggleSendModalOption
-                      active={useAlternativeKey}
-                      onClick={handleAlternativeKey}
-                    >
-                      {alternativeKeySendText}
-                    </InputMessageToggleSendModalOption>
-                  </InputMessageToggleSendModalStyled>
-                ),
+        <InputMessageBottom>
+          <InputMessageBottomGroup>
+            {!hideUploadFile && !isVoiceRecording && (
+              <InputMessageUploadFile onClick={handleUploadFileClick}>
+                <InputMessageUploadFileInput
+                  key={files.length}
+                  type="file"
+                  accept={uploadFileAccept}
+                  multiple
+                  disabled={
+                    files.length >= uploadFileLimit ||
+                    disabled ||
+                    uploadFileDisabled
+                  }
+                  onChange={handleUploadFileChange}
+                />
+                <InputMessageUploadFileButton
+                  disabled={
+                    files.length >= uploadFileLimit ||
+                    disabled ||
+                    uploadFileDisabled
+                  }
+                />
+              </InputMessageUploadFile>
             )}
-          </InputMessageToggleSendStyled>
-        )}
-        {rightActions}
-        {!voice || message ? (
-          <InputMessageSendButton
-            disabled={disabled || sendDisabled}
-            onClick={handleSend}
-            {...(theme.bright && { iconFill: theme.default.colors.base.black })}
-            data-test="submit-message"
-          >
-            <InputMessageSendIcon />
-          </InputMessageSendButton>
-        ) : (
-          <InputMessageSendButton
-            {...(isVoiceRecording && {
-              color: theme.colors.critic,
-            })}
-            {...(theme.bright && { iconFill: theme.default.colors.base.black })}
-            disabled={disabled || sendDisabled}
-            onClick={
-              !isVoiceRecording ? handleVoiceRecordStart : handleVoiceRecordEnd
-            }
-            data-test="submit-message"
-          >
-            {isVoiceRecording ? (
+            {rightActions}
+          </InputMessageBottomGroup>
+          <InputMessageBottomGroup>
+            {!!defaultKeySendText && !!alternativeKeySendText && (
+              <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
+                <InputMessageToggleSendButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setAlternativeKeyModalShown(!alternativeKeyModalShown);
+                  }}
+                  disabled={disabled}
+                />
+                {modalTransition(
+                  (style, item) =>
+                    item && (
+                      <InputMessageToggleSendModalStyled
+                        key="alternative-key-modal"
+                        style={style}
+                      >
+                        <InputMessageToggleSendModalOption
+                          active={!useAlternativeKey}
+                          onClick={handleDefaultKey}
+                        >
+                          {defaultKeySendText}
+                        </InputMessageToggleSendModalOption>
+                        <InputMessageToggleSendModalOption
+                          active={useAlternativeKey}
+                          onClick={handleAlternativeKey}
+                        >
+                          {alternativeKeySendText}
+                        </InputMessageToggleSendModalOption>
+                      </InputMessageToggleSendModalStyled>
+                    ),
+                )}
+              </InputMessageToggleSendStyled>
+            )}
+            {voice && (
+              <InputMessageVoiceButton
+                $isRecording={isVoiceRecording}
+                disabled={disabled || sendDisabled}
+                onClick={
+                  !isVoiceRecording
+                    ? handleVoiceRecordStart
+                    : handleVoiceRecordEnd
+                }
+                data-test="submit-message"
+              >
+                {isVoiceRecording ? (
+                  <InputMessageSendIcon />
+                ) : (
+                  <InputMessageVoiceIcon />
+                )}
+              </InputMessageVoiceButton>
+            )}
+            <InputMessageSendButton
+              disabled={disabled || sendDisabled}
+              onClick={handleSend}
+              {...(theme.bright && {
+                iconFill: theme.default.colors.base.black,
+              })}
+              data-test="submit-message"
+            >
               <InputMessageSendIcon />
-            ) : (
-              <InputMessageVoiceIcon />
-            )}
-          </InputMessageSendButton>
-        )}
+            </InputMessageSendButton>
+          </InputMessageBottomGroup>
+        </InputMessageBottom>
       </InputMessageContent>
     </InputMessageStyled>
   );
