@@ -662,7 +662,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                 )}
               </InputMessageToggleSendStyled>
             )}
-            {!voice && (
+            {voice && (
               <InputMessageVoiceButton
                 $isRecording={isVoiceRecording}
                 disabled={disabled || sendDisabled}
