@@ -71,9 +71,20 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
 
 export const InputMessageContent = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   gap: 14px;
   width: 100%;
+`;
+
+export const InputMessageBottomGroup = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
+export const InputMessageBottom = styled(InputMessageBottomGroup)`
+  justify-content: space-between;
 `;
 
 export const InputMessageUploadFile = styled.div`
@@ -98,7 +109,6 @@ export const InputMessageUploadFileButton = styled(Button).attrs({
 
 export const InputMessageMain = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   gap: 14px;
@@ -166,6 +176,24 @@ export const InputMessageSendButton = styled(Button)`
   svg {
     pointer-events: none;
   }
+`;
+
+export interface InputMessageVoiceButtonProps {
+  $isRecording?: boolean;
+}
+
+export const InputMessageVoiceButton = styled(
+  InputMessageSendButton,
+).attrs<InputMessageVoiceButtonProps>(({ theme, $isRecording }) => ({
+  variant: 'text',
+  ...($isRecording && {
+    iconFill: theme.colors.critic,
+  }),
+  ...(theme.bright && {
+    iconFill: theme.default.colors.base.black,
+  }),
+}))`
+  margin: 10px;
 `;
 
 export const InputMessageSendIcon = SendIcon;
