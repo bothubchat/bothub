@@ -11,7 +11,7 @@ export const Referrals: React.FC<ReferralsProps> = ({
   className,
   create,
   empty,
-  children
+  children,
 }) => (
   <ReferralsStyled className={className}>
     {React.Children.toArray(children).length === 0 && empty}

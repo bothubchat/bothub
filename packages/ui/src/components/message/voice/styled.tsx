@@ -5,14 +5,16 @@ import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { TextReadIcon } from '@/ui/icons/text-read';
 import { TextHideIcon } from '@/ui/icons/text-hide';
+import { isBright } from '@/ui/utils';
 
 export const MessageVoiceStyled = styled.div`
   display: inline-flex;
+  border-radius: 10px 10px 0px 0px;
+  padding: 1px 0px;
   width: min-content;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
-  padding: 1px 0px;
 `;
 
 export const MessageVoiceAudio = styled.audio`
@@ -34,7 +36,7 @@ export const MessageVoiceMain = styled.div<MessageVoiceMainProps>`
 export const MessageVoiceToggleButton = styled(Button).attrs({
   variant: 'text',
   iconSize: 36,
-  disableHoverColor: true
+  disableHoverColor: true,
 })`
   cursor: inherit;
 `;
@@ -51,16 +53,23 @@ export const MessageVoiceWaves = styled.svg`
 `;
 
 export const MessageVoiceDurationText = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })`
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) =>
+    theme.bright ||
+    (theme.scheme === 'custom' &&
+      isBright(theme.colors.custom.message.user.background))
+      ? theme.mode === 'dark'
+        ? theme.colors.base.black
+        : theme.default.colors.base.black
+      : theme.colors.base.white};
   user-select: none;
 `;
 
 export const MessageVoiceToggleTextButton = styled(Button).attrs({
   variant: 'text',
   iconSize: 30,
-  disableHoverColor: true
+  disableHoverColor: true,
 })``;
 
 export const MessageVoiceShowTextIcon = styled(TextReadIcon)``;
@@ -72,10 +81,10 @@ export interface MessageVoiceTextProps {
 }
 
 export const MessageVoiceText = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })<MessageVoiceTextProps>`
   width: 100%;
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => theme.colors.base.white};
   &::selection {
     ${({ $messageColor }) => {
       switch ($messageColor) {

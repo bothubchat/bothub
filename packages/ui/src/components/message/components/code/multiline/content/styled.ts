@@ -67,7 +67,7 @@ export const contentStyles = css<MessageMultilineCodeContentProps>`
       &::-webkit-scrollbar {
         display: none;
       }
-    `
+    `,
   })}
   padding: 1em;
 `;

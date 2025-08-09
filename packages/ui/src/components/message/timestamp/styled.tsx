@@ -4,8 +4,9 @@ import { adaptive } from '@/ui/adaptive';
 import {
   MessageColor,
   MessageTimestampPosition,
-  MessageVariant
+  MessageVariant,
 } from '../types';
+import { isBright } from '@/ui/utils';
 
 export interface TimestampProps {
   $timestampPosition?: MessageTimestampPosition;
@@ -31,17 +32,32 @@ export const TimestampStyled = styled.div<TimestampProps>`
 `;
 
 export interface TimestampTextProp {
-  $variant: MessageVariant;
   $color: MessageColor;
+  $variant: MessageVariant;
 }
 export const TimestampText = styled(Typography).attrs({
-  variant: 'body-s-regular'
+  variant: 'body-s-regular',
 })<TimestampTextProp>`
-  color: ${({ theme, $variant, $color }) => {
-    if (theme.mode === 'dark' || $variant === 'user' || $color !== 'default') {
-      return theme.default.colors.base.white;
+  color: ${({ theme, $color, $variant }) => {
+    if ($variant === 'assistant') {
+      return isBright(theme.colors.grayScale.gray4)
+        ? theme.mode === 'dark'
+          ? theme.colors.base.black
+          : theme.default.colors.base.black
+        : theme.default.colors.base.white;
     }
-    return theme.default.colors.base.black;
+    if (theme.scheme === 'standard' && theme.mode === 'light') {
+      return theme.default.colors.base.black;
+    }
+
+    if (theme.bright || isBright($color)) {
+      return theme.mode === 'dark'
+        ? theme.colors.base.black
+        : theme.colors.base.white;
+    }
+    return theme.mode === 'dark'
+      ? theme.colors.base.white
+      : theme.colors.base.black;
   }} !important;
   ${adaptive({
     desktop: css`
@@ -52,6 +68,6 @@ export const TimestampText = styled(Typography).attrs({
     `,
     mobile: css`
       font-size: 10px;
-    `
+    `,
   })};
 `;

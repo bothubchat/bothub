@@ -24,7 +24,7 @@ export interface MessageFileNameProps {
 }
 
 export const MessageFileName = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })<MessageFileNameProps>`
   color: ${({ theme, $variant, $color }) => {
     if ($variant === 'assistant') {
@@ -34,7 +34,7 @@ export const MessageFileName = styled(Typography).attrs({
       return theme.colors.base.white;
     }
 
-    return theme.default.colors.base.white;
+    return theme.colors.base.white;
   }};
 `;
 
@@ -44,7 +44,7 @@ export interface MessageFileSizeProps {
 }
 
 export const MessageFileSize = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })<MessageFileSizeProps>`
   color: ${({ theme, $variant, $color }) => {
     if ($variant === 'assistant') {
@@ -55,7 +55,7 @@ export const MessageFileSize = styled(Typography).attrs({
       return theme.colors.base.white;
     }
 
-    return theme.default.colors.base.white;
+    return theme.colors.base.white;
   }};
 `;
 

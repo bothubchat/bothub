@@ -12,14 +12,14 @@ type SliderProps = {
 export const Slider = ({
   arrowsSize = 'md',
   gap = 10,
-  children
+  children,
 }: SliderProps) => {
   const {
     isLeftDisabled,
     isRightDisabled,
     onScrollLeft,
     onScrollRight,
-    scrollbarRef
+    scrollbarRef,
   } = useSlider();
 
   return (
@@ -27,6 +27,7 @@ export const Slider = ({
       <S.SliderArrow
         $hidden={isLeftDisabled}
         $arrowsSize={arrowsSize}
+        data-test="slider-left-arrow"
       >
         <S.SliderIconContainer onClick={onScrollLeft}>
           <ArrowDownIcon />
@@ -44,6 +45,7 @@ export const Slider = ({
         $hidden={isRightDisabled}
         $arrowsSize={arrowsSize}
         $isLeftArrow={false}
+        data-test="slider-right-arrow"
       >
         <S.SliderIconContainer onClick={onScrollRight}>
           <ArrowDownIcon />

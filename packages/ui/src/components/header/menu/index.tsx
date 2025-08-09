@@ -3,7 +3,7 @@ import { useTransition } from '@react-spring/web';
 import {
   HeaderMenuContent,
   HeaderMenuOpenGlobalStyle,
-  HeaderMenuStyled
+  HeaderMenuStyled,
 } from './styled';
 import { useHeader } from '../context';
 import { HeaderMenuProvider } from './context';
@@ -13,15 +13,15 @@ export interface HeaderMenuProps extends React.PropsWithChildren {
 }
 
 export const HeaderMenu: React.FC<HeaderMenuProps> = ({
+  isPreset,
   children,
-  isPreset
 }) => {
   const { variant, isMenuOpen } = useHeader();
 
   useEffect(() => {
     if (isMenuOpen) {
       window.scrollTo({
-        top: 0
+        top: 0,
       });
     }
   }, [isMenuOpen]);
@@ -30,22 +30,22 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({
     typeof window !== 'undefined'
       ? window
       : {
-          innerHeight: 1920
+          innerHeight: 1920,
         };
   const menuTransition = useTransition(isMenuOpen, {
     from: {
       opacity: 0,
-      transform: `translateY(${-w.innerHeight}px)`
+      transform: `translateY(${-w.innerHeight}px)`,
     },
     enter: {
       opacity: 1,
-      transform: 'translateY(0px)'
+      transform: 'translateY(0px)',
     },
     leave: {
       opacity: 0,
-      transform: `translateY(${-w.innerHeight}px)`
+      transform: `translateY(${-w.innerHeight}px)`,
     },
-    config: { duration: 150 }
+    config: { duration: 150 },
   });
 
   return (
@@ -63,7 +63,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = ({
                 {children}
               </HeaderMenuContent>
             </HeaderMenuStyled>
-          )
+          ),
       )}
     </HeaderMenuProvider>
   );

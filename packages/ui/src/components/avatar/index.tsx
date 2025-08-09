@@ -1,14 +1,9 @@
 import React from 'react';
-import defaultAvatar from './assets/default-avatar.png';
 import botAvatar from './assets/bot-avatar.png';
-import {
-  AvatarImage,
-  AvatarObject,
-  AvatarSkeleton,
-  AvatarStyled
-} from './styled';
+import { AvatarBg, AvatarObject, AvatarSkeleton, AvatarStyled } from './styled';
 import { AvatarVariant } from './types';
 import { IconProvider } from '../icon';
+import { UserProfileIcon } from '@/ui/icons';
 
 export interface AvatarProps extends React.ComponentProps<'img'> {
   variant?: AvatarVariant;
@@ -21,7 +16,6 @@ export const Avatar: React.FC<AvatarProps> = ({
   variant = 'user',
   size = 40,
   src,
-  alt,
   children,
   ...props
 }) => {
@@ -30,24 +24,17 @@ export const Avatar: React.FC<AvatarProps> = ({
     isChildren && (children.type as React.FC).displayName === 'Skeleton';
 
   switch (variant) {
-    case 'user':
-      if (!src) {
-        src = defaultAvatar;
-      }
-      break;
-    case 'default':
-      src = defaultAvatar;
-      break;
     case 'bot':
       src = botAvatar;
       break;
   }
 
-  return (
+  return src ? (
     <AvatarStyled
       {...props}
       $size={size}
       $children={isChildren}
+      $variant={variant}
       className={className}
       style={style}
     >
@@ -56,19 +43,36 @@ export const Avatar: React.FC<AvatarProps> = ({
           data={src}
           width={size}
           height={size}
-        >
-          <AvatarImage
-            src={defaultAvatar}
-            width={size}
-            height={size}
-            alt={alt}
-          />
-        </AvatarObject>
+        />
       )}
       {isChildren && !isSkeleton && (
         <IconProvider size={size}>{children}</IconProvider>
       )}
       {isSkeleton && <AvatarSkeleton />}
+    </AvatarStyled>
+  ) : (
+    <AvatarStyled
+      {...props}
+      $size={size}
+      $children={isChildren}
+      $variant={variant}
+      className={className}
+      style={style}
+    >
+      <AvatarBg
+        $size={size}
+        $variant={variant}
+      >
+        {!isSkeleton && !isChildren && (
+          <IconProvider size={size / 2}>
+            <UserProfileIcon />
+          </IconProvider>
+        )}
+        {isChildren && !isSkeleton && (
+          <IconProvider size={size}>{children}</IconProvider>
+        )}
+        {isSkeleton && <AvatarSkeleton />}
+      </AvatarBg>
     </AvatarStyled>
   );
 };

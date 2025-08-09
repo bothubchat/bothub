@@ -2,7 +2,7 @@ import { css } from 'styled-components';
 import type {
   RuleSet,
   Interpolation,
-  ExecutionContext
+  ExecutionContext,
 } from 'styled-components/dist/types';
 
 export type AdaptiveVariant = 'main' | 'dashboard';
@@ -20,11 +20,11 @@ export interface AdaptiveOptions {
 }
 
 export type AdaptiveFn<Props extends object> = (
-  props: ExecutionContext & Props
+  props: ExecutionContext & Props,
 ) => AdaptiveOptions;
 
 export function adaptive<Props extends object>(
-  optionsOrFn: AdaptiveOptions | AdaptiveFn<Props>
+  optionsOrFn: AdaptiveOptions | AdaptiveFn<Props>,
 ): Interpolation<Props> {
   return (props) => {
     const { theme } = props;
@@ -35,7 +35,7 @@ export function adaptive<Props extends object>(
       tablet,
       miniTablet,
       mobile,
-      touch
+      touch,
     } = typeof optionsOrFn === 'object' ? optionsOrFn : optionsOrFn(props);
 
     let tabletMaxWidth: string;

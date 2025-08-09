@@ -5,7 +5,7 @@ import {
   ReferralRadioHead,
   ReferralRadioName,
   ReferralRadioRadio,
-  ReferralRadioStyled
+  ReferralRadioStyled,
 } from './styled';
 import { RadioProps } from '@/ui/components/radio';
 import { Skeleton } from '@/ui/components/skeleton';

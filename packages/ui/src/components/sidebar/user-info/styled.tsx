@@ -3,6 +3,7 @@ import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 import { LogoutIcon } from '@/ui/icons/logout';
+import { colorToRgba } from '@/ui/utils';
 
 export interface SidebarUserInfoStyledProps {
   $open: boolean;
@@ -33,7 +34,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
       `,
       mobile: css`
         padding: 0px;
-      `
+      `,
     })}
   ${({ $open }) =>
     !$open &&
@@ -48,7 +49,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
       `,
       mobile: css`
         padding: 14px;
-      `
+      `,
     })}
   ${({ theme, $open }) =>
     $open
@@ -60,7 +61,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
                 ? theme.colors.grayScale.gray3
                 : theme.colors.grayScale.gray2};
             border-radius: 18px;
-            background: ${theme.mode === 'light'
+            background: ${theme.mode === 'light' && theme.scheme === 'standard'
               ? theme.default.colors.base.white
               : theme.colors.grayScale.gray4};
           `,
@@ -72,7 +73,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
           mobile: css`
             border-radius: 0px;
             border: 0px solid rgba(0, 0, 0, 0);
-          `
+          `,
         })
       : adaptive({
           variant: 'dashboard',
@@ -84,7 +85,7 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
           `,
           tablet: css`
             border-radius: 10px;
-            background: ${theme.mode === 'light'
+            background: ${theme.mode === 'light' && theme.scheme === 'standard'
               ? theme.default.colors.base.white
               : theme.colors.grayScale.gray4};
             border: 1px solid
@@ -98,12 +99,12 @@ export const SidebarUserInfoStyled = styled.div<SidebarUserInfoStyledProps>`
               ${theme.mode === 'light'
                 ? theme.colors.grayScale.gray2
                 : theme.colors.grayScale.gray3};
-          `
+          `,
         })}
-  transition: border-width 0.3s ease-out, 
+  transition: border-width 0.3s ease-out,
               border-color 0.3s ease-out,
               border-radius 0.3s ease-out,
-              background 0.3s ease-out;
+              background-color 0.3s ease-out;
 `;
 
 export const SidebarUserInfoContent = styled.div`
@@ -140,7 +141,7 @@ export const SidebarUserInfoTariffContainer = styled.div<SidebarUserInfoTariffCo
       `,
       mobile: css`
         display: flex;
-      `
+      `,
     })}
 
   ${({ $open }) =>
@@ -155,7 +156,7 @@ export const SidebarUserInfoTariffContainer = styled.div<SidebarUserInfoTariffCo
       `,
       mobile: css`
         display: none;
-      `
+      `,
     })}
 `;
 
@@ -188,7 +189,7 @@ export const SidebarUserInfoUpdateTariffContainer = styled.div<SidebarUserInfoUp
           opacity: 1;
           height: auto;
           margin-top: 10px;
-        `
+        `,
       });
     }
     return adaptive({
@@ -207,7 +208,7 @@ export const SidebarUserInfoUpdateTariffContainer = styled.div<SidebarUserInfoUp
         opacity: 0;
         height: 0px;
         margin-top: 0px;
-      `
+      `,
     });
   }}
 `;
@@ -220,14 +221,14 @@ export const SidebarUserInfoText = styled.div`
 
 export const SidebarUserInfoName = styled(Typography).attrs({
   variant: 'body-m-semibold',
-  component: 'span'
+  component: 'span',
 })`
   white-space: nowrap;
 `;
 
 export const SidebarUserInfoCaps = styled(Typography).attrs({
   variant: 'body-s-medium',
-  component: 'span'
+  component: 'span',
 })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
   white-space: nowrap;
@@ -235,7 +236,7 @@ export const SidebarUserInfoCaps = styled(Typography).attrs({
 
 export const SidebarUserInfoTariff = styled(Typography).attrs({
   variant: 'body-m-medium',
-  component: 'span'
+  component: 'span',
 })`
   display: inline-flex;
   color: ${({ theme }) => theme.default.colors.base.white};
@@ -262,7 +263,26 @@ export const SidebarUserInfoUpdateTariffButton = styled.button`
   border-radius: 8px;
   padding: 6px 18px 6px 6px;
   box-shadow: inset 0 1px 1px 0 #ffffff60;
-  background: linear-gradient(90deg, #00247d 15%, #1c64f2 100%);
+  background: ${({ theme }) => {
+    if (theme.scheme === 'standard') {
+      return theme.mode === 'dark'
+        ? css`
+            ${theme.colors.gradient.basic}
+          `
+        : css`
+            ${theme.colors.gradient.light}
+          `;
+    }
+    return theme.mode === 'dark'
+      ? css`
+    linear-gradient(90deg, ${theme.colors.base.black} 0%, ${colorToRgba(theme.colors.accent.primary, 0.75)} 100%); 
+    `
+      : css`
+    linear-gradient(90deg, ${theme.colors.accent.primary} 0%, ${colorToRgba(theme.colors.accent.primary, 0.3)} 100%);
+
+    `;
+  }};
+
   font-weight: 500;
   &:hover {
     filter: brightness(0.8);
@@ -279,9 +299,18 @@ export const SidebarUserInfoUpdateTariffButton = styled.button`
 `;
 
 export const SidebarUserInfoUpdateTariffButtonText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })`
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case 'dark':
+        return theme.colors.base.white;
+      case 'light':
+        return theme.bright
+          ? theme.default.colors.base.black
+          : theme.default.colors.base.white;
+    }
+  }};
   margin-inline: auto;
 `;
 
@@ -299,7 +328,7 @@ export interface SidebarUserInfoUpdateTariffBadgeTextProps {
 }
 
 export const SidebarUserInfoUpdateTariffBadgeText = styled(Typography).attrs({
-  variant: 'body-m-semibold'
+  variant: 'body-m-semibold',
 })<SidebarUserInfoUpdateTariffBadgeTextProps>`
   color: transparent;
   background: ${({ children, theme }) => {
@@ -333,7 +362,7 @@ export const SidebarUserInfoLogoutButtonContainer = styled.div<SidebarUserInfoLo
           `,
           mobile: css`
             display: flex;
-          `
+          `,
         })
       : adaptive({
           variant: 'dashboard',
@@ -345,7 +374,7 @@ export const SidebarUserInfoLogoutButtonContainer = styled.div<SidebarUserInfoLo
           `,
           mobile: css`
             display: none;
-          `
+          `,
         })}
 `;
 
@@ -356,7 +385,7 @@ export interface SidebarUserInfoUpdateTariffContainerProps {
 export const SidebarUserInfoLogoutButton = styled(Button).attrs(() => ({
   variant: 'text',
   iconSize: 18,
-  children: <LogoutIcon />
+  children: <LogoutIcon />,
 }))`
   svg path {
     fill: ${({ theme }) => theme.colors.critic} !important;

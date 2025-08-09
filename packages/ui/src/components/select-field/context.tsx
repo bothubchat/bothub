@@ -7,7 +7,7 @@ export interface SelectFieldContextValue {
 
 export const SelectFieldContext = React.createContext<SelectFieldContextValue>({
   selectRef: React.createRef(),
-  handleSelectClick: () => {}
+  handleSelectClick: () => {},
 });
 
 export const SelectFieldProvider: React.FC<
@@ -20,4 +20,4 @@ export const SelectFieldProvider: React.FC<
 
 export const SelectFieldConsumer = SelectFieldContext.Consumer;
 
-export const useSelectField = () => useContext(SelectFieldContext);
+export const useSelectFieldContext = () => useContext(SelectFieldContext);

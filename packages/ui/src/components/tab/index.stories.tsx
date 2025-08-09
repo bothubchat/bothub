@@ -8,12 +8,12 @@ export type TabStory = StoryObj<typeof Tab>;
 
 export const Basic: TabStory = {
   args: {
-    children: 'Tab item'
-  }
+    children: 'Tab item',
+  },
 };
 
 export default {
   title: 'UI Components/Tab/Item',
   component: Tab,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as TabMeta;

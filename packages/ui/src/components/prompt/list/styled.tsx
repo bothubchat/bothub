@@ -9,7 +9,7 @@ export const PromptsStyled = styled.div`
 
 export const PromptsLabel = styled(Typography).attrs({
   component: 'h2',
-  variant: 'h3'
+  variant: 'h3',
 })`
   ${adaptive(() => ({
     desktop: css`
@@ -20,7 +20,7 @@ export const PromptsLabel = styled(Typography).attrs({
     `,
     mobile: css`
       margin-bottom: 24px;
-    `
+    `,
   }))}
 `;
 
@@ -37,6 +37,6 @@ export const PromptList = styled.div`
     `,
     mobile: css`
       gap: 14px;
-    `
+    `,
   }))}
 `;

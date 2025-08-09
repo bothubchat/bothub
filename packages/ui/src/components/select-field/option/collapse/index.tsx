@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import {
   SelectFieldDataItem,
-  SelectFieldSize
+  SelectFieldSize,
 } from '@/ui/components/select-field';
 import {
   SelectFieldCollapseOptionArrow,
@@ -9,25 +9,49 @@ import {
   SelectFieldCollapseOptionHead,
   SelectFieldCollapseOptionHeadSide,
   SelectFieldCollapseOptionStyled,
-  SelectFieldCollapseOptionText
+  SelectFieldCollapseOptionText,
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
+import { SelectFieldOptionClickEventHandler } from '../list';
 
 export interface SelectFieldCollapseOptionProps
-  extends React.PropsWithChildren {
+  extends React.PropsWithChildren,
+    Pick<
+      React.ComponentProps<'div'>,
+      | 'onMouseEnter'
+      | 'onMouseLeave'
+      | 'onPointerDown'
+      | 'onPointerUp'
+      | 'onPointerLeave'
+    > {
   size: SelectFieldSize;
   item: SelectFieldDataItem;
+  onClick?: SelectFieldOptionClickEventHandler;
+  icon?: React.ReactNode;
 }
 
-export const SelectFieldCollapseOption: React.FC<
-  SelectFieldCollapseOptionProps
-> = ({ size, item, children }) => {
+export const SelectFieldCollapseOption = ({
+  size,
+  item,
+  children,
+  onClick,
+  icon,
+  ...props
+}: SelectFieldCollapseOptionProps) => {
   const theme = useTheme();
 
   const [isOpen, setIsOpen] = useState(
-    typeof item === 'string' ? false : (item.open ?? false)
+    typeof item === 'string' ? false : (item.open ?? false),
   );
+
+  const onCollapseClick = () => {
+    setIsOpen((isOpen) => !isOpen);
+
+    if (onClick) {
+      onClick(item);
+    }
+  };
 
   let isDisabled: boolean;
   if (typeof item === 'string') {
@@ -36,19 +60,25 @@ export const SelectFieldCollapseOption: React.FC<
     isDisabled = !!item.disabled;
   }
 
-  if (typeof window !== 'undefined') {
-    useLayoutEffect(() => {
-      setIsOpen(typeof item === 'string' ? false : (item.open ?? false));
-    }, [item]);
-  }
+  useLayoutEffect(() => {
+    if (typeof item !== 'string') {
+      setIsOpen(Boolean(item.open));
+    }
+  }, [item]);
+
+  const label = typeof item === 'string' ? item : (item.label ?? item.value);
 
   return (
-    <SelectFieldCollapseOptionStyled $size={size}>
+    <SelectFieldCollapseOptionStyled
+      {...props}
+      $size={size}
+      data-test={label}
+    >
       <SelectFieldCollapseOptionHead
         $disabled={isDisabled}
         $size={size}
         {...(!isDisabled && {
-          onClick: setIsOpen.bind(null, (isOpen) => !isOpen)
+          onClick: onCollapseClick,
         })}
       >
         <SelectFieldCollapseOptionHeadSide $size={size}>
@@ -64,16 +94,17 @@ export const SelectFieldCollapseOption: React.FC<
             $size={size}
             $bold={typeof item === 'object' && item.bold}
           >
-            {typeof item === 'string' && item}
-            {typeof item !== 'string' && (item.label ?? item.value)}
+            {label}
           </SelectFieldCollapseOptionText>
         </SelectFieldCollapseOptionHeadSide>
         <SelectFieldCollapseOptionHeadSide $size={size}>
-          <SelectFieldCollapseOptionArrow
-            style={{
-              transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)'
-            }}
-          />
+          {icon || (
+            <SelectFieldCollapseOptionArrow
+              style={{
+                transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)',
+              }}
+            />
+          )}
         </SelectFieldCollapseOptionHeadSide>
       </SelectFieldCollapseOptionHead>
       {isOpen && (

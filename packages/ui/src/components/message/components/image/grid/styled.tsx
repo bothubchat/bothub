@@ -8,6 +8,6 @@ export const MessageImageGrid = styled.div`
   ${adaptive({
     mobile: css`
       display: flex;
-    `
+    `,
   })}
 `;

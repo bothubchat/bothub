@@ -11,5 +11,5 @@ export const Basic: LogoStory = {};
 export default {
   title: 'UI Components/LogoHalloween',
   component: LogoHalloween,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as LogoMeta;

@@ -3,7 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useRef,
-  useState
+  useState,
 } from 'react';
 import {
   MessageBlock,
@@ -21,7 +21,8 @@ import {
   MessageTop,
   MessageAvatar,
   MessageStyledWithBottomPanel,
-  MessageButtonsStyled
+  MessageButtonsStyled,
+  MessageAvatarWrapper,
 } from './styled';
 import {
   MessageActionEventHandler,
@@ -29,11 +30,11 @@ import {
   MessageCopyEventHandler,
   MessageTimestampPosition,
   MessageVariant,
-  MessageVersionEventHandler
+  MessageVersionEventHandler,
 } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
-import { getTgMarkdown } from '@/ui/utils';
+import { colorToRgba, getTgMarkdown } from '@/ui/utils';
 import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
@@ -52,14 +53,18 @@ export interface MessageProps {
   tags?: React.ReactNode;
   avatar?: React.ReactNode;
   transaction?: React.ReactNode;
+  disableModal?: boolean;
   disableResend?: boolean;
   disableEdit?: boolean;
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
+  disableDownload?: boolean;
+  disableEncryption?: boolean;
   copyPlainText?: string | null;
   copyTgText?: string | null;
   editText?: string | null;
+  editOutOfMenu?: boolean;
   resendText?: string | null;
   deleteText?: string | null;
   onReportText?: string | null;
@@ -67,6 +72,8 @@ export interface MessageProps {
   discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
+  downloadTooltipLabel?: string | null;
+  encryptionTooltipLabel?: string | null;
   typing?: boolean;
   timestamp?: string | number;
   timestampPosition?: MessageTimestampPosition;
@@ -77,6 +84,7 @@ export interface MessageProps {
   children?: ReactNode;
   version?: number;
   totalVersions?: number;
+  hideActions?: boolean;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
   onEdit?: MessageActionEventHandler;
@@ -86,6 +94,7 @@ export interface MessageProps {
   onReport?: MessageActionEventHandler;
   onNextVersion?: MessageVersionEventHandler;
   onPrevVersion?: MessageVersionEventHandler;
+  onDownload?: () => void;
 }
 
 export const Message: React.FC<MessageProps> = ({
@@ -98,21 +107,27 @@ export const Message: React.FC<MessageProps> = ({
   tags,
   avatar,
   transaction,
+  disableModal = false,
   disableResend = false,
   disableEdit = false,
   disableDelete = false,
   disableUpdate = false,
   disableCopy = false,
+  disableDownload = true,
+  disableEncryption = true,
+  editOutOfMenu = false,
   copyPlainText,
   copyTgText,
   editText,
   resendText,
   deleteText,
   onReportText,
+  downloadTooltipLabel,
   submitEditTooltipLabel,
   discardEditTooltipLabel,
   updateTooltipLabel,
   copyTooltipLabel,
+  encryptionTooltipLabel,
   typing = false,
   timestamp,
   timestampPosition = 'right',
@@ -123,6 +138,7 @@ export const Message: React.FC<MessageProps> = ({
   children,
   version,
   totalVersions,
+  hideActions,
   onCopy,
   onCodeCopy,
   onEdit,
@@ -131,7 +147,8 @@ export const Message: React.FC<MessageProps> = ({
   onUpdate,
   onReport,
   onNextVersion,
-  onPrevVersion
+  onPrevVersion,
+  onDownload,
 }) => {
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
@@ -144,14 +161,14 @@ export const Message: React.FC<MessageProps> = ({
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
       setEditedText(e.target.textContent ?? '');
     },
-    []
+    [],
   );
 
   const getRichText = useCallback(
     (html: HTMLElement) => {
       const htmlStr = new DOMParser().parseFromString(
         html.innerHTML,
-        'text/html'
+        'text/html',
       );
       const codeNodes = htmlStr.getElementsByTagName('code');
       for (const codeNode of codeNodes) {
@@ -161,16 +178,16 @@ export const Message: React.FC<MessageProps> = ({
       }
       const clipboardItem = new ClipboardItem({
         'text/plain': new Blob([content!], { type: 'text/plain' }),
-        'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' })
+        'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' }),
       });
       return [clipboardItem];
     },
-    [content]
+    [content],
   );
 
   const getPlainText = useCallback((html: HTMLElement) => {
     const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([html.innerText], { type: 'text/plain' })
+      'text/plain': new Blob([html.innerText], { type: 'text/plain' }),
     });
     return [clipboardItem];
   }, []);
@@ -179,7 +196,7 @@ export const Message: React.FC<MessageProps> = ({
     const tgMarkdown = getTgMarkdown(string);
 
     const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([tgMarkdown], { type: 'text/plain' })
+      'text/plain': new Blob([tgMarkdown], { type: 'text/plain' }),
     });
     return [clipboardItem];
   }, []);
@@ -218,6 +235,17 @@ export const Message: React.FC<MessageProps> = ({
     case 'user':
       switch (color) {
         case 'default':
+          if (theme.scheme === 'custom') {
+            hexColor = theme.colors.custom.message.user.background;
+            break;
+          }
+          if (theme.scheme === 'standard') {
+            hexColor =
+              theme.mode === 'dark'
+                ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
+                : colorToRgba(theme.colors.accent.primaryLight, 0.2);
+            break;
+          }
           hexColor = theme.colors.accent.primary;
           break;
         case 'green':
@@ -288,7 +316,7 @@ export const Message: React.FC<MessageProps> = ({
             data-date={timestamp}
           >
             <MessageContent $variant={variant}>
-              {(name || transaction) && (
+              {name && (
                 <MessageTop>
                   {typeof name === 'string' && (
                     <MessageSender>
@@ -297,13 +325,12 @@ export const Message: React.FC<MessageProps> = ({
                     </MessageSender>
                   )}
                   {typeof name !== 'string' && <div />}
-                  <MessageBlockTransaction $top>
-                    {transaction}
-                  </MessageBlockTransaction>
                 </MessageTop>
               )}
               {typeof name !== 'string' && name}
-              <MessageAvatar>{avatar}</MessageAvatar>
+              <MessageAvatarWrapper $variant={variant}>
+                <MessageAvatar>{avatar}</MessageAvatar>
+              </MessageAvatarWrapper>
 
               <MessageBlockWrapper>
                 <MessageBlock
@@ -318,7 +345,7 @@ export const Message: React.FC<MessageProps> = ({
                       color: hexColor,
                       size: 60,
                       left: <ScrollbarShadow side="left" />,
-                      right: <ScrollbarShadow side="right" />
+                      right: <ScrollbarShadow side="right" />,
                     }}
                   >
                     <MessageBlockContent
@@ -343,14 +370,14 @@ export const Message: React.FC<MessageProps> = ({
                                 width={260}
                                 opacity={[
                                   theme.mode === 'light' ? 0.1 : 0.15,
-                                  theme.mode === 'light' ? 0.225 : 0.45
+                                  theme.mode === 'light' ? 0.225 : 0.45,
                                 ]}
                                 colors={[
                                   variant === 'user'
                                     ? theme.colors.base.white
                                     : theme.mode === 'light'
                                       ? theme.default.colors.base.black
-                                      : theme.colors.grayScale.gray6
+                                      : theme.colors.grayScale.gray6,
                                 ]}
                               />
                             </MessageParagraph>
@@ -373,6 +400,7 @@ export const Message: React.FC<MessageProps> = ({
                     <MessageTimestamp
                       time={timestamp}
                       position={timestampPosition}
+                      color={hexColor}
                     />
                   )}
                 </MessageBlock>
@@ -380,27 +408,37 @@ export const Message: React.FC<MessageProps> = ({
             </MessageContent>
           </MessageStyled>
           <MessageBlockBottomPanel $variant={variant}>
-            {!skeleton && (
+            {transaction && (
+              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
+            )}
+            {!skeleton && !hideActions && (
               <MessageActions
                 id={id}
+                onDownload={onDownload}
+                disableDownload={disableDownload}
                 message={content}
                 variant={variant}
                 skeleton={skeleton}
+                disableModal={disableModal}
                 disableResend={disableResend}
                 disableEdit={disableEdit}
                 disableDelete={disableDelete}
                 disableUpdate={disableUpdate}
                 disableCopy={disableCopy}
+                disableEncryption={disableEncryption}
+                editOutOfMenu={editOutOfMenu}
                 copyPlainText={copyPlainText}
                 copyTgText={copyTgText}
                 editText={editText}
                 resendText={resendText}
                 deleteText={deleteText}
                 onReportText={onReportText}
+                downloadTooltipLabel={downloadTooltipLabel}
                 submitEditTooltipLabel={submitEditTooltipLabel}
                 discardEditTooltipLabel={discardEditTooltipLabel}
                 updateTooltipLabel={updateTooltipLabel}
                 copyTooltipLabel={copyTooltipLabel}
+                encryptionTooltipLabel={encryptionTooltipLabel}
                 editing={isEditing}
                 editedText={editedText}
                 messageRef={messageRef}
@@ -416,9 +454,7 @@ export const Message: React.FC<MessageProps> = ({
                 onCopy={handleRichTextCopy}
               />
             )}
-            {transaction && (
-              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
-            )}
+
             <MessageVersions
               id={id}
               version={version}

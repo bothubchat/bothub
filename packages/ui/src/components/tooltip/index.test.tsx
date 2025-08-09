@@ -13,7 +13,7 @@ describe('tooltip', () => {
     customRender(
       <Tooltip label="Tooltip text">
         <Button>Hover me</Button>
-      </Tooltip>
+      </Tooltip>,
     );
 
     const button = screen.getByRole('button');
@@ -36,8 +36,8 @@ describe('tooltip', () => {
         expect(screen.queryByText('Tooltip text')).toBeNull();
       },
       {
-        timeout: TooltipAnimationDuration.exit + 25
-      }
+        timeout: TooltipAnimationDuration.exit + 25,
+      },
     );
   });
 
@@ -48,7 +48,7 @@ describe('tooltip', () => {
         disabled
       >
         <Button>Hover me</Button>
-      </Tooltip>
+      </Tooltip>,
     );
 
     const button = screen.getByRole('button');
@@ -61,7 +61,7 @@ describe('tooltip', () => {
     customRender(
       <Tooltip label="">
         <Button>Hover me</Button>
-      </Tooltip>
+      </Tooltip>,
     );
 
     const button = screen.getByRole('button');
@@ -74,7 +74,7 @@ describe('tooltip', () => {
     customRender(
       <Tooltip label="Tooltip text">
         <Button>Click me</Button>
-      </Tooltip>
+      </Tooltip>,
     );
 
     const button = screen.getByRole('button');
@@ -82,12 +82,12 @@ describe('tooltip', () => {
     fireEvent.mouseEnter(button);
     await waitFor(
       () => expect(screen.getByText('Tooltip text')).not.toBeNull(),
-      { timeout: TooltipAnimationDuration.enter + 25 }
+      { timeout: TooltipAnimationDuration.enter + 25 },
     );
 
     fireEvent.mouseLeave(button);
     await waitFor(() => expect(screen.queryByText('Tooltip text')).toBeNull(), {
-      timeout: TooltipAnimationDuration.exit + 25
+      timeout: TooltipAnimationDuration.exit + 25,
     });
   });
 });

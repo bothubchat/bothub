@@ -7,7 +7,7 @@ export interface SidebarMenuNavLinkStyledProps {
 }
 
 export const SidebarMenuNavLinkText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })<{ $open?: boolean }>`
   ${({ $open, theme }) =>
     !$open
@@ -42,7 +42,7 @@ export const SidebarMenuNavLinkText = styled(Typography).attrs({
           `,
           mobile: css`
             display: flex;
-          `
+          `,
         })
       : adaptive({
           variant: 'dashboard',
@@ -51,7 +51,7 @@ export const SidebarMenuNavLinkText = styled(Typography).attrs({
           `,
           tablet: css`
             display: none;
-          `
+          `,
         })}
 `;
 

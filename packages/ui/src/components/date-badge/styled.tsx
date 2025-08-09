@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { colorToRgba } from '@/ui/utils/colorToRgba';
+import { colorToRgba } from '@/ui/utils/colors';
 
 export const DateBadgeStyled = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ export const DateBadgeStyled = styled.div`
 `;
 
 export const DateBadgeText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })`
   color: ${({ theme }) =>
     theme.mode === 'light'

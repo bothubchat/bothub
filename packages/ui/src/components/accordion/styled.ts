@@ -1,6 +1,11 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
+import { colorToRgba } from '@/ui/utils';
+
+type IsOpenProps = {
+  $isOpen: boolean;
+};
 
 export const AccordionStyled = styled.div`
   width: 100%;
@@ -11,14 +16,19 @@ export const AccordionStyled = styled.div`
   position: relative;
 `;
 
-export const AccordionHead = styled.div<{ $isOpen: boolean }>`
+export const AccordionHead = styled.div<
+  IsOpenProps & {
+    $isDefaultVariant: boolean;
+  }
+>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
   padding: 18px;
   cursor: pointer;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border: ${({ theme, $isDefaultVariant }) =>
+    $isDefaultVariant && `1px solid ${theme.colors.grayScale.gray2}`};
   border-radius: 20px;
   transition:
     border-bottom 0.3s,
@@ -43,37 +53,49 @@ export const AccordionHead = styled.div<{ $isOpen: boolean }>`
     top: 0;
     left: 0;
     background-color: ${({ theme }) => theme.colors.grayScale.gray4};
-    opacity: 0.5;
+    opacity: ${({ $isDefaultVariant }) =>
+      !$isDefaultVariant ? '0.75' : '0.5'};
   }
 `;
 
 export const AccordionLabel = styled(Typography).attrs({
-  variant: 'body-m-semibold'
+  variant: 'body-m-semibold',
 })`
   position: relative;
   z-index: 1;
 `;
 
-export const AccordionArrow = styled(ArrowDownIcon).attrs<{
-  $isOpen: boolean;
-}>({ size: 24 })`
+export const AccordionArrow = styled(ArrowDownIcon).attrs<IsOpenProps>({
+  size: 24,
+})`
   transform: rotate(${({ $isOpen }) => ($isOpen ? '180deg' : '0deg')});
   transition: transform 0.2s ease-in-out;
 `;
 
-export const AccordionBody = styled.div<{ $isOpen: boolean }>`
-  background-color: ${({ theme }) => theme.colors.grayScale.gray3};
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+export const AccordionBody = styled.div<
+  IsOpenProps & {
+    $isDefaultVariant: boolean;
+  }
+>`
+  background-color: ${({ theme, $isDefaultVariant }) =>
+    !$isDefaultVariant
+      ? colorToRgba(theme.colors.grayScale.gray4, 0.75)
+      : theme.colors.grayScale.gray3};
+
+  border: ${({ theme, $isDefaultVariant }) =>
+    $isDefaultVariant && `1px solid ${theme.colors.grayScale.gray2}`};
+
   border-top: 0;
   border-radius: 0 0 20px 20px;
   transition:
     max-height 0.3s,
     padding 0.3s,
     opacity 0.3s;
-  ${({ $isOpen }) =>
+  ${({ $isOpen, $isDefaultVariant }) =>
     $isOpen
       ? css`
           padding: 18px;
+          ${!$isDefaultVariant ? 'padding-top: 0px;' : ''}
           max-height: auto;
         `
       : css`
@@ -84,9 +106,15 @@ export const AccordionBody = styled.div<{ $isOpen: boolean }>`
         `};
 `;
 
-export const AccordionText = styled(Typography).attrs({
+export const AccordionText = styled(Typography).attrs<IsOpenProps>({
   variant: 'body-m-regular',
-  component: 'p'
+  component: 'p',
 })`
   white-space: pre-wrap;
+  ${({ $isOpen }) =>
+    !$isOpen &&
+    css`
+      opacity: 0;
+      pointer-events: none;
+    `};
 `;

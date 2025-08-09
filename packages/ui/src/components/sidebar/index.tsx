@@ -2,7 +2,7 @@ import React, {
   forwardRef,
   StyleHTMLAttributes,
   useCallback,
-  useState
+  useState,
 } from 'react';
 import {
   SidebarArrowDownButton,
@@ -26,7 +26,7 @@ import {
   SidebarTabletThemeSwitcher,
   SidebarToggle,
   SidebarToolbar,
-  SidebarWrapper
+  SidebarWrapper,
 } from './styled';
 import { SidebarProvider } from './context';
 import { SidebarMenu } from './menu';
@@ -79,9 +79,9 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
       children,
       style,
       banner,
-      onOpen
+      onOpen,
     },
-    ref
+    ref,
   ) => {
     const initialIsOpen = open;
     const setInitialIsOpen = useCallback<
@@ -92,7 +92,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
           onOpen?.(open);
         }
       },
-      [onOpen]
+      [onOpen],
     );
     const [isOpen, setIsOpen] =
       typeof initialIsOpen === 'boolean'
@@ -109,21 +109,21 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
           onOpen(open);
         }
       },
-      [setIsOpen, initialIsOpen, onOpen]
+      [setIsOpen, initialIsOpen, onOpen],
     );
 
     const handleScroll = useCallback<ScrollbarScrollEventHandler>(
       ({ isBottom }) => {
         setIsBottom(isBottom);
       },
-      [setIsBottom]
+      [setIsBottom],
     );
 
     const handleScrollTop = useCallback(() => {
       if (ref && typeof ref !== 'function' && ref.current?.element) {
         ref.current.element.scrollTo({
           top: 0,
-          behavior: 'smooth'
+          behavior: 'smooth',
         });
       }
     }, [ref]);
@@ -132,7 +132,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
       if (ref && typeof ref !== 'function' && ref.current?.element) {
         ref.current.element.scrollTo({
           top: ref.current.element.scrollHeight,
-          behavior: 'smooth'
+          behavior: 'smooth',
         });
       }
     }, [ref]);
@@ -162,7 +162,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
               {buttons}
               {buttonsModal}
               {!isOpen && <SidebarMenu>{menu}</SidebarMenu>}
-              <SidebarToggle>{toggle}</SidebarToggle>
+              <SidebarToggle data-test="sidebar-toggle">{toggle}</SidebarToggle>
             </SidebarToolbar>
             <SidebarSearchContainer>{search}</SidebarSearchContainer>
             <SidebarDivider />
@@ -215,7 +215,7 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
         <SidebarGlobalStyle $open={isOpen} />
       </SidebarProvider>
     );
-  }
+  },
 );
 
 export * from './styled';
@@ -226,7 +226,6 @@ export * from './user-info';
 export * from './chat';
 export * from './group';
 export * from './empty';
-export * from './theme-switcher';
 export * from './menu';
 export * from './dropdown';
 export * from './group-empty';

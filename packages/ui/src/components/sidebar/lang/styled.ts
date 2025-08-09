@@ -10,7 +10,7 @@ export const SidebarLangDropdownStyled = styled.div`
 `;
 
 export const SidebarLangDropdownTogglerIcon = styled(LanguageIcon).attrs({
-  size: 18
+  size: 18,
 })`
   pointer-events: none;
 `;
@@ -21,10 +21,11 @@ export const SidebarLangDropdownTogglerText = styled(Typography)`
   font-weight: 700;
   line-height: 22px;
   pointer-events: none;
+  color: ${({ theme }) => theme.colors.base.white};
 `;
 
 export const SidebarLangDropdownTogglerArrow = styled(ArrowDownIcon).attrs({
-  size: 16
+  size: 16,
 })`
   pointer-events: none;
   transition: transform 0.2s ease-in-out;

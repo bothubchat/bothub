@@ -10,8 +10,8 @@ export type AdaptiveButtonStory = StoryObj<typeof AdaptiveButton>;
 export const Basic: AdaptiveButtonStory = {
   args: {
     startIcon: <DownloadImgIcon />,
-    children: 'Скачать изображение'
-  }
+    children: 'Скачать изображение',
+  },
 };
 
 export default {
@@ -21,8 +21,8 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as AdaptiveButtonMeta;

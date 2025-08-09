@@ -1,83 +1,116 @@
-import React from 'react';
+import { Radio } from '@/ui/components/radio';
 import {
-  TariffCardBorderWrapper,
-  TariffCardContent,
-  TariffCardCurrency,
-  TariffCardName,
-  TariffCardPrice,
-  TariffCardPriceValue,
-  TariffCardPurchaseButton,
   TariffCardStyled,
-  TariffCardValidityPeriod,
-  TariffCardTop,
-  TariffCardBottom,
-  TariffCardNamePrice,
-  TariffCardHead,
-  TariffCardBody,
-  TariffCardDetailsLink
+  TariffCardStyledContent,
+  TariffCardContainer,
+  TariffCardDescription,
+  TariffCardLabel,
+  TariffCardCapsBadge,
+  TariffCardCapsContainer,
+  TariffCardCapsText,
+  TariffCardContainerPrice,
+  TariffCardPrice,
+  TariffCardCurrency,
+  TariffCardEnterpriseButtonContainer,
+  TariffCardIsPopular,
+  TariffCardIsPopularText,
+  TariffCardIsPopularContainer,
+  TariffCardStarUnfilledIcon,
+  TariffCardBackground,
+  TariffCardDiscount,
 } from './styled';
-import { TariffCardColor, TariffCardVariant } from './types';
+import { TariffType } from './types';
 
-export interface TariffCardProps extends React.ComponentProps<'div'> {
-  variant?: TariffCardVariant;
-  name: string;
-  giveCaps?: React.ReactNode;
-  price: string;
+type TariffCardProps = {
+  label: string;
+  variant: TariffType;
+  description?: string;
+  extraText: string;
   currency: string;
-  purchase: React.ReactNode;
-  details: React.ReactNode;
-  validityPeriod: string;
-  color?: TariffCardColor;
-}
+  price: string;
+  discount?: string;
+  selected?: boolean;
+  caps: string;
+  popularText?: string;
+  onClick?: (e: React.MouseEvent) => void;
+};
 
-export const TariffCard: React.FC<TariffCardProps> = ({
-  variant = 'primary',
-  name,
-  giveCaps,
-  price,
-  currency,
-  details,
-  purchase,
-  validityPeriod,
-  color = 'gray',
-  children,
-  ...props
-}) => (
-  <TariffCardStyled
-    $color={color}
-    {...props}
-  >
-    <TariffCardBorderWrapper>
-      <TariffCardContent $variant={variant}>
-        <TariffCardTop>
-          <TariffCardHead>
-            <TariffCardNamePrice>
-              <TariffCardName>{name}</TariffCardName>
-              <TariffCardPrice>
-                <TariffCardPriceValue>{price}</TariffCardPriceValue>
-                <TariffCardCurrency>{currency}</TariffCardCurrency>
-              </TariffCardPrice>
-            </TariffCardNamePrice>
-            {giveCaps}
-          </TariffCardHead>
-          <TariffCardBody>{children}</TariffCardBody>
-        </TariffCardTop>
-        <TariffCardBottom>
-          {typeof details !== 'string' && details}
-          {typeof details === 'string' && (
-            <TariffCardDetailsLink>{details}</TariffCardDetailsLink>
-          )}
-          {typeof purchase !== 'string' && purchase}
-          {typeof purchase === 'string' && (
-            <TariffCardPurchaseButton>{purchase}</TariffCardPurchaseButton>
-          )}
-          <TariffCardValidityPeriod>{validityPeriod}</TariffCardValidityPeriod>
-        </TariffCardBottom>
-      </TariffCardContent>
-    </TariffCardBorderWrapper>
-  </TariffCardStyled>
-);
+type TariffCardEnterpriseProps = {
+  label: string;
+  variant: 'ENTERPRISE';
+  description?: string;
+  extraText: string;
+  button: React.ReactNode;
+};
+export const TariffCard: React.FC<
+  TariffCardProps | TariffCardEnterpriseProps
+> = (props) => {
+  const handleClick = (e: React.MouseEvent) => {
+    if (props.variant !== 'ENTERPRISE') {
+      e.preventDefault();
+      props.onClick?.(e);
+    }
+  };
 
-export * from './types';
-export * from './styled';
-export * from './model';
+  return (
+    <TariffCardIsPopular
+      $active={props.variant === 'PREMIUM' && !!props.popularText}
+      $variant={props.variant}
+      data-test={props.variant}
+    >
+      {props.variant === 'PREMIUM' && !!props.popularText && (
+        <TariffCardIsPopularContainer>
+          <TariffCardStarUnfilledIcon
+            fill="#fff"
+            size={16}
+          />
+          <TariffCardIsPopularText>{props.popularText}</TariffCardIsPopularText>
+        </TariffCardIsPopularContainer>
+      )}
+      <TariffCardBackground>
+        <TariffCardStyled
+          onClick={handleClick}
+          $variant={props.variant}
+          $active={props.variant !== 'ENTERPRISE' && !!props.selected}
+        >
+          <TariffCardStyledContent $variant={props.variant}>
+            {props.variant !== 'ENTERPRISE' && (
+              <Radio
+                onClick={handleClick}
+                checked={!!props.selected}
+              />
+            )}
+            <TariffCardContainer>
+              <TariffCardLabel $color={props.variant}>
+                {props.label}
+              </TariffCardLabel>
+              <TariffCardCapsContainer>
+                <TariffCardCapsText>{props.extraText}</TariffCardCapsText>
+                {props.variant !== 'ENTERPRISE' && (
+                  <TariffCardCapsBadge color="blue">{`${props.caps} Caps`}</TariffCardCapsBadge>
+                )}
+              </TariffCardCapsContainer>
+            </TariffCardContainer>
+            {props.variant !== 'ENTERPRISE' && (
+              <TariffCardContainerPrice>
+                <TariffCardPrice>{props.price} </TariffCardPrice>
+                <TariffCardCurrency>{props.currency}</TariffCardCurrency>
+              </TariffCardContainerPrice>
+            )}
+            {props.variant === 'ENTERPRISE' && (
+              <TariffCardEnterpriseButtonContainer>
+                {props.button}
+              </TariffCardEnterpriseButtonContainer>
+            )}
+          </TariffCardStyledContent>
+          <TariffCardDescription>{props.description}</TariffCardDescription>
+          {props.variant !== 'ENTERPRISE' && props.discount && (
+            <TariffCardDiscount>{props.discount}</TariffCardDiscount>
+          )}
+        </TariffCardStyled>
+      </TariffCardBackground>
+    </TariffCardIsPopular>
+  );
+};
+
+export { TariffCardEnterpriseButton, TariffCardArrow } from './styled';

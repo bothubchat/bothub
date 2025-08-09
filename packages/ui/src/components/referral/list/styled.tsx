@@ -26,15 +26,15 @@ export const ReferralsButtons = styled.div`
     `,
     mobile: css`
       margin-top: 24px;
-    `
+    `,
   })}
 `;
 
-export const CreateReferralButton = styled(Button).attrs({ size: 'md' })`
+export const CreateReferralButton = styled(Button).attrs({ size: 'small' })`
   ${adaptive({
     variant: 'dashboard',
     mobile: css`
       width: 100%;
-    `
+    `,
   })}
 `;

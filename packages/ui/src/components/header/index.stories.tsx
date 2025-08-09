@@ -7,25 +7,20 @@ import {
   HeaderUserInfoList,
   HeaderLogoLink,
   HeaderNav,
-  HeaderNavDropdown,
-  HeaderNavDropdownItem,
-  HeaderNavDropdownList,
   HeaderNavLink,
   HeaderUser,
   HeaderUserButton,
-  HeaderThemeSwitcher
 } from '.';
+import { ThemeSwitcher } from '../theme-switcher';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Logo } from '@/ui/components/logo';
 import {
   HeaderLangDropdown,
   HeaderLangDropdownItem,
-  HeaderLangDropdownList
+  HeaderLangDropdownList,
 } from './lang-dropdown';
 import {
   BookmarksBigIcon,
-  BothubAggIcon,
-  BusinessColoredIcon,
   ChatsIcon,
   CoderIcon,
   DashboardIcon,
@@ -34,11 +29,11 @@ import {
   ReferalIcon,
   SettingsIcon,
   TariffIcon,
-  TgColoredIcon,
-  UserProfileIcon
+  UserProfileIcon,
 } from '@/ui/icons';
 import { Button } from '../button';
 import { MenuDropdown } from '../menu-dropdown';
+import { config, HeaderMenuNav } from './menu-nav';
 
 export type HeaderMeta = Meta<typeof Header>;
 
@@ -52,33 +47,10 @@ export const Basic: HeaderStory = {
       </HeaderLogoLink>
     ),
     nav: (
-      <HeaderNav>
-        <HeaderNavLink href="#">Главная</HeaderNavLink>
-        <HeaderNavDropdown label="Продукты">
-          <HeaderNavDropdownList>
-            <HeaderNavDropdownItem
-              icon={<BothubAggIcon />}
-              title="Агрегатор нейросетей BotHub"
-              text="ChatGPT на базе 3.5 и 4.0 версии OpenAI"
-            />
-            <HeaderNavDropdownItem
-              icon={<TgColoredIcon />}
-              title="Telegram бот"
-              text="Удобный бот в Telegram который всегда под рукой"
-            />
-            <HeaderNavDropdownItem
-              icon={<BusinessColoredIcon />}
-              title="Бизнес бот"
-              text="ChatGPT для эффективного решения бизнес задач"
-            />
-          </HeaderNavDropdownList>
-        </HeaderNavDropdown>
-        <HeaderNavLink href="#">Тарифы</HeaderNavLink>
-        <HeaderNavLink href="#">Контакты</HeaderNavLink>
-        <HeaderNavLink href="#">Наши возможности</HeaderNavLink>
-        <HeaderNavLink href="#">О Нас</HeaderNavLink>
-        <HeaderNavLink href="#">Документация</HeaderNavLink>
-      </HeaderNav>
+      <HeaderMenuNav
+        isDesktop
+        items={config}
+      />
     ),
     lang: (
       <HeaderLangDropdown lang="ru">
@@ -94,8 +66,8 @@ export const Basic: HeaderStory = {
       <HeaderUser>
         <HeaderUserButton>Авторизация</HeaderUserButton>
       </HeaderUser>
-    )
-  }
+    ),
+  },
 };
 
 export const Authorized: HeaderStory = {
@@ -124,8 +96,8 @@ export const Authorized: HeaderStory = {
           </HeaderUserInfoList>
         </HeaderUserInfo>
       </HeaderUser>
-    )
-  }
+    ),
+  },
 };
 
 export const Dashboard: HeaderStory = {
@@ -172,8 +144,8 @@ export const Dashboard: HeaderStory = {
         </HeaderNavLink>
       </HeaderNav>
     ),
-    themeSwitcher: <HeaderThemeSwitcher />
-  }
+    themeSwitcher: <ThemeSwitcher />,
+  },
 };
 
 export const DashboardTablet: HeaderStory = {
@@ -202,8 +174,8 @@ export const DashboardTablet: HeaderStory = {
         </Button>
       </HeaderNav>
     ),
-    themeSwitcher: <HeaderThemeSwitcher />
-  }
+    themeSwitcher: <ThemeSwitcher />,
+  },
 };
 
 export const AdminDashboard: HeaderStory = {
@@ -249,44 +221,44 @@ export const AdminDashboard: HeaderStory = {
           Для разработчиков
         </HeaderNavLink>
       </HeaderNav>
-    )
-  }
+    ),
+  },
 };
 
 export default {
   title: 'Components/Header',
   component: Header,
-  decorators: [StoryDecorator()],
+  decorators: [StoryDecorator({ scale: 'main' })],
   argTypes: {
     variant: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     logo: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     nav: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     lang: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     user: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     id: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as HeaderMeta;

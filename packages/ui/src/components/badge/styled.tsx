@@ -30,7 +30,9 @@ export const BadgeStyled = styled.div<BadgeStyledProps>`
     }
     switch ($variant) {
       case 'info':
-        return theme.colors.grayScale.gray2;
+        return theme.mode === 'dark'
+          ? theme.colors.grayScale.gray3
+          : theme.colors.grayScale.gray5;
       case 'blue':
         return theme.colors.accent.primary;
       case 'critic':
@@ -52,12 +54,12 @@ export interface BadgeTextProps {
 }
 
 export const BadgeText = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })<BadgeTextProps>`
   color: ${({ theme, $variant }) => {
     switch ($variant) {
       case 'info':
-        return theme.colors.base.white;
+        return theme.default.colors.base.white;
       default:
         return theme.default.colors.base.white;
     }

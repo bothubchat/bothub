@@ -40,8 +40,8 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
       : theme.colors.grayScale.gray4;
   }};
   width: 100%;
-  max-width: ${({ theme }) => theme.dashboard.chat.containerWidth};
   padding: 14px 20px;
+  max-width: ${({ theme }) => theme.dashboard.chat.containerWidth};
   box-sizing: border-box;
   overflow: visible;
   cursor: ${({ $disabled, $textAreaDisabled, $voiceRecording }) => {
@@ -71,9 +71,20 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
 
 export const InputMessageContent = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   gap: 14px;
   width: 100%;
+`;
+
+export const InputMessageBottomGroup = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
+export const InputMessageBottom = styled(InputMessageBottomGroup)`
+  justify-content: space-between;
 `;
 
 export const InputMessageUploadFile = styled.div`
@@ -81,7 +92,7 @@ export const InputMessageUploadFile = styled.div`
 `;
 
 export const InputMessageUploadFileInput = styled.input.attrs({
-  id: 'inputMessageUploadFileInput'
+  id: 'inputMessageUploadFileInput',
 })`
   display: none;
 `;
@@ -90,7 +101,7 @@ export const InputMessageUploadFileButton = styled(Button).attrs({
   variant: 'secondary',
   component: 'label',
   htmlFor: 'inputMessageUploadFileInput',
-  children: <AttachIcon />
+  children: <AttachIcon />,
 })`
   flex-shrink: 0;
   user-select: none;
@@ -98,7 +109,6 @@ export const InputMessageUploadFileButton = styled(Button).attrs({
 
 export const InputMessageMain = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   gap: 14px;
@@ -129,7 +139,6 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   outline: none;
   resize: none;
   border: none;
-  line-height: 18px;
   color: ${({ theme, $disabled }) => {
     if ($disabled) {
       return theme.colors.grayScale.gray1;
@@ -137,8 +146,7 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
 
     return theme.colors.base.white;
   }};
-  font-weight: 500;
-  font-size: 14px;
+
   overflow: auto;
   scrollbar-width: none;
   padding: 0px;
@@ -153,6 +161,14 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
     css`
       cursor: not-allowed;
     `}
+
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 23.4px;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    font-size: 16px;
+    line-height: 22px;
+  }
 `;
 
 export const InputMessageSendButton = styled(Button)`
@@ -160,6 +176,24 @@ export const InputMessageSendButton = styled(Button)`
   svg {
     pointer-events: none;
   }
+`;
+
+export interface InputMessageVoiceButtonProps {
+  $isRecording?: boolean;
+}
+
+export const InputMessageVoiceButton = styled(
+  InputMessageSendButton,
+).attrs<InputMessageVoiceButtonProps>(({ theme, $isRecording }) => ({
+  variant: 'text',
+  ...($isRecording && {
+    iconFill: theme.colors.critic,
+  }),
+  ...(theme.bright && {
+    iconFill: theme.default.colors.base.black,
+  }),
+}))`
+  margin: 10px;
 `;
 
 export const InputMessageSendIcon = SendIcon;
@@ -193,7 +227,7 @@ export const InputMessageVoiceRecordDot = styled.span`
 `;
 
 export const InputMessageVoiceRecordTimeText = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })`
   cursor: default;
 `;
@@ -209,14 +243,14 @@ export const InputMessageToggleSendStyled = styled.div`
     `,
     mobile: css`
       display: none;
-    `
+    `,
   })}
 `;
 
 export const InputMessageToggleSendButton = styled(Button).attrs({
   variant: 'text',
   startIcon: <EnterIcon />,
-  iconSize: 24
+  iconSize: 24,
 })`
   svg {
     g path {

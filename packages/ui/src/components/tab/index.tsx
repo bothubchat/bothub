@@ -11,7 +11,7 @@ export const Tab: React.FC<TabProps> = ({
   className,
   active = false,
   children,
-  onClick
+  onClick,
 }) => (
   <TabStyled
     $active={active}

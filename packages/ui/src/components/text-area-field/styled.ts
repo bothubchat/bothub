@@ -31,7 +31,7 @@ export const TextAreaFieldStyled = styled.div<TextAreaFieldStyledProps>`
 `;
 
 export const TextAreaFieldLabel = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   display: inline-flex;
   align-items: center;
@@ -73,6 +73,10 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
       return theme.colors.grayScale.gray3;
     }
 
+    if (theme.scheme === 'custom') {
+      return theme.colors.grayScale.gray7;
+    }
+
     return theme.mode === 'light'
       ? theme.default.colors.base.white
       : theme.colors.grayScale.gray4;
@@ -83,7 +87,6 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
       background: ${theme.colors.grayScale.gray2};
       border-color: ${theme.colors.accent.primary};
     `}
-  transition: background-color .5s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color .2s ease-in-out;
   cursor: ${({ $disabled, $skeleton }) => {
     if ($skeleton) {
       return 'progress';
@@ -104,7 +107,7 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
 
 export const TextAreaFieldSkeleton = styled(Skeleton).attrs({
   width: 160,
-  height: 18
+  height: 18,
 })`
   margin: 14px 16px;
 `;
@@ -139,7 +142,7 @@ export const TextAreaFieldTextArea = styled.textarea`
 `;
 
 export const TextAreaFieldErrorText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   display: inline-flex;
   margin-top: 8px;

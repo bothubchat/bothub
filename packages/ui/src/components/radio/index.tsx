@@ -4,7 +4,7 @@ import {
   RadioCircleDot,
   RadioInput,
   RadioLabel,
-  RadioStyled
+  RadioStyled,
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 
@@ -15,6 +15,7 @@ export interface RadioProps extends React.ComponentProps<'input'> {
   label?: string | boolean;
   skeleton?: boolean;
   onValueChange?: RadioValueChangeEventHandler;
+  icon?: React.ReactNode;
 }
 
 export const Radio: React.FC<RadioProps> = ({
@@ -22,6 +23,7 @@ export const Radio: React.FC<RadioProps> = ({
   label,
   skeleton = false,
   onValueChange,
+  icon,
   ...props
 }) => {
   const handleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
@@ -29,7 +31,7 @@ export const Radio: React.FC<RadioProps> = ({
       props.onChange?.(event);
       onValueChange?.(event.target.checked);
     },
-    [props.onChange, onValueChange]
+    [props.onChange, onValueChange],
   );
 
   return (
@@ -45,9 +47,13 @@ export const Radio: React.FC<RadioProps> = ({
         />
       )}
       {!skeleton && (
-        <RadioCircle $skeleton={false}>
-          <RadioCircleDot />
-        </RadioCircle>
+        <>
+          {icon || (
+            <RadioCircle $skeleton={false}>
+              <RadioCircleDot />
+            </RadioCircle>
+          )}
+        </>
       )}
       {skeleton && (
         <RadioCircle

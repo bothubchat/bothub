@@ -2,7 +2,7 @@ import React from 'react';
 import {
   BookmarkCardChatIcon,
   BookmarkCardChatName,
-  BookmarkCardChatStyled
+  BookmarkCardChatStyled,
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 import { IconProvider } from '@/ui/components/icon';

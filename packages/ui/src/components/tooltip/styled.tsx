@@ -105,6 +105,7 @@ export const TooltipStyled = styled(animated.div)<TooltipStyledProps>`
 
 export interface TooltipBlockProps {
   $variant: TooltipVariant;
+  $contentWidth?: number;
 }
 
 export const TooltipBlock = styled.span<TooltipBlockProps>`
@@ -121,11 +122,12 @@ export const TooltipBlock = styled.span<TooltipBlockProps>`
   overflow: hidden;
   border-radius: 6px;
   box-sizing: border-box;
-  max-width: 260px;
+  max-width: ${({ $contentWidth }) =>
+    $contentWidth ? `${$contentWidth}px` : '260px'};
 `;
 
 export const TooltipLabel = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })`
   white-space: pre-wrap;
 `;
@@ -137,12 +139,12 @@ export const TooltipMarkdown = styled(ReactMarkdown)`
 `;
 
 export const TooltipLabelBold = styled(Typography).attrs({
-  variant: 'body-s-semibold'
+  variant: 'body-s-semibold',
 })``;
 
 export const TooltipCode = styled(Typography).attrs({
   component: 'code',
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })`
   display: inline-flex;
   border-radius: 4px;

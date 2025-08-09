@@ -216,6 +216,23 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
             --skeleton-height: 24px;
           }
         `;
+      case 'body-xl-medium':
+        return `
+          font-weight: 500;
+          font-size: 22px;
+          line-height: 29px;
+          --skeleton-height: 29px;
+          @media (max-width: ${theme.tablet.maxWidth}) {
+            font-size: 20px;
+            line-height: 26px;
+            --skeleton-height: 26px;
+          }
+          @media (max-width: ${theme.mobile.maxWidth}) {
+            font-size: 18px;
+            line-height: 24px;
+            --skeleton-height: 24px;
+          }
+        `;
       case 'body-m-semibold':
         return `
           font-weight: 600;
@@ -414,7 +431,10 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
 
 export const TypographyStyled = styled.span<TypographyStyledProps>`
   margin: 0px;
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) =>
+    theme.scheme === 'custom'
+      ? theme.colors.custom.interface.text
+      : theme.colors.base.white};
   font-weight: normal;
   text-decoration: none;
   text-align: ${({ $align }) => $align};

@@ -75,14 +75,14 @@ export const ScrollbarShadowStyled = styled.span<ScrollbarShadowStyledProps>`
         return {
           touch: css`
             height: 100%;
-          `
+          `,
         };
       case 'top':
       case 'bottom':
         return {
           touch: css`
             width: 100%;
-          `
+          `,
         };
     }
   })}

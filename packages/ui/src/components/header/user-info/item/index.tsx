@@ -29,7 +29,7 @@ export const HeaderUserInfoItem: React.FC<HeaderUserInfoItemProps> = ({
       setIsOpen(false);
       setIsMenuOpen(false);
     },
-    [props.onClick]
+    [props.onClick],
   );
 
   return (

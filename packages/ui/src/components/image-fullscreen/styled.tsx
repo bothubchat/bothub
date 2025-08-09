@@ -78,13 +78,13 @@ export const ImageFullScreenAuthor = styled.div`
 export const ImageFullScreenAuthorAvatar = styled(Avatar).attrs({ size: 30 })``;
 
 export const ImageFullScreenAuthorName = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })`
   cursor: default;
 `;
 
 export const ImageFullScreenAuthorTag = styled(Badge).attrs({
-  variant: 'info'
+  variant: 'info',
 })``;
 
 export const ImageFullScreenToolbar = styled.div``;
@@ -144,7 +144,7 @@ export const ImageFullScreenImage = styled(ZoommableImage)`
       `,
       mobile: css`
         max-width: 256px;
-      `
+      `,
     })}
     @media (max-height: 600px) {
       max-width: 256px;
@@ -160,7 +160,7 @@ export const ImageFullScreenImage = styled(ZoommableImage)`
       `,
       mobile: css`
         max-width: 256px;
-      `
+      `,
     })}
     @media (max-width: 600px) {
       max-width: 256px;
@@ -196,7 +196,7 @@ export const ImageFullScreenCarouselButtons = styled.div<ImageFullScreenCarousel
     `,
     mobile: css`
       gap: calc(min(256px, ${$imageWidth}px) + 48px);
-    `
+    `,
   }))}
   @media (max-height: 600px) {
     gap: calc(min(256px, ${({ $imageWidth }) => $imageWidth}px) + 48px);
@@ -204,13 +204,13 @@ export const ImageFullScreenCarouselButtons = styled.div<ImageFullScreenCarousel
 `;
 
 export const ImageFullScreenCarouselPrevButton = styled(Button).attrs({
-  children: <ArrowNarrowLeftIcon />
+  children: <ArrowNarrowLeftIcon />,
 })`
   pointer-events: auto;
 `;
 
 export const ImageFullScreenCarouselNextButton = styled(Button).attrs({
-  children: <ArrowNarrowRightIcon />
+  children: <ArrowNarrowRightIcon />,
 })`
   pointer-events: auto;
 `;
@@ -230,7 +230,7 @@ export const ImageFullScreenPreview = styled.div`
     `,
     mobile: css`
       padding: 8px;
-    `
+    `,
   })}
 `;
 
@@ -246,7 +246,7 @@ export interface ImageFullScreenPreviewImageProps {
 export const ImageFullScreenPreviewImage = styled(Image).attrs({
   width: 64,
   height: 64,
-  loading: 'skeleton'
+  loading: 'skeleton',
 })<ImageFullScreenPreviewImageProps>`
   display: inline-flex;
   width: auto;

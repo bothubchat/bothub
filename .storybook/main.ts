@@ -7,24 +7,24 @@ export const config: StorybookConfig = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-onboarding',
-    '@storybook/addon-interactions'
+    '@storybook/addon-interactions',
   ],
   framework: {
     name: '@storybook/react-vite',
-    options: {}
+    options: {},
   },
   docs: {
-    autodocs: 'tag'
+    autodocs: 'tag',
   },
   async viteFinal(config) {
     return mergeConfig(config, {
       resolve: {
         alias: {
-          '@/ui': '/packages/ui/src'
-        }
-      }
+          '@/ui': '/packages/ui/src',
+        },
+      },
     });
-  }
+  },
 };
 
 export default config;

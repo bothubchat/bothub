@@ -5,7 +5,7 @@ export interface HeaderMenuContextValue {
 }
 
 export const HeaderMenuContext = React.createContext<HeaderMenuContextValue>({
-  isInMenu: false
+  isInMenu: false,
 });
 
 export const HeaderMenuProvider: React.FC<

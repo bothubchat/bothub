@@ -6,7 +6,7 @@ import {
   SelectFieldDataItem,
   SelectFieldDataItemComplex,
   SelectFieldItemType,
-  SelectFieldLabel
+  SelectFieldLabel,
 } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Tooltip } from '@/ui/components/tooltip';
@@ -30,7 +30,7 @@ import {
   SpellingIcon,
   StarIcon,
   TextGenerationIcon,
-  TrafficAnalisysIcon
+  TrafficAnalisysIcon,
 } from '@/ui/icons';
 
 export type SelectFieldMeta = Meta<typeof SelectField>;
@@ -53,16 +53,19 @@ export const Basic: SelectFieldStory = {
       'Vite',
       'Bothub',
       'ChatGPT',
-      'Midjourney'
-    ]
-  }
+      'Midjourney',
+      'o3-mini',
+    ],
+    onValueChange: (value: unknown) => console.log('onValueChange', value),
+    onChange: (value: unknown) => console.log('onChange', value),
+  },
 };
 
 export const Clearable: SelectFieldStory = {
   args: {
     ...Basic.args,
-    clearable: true
-  }
+    clearable: true,
+  },
 };
 
 export const Empty: SelectFieldStory = {
@@ -71,10 +74,10 @@ export const Empty: SelectFieldStory = {
     data: [
       {
         type: 'empty',
-        label: 'По вашему запросу ничего не найдено'
-      }
-    ]
-  }
+        label: 'По вашему запросу ничего не найдено',
+      },
+    ],
+  },
 };
 
 export const Multiple: SelectFieldStory = {
@@ -83,7 +86,7 @@ export const Multiple: SelectFieldStory = {
     placeholder: 'Placeholder',
     data: [
       {
-        value: 'React'
+        value: 'React',
       },
       'Vue',
       'Svelte',
@@ -95,31 +98,31 @@ export const Multiple: SelectFieldStory = {
       'Vite',
       'Bothub',
       'ChatGPT',
-      'Midjourney'
+      'Midjourney',
     ],
-    multiple: true
-  }
+    multiple: true,
+  },
 };
 
 export const Loading: SelectFieldStory = {
   args: {
     ...Basic.args,
-    loading: true
-  }
+    loading: true,
+  },
 };
 
 export const Input: SelectFieldStory = {
   args: {
     ...Basic.args,
-    enableInput: true
-  }
+    enableInput: true,
+  },
 };
 
 export const InputLoading: SelectFieldStory = {
   args: {
     ...Input.args,
-    loading: true
-  }
+    loading: true,
+  },
 };
 
 export const Help: SelectFieldStory = {
@@ -132,8 +135,8 @@ export const Help: SelectFieldStory = {
           <Button variant="help" />
         </Tooltip>
       </SelectFieldLabel>
-    )
-  }
+    ),
+  },
 };
 
 export const Color: SelectFieldStory = {
@@ -142,22 +145,22 @@ export const Color: SelectFieldStory = {
     data: [
       {
         color: 'red',
-        value: 'Red'
+        value: 'Red',
       },
       {
         color: 'green',
-        value: 'Green'
+        value: 'Green',
       },
       {
         color: 'blue',
-        value: 'Blue'
+        value: 'Blue',
       },
       {
         color: 'orange',
-        value: 'Orange'
-      }
-    ]
-  }
+        value: 'Orange',
+      },
+    ],
+  },
 };
 
 export const Icon: SelectFieldStory = {
@@ -167,17 +170,17 @@ export const Icon: SelectFieldStory = {
       {
         icon: <Gpt35Icon />,
         value: 'gpt',
-        label: 'ChatGPT'
+        label: 'ChatGPT',
       },
       {
         icon: <DallEIcon />,
         value: 'dall-e',
-        label: 'DALL-E'
+        label: 'DALL-E',
       },
       {
         icon: <MjWhiteIcon />,
         value: 'mj',
-        label: 'Midjourney'
+        label: 'Midjourney',
       },
       {
         icon: <ClaudeIcon />,
@@ -189,12 +192,12 @@ export const Icon: SelectFieldStory = {
           placementX: -2,
           placementY: 0,
           label:
-            'Эта модель отсутствует в вашем текущем пакете. Для доступа к ней необходимо приобрести пакет Elite.'
+            'Эта модель отсутствует в вашем текущем пакете. Для доступа к ней необходимо приобрести пакет Elite.',
         },
-        disabled: true
-      }
-    ]
-  }
+        disabled: true,
+      },
+    ],
+  },
 };
 
 export const Plans: SelectFieldStory = {
@@ -205,22 +208,22 @@ export const Plans: SelectFieldStory = {
         icon: <PublicIcon />,
         value: 'public',
         label: 'Public',
-        backgroundHoverColor: 'primary'
+        backgroundHoverColor: 'primary',
       },
       {
         icon: <StarIcon />,
         value: 'premium',
         label: 'Premium',
-        backgroundHoverColor: 'primary'
+        backgroundHoverColor: 'primary',
       },
       {
         icon: <LightningIcon />,
         value: 'elite',
         label: 'Elite',
-        backgroundHoverColor: 'gradient'
-      }
-    ]
-  }
+        backgroundHoverColor: 'gradient',
+      },
+    ],
+  },
 };
 
 export const Sort: SelectFieldStory = {
@@ -229,54 +232,54 @@ export const Sort: SelectFieldStory = {
     data: [
       {
         label: 'По цене',
-        type: 'label'
+        type: 'label',
       },
       {
         icon: <SortDescendingIcon />,
-        label: 'По возрастанию'
+        label: 'По возрастанию',
       },
       {
         label: 'По убыванию',
-        icon: <SortAscendingIcon />
+        icon: <SortAscendingIcon />,
       },
       {
-        type: 'divider'
+        type: 'divider',
       },
       {
         label: 'По длине ответа',
-        type: 'label'
+        type: 'label',
       },
       {
         icon: <SortAlphabetAscendingIcon />,
-        label: 'По возрастанию'
+        label: 'По возрастанию',
       },
       {
         label: 'По убыванию',
-        icon: <SortAlphabetDescendingIcon />
-      }
-    ]
-  }
+        icon: <SortAlphabetDescendingIcon />,
+      },
+    ],
+  },
 };
 
 export const Error: SelectFieldStory = {
   args: {
     ...Basic.args,
-    error: 'Error message'
-  }
+    error: 'Error message',
+  },
 };
 
 export const Disabled: SelectFieldStory = {
   args: {
     ...Basic.args,
-    disabled: true
-  }
+    disabled: true,
+  },
 };
 
 export const Skeleton: SelectFieldStory = {
   args: {
     ...Basic.args,
-    skeleton: true
-  }
+    skeleton: true,
+  },
 };
 
 export const Shortcut: SelectFieldStory = {
@@ -288,26 +291,26 @@ export const Shortcut: SelectFieldStory = {
     data: [
       {
         value: 'next',
-        label: 'Далее'
+        label: 'Далее',
       },
       {
         value: 'text',
-        label: 'Продолжи текст'
+        label: 'Продолжи текст',
       },
       ...[...Array(10)].map((_, index) => ({
         value: `shortcut-${index + 1}`,
-        label: `Быстрое действие #${index + 1}`
-      }))
+        label: `Быстрое действие #${index + 1}`,
+      })),
     ],
     after: [
       {
-        type: 'divider'
+        type: 'divider',
       },
       {
         value: 'add',
         icon: <Plus2Icon />,
-        label: 'Добавить быстрое действие'
-      }
+        label: 'Добавить быстрое действие',
+      },
     ],
     children: React.createElement(() => (
       <SelectFieldConsumer>
@@ -320,8 +323,8 @@ export const Shortcut: SelectFieldStory = {
           </Button>
         )}
       </SelectFieldConsumer>
-    ))
-  }
+    )),
+  },
 };
 
 export const Preset: SelectFieldStory = {
@@ -332,34 +335,65 @@ export const Preset: SelectFieldStory = {
     inputType: 'search',
     data: [
       {
+        id: 'presets',
         type: 'collapse',
         icon: <StarIcon fill="#F29C1C" />,
         label: 'Избранные пресеты',
         data: [
           {
             value: '1',
-            label: 'Пресет #1'
+            label: 'Пресет #1',
           },
           {
             value: '2',
-            label: 'Пресет #2'
+            label: 'Пресет #2',
           },
           {
             value: '3',
-            label: 'Пресет #3'
+            label: 'Пресет #3',
           },
           {
             value: '4',
-            label: 'Пресет #4'
+            label: 'Пресет #4',
           },
           {
             value: '5',
             label:
-              'Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет'
-          }
-        ]
+              'Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет',
+          },
+        ],
       },
       {
+        id: 'presets-2',
+        type: 'collapse',
+        icon: <StarIcon fill="#F29C1C" />,
+        label: 'Избранные пресеты',
+        data: [
+          {
+            value: '1',
+            label: 'Пресет #1',
+          },
+          {
+            value: '2',
+            label: 'Пресет #2',
+          },
+          {
+            value: '3',
+            label: 'Пресет #3',
+          },
+          {
+            value: '4',
+            label: 'Пресет #4',
+          },
+          {
+            value: '5',
+            label:
+              'Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет Большой пресет',
+          },
+        ],
+      },
+      {
+        id: 'disabled',
         type: 'collapse',
         icon: <PublicIcon fill="#4785FF" />,
         label: 'Общедоступные пресеты',
@@ -368,12 +402,12 @@ export const Preset: SelectFieldStory = {
         data: [
           {
             type: 'empty',
-            label: 'По вашему запросу пресеты не найдены'
-          }
-        ]
-      }
-    ]
-  }
+            label: 'По вашему запросу пресеты не найдены',
+          },
+        ],
+      },
+    ],
+  },
 };
 
 export const Bold: SelectFieldStory = {
@@ -385,42 +419,51 @@ export const Bold: SelectFieldStory = {
         data: [
           {
             label: 'По возрастанию',
-            noSelect: true
+            noSelect: true,
           },
           {
             label: 'По убыванию',
-            noSelect: true
-          }
-        ]
+            noSelect: true,
+          },
+        ],
       },
       {
         icon: <Gpt35Icon />,
         value: 'gpt',
-        label: 'ChatGPT'
+        label: 'ChatGPT',
       },
       {
         icon: <DallEIcon />,
         value: 'dall-e',
-        label: 'DALL-E'
+        label: 'DALL-E',
       },
       {
         icon: <MjWhiteIcon />,
         value: 'mj',
-        label: 'Midjourney'
+        label: 'Midjourney',
       },
       {
         label: 'Показать еще',
         bold: true,
         icon: <Plus2Icon d="fill" />,
-        noSelect: true
-      }
-    ]
-  }
+        noSelect: true,
+      },
+    ],
+  },
 };
 
 export const Radio: SelectFieldStory = {
   render() {
     const [data, setData] = useState([
+      {
+        id: 'model-id',
+        icon: <Gpt35Icon />,
+        type: 'radio' as SelectFieldItemType,
+        label: 'long model name '.repeat(2),
+        description:
+          'Уменьшенная и более дешевая версия самой лучшей модели OpenAi',
+        radioName: 'models',
+      },
       {
         id: 'o1-mini',
         icon: <Gpt35Icon />,
@@ -428,7 +471,7 @@ export const Radio: SelectFieldStory = {
         label: 'o1-mini',
         description:
           'Уменьшенная и более дешевая версия самой лучшей модели OpenAi',
-        radioName: 'models'
+        radioName: 'models',
       },
       {
         id: 'GPT-4o',
@@ -437,7 +480,7 @@ export const Radio: SelectFieldStory = {
         label: 'GPT-4o',
         description:
           'Модель c высоким уровнем креативности, адаптированная для  написания человечных текстов',
-        radioName: 'models'
+        radioName: 'models',
       },
       {
         id: 'GPT-4-turbo',
@@ -446,15 +489,18 @@ export const Radio: SelectFieldStory = {
         label: 'GPT-4-turbo',
         description:
           'Модель хорошо справляется с кодом, обработкой неструктурированых и визуальных данных.',
-        radioName: 'models'
-      }
+        radioName: 'models',
+      },
     ]);
 
     const onOptionClick = (item: SelectFieldDataItem) => {
       const selectedItem = item as SelectFieldDataItemComplex;
 
       setData(
-        data.map((item) => ({ ...item, selected: selectedItem.id === item.id }))
+        data.map((item) => ({
+          ...item,
+          selected: selectedItem.id === item.id,
+        })),
       );
     };
 
@@ -464,7 +510,7 @@ export const Radio: SelectFieldStory = {
         onOptionClick={onOptionClick}
       />
     );
-  }
+  },
 };
 
 export const WithTabs: SelectFieldStory = {
@@ -475,54 +521,136 @@ export const WithTabs: SelectFieldStory = {
         {
           id: 'text',
           label: 'Текст',
-          icon: <TextGenerationIcon />
+          icon: <TextGenerationIcon />,
         },
         {
           id: 'image',
           label: 'Изображение',
-          icon: <ImageGenerationIcon />
+          icon: <ImageGenerationIcon />,
         },
         {
           id: 'code',
           label: 'Код',
-          icon: <CodeGenerationIcon />
+          icon: <CodeGenerationIcon />,
         },
         {
           id: 'table',
           label: 'Анализ таблиц',
-          icon: <TrafficAnalisysIcon />
+          icon: <TrafficAnalisysIcon />,
         },
         {
           id: 'speech',
           label: 'Синтез речи',
-          icon: <SpeechSynthesysIcon />
+          icon: <SpeechSynthesysIcon />,
         },
         {
           id: 'spell',
           label: 'Орфография',
-          icon: <SpellingIcon />
-        }
+          icon: <SpellingIcon />,
+        },
       ],
-      onTabClick(id) {
+      onClick(id) {
         alert(id);
       },
-      defaultTabId: 'code'
+      defaultTabId: 'code',
     },
     contentWidth: 350,
-    size: 'large'
-  }
+  },
 };
 
 export const WithSearch: SelectFieldStory = {
   args: {
-    ...Basic.args,
+    data: [
+      {
+        id: 'ChatGPT',
+        type: 'collapse',
+        label: 'ChatGPT',
+        icon: <Gpt35Icon />,
+        data: ['gpt-4o', 'gpt-4o-mini', 'o1-mini'],
+      },
+      'Midjourney',
+      {
+        icon: <DallEIcon />,
+        value: 'dall-e',
+        label: 'DALL-E',
+      },
+    ],
     search: true,
-    searchPlaceholder: 'Поиск...'
-  }
+    searchPlaceholder: 'Поиск...',
+    contentHeight: 300,
+  },
+};
+
+export const SmallSize: SelectFieldStory = {
+  args: {
+    data: [
+      {
+        id: 'gpt',
+        type: 'collapse',
+        label: 'ChatGPT',
+        icon: <Gpt35Icon />,
+        data: ['gpt-4o', 'gpt-4o-mini', 'o1-mini'],
+      },
+      {
+        label: 'Midjourney',
+        icon: <MjWhiteIcon />,
+      },
+      'React',
+      'Vue',
+      'Svelte',
+    ],
+  },
+};
+
+export const MediumSize: SelectFieldStory = {
+  args: {
+    ...SmallSize.args,
+    size: 'md',
+  },
+};
+
+export const LargeSize: SelectFieldStory = {
+  args: {
+    ...SmallSize.args,
+    size: 'large',
+  },
+};
+
+export const WithBeforeAndAfter: SelectFieldStory = {
+  args: {
+    data: Basic.args?.data,
+    after: Basic.args?.data,
+  },
+};
+
+export const ResetStyleState: SelectFieldStory = {
+  render() {
+    const [shouldResetStyleState, setShouldResetStyleState] = useState(false);
+
+    return (
+      <>
+        <SelectField
+          data={WithSearch.args?.data}
+          resetStyleState={shouldResetStyleState}
+          placement="top-right"
+          search
+        />
+        <Button
+          type="button"
+          onClick={() => setShouldResetStyleState((prev) => !prev)}
+          style={{
+            marginTop: 20,
+          }}
+        >
+          Reset opened option and scroll top state
+        </Button>
+      </>
+    );
+  },
 };
 
 export default {
   title: 'UI Components/Fields/Select',
   component: SelectField,
-  decorators: [StoryDecorator({ margin: '300px' })]
+  decorators: [StoryDecorator({ margin: '300px' })],
 } as SelectFieldMeta;

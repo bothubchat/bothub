@@ -49,7 +49,7 @@ export const UserTariffBadgeStyled = styled.div<UserTariffBadgeStyledProps>`
 `;
 
 export const UserTariffBadgeText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })`
   color: ${({ theme }) => theme.default.colors.base.white};
   cursor: inherit;
@@ -59,7 +59,7 @@ export const UserTariffBadgeText = styled(Typography).attrs({
 
 export const UserTariffBadgeSkeleton = styled(Skeleton).attrs({
   width: 60,
-  height: 12
+  height: 12,
 })`
   border-radius: 8px;
 `;

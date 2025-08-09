@@ -3,7 +3,7 @@ import { ScrollbarRef } from '../scrollbar';
 
 export const useSlider = () => {
   const [isLeftDisabled, setIsLeftDisabled] = useState(true);
-  const [isRightDisabled, setIsRightDisabled] = useState(false);
+  const [isRightDisabled, setIsRightDisabled] = useState(true);
 
   const scrollbarRef = useRef<ScrollbarRef>(null);
 
@@ -33,7 +33,7 @@ export const useSlider = () => {
     children[isNearFirstPosition].scrollIntoView({
       behavior: 'smooth',
       block: 'nearest',
-      inline: 'center'
+      inline: 'center',
     });
   };
 
@@ -66,7 +66,7 @@ export const useSlider = () => {
     children[isNearFirstPosition].scrollIntoView({
       behavior: 'smooth',
       block: 'nearest',
-      inline: 'center'
+      inline: 'center',
     });
   };
 
@@ -116,6 +116,6 @@ export const useSlider = () => {
     isRightDisabled,
     onScrollLeft,
     onScrollRight,
-    scrollbarRef
+    scrollbarRef,
   };
 };

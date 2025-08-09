@@ -3,15 +3,14 @@ import {
   DescriptionCardBackground,
   DescriptionCardBackgroundWrapper,
   DescriptionCardBorderWrapper,
-  DescriptionCardButton,
   DescriptionCardContent,
   DescriptionCardStyled,
   DescriptionCardText,
   DescriptionCardTitle,
   DescriptionCardTertiaryTitle,
-  DescriptionCardTertiaryText
+  DescriptionCardTertiaryText,
 } from './styled';
-import { DescriptionCardVariant } from './types';
+import { TDescriptionCard, DescriptionCardVariant } from './types';
 import { LinksIcon } from '@/ui/icons/links';
 import { useTheme } from '@/ui/theme';
 
@@ -23,15 +22,17 @@ export interface DescriptionCardProps
   icon?: React.ReactNode;
   title?: React.ReactNode | string;
   text?: React.ReactNode | string;
-  button?: React.ReactNode | boolean;
   variant?: DescriptionCardVariant;
+  descriptionCardType?: TDescriptionCard;
+  children?: React.ReactNode;
 }
 
 export const DescriptionCard: React.FC<DescriptionCardProps> = ({
   icon = <LinksIcon />,
   title,
+  descriptionCardType,
   text,
-  button,
+  children,
   variant = 'main',
   ...props
 }) => {
@@ -50,7 +51,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
 
       props.onMouseMove?.(event);
     },
-    [props.onMouseMove]
+    [props.onMouseMove],
   );
   const handleMouseLeave = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
@@ -59,13 +60,14 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
 
       props.onMouseLeave?.(event);
     },
-    [props.onMouseLeave]
+    [props.onMouseLeave],
   );
 
   return (
     <DescriptionCardStyled
       {...props}
       $variant={variant}
+      $descriptionCardType={descriptionCardType}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
@@ -74,7 +76,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
         style={
           variant !== 'tertiary'
             ? {
-                background: `radial-gradient(100% 100% at ${hoverX}px ${hoverY}px, ${theme.colors.accent.primary}, rgba(0, 0, 0, 0.0))`
+                background: `radial-gradient(100% 100% at ${hoverX}px ${hoverY}px, ${theme.colors.accent.primary}, rgba(0, 0, 0, 0.0))`,
               }
             : {}
         }
@@ -84,12 +86,15 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
           style={
             variant !== 'tertiary'
               ? {
-                  background: `radial-gradient(80% 70% at ${hoverX}px ${hoverY}px, rgba(28, 100, 242, 0.38) 9.34%, rgba(0, 0, 0, 0.00) 100%), #121825`
+                  background: `radial-gradient(80% 70% at ${hoverX}px ${hoverY}px, rgba(28, 100, 242, 0.38) 9.34%, rgba(0, 0, 0, 0.00) 100%), #121825`,
                 }
               : {}
           }
         >
-          <DescriptionCardBackground $variant={variant} />
+          {variant === 'tertiary' && (
+            <DescriptionCardBackground $variant={variant} />
+          )}
+
           <DescriptionCardContent $variant={variant}>
             {variant === 'tertiary' && icon}
             {variant !== 'tertiary' &&
@@ -120,11 +125,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
               ) : (
                 text
               ))}
-            {variant !== 'tertiary' && button === true ? (
-              <DescriptionCardButton>Подробнее</DescriptionCardButton>
-            ) : (
-              button
-            )}
+            {children}
           </DescriptionCardContent>
         </DescriptionCardBackgroundWrapper>
       </DescriptionCardBorderWrapper>

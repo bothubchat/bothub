@@ -4,7 +4,7 @@ import { SkeletonVariant } from './types';
 const pulse = ({
   theme,
   $opacity,
-  $colors
+  $colors,
 }: {
   theme: DefaultTheme;
   $opacity?: [number, number?];
@@ -91,7 +91,7 @@ export const SkeletonStyled = styled.span<SkeletonStyledProps>`
     ${pulse({
       theme,
       $opacity,
-      $colors
+      $colors,
     })} 2s infinite forwards;
   `};
   overflow: hidden;

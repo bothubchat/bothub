@@ -28,7 +28,7 @@ export const FooterMobileStyled = styled.div<{ $isPreset?: boolean }>`
     variant: 'dashboard',
     mobile: css`
       display: flex;
-    `
+    `,
   })}
 `;
 
@@ -64,11 +64,14 @@ export const FooterMobileButton = styled.button<FooterMobileButtonProps>`
 `;
 
 export const FooterMobileNewChatButton = styled(FooterMobileButton).attrs({
-  children: <AddChatIcon />
+  children: <AddChatIcon />,
 })`
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.accent.primary};
   svg path {
-    stroke: ${({ theme }) => theme.default.colors.base.white};
+    stroke: ${({ theme }) =>
+      theme.bright
+        ? theme.default.colors.base.black
+        : theme.default.colors.base.white};
   }
 `;

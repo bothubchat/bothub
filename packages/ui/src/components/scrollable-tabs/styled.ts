@@ -1,11 +1,13 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '../typography';
 import { Variant } from './types';
+import { colorToRgba } from '@/ui/utils';
 
 type VariantProps = { $variant: Variant };
 
 type ScrollableTabsTabProps = {
   $selected?: boolean;
+  $fullWidth?: boolean;
 } & VariantProps;
 
 export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
@@ -15,6 +17,16 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
   align-items: center;
   flex-shrink: 0;
   position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    css`
+      justify-content: center;
+      flex: 1;
+    `}
 
   ${({ $variant }) =>
     $variant === 'primary'
@@ -71,14 +83,8 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
   }
 
   &:hover:before {
-    background-color: ${({ theme }) => theme.colors.accent.primary}33;
-  }
-
-  svg path {
-    stroke: ${({ theme }) =>
-      theme.mode === 'light'
-        ? theme.default.colors.base.black
-        : theme.default.colors.base.white};
+    background-color: ${({ theme }) =>
+      colorToRgba(theme.colors.accent.primary, 0.2)};
   }
 
   & > * {
@@ -89,6 +95,14 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
 
 export const ScrollableTabsTabLabel = styled(Typography).attrs<VariantProps>(
   (props) => ({
-    variant: props.$variant === 'primary' ? 'body-l-regular' : 'button-sm'
-  })
+    variant: props.$variant === 'primary' ? 'body-l-regular' : 'button-sm',
+  }),
 )``;
+
+export const ScrollableTabsFullWidth = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  overflow: hidden;
+`;

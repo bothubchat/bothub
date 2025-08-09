@@ -54,7 +54,7 @@ export const DateGridItem = styled.div`
 export const DayOfMonth = styled(Typography)``;
 
 export const DateGridInteractiveItem = styled(DateGridItem).attrs({
-  as: 'button'
+  as: 'button',
 })<{
   $active?: boolean;
   $outRange?: boolean;

@@ -3,7 +3,7 @@ import {
   IconComponent,
   IconProps,
   Tooltip,
-  TooltipConsumer
+  TooltipConsumer,
 } from '@/ui/components';
 import { IconItemStyled } from './styled';
 

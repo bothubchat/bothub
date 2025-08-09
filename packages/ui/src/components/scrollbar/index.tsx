@@ -4,7 +4,7 @@ import React, {
   useState,
   useEffect,
   forwardRef,
-  useImperativeHandle
+  useImperativeHandle,
 } from 'react';
 import { ScrollbarContent, ScrollbarShadows, ScrollbarStyled } from './styled';
 import {
@@ -13,7 +13,7 @@ import {
   ScrollbarOverflow,
   ScrollbarRef,
   ScrollbarShadowsProps,
-  ScrollbarVariant
+  ScrollbarVariant,
 } from './types';
 import { ScrollbarProvider } from './context';
 
@@ -55,9 +55,9 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
       onScroll,
       defaultStickyBottom = false,
       withStickyBottom = false,
-      isHorizontalScrollbar = false
+      isHorizontalScrollbar = false,
     },
-    ref
+    ref,
   ) => {
     const scrollbarRef = useRef<HTMLDivElement>(null);
     const [isLeft, setIsLeft] = useState<boolean>(false);
@@ -68,7 +68,6 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
     const lockedMode = !!scrollLocked;
     const [sticky, setSticky] = useState<boolean>(defaultStickyBottom);
     const [previousScrollTop, setPreviousScrollTop] = useState<number>(0);
-
     const scrollShadowsSize = scrollShadows?.size ?? 60;
 
     const handleScroll = useCallback(
@@ -79,7 +78,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
           clientHeight,
           scrollLeft,
           scrollWidth,
-          clientWidth
+          clientWidth,
         } = scrollbarEl;
 
         const isBiggerThanContentHeight = scrollShadowsSize > clientHeight;
@@ -94,7 +93,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         setIsLeft(!isBiggerThanContentWidth && scrollLeft !== 0);
         setIsRight(
           !isBiggerThanContentWidth &&
-            Math.round(scrollLeft) + 1 < scrollWidth - clientWidth
+            Math.round(scrollLeft) + 1 < scrollWidth - clientWidth,
         );
 
         const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
@@ -122,8 +121,8 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         previousScrollTop,
         withStickyBottom,
         scrollShadowsSize,
-        onScroll
-      ]
+        onScroll,
+      ],
     );
 
     useEffect(() => {
@@ -168,16 +167,16 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
           }
         }
       },
-      [lockedMode, scrollLocked]
+      [lockedMode, scrollLocked],
     );
 
     useImperativeHandle(
       ref,
       () => ({
         element: scrollbarRef.current,
-        setScroll
+        setScroll,
       }),
-      [scrollbarRef.current, setScroll]
+      [scrollbarRef.current, setScroll],
     );
 
     useEffect(() => {
@@ -209,7 +208,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
 
         observer.observe(scrollbarEl, {
           childList: true,
-          subtree: true
+          subtree: true,
         });
       }
 
@@ -291,7 +290,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         </ScrollbarStyled>
       </ScrollbarProvider>
     );
-  }
+  },
 );
 
 export * from './types';

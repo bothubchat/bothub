@@ -15,11 +15,11 @@ import {
   MessageTableCellStyled,
   MessageTableRow,
   MessageTableStyled,
-  MessageTitleStyled
+  MessageTitleStyled,
 } from '@/ui/components/message/components';
 import {
   MessageMultilineCodeContentContainer,
-  MessageMultilineCodeLastLine
+  MessageMultilineCodeLastLine,
 } from '../components/code/multiline/content/styled';
 
 export const MessageMarkdownStyled = styled.div`
@@ -40,7 +40,13 @@ export const MessageMarkdownLine = React.memo(
   styled(ReactMarkdown)<MessageMarkdownStyledProps>`
     display: block;
     width: 100%;
-    color: ${({ theme }) => theme.colors.base.white};
+    color: ${({ theme }) => {
+      if (theme.scheme === 'custom') {
+        return theme.colors.custom.message.assistant.text;
+      }
+      return theme.mode === 'dark' ? theme.colors.base.white : '#a1a19a';
+    }};
+
     font-weight: 400;
     font-size: 16px;
     line-height: 22px;
@@ -117,7 +123,7 @@ export const MessageMarkdownLine = React.memo(
     prevProps.children === nextProps.children &&
     prevProps.$typing === nextProps.$typing &&
     prevProps.$color === nextProps.$color &&
-    prevProps.$singleDollarTextMath === nextProps.$singleDollarTextMath
+    prevProps.$singleDollarTextMath === nextProps.$singleDollarTextMath,
 );
 
 export const messageTextCursorOpacity = keyframes`

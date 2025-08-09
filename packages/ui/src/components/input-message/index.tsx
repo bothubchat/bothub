@@ -1,13 +1,9 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-  useLayoutEffect
-} from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useTransition } from '@react-spring/web';
 import { useOnClickOutside } from '@/ui/utils/useOnClickOutside';
 import {
+  InputMessageBottom,
+  InputMessageBottomGroup,
   InputMessageContent,
   InputMessageFile,
   InputMessageFiles,
@@ -23,10 +19,11 @@ import {
   InputMessageUploadFile,
   InputMessageUploadFileButton,
   InputMessageUploadFileInput,
+  InputMessageVoiceButton,
   InputMessageVoiceIcon,
   InputMessageVoiceRecord,
   InputMessageVoiceRecordDot,
-  InputMessageVoiceRecordTimeText
+  InputMessageVoiceRecordTimeText,
 } from './styled';
 import { ChipImage } from '@/ui/components/chip';
 import { PdfIcon } from '@/ui/icons/pdf';
@@ -38,7 +35,8 @@ import { IconProvider } from '@/ui/components/icon';
 import {
   formatUploadFiles,
   getPreviewUrlForFile,
-  formatSeconds
+  formatSeconds,
+  isFileTypeAccepted,
 } from './utils';
 import { AttachFileIcon } from '@/ui/icons/attach-file';
 import { useTheme } from '@/ui/theme';
@@ -47,12 +45,12 @@ import { getSupportedAudioMimeType } from '@/ui/utils/getSupportedAudioMimeType'
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
 export type InputMessageFilesChangeEventHandler = (
-  files: IInputMessageFile[]
+  files: IInputMessageFile[],
 ) => unknown;
 
 export type InputMessageSendEventHandler = (
   message: string,
-  files: IInputMessageFile[]
+  files: IInputMessageFile[],
 ) => unknown;
 
 export type InputMessageVoiceEventHandler = (blob: Blob) => unknown;
@@ -122,7 +120,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [textareaHeight, setTextareaHeight] = useState(
-    'calc(var(--bothub-scale, 1) * 18px)'
+    'calc(var(--bothub-scale, 1) * 22px)',
   );
 
   const [message, setMessage] =
@@ -136,7 +134,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const [dragActive, setDragActive] = useState(false);
   const [isVoiceRecording, setIsVoiceRecording] = useState(false);
   const [voiceRecordingTime, setVoiceRecordingTime] = useState<number | null>(
-    null
+    null,
   );
   const voiceMediaRecorderRef = useRef<MediaRecorder | null>(null);
   const voiceMediaStreamRef = useRef<MediaStream | null>(null);
@@ -147,7 +145,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const inputMessageToggleSendKeyRef = useRef<HTMLDivElement | null>(null);
 
   const [useAlternativeKey, setUseAlternativeKey] = useState(
-    useAlternativeKeyDefaultValue
+    useAlternativeKeyDefaultValue,
   );
   const [alternativeKeyModalShown, setAlternativeKeyModalShown] =
     useState<boolean>(false);
@@ -169,7 +167,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       setIsFocus(true);
       onFocus?.(event);
     },
-    [onFocus]
+    [onFocus],
   );
 
   const handleBlur = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
@@ -177,7 +175,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       setIsFocus(false);
       onBlur?.(event);
     },
-    [onBlur]
+    [onBlur],
   );
 
   const handleChange = useCallback<
@@ -187,24 +185,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       setMessage?.(event.target.value);
       onTextAreaChange?.(event);
     },
-    [setMessage, onTextAreaChange]
-  );
-
-  const handleInput = useCallback<React.ReactEventHandler<HTMLTextAreaElement>>(
-    (event) => {
-      const textareaEl: HTMLElement | null = textareaRef.current;
-
-      if (textareaEl === null) {
-        return;
-      }
-
-      textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 18px)';
-      textareaEl.style.height = `${event.currentTarget.scrollHeight}px`;
-      textareaEl.focus();
-
-      setTextareaHeight(`${event.currentTarget.scrollHeight}px`);
-    },
-    []
+    [setMessage, onTextAreaChange],
   );
 
   const handleSideUploadFiles = useCallback(
@@ -213,16 +194,16 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       const newFiles: IInputMessageFile[] = [];
       const rejectedFiles: File[] = [];
       const previewsUrls: (string | null)[] = await Promise.all(
-        uploadFiles?.map(getPreviewUrlForFile)
+        uploadFiles?.map(getPreviewUrlForFile),
       );
       for (const [idx, file] of uploadFiles.entries()) {
-        const isValidFile = uploadFileAccept?.includes(file.type) ?? true;
+        const isValidFile = isFileTypeAccepted(file.type, uploadFileAccept);
 
         if (isValidFile) {
           newFiles.push({
             previewUrl: previewsUrls[idx],
             name: file.name,
-            native: file
+            native: file,
           });
         } else {
           rejectedFiles.push(file);
@@ -235,7 +216,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         setFiles?.([...files, ...newFiles].slice(0, uploadFileLimit));
       }
     },
-    [uploadFileAccept, emitError, uploadFileLimit, files]
+    [uploadFileAccept, emitError, uploadFileLimit, files],
   );
 
   const handlePaste = useCallback<React.ClipboardEventHandler>(
@@ -245,7 +226,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         await handleSideUploadFiles([...event.clipboardData.files]);
       }
     },
-    [handleSideUploadFiles, uploadFileDisabled]
+    [handleSideUploadFiles, uploadFileDisabled],
   );
 
   const handleUploadFileChange = useCallback<
@@ -257,28 +238,29 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       }
       const formattedFiles = await formatUploadFiles([
         ...files.map(({ native }) => native),
-        ...event.target.files
+        ...event.target.files,
       ]);
       setFiles(formattedFiles.slice(0, uploadFileLimit));
     },
-    [files, setFiles, uploadFileLimit]
+    [files, setFiles, uploadFileLimit],
   );
 
   const handleDeleteFile = useCallback(
     (file: IInputMessageFile) => {
       setFiles?.(files.filter(({ name }) => name !== file.name));
     },
-    [setFiles, files]
+    [setFiles, files],
   );
 
   const handleSend = useCallback<React.MouseEventHandler<HTMLButtonElement>>(
     (event) => {
       event.stopPropagation();
-
       onSend?.(message, files);
-      setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
+      setMessage?.('');
+      setFiles?.([]);
+      setTextareaHeight('calc(var(--bothub-scale, 1) * 22px)');
     },
-    [message, files, onSend, setMessage, setFiles]
+    [message, files, onSend, setMessage, setFiles],
   );
 
   const handleKeyDown = useCallback(
@@ -318,16 +300,18 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         if (newLineKey !== keyboardEvent && keyboardEvent !== '') {
           event.preventDefault();
           onSend?.(message, files);
-          setTextareaHeight('calc(var(--bothub-scale, 1) * 18px)');
+          setTextareaHeight('calc(var(--bothub-scale, 1) * 22px)');
         }
       }
     },
-    [isFocus, message, files, onSend, setMessage, setFiles]
+    [isFocus, message, files, onSend, setMessage, setFiles],
   );
 
   const handleClick = useCallback(() => {
-    textareaRef.current?.focus();
-  }, []);
+    if (!disabled) {
+      textareaRef.current?.focus();
+    }
+  }, [disabled, autoFocus]);
 
   const handleUploadFileClick = useCallback<
     React.MouseEventHandler<HTMLDivElement>
@@ -343,10 +327,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       event.stopPropagation();
 
       const mediaStream = await navigator.mediaDevices.getUserMedia({
-        audio: true
+        audio: true,
       });
       const mediaRecorder = new MediaRecorder(mediaStream, {
-        mimeType: getSupportedAudioMimeType()
+        mimeType: getSupportedAudioMimeType(),
       });
 
       if (!voicePressedRef.current) {
@@ -364,7 +348,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       setIsVoiceRecording(true);
       setVoiceRecordingTime(0);
     },
-    [voicePressedRef.current, voiceChunksRef.current, isVoiceRecording]
+    [voicePressedRef.current, voiceChunksRef.current, isVoiceRecording],
   );
 
   const stopVoiceRecording = useCallback(() => {
@@ -386,7 +370,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     isVoiceRecording,
     voiceMediaRecorderRef.current,
     voiceMediaStreamRef.current,
-    voiceTimerRef.current
+    voiceTimerRef.current,
   ]);
 
   const handleVoiceRecordEnd = useCallback(async () => {
@@ -399,16 +383,33 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     stopVoiceRecording();
   }, [isVoiceRecording, stopVoiceRecording]);
 
-  useEffect(() => {
-    const textareaEl: HTMLElement | null = textareaRef.current;
-    const focused = document.activeElement === textareaEl;
+  const handleInput = useCallback(() => {
+    const textareaEl = textareaRef.current;
+    if (textareaEl === null) return;
 
-    if (textareaEl && autoFocus) {
+    textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 22px)';
+    textareaEl.style.height = `${textareaEl.scrollHeight}px`;
+    setTextareaHeight(`${textareaEl.scrollHeight}px`);
+  }, [message, autoFocus]);
+
+  useEffect(() => {
+    handleInput();
+  }, [handleInput]);
+
+  useEffect(() => {
+    const textareaEl = textareaRef.current;
+    if (!textareaEl || disabled) return;
+
+    const shouldFocus = !disabled && autoFocus;
+
+    setIsFocus(shouldFocus);
+
+    if (shouldFocus) {
       textareaEl.focus();
-    } else if (!focused) {
-      setIsFocus(false);
+    } else if (document.activeElement === textareaEl) {
+      textareaEl.blur();
     }
-  }, [disabled]);
+  }, [disabled, autoFocus]);
 
   useEffect(() => {
     const textareaEl: HTMLElement | null = textareaRef.current;
@@ -430,22 +431,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     }
   }, [initialFiles]);
 
-  if (typeof window !== 'undefined') {
-    useLayoutEffect(() => {
-      const textareaEl: HTMLElement | null = textareaRef.current;
-
-      if (textareaEl === null) {
-        return;
-      }
-
-      textareaEl.style.height = `${textareaEl.scrollHeight}px`;
-      textareaEl.scrollTop = textareaEl.scrollHeight;
-      if (autoFocus) {
-        textareaEl.focus();
-      }
-    }, [message, autoFocus]);
-  }
-
   useEffect(() => {
     const mediaRecorder = voiceMediaRecorderRef.current;
 
@@ -456,7 +441,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     };
     const stopListener = async () => {
       const blob = new Blob(voiceChunksRef.current, {
-        type: getSupportedAudioMimeType()
+        type: getSupportedAudioMimeType(),
       });
 
       await onVoice?.(blob);
@@ -479,7 +464,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       if (mediaRecorder) {
         mediaRecorder.removeEventListener(
           'dataavailable',
-          dataAvailableListener
+          dataAvailableListener,
         );
         mediaRecorder.removeEventListener('stop', stopListener);
       }
@@ -495,20 +480,20 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const modalTransition = useTransition(alternativeKeyModalShown, {
     from: {
       opacity: 0,
-      y: 10
+      y: 10,
     },
     enter: {
       opacity: 1,
-      y: 0
+      y: 0,
     },
     leave: {
       opacity: 0,
-      y: 10
+      y: 10,
     },
     config: {
       duration: 150,
-      ease: 'easeOut'
-    }
+      ease: 'easeOut',
+    },
   });
 
   return (
@@ -538,29 +523,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       }}
     >
       <InputMessageContent>
-        {!hideUploadFile && !isVoiceRecording && (
-          <InputMessageUploadFile onClick={handleUploadFileClick}>
-            <InputMessageUploadFileInput
-              key={files.length}
-              type="file"
-              accept={uploadFileAccept}
-              multiple
-              disabled={
-                files.length >= uploadFileLimit ||
-                disabled ||
-                uploadFileDisabled
-              }
-              onChange={handleUploadFileChange}
-            />
-            <InputMessageUploadFileButton
-              disabled={
-                files.length >= uploadFileLimit ||
-                disabled ||
-                uploadFileDisabled
-              }
-            />
-          </InputMessageUploadFile>
-        )}
         <InputMessageMain>
           {isVoiceRecording && voiceRecordingTime !== null && (
             <InputMessageVoiceRecord>
@@ -628,76 +590,108 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                   disabled={disabled || textAreaDisabled}
                   style={{
                     ...props.style,
-                    height: textareaHeight
+                    height: textareaHeight,
                   }}
                   onFocus={handleFocus}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  onInput={handleInput}
                   onPaste={handlePaste}
                 />
               )}
             </>
           )}
         </InputMessageMain>
-        {!!defaultKeySendText && !!alternativeKeySendText && (
-          <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
-            <InputMessageToggleSendButton
-              onClick={(e) => {
-                e.stopPropagation();
-                setAlternativeKeyModalShown(!alternativeKeyModalShown);
-              }}
-              disabled={disabled}
-            />
-            {modalTransition(
-              (style, item) =>
-                item && (
-                  <InputMessageToggleSendModalStyled
-                    key="alternative-key-modal"
-                    style={style}
-                  >
-                    <InputMessageToggleSendModalOption
-                      active={!useAlternativeKey}
-                      onClick={handleDefaultKey}
-                    >
-                      {defaultKeySendText}
-                    </InputMessageToggleSendModalOption>
-                    <InputMessageToggleSendModalOption
-                      active={useAlternativeKey}
-                      onClick={handleAlternativeKey}
-                    >
-                      {alternativeKeySendText}
-                    </InputMessageToggleSendModalOption>
-                  </InputMessageToggleSendModalStyled>
-                )
+        <InputMessageBottom>
+          <InputMessageBottomGroup>
+            {!hideUploadFile && !isVoiceRecording && (
+              <InputMessageUploadFile onClick={handleUploadFileClick}>
+                <InputMessageUploadFileInput
+                  key={files.length}
+                  type="file"
+                  accept={uploadFileAccept}
+                  multiple
+                  disabled={
+                    files.length >= uploadFileLimit ||
+                    disabled ||
+                    uploadFileDisabled
+                  }
+                  onChange={handleUploadFileChange}
+                />
+                <InputMessageUploadFileButton
+                  disabled={
+                    files.length >= uploadFileLimit ||
+                    disabled ||
+                    uploadFileDisabled
+                  }
+                />
+              </InputMessageUploadFile>
             )}
-          </InputMessageToggleSendStyled>
-        )}
-        {rightActions}
-        {!voice || message || files.length > 0 ? (
-          <InputMessageSendButton
-            disabled={disabled || sendDisabled}
-            onClick={handleSend}
-          >
-            <InputMessageSendIcon />
-          </InputMessageSendButton>
-        ) : (
-          <InputMessageSendButton
-            {...(isVoiceRecording && {
-              color: theme.colors.critic
-            })}
-            disabled={disabled || sendDisabled}
-            onClick={
-              !isVoiceRecording ? handleVoiceRecordStart : handleVoiceRecordEnd
-            }
-          >
-            {isVoiceRecording ? (
+            {rightActions}
+          </InputMessageBottomGroup>
+          <InputMessageBottomGroup>
+            {!!defaultKeySendText && !!alternativeKeySendText && (
+              <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
+                <InputMessageToggleSendButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setAlternativeKeyModalShown(!alternativeKeyModalShown);
+                  }}
+                  disabled={disabled}
+                />
+                {modalTransition(
+                  (style, item) =>
+                    item && (
+                      <InputMessageToggleSendModalStyled
+                        key="alternative-key-modal"
+                        style={style}
+                      >
+                        <InputMessageToggleSendModalOption
+                          active={!useAlternativeKey}
+                          onClick={handleDefaultKey}
+                        >
+                          {defaultKeySendText}
+                        </InputMessageToggleSendModalOption>
+                        <InputMessageToggleSendModalOption
+                          active={useAlternativeKey}
+                          onClick={handleAlternativeKey}
+                        >
+                          {alternativeKeySendText}
+                        </InputMessageToggleSendModalOption>
+                      </InputMessageToggleSendModalStyled>
+                    ),
+                )}
+              </InputMessageToggleSendStyled>
+            )}
+            {voice && (
+              <InputMessageVoiceButton
+                $isRecording={isVoiceRecording}
+                disabled={disabled || sendDisabled}
+                onClick={
+                  !isVoiceRecording
+                    ? handleVoiceRecordStart
+                    : handleVoiceRecordEnd
+                }
+                data-test="submit-message"
+              >
+                {isVoiceRecording ? (
+                  <InputMessageSendIcon />
+                ) : (
+                  <InputMessageVoiceIcon />
+                )}
+              </InputMessageVoiceButton>
+            )}
+            <InputMessageSendButton
+              disabled={disabled || sendDisabled}
+              onClick={handleSend}
+              {...(theme.bright && {
+                iconFill: theme.default.colors.base.black,
+              })}
+              data-test="submit-message"
+            >
               <InputMessageSendIcon />
-            ) : (
-              <InputMessageVoiceIcon />
-            )}
-          </InputMessageSendButton>
-        )}
+            </InputMessageSendButton>
+          </InputMessageBottomGroup>
+        </InputMessageBottom>
       </InputMessageContent>
     </InputMessageStyled>
   );

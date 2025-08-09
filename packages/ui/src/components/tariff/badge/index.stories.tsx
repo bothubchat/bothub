@@ -8,43 +8,43 @@ export type BadgeStory = StoryObj<typeof UserTariffBadge>;
 
 export const Free: BadgeStory = {
   args: {
-    tariff: 'FREE'
-  }
+    tariff: 'FREE',
+  },
 };
 
 export const Basic: BadgeStory = {
   args: {
     ...Free.args,
-    tariff: 'BASIC'
-  }
+    tariff: 'BASIC',
+  },
 };
 
 export const Premium: BadgeStory = {
   args: {
     ...Free.args,
-    tariff: 'PREMIUM'
-  }
+    tariff: 'PREMIUM',
+  },
 };
 
 export const Elite: BadgeStory = {
   args: {
     ...Free.args,
-    tariff: 'ELITE'
-  }
+    tariff: 'ELITE',
+  },
 };
 
 export const Deluxe: BadgeStory = {
   args: {
     ...Free.args,
-    tariff: 'DELUXE'
-  }
+    tariff: 'DELUXE',
+  },
 };
 
 export const Skeleton: BadgeStory = {
   args: {
     ...Free.args,
-    skeleton: true
-  }
+    skeleton: true,
+  },
 };
 
 export default {
@@ -54,8 +54,8 @@ export default {
   argTypes: {
     icon: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as BadgeMeta;

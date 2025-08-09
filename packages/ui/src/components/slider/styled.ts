@@ -7,7 +7,9 @@ export const SliderContainer = styled.div`
   position: relative;
 `;
 
-export const SliderWrapper = styled(Scrollbar)<{ $gap: number }>`
+export const SliderWrapper = styled(Scrollbar)<{
+  $gap: number;
+}>`
   display: flex;
   gap: ${({ $gap }) => $gap}px;
   scrollbar-width: none;
@@ -19,19 +21,19 @@ export const SliderArrow = styled.div<{
   $isLeftArrow?: boolean;
 }>`
   height: 100%;
-
   position: absolute;
   z-index: 2;
   top: 0;
   transition: opacity 0.2s;
+  pointer-events: none;
 
   ${({ $isLeftArrow = true }) =>
     $isLeftArrow
       ? css`
-          left: 0;
+          left: -1px;
         `
       : css`
-          right: -0.5px;
+          right: -1px;
           transform: rotate(180deg);
         `};
 
@@ -39,7 +41,7 @@ export const SliderArrow = styled.div<{
     switch ($arrowsSize) {
       case 'sm':
         return css`
-          width: 40px;
+          width: 122px;
 
           background: ${({ theme }) =>
             theme.mode === 'light'
@@ -48,7 +50,7 @@ export const SliderArrow = styled.div<{
         `;
       case 'md':
         return css`
-          width: 48px;
+          width: 80px;
           background: ${({ theme }) =>
             theme.mode === 'light'
               ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
@@ -98,4 +100,5 @@ export const SliderArrow = styled.div<{
 export const SliderIconContainer = styled.button`
   all: unset;
   cursor: pointer;
+  pointer-events: all;
 `;

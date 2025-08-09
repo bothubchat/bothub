@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   MessageImageButtonsContent,
-  MessageImageButtonsStyled
+  MessageImageButtonsStyled,
 } from './styled';
 import { useMessageImage } from '../../context';
 

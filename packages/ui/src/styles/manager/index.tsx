@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheetManager } from 'styled-components';
 import {
   BothubStyleSheetDashboardPlugin,
-  BothubStyleSheetMainPlugin
+  BothubStyleSheetMainPlugin,
 } from './plugin';
 
 export type BothubStyleSheetManagerProps = React.ComponentProps<
@@ -21,7 +21,7 @@ export const BothubStyleSheetManager = ({
     stylisPlugins={[
       variant === 'dashboard'
         ? BothubStyleSheetDashboardPlugin
-        : BothubStyleSheetMainPlugin
+        : BothubStyleSheetMainPlugin,
     ]}
   >
     {children}

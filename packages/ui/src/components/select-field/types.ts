@@ -2,23 +2,23 @@ import React from 'react';
 import { TooltipProps } from '@/ui/components/tooltip';
 
 export type SelectFieldChangeEventHandler = (
-  item: SelectFieldDataItem | null
+  item: SelectFieldDataItem | null,
 ) => unknown;
 
 export type SelectFieldValueChangeEventHandler = (
-  value: string | null
+  value: string | null,
 ) => unknown;
 
 export type SelectFieldMultiChangeEventHandler = (
-  items: SelectFieldDataItem[]
+  items: SelectFieldDataItem[],
 ) => unknown;
 
 export type SelectFieldMultiValueChangeEventHandler = (
-  value: string[]
+  value: string[],
 ) => unknown;
 
 export type SelectFieldOptionClickEventHandler = (
-  item: SelectFieldDataItem
+  item: SelectFieldDataItem,
 ) => unknown;
 
 export type SelectFieldInputChangeEventHandler = (value: string) => unknown;
@@ -47,6 +47,7 @@ export type SelectFieldDataItemComplex = {
   open?: boolean;
   backgroundHoverColor?: 'gradient' | 'primary';
   data?: SelectFieldDataItem[];
+  best_model?: boolean;
   noSelect?: boolean;
   description?: string;
   selected?: boolean;
@@ -60,6 +61,18 @@ export type SelectFieldData = SelectFieldDataItem[];
 
 export type SelectFieldSize = 'small' | 'md' | 'large';
 
-export type SelectFieldPlacement = 'bottom-left' | 'top-left' | 'top-right';
+export type SelectFieldPlacement =
+  | 'bottom-left'
+  | 'bottom-center'
+  | 'top-left'
+  | 'top-right';
 
 export type SelectFieldInputType = 'text' | 'search';
+
+export type ResetStyleStateType = string | number | boolean | null;
+
+export type SelectedItem = SelectFieldDataItem | null;
+
+export type ValueType = SelectFieldDataItem | SelectFieldDataItem[] | null;
+
+export type ValueSetter = (value: ValueType) => void;

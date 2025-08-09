@@ -3,7 +3,7 @@ import {
   MessageFileInfo,
   MessageFileName,
   MessageFileSize,
-  MessageFileStyled
+  MessageFileStyled,
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { PdfBigIcon } from '@/ui/icons/pdf-big';

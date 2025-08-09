@@ -7,7 +7,7 @@ export const MessageActionsStyled = styled.div<{ $variant?: MessageVariant }>`
   display: flex;
   flex-direction: ${({ $variant }) =>
     $variant === 'assistant' ? 'row' : 'row-reverse'};
-  align-items: flex-start;
+  align-items: flex-end;
   justify-content: center;
   user-select: none;
   -moz-user-select: none;
@@ -82,6 +82,21 @@ export const MessageActionsMenuModalOption = styled.button`
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayScale.gray2};
+    &:hover {
+      svg {
+        path,
+        circle {
+          fill: ${({ theme }) => {
+            if (theme.scheme === 'custom') {
+              return theme.colors.custom.icon;
+            }
+            return theme.mode === 'dark'
+              ? theme.colors.accent.primaryLight
+              : theme.default.colors.base.white;
+          }};
+        }
+      }
+    }
   }
   &:active {
     filter: brightness(0.8);
@@ -103,11 +118,7 @@ export const MessageActionsButton = styled.button`
     svg {
       path,
       circle {
-        fill: ${({ theme }) =>
-          theme.mode === 'dark'
-            ? theme.colors.grayScale.gray6
-            : theme.colors.grayScale.gray2};
-        transition: all 100ms ease-out;
+        filter: brightness(1.2);
       }
     }
   }
@@ -115,7 +126,13 @@ export const MessageActionsButton = styled.button`
     svg {
       path,
       circle {
-        fill: #4785ff;
+        fill: ${({ theme }) => {
+          if (theme.scheme === 'custom') {
+            return theme.colors.custom.icon;
+          }
+          return theme.colors.accent.primaryLight;
+        }};
+        opacity: 0.75;
         transition: all 100ms ease-out;
       }
     }
@@ -136,5 +153,5 @@ export const MessageActionsMenuModalOptionContent = styled.div`
 `;
 
 export const MessageActionsButtonText = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })``;

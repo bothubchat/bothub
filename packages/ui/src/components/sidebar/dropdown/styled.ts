@@ -1,9 +1,9 @@
-import { styled } from 'styled-components';
 import React from 'react';
+import { styled } from 'styled-components';
 import { animated, AnimatedProps } from '@react-spring/web';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
-import { Typography } from '../../typography';
+import { Typography } from '@/ui/components/typography';
 
 export const SidebarDropdownStyled = styled.div`
   width: 24px;
@@ -12,7 +12,7 @@ export const SidebarDropdownStyled = styled.div`
 `;
 
 export const SidebarDropdownTogglerIcon = styled(MenuDotIcon).attrs({
-  size: 18
+  size: 16,
 })`
   pointer-events: none;
 `;
@@ -26,7 +26,7 @@ export const SidebarDropdownTogglerText = styled(Typography)`
 `;
 
 export const SidebarDropdownTogglerArrow = styled(ArrowDownIcon).attrs({
-  size: 16
+  size: 16,
 })`
   pointer-events: none;
 `;
@@ -40,6 +40,7 @@ export const SidebarDropdownToggler = styled.button<{ $open: boolean }>`
   align-items: center;
   cursor: pointer;
   gap: 6px;
+  padding: 0;
   &:hover {
     ${SidebarDropdownTogglerIcon} circle {
       fill: ${({ theme }) => theme.colors.grayScale.gray6};
@@ -73,7 +74,13 @@ export const SidebarDropdownContent: React.FC<
       : 'rgba(18, 24, 37, 0.75)'};
   opacity: 0.8;
   padding: 0;
-  z-index: ${({ theme }) => theme.zIndex.menu};
+  // Performance optimization for Safari
+  transform: translate3d(0, 0, 0);
+  backdrop-filter: blur(2px);
+  z-index: ${({ theme }) => theme.zIndex.menu + 1};
+  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
+    transform: translate3d(-100%, 0, 0);
+  }
 `;
 
 export const SidebarDropdownList = styled.ul`

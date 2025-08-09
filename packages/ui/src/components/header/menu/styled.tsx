@@ -13,12 +13,7 @@ export const HeaderMenuStyled = styled.div`
 `;
 
 export const HeaderMenuContent = styled(animated.div)<HeaderMenuStyledProps>`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  position: fixed;
   background: ${({ theme }) => theme.colors.base.black};
-  gap: 40px;
   overflow: auto;
   position: absolute;
   top: 0px;
@@ -35,37 +30,42 @@ export const HeaderMenuContent = styled(animated.div)<HeaderMenuStyledProps>`
             height: calc(100vh - ${theme.header.height});
           `,
           tablet: css`
-            padding: 42px 40px;
             height: calc(100vh - ${theme.header.height});
           `,
           mobile: css`
-            padding: 32px 30px;
             height: calc(100vh - ${theme.header.mobile.height});
-          `
+          `,
         });
       case 'dashboard':
-        return adaptive({
-          variant: $variant,
-          desktop: css`
-            display: none;
-            height: calc(100vh - ${theme.dashboard.header.height});
-          `,
-          tablet: css`
-            ${$isPreset ? '' : 'display: none;'}
-            padding: 42px 18px;
-            height: calc(100vh - ${theme.dashboard.header.tablet.height});
-          `,
-          mobile: css`
-            ${$isPreset ? '' : 'display: none;'}
-            padding: 32px 16px;
-            height: calc(
-              100vh -
-                ${!$isPreset
-                  ? theme.dashboard.header.mobile.height
-                  : parseInt(theme.dashboard.header.mobile.height) - 80}
-            );
-          `
-        });
+        return css`
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          position: fixed;
+          gap: 40px;
+          ${adaptive({
+            variant: $variant,
+            desktop: css`
+              display: none;
+              height: calc(100vh - ${theme.dashboard.header.height});
+            `,
+            tablet: css`
+              ${$isPreset ? '' : 'display: none;'}
+              padding: 42px 18px;
+              height: calc(100vh - ${theme.dashboard.header.tablet.height});
+            `,
+            mobile: css`
+              ${$isPreset ? '' : 'display: none;'}
+              padding: 32px 16px;
+              height: calc(
+                100vh -
+                  ${!$isPreset
+                    ? theme.dashboard.header.mobile.height
+                    : parseInt(theme.dashboard.header.mobile.height) - 80}
+              );
+            `,
+          })}
+        `;
     }
   }}
 `;

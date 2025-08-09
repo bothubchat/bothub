@@ -4,7 +4,7 @@
   "semi": true,
   "printWidth": 80,
   "singleAttributePerLine": true,
-  "trailingComma": "none",
+  "trailingComma": "all",
   "bracketSameLine": false,
-  "endOfLine": "auto"
+  "endOfLine": "lf"
 }

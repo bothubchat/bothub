@@ -2,7 +2,7 @@ import React, { forwardRef, useMemo } from 'react';
 import { useMessage } from '@/ui/components/message/context';
 import {
   MessageComponentsProps,
-  MessageParagraph
+  MessageParagraph,
 } from '@/ui/components/message/components';
 import { MessageMarkdownLine, MessageMarkdownStyled } from './styled';
 import { markdownComponents } from './markdown-components';
@@ -25,6 +25,7 @@ export interface MessageMarkdownProps {
     typeof MessageMarkdownLine
   >['components'];
   disableTyping?: boolean;
+  forceMarkdown?: boolean;
 }
 
 export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
@@ -33,12 +34,13 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
       children,
       components = {},
       componentsOverride = {},
-      disableTyping = false
+      disableTyping = false,
+      forceMarkdown = false,
     },
-    ref
+    ref,
   ) => {
     const { typing, variant, color } = useMessage();
-    const isDisabled = variant === 'user';
+    const isDisabled = forceMarkdown ? false : variant === 'user';
 
     const formattedChildren = useMemo(() => {
       if (typeof children === 'string' && !isDisabled) {
@@ -49,7 +51,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
 
     const { remarkPlugins, rehypePlugins, singleDollarTextMath } =
       useMarkdownPlugins({
-        children: formattedChildren
+        children: formattedChildren,
       });
 
     const markdownNode = useMemo(() => {
@@ -96,7 +98,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
       singleDollarTextMath,
       remarkPlugins,
       rehypePlugins,
-      ref
+      ref,
     ]);
 
     return (
@@ -112,5 +114,5 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
         {!isDisabled && typeof children === 'string' && markdownNode}
       </>
     );
-  }
+  },
 );

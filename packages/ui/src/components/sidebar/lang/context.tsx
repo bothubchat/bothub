@@ -20,7 +20,7 @@ export function useSidebarLangDropdown(): SidebarLangDropdownContextValue {
 
   if (!value) {
     throw new Error(
-      'useSidebarLangDropdown must be used within a SidebarLangDropdownProvider.'
+      'useSidebarLangDropdown must be used within a SidebarLangDropdownProvider.',
     );
   }
 

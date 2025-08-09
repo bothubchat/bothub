@@ -3,3 +3,5 @@ export type DescriptionCardVariant =
   | 'secondary'
   | 'tertiary'
   | 'quaternary';
+
+export type TDescriptionCard = 'collaborate' | 'products';

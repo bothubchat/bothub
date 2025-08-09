@@ -9,7 +9,7 @@ export interface NotificationsProps extends React.PropsWithChildren {
 
 export const Notifications: React.FC<NotificationsProps> = ({
   className,
-  children
+  children,
 }) => (
   <NotificationsProvider isInNotificationList>
     <Portal>

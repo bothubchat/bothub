@@ -57,11 +57,13 @@ export const SelectFieldCollapseOptionHead = styled.div<SelectFieldCollapseOptio
     if ($disabled) {
       return css`
         cursor: not-allowed;
-        opacity: 0.5;
         &:hover {
           background: ${theme.mode === 'light'
             ? 'rgba(0, 0, 0, 0.05)'
             : 'rgba(255, 255, 255, 0.05)'};
+        }
+        & > ${SelectFieldCollapseOptionHeadSide}:first-child {
+          opacity: 0.5;
         }
       `;
     }
@@ -104,9 +106,9 @@ export interface SelectFieldCollapseOptionTextProps {
 }
 
 export const SelectFieldCollapseOptionText = styled(
-  Typography
+  Typography,
 ).attrs<SelectFieldCollapseOptionTextAttrsProps>((props) => ({
-  variant: props.$size === 'large' ? 'body-m-semibold' : 'input-sm'
+  variant: props.$size === 'large' ? 'body-m-semibold' : 'input-sm',
 }))<SelectFieldCollapseOptionTextProps>`
   ${({ $bold }) =>
     $bold &&
@@ -115,12 +117,9 @@ export const SelectFieldCollapseOptionText = styled(
     `}
 `;
 
-export const SelectFieldCollapseOptionArrow = styled(ArrowDownIcon).attrs(
-  ({ theme }) => ({
-    size: 16,
-    fill: theme.colors.base.white
-  })
-)`
+export const SelectFieldCollapseOptionArrow = styled(ArrowDownIcon).attrs({
+  size: 16,
+})`
   transition: transform 0.2s ease-in-out;
 `;
 

@@ -42,7 +42,6 @@ import {
   MediumCircleIcon,
   MenuDotIcon,
   MenuIcon,
-  MinimizeIcon,
   MjIcon,
   Plus1Icon,
   Plus2Icon,
@@ -61,7 +60,6 @@ import {
   ThumbDownIcon,
   ThumbUpIcon,
   TrashIcon,
-  UnminimizeIcon,
   UpdateIcon,
   UserProfileIcon,
   WarningBigIcon,
@@ -225,7 +223,66 @@ import {
   TextRewriteIcon,
   ExclamationIcon,
   OrganizationIcon,
-  SimpleGearIcon
+  SimpleGearIcon,
+  SetchelIcon,
+  ArticleIcon,
+  AssemblyIcon,
+  DataVisualisationIcon,
+  DocumentAnalisysIcon,
+  ProblemSolvmentIcon,
+  SettingAnalisysIcon,
+  TranslationIcon,
+  StarsIcon,
+  ArticlesIcon,
+  BlogPostIcon,
+  BookIcon,
+  BowTieIcon,
+  CaseStudyIcon,
+  CommentsIcon,
+  GuideIcon,
+  MarketingIcon,
+  PostIcon,
+  ReviewIcon,
+  ScientificArticleIcon,
+  SellingTextIcon,
+  TextBookIcon,
+  WindIcon,
+  SidebarToggleRight,
+  SidebarToggleLeft,
+  AcademyIcon,
+  DeepSeekIcon,
+  GridHorizontalIcon,
+  GridVerticalIcon,
+  GrokIcon,
+  QwenIcon,
+  ReportIcon,
+  StarGradientIcon,
+  MusicNoteIcon,
+  CustomerSupportIcon,
+  AddProfileIcon,
+  TokenCounterIcon,
+  VideoCameraIcon,
+  SortAlphabetTopBottomIcon,
+  SortAlphabetBottomTopIcon,
+  PauseIcon,
+  PlayIcon,
+  Restore2Icon,
+  VideoGenerationIcon,
+  VeoModelIcon,
+  RunwayIcon,
+  QueueSelectIcon,
+  AppleIcon,
+  MailColoredIcon,
+  ShieldIcon,
+  StarsGradientIcon,
+  FireIcon,
+  BrainIcon,
+  ClaudeBlackIcon,
+  MjPurpleIcon,
+  VKFilledIcon,
+  TelegramFilledIcon,
+  ExchangeIcon,
+  TimeIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -272,7 +329,8 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="CheckedIcon">{CheckedIcon}</IconItem>
         <IconItem name="HotnessIcon">{HotnessIcon}</IconItem>
         <IconItem name="FreeIcon">{FreeIcon}</IconItem>
-        <IconItem name="MinimizeIcon">{MinimizeIcon}</IconItem>
+        <IconItem name="SidebarToggleLeft">{SidebarToggleLeft}</IconItem>
+        <IconItem name="SidebarToggleRight">{SidebarToggleRight}</IconItem>
         <IconItem name="EditIcon">{EditIcon}</IconItem>
         <IconItem name="ManageChatIcon">{ManageChatIcon}</IconItem>
         <IconItem name="CopyIcon">{CopyIcon}</IconItem>
@@ -285,9 +343,9 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="CoderIcon">{CoderIcon}</IconItem>
         <IconItem name="BookmarksIcon">{BookmarksIcon}</IconItem>
         <IconItem name="AIIcon">{AIIcon}</IconItem>
-        <IconItem name="UnminimizeIcon">{UnminimizeIcon}</IconItem>
         <IconItem name="UpdateIcon">{UpdateIcon}</IconItem>
         <IconItem name="RestoreIcon">{RestoreIcon}</IconItem>
+        <IconItem name="Restore2Icon">{Restore2Icon}</IconItem>
         <IconItem name="ChatIcon">{ChatIcon}</IconItem>
         <IconItem name="StopIcon">{StopIcon}</IconItem>
         <IconItem name="ThumbUpIcon">{ThumbUpIcon}</IconItem>
@@ -327,6 +385,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="GenerationIcon">{GenerationIcon}</IconItem>
         <IconItem name="Gpt35Icon">{Gpt35Icon}</IconItem>
         <IconItem name="Gpt4Icon">{Gpt4Icon}</IconItem>
+        <IconItem name="AssemblyIcon">{AssemblyIcon}</IconItem>
         <IconItem name="ImagineIcon">{ImagineIcon}</IconItem>
         <IconItem name="Imagine2Icon">{Imagine2Icon}</IconItem>
         <IconItem name="LoaderIcon">{LoaderIcon}</IconItem>
@@ -433,6 +492,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="GoogleIcon">{GoogleIcon}</IconItem>
         <IconItem name="YandexIcon">{YandexIcon}</IconItem>
         <IconItem name="VKIcon">{VKIcon}</IconItem>
+        <IconItem name="AppleIcon">{AppleIcon}</IconItem>
         <IconItem name="ResendIcon">{ResendIcon}</IconItem>
         <IconItem name="AddChatIcon">{AddChatIcon}</IconItem>
         <IconItem name="AddGroupIcon">{AddGroupIcon}</IconItem>
@@ -494,6 +554,71 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TextRewriteIcon">{TextRewriteIcon}</IconItem>
         <IconItem name="FavoriteProfileIcon">{FavoriteProfileIcon}</IconItem>
         <IconItem name="ExclamationIcon">{ExclamationIcon}</IconItem>
+        <IconItem name="SetchelIcon">{SetchelIcon}</IconItem>
+        <IconItem name="ArticleIcon">{ArticleIcon}</IconItem>
+        <IconItem name="DataVisualisationIcon">
+          {DataVisualisationIcon}
+        </IconItem>
+        <IconItem name="DocumentAnalisysIcon">{DocumentAnalisysIcon}</IconItem>
+        <IconItem name="ProblemSolvmentIcon">{ProblemSolvmentIcon}</IconItem>
+        <IconItem name="TranslationIcon">{TranslationIcon}</IconItem>
+        <IconItem name="StarsIcon">{StarsIcon}</IconItem>
+        <IconItem name="SettingAnalisysIcon">{SettingAnalisysIcon}</IconItem>
+        <IconItem name="AcademyIcon">{AcademyIcon}</IconItem>
+        <IconItem name="ArticlesIcon">{ArticlesIcon}</IconItem>
+        <IconItem name="BlogPostIcon">{BlogPostIcon}</IconItem>
+        <IconItem name="BookIcon">{BookIcon}</IconItem>
+        <IconItem name="BowTieIcon">{BowTieIcon}</IconItem>
+        <IconItem name="CaseStudyIcon">{CaseStudyIcon}</IconItem>
+        <IconItem name="CommentsIcon">{CommentsIcon}</IconItem>
+        <IconItem name="GuideIcon">{GuideIcon}</IconItem>
+        <IconItem name="MarketingIcon">{MarketingIcon}</IconItem>
+        <IconItem name="PostIcon">{PostIcon}</IconItem>
+        <IconItem name="ReportIcon">{ReportIcon}</IconItem>
+        <IconItem name="ReviewIcon">{ReviewIcon}</IconItem>
+        <IconItem name="ScientificArticleIcon">
+          {ScientificArticleIcon}
+        </IconItem>
+        <IconItem name="SellingTextIcon">{SellingTextIcon}</IconItem>
+        <IconItem name="TextBookIcon">{TextBookIcon}</IconItem>
+        <IconItem name="WindIcon">{WindIcon}</IconItem>
+        <IconItem name="GrokIcon">{GrokIcon}</IconItem>
+        <IconItem name="DeepSeekIcon">{DeepSeekIcon}</IconItem>
+        <IconItem name="AcademyIcon">{AcademyIcon}</IconItem>
+        <IconItem name="GridVerticalIcon">{GridVerticalIcon}</IconItem>
+        <IconItem name="GridHorizontalIcon">{GridHorizontalIcon}</IconItem>
+        <IconItem name="StarGradientIcon">{StarGradientIcon}</IconItem>
+        <IconItem name="ReportIcon">{ReportIcon}</IconItem>
+        <IconItem name="QwenIcon">{QwenIcon}</IconItem>
+        <IconItem name="VideoCameraIcon">{VideoCameraIcon}</IconItem>
+        <IconItem name="CustomerSupportIcon">{CustomerSupportIcon}</IconItem>
+        <IconItem name="TokenCounterIcon">{TokenCounterIcon}</IconItem>
+        <IconItem name="AddProfileIcon">{AddProfileIcon}</IconItem>
+        <IconItem name="MusicNoteIcon">{MusicNoteIcon}</IconItem>
+        <IconItem name="QueueIcon">{QueueIcon}</IconItem>
+        <IconItem name="SortAlphabetTopBottomIcon">
+          {SortAlphabetTopBottomIcon}
+        </IconItem>
+        <IconItem name="SortAlphabetBottomTopIcon">
+          {SortAlphabetBottomTopIcon}
+        </IconItem>
+        <IconItem name="PauseIcon">{PauseIcon}</IconItem>
+        <IconItem name="PlayIcon">{PlayIcon}</IconItem>
+        <IconItem name="VeoModelIcon">{VeoModelIcon}</IconItem>
+        <IconItem name="VideoGenerationIcon">{VideoGenerationIcon}</IconItem>
+        <IconItem name="RunwayIcon">{RunwayIcon}</IconItem>
+        <IconItem name="QueueSelectIcon">{QueueSelectIcon}</IconItem>
+        <IconItem name="MailColoredIcon">{MailColoredIcon}</IconItem>
+        <IconItem name="ShieldIcon">{ShieldIcon}</IconItem>
+        <IconItem name="StarsGradientIcon">{StarsGradientIcon}</IconItem>
+        <IconItem name="FireIcon">{FireIcon}</IconItem>
+        <IconItem name="BrainIcon">{BrainIcon}</IconItem>
+        <IconItem name="ClaudeBlackIcon">{ClaudeBlackIcon}</IconItem>
+        <IconItem name="MjPurpleIcon">{MjPurpleIcon}</IconItem>
+        <IconItem name="VKFilledIcon">{VKFilledIcon}</IconItem>
+        <IconItem name="TelegramFilledIcon">{TelegramFilledIcon}</IconItem>
+        <IconItem name="ExchangeIcon">{ExchangeIcon}</IconItem>
+        <IconItem name="TimeIcon">{TimeIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
