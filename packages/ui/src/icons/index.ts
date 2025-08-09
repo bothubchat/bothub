@@ -293,3 +293,4 @@ export * from './tg';
 export * from './gift';
 export * from './exchange';
 export * from './time';
+export * from './prompt-queue';
