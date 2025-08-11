@@ -24,10 +24,12 @@ export type UploadedFileProps = {
   doneLabel?: React.ReactNode;
   errorLabel?: React.ReactNode;
   className?: string;
-  onDelete?: {
-    disabled?: boolean;
-    action: () => void;
-  };
+  onDelete?:
+    | {
+        disabled?: boolean;
+        action: () => void;
+      }
+    | (() => void);
   onPause?: () => void;
   onResume?: () => void;
   onRetry?: () => void;
@@ -136,8 +138,8 @@ export const UploadedFile = ({
             <S.UploadedFileDeleteButton
               variant="text"
               startIcon={<S.UploadedFileCloseIcon />}
-              onClick={() => onDelete.action()}
-              disabled={onDelete.disabled}
+              onClick={'action' in onDelete ? onDelete.action : onDelete}
+              disabled={'disabled' in onDelete ? onDelete.disabled : undefined}
             />
           )}
         </S.UploadedFileActions>
