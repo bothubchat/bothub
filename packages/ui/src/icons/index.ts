@@ -294,3 +294,6 @@ export * from './gift';
 export * from './exchange';
 export * from './time';
 export * from './prompt-queue';
+export * from './image';
+export * from './text';
+export * from './code';
