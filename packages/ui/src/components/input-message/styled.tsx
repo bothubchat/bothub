@@ -109,8 +109,9 @@ export const InputMessageUploadFileButton = styled(Button).attrs({
 
 export const InputMessageMain = styled.div`
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: flex-start;
-  justify-content: center;
   gap: 14px;
   width: 100%;
 `;
@@ -134,6 +135,7 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   display: flex;
   height: auto;
   width: 100%;
+  min-height: 22px;
   max-height: 270px;
   background: none;
   outline: none;
@@ -146,7 +148,7 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
 
     return theme.colors.base.white;
   }};
-
+  flex-shrink: 0;
   overflow: auto;
   scrollbar-width: none;
   padding: 0px;
