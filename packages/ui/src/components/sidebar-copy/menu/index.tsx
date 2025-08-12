@@ -18,17 +18,17 @@ export const SidebarMenu = ({ children }: { children: React.ReactNode }) => {
   const menuTransition = useTransition(isOpen, {
     from: {
       opacity: 0,
-      scale: 0.85
+      scale: 0.85,
     },
     enter: {
       opacity: 1,
-      scale: 1
+      scale: 1,
     },
     leave: {
       opacity: 0,
-      scale: 0.85
+      scale: 0.85,
     },
-    config: { duration: 150 }
+    config: { duration: 150 },
   });
 
   return (
@@ -49,7 +49,7 @@ export const SidebarMenu = ({ children }: { children: React.ReactNode }) => {
             >
               {children}
             </SidebarMenuList>
-          )
+          ),
       )}
     </SidebarMenuStyled>
   );

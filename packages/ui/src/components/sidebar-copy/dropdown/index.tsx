@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTransition } from '@react-spring/web';
 import {
   SidebarDropdownContent,
   SidebarDropdownList,
   SidebarDropdownStyled,
   SidebarDropdownToggler,
-  SidebarDropdownTogglerIcon
+  SidebarDropdownTogglerIcon,
 } from './styled';
 import { SidebarDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
@@ -22,9 +23,7 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [visable, setVisible] = useState(true);
   const contentRef = useRef<HTMLDivElement>(null);
-  const { scrollbarElement } = useSidebar();
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
@@ -40,51 +39,37 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
           setIsOpen(false);
         }
       };
+      const blurListener = () => setIsOpen(false);
+
       document.addEventListener('click', clickListener, true);
+      window.addEventListener('blur', blurListener, true);
 
       return () => {
         document.removeEventListener('click', clickListener, true);
+        window.removeEventListener('blur', blurListener, true);
       };
     }
   }, []);
 
-  useEffect(() => {
-    const scrollListener = () => {
-      if (isOpen) {
-        if (buttonEl !== null && contentEl !== null) {
-          if (scrollbarElement !== null) {
-            const { bottom: scrollbarBottom, top: scrollbarTop } =
-              scrollbarElement.getBoundingClientRect();
-            console.log(contentTop < scrollbarTop);
-            if (contentTop < scrollbarTop) {
-              setVisible(false);
-            } else {
-              setVisible(true);
-            }
-          }
-        }
-      }
-    };
-    scrollListener();
-    scrollbarElement?.addEventListener('scroll', scrollListener);
+  const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? {
+    right: 0,
+    bottom: 0,
+  };
 
-    return () => {
-      scrollbarElement?.removeEventListener('scroll', scrollListener);
-    };
-  }, [isOpen, scrollbarElement]);
-
-  const buttonEl: HTMLButtonElement | null = buttonRef.current;
-  const contentEl: HTMLDivElement | null = contentRef.current;
-  const buttonRect = buttonEl?.getBoundingClientRect();
-  const contentRect = contentEl?.getBoundingClientRect();
-
-  const { x, y } =
-    buttonRect !== undefined && contentRect !== undefined
-      ? {
-          x: buttonRect.x - contentRect.width,
-          y: buttonRect.y
-        }
-      : {};
+  const dropdownTransition = useTransition(isOpen, {
+    from: {
+      opacity: 0,
+    },
+    enter: {
+      opacity: 1,
+    },
+    leave: {
+      opacity: 0,
+    },
+    config: {
+      duration: 150,
+    },
+  });
 
   return (
     <SidebarDropdownProvider setIsOpen={setIsOpen}>
@@ -100,17 +85,20 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
             <SidebarDropdownTogglerIcon />
           </IconProvider>
         </SidebarDropdownToggler>
-        {isOpen && (
-          <SidebarDropdownContent
-            $opacity={visable ? 1 : 0}
-            style={{
-              top: y,
-              left: x
-            }}
-            ref={contentRef}
-          >
-            <SidebarDropdownList>{children}</SidebarDropdownList>
-          </SidebarDropdownContent>
+        {dropdownTransition(
+          (style, item) =>
+            item && (
+              <SidebarDropdownContent
+                style={{
+                  ...style,
+                  top: contentPosition.bottom,
+                  left: contentPosition.right,
+                }}
+                ref={contentRef}
+              >
+                <SidebarDropdownList>{children}</SidebarDropdownList>
+              </SidebarDropdownContent>
+            ),
         )}
       </SidebarDropdownStyled>
     </SidebarDropdownProvider>

@@ -34,8 +34,9 @@ export const SidebarChatStyled = styled.div`
 
 export const SidebarChatName = styled(Typography).attrs({
   variant: 'body-m-medium',
-  component: 'p'
+  component: 'p',
 })`
+  display: flex;
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
@@ -46,6 +47,7 @@ export const SidebarChatIconStyled = styled(SidebarChatIcon)``;
 
 export const SidebarChatIconSkeleton = styled(Skeleton)`
   aspect-ratio: 1/1;
+  display: flex;
   width: 20px;
   height: 20px;
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
@@ -56,4 +58,20 @@ export const SidebarChatIconSkeleton = styled(Skeleton)`
 
 export const SidebarChatSkeleton = styled(Skeleton)`
   margin-left: 8px;
+`;
+
+export const SidebarChatButton = styled.button`
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  flex-grow: 1;
+  user-select: all;
+  background: none;
+  outline: none;
+  padding: 0;
+  border: none;
+  aspect-ratio: 1/1;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
 `;

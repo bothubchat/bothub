@@ -1,12 +1,13 @@
-import { Button } from '@/ui/components/button';
 import { useSidebar } from '../context';
 import {
   SidebarChatStyled,
   SidebarChatName,
-  SidebarChatIconStyled
+  SidebarChatIconStyled,
+  SidebarChatButton,
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { SidebarChatSkeleton } from './skeleton';
+import { Tooltip, TooltipConsumer } from '../../tooltip';
 
 export interface SidebarChatDefaultProps {
   color: string;
@@ -46,9 +47,24 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
 
   if (!sidebarOpen) {
     return (
-      <Button variant="secondary">
-        {props.icon || <SidebarChatIconStyled />}
-      </Button>
+      <Tooltip
+        label={props.name}
+        placement="center-right"
+        align="center"
+      >
+        <TooltipConsumer>
+          {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+            <SidebarChatButton
+              onMouseEnter={handleTooltipMouseEnter}
+              onMouseLeave={handleTooltipMouseLeave}
+            >
+              <IconProvider size={18}>
+                {props.icon || <SidebarChatIconStyled />}
+              </IconProvider>
+            </SidebarChatButton>
+          )}
+        </TooltipConsumer>
+      </Tooltip>
     );
   }
 

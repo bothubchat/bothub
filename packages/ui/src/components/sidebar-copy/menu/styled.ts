@@ -13,7 +13,8 @@ export const SidebarMenuList = styled(animated.ul)<{ $isOpen: boolean }>`
   margin: 0;
   gap: 20px;
   ${({ $isOpen, theme }) =>
-    $isOpen && `
+    $isOpen &&
+    `
     position: absolute;
     background: ${theme.colors.grayScale.gray7};
     border: 1px solid ${theme.colors.grayScale.gray3};
@@ -22,7 +23,9 @@ export const SidebarMenuList = styled(animated.ul)<{ $isOpen: boolean }>`
     width: 100%;
   `}
   ${({ $isOpen }) =>
-    !$isOpen && `
+    !$isOpen &&
+    `
+    gap: 10px;
     margin: 0;
     padding: 0;
     width: fit-content;
@@ -60,7 +63,7 @@ export const SidebarMenuItemIconBox = styled.div<{
 `;
 
 export const SidebarMenuItemText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })<{
   $active: boolean;
 }>`

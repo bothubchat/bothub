@@ -4,17 +4,23 @@ import {
   SidebarGroupList,
   SidebarGroupSkeletonStyled,
   SidebarGroupIconSkeleton,
-  SidebarGroupSkeletonContainer
+  SidebarGroupSkeletonContainer,
 } from './styled';
+import { useSidebar } from '../context';
 
 export const SidebarGroupSkeleton: React.FC<PropsWithChildren> = ({
-  children
-}) => (
-  <SidebarGroupStyled>
-    <SidebarGroupSkeletonContainer>
-      <SidebarGroupIconSkeleton />
-      <SidebarGroupSkeletonStyled />
-    </SidebarGroupSkeletonContainer>
-    <SidebarGroupList>{children}</SidebarGroupList>
-  </SidebarGroupStyled>
-);
+  children,
+}) => {
+  const { isOpen: sidebarOpen } = useSidebar();
+  return (
+    <SidebarGroupStyled>
+      <SidebarGroupSkeletonContainer>
+        <SidebarGroupIconSkeleton />
+        <SidebarGroupSkeletonStyled />
+      </SidebarGroupSkeletonContainer>
+      <SidebarGroupList $isSidebarOpen={sidebarOpen}>
+        {children}
+      </SidebarGroupList>
+    </SidebarGroupStyled>
+  );
+};

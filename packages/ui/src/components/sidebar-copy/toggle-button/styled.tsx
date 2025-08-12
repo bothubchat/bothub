@@ -3,7 +3,7 @@ import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 
 export const SidebarToggleButtonStyled = styled(Button).attrs({
-  variant: 'text'
+  variant: 'text',
 })<{ $isOpen: boolean }>`
   &:hover {
     svg path {
@@ -16,6 +16,6 @@ export const SidebarToggleButtonStyled = styled(Button).attrs({
   ${adaptive({
     mobile: css`
       display: none;
-    `
+    `,
   })}
 `;

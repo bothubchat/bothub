@@ -6,9 +6,9 @@ import { colorToRgba } from '@/ui/utils';
 import { Skeleton } from '@/ui/components/skeleton';
 
 export const SidebarGroupStyled = styled.div`
-  position: relative;
   display: flex;
   flex-direction: column;
+  position: relative;
   gap: 8px;
   user-select: none;
 `;
@@ -44,16 +44,19 @@ export const SidebarGroupBox = styled.div`
   }
 `;
 
-export const SidebarGroupList = styled(animated.div)`
+export const SidebarGroupList = styled(animated.div)<{
+  $isSidebarOpen?: boolean;
+}>`
   transform-origin: top center;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  position: relative;
+  gap: ${({ $isSidebarOpen }) => ($isSidebarOpen ? '4px' : '8px')};
 `;
 
 export const SidebarGroupName = styled(Typography).attrs({
   variant: 'body-l-medium',
-  component: 'p'
+  component: 'p',
 })`
   white-space: nowrap;
   overflow: hidden;
@@ -77,12 +80,13 @@ export const SidebarArrowDownIcon = styled(ArrowDownIcon)<{
 
 export const SidebarGroupButton = styled.button`
   display: flex;
+  flex-grow: 1;
+  max-height: 60px;
   background: none;
   outline: none;
   padding: 0;
   border: none;
-  width: 40px;
-  height: 40px;
+  aspect-ratio: 1/1;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 8px;
   align-items: center;
@@ -103,7 +107,7 @@ export const SidebarGroupIconSkeleton = styled(Skeleton)`
 `;
 export const SidebarGroupSkeletonContainer = styled(Typography).attrs({
   component: 'div',
-  variant: 'body-l-medium'
+  variant: 'body-l-medium',
 })`
   display: flex;
   align-items: center;

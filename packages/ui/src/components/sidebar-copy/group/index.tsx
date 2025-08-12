@@ -6,11 +6,12 @@ import {
   SidebarGroupButton,
   SidebarGroupList,
   SidebarGroupName,
-  SidebarGroupStyled
+  SidebarGroupStyled,
 } from './styled';
 import { useSidebar } from '../context';
 import { FolderIcon } from '@/ui/icons/folder';
 import { SidebarGroupSkeleton } from './skeleton';
+import { Tooltip, TooltipConsumer, useTooltip } from '../../tooltip';
 
 export interface SidebarGroupDefaultProps {
   name: string;
@@ -51,7 +52,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
     from: { opacity: 0, scale: 0.75 },
     enter: { opacity: 1, scale: 1 },
     leave: { opacity: 0, scale: 0.75 },
-    config: { duration: 200 }
+    config: { duration: 100 },
   });
 
   const handleOpen = useCallback((e: React.MouseEvent) => {
@@ -67,14 +68,33 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   if (!sidebarOpen) {
     return (
       <SidebarGroupStyled>
-        <SidebarGroupButton onClick={handleOpen}>
-          <FolderIcon />
-        </SidebarGroupButton>
+        <Tooltip
+          label={props.name}
+          placement="center-right"
+          align="center"
+        >
+          <TooltipConsumer>
+            {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+              <SidebarGroupButton
+                onMouseEnter={handleTooltipMouseEnter}
+                onMouseLeave={handleTooltipMouseLeave}
+                onClick={handleOpen}
+              >
+                <FolderIcon size={18} />
+              </SidebarGroupButton>
+            )}
+          </TooltipConsumer>
+        </Tooltip>
         {listTransition(
           (style, item) =>
             item && (
-              <SidebarGroupList style={style}>{children}</SidebarGroupList>
-            )
+              <SidebarGroupList
+                $isSidebarOpen={sidebarOpen}
+                style={style}
+              >
+                {children}
+              </SidebarGroupList>
+            ),
         )}
       </SidebarGroupStyled>
     );
@@ -91,7 +111,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
       </SidebarGroupBox>
       {listTransition(
         (style, item) =>
-          item && <SidebarGroupList style={style}>{children}</SidebarGroupList>
+          item && <SidebarGroupList style={style}>{children}</SidebarGroupList>,
       )}
     </SidebarGroupStyled>
   );

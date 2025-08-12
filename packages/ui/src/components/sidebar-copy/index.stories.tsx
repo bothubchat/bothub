@@ -6,13 +6,13 @@ import {
   SidebarDropdownItem,
   SidebarChat,
   SidebarGroupsList,
-  SidebarGroup
+  SidebarGroup,
 } from '.';
 import { Logo } from '@/ui/components/logo';
 import {
   SidebarLangDropdown,
   SidebarLangDropdownItem,
-  SidebarLangDropdownList
+  SidebarLangDropdownList,
 } from './lang';
 import { SidebarMenu, SidebarMenuItem } from './menu';
 import {
@@ -24,14 +24,14 @@ import {
   CoderIcon,
   OrganizationIcon,
   SimpleGearIcon,
-  Gpt35Icon
+  Gpt35Icon,
 } from '@/ui/icons';
 import { SidebarToggleButton } from './toggle-button';
 import {
   SidebarCreateChatButton,
-  SidebarAddGroupButton,
   SidebarSearchButton,
-  SidebarEditButton
+  SidebarEditButton,
+  SidebarAddGroupButton,
 } from './buttons';
 import {
   SidebarUser,
@@ -40,8 +40,9 @@ import {
   SidebarUserInfoUpdateTariffBadge,
   SidebarUserInfoUpdateTariffBadgeText,
   SidebarUserInfoUpdateTariffButton,
-  SidebarUserInfoUpdateTariffButtonText
+  SidebarUserInfoUpdateTariffButtonText,
 } from './user-info';
+import { Tooltip } from '../tooltip';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
 
@@ -172,7 +173,7 @@ const Chat: React.FC<{ skeleton?: boolean }> = ({ skeleton = false }) => (
 
 const Chats = ({
   loading,
-  actions
+  actions,
 }: {
   loading?: boolean;
   actions?: React.ReactNode;
@@ -260,14 +261,20 @@ export const Basic: SidebarStory = {
     user: <User />,
     buttons: (
       <>
-        <SidebarCreateChatButton variant="primary" />
+        <Tooltip
+          align="center"
+          placement="center-right"
+          label="Tooltip text"
+        >
+          <SidebarCreateChatButton variant="primary" />
+        </Tooltip>
         <SidebarAddGroupButton variant="secondary" />
         <SidebarSearchButton variant="secondary" />
         <SidebarEditButton variant="secondary" />
       </>
     ),
-    children: <Chats actions={<ChatsActions />} />
-  }
+    children: <Chats actions={<ChatsActions />} />,
+  },
 };
 
 export default {
@@ -277,18 +284,18 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     user: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     toggle: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as SidebarMeta;

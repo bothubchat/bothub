@@ -10,7 +10,7 @@ export const SidebarDropdownStyled = styled.div`
 `;
 
 export const SidebarDropdownTogglerIcon = styled(MenuDotIcon).attrs({
-  size: 18
+  size: 18,
 })`
   rotate: 90deg;
 `;
@@ -28,12 +28,12 @@ export const SidebarDropdownToggler = styled.button`
   align-items: center;
 `;
 
-export const SidebarDropdownContent = styled.div<{ $opacity: number }>`
+export const SidebarDropdownContent = styled(animated.div)`
   position: fixed;
-  visibility: ${({ $opacity }) => ($opacity > 0 ? 'visible' : 'hidden')};
   transform-origin: top right;
   width: fit-content;
   margin-top: 16px;
+  transform: translateX(-100%);
   top: 16px;
   right: -2px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
@@ -44,7 +44,7 @@ export const SidebarDropdownContent = styled.div<{ $opacity: number }>`
     content: '';
     position: absolute;
     border-radius: 8px;
-    z-index: -1;
+    z-index: 0;
     width: 100%;
     height: 100%;
     top: 0px;
@@ -87,5 +87,5 @@ export const SidebarDropdownItemStyled = styled.button`
 
 export const SidebarDropdownItemText = styled(Typography).attrs({
   variant: 'body-m-regular',
-  component: 'span'
+  component: 'span',
 })``;
