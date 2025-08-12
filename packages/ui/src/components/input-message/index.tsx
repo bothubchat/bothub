@@ -4,6 +4,7 @@ import { useOnClickOutside } from '@/ui/utils/useOnClickOutside';
 import {
   InputMessageBottom,
   InputMessageBottomGroup,
+  InputMessageConcatenateWarning,
   InputMessageContent,
   InputMessageFile,
   InputMessageFiles,
@@ -20,17 +21,21 @@ import {
   InputMessageUploadFileButton,
   InputMessageUploadFileInput,
   InputMessageVoiceButton,
-  InputMessageVoiceIcon,
+  InputMessageVoiceFileDelete,
+  InputMessageVoiceFiles,
+  InputMessageVoicePauseButton,
+  InputMessageVoicePlayButton,
   InputMessageVoiceRecord,
   InputMessageVoiceRecordDot,
   InputMessageVoiceRecordTimeText,
+  InputMessageVoiceTrack,
 } from './styled';
 import { ChipImage } from '@/ui/components/chip';
 import { PdfIcon } from '@/ui/icons/pdf';
 import { TxtIcon } from '@/ui/icons/txt';
 import { WordIcon } from '@/ui/icons/word';
 import { XlsIcon } from '@/ui/icons/xls';
-import { IInputMessageFile } from './types';
+import { IInputMessageFile, IInputMessageVoiceFile } from './types';
 import { IconProvider } from '@/ui/components/icon';
 import {
   formatUploadFiles,
@@ -41,11 +46,17 @@ import {
 import { AttachFileIcon } from '@/ui/icons/attach-file';
 import { useTheme } from '@/ui/theme';
 import { getSupportedAudioMimeType } from '@/ui/utils/getSupportedAudioMimeType';
+import { MessageVoice } from '../message';
+import { getWaveData } from '@/ui/utils/audio/getWaveData';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
 export type InputMessageFilesChangeEventHandler = (
   files: IInputMessageFile[],
+) => unknown;
+
+export type InputMessageVoiceFilesChangeEventHandler = (
+  files: IInputMessageVoiceFile[],
 ) => unknown;
 
 export type InputMessageSendEventHandler = (
@@ -75,15 +86,16 @@ export interface InputMessageProps
   useAlternativeKeyDefaultValue?: boolean;
   defaultKeySendText?: React.ReactNode;
   alternativeKeySendText?: React.ReactNode;
+  concatenateText?: React.ReactNode;
   autoFocus?: boolean;
   voice?: boolean;
   onSetAlternativeKeyValue?: (value: boolean) => unknown;
   onChange?: InputMessageChangeEventHandler;
   onFilesChange?: InputMessageFilesChangeEventHandler;
+  onVoiceFilesChange?: InputMessageVoiceFilesChangeEventHandler;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
   onSend?: InputMessageSendEventHandler;
   emitError?(event: InputMessageErrorEvent): void;
-  onVoice?: InputMessageVoiceEventHandler;
   rightActions?: React.ReactNode;
 }
 
@@ -98,6 +110,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   useAlternativeKeyDefaultValue = false,
   defaultKeySendText,
   alternativeKeySendText,
+  concatenateText,
   uploadFileLimit = 5,
   hideUploadFile = false,
   uploadFileDisabled = false,
@@ -107,11 +120,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   onSetAlternativeKeyValue,
   onChange,
   onFilesChange,
+  onVoiceFilesChange,
   onTextAreaChange,
   onSend,
   onFocus,
   onBlur,
-  onVoice,
   emitError,
   rightActions,
   ...props
@@ -127,9 +140,14 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     typeof initialMessage === 'string'
       ? [initialMessage, onChange]
       : useState('');
+
   const [files, setFiles] = Array.isArray(initialFiles)
     ? [initialFiles, onFilesChange]
     : useState<IInputMessageFile[]>([]);
+
+  const [voiceFiles, setVoiceFiles] = useState<IInputMessageVoiceFile[]>([]);
+
+  const [isVoicePaused, setIsVoicePaused] = useState(false);
   const [isFocus, setIsFocus] = useState(!disabled && autoFocus);
   const [dragActive, setDragActive] = useState(false);
   const [isVoiceRecording, setIsVoiceRecording] = useState(false);
@@ -258,9 +276,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       onSend?.(message, files);
       setMessage?.('');
       setFiles?.([]);
+      setVoiceFiles?.([]);
       setTextareaHeight('calc(var(--bothub-scale, 1) * 22px)');
     },
-    [message, files, onSend, setMessage, setFiles],
+    [message, files, onSend, setMessage, setFiles, setVoiceFiles],
   );
 
   const handleKeyDown = useCallback(
@@ -347,6 +366,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
       setIsVoiceRecording(true);
       setVoiceRecordingTime(0);
+      setIsVoicePaused(false);
     },
     [voicePressedRef.current, voiceChunksRef.current, isVoiceRecording],
   );
@@ -382,6 +402,40 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 
     stopVoiceRecording();
   }, [isVoiceRecording, stopVoiceRecording]);
+
+  const handleVoicePause = useCallback(() => {
+    const mediaRecorder = voiceMediaRecorderRef.current;
+    const timer = voiceTimerRef.current;
+
+    if (!isVoiceRecording || !mediaRecorder || !timer) {
+      return;
+    }
+
+    mediaRecorder.pause();
+    window.clearInterval(timer);
+    setIsVoicePaused(true);
+  }, [isVoiceRecording]);
+
+  const handleVoiceResume = useCallback(() => {
+    const mediaRecorder = voiceMediaRecorderRef.current;
+
+    if (!isVoiceRecording || !mediaRecorder) {
+      return;
+    }
+
+    mediaRecorder.resume();
+    voiceTimerRef.current = window.setInterval(() => {
+      setVoiceRecordingTime((recordingTime) => (recordingTime ?? 0) + 0.1);
+    }, 100);
+    setIsVoicePaused(false);
+  }, [isVoiceRecording, setVoiceRecordingTime]);
+
+  const handleVoiceFileDelete = useCallback(
+    (file: IInputMessageVoiceFile) => {
+      setVoiceFiles(voiceFiles.filter((f) => f.src !== file.src));
+    },
+    [voiceFiles, setVoiceFiles],
+  );
 
   const handleInput = useCallback(() => {
     const textareaEl = textareaRef.current;
@@ -432,6 +486,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   }, [initialFiles]);
 
   useEffect(() => {
+    onVoiceFilesChange?.(voiceFiles);
+  }, [voiceFiles]);
+
+  useEffect(() => {
     const mediaRecorder = voiceMediaRecorderRef.current;
 
     const dataAvailableListener = (event: BlobEvent) => {
@@ -444,7 +502,16 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         type: getSupportedAudioMimeType(),
       });
 
-      await onVoice?.(blob);
+      const { waveData, duration } = await getWaveData(blob);
+
+      const newVoiceFile = {
+        src: URL.createObjectURL(blob),
+        duration,
+        blob,
+        waveData,
+      };
+
+      setVoiceFiles([...voiceFiles, newVoiceFile]);
 
       voiceMediaRecorderRef.current = null;
       voiceMediaStreamRef.current = null;
@@ -532,73 +599,91 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               </InputMessageVoiceRecordTimeText>
             </InputMessageVoiceRecord>
           )}
-          {!isVoiceRecording && (
-            <>
-              {files.length > 0 && (
-                <InputMessageFiles>
-                  {files.map((file) => {
-                    let iconNode: React.ReactNode;
+          {files.length > 0 && (
+            <InputMessageFiles>
+              {files.map((file) => {
+                let iconNode: React.ReactNode;
 
-                    if (
-                      file.previewUrl &&
-                      (file.name.match(/.png$/i) ||
-                        file.name.match(/.jpg$/i) ||
-                        file.name.match(/.jpeg$/i))
-                    ) {
-                      iconNode = <ChipImage src={file.previewUrl} />;
-                    } else if (file.name.match(/.txt$/i)) {
-                      iconNode = <TxtIcon />;
-                    } else if (file.name.match(/.docx$/i)) {
-                      iconNode = <WordIcon />;
-                    } else if (file.name.match(/.xlsx$/i)) {
-                      iconNode = <XlsIcon />;
-                    } else if (file.name.match(/.pdf$/i)) {
-                      iconNode = <PdfIcon />;
-                    } else {
-                      iconNode = <AttachFileIcon />;
-                    }
+                if (
+                  file.previewUrl &&
+                  (file.name.match(/.png$/i) ||
+                    file.name.match(/.jpg$/i) ||
+                    file.name.match(/.jpeg$/i))
+                ) {
+                  iconNode = <ChipImage src={file.previewUrl} />;
+                } else if (file.name.match(/.txt$/i)) {
+                  iconNode = <TxtIcon />;
+                } else if (file.name.match(/.docx$/i)) {
+                  iconNode = <WordIcon />;
+                } else if (file.name.match(/.xlsx$/i)) {
+                  iconNode = <XlsIcon />;
+                } else if (file.name.match(/.pdf$/i)) {
+                  iconNode = <PdfIcon />;
+                } else {
+                  iconNode = <AttachFileIcon />;
+                }
 
-                    iconNode = (
-                      <IconProvider size={18}>{iconNode}</IconProvider>
-                    );
+                iconNode = <IconProvider size={18}>{iconNode}</IconProvider>;
 
-                    return (
-                      <InputMessageFile
-                        key={file.name}
-                        start={iconNode}
-                        onDelete={handleDeleteFile.bind(null, file)}
-                      >
-                        {file.name.length > 20
-                          ? `...${file.name.slice(-20)}`
-                          : file.name}
-                      </InputMessageFile>
-                    );
-                  })}
-                </InputMessageFiles>
-              )}
-              {(!textAreaDisabled ||
-                (textAreaDisabled &&
-                  placeholder &&
-                  files.length !== uploadFileLimit) ||
-                (textAreaDisabled && message)) && (
-                <InputMessageTextArea
-                  $disabled={disabled}
-                  {...props}
-                  ref={textareaRef}
-                  value={message}
-                  placeholder={placeholder}
-                  disabled={disabled || textAreaDisabled}
-                  style={{
-                    ...props.style,
-                    height: textareaHeight,
-                  }}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  onPaste={handlePaste}
-                />
-              )}
-            </>
+                return (
+                  <InputMessageFile
+                    key={file.name}
+                    start={iconNode}
+                    onDelete={handleDeleteFile.bind(null, file)}
+                  >
+                    {file.name.length > 20
+                      ? `...${file.name.slice(-20)}`
+                      : file.name}
+                  </InputMessageFile>
+                );
+              })}
+            </InputMessageFiles>
+          )}
+          {voiceFiles.length > 1 && (
+            <InputMessageConcatenateWarning>
+              {concatenateText}
+            </InputMessageConcatenateWarning>
+          )}
+          {voiceFiles.length > 0 && (
+            <InputMessageVoiceFiles>
+              {voiceFiles.map((file) => (
+                <InputMessageVoiceTrack key={file.src}>
+                  <MessageVoice
+                    variant="input"
+                    height={24}
+                    src={file.src}
+                    duration={file.duration}
+                    waveData={file.waveData}
+                    disableTranscription
+                  />
+                  <InputMessageVoiceFileDelete
+                    onClick={handleVoiceFileDelete.bind(null, file)}
+                  />
+                </InputMessageVoiceTrack>
+              ))}
+            </InputMessageVoiceFiles>
+          )}
+          {(!textAreaDisabled ||
+            (textAreaDisabled &&
+              placeholder &&
+              files.length !== uploadFileLimit) ||
+            (textAreaDisabled && message)) && (
+            <InputMessageTextArea
+              $disabled={disabled}
+              {...props}
+              ref={textareaRef}
+              value={message}
+              placeholder={placeholder}
+              disabled={disabled || textAreaDisabled}
+              style={{
+                ...props.style,
+                height: textareaHeight,
+              }}
+              onFocus={handleFocus}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              onPaste={handlePaste}
+            />
           )}
         </InputMessageMain>
         <InputMessageBottom>
@@ -662,6 +747,15 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                 )}
               </InputMessageToggleSendStyled>
             )}
+            {isVoiceRecording && (
+              <>
+                {isVoicePaused ? (
+                  <InputMessageVoicePlayButton onClick={handleVoiceResume} />
+                ) : (
+                  <InputMessageVoicePauseButton onClick={handleVoicePause} />
+                )}
+              </>
+            )}
             {voice && (
               <InputMessageVoiceButton
                 $isRecording={isVoiceRecording}
@@ -672,16 +766,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                     : handleVoiceRecordEnd
                 }
                 data-test="submit-message"
-              >
-                {isVoiceRecording ? (
-                  <InputMessageSendIcon />
-                ) : (
-                  <InputMessageVoiceIcon />
-                )}
-              </InputMessageVoiceButton>
+              />
             )}
             <InputMessageSendButton
-              disabled={disabled || sendDisabled}
+              disabled={disabled || sendDisabled || isVoiceRecording}
               onClick={handleSend}
               {...(theme.bright && {
                 iconFill: theme.default.colors.base.black,
