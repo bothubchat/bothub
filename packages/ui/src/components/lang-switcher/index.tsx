@@ -213,6 +213,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
                 onOptionClick={(e) => handleChange(e, 'lang')}
                 value={currentLanguage}
                 data={dataLanguages}
+                dataTest="lang-select"
               />
               <LangSwitcherLabel>{region.label}</LangSwitcherLabel>
               <LangSwitcherInput
@@ -221,6 +222,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
                 onOptionClick={(e) => handleChange(e, 'region')}
                 value={currentRegion}
                 data={dataRegions}
+                dataTest="region-select"
               />
             </LangSwitcherList>
           ),

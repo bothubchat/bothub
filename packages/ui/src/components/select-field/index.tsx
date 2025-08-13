@@ -1,16 +1,18 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+
 import * as S from './styled';
+import { Skeleton } from '@/ui/components/skeleton';
+
+import { SelectModalGeneralProps, SelectModal } from './select-modal';
+import { SelectFieldInputValue } from './nodes';
+
 import {
   SelectFieldDataItem,
   SelectFieldInputChangeEventHandler,
   SelectFieldInputType,
 } from './types';
-import { useTheme } from '@/ui/theme';
-import { Skeleton } from '@/ui/components/skeleton';
-import { IconProvider } from '../icon';
+
 import { SelectFieldProvider } from './context';
-import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
-import { SelectModalGeneralProps, SelectModal } from './select-modal';
 import { useSelectField, UseSelectFieldProps } from './useSelectField';
 
 export type SelectFieldProps = {
@@ -25,7 +27,6 @@ export type SelectFieldProps = {
   inputValue?: string;
   clearable?: boolean;
   loading?: boolean;
-  padding?: [number, number];
   dataTest?: string;
   onInputChange?: SelectFieldInputChangeEventHandler;
   onPointerLeave?: React.PointerEventHandler<HTMLDivElement>;
@@ -83,8 +84,6 @@ export const SelectField = ({
     ...selectModalProps
   } = useSelectField(useSelectFieldProps);
 
-  const theme = useTheme();
-
   const setInitialInputValue = useCallback(
     (value: string) => {
       onInputChange?.(value);
@@ -92,15 +91,38 @@ export const SelectField = ({
     [onInputChange],
   );
 
-  let [inputValue, setInputValue] = useState('') as [
-    string,
-    (value: string) => void,
-  ];
-  if (typeof initialInputValue !== 'undefined') {
-    [inputValue, setInputValue] = [initialInputValue, setInitialInputValue];
-  }
+  const [inputValue, setInputValue] =
+    typeof initialInputValue === 'undefined'
+      ? useState('')
+      : [initialInputValue, setInitialInputValue];
 
   const [isInputNativeFocus, setIsInputNativeFocus] = useState(false);
+
+  const isSearch = useMemo(
+    () => enableInput && inputType === 'search',
+    [enableInput, inputType],
+  );
+
+  const isMultipleWithValues = useMemo(
+    () => multiple && Array.isArray(value) && value.length > 0,
+    [multiple, value],
+  );
+
+  const labelNode = useMemo(() => {
+    if (skeleton) {
+      return (
+        <S.SelectFieldLabel>
+          <Skeleton width={100} />
+        </S.SelectFieldLabel>
+      );
+    }
+
+    if (typeof label === 'string') {
+      return <S.SelectFieldLabel>{label}</S.SelectFieldLabel>;
+    }
+
+    return label;
+  }, [skeleton, label]);
 
   const handleValueDelete = useCallback(
     (item: SelectFieldDataItem, event: React.MouseEvent) => {
@@ -117,17 +139,18 @@ export const SelectField = ({
               return value.value !== item;
             }),
           );
-        } else {
-          setValue(
-            value.filter((value) => {
-              if (typeof value === 'string') {
-                return value !== item.value;
-              }
-
-              return value.value !== item.value;
-            }),
-          );
+          return;
         }
+
+        setValue(
+          value.filter((value) => {
+            if (typeof value === 'string') {
+              return value !== item.value;
+            }
+
+            return value.value !== item.value;
+          }),
+        );
       }
 
       handleClose();
@@ -160,151 +183,10 @@ export const SelectField = ({
         className={className}
         onPointerLeave={onPointerLeave}
       >
-        {label && skeleton && (
-          <S.SelectFieldLabel>
-            <Skeleton width={100} />
-          </S.SelectFieldLabel>
-        )}
-        {typeof label === 'string' && !skeleton && (
-          <S.SelectFieldLabel>{label}</S.SelectFieldLabel>
-        )}
-        {typeof label !== 'string' && !skeleton && label}
-        {children}
-        {!children && (
+        {labelNode}
+        {children ?? (
           <>
-            {!skeleton && (
-              <S.SelectFieldInput
-                $open={isOpen}
-                $error={!!error}
-                $disabled={disabled}
-                $skeleton={false}
-                $blur={blur}
-                $loading={loading}
-                $multiple={multiple && Array.isArray(value) && value.length > 0}
-                ref={triggerRef}
-                onClick={handleInputClick.bind(null, false)}
-                data-test={dataTest}
-              >
-                <S.SelectFieldInputLeftSide>
-                  {(!value || (Array.isArray(value) && value.length === 0)) && (
-                    <>
-                      {enableInput && inputType === 'search' && (
-                        <S.SelectFieldSearchIcon $focus={isInputNativeFocus} />
-                      )}
-                      {enableInput && (
-                        <S.SelectFieldInputNative
-                          type={inputType}
-                          value={inputValue}
-                          placeholder={placeholder}
-                          disabled={disabled}
-                          onClick={handleInputClick.bind(null, true)}
-                          onChange={handleInputChange}
-                          onFocus={setIsInputNativeFocus.bind(null, true)}
-                          onBlur={setIsInputNativeFocus.bind(null, false)}
-                        />
-                      )}
-                      {!enableInput && (
-                        <S.SelectFieldPlaceholder $open={isOpen}>
-                          {placeholder}
-                        </S.SelectFieldPlaceholder>
-                      )}
-                    </>
-                  )}
-                  {typeof value === 'string' && value !== '' && (
-                    <S.SelectFieldValue>
-                      <S.SelectFieldValueText>{value}</S.SelectFieldValueText>
-                    </S.SelectFieldValue>
-                  )}
-                  {value &&
-                    typeof value === 'object' &&
-                    !Array.isArray(value) && (
-                      <S.SelectFieldValue>
-                        {value.icon && (
-                          <IconProvider
-                            fill={theme.colors.base.white}
-                            size={18}
-                          >
-                            {value.icon}
-                          </IconProvider>
-                        )}
-                        {value.color && (
-                          <S.SelectFieldValueColor $color={value.color} />
-                        )}
-                        {value.label && (
-                          <Tooltip
-                            label={value.label}
-                            placement="top-left"
-                            disabled={value.label.length <= 128}
-                          >
-                            <TooltipConsumer>
-                              {({
-                                handleTooltipMouseEnter,
-                                handleTooltipMouseLeave,
-                              }) => (
-                                <S.SelectFieldColorValueText
-                                  onMouseEnter={handleTooltipMouseEnter}
-                                  onMouseLeave={handleTooltipMouseLeave}
-                                >
-                                  {value.label}
-                                </S.SelectFieldColorValueText>
-                              )}
-                            </TooltipConsumer>
-                          </Tooltip>
-                        )}
-                        {!value.label && value.value && (
-                          <S.SelectFieldColorValueText>
-                            {value.value}
-                          </S.SelectFieldColorValueText>
-                        )}
-                      </S.SelectFieldValue>
-                    )}
-                  {Array.isArray(value) && value.length > 0 && (
-                    <S.SelectFieldValues>
-                      <S.SelectFieldValueList>
-                        {value.map((item, index) => {
-                          if (typeof item === 'string') {
-                            return (
-                              <S.SelectFieldValueListItem
-                                key={item}
-                                onDelete={handleValueDelete.bind(null, item)}
-                              >
-                                {item}
-                              </S.SelectFieldValueListItem>
-                            );
-                          }
-
-                          return (
-                            <S.SelectFieldValueListItem
-                              key={item.id ?? item.value ?? index}
-                              onDelete={handleValueDelete.bind(null, item)}
-                            >
-                              {item.label ?? item.value}
-                            </S.SelectFieldValueListItem>
-                          );
-                        })}
-                      </S.SelectFieldValueList>
-                    </S.SelectFieldValues>
-                  )}
-                </S.SelectFieldInputLeftSide>
-                <S.SelectFieldInputSide>
-                  {((clearable && value) ||
-                    (enableInput &&
-                      inputType === 'search' &&
-                      !loading &&
-                      inputValue) ||
-                    (enableInput && value)) && (
-                    <S.SelectFieldClearButton onClick={handleClear} />
-                  )}
-                  {loading && <S.SelectFieldLoader />}
-                  <S.SelectFieldArrow
-                    style={{
-                      transform: isOpen ? 'rotateZ(180deg)' : 'rotateZ(0deg)',
-                    }}
-                  />
-                </S.SelectFieldInputSide>
-              </S.SelectFieldInput>
-            )}
-            {skeleton && (
+            {skeleton ? (
               <S.SelectFieldInput
                 $open={false}
                 $error={false}
@@ -317,10 +199,60 @@ export const SelectField = ({
               >
                 <S.SelectFieldSkeleton />
               </S.SelectFieldInput>
+            ) : (
+              <S.SelectFieldInput
+                $open={isOpen}
+                $error={!!error}
+                $disabled={disabled}
+                $skeleton={false}
+                $blur={blur}
+                $loading={loading}
+                $multiple={isMultipleWithValues}
+                ref={triggerRef}
+                onClick={handleInputClick.bind(null, false)}
+                data-test={dataTest}
+              >
+                <S.SelectFieldInputLeftSide>
+                  {(!value || (Array.isArray(value) && value.length === 0)) && (
+                    <>
+                      {isSearch && (
+                        <S.SelectFieldSearchIcon $focus={isInputNativeFocus} />
+                      )}
+                      {enableInput ? (
+                        <S.SelectFieldInputNative
+                          type={inputType}
+                          value={inputValue}
+                          placeholder={placeholder}
+                          disabled={disabled}
+                          onClick={handleInputClick.bind(null, true)}
+                          onChange={handleInputChange}
+                          onFocus={setIsInputNativeFocus.bind(null, true)}
+                          onBlur={setIsInputNativeFocus.bind(null, false)}
+                        />
+                      ) : (
+                        <S.SelectFieldPlaceholder $open={isOpen}>
+                          {placeholder}
+                        </S.SelectFieldPlaceholder>
+                      )}
+                    </>
+                  )}
+                  <SelectFieldInputValue
+                    value={value}
+                    handleValueDelete={handleValueDelete}
+                  />
+                </S.SelectFieldInputLeftSide>
+                <S.SelectFieldInputSide>
+                  {((value && (clearable || enableInput)) ||
+                    (isSearch && !loading && inputValue)) && (
+                    <S.SelectFieldClearButton onClick={handleClear} />
+                  )}
+                  {loading && <S.SelectFieldLoader />}
+                  <S.SelectFieldArrow $isOpen={isOpen} />
+                </S.SelectFieldInputSide>
+              </S.SelectFieldInput>
             )}
           </>
         )}
-
         <SelectModal
           {...selectModalProps}
           isOpen={isOpen}
@@ -349,7 +281,6 @@ export const SelectField = ({
           modalStyles={modalStyles}
           openedModel={openedModel}
         />
-
         {error && <S.SelectFieldErrorText>{error}</S.SelectFieldErrorText>}
       </S.SelectFieldStyled>
     </SelectFieldProvider>
