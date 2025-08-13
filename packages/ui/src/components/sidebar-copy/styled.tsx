@@ -4,12 +4,14 @@ import { Divider } from '@/ui/components/divider';
 
 export const SidebarStyled = styled.div<{
   $isOpen: boolean;
+  $isHide: boolean;
 }>`
   display: flex;
   flex-direction: column;
   height: 100%;
   height: 98vh;
-  width: ${({ $isOpen }) => ($isOpen ? '324px' : '74px')};
+  width: ${({ $isOpen, $isHide }) =>
+    $isHide ? '0px' : $isOpen ? '324px' : '74px'};
   ${({ $isOpen }) => !$isOpen && 'justify-content: center;'}
   padding: 20px 0;
   background: ${({ theme }) => theme.colors.grayScale.gray4};

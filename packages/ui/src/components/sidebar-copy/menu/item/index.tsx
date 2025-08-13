@@ -1,7 +1,7 @@
 import {
   SidebarMenuListItem,
   SidebarMenuItemIconBox,
-  SidebarMenuItemText
+  SidebarMenuItemText,
 } from '../styled';
 import { useSidebar } from '../../context';
 
@@ -14,7 +14,7 @@ type SidebarMenuItemProps = {
 export const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
   icon,
   label,
-  active
+  active,
 }) => {
   const { isOpen } = useSidebar();
 

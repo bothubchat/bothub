@@ -80,12 +80,12 @@ export const SidebarArrowDownIcon = styled(ArrowDownIcon)<{
 
 export const SidebarGroupButton = styled.button`
   display: flex;
-  flex-grow: 1;
-  max-height: 60px;
   background: none;
   outline: none;
+  flex-grow: 1;
   padding: 0;
   border: none;
+  max-height: 42px;
   aspect-ratio: 1/1;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 8px;

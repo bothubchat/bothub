@@ -67,6 +67,7 @@ export const SidebarChatButton = styled.button`
   justify-content: center;
   border-radius: 8px;
   flex-grow: 1;
+  max-height: 42px;
   user-select: all;
   background: none;
   outline: none;

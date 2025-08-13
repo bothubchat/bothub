@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
@@ -14,6 +14,10 @@ export const SidebarMenu = ({ children }: { children: React.ReactNode }) => {
   const handleToggle = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, [isOpen]);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [sidebarOpen]);
 
   const menuTransition = useTransition(isOpen, {
     from: {

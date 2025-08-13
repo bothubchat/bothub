@@ -2,7 +2,7 @@ import React, {
   StyleHTMLAttributes,
   useCallback,
   useEffect,
-  useState
+  useState,
 } from 'react';
 import {
   SidebarBodyScrollbarWrapper,
@@ -14,7 +14,7 @@ import {
   SidebarToolbar,
   SidebarTop,
   SidebarWrapper,
-  SidebarDivider
+  SidebarDivider,
 } from './styled';
 import { SidebarProvider } from './context';
 import { ScrollbarRef } from '../scrollbar';
@@ -65,7 +65,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   children,
   style,
   banner,
-  onOpen
+  onOpen,
 }) => {
   const initialIsOpen = open;
   const setInitialIsOpen = useCallback<
@@ -76,7 +76,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         onOpen?.(open);
       }
     },
-    [onOpen]
+    [onOpen],
   );
   const [isOpen, setIsOpen] =
     typeof initialIsOpen === 'boolean'
@@ -94,7 +94,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         onOpen(open);
       }
     },
-    [setIsOpen, initialIsOpen, onOpen]
+    [setIsOpen, initialIsOpen, onOpen],
   );
 
   useEffect(() => {
@@ -127,6 +127,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       setIsOpen={handleOpen}
     >
       <SidebarStyled
+        style={style}
+        $isHide={isHide}
         $isOpen={isOpen}
         className={className}
         id={id}

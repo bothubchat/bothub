@@ -11,7 +11,7 @@ import {
 import { useSidebar } from '../context';
 import { FolderIcon } from '@/ui/icons/folder';
 import { SidebarGroupSkeleton } from './skeleton';
-import { Tooltip, TooltipConsumer, useTooltip } from '../../tooltip';
+import { Tooltip, TooltipConsumer } from '../../tooltip';
 
 export interface SidebarGroupDefaultProps {
   name: string;
@@ -47,19 +47,31 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   ...props
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const { isOpen: sidebarOpen, isEdit } = useSidebar();
+  const {
+    isOpen: sidebarOpen,
+    isEdit,
+    setIsOpen: setSidebarOpen,
+  } = useSidebar();
   const listTransition = useTransition(open, {
-    from: { opacity: 0, scale: 0.75 },
+    from: { opacity: 0, scale: 0.8 },
     enter: { opacity: 1, scale: 1 },
-    leave: { opacity: 0, scale: 0.75 },
+    leave: { opacity: 0, scale: 0.8 },
     config: { duration: 100 },
   });
 
-  const handleOpen = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setOpen((prev) => !prev);
-  }, []);
+  const handleOpen = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!open && !sidebarOpen) {
+        setOpen(true);
+        setSidebarOpen(true);
+      } else {
+        setOpen(!open);
+      }
+    },
+    [open],
+  );
 
   if (props.skeleton) {
     return <SidebarGroupSkeleton>{children}</SidebarGroupSkeleton>;
