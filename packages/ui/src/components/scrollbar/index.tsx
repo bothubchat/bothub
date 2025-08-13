@@ -136,7 +136,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
       };
       const container = scrollbarRef.current;
       if (container) {
-        container.addEventListener('wheel', handleWheel);
+        container.addEventListener('wheel', handleWheel, { passive: true });
       }
 
       return () => {

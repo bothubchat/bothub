@@ -66,10 +66,7 @@ export type InputMessageSendEventHandler = (
 
 export type InputMessageVoiceEventHandler = (blob: Blob) => unknown;
 
-export type InputMessageErrorEvent = {
-  name: 'WRONG_FILES';
-  payload: File[];
-};
+export type InputMessageErrorEvent = { name: 'WRONG_FILES'; payload: File[] };
 
 export interface InputMessageProps
   extends Omit<React.ComponentProps<'textarea'>, 'value' | 'onChange'> {
@@ -545,22 +542,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   });
 
   const modalTransition = useTransition(alternativeKeyModalShown, {
-    from: {
-      opacity: 0,
-      y: 10,
-    },
-    enter: {
-      opacity: 1,
-      y: 0,
-    },
-    leave: {
-      opacity: 0,
-      y: 10,
-    },
-    config: {
-      duration: 150,
-      ease: 'easeOut',
-    },
+    from: { opacity: 0, y: 10 },
+    enter: { opacity: 1, y: 0 },
+    leave: { opacity: 0, y: 10 },
+    config: { duration: 150, ease: 'easeOut' },
   });
 
   return (
@@ -675,10 +660,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               value={message}
               placeholder={placeholder}
               disabled={disabled || textAreaDisabled}
-              style={{
-                ...props.style,
-                height: textareaHeight,
-              }}
+              style={{ ...props.style, height: textareaHeight }}
               onFocus={handleFocus}
               onBlur={handleBlur}
               onChange={handleChange}
