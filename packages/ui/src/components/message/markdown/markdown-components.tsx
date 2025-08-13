@@ -1,3 +1,4 @@
+import ReactMarkdown from 'react-markdown';
 import {
   MessageBold,
   MessageComponentsProps,
@@ -18,14 +19,11 @@ import {
   MessageTableRow,
   MessageTitle,
 } from '@/ui/components/message/components';
-import { MessageMarkdownLine } from './styled';
 
 export function markdownComponents(
   components: MessageComponentsProps,
-  componentsOverride?: React.ComponentProps<
-    typeof MessageMarkdownLine
-  >['components'],
-): React.ComponentProps<typeof MessageMarkdownLine>['components'] {
+  componentsOverride?: React.ComponentProps<typeof ReactMarkdown>['components'],
+): React.ComponentProps<typeof ReactMarkdown>['components'] {
   return {
     p: ({ children }) => <MessageParagraph wrap>{children}</MessageParagraph>,
     b: ({ children }) => <MessageBold>{children}</MessageBold>,
