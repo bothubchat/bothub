@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.48.0-fix-deps-0056c322-9c46-414b-bb5c-c7beba91437d",
+  "version": "2.48.0-fix-bugs-migrate-dd12c7b9-38e0-4cc6-a7f4-76f652f9b56b",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
@@ -41,13 +41,13 @@
   },
   "sideEffects": false,
   "resolutions": {
-    "react-helmet-async/react": "^19.0.0"
+    "react-helmet/react": "^19.0.0"
   },
   "peerDependencies": {
     "@uidotdev/usehooks": "^2.4.1",
-    "react": ">=19",
-    "react-dom": ">=19",
-    "react-helmet-async": ">=2",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "react-helmet": ">=2",
     "styled-components": "^6.0.7"
   },
   "dependencies": {
