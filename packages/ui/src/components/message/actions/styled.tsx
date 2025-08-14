@@ -7,14 +7,11 @@ export const MessageActionsStyled = styled.div<{ $variant?: MessageVariant }>`
   display: flex;
   flex-direction: ${({ $variant }) =>
     $variant === 'assistant' ? 'row' : 'row-reverse'};
-  align-items: flex-end;
-  justify-content: center;
+  align-items: center;
   user-select: none;
+  gap: 14px;
   -moz-user-select: none;
   -webkit-user-select: none;
-  @media (width <= ${({ theme }) => theme.mobile.maxWidth}) {
-    gap: 8px;
-  }
 `;
 
 export const MessageActionsMenuStyled = styled.div`
@@ -109,7 +106,7 @@ export const MessageActionsButton = styled.button`
   all: unset;
   width: fit-content;
   height: fit-content;
-  padding-inline: 6px;
+  aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
