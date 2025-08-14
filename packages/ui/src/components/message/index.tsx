@@ -395,76 +395,85 @@ export const Message: React.FC<MessageProps> = ({
                         </MessageParagraph>
                       )}
                     </MessageBlockContent>
+                    {timestamp && variant === 'user' && (
+                      <MessageTimestamp
+                        time={timestamp}
+                        position={timestampPosition}
+                        color={hexColor}
+                      />
+                    )}
                   </MessageBlockScrollbarWrapper>
-                  {timestamp && (
-                    <MessageTimestamp
-                      time={timestamp}
-                      position={timestampPosition}
-                      color={hexColor}
-                    />
-                  )}
                 </MessageBlock>
               </MessageBlockWrapper>
+              {timestamp && variant === 'assistant' && (
+                <MessageTimestamp
+                  time={timestamp}
+                  position={timestampPosition}
+                  color={hexColor}
+                />
+              )}
+              <MessageBlockBottomPanel $variant={variant}>
+                {transaction && (
+                  <MessageBlockTransaction>
+                    {transaction}
+                  </MessageBlockTransaction>
+                )}
+                {!skeleton && !hideActions && (
+                  <MessageActions
+                    id={id}
+                    onDownload={onDownload}
+                    disableDownload={disableDownload}
+                    message={content}
+                    variant={variant}
+                    skeleton={skeleton}
+                    disableModal={disableModal}
+                    disableResend={disableResend}
+                    disableEdit={disableEdit}
+                    disableDelete={disableDelete}
+                    disableUpdate={disableUpdate}
+                    disableCopy={disableCopy}
+                    disableEncryption={disableEncryption}
+                    editOutOfMenu={editOutOfMenu}
+                    copyPlainText={copyPlainText}
+                    copyTgText={copyTgText}
+                    editText={editText}
+                    resendText={resendText}
+                    deleteText={deleteText}
+                    onReportText={onReportText}
+                    downloadTooltipLabel={downloadTooltipLabel}
+                    submitEditTooltipLabel={submitEditTooltipLabel}
+                    discardEditTooltipLabel={discardEditTooltipLabel}
+                    updateTooltipLabel={updateTooltipLabel}
+                    copyTooltipLabel={copyTooltipLabel}
+                    encryptionTooltipLabel={encryptionTooltipLabel}
+                    editing={isEditing}
+                    editedText={editedText}
+                    messageRef={messageRef}
+                    onEditing={setIsEditing}
+                    onEditedText={setEditedText}
+                    onEdit={onEdit}
+                    onResend={onResend}
+                    onDelete={onDelete}
+                    onUpdate={onUpdate}
+                    onReport={onReport}
+                    onPlainTextCopy={handlePlainTextCopy}
+                    onTgCopy={handleTgTextCopy}
+                    onCopy={handleRichTextCopy}
+                  />
+                )}
+
+                <MessageVersions
+                  id={id}
+                  version={version}
+                  totalVersions={totalVersions}
+                  onNextVersion={onNextVersion}
+                  onPrevVersion={onPrevVersion}
+                  editing={isEditing}
+                  variant={variant}
+                />
+              </MessageBlockBottomPanel>
             </MessageContent>
           </MessageStyled>
-          <MessageBlockBottomPanel $variant={variant}>
-            {transaction && (
-              <MessageBlockTransaction>{transaction}</MessageBlockTransaction>
-            )}
-            {!skeleton && !hideActions && (
-              <MessageActions
-                id={id}
-                onDownload={onDownload}
-                disableDownload={disableDownload}
-                message={content}
-                variant={variant}
-                skeleton={skeleton}
-                disableModal={disableModal}
-                disableResend={disableResend}
-                disableEdit={disableEdit}
-                disableDelete={disableDelete}
-                disableUpdate={disableUpdate}
-                disableCopy={disableCopy}
-                disableEncryption={disableEncryption}
-                editOutOfMenu={editOutOfMenu}
-                copyPlainText={copyPlainText}
-                copyTgText={copyTgText}
-                editText={editText}
-                resendText={resendText}
-                deleteText={deleteText}
-                onReportText={onReportText}
-                downloadTooltipLabel={downloadTooltipLabel}
-                submitEditTooltipLabel={submitEditTooltipLabel}
-                discardEditTooltipLabel={discardEditTooltipLabel}
-                updateTooltipLabel={updateTooltipLabel}
-                copyTooltipLabel={copyTooltipLabel}
-                encryptionTooltipLabel={encryptionTooltipLabel}
-                editing={isEditing}
-                editedText={editedText}
-                messageRef={messageRef}
-                onEditing={setIsEditing}
-                onEditedText={setEditedText}
-                onEdit={onEdit}
-                onResend={onResend}
-                onDelete={onDelete}
-                onUpdate={onUpdate}
-                onReport={onReport}
-                onPlainTextCopy={handlePlainTextCopy}
-                onTgCopy={handleTgTextCopy}
-                onCopy={handleRichTextCopy}
-              />
-            )}
-
-            <MessageVersions
-              id={id}
-              version={version}
-              totalVersions={totalVersions}
-              onNextVersion={onNextVersion}
-              onPrevVersion={onPrevVersion}
-              editing={isEditing}
-              variant={variant}
-            />
-          </MessageBlockBottomPanel>
           <MessageButtonsStyled>{buttons}</MessageButtonsStyled>
         </MessageStyledWithBottomPanel>
       </MessageStyledWrapper>
