@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useState,
 } from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useTheme } from '../../theme';
 import { ImageImg, ImagePicture, ImageSkeleton, ImageSource } from './styled';
 import { ImageLoadingVariant } from './types';

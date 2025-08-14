@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
+import ReactMarkdown from 'react-markdown';
 import { Portal } from '@/ui/components/portal';
 import {
   TooltipBlock,
@@ -196,20 +197,12 @@ export const Tooltip: React.FC<TooltipProps> = ({
   }
 
   const tooltipTransition = useTransition(!!hoveredElement, {
-    from: {
-      opacity: 0,
-      y: -6,
-    },
-    enter: {
-      opacity: 1,
-      y: 0,
-    },
+    from: { opacity: 0, y: -6 },
+    enter: { opacity: 1, y: 0 },
     leave: {
       opacity: 0,
       y: -6,
-      transition: {
-        duration: disableHiddenAnimation ? 0 : 0.3,
-      },
+      transition: { duration: disableHiddenAnimation ? 0 : 0.3 },
     },
     config: { duration: TooltipAnimationDuration.enter },
   });
@@ -221,7 +214,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           $placement={placement}
           $align={align}
           $inverted={inverted}
-          ref={tooltipRef}
+          ref={tooltipRef as React.RefObject<HTMLDivElement>}
           className={className}
           style={{
             ...style,
@@ -247,23 +240,27 @@ export const Tooltip: React.FC<TooltipProps> = ({
               </TooltipLabel>
             )}
             {typeof label === 'string' && markdown && (
-              <TooltipMarkdown
-                components={{
-                  p: ({ children }) => (
-                    <TooltipLabel component="p">{children}</TooltipLabel>
-                  ),
-                  b: ({ children }) => (
-                    <TooltipLabelBold>{children}</TooltipLabelBold>
-                  ),
-                  strong: ({ children }) => (
-                    <TooltipLabelBold component="strong">
-                      {children}
-                    </TooltipLabelBold>
-                  ),
-                  code: ({ children }) => <TooltipCode>{children}</TooltipCode>,
-                }}
-              >
-                {label}
+              <TooltipMarkdown>
+                <ReactMarkdown
+                  components={{
+                    p: ({ children }) => (
+                      <TooltipLabel component="p">{children}</TooltipLabel>
+                    ),
+                    b: ({ children }) => (
+                      <TooltipLabelBold>{children}</TooltipLabelBold>
+                    ),
+                    strong: ({ children }) => (
+                      <TooltipLabelBold component="strong">
+                        {children}
+                      </TooltipLabelBold>
+                    ),
+                    code: ({ children }) => (
+                      <TooltipCode>{children}</TooltipCode>
+                    ),
+                  }}
+                >
+                  {label}
+                </ReactMarkdown>
               </TooltipMarkdown>
             )}
             {typeof label !== 'string' && label}

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Checkbox, CheckboxLabel } from '.';
 import { Tooltip } from '@/ui/components/tooltip';

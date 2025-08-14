@@ -1,6 +1,5 @@
 import { css, styled } from 'styled-components';
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
 import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { TooltipAlign, TooltipPlacement, TooltipVariant } from './types';
@@ -132,7 +131,7 @@ export const TooltipLabel = styled(Typography).attrs({
   white-space: pre-wrap;
 `;
 
-export const TooltipMarkdown = styled(ReactMarkdown)`
+export const TooltipMarkdown = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;

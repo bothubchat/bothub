@@ -5,16 +5,15 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import * as S from './styled';
 
+import * as S from './styled';
 import { SearchSimpleIcon } from '@/ui/icons';
 
 import { Portal } from '@/ui/components/portal';
 import { ScrollableTabsProps } from '@/ui/components/scrollable-tabs';
 
-import { SelectFieldGroup } from '../select-field-group';
-import { SelectFieldOptions } from '../option';
-
+import { SelectFieldGroup } from './select-field-group';
+import { SelectFieldOptions } from './option';
 import { filterData } from './filterData';
 
 import { UseSelectFieldReturnType } from '..';
@@ -59,7 +58,7 @@ export type SelectModalProps = SelectModalGeneralProps &
 
 export const SelectModal = ({
   isOpen,
-  data = [],
+  data: initialData = [],
   contentWidth,
   contentHeight,
   size = 'small',
@@ -134,7 +133,7 @@ export const SelectModal = ({
 
       handleClose();
     },
-    [value, setValue, multiple, onOptionClick, disableSelect],
+    [value, multiple, disableSelect, setValue, onOptionClick, handleClose],
   );
 
   useEffect(() => {
@@ -147,7 +146,6 @@ export const SelectModal = ({
     (id: string | null) => {
       scrollTop.current = 0;
       setOpenedOptions([]);
-
       if (tabs && tabs.onClick) {
         tabs.onClick(id);
       }
@@ -162,7 +160,7 @@ export const SelectModal = ({
           ? prev.filter((id) => id !== itemId)
           : [...prev, itemId],
       ),
-    [openedOptions],
+    [],
   );
 
   const SelectModalWrapper = useMemo(
@@ -170,38 +168,39 @@ export const SelectModal = ({
     [disablePortal],
   );
 
-  data = data.map((item) => {
-    if (
-      typeof item === 'object' &&
-      item.type === 'collapse' &&
-      item.id &&
-      !item.disabled
-    ) {
-      const { onClick, ...rest } = item;
+  const data = useMemo(
+    () =>
+      initialData.map((item) => {
+        if (
+          !!item &&
+          typeof item === 'object' &&
+          item.type === 'collapse' &&
+          item.id &&
+          !item.disabled
+        ) {
+          const { onClick, ...rest } = item;
 
-      const onOptionClick = () => {
-        if (onClick) {
-          onClick(item);
+          const onOptionClick = () => {
+            if (onClick) {
+              onClick(item);
+            }
+            if (item.id) {
+              onOpenedOptionChange(item.id);
+            }
+          };
+
+          const open = openedOptions.includes(item.id);
+
+          return {
+            ...rest,
+            open,
+            onClick: onOptionClick,
+          };
         }
-
-        if (item.id) {
-          onOpenedOptionChange(item.id);
-        }
-      };
-
-      const open = openedOptions.includes(item.id);
-
-      return {
-        ...rest,
-        ...(open && {
-          open,
-        }),
-        onClick: onOptionClick,
-      };
-    }
-
-    return item;
-  });
+        return item;
+      }),
+    [initialData, openedOptions, onOpenedOptionChange],
+  );
 
   return (
     <SelectModalWrapper>
@@ -222,7 +221,11 @@ export const SelectModal = ({
                 left: `calc(${x}px - ${width})`,
               }),
               ...(typeof contentWidth === 'number' && {
-                left: `calc(${x}px - ${contentWidth > width ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)` : `${width}px`})`,
+                left: `calc(${x}px - ${
+                  contentWidth > width
+                    ? `calc(var(--bothub-scale, 1) * ${contentWidth}px)`
+                    : `${width}px`
+                })`,
               }),
             }),
           }),

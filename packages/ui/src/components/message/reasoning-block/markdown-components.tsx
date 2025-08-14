@@ -1,3 +1,4 @@
+import ReactMarkdown from 'react-markdown';
 import {
   MessageBold,
   MessageImageProps,
@@ -6,10 +7,9 @@ import {
   MessageMultilineCodeProps,
   MessageParagraph,
 } from '@/ui/components/message/components';
-import { MessageMarkdownLine } from '../markdown/styled';
 
 export function markdownComponents(): Partial<
-  React.ComponentProps<typeof MessageMarkdownLine>['components']
+  React.ComponentProps<typeof ReactMarkdown>['components']
 > & {
   code?: Partial<MessageMultilineCodeProps>;
   image?: Omit<Partial<MessageImageProps>, 'buttons'> & {

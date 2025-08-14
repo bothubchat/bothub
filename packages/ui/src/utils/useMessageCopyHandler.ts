@@ -108,7 +108,9 @@ export const buildOnCopy = (copyTgMarkdown?: boolean) =>
     e.stopPropagation();
   };
 
-export const useMessageCopyHandler = <Ref extends React.RefObject<HTMLElement>>(
+export const useMessageCopyHandler = <
+  Ref extends React.RefObject<HTMLElement | null>,
+>(
   ref: Ref,
   copyTgMarkdown: boolean = true,
 ): void => {

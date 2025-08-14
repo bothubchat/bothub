@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { Drawer } from '@/ui/components/drawer';
 import { StoryDecorator } from '@/ui/story-decorator';
 
