@@ -52,6 +52,7 @@
     "@types/postcss-url": "^10.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@types/react-helmet": "^6.1.11",
     "@typescript-eslint/eslint-plugin": "6.21.0",
     "@typescript-eslint/parser": "6.21.0",
     "@vitejs/plugin-react": "^4.3.4",
@@ -96,9 +97,6 @@
     "vite": "^7.0.0",
     "vitest": "^3.0.5"
   },
-  "resolutions": {
-    "react-helmet-async/react": "^19.0.0"
-  },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
     "@testing-library/dom": "10.4.1",
@@ -113,7 +111,7 @@
     "rc-slider": "^11.1.8",
     "react": "^19.0.0",
     "react-dom": ">=19",
-    "react-helmet-async": "^2.0.5",
+    "react-helmet": "^6.1.0",
     "react-markdown": "^10.0.0",
     "rehype-katex": "^7.0.0",
     "remark-gfm": "^4.0.1",
