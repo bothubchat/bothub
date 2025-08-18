@@ -287,6 +287,7 @@ import {
   ImageIcon,
   TextIcon,
   CodeIcon,
+  BlueGrokIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -627,6 +628,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="ImageIcon">{ImageIcon}</IconItem>
         <IconItem name="TextIcon">{TextIcon}</IconItem>
         <IconItem name="CodeIcon">{CodeIcon}</IconItem>
+        <IconItem name="BlueGrokIcon">{BlueGrokIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
