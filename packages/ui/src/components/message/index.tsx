@@ -441,7 +441,6 @@ export const Message: React.FC<MessageProps> = ({
                 encryptionTooltipLabel={encryptionTooltipLabel}
                 editing={isEditing}
                 editedText={editedText}
-                messageRef={messageRef}
                 onEditing={setIsEditing}
                 onEditedText={setEditedText}
                 onEdit={onEdit}
