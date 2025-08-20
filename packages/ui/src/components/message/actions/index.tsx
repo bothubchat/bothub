@@ -68,6 +68,7 @@ type MessageActionsProps = {
   editing?: boolean;
   editedText?: string;
   messageRef?: MutableRefObject<HTMLDivElement | null>;
+  isLastMessage?: boolean;
   onEditing?: (value: boolean) => unknown;
   onEditedText?: (value: string) => unknown;
   onEdit?: MessageActionEditEventHandler;
@@ -110,6 +111,7 @@ export const MessageActions = ({
   editing,
   editedText,
   messageRef,
+  isLastMessage = false,
   onEditing,
   onEditedText,
   onEdit,
@@ -162,7 +164,7 @@ export const MessageActions = ({
     const scrollWidth = messageRef?.current?.scrollWidth ?? 0;
     const offsetTop = messageActionsRef.current?.offsetTop ?? 0;
     const offsetLeft = messageActionsRef.current?.offsetLeft ?? 0;
-    setInvertedY(scrollHeight - offsetTop <= 300);
+    setInvertedY(scrollHeight - offsetTop <= 300 || isLastMessage);
     setInvertedX(
       (variant === 'assistant' && scrollWidth - offsetLeft <= 160) ||
         (variant === 'user' && offsetLeft <= 160),
