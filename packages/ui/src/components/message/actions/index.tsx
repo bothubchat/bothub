@@ -164,10 +164,13 @@ export const MessageActions = ({
     const scrollWidth = messageRef?.current?.scrollWidth ?? 0;
     const offsetTop = messageActionsRef.current?.offsetTop ?? 0;
     const offsetLeft = messageActionsRef.current?.offsetLeft ?? 0;
+    const offsetWidth = messageActionsRef.current?.offsetWidth ?? 0;
+    const distanceRight = scrollWidth - (offsetLeft + offsetWidth);
+
     setInvertedY(scrollHeight - offsetTop <= 300 || isLastMessage);
     setInvertedX(
       (variant === 'assistant' && scrollWidth - offsetLeft <= 160) ||
-        (variant === 'user' && offsetLeft <= 160),
+        (variant === 'user' && distanceRight <= 160),
     );
   };
 
