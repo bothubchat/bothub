@@ -22,7 +22,7 @@ export const MessageActionsMenuStyled = styled.div`
 const getModalStylesX = (variant?: MessageVariant, inverted?: boolean) => {
   switch (variant) {
     case 'assistant':
-      if (!inverted) {
+      if (inverted) {
         return css`
           left: 14px;
         `;
@@ -31,7 +31,7 @@ const getModalStylesX = (variant?: MessageVariant, inverted?: boolean) => {
         right: 14px;
       `;
     case 'user':
-      if (!inverted) {
+      if (inverted) {
         return css`
           right: 14px;
         `;
