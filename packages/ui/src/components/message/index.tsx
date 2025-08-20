@@ -85,7 +85,6 @@ export interface MessageProps {
   version?: number;
   totalVersions?: number;
   hideActions?: boolean;
-  isLastMessage?: boolean;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
   onEdit?: MessageActionEventHandler;
@@ -140,7 +139,6 @@ export const Message: React.FC<MessageProps> = ({
   version,
   totalVersions,
   hideActions,
-  isLastMessage,
   onCopy,
   onCodeCopy,
   onEdit,
@@ -450,8 +448,6 @@ export const Message: React.FC<MessageProps> = ({
                     encryptionTooltipLabel={encryptionTooltipLabel}
                     editing={isEditing}
                     editedText={editedText}
-                    messageRef={messageRef}
-                    isLastMessage={isLastMessage}
                     onEditing={setIsEditing}
                     onEditedText={setEditedText}
                     onEdit={onEdit}
