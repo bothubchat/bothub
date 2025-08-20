@@ -1,11 +1,4 @@
-import {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
@@ -67,8 +60,6 @@ type MessageActionsProps = {
   encryptionTooltipLabel?: string | null;
   editing?: boolean;
   editedText?: string;
-  messageRef?: MutableRefObject<HTMLDivElement | null>;
-  isLastMessage?: boolean;
   onEditing?: (value: boolean) => unknown;
   onEditedText?: (value: string) => unknown;
   onEdit?: MessageActionEditEventHandler;
@@ -110,8 +101,6 @@ export const MessageActions = ({
   copyTooltipLabel,
   editing,
   editedText,
-  messageRef,
-  isLastMessage = false,
   onEditing,
   onEditedText,
   onEdit,
@@ -160,17 +149,19 @@ export const MessageActions = ({
   }, [disableEdit, disableDelete, disableResend]);
 
   const handleInvertedModalState = () => {
-    const scrollHeight = useScrollRef?.current?.element?.scrollHeight ?? 0;
-    const scrollWidth = messageRef?.current?.scrollWidth ?? 0;
-    const offsetTop = messageActionsRef.current?.offsetTop ?? 0;
-    const offsetLeft = messageActionsRef.current?.offsetLeft ?? 0;
-    const offsetWidth = messageActionsRef.current?.offsetWidth ?? 0;
-    const distanceRight = scrollWidth - (offsetLeft + offsetWidth);
+    const container = useScrollRef?.current?.element;
+    const actions = messageActionsRef?.current;
 
-    setInvertedY(scrollHeight - offsetTop <= 300 || isLastMessage);
+    if (!container || !actions) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const actionsRect = actions.getBoundingClientRect();
+
+    setInvertedY(containerRect.bottom - actionsRect.bottom <= 300);
     setInvertedX(
-      (variant === 'assistant' && scrollWidth - offsetLeft <= 160) ||
-        (variant === 'user' && distanceRight <= 160),
+      (variant === 'assistant' &&
+        actionsRect.left - containerRect.left <= 160) ||
+        (variant === 'user' && containerRect.right - actionsRect.right <= 160),
     );
   };
 
