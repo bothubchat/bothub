@@ -306,8 +306,11 @@ export const SelectFieldPlaceholder = styled(Typography).attrs({
 
 export const SelectFieldLoader = styled(LoaderCircularGradientIcon)``;
 
-export const SelectFieldArrow = styled(ArrowDownIcon).attrs({ size: 16 })`
+export const SelectFieldArrow = styled(ArrowDownIcon).attrs({ size: 16 })<{
+  $isOpen?: boolean;
+}>`
   transition: transform 0.2s ease-in-out;
+  transform: rotateZ(${({ $isOpen }) => ($isOpen ? 180 : 0)}deg);
 `;
 
 export const SelectFieldErrorText = styled(Typography).attrs({

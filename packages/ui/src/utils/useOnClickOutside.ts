@@ -5,7 +5,7 @@ type Event = MouseEvent | TouchEvent;
 // Не смог нормально завести react-use, что бы он работал в остальных приложениях,
 // поэтому скопипастил хук сюда
 export const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
-  ref: RefObject<T>,
+  ref: RefObject<T | null>,
   handler: (event: Event) => void,
 ) => {
   useEffect(() => {

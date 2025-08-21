@@ -228,13 +228,23 @@ export const useSelectField = <
 
       let newPlacement = placement;
 
-      if (top - 186 < 0) {
-        if (newPlacement === 'bottom-left') {
-          newPlacement = 'bottom-left';
-        } else {
+      if (
+        top - 186 < 0 ||
+        (typeof contentHeight === 'number' &&
+          contentHeight > top &&
+          windowHeight - bottom > top)
+      ) {
+        if (newPlacement === 'bottom-center') {
           newPlacement = 'bottom-center';
+        } else {
+          newPlacement = 'bottom-left';
         }
-      } else if (bottom + 186 > windowHeight) {
+      } else if (
+        bottom + 186 > windowHeight ||
+        (typeof contentHeight === 'number' &&
+          contentHeight > windowHeight - bottom &&
+          windowHeight - bottom < top)
+      ) {
         if (initialPlacement === 'top-right') {
           newPlacement = 'top-right';
         } else {

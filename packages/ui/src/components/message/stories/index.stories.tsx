@@ -1,5 +1,5 @@
 import 'katex/dist/katex.min.css';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React, { useEffect, useState } from 'react';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import {
@@ -94,6 +94,7 @@ export const Assistant: MessageStory = {
     variant: 'assistant',
     avatar: <MessageAvatar variant="bot" />,
     transaction: <MessageTransaction>-1571 CAPS</MessageTransaction>,
+    timestamp: 'Date Mon Oct 07 2024 21:20:03 GMT+0400 (Samara Standard Time)',
     children: 'Привет! Чем я могу помочь? $2+3/2$',
   },
 };

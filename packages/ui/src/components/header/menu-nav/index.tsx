@@ -135,6 +135,7 @@ export const HeaderMenuNav: React.FC<{
                   handleMouseEnterParent(item.id);
                 }
               }}
+              data-test={item.label}
             >
               {item.label}
               {!isDesktop && item.children && item.children.length > 0 && (
@@ -245,6 +246,7 @@ const HeaderCollapseSubMenu: React.FC<{
                 href={item.href}
                 onMouseEnter={handleMouseEnterContent}
                 onPointerUp={handleMouseEnterContent}
+                data-test={item.label}
               >
                 <HeaderMenuNavMainLinkContainer>
                   <IconProvider size={18}>{item.icon}</IconProvider>
@@ -269,6 +271,7 @@ const HeaderCollapseSubMenu: React.FC<{
                 onClick={item.onClick}
                 onMouseEnter={handleMouseEnterContent}
                 onPointerUp={handleMouseEnterContent}
+                data-test={item.label}
               >
                 <HeaderMenuNavMainLinkContainer>
                   <IconProvider size={18}>{item.icon}</IconProvider>
@@ -319,6 +322,7 @@ const HeaderFirstLevelSubMenu: React.FC<{
             key={item.id}
             {...(item.type === 'button' && { onClick: item.onClick })}
             {...(item.type === 'link' && { href: item.href })}
+            data-test={item.label}
           >
             <HeaderMenuNavMainLinkContainer>
               <IconProvider size={18}>{item.icon}</IconProvider>

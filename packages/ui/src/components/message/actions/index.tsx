@@ -1,11 +1,4 @@
-import {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
@@ -67,7 +60,6 @@ type MessageActionsProps = {
   encryptionTooltipLabel?: string | null;
   editing?: boolean;
   editedText?: string;
-  messageRef?: MutableRefObject<HTMLDivElement | null>;
   onEditing?: (value: boolean) => unknown;
   onEditedText?: (value: string) => unknown;
   onEdit?: MessageActionEditEventHandler;
@@ -109,7 +101,6 @@ export const MessageActions = ({
   copyTooltipLabel,
   editing,
   editedText,
-  messageRef,
   onEditing,
   onEditedText,
   onEdit,
@@ -158,14 +149,19 @@ export const MessageActions = ({
   }, [disableEdit, disableDelete, disableResend]);
 
   const handleInvertedModalState = () => {
-    const scrollHeight = useScrollRef?.current?.element?.scrollHeight ?? 0;
-    const scrollWidth = messageRef?.current?.scrollWidth ?? 0;
-    const offsetTop = messageActionsRef.current?.offsetTop ?? 0;
-    const offsetLeft = messageActionsRef.current?.offsetLeft ?? 0;
-    setInvertedY(scrollHeight - offsetTop <= 300);
+    const container = useScrollRef?.current?.element;
+    const actions = messageActionsRef?.current;
+
+    if (!container || !actions) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const actionsRect = actions.getBoundingClientRect();
+
+    setInvertedY(containerRect.bottom - actionsRect.bottom <= 300);
     setInvertedX(
-      (variant === 'assistant' && scrollWidth - offsetLeft <= 160) ||
-        (variant === 'user' && offsetLeft <= 160),
+      (variant === 'assistant' &&
+        actionsRect.left - containerRect.left <= 160) ||
+        (variant === 'user' && containerRect.right - actionsRect.right <= 160),
     );
   };
 

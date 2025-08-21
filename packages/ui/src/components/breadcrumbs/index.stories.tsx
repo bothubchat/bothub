@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Breadcrumbs } from '.';
 import { BreadcrumbsItem } from './styled';
