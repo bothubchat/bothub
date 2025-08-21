@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { TextField, TextFieldLabel } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { EmailCircleIcon } from '@/ui/icons';

@@ -1,4 +1,3 @@
-import ReactMarkdown from 'react-markdown';
 import { css, keyframes, styled } from 'styled-components';
 import React from 'react';
 import { MessageColor } from '@/ui/components/message/types';
@@ -37,7 +36,7 @@ export interface MessageMarkdownStyledProps {
 }
 
 export const MessageMarkdownLine = React.memo(
-  styled(ReactMarkdown)<MessageMarkdownStyledProps>`
+  styled.div<MessageMarkdownStyledProps>`
     display: block;
     width: 100%;
     color: ${({ theme }) => {

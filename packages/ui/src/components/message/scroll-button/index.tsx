@@ -7,7 +7,7 @@ import {
 import { ScrollbarRef } from '../..';
 
 interface IScrollButton {
-  scrollbarRef: React.RefObject<ScrollbarRef>;
+  scrollbarRef: React.RefObject<ScrollbarRef | null>;
 }
 export const ScrollButton: React.FC<IScrollButton> = ({ scrollbarRef }) => {
   const [isAtBottom, setIsAtBottom] = useState(false);
@@ -16,10 +16,7 @@ export const ScrollButton: React.FC<IScrollButton> = ({ scrollbarRef }) => {
   const handleScrollToBottom = () => {
     const el = scrollbarRef.current?.element;
     if (el) {
-      el.scrollTo({
-        top: el.scrollHeight,
-        behavior: 'smooth',
-      });
+      el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
     }
   };
 
