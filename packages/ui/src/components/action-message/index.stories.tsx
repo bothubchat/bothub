@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { ActionMessage } from '.';
 

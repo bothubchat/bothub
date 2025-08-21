@@ -12,10 +12,11 @@ export interface TimestampProps {
   $timestampPosition?: MessageTimestampPosition;
 }
 export const TimestampStyled = styled.div<TimestampProps>`
-  width: fit-content;
-  height: fit-content;
   display: flex;
   justify-content: flex-end;
+  grid-area: timestamp;
+  text-align: right;
+  width: 100%;
 
   ${({ $timestampPosition }) => {
     switch ($timestampPosition) {

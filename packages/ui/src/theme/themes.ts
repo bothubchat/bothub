@@ -96,7 +96,7 @@ export const defaultTheme: DefaultTheme = {
       },
     },
     chat: {
-      containerWidth: '1009px',
+      containerWidth: '1260px',
     },
     tablet: {
       maxWidth: '1060px',

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 export interface SelectFieldContextValue {
-  selectRef: React.RefObject<HTMLElement>;
+  selectRef: React.RefObject<HTMLElement | null>;
   handleSelectClick: React.MouseEventHandler<HTMLElement>;
 }
 
