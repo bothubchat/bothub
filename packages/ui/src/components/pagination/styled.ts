@@ -62,9 +62,9 @@ export const ArrowNextIcon = styled(ArrowIcon)`
 export const ArrowCaretIcon = styled(ArrowDownIcon)`
   top: 2px;
   position: relative;
-  transform: translateY(-90deg);
+  transform: rotate(90deg);
 `;
 
 export const ArrowCaretNextIcon = styled(ArrowCaretIcon)`
-  transform: translateY(90deg);
+  transform: rotate(-90deg);
 `;
