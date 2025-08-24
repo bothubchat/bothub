@@ -21,8 +21,8 @@ import {
 } from './styled';
 import {
   SelectFieldOptionClickEventHandler,
-  SelectFieldOptions,
-} from '../list';
+  SelectFieldOptionsProps,
+} from '../types';
 
 const MAX_SHOW_ONCE = 5;
 
@@ -34,6 +34,7 @@ export type SelectFieldCheckboxGroupOptionProps = {
   onGroupCheckboxClick?: SelectFieldGroupCheckboxClickEventHandler;
   onOptionClick: SelectFieldOptionClickEventHandler | undefined;
   icon?: React.ReactNode;
+  SelectFieldOptions: React.FC<SelectFieldOptionsProps>;
 };
 
 export const SelectFieldCheckboxGroupOption = ({
@@ -44,6 +45,7 @@ export const SelectFieldCheckboxGroupOption = ({
   onOptionClick,
   onGroupCheckboxClick,
   icon,
+  SelectFieldOptions,
 }: SelectFieldCheckboxGroupOptionProps) => {
   const theme = useTheme();
 

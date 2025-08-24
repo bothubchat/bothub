@@ -1,9 +1,5 @@
 import React, { useCallback } from 'react';
-import {
-  SelectFieldData,
-  SelectFieldDataItem,
-  SelectFieldSize,
-} from '@/ui/components/select-field/types';
+import { SelectFieldDataItem } from '@/ui/components/select-field/types';
 import {
   SelectFieldCheckBox,
   SelectFieldCheckBoxLeftSide,
@@ -36,24 +32,7 @@ import { SelectFieldOption } from '../select-field-option';
 import { StarsIcon } from '@/ui/icons';
 import { Checkbox } from '@/ui/components/checkbox';
 import { SelectFieldCheckboxGroupOption } from '../checkbox-group';
-
-export type SelectFieldOptionClickEventHandler = (
-  item: SelectFieldDataItem,
-) => unknown;
-
-export type SelectFieldGroupCheckboxClickEventHandler = (
-  item: SelectFieldDataItem,
-) => unknown;
-
-export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
-  value: SelectFieldDataItem | SelectFieldDataItem[] | null;
-  data: SelectFieldData;
-  size: SelectFieldSize;
-  disableSelect?: boolean;
-  selectedColor?: string;
-  onGroupCheckboxClick?: SelectFieldGroupCheckboxClickEventHandler;
-  onOptionClick?: SelectFieldOptionClickEventHandler;
-}
+import { SelectFieldOptionsProps } from '../types';
 
 export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
   value,
@@ -340,6 +319,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           const key = item.id ?? item.value ?? `checkbox-group-${index}`;
           return (
             <SelectFieldCheckboxGroupOption
+              SelectFieldOptions={SelectFieldOptions}
               data={item.data ?? []}
               size={size}
               value={value}
