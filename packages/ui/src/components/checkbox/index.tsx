@@ -73,7 +73,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             onChange={handleChange}
           />
           <CheckboxBlock $checkedColor={checkedColor}>
-            {checkedIcon || <CheckboxCheckedIcon />}
+            {checkedIcon || <CheckboxCheckedIcon size={size} />}
           </CheckboxBlock>
         </>
       )}

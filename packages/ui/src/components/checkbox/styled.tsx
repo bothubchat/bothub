@@ -78,7 +78,7 @@ export const CheckboxLabel = styled(Typography).attrs({ variant: 'input-sm' })`
   cursor: inherit;
 `;
 
-export const CheckboxCheckedIcon = styled(CheckSmallIcon).attrs({ size: 20 })``;
+export const CheckboxCheckedIcon = styled(CheckSmallIcon)``;
 
 export const CheckboxInput = styled.input<CheckedColor>`
   width: 0;
