@@ -27,7 +27,7 @@ export const BookmarksContent = styled.div`
     mobile: css`
       padding: 10px 16px;
       padding-bottom: 5px;
-    `
+    `,
   })}
 `;
 
@@ -42,8 +42,8 @@ export const BookmarkListScrollbarWrapper = styled(Scrollbar).attrs({
   isHorizontalScrollbar: true,
   scrollShadows: {
     left: <ScrollbarShadow side="left" />,
-    right: <ScrollbarShadow side="right" />
-  }
+    right: <ScrollbarShadow side="right" />,
+  },
 })`
   display: flex;
   overflow: auto;
@@ -55,7 +55,7 @@ export const BookmarkListScrollbarWrapper = styled(Scrollbar).attrs({
     `,
     mobile: css`
       padding-bottom: 5px;
-    `
+    `,
   })}
 `;
 
@@ -65,10 +65,10 @@ export const BookmarkListContent = styled.div`
 `;
 
 export const AddBookmarkButton = styled(Button).attrs({
-  children: <Plus2Icon />
+  children: <Plus2Icon />,
 })`
   ${adaptive({
     variant: 'dashboard',
-    merge: true
+    merge: true,
   })}
 `;

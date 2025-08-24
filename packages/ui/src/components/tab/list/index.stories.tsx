@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Tabs } from '.';
 import { Tab } from '@/ui/components/tab';
@@ -18,8 +18,8 @@ export const Basic: TabsStory = {
         <Tab>Tab item #5</Tab>
         <Tab>Tab item #6</Tab>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -29,8 +29,8 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as TabsMeta;

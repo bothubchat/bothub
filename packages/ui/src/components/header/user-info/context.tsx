@@ -20,7 +20,7 @@ export function useHeaderUserInfo(): HeaderUserInfoContextValue {
 
   if (!value) {
     throw new Error(
-      'useHeaderUserInfo must be used within a HeaderUserInfoProvider.'
+      'useHeaderUserInfo must be used within a HeaderUserInfoProvider.',
     );
   }
 

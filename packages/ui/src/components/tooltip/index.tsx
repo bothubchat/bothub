@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
+import ReactMarkdown from 'react-markdown';
 import { Portal } from '@/ui/components/portal';
 import {
   TooltipBlock,
@@ -7,7 +8,7 @@ import {
   TooltipLabel,
   TooltipLabelBold,
   TooltipMarkdown,
-  TooltipStyled
+  TooltipStyled,
 } from './styled';
 import { TooltipArrow } from './arrow';
 import { TooltipProvider } from './context';
@@ -16,7 +17,7 @@ import { TooltipAlign, TooltipPlacement, TooltipVariant } from './types';
 export const TooltipAnimationDuration = {
   enter: 150,
   exit: 150,
-  leaveDisabledHiddenAnimation: 0
+  leaveDisabledHiddenAnimation: 0,
 };
 
 export interface TooltipProps extends React.PropsWithChildren {
@@ -32,6 +33,7 @@ export interface TooltipProps extends React.PropsWithChildren {
   disabled?: boolean;
   disableHiddenAnimation?: boolean;
   markdown?: boolean;
+  hideOnScroll?: boolean;
 }
 
 export const Tooltip: React.FC<TooltipProps> = ({
@@ -47,7 +49,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
   disabled = false,
   disableHiddenAnimation = false,
   markdown = false,
-  children
+  children,
+  hideOnScroll = true,
 }) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [hoveredElement, sethoveredElement] = useState<Element | null>();
@@ -194,22 +197,14 @@ export const Tooltip: React.FC<TooltipProps> = ({
   }
 
   const tooltipTransition = useTransition(!!hoveredElement, {
-    from: {
-      opacity: 0,
-      y: -6
-    },
-    enter: {
-      opacity: 1,
-      y: 0
-    },
+    from: { opacity: 0, y: -6 },
+    enter: { opacity: 1, y: 0 },
     leave: {
       opacity: 0,
       y: -6,
-      transition: {
-        duration: disableHiddenAnimation ? 0 : 0.3
-      }
+      transition: { duration: disableHiddenAnimation ? 0 : 0.3 },
     },
-    config: { duration: TooltipAnimationDuration.enter }
+    config: { duration: TooltipAnimationDuration.enter },
   });
 
   const tooltipNode: React.ReactNode = tooltipTransition(
@@ -219,12 +214,12 @@ export const Tooltip: React.FC<TooltipProps> = ({
           $placement={placement}
           $align={align}
           $inverted={inverted}
-          ref={tooltipRef}
+          ref={tooltipRef as React.RefObject<HTMLDivElement>}
           className={className}
           style={{
             ...style,
             top: top.length <= 1 ? top[0] : `calc(${top.join(' + ')})`,
-            left: left.length <= 1 ? left[0] : `calc(${left.join(' + ')})`
+            left: left.length <= 1 ? left[0] : `calc(${left.join(' + ')})`,
           }}
         >
           {inverted && (
@@ -245,23 +240,27 @@ export const Tooltip: React.FC<TooltipProps> = ({
               </TooltipLabel>
             )}
             {typeof label === 'string' && markdown && (
-              <TooltipMarkdown
-                components={{
-                  p: ({ children }) => (
-                    <TooltipLabel component="p">{children}</TooltipLabel>
-                  ),
-                  b: ({ children }) => (
-                    <TooltipLabelBold>{children}</TooltipLabelBold>
-                  ),
-                  strong: ({ children }) => (
-                    <TooltipLabelBold component="strong">
-                      {children}
-                    </TooltipLabelBold>
-                  ),
-                  code: ({ children }) => <TooltipCode>{children}</TooltipCode>
-                }}
-              >
-                {label}
+              <TooltipMarkdown>
+                <ReactMarkdown
+                  components={{
+                    p: ({ children }) => (
+                      <TooltipLabel component="p">{children}</TooltipLabel>
+                    ),
+                    b: ({ children }) => (
+                      <TooltipLabelBold>{children}</TooltipLabelBold>
+                    ),
+                    strong: ({ children }) => (
+                      <TooltipLabelBold component="strong">
+                        {children}
+                      </TooltipLabelBold>
+                    ),
+                    code: ({ children }) => (
+                      <TooltipCode>{children}</TooltipCode>
+                    ),
+                  }}
+                >
+                  {label}
+                </ReactMarkdown>
               </TooltipMarkdown>
             )}
             {typeof label !== 'string' && label}
@@ -274,7 +273,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
             />
           )}
         </TooltipStyled>
-      )
+      ),
   );
 
   useEffect(() => {
@@ -298,7 +297,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
         updatePosition();
       }
     },
-    [isDisabled, updatePosition]
+    [isDisabled, updatePosition],
   );
 
   useEffect(() => {
@@ -311,11 +310,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
     };
 
     window.addEventListener('mouseleave', handleGlobalMouseLeave);
-    window.addEventListener('scroll', handleGlobalScroll, true);
+    window.addEventListener('scroll', handleGlobalScroll, hideOnScroll);
 
     return () => {
       window.removeEventListener('mouseleave', handleGlobalMouseLeave);
-      window.removeEventListener('scroll', handleGlobalScroll, true);
+      window.removeEventListener('scroll', handleGlobalScroll, hideOnScroll);
     };
   }, [hideTooltip]);
 

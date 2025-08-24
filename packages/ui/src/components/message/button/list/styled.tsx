@@ -14,12 +14,12 @@ export const MessageButtonsStyled = styled.div`
   ${adaptive({
     touch: css`
       max-width: 512px;
-    `
+    `,
   })}
 `;
 
 export const MessageButtonsScrollbarWrapper = styled(Scrollbar).attrs({
-  variant: 'secondary'
+  variant: 'secondary',
 })`
   width: 100%;
   overflow-y: hidden;
@@ -33,6 +33,6 @@ export const MessageButtonsContent = styled.div`
   ${adaptive({
     touch: css`
       flex-wrap: nowrap;
-    `
+    `,
   })}
 `;

@@ -14,7 +14,7 @@ export const Drawer = ({
   title,
   open,
   onClose,
-  children
+  children,
 }: PropsWithChildren<DrawerProps>) => {
   const [isReady, setIsReady] = useState(false);
   const [localOpen, setLocalOpen] = useState(false);
@@ -85,6 +85,6 @@ export const Drawer = ({
         <S.Content>{children}</S.Content>
       </S.Component>
     </>,
-    document.body
+    document.body,
   );
 };

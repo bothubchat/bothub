@@ -51,7 +51,7 @@ export const BookmarkCardStyled = styled.div<BookmarkCardStyledProps>`
         ${BookmarkCardActions} {
           visibility: visible !important;
         }
-      `
+      `,
     })}
 `;
 
@@ -100,7 +100,7 @@ export const BookmarkCardBody = styled.div`
 `;
 
 export const BookmarkCardName = styled(Typography).attrs({
-  variant: 'body-m-semibold'
+  variant: 'body-m-semibold',
 })`
   white-space: nowrap;
   overflow: hidden;
@@ -114,15 +114,15 @@ export const BookmarkCardActions = styled.div`
 
 export const BookmarkCardAction = styled(Button).attrs({
   variant: 'text',
-  iconSize: 18
+  iconSize: 18,
 })``;
 
 export const BookmarkCardEditAction = styled(BookmarkCardAction).attrs({
-  children: <EditIcon />
+  children: <EditIcon />,
 })``;
 
 export const BookmarkCardDeleteAction = styled(BookmarkCardAction).attrs({
-  children: <CloseIcon />
+  children: <CloseIcon />,
 })``;
 
 export const BookmarkCardChats = styled.div`

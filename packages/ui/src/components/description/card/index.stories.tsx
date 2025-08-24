@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import {
   DescriptionCard,
   DescriptionCardButton,
   DescriptionCardButtonsWrapper,
   DescriptionCardLiContent,
   DescriptionCardLiStled,
-  DescriptionCardUlStyled
+  DescriptionCardUlStyled,
 } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { CheckCircleIcon, EmailCircleIcon, TgCircleIcon } from '@/ui/icons';
@@ -25,8 +25,8 @@ export const Products: DescriptionCardStory = {
           <DescriptionCardButton>Подробнее</DescriptionCardButton>
         </DescriptionCardButtonsWrapper>
       </>
-    )
-  }
+    ),
+  },
 };
 export const Collaborate: DescriptionCardStory = {
   args: {
@@ -64,8 +64,8 @@ export const Collaborate: DescriptionCardStory = {
           </DescriptionCardButton>
         </DescriptionCardButtonsWrapper>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -74,18 +74,18 @@ export default {
   decorators: [StoryDecorator()],
   parameters: {
     actions: {
-      disable: true
-    }
+      disable: true,
+    },
   },
   argTypes: {
     title: {
-      type: 'string'
+      type: 'string',
     },
     text: {
-      type: 'string'
+      type: 'string',
     },
     button: {
-      type: 'boolean'
-    }
-  }
+      type: 'boolean',
+    },
+  },
 } as DescriptionCardMeta;

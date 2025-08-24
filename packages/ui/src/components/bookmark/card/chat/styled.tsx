@@ -11,5 +11,5 @@ export const BookmarkCardChatStyled = styled.div`
 export const BookmarkCardChatIcon = styled(ChatIcon).attrs({ size: 16 })``;
 
 export const BookmarkCardChatName = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })``;

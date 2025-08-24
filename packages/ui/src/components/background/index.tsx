@@ -3,7 +3,7 @@ import { BackgroundVariant } from './types';
 import {
   BackgroundBluePurpleBottomLeftImage,
   BackgroundBluePurpleCenterImage,
-  BackgroundStyled
+  BackgroundStyled,
 } from './styled';
 
 export interface BackgroundProps extends React.ComponentProps<'div'> {

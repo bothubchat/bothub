@@ -31,7 +31,7 @@ export const TextAreaFieldStyled = styled.div<TextAreaFieldStyledProps>`
 `;
 
 export const TextAreaFieldLabel = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   display: inline-flex;
   align-items: center;
@@ -107,7 +107,7 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
 
 export const TextAreaFieldSkeleton = styled(Skeleton).attrs({
   width: 160,
-  height: 18
+  height: 18,
 })`
   margin: 14px 16px;
 `;
@@ -142,7 +142,7 @@ export const TextAreaFieldTextArea = styled.textarea`
 `;
 
 export const TextAreaFieldErrorText = styled(Typography).attrs({
-  variant: 'input-sm'
+  variant: 'input-sm',
 })`
   display: inline-flex;
   margin-top: 8px;

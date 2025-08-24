@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { BadgeProgress, BadgeProgressText, BadgeProgressTextBold } from '.';
 
@@ -14,8 +14,8 @@ export const Basic: BadgeProgressStory = {
         <BadgeProgressTextBold>Midjourney</BadgeProgressTextBold> генерирует{' '}
         <BadgeProgressTextBold>69%</BadgeProgressTextBold>
       </BadgeProgressText>
-    )
-  }
+    ),
+  },
 };
 
 export const WithoutValue: BadgeProgressStory = {
@@ -24,12 +24,12 @@ export const WithoutValue: BadgeProgressStory = {
       <BadgeProgressText>
         <BadgeProgressTextBold>DALL-E 3</BadgeProgressTextBold> генерирует
       </BadgeProgressText>
-    )
-  }
+    ),
+  },
 };
 
 export default {
   title: 'UI Components/Badge/Progress',
   component: BadgeProgress,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as BadgeProgressMeta;

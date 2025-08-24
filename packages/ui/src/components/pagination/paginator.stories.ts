@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Paginator } from './paginator';
 import { StoryDecorator } from '@/ui/story-decorator';
 
@@ -9,8 +9,8 @@ export type PaginatorStory = StoryObj<typeof Paginator>;
 export const Basic: PaginatorStory = {
   args: {
     lastPage: 80,
-    current: 1
-  }
+    current: 1,
+  },
 };
 
 export default {
@@ -19,6 +19,6 @@ export default {
   decorators: [StoryDecorator()],
   argTypes: {
     current: { control: { type: 'number' } },
-    lastPage: { control: { type: 'number' } }
-  }
+    lastPage: { control: { type: 'number' } },
+  },
 } as PaginatorMeta;

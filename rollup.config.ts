@@ -20,7 +20,7 @@ export interface CreateConfigOptions {
 }
 
 export function createConfig({
-  packageName
+  packageName,
 }: CreateConfigOptions): RollupOptions[] {
   const rootPath: string = process.cwd();
   const packagesPath: string = join(rootPath, './packages');
@@ -33,16 +33,16 @@ export function createConfig({
     ...Object.keys({
       ...packageConfig.peerDependencies,
       ...packageConfig.devDependencies,
-      ...packageConfig.dependencies
+      ...packageConfig.dependencies,
     }),
     'unified',
     'remark-parse',
     'remark-gfm',
     'mdast',
-    'mdast-util-to-markdown'
+    'mdast-util-to-markdown',
   ];
   const aliasPlugin: Plugin = alias({
-    entries: [{ find: `@/${packageName}`, replacement: srcPath }]
+    entries: [{ find: `@/${packageName}`, replacement: srcPath }],
   });
 
   return [
@@ -56,27 +56,27 @@ export function createConfig({
           preserveModules: true,
           preserveModulesRoot: path.resolve(
             rootPath,
-            `packages/${packageName}/src`
-          )
-        }
+            `packages/${packageName}/src`,
+          ),
+        },
       ],
       plugins: [
         commonjs({
-          include: 'node_modules/**'
+          include: 'node_modules/**',
         }),
         del({
           targets: [join(distPath, './*')],
-          runOnce: true
+          runOnce: true,
         }),
         aliasPlugin,
         nodeExternals(),
         nodeResolve({
-          extensions: ['.css', '.ts', '.tsx', '.js', '.jsx']
+          extensions: ['.css', '.ts', '.tsx', '.js', '.jsx'],
         }),
         esbuild({
           tsconfig: join(rootPath, './tsconfig.json'),
           exclude: ['**/*.stories.ts'],
-          sourceMap: false
+          sourceMap: false,
         }),
         visualizer(),
         babel({
@@ -89,13 +89,13 @@ export function createConfig({
               'babel-plugin-styled-components',
               {
                 ssr: true,
-                displayName: true
-              }
-            ]
-          ]
+                displayName: true,
+              },
+            ],
+          ],
         }),
         image({
-          include: ['**/*.png', '**/*.svg', '**/*.webp']
+          include: ['**/*.png', '**/*.svg', '**/*.webp'],
         }),
         postcss(),
         terser(),
@@ -109,19 +109,19 @@ export function createConfig({
             './**/*.stories.tsx',
             './packages/*/tests',
             './**/*.test.ts',
-            './**/*.test.tsx'
-          ]
+            './**/*.test.tsx',
+          ],
         }),
-        eslint({})
+        eslint({}),
       ],
-      external
-    }
+      external,
+    },
   ];
 }
 
 export const createUiConfig = () =>
   createConfig({
-    packageName: 'ui'
+    packageName: 'ui',
   });
 
 export default defineConfig([...createUiConfig()]);

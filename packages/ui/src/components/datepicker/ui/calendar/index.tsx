@@ -3,7 +3,7 @@ import { useInfoDate } from '../../hooks';
 import {
   DatepickerProps,
   RangeDatepickerProps,
-  SingleDatepickerProps
+  SingleDatepickerProps,
 } from '../../types';
 import * as S from './styled';
 
@@ -12,7 +12,7 @@ import {
   getMonthName,
   isEqualDaysOfDate,
   resetTimeInDate,
-  subMonth
+  subMonth,
 } from '../../utils';
 import { useTheme } from '../../../../theme';
 
@@ -37,12 +37,12 @@ const getDefaultCalendarDate = (value?: CalendarProps['value']) => {
 };
 
 const getDefaultValue = (
-  value?: CalendarProps['value']
+  value?: CalendarProps['value'],
 ): Date | [Date, Date | null] | null => {
   if (Array.isArray(value)) {
     return [
       resetTimeInDate(new Date(value[0])),
-      value[1] ? resetTimeInDate(new Date(value[1])) : null
+      value[1] ? resetTimeInDate(new Date(value[1])) : null,
     ];
   }
   if (value && !Array.isArray(value)) {
@@ -58,11 +58,11 @@ export const DatepickerCalendar = ({
   locale = 'en-US',
   range,
   buttonSaveText = 'Save',
-  buttonCloseText = 'Close'
+  buttonCloseText = 'Close',
 }: CalendarProps) => {
   const theme = useTheme();
   const [calendarDate, setCalendarDate] = useState(
-    getDefaultCalendarDate(value)
+    getDefaultCalendarDate(value),
   );
   const [localValue, setLocalValue] = useState<
     [Date, Date | null] | Date | null
@@ -115,7 +115,7 @@ export const DatepickerCalendar = ({
     if (range && Array.isArray(localValue)) {
       (onChange as RangeDatepickerProps['onChange'])([
         localValue[0],
-        localValue[1] || null
+        localValue[1] || null,
       ]);
     } else if (!range && !Array.isArray(localValue) && localValue) {
       (onChange as SingleDatepickerProps['onChange'])(localValue);
@@ -215,10 +215,10 @@ export const DatepickerCalendar = ({
                 isArrayLocalValue &&
                   ((hoveredItem && hoveredItem > localValue[0]) ||
                     localValue[1]) &&
-                  isEqualDaysOfDate(localValue[0], monthDay)
+                  isEqualDaysOfDate(localValue[0], monthDay),
               )}
               $finishDate={Boolean(
-                isArrayLocalValue && isEqualDaysOfDate(localValue[1], monthDay)
+                isArrayLocalValue && isEqualDaysOfDate(localValue[1], monthDay),
               )}
               onMouseEnter={() => setHoveredItem(monthDay)}
               onMouseLeave={() => setHoveredItem(null)}

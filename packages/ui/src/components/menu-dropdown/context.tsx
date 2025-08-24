@@ -8,7 +8,7 @@ export interface MenuDropdownContextValue {
 export const MenuDropdownContext =
   React.createContext<MenuDropdownContextValue>({
     isOpen: false,
-    setIsOpen() {}
+    setIsOpen() {},
   });
 
 export const MenuDropdownProvider: React.FC<

@@ -7,7 +7,7 @@ export interface BothubScaleGlobalStyleProps {
 }
 
 export const BothubScaleGlobalStyle: React.FC<BothubScaleGlobalStyleProps> = ({
-  variant
+  variant,
 }) => <BothubScaleGlobalStyleStyled $variant={variant} />;
 
 export * from './types';

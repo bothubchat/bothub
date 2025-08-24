@@ -119,7 +119,7 @@ export const MessageVideoTimeLine = styled.div<{ $progress: number }>`
 `;
 
 export const MessageVideoTimeText = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })`
   color: ${({ theme }) => theme.default.colors.base.white};
 `;
@@ -179,5 +179,5 @@ export const MessageVideoVolumeContainer = styled.div`
 `;
 
 export const MessageVideoDownload = styled(Button).attrs({
-  variant: 'text'
+  variant: 'text',
 })``;

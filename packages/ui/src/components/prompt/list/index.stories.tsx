@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Prompts } from '.';
 import { PromptCard } from '@/ui/components/prompt';
@@ -103,8 +103,8 @@ export const Basic: PromptsStory = {
           его уникальных преимуществах и разрешая все возможные возражения.
         </PromptCard>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export default {
@@ -114,8 +114,8 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as PromptsMeta;

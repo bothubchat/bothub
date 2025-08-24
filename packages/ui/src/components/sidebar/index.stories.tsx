@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
   Sidebar,
@@ -36,7 +36,7 @@ import {
   SidebarUserInfoSkeleton,
   SidebarUserInfoUpdateTariffBadgeText,
   SidebarUserInfoUpdateTariffBadge,
-  SidebarUserInfoUpdateTariffButtonText
+  SidebarUserInfoUpdateTariffButtonText,
 } from '.';
 import { ThemeSwitcher } from '../theme-switcher';
 import { Tooltip } from '@/ui/components/tooltip';
@@ -50,7 +50,7 @@ import {
   BigModelsIcon,
   CoderIcon,
   OrganizationIcon,
-  SimpleGearIcon
+  SimpleGearIcon,
 } from '@/ui/icons';
 
 export type SidebarMeta = Meta<typeof Sidebar>;
@@ -799,6 +799,11 @@ export const Basic: SidebarStory = {
                 onValueChange={() => {}}
               />
             }
+            progress={{
+              loading: false,
+              max: 100,
+              value: 66,
+            }}
             actions={
               <SidebarDropdown>
                 <SidebarDropdownList>
@@ -839,8 +844,8 @@ export const Basic: SidebarStory = {
           />
         </SidebarGroup>
       </SidebarGroups>
-    )
-  }
+    ),
+  },
 };
 
 export const BasicTariff: SidebarStory = {
@@ -870,8 +875,8 @@ export const BasicTariff: SidebarStory = {
         }
         logout={<SidebarUserInfoLogoutButton />}
       />
-    )
-  }
+    ),
+  },
 };
 
 export const PremiumTariff: SidebarStory = {
@@ -900,8 +905,8 @@ export const PremiumTariff: SidebarStory = {
           </SidebarUserInfoUpdateTariffButton>
         }
       />
-    )
-  }
+    ),
+  },
 };
 
 export const EliteTariff: SidebarStory = {
@@ -931,15 +936,15 @@ export const EliteTariff: SidebarStory = {
         }
         logout={<SidebarUserInfoLogoutButton />}
       />
-    )
-  }
+    ),
+  },
 };
 
 export const Empty: SidebarStory = {
   args: {
     ...EliteTariff.args,
-    children: <SidebarEmpty>На данный момент у вас нет чатов</SidebarEmpty>
-  }
+    children: <SidebarEmpty>На данный момент у вас нет чатов</SidebarEmpty>,
+  },
 };
 
 export const Skeleton: SidebarStory = {
@@ -971,15 +976,15 @@ export const Skeleton: SidebarStory = {
           <SidebarChat skeleton />
         </SidebarGroup>
       </SidebarGroups>
-    )
-  }
+    ),
+  },
 };
 
 export const SkeletonClosed: SidebarStory = {
   args: {
     ...Skeleton.args,
-    open: false
-  }
+    open: false,
+  },
 };
 
 export default {
@@ -989,18 +994,18 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     user: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     toggle: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as SidebarMeta;

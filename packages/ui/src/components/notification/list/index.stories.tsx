@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Notifications } from '.';
 import { Notification } from '@/ui/components/notification';
@@ -45,12 +45,12 @@ export const Basic: NotificationsStory = {
           Скопировано в буфер обмена
         </Notification>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export default {
   title: 'UI Components/Notification/List',
   component: Notifications,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as NotificationsMeta;

@@ -12,14 +12,14 @@ type SliderProps = {
 export const Slider = ({
   arrowsSize = 'md',
   gap = 10,
-  children
+  children,
 }: SliderProps) => {
   const {
     isLeftDisabled,
     isRightDisabled,
     onScrollLeft,
     onScrollRight,
-    scrollbarRef
+    scrollbarRef,
   } = useSlider();
 
   return (

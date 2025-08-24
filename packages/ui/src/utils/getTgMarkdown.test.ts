@@ -12,13 +12,13 @@ describe('getTgMarkdown', () => {
 
   test('converts links and images', () => {
     expect(getTgMarkdown('[Link](https://example.com)')).toBe(
-      'https://example.com'
+      'https://example.com',
     );
     expect(getTgMarkdown('![Alt text](https://example.com/image.jpg)')).toBe(
-      'https://example.com/image.jpg'
+      'https://example.com/image.jpg',
     );
     expect(getTgMarkdown('![](https://example.com/image.jpg)')).toBe(
-      'https://example.com/image.jpg'
+      'https://example.com/image.jpg',
     );
   });
 
@@ -113,18 +113,18 @@ describe('getTgMarkdown', () => {
   test('converts multiline quotes', () => {
     expect(
       getTgMarkdown(
-        '> "Markdown is what plain text wants to be."\n> — *Anonymous*'
-      )
+        '> "Markdown is what plain text wants to be."\n> — *Anonymous*',
+      ),
     ).toBe('__"Markdown is what plain text wants to be."__\n__— Anonymous__');
   });
 
   test('converts nested bolds', () => {
     expect(
       getTgMarkdown(
-        '> 💡 **Pro tip:** Markdown is supported across many platforms including GitHub, Stack Overflow, and Discord.'
-      )
+        '> 💡 **Pro tip:** Markdown is supported across many platforms including GitHub, Stack Overflow, and Discord.',
+      ),
     ).toBe(
-      '__💡 Pro tip: Markdown is supported across many platforms including GitHub, Stack Overflow, and Discord.__'
+      '__💡 Pro tip: Markdown is supported across many platforms including GitHub, Stack Overflow, and Discord.__',
     );
   });
 
@@ -140,28 +140,28 @@ describe('getTgMarkdown', () => {
 
   test('doesnt add unneccesary escaping', () => {
     expect(getTgMarkdown(':busts_in_silhouette: Участники:')).toBe(
-      ':busts_in_silhouette: Участники:'
+      ':busts_in_silhouette: Участники:',
     );
     expect(getTgMarkdown('[/* your extensions */]')).toBe(
-      '[/* your extensions */]'
+      '[/* your extensions */]',
     );
   });
 
   test('strips leading spaces', () => {
     expect(getTgMarkdown('  :calendar: Заказчик 1')).toBe(
-      ':calendar: Заказчик 1'
+      ':calendar: Заказчик 1',
     );
   });
 
   test('preserves inline code', () => {
     expect(
-      getTgMarkdown('`containerElement` would be the `span.string` element')
+      getTgMarkdown('`containerElement` would be the `span.string` element'),
     ).toBe('`containerElement` would be the `span.string` element');
   });
 
   test('preserves checkboxes', () => {
     expect(
-      getTgMarkdown('- [ ] Checkbox 1\n- [ ] Checkbox 2\n- [x] Checkbox 3')
+      getTgMarkdown('- [ ] Checkbox 1\n- [ ] Checkbox 2\n- [x] Checkbox 3'),
     ).toBe('- [ ] Checkbox 1\n- [ ] Checkbox 2\n- [x] Checkbox 3');
   });
 
@@ -184,15 +184,15 @@ describe('getTgMarkdown', () => {
 
   test('bold text in list', () => {
     expect(
-      getTgMarkdown('- **Обработка запросов** пользователей по всему миру 🌍')
+      getTgMarkdown('- **Обработка запросов** пользователей по всему миру 🌍'),
     ).toBe('- **Обработка запросов** пользователей по всему миру 🌍');
   });
 
   test('doesnt add \\ to the end of the line for hard linebreak', () => {
     expect(
       getTgMarkdown(
-        '1. **Улучшения для iOS** 📱✨  \n   — В мобильном приложении на iOS'
-      )
+        '1. **Улучшения для iOS** 📱✨  \n   — В мобильном приложении на iOS',
+      ),
     ).toBe('- **Улучшения для iOS** 📱✨\n  — В мобильном приложении на iOS');
   });
 });

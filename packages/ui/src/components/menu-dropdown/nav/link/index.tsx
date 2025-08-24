@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import {
   MenuDropdownNavLinkStyled,
   MenuDropdownNavLinkStyledProps,
-  MenuDropdownNavLinkText
+  MenuDropdownNavLinkText,
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useMenuDropdown } from '../../context';
@@ -33,7 +33,7 @@ export const MenuDropdownNavLink: React.FC<MenuDropdownNavLinkProps> = ({
 
       props.onClick?.(event);
     },
-    [props.onClick]
+    [props.onClick],
   );
 
   return (

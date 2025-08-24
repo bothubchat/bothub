@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { TariffList } from '.';
 import {
   TariffCard,
   TariffCardArrow,
-  TariffCardEnterpriseButton
+  TariffCardEnterpriseButton,
 } from '../card';
 
 export type TariffListMeta = Meta<typeof TariffList>;
@@ -79,12 +79,12 @@ export const Basic: TariffListStory = {
           variant="ENTERPRISE"
         />
       </>
-    )
-  }
+    ),
+  },
 };
 
 export default {
   title: 'Components/Tariff/List',
   component: TariffList,
-  decorators: [StoryDecorator({ scale: 'main' })]
+  decorators: [StoryDecorator({ scale: 'main' })],
 } as TariffListMeta;

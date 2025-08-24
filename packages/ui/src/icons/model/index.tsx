@@ -36,5 +36,5 @@ export const ModelIcon = icon(
         )}
       </IconConsumer>
     </Icon>
-  )
+  ),
 );

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { TextAreaField, TextAreaFieldLabel } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Tooltip } from '@/ui/components/tooltip';
@@ -12,8 +12,8 @@ export const Basic: TextAreaFieldStory = {
   args: {
     label: 'Label',
     placeholder: 'Placeholder',
-    glow: false
-  }
+    glow: false,
+  },
 };
 
 export const Help: TextAreaFieldStory = {
@@ -25,33 +25,33 @@ export const Help: TextAreaFieldStory = {
           <Button variant="help" />
         </Tooltip>
       </TextAreaFieldLabel>
-    )
-  }
+    ),
+  },
 };
 
 export const Error: TextAreaFieldStory = {
   args: {
     ...Basic.args,
-    error: 'Error message'
-  }
+    error: 'Error message',
+  },
 };
 
 export const Disabled: TextAreaFieldStory = {
   args: {
     ...Basic.args,
-    disabled: true
-  }
+    disabled: true,
+  },
 };
 
 export const Skeleton: TextAreaFieldStory = {
   args: {
     ...Basic.args,
-    skeleton: true
-  }
+    skeleton: true,
+  },
 };
 
 export default {
   title: 'UI Components/Fields/TextArea',
   component: TextAreaField,
-  decorators: [StoryDecorator({ margin: '50px 0px' })]
+  decorators: [StoryDecorator({ margin: '50px 0px' })],
 } as TextAreaFieldMeta;

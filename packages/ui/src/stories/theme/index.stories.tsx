@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Theme } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 
@@ -11,5 +11,5 @@ export const Basic: ThemeStory = {};
 export default {
   title: 'Theme',
   component: Theme,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ThemeMeta;

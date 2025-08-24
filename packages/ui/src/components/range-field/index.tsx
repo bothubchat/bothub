@@ -6,9 +6,8 @@ import {
   RangeFieldFormattedValue,
   RangeFieldRange,
   RangeFieldRangeThumb,
-  RangeFieldRangeTrack,
   RangeFieldSkeleton,
-  RangeFieldStyled
+  RangeFieldStyled,
 } from './styled';
 import { RangeFieldValue } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -55,7 +54,7 @@ export const RangeField: React.FC<RangeFieldProps> = ({
     (value: RangeFieldValue) => {
       setValue?.(value);
     },
-    [setValue]
+    [setValue],
   );
 
   return (
@@ -90,7 +89,7 @@ export const RangeField: React.FC<RangeFieldProps> = ({
             {({
               handleTooltipMouseEnter,
               handleTooltipMouseLeave,
-              handleTooltipPointerMove
+              handleTooltipPointerMove,
             }) => (
               <RangeFieldRange
                 {...props}
@@ -98,24 +97,22 @@ export const RangeField: React.FC<RangeFieldProps> = ({
                 max={max}
                 step={step}
                 value={value}
+                $disabled={disabled}
                 disabled={disabled}
-                renderTrack={({ key, ...props }, state) => (
-                  <RangeFieldRangeTrack
-                    {...props}
-                    key={key}
-                    $index={state.index}
-                    $disabled={disabled}
-                  />
-                )}
-                renderThumb={({ key, ...props }) => (
+                classNames={{
+                  track: 'custom-track',
+                }}
+                handleRender={(node, handleProps) => (
                   <RangeFieldRangeThumb
-                    {...props}
-                    key={key}
+                    {...handleProps}
+                    key={node.key}
                     $disabled={disabled}
                     onPointerMove={handleTooltipPointerMove}
                     onPointerEnter={handleTooltipMouseEnter}
                     onPointerLeave={handleTooltipMouseLeave}
-                  />
+                  >
+                    {node}
+                  </RangeFieldRangeThumb>
                 )}
                 onChange={handleChange}
               />

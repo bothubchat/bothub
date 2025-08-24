@@ -8,7 +8,7 @@ import {
   ThemeSwitcherItemBackground,
   ThemeSwitcherItemContent,
   ThemeSwitcherList,
-  ThemeSwitcherStyled
+  ThemeSwitcherStyled,
 } from './styled';
 import { ThemeSwitcherMode } from './types';
 import { ThemeMode, useTheme } from '@/ui/theme';
@@ -30,12 +30,12 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   mode: initialMode,
   defaultMode = 'dark',
   onChange,
-  onSystemClick
+  onSystemClick,
 }) => {
   const theme = useTheme();
 
   const [mode, setMode] = useState<ThemeSwitcherMode>(
-    initialMode ?? defaultMode
+    initialMode ?? defaultMode,
   );
 
   const handleClick = useCallback((newMode: ThemeSwitcherMode) => {
@@ -82,6 +82,7 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
             <ThemeSwitcherItem
               key={itemMode}
               onClick={() => handleClick(itemMode)}
+              data-test={`theme-${itemMode}`}
             >
               <ThemeSwitcherItemContent>
                 <IconProvider

@@ -8,7 +8,7 @@ import {
   BookmarkCardMain,
   BookmarkCardName,
   BookmarkCardStyled,
-  BookmrakCardLine
+  BookmrakCardLine,
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 
@@ -26,13 +26,13 @@ export const BookmarkCard: React.FC<BookmarkCardProps> = ({
   color,
   skeleton = false,
   children,
-  onClick
+  onClick,
 }) => {
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       onClick?.(event);
     },
-    [onClick]
+    [onClick],
   );
 
   return (

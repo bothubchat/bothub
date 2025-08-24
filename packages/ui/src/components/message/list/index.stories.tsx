@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
   Message,
   MessageAvatar,
-  MessageTransaction
+  MessageTransaction,
 } from '@/ui/components/message';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import { Messages } from '.';
@@ -42,8 +42,8 @@ console.log("Hello, world!");
         <Message avatar={<MessageAvatar />}>Спасибо бот! то что нужно</Message>
         <ActionMessage>Контекст сброшен</ActionMessage>
       </>
-    )
-  }
+    ),
+  },
 };
 
 export const Skeleton: MessagesStory = {
@@ -68,8 +68,8 @@ export const Skeleton: MessagesStory = {
           skeleton
         />
       </React.Fragment>
-    ))
-  }
+    )),
+  },
 };
 
 export default {
@@ -79,8 +79,8 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as MessagesMeta;

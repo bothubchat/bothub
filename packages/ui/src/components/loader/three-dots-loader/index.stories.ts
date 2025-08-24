@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { ThreeDotsLoader } from '.';
 
@@ -11,5 +11,5 @@ export const Basic: ThreeDotsLoaderStory = {};
 export default {
   title: 'UI Components/Loader/Three Dots Loader',
   component: ThreeDotsLoader,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ThreeDotsLoaderMeta;

@@ -1,3 +1,4 @@
+import ReactMarkdown from 'react-markdown';
 import {
   MessageBold,
   MessageComponentsProps,
@@ -16,16 +17,13 @@ import {
   MessageTableCell,
   MessageTableHead,
   MessageTableRow,
-  MessageTitle
+  MessageTitle,
 } from '@/ui/components/message/components';
-import { MessageMarkdownLine } from './styled';
 
 export function markdownComponents(
   components: MessageComponentsProps,
-  componentsOverride?: React.ComponentProps<
-    typeof MessageMarkdownLine
-  >['components']
-): React.ComponentProps<typeof MessageMarkdownLine>['components'] {
+  componentsOverride?: React.ComponentProps<typeof ReactMarkdown>['components'],
+): React.ComponentProps<typeof ReactMarkdown>['components'] {
   return {
     p: ({ children }) => <MessageParagraph wrap>{children}</MessageParagraph>,
     b: ({ children }) => <MessageBold>{children}</MessageBold>,
@@ -37,13 +35,15 @@ export function markdownComponents(
       <MessageItalic component="em">{children}</MessageItalic>
     ),
     pre: ({ children }) => <MessagePre>{children}</MessagePre>,
-    code: ({ className, inline = false, children }) => {
+    code: ({ className, children }) => {
       const code = String(children);
       if (!code) {
         return null;
       }
 
-      if (inline) {
+      const isInline = !className || !className.startsWith('language-');
+
+      if (isInline) {
         return <MessageInlineCode>{code}</MessageInlineCode>;
       }
 
@@ -96,7 +96,7 @@ export function markdownComponents(
         src,
         alt,
         disableSkeleton: true,
-        buttons: null
+        buttons: null,
       };
 
       return (
@@ -104,11 +104,11 @@ export function markdownComponents(
           {...imageProps}
           {...(components.image &&
             components.image.buttons && {
-              buttons: components.image.buttons(imageProps)
+              buttons: components.image.buttons(imageProps),
             })}
         />
       );
     },
-    ...componentsOverride
+    ...componentsOverride,
   };
 }

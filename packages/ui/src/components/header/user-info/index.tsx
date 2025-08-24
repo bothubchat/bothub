@@ -8,7 +8,7 @@ import {
   HeaderUserInfoInfoText,
   HeaderUserInfoName,
   HeaderUserInfoStyled,
-  HeaderUserInfoTokens
+  HeaderUserInfoTokens,
 } from './styled';
 import { HeaderUserInfoProvider } from './context';
 import { useHeaderMenu } from '../menu/context';
@@ -23,7 +23,7 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
   avatar,
   name,
   tokens,
-  children
+  children,
 }) => {
   const { isInMenu } = useHeaderMenu();
 
@@ -71,22 +71,22 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
       ? {
           from: {
             opacity: 0,
-            transform: 'scale(0)'
+            transform: 'scale(0)',
           },
           enter: {
             opacity: isOpen ? 1 : 0.5,
             transform: `scale(${isOpen ? 1 : 0.999})`,
             transition: {
-              duration: 0.15
-            }
+              duration: 0.15,
+            },
           },
           leave: {
             opacity: 0,
-            transform: 'scale(0.999)'
+            transform: 'scale(0.999)',
           },
-          config: { duration: 150 }
+          config: { duration: 150 },
         }
-      : {}
+      : {},
   );
 
   return (
@@ -94,6 +94,7 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
       <HeaderUserInfoStyled
         ref={userRef}
         $inMenu={isInMenu}
+        data-test="user-info"
       >
         <HeaderUserInfoHead
           $inMenu={isInMenu}
@@ -109,7 +110,7 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
           </HeaderUserInfoInfo>
           <HeaderUserInfoArrow
             style={{
-              transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)'
+              transform: isOpen ? 'rotateZ(-180deg)' : 'rotateZ(0)',
             }}
           />
         </HeaderUserInfoHead>
@@ -122,7 +123,7 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
               >
                 {children}
               </HeaderUserInfoBody>
-            )
+            ),
         )}
       </HeaderUserInfoStyled>
     </HeaderUserInfoProvider>

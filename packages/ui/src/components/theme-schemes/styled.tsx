@@ -11,12 +11,12 @@ export const ThemeSchemesStyled = styled.div`
     variant: 'dashboard',
     tablet: css`
       flex-direction: row;
-    `
+    `,
   })}
 `;
 
 export const ThemeAddButton = styled.button.attrs({
-  children: <Plus2Icon />
+  children: <Plus2Icon />,
 })`
   all: unset;
   width: 40px;

@@ -8,7 +8,7 @@ export const MessageTableCellStyled = styled.td`
 `;
 
 export const MessageTableHeadCell = styled(MessageTableCellStyled).attrs({
-  as: 'th'
+  as: 'th',
 })`
   background: ${({ theme }) => theme.colors.grayScale.gray4};
 `;
@@ -19,7 +19,7 @@ export interface MessageTableCellTextProps {
 }
 
 export const MessageTableCellText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })<MessageTableCellTextProps>`
   ${({ theme, $head }) =>
     $head &&

@@ -19,7 +19,7 @@ export const ScrollbarContext = React.createContext<ScrollbarContextValue>({
   isLeft: false,
   isRight: false,
   isTop: false,
-  isBottom: false
+  isBottom: false,
 });
 
 export const ScrollbarProvider: React.FC<

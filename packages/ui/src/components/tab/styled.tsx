@@ -33,7 +33,7 @@ export const TabStyled: React.FC<
     `,
     tablet: css`
       padding: 12px 20px;
-    `
+    `,
   }))}
 
   ${({ $active }) =>
@@ -54,7 +54,7 @@ export interface TabTextProps {
 }
 
 export const TabText = styled(Typography).attrs({
-  variant: 'body-m-semibold'
+  variant: 'body-m-semibold',
 })<TabTextProps>`
   color: ${({ theme, $active }) => {
     if ($active) {

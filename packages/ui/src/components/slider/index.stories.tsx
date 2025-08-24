@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Slider } from '.';
 
@@ -15,7 +15,7 @@ export const SliderWithMediumArrows: SliderStory = {
             width: 300,
             height: 100,
             background: '#FF0000',
-            flexShrink: 0
+            flexShrink: 0,
           }}
         />
         <div
@@ -23,7 +23,7 @@ export const SliderWithMediumArrows: SliderStory = {
             width: 300,
             height: 100,
             background: '#0000FF',
-            flexShrink: 0
+            flexShrink: 0,
           }}
         />
         <div
@@ -31,7 +31,7 @@ export const SliderWithMediumArrows: SliderStory = {
             width: 300,
             height: 100,
             background: '#FFFF00',
-            flexShrink: 0
+            flexShrink: 0,
           }}
         />
         <div
@@ -39,7 +39,7 @@ export const SliderWithMediumArrows: SliderStory = {
             width: 300,
             height: 100,
             background: '#FF00FF',
-            flexShrink: 0
+            flexShrink: 0,
           }}
         />
         <div
@@ -47,7 +47,7 @@ export const SliderWithMediumArrows: SliderStory = {
             width: 300,
             height: 100,
             background: '#00FFFF',
-            flexShrink: 0
+            flexShrink: 0,
           }}
         />
         <div
@@ -55,7 +55,7 @@ export const SliderWithMediumArrows: SliderStory = {
             width: 300,
             height: 100,
             background: '#800000',
-            flexShrink: 0
+            flexShrink: 0,
           }}
         />
         <div
@@ -63,7 +63,7 @@ export const SliderWithMediumArrows: SliderStory = {
             width: 300,
             height: 100,
             background: '#008000',
-            flexShrink: 0
+            flexShrink: 0,
           }}
         />
         <div
@@ -71,23 +71,23 @@ export const SliderWithMediumArrows: SliderStory = {
             width: 300,
             height: 100,
             background: '#000080',
-            flexShrink: 0
+            flexShrink: 0,
           }}
         />
       </>
-    )
-  }
+    ),
+  },
 };
 
 export const SliderWithSmallArrows: SliderStory = {
   args: {
     ...SliderWithMediumArrows.args,
-    arrowsSize: 'sm'
-  }
+    arrowsSize: 'sm',
+  },
 };
 
 export default {
   title: 'UI Components/Slider',
   component: Slider,
-  decorators: [StoryDecorator({ margin: '300px' })]
+  decorators: [StoryDecorator({ margin: '300px' })],
 } as SliderMeta;

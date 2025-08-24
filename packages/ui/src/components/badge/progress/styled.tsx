@@ -74,11 +74,11 @@ export const BadgeProgressContent = styled.div`
 `;
 
 export const BadgeProgressLoader = styled(LoaderCircularIcon).attrs({
-  size: 16
+  size: 16,
 })``;
 
 export const BadgeProgressText = styled(Typography).attrs({
-  variant: 'body-s-regular'
+  variant: 'body-s-regular',
 })`
   cursor: inherit;
   color: ${({ theme }) => theme.default.colors.base.white};
@@ -86,7 +86,7 @@ export const BadgeProgressText = styled(Typography).attrs({
 `;
 
 export const BadgeProgressTextBold = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })`
   cursor: inherit;
   color: ${({ theme }) => theme.default.colors.base.white};

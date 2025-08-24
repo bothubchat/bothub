@@ -22,5 +22,5 @@ export const MenuDropdownNavLinkStyled = styled.a<MenuDropdownNavLinkStyledProps
 `;
 
 export const MenuDropdownNavLinkText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })``;

@@ -4,7 +4,7 @@ import {
   TabMobileList,
   TabMobileListContent,
   TabMobileListScrollbarWrapper,
-  TabsStyled
+  TabsStyled,
 } from './styled';
 
 export interface TabsProps extends React.PropsWithChildren {

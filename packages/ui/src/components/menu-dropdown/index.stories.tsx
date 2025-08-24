@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { MenuDropdown } from '.';
 import { MenuDropdownNav } from './styled';
@@ -46,12 +46,12 @@ export const Basic: MenuDropDownStory = {
           MidJourney
         </MenuDropdownNavLink>
       </MenuDropdownNav>
-    )
-  }
+    ),
+  },
 };
 
 export default {
   title: 'UI Components/MenuDropDown',
   component: MenuDropdown,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as MenuDropDownMeta;

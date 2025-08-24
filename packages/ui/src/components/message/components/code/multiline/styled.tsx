@@ -42,7 +42,7 @@ export interface MessageMultilineCodeLanguageProps {
 }
 
 export const MessageMultilineCodeLanguage = styled(Typography).attrs({
-  variant: 'body-l-medium'
+  variant: 'body-l-medium',
 })<MessageMultilineCodeLanguageProps>`
   color: ${({ theme, $messageVariant, $messageColor }) => {
     switch ($messageVariant) {

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
   PresetCard,
@@ -7,7 +7,7 @@ import {
   PresetCardCategory,
   PresetCardDeleteAction,
   PresetCardEditAction,
-  PresetCardFavoriteAction
+  PresetCardFavoriteAction,
 } from '.';
 
 export type PresetCardMeta = Meta<typeof PresetCard>;
@@ -24,8 +24,8 @@ export const Basic: PresetCardStory = {
         <PresetCardDeleteAction />
       </PresetCardActions>
     ),
-    description: 'Режим разработчика снимает все ограничения модели GPT-3.5'
-  }
+    description: 'Режим разработчика снимает все ограничения модели GPT-3.5',
+  },
 };
 
 export const Categories: PresetCardStory = {
@@ -36,23 +36,23 @@ export const Categories: PresetCardStory = {
         <PresetCardCategory>Бизнес</PresetCardCategory>
         <PresetCardCategory>Учеба</PresetCardCategory>
       </PresetCardCategories>
-    )
-  }
+    ),
+  },
 };
 
 export const Loading: PresetCardStory = {
   args: {
     ...Categories.args,
-    loading: true
-  }
+    loading: true,
+  },
 };
 
 export const Skeleton: PresetCardStory = {
   args: {
     ...Basic.args,
     skeleton: true,
-    categories: true
-  }
+    categories: true,
+  },
 };
 
 export default {
@@ -62,13 +62,13 @@ export default {
   argTypes: {
     add: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     actions: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as PresetCardMeta;

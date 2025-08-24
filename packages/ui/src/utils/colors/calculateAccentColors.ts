@@ -6,11 +6,11 @@ const originalRgb: Record<string, [number, number, number]> = {
   primary: hexToRgb(defaultTheme.colors.accent.primary),
   primaryLight: hexToRgb(defaultTheme.colors.accent.primaryLight),
   strong: hexToRgb(defaultTheme.colors.accent.strong),
-  strongDown: hexToRgb(defaultTheme.colors.accent.strongDown)
+  strongDown: hexToRgb(defaultTheme.colors.accent.strongDown),
 };
 
 export const calculateAccentColors = (
-  newPrimary: string
+  newPrimary: string,
 ): ThemeAccentColors => {
   const newPrimaryRgb = hexToRgb(newPrimary);
 

@@ -9,6 +9,6 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./packages/*/tests/tests.setup.ts'],
-    workspace: ['packages/*']
-  }
+    workspace: ['packages/*'],
+  },
 });

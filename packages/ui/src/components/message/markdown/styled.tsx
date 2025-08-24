@@ -1,4 +1,3 @@
-import ReactMarkdown from 'react-markdown';
 import { css, keyframes, styled } from 'styled-components';
 import React from 'react';
 import { MessageColor } from '@/ui/components/message/types';
@@ -15,11 +14,11 @@ import {
   MessageTableCellStyled,
   MessageTableRow,
   MessageTableStyled,
-  MessageTitleStyled
+  MessageTitleStyled,
 } from '@/ui/components/message/components';
 import {
   MessageMultilineCodeContentContainer,
-  MessageMultilineCodeLastLine
+  MessageMultilineCodeLastLine,
 } from '../components/code/multiline/content/styled';
 
 export const MessageMarkdownStyled = styled.div`
@@ -37,7 +36,7 @@ export interface MessageMarkdownStyledProps {
 }
 
 export const MessageMarkdownLine = React.memo(
-  styled(ReactMarkdown)<MessageMarkdownStyledProps>`
+  styled.div<MessageMarkdownStyledProps>`
     display: block;
     width: 100%;
     color: ${({ theme }) => {
@@ -123,7 +122,7 @@ export const MessageMarkdownLine = React.memo(
     prevProps.children === nextProps.children &&
     prevProps.$typing === nextProps.$typing &&
     prevProps.$color === nextProps.$color &&
-    prevProps.$singleDollarTextMath === nextProps.$singleDollarTextMath
+    prevProps.$singleDollarTextMath === nextProps.$singleDollarTextMath,
 );
 
 export const messageTextCursorOpacity = keyframes`

@@ -8,7 +8,7 @@ import {
   MenuDropdownBlockContent,
   MenuDropdownBlockScrollbarWrapper,
   MenuDropdownStyled,
-  MenuDropdownToggleButton
+  MenuDropdownToggleButton,
 } from './styled';
 
 export type MenuDropdownProps = React.ComponentProps<'div'> & {
@@ -55,7 +55,7 @@ export const MenuDropdown: React.FC<MenuDropdownProps> = ({
     from: { scale: 0.85, opacity: 0 },
     enter: { opacity: 1, scale: 1 },
     leave: { scale: 0.85, opacity: 0 },
-    config: { duration: 135 }
+    config: { duration: 135 },
   });
 
   return (
@@ -83,7 +83,7 @@ export const MenuDropdown: React.FC<MenuDropdownProps> = ({
                   </MenuDropdownBlockContent>
                 </MenuDropdownBlockScrollbarWrapper>
               </MenuDropdownBlock>
-            )
+            ),
         )}
       </MenuDropdownStyled>
     </MenuDropdownProvider>

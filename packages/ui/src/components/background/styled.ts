@@ -46,14 +46,14 @@ export const BackgroundImage = styled.img``;
 export const BackgroundBluePurpleCenterImage = styled(BackgroundImage).attrs({
   src: bluePurpleCenter,
   width: 773,
-  height: 576
+  height: 576,
 })`
   width: 773px;
   height: 576px;
 `;
 
 export const BackgroundBluePurpleBottomLeftImage = styled(
-  BackgroundImage
+  BackgroundImage,
 ).attrs({ src: bluePurpleBottomLeft, width: 663, height: 300 })`
   width: 663px;
   height: 300px;

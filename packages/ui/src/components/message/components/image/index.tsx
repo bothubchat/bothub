@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   MessageImageNative,
   MessageImageSkeleton,
-  MessageImageStyled
+  MessageImageStyled,
 } from './styled';
 import { ImageProps } from '@/ui/components/image';
 import { MessageImageProvider } from './context';
@@ -52,7 +52,7 @@ export const MessageImage: React.FC<MessageImageProps> = ({
         URL.revokeObjectURL(imageUrl);
       }
     },
-    [imageUrl]
+    [imageUrl],
   );
 
   return (
@@ -67,14 +67,14 @@ export const MessageImage: React.FC<MessageImageProps> = ({
             $height={height ?? 300}
             opacity={[
               theme.mode === 'light' ? 0.1 : 0.15,
-              theme.mode === 'light' ? 0.225 : 0.35
+              theme.mode === 'light' ? 0.225 : 0.35,
             ]}
             colors={[
               variant === 'user'
                 ? theme.colors.base.white
                 : theme.mode === 'light'
                   ? theme.default.colors.base.black
-                  : theme.colors.grayScale.gray6
+                  : theme.colors.grayScale.gray6,
             ]}
           />
         )}
@@ -85,7 +85,7 @@ export const MessageImage: React.FC<MessageImageProps> = ({
           {...props}
           {...(fetchImage &&
             imageUrl && {
-              src: imageUrl
+              src: imageUrl,
             })}
           {...(!fetchImage && { src })}
           width={width ?? 300}

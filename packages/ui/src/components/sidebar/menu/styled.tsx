@@ -13,7 +13,7 @@ export const SidebarMenuStyled = styled.div`
     `,
     mobile: css`
       display: none;
-    `
+    `,
   })}
 `;
 
@@ -69,12 +69,12 @@ export const SidebarMenuBlock = styled(animated.div)<{
       `,
       tablet: css`
         display: none;
-      `
+      `,
     })}
 `;
 
 export const SidebarMenuBlockScrollbarWrapper = styled(Scrollbar).attrs({
-  variant: 'secondary'
+  variant: 'secondary',
 })`
   width: 100%;
   height: 100%;
@@ -83,7 +83,7 @@ export const SidebarMenuBlockScrollbarWrapper = styled(Scrollbar).attrs({
     merge: true,
     tablet: css`
       padding-right: 0px;
-    `
+    `,
   })}
 `;
 
@@ -99,6 +99,6 @@ export const SidebarMenuNav = styled.nav`
     merge: true,
     tablet: css`
       gap: 10px;
-    `
+    `,
   })}
 `;

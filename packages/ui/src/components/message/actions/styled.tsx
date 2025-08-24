@@ -7,14 +7,11 @@ export const MessageActionsStyled = styled.div<{ $variant?: MessageVariant }>`
   display: flex;
   flex-direction: ${({ $variant }) =>
     $variant === 'assistant' ? 'row' : 'row-reverse'};
-  align-items: flex-end;
-  justify-content: center;
+  align-items: center;
   user-select: none;
+  gap: 14px;
   -moz-user-select: none;
   -webkit-user-select: none;
-  @media (width <= ${({ theme }) => theme.mobile.maxWidth}) {
-    gap: 8px;
-  }
 `;
 
 export const MessageActionsMenuStyled = styled.div`
@@ -25,7 +22,7 @@ export const MessageActionsMenuStyled = styled.div`
 const getModalStylesX = (variant?: MessageVariant, inverted?: boolean) => {
   switch (variant) {
     case 'assistant':
-      if (!inverted) {
+      if (inverted) {
         return css`
           left: 14px;
         `;
@@ -34,7 +31,7 @@ const getModalStylesX = (variant?: MessageVariant, inverted?: boolean) => {
         right: 14px;
       `;
     case 'user':
-      if (!inverted) {
+      if (inverted) {
         return css`
           right: 14px;
         `;
@@ -109,7 +106,7 @@ export const MessageActionsButton = styled.button`
   all: unset;
   width: fit-content;
   height: fit-content;
-  padding-inline: 6px;
+  aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -153,5 +150,5 @@ export const MessageActionsMenuModalOptionContent = styled.div`
 `;
 
 export const MessageActionsButtonText = styled(Typography).attrs({
-  variant: 'body-m-regular'
+  variant: 'body-m-regular',
 })``;

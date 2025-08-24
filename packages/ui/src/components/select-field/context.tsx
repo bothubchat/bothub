@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 
 export interface SelectFieldContextValue {
-  selectRef: React.RefObject<HTMLElement>;
+  selectRef: React.RefObject<HTMLElement | null>;
   handleSelectClick: React.MouseEventHandler<HTMLElement>;
 }
 
 export const SelectFieldContext = React.createContext<SelectFieldContextValue>({
   selectRef: React.createRef(),
-  handleSelectClick: () => {}
+  handleSelectClick: () => {},
 });
 
 export const SelectFieldProvider: React.FC<

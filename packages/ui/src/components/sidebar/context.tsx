@@ -7,7 +7,7 @@ export interface SidebarContextValue {
 
 export const SidebarContext = React.createContext<SidebarContextValue>({
   isOpen: false,
-  setIsOpen() {}
+  setIsOpen() {},
 });
 
 export const SidebarProvider: React.FC<

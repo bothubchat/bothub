@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { ScrollableTabs } from '.';
@@ -8,7 +8,7 @@ import {
   SpeechSynthesysIcon,
   SpellingIcon,
   TextGenerationIcon,
-  TrafficAnalisysIcon
+  TrafficAnalisysIcon,
 } from '@/ui/icons';
 
 export type ScrollableTabsMeta = Meta<typeof ScrollableTabs>;
@@ -22,44 +22,44 @@ export const Primary: ScrollableTabsStory = {
         id: 'text',
         label: 'Генерация текста',
         href: '/',
-        icon: <TextGenerationIcon />
+        icon: <TextGenerationIcon />,
       },
       {
         id: 'image',
         label: 'Генерация изображений',
         href: '/',
-        icon: <ImageGenerationIcon />
+        icon: <ImageGenerationIcon />,
       },
       {
         id: 'code',
         label: 'Генерация кода',
         href: '/',
-        icon: <CodeGenerationIcon />
+        icon: <CodeGenerationIcon />,
       },
       {
         id: 'table',
         label: 'Анализ таблиц',
         href: '/',
-        icon: <TrafficAnalisysIcon />
+        icon: <TrafficAnalisysIcon />,
       },
       {
         id: 'speech',
         label: 'Синтез речи',
         href: '/',
-        icon: <SpeechSynthesysIcon />
+        icon: <SpeechSynthesysIcon />,
       },
-      { id: 'spell', label: 'Орфография', href: '/', icon: <SpellingIcon /> }
+      { id: 'spell', label: 'Орфография', href: '/', icon: <SpellingIcon /> },
     ],
-    defaultTabId: 'code'
-  }
+    defaultTabId: 'code',
+  },
 };
 
 export const Secondary: ScrollableTabsStory = {
   args: {
     ...Primary.args,
     variant: 'secondary',
-    component: 'button'
-  }
+    component: 'button',
+  },
 };
 
 export const TabsAsButtons: ScrollableTabsStory = {
@@ -77,11 +77,11 @@ export const TabsAsButtons: ScrollableTabsStory = {
         onClick={onSelectedTabChange}
       />
     );
-  }
+  },
 };
 
 export default {
   title: 'UI Components/ScrollableTabs',
   component: ScrollableTabs,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ScrollableTabsMeta;

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FileField, FileFieldLabel } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { UploadIcon } from '@/ui/icons';
@@ -12,15 +12,15 @@ export type FileFieldStory = StoryObj<typeof FileField>;
 export const Basic: FileFieldStory = {
   args: {
     label: 'Файлы',
-    placeholder: 'Загрузить файлы'
-  }
+    placeholder: 'Загрузить файлы',
+  },
 };
 
 export const DisableMultiple: FileFieldStory = {
   args: {
     ...Basic.args,
-    multiple: false
-  }
+    multiple: false,
+  },
 };
 
 export const Help: FileFieldStory = {
@@ -33,40 +33,40 @@ export const Help: FileFieldStory = {
           <Button variant="help" />
         </Tooltip>
       </FileFieldLabel>
-    )
-  }
+    ),
+  },
 };
 
 export const Error: FileFieldStory = {
   args: {
     ...Basic.args,
-    error: 'Произошла ошибка'
-  }
+    error: 'Произошла ошибка',
+  },
 };
 
 export const Disabled: FileFieldStory = {
   args: {
     ...Basic.args,
-    disabled: true
-  }
+    disabled: true,
+  },
 };
 
 export const CustomIcon: FileFieldStory = {
   args: {
     ...Basic.args,
-    icon: <UploadIcon />
-  }
+    icon: <UploadIcon />,
+  },
 };
 
 export const Closed: FileFieldStory = {
   args: {
     ...Basic.args,
-    open: false
-  }
+    open: false,
+  },
 };
 
 export default {
   title: 'UI Components/Fields/File',
   component: FileField,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as FileFieldMeta;

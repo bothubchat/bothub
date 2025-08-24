@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
   ImageFullScreen,
@@ -6,7 +6,7 @@ import {
   ImageFullScreenAuthorAvatar,
   ImageFullScreenAuthorName,
   ImageFullScreenAuthorTag,
-  ImageFullScreenToolbar
+  ImageFullScreenToolbar,
 } from '@/ui/components/image-fullscreen';
 import image from './assets/image.png';
 import image1 from './assets/image-1.png';
@@ -28,10 +28,10 @@ export const Basic: ImageFullScreenStory = {
       {
         url: image,
         width: 512,
-        height: 512
-      }
-    ]
-  }
+        height: 512,
+      },
+    ],
+  },
 };
 
 export const Toolbar: ImageFullScreenStory = {
@@ -52,8 +52,8 @@ export const Toolbar: ImageFullScreenStory = {
           Скачать изображение
         </AdaptiveButton>
       </ImageFullScreenToolbar>
-    )
-  }
+    ),
+  },
 };
 
 export const Images: ImageFullScreenStory = {
@@ -65,28 +65,28 @@ export const Images: ImageFullScreenStory = {
         id: 'image1',
         url: image1,
         width: 1024,
-        height: 1024
+        height: 1024,
       },
       {
         id: 'image2',
         url: image2,
         width: 1024,
-        height: 1024
+        height: 1024,
       },
       {
         id: 'image3',
         url: image3,
         width: 1024,
-        height: 1024
+        height: 1024,
       },
       {
         id: 'image4',
         url: image4,
         width: 1024,
-        height: 1024
-      }
-    ]
-  }
+        height: 1024,
+      },
+    ],
+  },
 };
 
 export const Images2: ImageFullScreenStory = {
@@ -98,26 +98,26 @@ export const Images2: ImageFullScreenStory = {
         id: 'image1',
         url: image1,
         width: 1024,
-        height: 1024
+        height: 1024,
       },
       {
         id: 'image2',
         url: image2,
         width: 1024,
-        height: 1024
+        height: 1024,
       },
       {
         id: 'image3',
         url: image3,
         width: 1024,
-        height: 1024
-      }
-    ]
-  }
+        height: 1024,
+      },
+    ],
+  },
 };
 
 export default {
   title: 'Components/Image/FullScreen',
   component: ImageFullScreen,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ImageFullScreenMeta;

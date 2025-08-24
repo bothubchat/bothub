@@ -37,7 +37,7 @@ export const StepperStepPoint = styled.div<StatusProps>`
 `;
 
 export const StepperStepPointValue = styled(Typography).attrs<StatusProps>({
-  variant: 'body-l-semibold'
+  variant: 'body-l-semibold',
 })`
   color: ${({ theme, $status }) =>
     $status === 'incomplete'
@@ -63,7 +63,7 @@ export const CheckIconContainer = styled.div<StatusProps>`
 `;
 
 export const CheckIcon = styled(CheckSmallIcon).attrs({
-  size: 24
+  size: 24,
 })`
   margin: 0 -2px -2px 0;
 `;

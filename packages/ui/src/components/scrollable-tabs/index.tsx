@@ -11,10 +11,10 @@ export const ScrollableTabs = ({
   defaultTabId,
   fullWidth,
   notNullable,
-  onClick
+  onClick,
 }: ScrollableTabsProps) => {
   const [selected, setSelected] = useState<string | null>(
-    selectedTab || defaultTabId || null
+    selectedTab || defaultTabId || null,
   );
 
   useEffect(() => {

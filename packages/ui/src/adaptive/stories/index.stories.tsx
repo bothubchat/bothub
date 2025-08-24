@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { AdaptiveBlock } from '.';
 
@@ -10,18 +10,18 @@ export const Basic: AdaptiveStory = {};
 
 export const WithoutMiniTablet: AdaptiveStory = {
   args: {
-    disableMiniTablet: true
-  }
+    disableMiniTablet: true,
+  },
 };
 
 export const Merge: AdaptiveStory = {
   args: {
-    merge: true
-  }
+    merge: true,
+  },
 };
 
 export default {
   title: 'Adaptive',
   component: AdaptiveBlock,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as AdaptiveMeta;

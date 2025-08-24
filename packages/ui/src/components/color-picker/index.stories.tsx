@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { ColorPicker } from '.';
 
@@ -10,8 +10,8 @@ export const Basic: ColorPickerStory = {
   args: {
     color: '#FFFFFF',
     label: 'Акцентный цвет',
-    preview: true
-  }
+    preview: true,
+  },
 };
 
 export default {
@@ -21,5 +21,5 @@ export default {
       <ColorPicker {...props} />
     </div>
   ),
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ColorPickerMeta;

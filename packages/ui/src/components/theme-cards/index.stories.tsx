@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { ThemeCards } from '.';
 
@@ -11,5 +11,5 @@ export const Basic: ThemesCardStory = {};
 export default {
   title: 'Components/ThemeCards',
   component: ThemeCards,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ThemesCardMeta;

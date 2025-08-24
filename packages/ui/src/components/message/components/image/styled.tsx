@@ -16,7 +16,7 @@ export const MessageImageStyled = styled.div`
     ${adaptive({
       touch: css`
         opacity: 1;
-      `
+      `,
     })}
   }
   &:hover {

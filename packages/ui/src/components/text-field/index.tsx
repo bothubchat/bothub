@@ -10,7 +10,7 @@ import {
   TextFieldColorPreview,
   TextFieldColor,
   TextFieldColorInput,
-  TextFieldShowpassButton
+  TextFieldShowpassButton,
 } from './styled';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
@@ -103,28 +103,28 @@ export const TextField: React.FC<TextFieldProps> = ({
       onFocus?.(event);
       setIsFocus(true);
     },
-    [onFocus]
+    [onFocus],
   );
   const handleBlur = useCallback(
     (event: React.FocusEvent<HTMLInputElement>) => {
       onBlur?.(event);
       setIsFocus(false);
     },
-    [onBlur]
+    [onBlur],
   );
   const handleMouseEnter = useCallback(
     (event: React.MouseEvent<HTMLInputElement>) => {
       onMouseEnter?.(event);
       setIsHover(true);
     },
-    [onMouseEnter]
+    [onMouseEnter],
   );
   const handleMouseLeave = useCallback(
     (event: React.MouseEvent<HTMLInputElement>) => {
       onMouseLeave?.(event);
       setIsHover(false);
     },
-    [onMouseLeave]
+    [onMouseLeave],
   );
 
   const handleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
@@ -132,20 +132,17 @@ export const TextField: React.FC<TextFieldProps> = ({
       onChange?.(event);
       onValueChange?.(event.target.value);
     },
-    [onChange, onValueChange]
+    [onChange, onValueChange],
   );
 
   const handleClear = useCallback(() => {
     const inputEl: HTMLInputElement | null = inputRef.current;
 
-    if (inputEl !== null) {
-      inputEl.value = '';
-      onValueChange?.('');
-    }
+    if (inputEl === null) return;
 
-    if (onClearButtonClick) {
-      onClearButtonClick();
-    }
+    inputEl.value = '';
+    onValueChange?.('');
+    onClearButtonClick?.();
   }, [onChange]);
 
   const handlePasswordToggle = useCallback(() => {
@@ -155,14 +152,14 @@ export const TextField: React.FC<TextFieldProps> = ({
   const iconProps: IconProviderProps = {
     size: 16,
     ...(disabled && {
-      fill: theme.colors.grayScale.gray1
+      fill: theme.colors.grayScale.gray1,
     }),
     ...(!disabled && {
       fill:
         theme.mode === 'light'
           ? theme.default.colors.accent.primary
-          : theme.colors.base.white
-    })
+          : theme.colors.base.white,
+    }),
   };
   const getInputType = () => {
     if (type === 'password') return showPassword ? 'text' : 'password';

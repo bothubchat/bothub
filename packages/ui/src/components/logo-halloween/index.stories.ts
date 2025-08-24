@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { LogoHalloween } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 
@@ -11,5 +11,5 @@ export const Basic: LogoStory = {};
 export default {
   title: 'UI Components/LogoHalloween',
   component: LogoHalloween,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as LogoMeta;

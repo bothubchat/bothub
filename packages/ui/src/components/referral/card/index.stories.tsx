@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import {
@@ -8,7 +8,7 @@ import {
   ReferralCardTableCell,
   ReferralCardTableHeadCell,
   ReferralCardTableRow,
-  ReferralCardWithdrawButton
+  ReferralCardWithdrawButton,
 } from '.';
 
 export type ReferralCardMeta = Meta<typeof ReferralCard>;
@@ -23,7 +23,7 @@ export const Basic: ReferralCardStory = {
       min: 0,
       max: 20000,
       minText: '0 ₽',
-      maxText: '20000 ₽'
+      maxText: '20000 ₽',
     },
     withdraw: (
       <ReferralCardWithdrawButton>Вывести средства</ReferralCardWithdrawButton>
@@ -54,16 +54,16 @@ export const Basic: ReferralCardStory = {
           <ReferralCardTableCell>24</ReferralCardTableCell>
         </ReferralCardTableRow>
       </ReferralCardTable>
-    )
-  }
+    ),
+  },
 };
 
 export const AI: ReferralCardStory = {
   args: {
     ...Basic.args,
     skeleton: false,
-    aiName: 'ChatGPT\n4.0'
-  }
+    aiName: 'ChatGPT\n4.0',
+  },
 };
 
 export const Skeleton: ReferralCardStory = {
@@ -101,12 +101,12 @@ export const Skeleton: ReferralCardStory = {
           </ReferralCardTableCell>
         </ReferralCardTableRow>
       </ReferralCardTable>
-    )
-  }
+    ),
+  },
 };
 
 export default {
   title: 'Components/Referral/Card',
   component: ReferralCard,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ReferralCardMeta;

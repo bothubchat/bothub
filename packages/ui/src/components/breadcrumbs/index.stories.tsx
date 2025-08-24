@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Breadcrumbs } from '.';
 import { BreadcrumbsItem } from './styled';
@@ -22,13 +22,13 @@ export const Basic: BreadcrumbsStory = {
       >
         Модели
       </BreadcrumbsItem>,
-      <BreadcrumbsItem>GPT-4o</BreadcrumbsItem>
-    ]
-  }
+      <BreadcrumbsItem>GPT-4o</BreadcrumbsItem>,
+    ],
+  },
 };
 
 export default {
   title: 'Components/Breadcrumbs',
   component: Breadcrumbs,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as BreadcrumbsMeta;

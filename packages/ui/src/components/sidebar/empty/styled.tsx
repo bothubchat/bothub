@@ -16,7 +16,7 @@ export interface SidebarEmptyTextProps {
 }
 
 export const SidebarEmptyText = styled(Typography).attrs({
-  variant: 'body-m-medium'
+  variant: 'body-m-medium',
 })<SidebarEmptyTextProps>`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
   cursor: default;

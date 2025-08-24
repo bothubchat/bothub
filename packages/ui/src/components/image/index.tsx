@@ -3,7 +3,7 @@ import React, {
   forwardRef,
   LinkHTMLAttributes,
   useCallback,
-  useState
+  useState,
 } from 'react';
 import { Helmet } from 'react-helmet';
 import { useTheme } from '../../theme';
@@ -48,7 +48,7 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
       fetchPriority,
       ...props
     },
-    ref
+    ref,
   ) => {
     const theme = useTheme();
 
@@ -60,7 +60,7 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
         setIsLoading(false);
         props.onLoad?.(event);
       },
-      [props.onLoad]
+      [props.onLoad],
     );
 
     return (
@@ -198,7 +198,7 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
         )}
       </>
     );
-  }
+  },
 );
 
 export * from './types';

@@ -4,7 +4,7 @@ import {
   SidebarUserInfoMain,
   SidebarUserInfoLeft,
   SidebarUserInfoText,
-  SidebarUserInfoUpdateTariffContainer
+  SidebarUserInfoUpdateTariffContainer,
 } from '../styled';
 import { SidebarUserInfoAvatar } from '../avatar';
 import { Skeleton } from '@/ui/components/skeleton';

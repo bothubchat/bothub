@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { LogoNewYear } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 
@@ -11,5 +11,5 @@ export const Basic: LogoNewYearStory = {};
 export default {
   title: 'UI Components/LogoNewYear',
   component: LogoNewYear,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as LogoNewYearMeta;

@@ -1,6 +1,5 @@
 import { css, styled } from 'styled-components';
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
 import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { TooltipAlign, TooltipPlacement, TooltipVariant } from './types';
@@ -127,24 +126,24 @@ export const TooltipBlock = styled.span<TooltipBlockProps>`
 `;
 
 export const TooltipLabel = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })`
   white-space: pre-wrap;
 `;
 
-export const TooltipMarkdown = styled(ReactMarkdown)`
+export const TooltipMarkdown = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
 `;
 
 export const TooltipLabelBold = styled(Typography).attrs({
-  variant: 'body-s-semibold'
+  variant: 'body-s-semibold',
 })``;
 
 export const TooltipCode = styled(Typography).attrs({
   component: 'code',
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })`
   display: inline-flex;
   border-radius: 4px;

@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/react';
+import { Meta } from '@storybook/react-vite';
 import React, { useState } from 'react';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Datepicker } from '.';
@@ -8,7 +8,7 @@ export type DatepickerFieldMeta = Meta<typeof Datepicker>;
 
 const dateText = (str: string | number) =>
   new Intl.DateTimeFormat('en-US', {
-    dateStyle: 'full'
+    dateStyle: 'full',
   }).format(new Date(str));
 
 export const RangeDatepicker = () => {
@@ -76,5 +76,5 @@ export const SingleDatepicker = () => {
 export default {
   title: 'UI Components/Datepicker',
   component: Datepicker,
-  decorators: [StoryDecorator({ margin: '50px 0px' })]
+  decorators: [StoryDecorator({ margin: '50px 0px' })],
 } as DatepickerFieldMeta;

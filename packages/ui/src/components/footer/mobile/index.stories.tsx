@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { FooterMobile } from '.';
 
@@ -11,5 +11,5 @@ export const Mobile: FooterMobileStory = {};
 export default {
   title: 'Components/Footer',
   component: FooterMobile,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as FooterMobileMeta;

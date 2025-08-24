@@ -15,11 +15,11 @@ export const PauseButtonIcon = icon(({ ...props }) => {
         {(
           {
             fill = theme.colors.accent.primary,
-            stroke = theme.colors.base.white
+            stroke = theme.colors.base.white,
           } = {
             fill: theme.colors.accent.primary,
-            stroke: theme.colors.base.white
-          }
+            stroke: theme.colors.base.white,
+          },
         ) => (
           <>
             <rect

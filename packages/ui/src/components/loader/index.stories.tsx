@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Loader } from '.';
 
@@ -11,5 +11,5 @@ export const Basic: LoaderStory = {};
 export default {
   title: 'UI Components/Loader',
   component: Loader,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as LoaderMeta;

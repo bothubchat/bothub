@@ -17,8 +17,8 @@ export const MenuTabsWrapper = styled(Scrollbar).attrs(({ theme }) => ({
   scrollShadows: {
     color: theme.colors.base.black,
     left: <ScrollbarShadow side="left" />,
-    right: <ScrollbarShadow side="right" />
-  }
+    right: <ScrollbarShadow side="right" />,
+  },
 }))`
   background: inherit;
 `;
@@ -31,7 +31,7 @@ export const MenuTabsContent = styled.div`
   width: fit-content;
 `;
 export const MenuTabsText = styled(Typography).attrs({
-  variant: 'body-l-medium'
+  variant: 'body-l-medium',
 })`
   color: ${({ theme }) => theme.colors.grayScale.gray6};
 `;

@@ -3,7 +3,7 @@ import {
   PromptCardContent,
   PromptCardCopyIcon,
   PromptCardStyled,
-  PromptCardText
+  PromptCardText,
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
@@ -23,7 +23,7 @@ export const PromptCard: React.FC<PromptCardProps> = ({
   className,
   tabIndex = 0,
   children,
-  onCopy
+  onCopy,
 }) => {
   const [isCopied, setIsCopied] = useState(false);
   const [isFocus, setIsFocus] = useState(false);

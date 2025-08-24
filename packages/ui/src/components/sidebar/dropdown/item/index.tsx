@@ -20,13 +20,14 @@ export const SidebarDropdownItem: React.FC<SidebarDropdownItemProps> = ({
       onClick?.(event);
       setIsOpen(false);
     },
-    [onClick]
+    [onClick],
   );
 
   return (
     <SidebarDropdownItemStyled
       {...props}
       onClick={handleClick}
+      data-test={props.children}
     >
       {startIcon}
       <SidebarDropdownItemText>{props.children}</SidebarDropdownItemText>

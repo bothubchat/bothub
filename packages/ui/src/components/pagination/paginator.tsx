@@ -6,7 +6,7 @@ export const Paginator = ({
   current,
   onChange,
   lastPage,
-  arrowStyles = 'default'
+  arrowStyles = 'default',
 }: PaginatorProps) => {
   const pages = usePaginatorPages(current ?? 1, lastPage);
 

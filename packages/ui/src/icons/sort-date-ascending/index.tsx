@@ -40,5 +40,5 @@ export const SortDateAscendingIcon = icon(
         />
       </Icon>
     );
-  }
+  },
 );

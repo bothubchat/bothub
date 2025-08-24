@@ -5,26 +5,13 @@ export const preview: Preview = {
     backgrounds: {
       default: 'dark',
       values: [
-        {
-          name: 'dark',
-          value: '#0E0C15'
-        },
-        {
-          name: 'light',
-          value: '#FFFFFF'
-        }
-      ]
+        { name: 'dark', value: '#0E0C15' },
+        { name: 'light', value: '#FFFFFF' },
+      ],
     },
-    actions: {
-      argTypesRegex: '^on[A-Z].*'
-    },
-    controls: {
-      matchers: {
-        color: /(background|color)$/i,
-        date: /Date$/
-      }
-    }
-  }
+    actions: { argTypesRegex: '^on[A-Z].*' },
+    controls: { matchers: { color: /(background|color)$/i, date: /Date$/ } },
+  },
 };
 
 export default preview;

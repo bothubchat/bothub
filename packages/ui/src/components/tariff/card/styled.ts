@@ -45,7 +45,7 @@ export const TariffCardStarUnfilledIcon = styled(StarUnfilledIcon)`
 
 export const TariffCardIsPopularText = styled(Typography).attrs({
   variant: 'body-s-medium',
-  component: 'p'
+  component: 'p',
 })`
   color: ${({ theme }) => theme.default.colors.base.white};
   text-align: center;
@@ -120,17 +120,17 @@ export const TariffCardContainerPrice = styled.div`
 
 export const TariffCardPrice = styled(Typography).attrs({
   variant: 'body-xxl-semibold',
-  component: 'span'
+  component: 'span',
 })``;
 
 export const TariffCardCurrency = styled(Typography).attrs({
   variant: 'body-l-semibold',
-  component: 'span'
+  component: 'span',
 })``;
 
 export const TariffCardLabel = styled(Typography).attrs({
   variant: 'body-xl-semibold',
-  component: 'h3'
+  component: 'h3',
 })<{ $color: TariffType | 'ENTERPRISE' }>`
   background-clip: text;
   -webkit-background-clip: text;
@@ -171,7 +171,7 @@ export const TariffCardLabel = styled(Typography).attrs({
 `;
 
 export const TariffCardCapsText = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })``;
 
 export const TariffCardCapsContainer = styled.div`
@@ -185,7 +185,7 @@ export const TariffCardCapsBadge = styled(Badge)``;
 
 export const TariffCardDescription = styled(Typography).attrs({
   variant: 'body-m-medium',
-  component: 'p'
+  component: 'p',
 })`
   margin-top: 16px;
 `;
@@ -196,7 +196,7 @@ export const TariffCardEnterpriseButtonContainer = styled.div`
 
 export const TariffCardEnterpriseButton = styled(Button).attrs({
   component: 'a',
-  variant: 'primary-transparent'
+  variant: 'primary-transparent',
 })`
   opacity: 1;
   pointer-events: all;
@@ -210,7 +210,7 @@ export const TariffCardArrow = styled(ArrowNarrowRightIcon)`
 
 export const TariffCardDiscount = styled(Typography).attrs({
   variant: 'body-s-medium',
-  component: 'p'
+  component: 'p',
 })`
   position: absolute;
   right: 0px;

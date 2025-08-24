@@ -96,7 +96,7 @@ export interface SidebarGroupNameProps {
 
 export const SidebarGroupName = styled(Typography).attrs({
   variant: 'body-l-medium',
-  component: 'div'
+  component: 'div',
 })<SidebarGroupNameProps>`
   display: flex;
   cursor: ${({ $skeleton }) => ($skeleton ? 'not-allowed' : 'pointer')};
@@ -170,7 +170,7 @@ export const SidebarGroupTooltip = styled(Tooltip)`
     `,
     tablet: css`
       display: none;
-    `
+    `,
   })}
 `;
 
@@ -182,7 +182,7 @@ export const SidebarGroupIconContainer = styled.div`
     `,
     tablet: css`
       display: flex;
-    `
+    `,
   })}
 `;
 

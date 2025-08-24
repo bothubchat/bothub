@@ -1,10 +1,12 @@
+import { memo } from 'react';
 import * as S from './styled';
 import {
   SelectFieldChangeEventHandler,
   SelectFieldDataItem,
+  SelectFieldValueChangeEventHandler,
   SelectModal,
   useSelectField,
-  UseSelectFieldProps
+  UseSelectFieldProps,
 } from '../select-field';
 import { Variant } from './types';
 import { useTheme } from '@/ui/theme';
@@ -16,80 +18,84 @@ export type BadgeSelectDropdownProps = {
   colorButtonOpened?: string;
   className?: string;
   compactWidth?: boolean;
+  modalStyles?: React.CSSProperties;
   onChange?: SelectFieldChangeEventHandler;
+  onValueChange?: SelectFieldValueChangeEventHandler;
 } & Omit<
   UseSelectFieldProps,
   'onChange' | 'multiple' | 'onValueChange' | 'value'
 >;
 
-export const BadgeSelectDropdown = ({
-  options,
-  value: initialValue,
-  variant = 'primary',
-  colorButtonOpened,
-  className,
-  compactWidth,
-  onChange,
-  ...useSelectFieldProps
-}: BadgeSelectDropdownProps) => {
-  const theme = useTheme();
-
-  const {
-    isOpen,
-    triggerRef,
-    value,
-    setValue,
-    handleInputClick,
-    ...selectModalProps
-  } = useSelectField<HTMLButtonElement>({
-    ...useSelectFieldProps,
+export const BadgeSelectDropdown = memo(
+  ({
+    options,
     value: initialValue,
-    multiple: false,
-    onChange
-  });
+    variant = 'primary',
+    colorButtonOpened,
+    className,
+    compactWidth,
+    modalStyles,
+    ...useSelectFieldProps
+  }: BadgeSelectDropdownProps) => {
+    const theme = useTheme();
 
-  let label = '';
-  if (typeof value === 'string') {
-    label = value;
-  }
-  if (
-    value &&
-    typeof value !== 'string' &&
-    !Array.isArray(value) &&
-    value.label
-  ) {
-    label = value.label;
-  }
+    const {
+      isOpen,
+      triggerRef,
+      value,
+      setValue,
+      handleInputClick,
+      ...selectModalProps
+    } = useSelectField<HTMLButtonElement>({
+      ...useSelectFieldProps,
+      value: initialValue,
+      multiple: false,
+    });
 
-  return (
-    <>
-      <S.BadgeSelectDropdownTrigger
-        ref={triggerRef}
-        $active={isOpen}
-        $variant={variant}
-        $colorButtonOpened={colorButtonOpened}
-        type="button"
-        onClick={(e) => handleInputClick(false, e)}
-        className={className}
-      >
-        <S.BadgeSelectDropdownSpanStyled>
-          {label}
-        </S.BadgeSelectDropdownSpanStyled>
+    let label = '';
+    if (typeof value === 'string') {
+      label = value;
+    }
+    if (
+      value &&
+      typeof value !== 'string' &&
+      !Array.isArray(value) &&
+      value.label
+    ) {
+      label = value.label;
+    }
 
-        <S.BadgeSelectDropdownTogglerArrow $open={isOpen} />
-      </S.BadgeSelectDropdownTrigger>
+    return (
+      <>
+        <S.BadgeSelectDropdownTrigger
+          ref={triggerRef}
+          $active={isOpen}
+          $variant={variant}
+          $colorButtonOpened={colorButtonOpened}
+          type="button"
+          onClick={(e) => handleInputClick(false, e)}
+          className={className}
+        >
+          <S.BadgeSelectDropdownSpanStyled>
+            {label}
+          </S.BadgeSelectDropdownSpanStyled>
 
-      <SelectModal
-        data={options}
-        isOpen={isOpen}
-        setValue={setValue}
-        value={value}
-        compactWidth={compactWidth}
-        selectedColor={theme.colors.grayScale.gray2}
-        {...selectModalProps}
-      />
-    </>
-  );
-};
+          <S.BadgeSelectDropdownTogglerArrow $open={isOpen} />
+        </S.BadgeSelectDropdownTrigger>
+
+        <SelectModal
+          data={options}
+          isOpen={isOpen}
+          setValue={setValue}
+          value={value}
+          compactWidth={compactWidth}
+          selectedColor={theme.colors.grayScale.gray2}
+          modalStyles={modalStyles}
+          {...selectModalProps}
+        />
+      </>
+    );
+  },
+);
 
 export * from './styled';

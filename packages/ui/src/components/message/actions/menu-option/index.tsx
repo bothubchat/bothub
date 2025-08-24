@@ -2,7 +2,7 @@ import * as S from '../styled';
 
 export const MenuOption = ({
   children,
-  onClick
+  onClick,
 }: {
   children: React.ReactNode;
   onClick?: () => void;

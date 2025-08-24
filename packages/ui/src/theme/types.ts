@@ -30,7 +30,7 @@ export const ColorSchemeNamesArray = [
   'mountain',
   'lake',
   'iris',
-  'peony'
+  'peony',
 ] as const;
 
 export type ColorSchemeNames = (typeof ColorSchemeNamesArray)[number];

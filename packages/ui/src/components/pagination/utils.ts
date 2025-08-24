@@ -28,7 +28,7 @@ export const usePaginatorPages = (current: number, last: number) =>
         if (i === left && i > 2) {
           range.push({
             id: range.length + 1,
-            value: emptySpace
+            value: emptySpace,
           });
         }
         range.push({ value: i, id: range.length + 1 });

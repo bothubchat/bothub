@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
   ReferralCard,
@@ -7,7 +7,7 @@ import {
   ReferralCardTableCell,
   ReferralCardTableHeadCell,
   ReferralCardTableRow,
-  ReferralCardWithdrawButton
+  ReferralCardWithdrawButton,
 } from '@/ui/components/referral';
 import { Referrals } from '.';
 import { CreateReferralButton } from './styled';
@@ -28,7 +28,7 @@ export const Basic: ReferralsStory = {
           min: 0,
           max: 20000,
           minText: '0 ₽',
-          maxText: '20000 ₽'
+          maxText: '20000 ₽',
         }}
         withdraw={
           <ReferralCardWithdrawButton>
@@ -62,12 +62,12 @@ export const Basic: ReferralsStory = {
           </ReferralCardTableRow>
         </ReferralCardTable>
       </ReferralCard>
-    ))
-  }
+    )),
+  },
 };
 
 export default {
   title: 'Components/Referral/List',
   component: Referrals,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ReferralsMeta;

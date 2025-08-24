@@ -15,7 +15,7 @@ import {
   IncludeContextIcon,
   ReportIcon,
   SpellingIcon,
-  TextGenerationIcon
+  TextGenerationIcon,
 } from '@/ui/icons';
 import {
   StartsIconMultiLevelMenu,
@@ -33,7 +33,7 @@ import {
   MultiLevelMenuGearIcon,
   MultiLevelMenuPublicIcon,
   MultiLevelMenuBlogCircleIcon,
-  MultiLevelMenuBlogNewsIcon
+  MultiLevelMenuBlogNewsIcon,
 } from '../styled';
 
 export const menuItems = [
@@ -47,23 +47,23 @@ export const menuItems = [
           {
             title: 'Генерация текста',
             path: '#',
-            icon: TextGenerationIcon
+            icon: TextGenerationIcon,
           },
           {
             title: 'Генерация изображения',
             path: '#',
-            icon: ImageGenerationIcon
+            icon: ImageGenerationIcon,
           },
           {
             title: 'Генерация кода',
             path: '#',
-            icon: CodeGenerationIcon
+            icon: CodeGenerationIcon,
           },
           {
             title: 'Все инструменты',
-            path: '/models'
-          }
-        ]
+            path: '/models',
+          },
+        ],
       },
       {
         title: 'Easy Writer',
@@ -73,43 +73,43 @@ export const menuItems = [
             title: 'Сочинение',
             sub_title: '(350 - 500 слов)',
             path: '/easy_writer',
-            icon: EssayGenerationIcon
+            icon: EssayGenerationIcon,
           },
           {
             title: 'Эссе',
             sub_title: '(500 - 1000 слов)',
             path: '/easy_writer',
-            icon: SpellingIcon
+            icon: SpellingIcon,
           },
           {
             title: 'Доклад',
             sub_title: '(1000 - 2000 слов)',
             path: '/easy_writer',
-            icon: ReportIcon
+            icon: ReportIcon,
           },
           {
             title: 'Реферат',
             sub_title: '(1500 - 3000 слов)',
             path: '/easy_writer',
-            icon: TextGenerationIcon
+            icon: TextGenerationIcon,
           },
           {
             title: 'Все форматы',
-            path: '/easy_writer'
-          }
-        ]
+            path: '/easy_writer',
+          },
+        ],
       },
       {
         title: 'Дашборд',
         path: '/dashboard',
-        icon: DashboardIcon
+        icon: DashboardIcon,
       },
       {
         title: 'Telegram bot',
         path: 'https://t.me/bothub_chat_bot',
-        icon: TgCircleIconMultiLevelMenu
-      }
-    ]
+        icon: TgCircleIconMultiLevelMenu,
+      },
+    ],
   },
   {
     accordion_title: 'Цены',
@@ -121,33 +121,33 @@ export const menuItems = [
           {
             title: 'Elite — 30 000 000 Caps',
             icon: MultiLevelMenuStarIconElite,
-            description: 'Хватит, чтобы сгенерировать 12 000 страниц текста'
+            description: 'Хватит, чтобы сгенерировать 12 000 страниц текста',
           },
           {
             title: 'Deluxe — 7 500 000 Caps',
             icon: MultiLevelMenuStarIconDeluxe,
-            description: 'Хватит, чтобы сгенерировать 3 000 страниц текста'
+            description: 'Хватит, чтобы сгенерировать 3 000 страниц текста',
           },
           {
             title: 'Premium — 3 000 000 Caps',
             path: '',
             icon: MultiLevelMenuStarIconPremium,
-            description: 'Хватит, чтобы сгенерировать 1 200 страниц текста'
+            description: 'Хватит, чтобы сгенерировать 1 200 страниц текста',
           },
           {
             title: 'Basic — 1 000 000 Caps',
             path: '/#plans',
             icon: MultiLevelMenuStarIconBasic,
-            description: 'Хватит, чтобы сгенерировать 400 страниц текста'
-          }
-        ]
+            description: 'Хватит, чтобы сгенерировать 400 страниц текста',
+          },
+        ],
       },
       {
         title: 'На модели',
         path: '/models',
-        icon: GridVerticalIcon
-      }
-    ]
+        icon: GridVerticalIcon,
+      },
+    ],
   },
   {
     accordion_title: 'Модели',
@@ -160,23 +160,23 @@ export const menuItems = [
             title: 'o1',
             path: '/o1',
             icon: Gpt4Icon,
-            description: 'Самая последняя и cильная модель от OpenAI.'
+            description: 'Самая последняя и cильная модель от OpenAI.',
           },
           {
             title: 'o1-mini',
             path: '/o1-mini',
             icon: Gpt4Icon,
             description:
-              'Уменьшенная и более дешевая версия самой лучшей модели OpenAi, оптимизированная для более быстрого реагирования.'
+              'Уменьшенная и более дешевая версия самой лучшей модели OpenAi, оптимизированная для более быстрого реагирования.',
           },
           {
             title: 'GPT-4o',
             path: '/gpt-4o',
             icon: Gpt4Icon,
             description:
-              'Модель c высоким уровнем креативности, адаптированная для  написания человечных текстов. '
-          }
-        ]
+              'Модель c высоким уровнем креативности, адаптированная для  написания человечных текстов. ',
+          },
+        ],
       },
       {
         title: 'Claude',
@@ -186,24 +186,24 @@ export const menuItems = [
           {
             title: 'Elite',
             path: '#',
-            icon: ''
+            icon: '',
           },
           {
             title: 'Deluxe',
             path: '#',
-            icon: ''
+            icon: '',
           },
           {
             title: 'Premium',
             path: '#',
-            icon: ''
+            icon: '',
           },
           {
             title: 'Basic',
             path: '#',
-            icon: ''
-          }
-        ]
+            icon: '',
+          },
+        ],
       },
       {
         title: 'DeepSeek',
@@ -213,24 +213,24 @@ export const menuItems = [
           {
             title: 'Elite',
             path: '#',
-            icon: ''
+            icon: '',
           },
           {
             title: 'Deluxe',
             path: '#',
-            icon: ''
+            icon: '',
           },
           {
             title: 'Premium',
             path: '#',
-            icon: ''
+            icon: '',
           },
           {
             title: 'Basic',
             path: '#',
-            icon: ''
-          }
-        ]
+            icon: '',
+          },
+        ],
       },
       {
         title: 'Flux',
@@ -240,24 +240,24 @@ export const menuItems = [
           {
             title: 'Elite',
             path: '#',
-            icon: ''
+            icon: '',
           },
           {
             title: 'Deluxe',
             path: '#',
-            icon: ''
+            icon: '',
           },
           {
             title: 'Premium',
             path: '#',
-            icon: ''
+            icon: '',
           },
           {
             title: 'Basic',
             path: '#',
-            icon: ''
-          }
-        ]
+            icon: '',
+          },
+        ],
       },
       {
         title: 'Grok',
@@ -267,30 +267,30 @@ export const menuItems = [
           {
             title: 'Elite',
             path: '#',
-            icon: ''
+            icon: '',
           },
           {
             title: 'Deluxe',
             path: '#',
-            icon: ''
+            icon: '',
           },
           {
             title: 'Premium',
             path: '#',
-            icon: ''
+            icon: '',
           },
           {
             title: 'Basic',
             path: '#',
-            icon: ''
-          }
-        ]
+            icon: '',
+          },
+        ],
       },
       {
         title: 'Все модели',
-        path: '/models'
-      }
-    ]
+        path: '/models',
+      },
+    ],
   },
   {
     accordion_title: 'Для бизнеса',
@@ -304,34 +304,34 @@ export const menuItems = [
             path: '#',
             icon: MultiLevelMenuSetchelIcon,
             description:
-              'Тариф с приоритетной поддержкой, индивидуальным подходом и контролем расхода токенов по членам команды'
+              'Тариф с приоритетной поддержкой, индивидуальным подходом и контролем расхода токенов по членам команды',
           },
           {
             title: 'Соглашение о неразглашении',
             path: '/privacy-policy',
             icon: IncludeContextIcon,
             description:
-              'NDA в формате дополнительного соглашения для защиты ваших данных'
+              'NDA в формате дополнительного соглашения для защиты ваших данных',
           },
           {
             title: 'Партнерская программа',
             path: '#',
             icon: MultiLevelMenuReferalIcon,
-            description: 'Зарабатывайте на рекомендациях вместе с нами'
-          }
-        ]
+            description: 'Зарабатывайте на рекомендациях вместе с нами',
+          },
+        ],
       },
       {
         title: 'Инвесторам',
         path: '/bothub_founder',
-        icon: FavoriteProfileIcon
+        icon: FavoriteProfileIcon,
       },
       {
         title: 'Поддержка',
         path: 'https://t.me/bothub_chat/25302',
-        icon: MultiLevelMenuActionChatIcon
-      }
-    ]
+        icon: MultiLevelMenuActionChatIcon,
+      },
+    ],
   },
   {
     accordion_title: 'Материалы',
@@ -340,19 +340,19 @@ export const menuItems = [
       {
         title: 'API',
         path: '/api/documentation/ru',
-        icon: MultiLevelMenuGearIcon
+        icon: MultiLevelMenuGearIcon,
       },
       {
         title: 'Академия Bothub',
         path: 'https://academy.bothub.chat/',
-        icon: AcademyIcon
+        icon: AcademyIcon,
       },
       {
         title: 'Сообщество',
         path: 'https://t.me/bothub_chat',
-        icon: MultiLevelMenuPublicIcon
-      }
-    ]
+        icon: MultiLevelMenuPublicIcon,
+      },
+    ],
   },
   {
     accordion_title: 'Компания',
@@ -361,23 +361,23 @@ export const menuItems = [
       {
         title: 'О нас',
         path: '#',
-        icon: HappyRobotIcon
+        icon: HappyRobotIcon,
       },
       {
         title: 'Блог',
         path: '/about-us',
-        icon: MultiLevelMenuBlogCircleIcon
+        icon: MultiLevelMenuBlogCircleIcon,
       },
       {
         title: 'Новости AI',
         path: 'https://t.me/bothub',
-        icon: MultiLevelMenuBlogNewsIcon
+        icon: MultiLevelMenuBlogNewsIcon,
       },
       {
         title: 'Связаться',
         path: '/contacts',
-        icon: MultiLevelMenuActionChatIcon
-      }
-    ]
-  }
+        icon: MultiLevelMenuActionChatIcon,
+      },
+    ],
+  },
 ];

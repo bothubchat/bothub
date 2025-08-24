@@ -4,8 +4,12 @@ import { Button } from '@/ui/components/button';
 import { EnterIcon } from '@/ui/icons/enter';
 import { AttachIcon } from '@/ui/icons/attach';
 import { SendIcon } from '@/ui/icons/send';
+import { CloseIcon } from '@/ui/icons/close';
 import { Chip } from '@/ui/components/chip';
 import { VoiceIcon } from '@/ui/icons/voice';
+import { PauseIcon } from '@/ui/icons/pause';
+import { PlayIcon } from '@/ui/icons/play';
+import { ExclamationIcon } from '@/ui/icons/exclamation';
 import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
 
@@ -41,6 +45,7 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
   }};
   width: 100%;
   padding: 14px 20px;
+  max-width: ${({ theme }) => theme.dashboard.chat.containerWidth};
   box-sizing: border-box;
   overflow: visible;
   cursor: ${({ $disabled, $textAreaDisabled, $voiceRecording }) => {
@@ -70,9 +75,20 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
 
 export const InputMessageContent = styled.div`
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
   gap: 14px;
   width: 100%;
+`;
+
+export const InputMessageBottomGroup = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
+
+export const InputMessageBottom = styled(InputMessageBottomGroup)`
+  justify-content: space-between;
 `;
 
 export const InputMessageUploadFile = styled.div`
@@ -80,7 +96,7 @@ export const InputMessageUploadFile = styled.div`
 `;
 
 export const InputMessageUploadFileInput = styled.input.attrs({
-  id: 'inputMessageUploadFileInput'
+  id: 'inputMessageUploadFileInput',
 })`
   display: none;
 `;
@@ -89,7 +105,7 @@ export const InputMessageUploadFileButton = styled(Button).attrs({
   variant: 'secondary',
   component: 'label',
   htmlFor: 'inputMessageUploadFileInput',
-  children: <AttachIcon />
+  children: <AttachIcon />,
 })`
   flex-shrink: 0;
   user-select: none;
@@ -98,8 +114,8 @@ export const InputMessageUploadFileButton = styled(Button).attrs({
 export const InputMessageMain = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: flex-start;
-  justify-content: center;
   gap: 14px;
   width: 100%;
 `;
@@ -115,6 +131,38 @@ export const InputMessageFiles = styled.div`
 
 export const InputMessageFile = styled(Chip).attrs({ variant: 'input' })``;
 
+export const InputMessageVoiceFiles = styled(InputMessageFiles)`
+  width: 100%;
+`;
+
+export const InputMessageVoiceTrack = styled.div`
+  display: flex;
+  gap: 14px;
+  align-items: center;
+`;
+
+export const InputMessageConcatenateWarning = styled(Typography).attrs(
+  ({ theme, children }) => ({
+    variant: 'body-m-regular',
+    children: (
+      <>
+        <ExclamationIcon fill={theme.colors.accent.primaryLight} />
+        {children}
+      </>
+    ),
+  }),
+)`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: ${({ theme }) => theme.colors.accent.primaryLight};
+`;
+
+export const InputMessageVoiceFileDelete = styled(Button).attrs({
+  variant: 'text',
+  children: <CloseIcon />,
+})``;
+
 export interface InputMessageTextAreaProps {
   $disabled: boolean;
 }
@@ -123,6 +171,7 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   display: flex;
   height: auto;
   width: 100%;
+  min-height: 22px;
   max-height: 270px;
   background: none;
   outline: none;
@@ -135,7 +184,7 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
 
     return theme.colors.base.white;
   }};
-
+  flex-shrink: 0;
   overflow: auto;
   scrollbar-width: none;
   padding: 0px;
@@ -167,9 +216,67 @@ export const InputMessageSendButton = styled(Button)`
   }
 `;
 
-export const InputMessageSendIcon = SendIcon;
+export const InputMessageVoicePauseButton = styled(Button).attrs({
+  variant: 'text',
+  children: <PauseIcon />,
+})`
+  padding: 10px;
+  margin-left: 10px;
+`;
 
-export const InputMessageVoiceIcon = VoiceIcon;
+export const InputMessageVoicePlayButton = styled(
+  InputMessageVoicePauseButton,
+).attrs({
+  children: <PlayIcon />,
+})``;
+
+export interface InputMessageVoiceButtonProps {
+  $isRecording?: boolean;
+  disabled?: boolean;
+}
+
+export const InputMessageVoiceButton = styled(
+  InputMessageSendButton,
+).attrs<InputMessageVoiceButtonProps>(({ theme, disabled }) => ({
+  variant: 'text',
+  startIcon: <VoiceIcon />,
+  iconFill: disabled
+    ? theme.colors.grayScale.gray1
+    : theme.bright
+      ? theme.default.colors.base.black
+      : theme.colors.base.white,
+  disableHoverColor: true,
+}))`
+  margin-inline: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: ${({ theme, $isRecording }) =>
+    $isRecording ? theme.colors.critic : 'transparent'};
+  position: relative;
+  z-index: 0;
+  ${({ theme, $isRecording }) =>
+    $isRecording &&
+    css`
+      svg path {
+        fill: ${theme.default.colors.base.white} !important;
+      }
+    `}
+  &:before {
+    content: '';
+    height: 140%;
+    width: 140%;
+    position: absolute;
+    top: -20%;
+    left: -20%;
+    background-color: ${({ theme }) => theme.colors.critic};
+    opacity: ${({ $isRecording }) => ($isRecording ? 1 : 0)};
+    filter: blur(18px);
+    z-index: -1;
+    transition: opacity 300ms ease-out;
+  }
+`;
+
+export const InputMessageSendIcon = SendIcon;
 
 export const InputMessageVoiceRecord = styled.div`
   display: flex;
@@ -198,7 +305,7 @@ export const InputMessageVoiceRecordDot = styled.span`
 `;
 
 export const InputMessageVoiceRecordTimeText = styled(Typography).attrs({
-  variant: 'body-s-medium'
+  variant: 'body-s-medium',
 })`
   cursor: default;
 `;
@@ -214,14 +321,14 @@ export const InputMessageToggleSendStyled = styled.div`
     `,
     mobile: css`
       display: none;
-    `
+    `,
   })}
 `;
 
 export const InputMessageToggleSendButton = styled(Button).attrs({
   variant: 'text',
   startIcon: <EnterIcon />,
-  iconSize: 24
+  iconSize: 24,
 })`
   svg {
     g path {

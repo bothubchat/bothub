@@ -4,7 +4,7 @@ import { adaptive } from '@/ui/adaptive';
 import {
   MessageColor,
   MessageTimestampPosition,
-  MessageVariant
+  MessageVariant,
 } from '../types';
 import { isBright } from '@/ui/utils';
 
@@ -12,10 +12,11 @@ export interface TimestampProps {
   $timestampPosition?: MessageTimestampPosition;
 }
 export const TimestampStyled = styled.div<TimestampProps>`
-  width: fit-content;
-  height: fit-content;
   display: flex;
   justify-content: flex-end;
+  grid-area: timestamp;
+  text-align: right;
+  width: 100%;
 
   ${({ $timestampPosition }) => {
     switch ($timestampPosition) {
@@ -36,7 +37,7 @@ export interface TimestampTextProp {
   $variant: MessageVariant;
 }
 export const TimestampText = styled(Typography).attrs({
-  variant: 'body-s-regular'
+  variant: 'body-s-regular',
 })<TimestampTextProp>`
   color: ${({ theme, $color, $variant }) => {
     if ($variant === 'assistant') {
@@ -68,6 +69,6 @@ export const TimestampText = styled(Typography).attrs({
     `,
     mobile: css`
       font-size: 10px;
-    `
+    `,
   })};
 `;

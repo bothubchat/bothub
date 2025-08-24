@@ -13,8 +13,8 @@ export const GearIcon = icon(({ ...props }) => {
       <IconConsumer>
         {(
           { fill = theme.colors.grayScale.gray1 } = {
-            fill: theme.colors.grayScale.gray1
-          }
+            fill: theme.colors.grayScale.gray1,
+          },
         ) => (
           <>
             <mask

@@ -6,7 +6,6 @@ import {
   CheckboxStyled,
   CheckboxBlock,
   CheckboxBlockSkeleton,
-  CheckboxHalfCheckedSquare
 } from './styled';
 import { useTooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
@@ -18,11 +17,12 @@ export interface CheckboxProps
   className?: string;
   displayFlex?: boolean;
   size?: number;
-  halfChecked?: boolean;
   label?: string | boolean | React.ReactNode;
   rowReverse?: boolean;
   skeleton?: boolean;
   fullWidth?: boolean;
+  checkedIcon?: React.ReactNode;
+  checkedColor?: string;
   dataTest?: string;
   onValueChange?: CheckboxValueChangeEventHandler;
   onPointerLeave?: React.PointerEventHandler<HTMLLabelElement>;
@@ -33,10 +33,11 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   label,
   size = 20,
   displayFlex = false,
-  halfChecked = false,
   skeleton = false,
   rowReverse,
   fullWidth = false,
+  checkedIcon,
+  checkedColor,
   dataTest,
   onValueChange,
   onPointerLeave,
@@ -49,7 +50,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       props.onChange?.(event);
       onValueChange?.(event.target.checked);
     },
-    [props.onChange, onValueChange]
+    [props.onChange, onValueChange],
   );
   return (
     <CheckboxStyled
@@ -67,15 +68,12 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         <>
           <CheckboxInput
             {...props}
+            $checkedColor={checkedColor}
             type="checkbox"
             onChange={handleChange}
           />
-          <CheckboxBlock $size={size}>
-            {!props.checked && halfChecked ? (
-              <CheckboxHalfCheckedSquare />
-            ) : (
-              <CheckboxCheckedIcon size={size} />
-            )}
+          <CheckboxBlock $checkedColor={checkedColor}>
+            {checkedIcon || <CheckboxCheckedIcon />}
           </CheckboxBlock>
         </>
       )}

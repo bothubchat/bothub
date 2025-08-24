@@ -7,7 +7,7 @@ import {
   HeaderRight,
   HeaderStyled,
   HeaderContainerContent,
-  HeaderCenter
+  HeaderCenter,
 } from './styled';
 import { HeaderMenu, HeaderMenuToggleButton } from './menu';
 import { HeaderVariant } from './types';
@@ -58,7 +58,7 @@ export const Header: React.FC<HeaderProps> = ({
         onOpen?.(open);
       }
     },
-    [onOpen]
+    [onOpen],
   );
 
   const [isMenuOpen, setIsMenuOpen] =
@@ -147,3 +147,4 @@ export * from './menu';
 export * from './types';
 export * from './context';
 export * from './multi-level-menu';
+export * from './menu-nav';

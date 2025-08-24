@@ -1,4 +1,4 @@
-import { StoryObj, Meta } from '@storybook/react';
+import { StoryObj, Meta } from '@storybook/react-vite';
 import { ThemeSchemes } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 
@@ -10,12 +10,12 @@ export const Basic: ThemeSchemesStory = {
     customTitle: 'Пользовательская тема',
     standardTitle: 'Стандартная тема',
     colorfulTitle: 'Цветная тема',
-    activeScheme: 'iris'
-  }
+    activeScheme: 'iris',
+  },
 };
 
 export default {
   title: 'Components/ThemeSchemes',
   component: ThemeSchemes,
-  decorators: [StoryDecorator()]
+  decorators: [StoryDecorator()],
 } as ThemeSchemesMeta;

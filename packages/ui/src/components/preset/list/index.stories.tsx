@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
   PresetCard,
@@ -8,7 +8,7 @@ import {
   PresetCardDeleteAction,
   PresetCardEditAction,
   PresetCardFavoriteAction,
-  Presets
+  Presets,
 } from '@/ui/components/preset';
 
 export type PresetsMeta = Meta<typeof Presets>;
@@ -22,7 +22,7 @@ export const Basic: PresetsStory = {
         key={index}
         name="Режим разработчика"
         {...(index % 3 === 0 && {
-          color: '#F29C1C'
+          color: '#F29C1C',
         })}
         actions={
           <PresetCardActions>
@@ -44,8 +44,8 @@ export const Basic: PresetsStory = {
           )
         }
       />
-    ))
-  }
+    )),
+  },
 };
 
 export default {
@@ -55,13 +55,13 @@ export default {
   argTypes: {
     add: {
       table: {
-        disable: true
-      }
+        disable: true,
+      },
     },
     actions: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as PresetsMeta;

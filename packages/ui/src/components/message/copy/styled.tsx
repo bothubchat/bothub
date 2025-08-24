@@ -6,7 +6,7 @@ export interface MessageCopyActionStyledProps {
 }
 
 export const MessageCopyActionStyled = styled(
-  MessageAction
+  MessageAction,
 )<MessageCopyActionStyledProps>`
   ${({ theme, $focus }) =>
     $focus &&

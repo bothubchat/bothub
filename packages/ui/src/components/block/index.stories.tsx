@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Block, BlockToolbar, BlockToolbarButtons } from '.';
 import { Typography } from '@/ui/components/typography';
@@ -19,15 +19,15 @@ export const Basic: BlockStory = {
       >
         Content
       </Typography>
-    ))
-  }
+    )),
+  },
 };
 
 export const Title: BlockStory = {
   args: {
     ...Basic.args,
-    title: 'Title'
-  }
+    title: 'Title',
+  },
 };
 
 export const Toolbar: BlockStory = {
@@ -39,15 +39,15 @@ export const Toolbar: BlockStory = {
           <Button startIcon={<Plus2Icon />}>Button</Button>
         </BlockToolbarButtons>
       </BlockToolbar>
-    )
-  }
+    ),
+  },
 };
 
 export const Rectangular: BlockStory = {
   args: {
     ...Toolbar.args,
-    variant: 'rectangular'
-  }
+    variant: 'rectangular',
+  },
 };
 
 export default {
@@ -57,8 +57,8 @@ export default {
   argTypes: {
     children: {
       table: {
-        disable: true
-      }
-    }
-  }
+        disable: true,
+      },
+    },
+  },
 } as BlockMeta;

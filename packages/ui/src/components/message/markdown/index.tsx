@@ -1,8 +1,9 @@
 import React, { forwardRef, useMemo } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { useMessage } from '@/ui/components/message/context';
 import {
   MessageComponentsProps,
-  MessageParagraph
+  MessageParagraph,
 } from '@/ui/components/message/components';
 import { MessageMarkdownLine, MessageMarkdownStyled } from './styled';
 import { markdownComponents } from './markdown-components';
@@ -21,9 +22,7 @@ function formatString(string: string) {
 export interface MessageMarkdownProps {
   children: string;
   components?: MessageComponentsProps;
-  componentsOverride?: React.ComponentProps<
-    typeof MessageMarkdownLine
-  >['components'];
+  componentsOverride?: React.ComponentProps<typeof ReactMarkdown>['components'];
   disableTyping?: boolean;
   forceMarkdown?: boolean;
 }
@@ -35,9 +34,9 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
       components = {},
       componentsOverride = {},
       disableTyping = false,
-      forceMarkdown = false
+      forceMarkdown = false,
     },
-    ref
+    ref,
   ) => {
     const { typing, variant, color } = useMessage();
     const isDisabled = forceMarkdown ? false : variant === 'user';
@@ -50,9 +49,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
     }, [children, isDisabled]);
 
     const { remarkPlugins, rehypePlugins, singleDollarTextMath } =
-      useMarkdownPlugins({
-        children: formattedChildren
-      });
+      useMarkdownPlugins({ children: formattedChildren });
 
     const markdownNode = useMemo(() => {
       const blocks = formattedChildren.split('\n\n');
@@ -80,14 +77,17 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
               $typing={disableTyping ? false : typing}
               $color={color}
               $singleDollarTextMath={singleDollarTextMath}
-              key={`${rehypePlugins.length}-${remarkPlugins.length}-${index}`}
-              // @ts-ignore
-              remarkPlugins={remarkPlugins}
-              // @ts-ignore
-              rehypePlugins={rehypePlugins}
-              components={markdownComponents(components, componentsOverride)}
             >
-              {block}
+              <ReactMarkdown
+                key={`${rehypePlugins.length}-${remarkPlugins.length}-${index}`}
+                // @ts-ignore
+                remarkPlugins={remarkPlugins}
+                // @ts-ignore
+                rehypePlugins={rehypePlugins}
+                components={markdownComponents(components, componentsOverride)}
+              >
+                {block}
+              </ReactMarkdown>
             </MessageMarkdownLine>
           ))}
         </MessageMarkdownStyled>
@@ -98,7 +98,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
       singleDollarTextMath,
       remarkPlugins,
       rehypePlugins,
-      ref
+      ref,
     ]);
 
     return (
@@ -114,5 +114,5 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
         {!isDisabled && typeof children === 'string' && markdownNode}
       </>
     );
-  }
+  },
 );

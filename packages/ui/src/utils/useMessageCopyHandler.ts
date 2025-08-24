@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { getTgMarkdown } from './getTgMarkdown';
 
 const shouldProcessElement = (
-  element: Element
+  element: Element,
 ): element is Element & {
   style: HTMLElement['style'];
 } => {
@@ -17,7 +17,7 @@ const excludedProperties = [
   'color',
   'background',
   'background-color',
-  'font-size'
+  'font-size',
 ];
 
 export const buildOnCopy = (copyTgMarkdown?: boolean) =>
@@ -108,19 +108,21 @@ export const buildOnCopy = (copyTgMarkdown?: boolean) =>
     e.stopPropagation();
   };
 
-export const useMessageCopyHandler = <Ref extends React.RefObject<HTMLElement>>(
+export const useMessageCopyHandler = <
+  Ref extends React.RefObject<HTMLElement | null>,
+>(
   ref: Ref,
-  copyTgMarkdown: boolean = true
+  copyTgMarkdown: boolean = true,
 ): void => {
   useEffect(() => {
     const onCopy = buildOnCopy(copyTgMarkdown);
     ref.current?.addEventListener('copy', onCopy, {
-      capture: false // listen bubbling phase
+      capture: false, // listen bubbling phase
     });
 
     return () => {
       ref.current?.removeEventListener('copy', onCopy, {
-        capture: false
+        capture: false,
       });
     };
   }, [copyTgMarkdown]);
