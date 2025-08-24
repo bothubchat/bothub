@@ -43,10 +43,6 @@ export const CheckboxStyled = styled.label<CheckboxStyledProps>`
 
 export const CheckboxBlock = styled.span<CheckedColor>`
   display: inline-flex;
-  ${({ $size }) => css`
-    width: ${`${$size}px`};
-    height: ${`${$size}px`};
-  `}
   align-items: center;
   justify-content: center;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
@@ -100,9 +96,6 @@ export const CheckboxInput = styled.input<CheckedColor>`
     }}
     svg {
       visibility: visible;
-    }
-    ${CheckboxHalfCheckedSquare} {
-      visibility: hidden;
     }
   }
   &:checked:not(:disabled) + ${CheckboxBlock}:hover {

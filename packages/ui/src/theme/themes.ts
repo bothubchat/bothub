@@ -34,8 +34,6 @@ export const defaultTheme: DefaultTheme = {
       enterprise20:
         'linear-gradient(90deg, rgba(110, 26, 255, 0.2) -0.39%, rgba(217, 103, 255, 0.2) 99.61%)',
       elite: 'linear-gradient(90deg, #1C64F2 0%, #D41CF2 100%)',
-      enterprise20:
-        'linear-gradient(90deg, rgba(110, 26, 255, 0.2) -0.39%, rgba(217, 103, 255, 0.2) 99.61%)',
       elite20:
         'linear-gradient(90deg, rgba(28,100,242,0.2) 0%, rgba(212,28,242,0.2) 100%)',
     },
