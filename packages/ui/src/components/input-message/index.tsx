@@ -42,6 +42,7 @@ import {
   getPreviewUrlForFile,
   formatSeconds,
   isFileTypeAccepted,
+  isMobileDevice,
 } from './utils';
 import { AttachFileIcon } from '@/ui/icons/attach-file';
 import { useTheme } from '@/ui/theme';
@@ -282,6 +283,12 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       event.stopPropagation();
+
+      const isMobile = isMobileDevice();
+
+      if (isMobile && event.key === 'Enter') {
+        return;
+      }
 
       const newLineKey = useAlternativeKey ? 'enter' : 'ctrl/shift+enter';
 
