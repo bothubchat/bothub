@@ -1,6 +1,6 @@
 import { css, styled } from 'styled-components';
 import { getTypographyStyles } from '@/ui/components/typography/styled';
-import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
+import { ArrowDownIcon, ArrowNarrowLeftIcon } from '@/ui/icons';
 
 export const Container = styled.div`
   display: inline-flex;
@@ -31,7 +31,7 @@ export const PaginatorItem = styled.button.attrs<{
     $disabled &&
     css`
       pointer-events: none;
-    `})}
+    `}
 `;
 
 export const ControlButton = styled.button.attrs<{
@@ -56,4 +56,14 @@ export const ArrowIcon = styled(ArrowNarrowLeftIcon)`
 
 export const ArrowNextIcon = styled(ArrowIcon)`
   transform: rotate(180deg);
+`;
+
+export const ArrowCaretIcon = styled(ArrowDownIcon)`
+  top: 2px;
+  position: relative;
+  transform: rotate(90deg);
+`;
+
+export const ArrowCaretNextIcon = styled(ArrowCaretIcon)`
+  transform: rotate(-90deg);
 `;

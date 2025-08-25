@@ -512,6 +512,64 @@ export const Radio: SelectFieldStory = {
     );
   },
 };
+export const Checkbox: SelectFieldStory = {
+  args: {
+    searchSampleIcon: true,
+    enableInput: true,
+    inputType: 'search',
+  },
+  render(args) {
+    const [data, setData] = useState([
+      {
+        id: 'mah',
+        type: 'checkbox' as SelectFieldItemType,
+        email: 'mashavolk@gmail.com',
+        selected: false,
+      },
+      {
+        id: 'sah',
+        type: 'checkbox' as SelectFieldItemType,
+        label: 'Александра Эрурин',
+        email: 'fishingqueen@gmail.com',
+        selected: false,
+      },
+      {
+        id: 'tim',
+        type: 'checkbox' as SelectFieldItemType,
+        label: 'Тимур Майнкрафтович',
+        email: 'iloveminecraft69@gmail.com',
+        selected: false,
+      },
+      {
+        id: 'max',
+        type: 'checkbox' as SelectFieldItemType,
+        label: 'Максим Кабан',
+        email: 'maxbizzarekaban9000@gmail.com',
+        selected: false,
+      },
+    ]);
+
+    const onOptionClick = (item: SelectFieldDataItem) => {
+      const selectedItem = item as SelectFieldDataItemComplex;
+
+      setData((prevData) =>
+        prevData.map((dataItem) =>
+          dataItem.id === selectedItem.id
+            ? { ...dataItem, selected: !dataItem.selected }
+            : dataItem,
+        ),
+      );
+    };
+
+    return (
+      <SelectField
+        {...args}
+        data={data}
+        onOptionClick={onOptionClick}
+      />
+    );
+  },
+};
 
 export const WithTabs: SelectFieldStory = {
   args: {
@@ -578,6 +636,43 @@ export const WithSearch: SelectFieldStory = {
     search: true,
     searchPlaceholder: 'Поиск...',
     contentHeight: 300,
+  },
+};
+
+export const CheckboxGroup: SelectFieldStory = {
+  args: {
+    data: [
+      {
+        id: 'ChatGPT',
+        type: 'checkbox-group',
+        label: 'ChatGPT',
+        icon: <Gpt35Icon />,
+
+        data: [
+          {
+            type: 'checkbox',
+            label: 'o1-mini',
+            selected: false,
+          },
+          {
+            type: 'checkbox',
+            label: 'o3-mini',
+            selected: false,
+          },
+          {
+            type: 'checkbox',
+            label: 'o2-mini',
+            selected: false,
+          },
+        ],
+      },
+      {
+        icon: <DallEIcon />,
+        value: 'dall-e',
+        type: 'checkbox',
+        label: 'DALL-E',
+      },
+    ],
   },
 };
 

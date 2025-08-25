@@ -9,10 +9,11 @@ export interface CheckboxStyledProps {
   $disabled: boolean;
   $fullWidth: boolean;
   $rowReverse?: boolean;
+  $displayFlex?: boolean;
 }
 
 export const CheckboxStyled = styled.label<CheckboxStyledProps>`
-  display: inline-flex;
+  display: ${({ $displayFlex }) => ($displayFlex ? 'flex' : 'inline-flex')};
   align-items: center;
   gap: 8px;
   cursor: pointer;
@@ -42,8 +43,7 @@ export const CheckboxStyled = styled.label<CheckboxStyledProps>`
 
 export const CheckboxBlock = styled.span<CheckedColor>`
   display: inline-flex;
-  width: 20px;
-  height: 20px;
+  align-items: center;
   justify-content: center;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray1};
@@ -62,9 +62,11 @@ export const CheckboxBlock = styled.span<CheckedColor>`
   }
 `;
 
-export const CheckboxBlockSkeleton = styled(Skeleton)`
-  width: 20px;
-  height: 20px;
+export const CheckboxBlockSkeleton = styled(Skeleton)<{ $size: number }>`
+  ${({ $size }) => css`
+    width: ${`${$size}px`};
+    height: ${`${$size}px`};
+  `}
   border-radius: 2px;
 `;
 
@@ -76,7 +78,7 @@ export const CheckboxLabel = styled(Typography).attrs({ variant: 'input-sm' })`
   cursor: inherit;
 `;
 
-export const CheckboxCheckedIcon = styled(CheckSmallIcon).attrs({ size: 20 })``;
+export const CheckboxCheckedIcon = styled(CheckSmallIcon)``;
 
 export const CheckboxInput = styled.input<CheckedColor>`
   width: 0;

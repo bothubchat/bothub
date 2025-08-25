@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react';
+import { SelectFieldDataItem } from '@/ui/components/select-field/types';
 import {
-  SelectFieldData,
-  SelectFieldDataItem,
-  SelectFieldSize,
-} from '@/ui/components/select-field/types';
-import {
+  SelectFieldCheckBox,
+  SelectFieldCheckBoxLeftSide,
+  SelectFieldCheckBoxMail,
+  SelectFieldCheckBoxName,
+  SelectFieldCheckBoxWrapper,
   SelectFieldDivider,
   SelectFieldEmpty,
   SelectFieldEmptyText,
@@ -29,19 +30,9 @@ import {
 } from '../select-field-option/styled';
 import { SelectFieldOption } from '../select-field-option';
 import { StarsIcon } from '@/ui/icons';
-
-export type SelectFieldOptionClickEventHandler = (
-  item: SelectFieldDataItem,
-) => unknown;
-
-export interface SelectFieldOptionsProps extends React.ComponentProps<'div'> {
-  value: SelectFieldDataItem | SelectFieldDataItem[] | null;
-  data: SelectFieldData;
-  size: SelectFieldSize;
-  disableSelect?: boolean;
-  selectedColor?: string;
-  onOptionClick?: SelectFieldOptionClickEventHandler;
-}
+import { Checkbox } from '@/ui/components/checkbox';
+import { SelectFieldCheckboxGroupOption } from '../checkbox-group';
+import { SelectFieldOptionsProps } from '../types';
 
 export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
   value,
@@ -49,11 +40,11 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
   size,
   disableSelect = false,
   selectedColor,
+  onGroupCheckboxClick,
   onOptionClick,
   ...props
 }) => {
   const theme = useTheme();
-
   const handleOptionClick = useCallback(
     (item: SelectFieldDataItem) => {
       onOptionClick?.(item);
@@ -235,6 +226,45 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           );
         }
 
+        if (item.type === 'checkbox') {
+          const onClick = (e: React.MouseEvent) => {
+            e.preventDefault();
+            handleOptionClick(item);
+          };
+          const key = item.id ?? item.value ?? `checkbox-${index}`;
+          const includeLabel = Boolean(item.label);
+          return (
+            <SelectFieldCheckBox
+              onClick={onClick}
+              key={key}
+            >
+              <SelectFieldCheckBoxWrapper>
+                <SelectFieldCheckBoxLeftSide>
+                  {item.icon && (
+                    <IconProvider
+                      size={16}
+                      fill={theme.colors.base.white}
+                    >
+                      {item.icon}
+                    </IconProvider>
+                  )}
+                  <SelectFieldCheckBoxName>
+                    {includeLabel ? item.label : item.email}
+                  </SelectFieldCheckBoxName>
+                </SelectFieldCheckBoxLeftSide>
+
+                <Checkbox
+                  displayFlex
+                  checked={item.selected}
+                  size={16}
+                />
+              </SelectFieldCheckBoxWrapper>
+              {includeLabel && (
+                <SelectFieldCheckBoxMail>{item.email}</SelectFieldCheckBoxMail>
+              )}
+            </SelectFieldCheckBox>
+          );
+        }
         if (item.type === 'collapse' && item.data) {
           const props = {
             size,
@@ -281,6 +311,23 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
             <SelectFieldCollapseOption
               key={key}
               {...props}
+            />
+          );
+        }
+
+        if (item.type === 'checkbox-group' && item.data) {
+          const key = item.id ?? item.value ?? `checkbox-group-${index}`;
+          return (
+            <SelectFieldCheckboxGroupOption
+              SelectFieldOptions={SelectFieldOptions}
+              data={item.data ?? []}
+              size={size}
+              value={value}
+              icon={item.disabled ? item.end : undefined}
+              onGroupCheckboxClick={onGroupCheckboxClick}
+              onOptionClick={onOptionClick}
+              key={key}
+              item={item}
             />
           );
         }

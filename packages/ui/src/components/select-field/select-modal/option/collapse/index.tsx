@@ -13,7 +13,7 @@ import {
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
-import { SelectFieldOptionClickEventHandler } from '../list';
+import { SelectFieldOptionClickEventHandler } from '../types';
 
 export interface SelectFieldCollapseOptionProps
   extends React.PropsWithChildren,

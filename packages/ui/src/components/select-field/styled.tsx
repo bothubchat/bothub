@@ -6,7 +6,7 @@ import { Chip } from '@/ui/components/chip';
 import { LoaderCircularGradientIcon } from '@/ui/icons/loader-circular-gradient';
 import { SearchCircleIcon } from '@/ui/icons/search-circle';
 import { Button } from '@/ui/components/button';
-import { CloseIcon } from '@/ui/icons/close';
+import { CloseIcon, SearchSimpleIcon } from '@/ui/icons';
 
 export interface SelectFieldStyledProps {
   $fullWidth: boolean;
@@ -166,6 +166,19 @@ export interface SelectFieldSearchIconProps {
 }
 
 export const SelectFieldSearchIcon = styled(SearchCircleIcon).attrs({
+  size: 16,
+})<SelectFieldSearchIconProps>`
+  path {
+    fill: ${({ theme, $focus }) => {
+      if ($focus) {
+        return theme.colors.base.white;
+      }
+
+      return theme.colors.grayScale.gray1;
+    }};
+  }
+`;
+export const SelectFieldSearchSimpleIcon = styled(SearchSimpleIcon).attrs({
   size: 16,
 })<SelectFieldSearchIconProps>`
   path {
