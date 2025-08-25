@@ -6,8 +6,7 @@ import { Chip } from '@/ui/components/chip';
 import { LoaderCircularGradientIcon } from '@/ui/icons/loader-circular-gradient';
 import { SearchCircleIcon } from '@/ui/icons/search-circle';
 import { Button } from '@/ui/components/button';
-import { CloseIcon } from '@/ui/icons/close';
-import { SearchSimpleIcon } from '@/ui/icons';
+import { CloseIcon, SearchSimpleIcon } from '@/ui/icons';
 
 export interface SelectFieldStyledProps {
   $fullWidth: boolean;

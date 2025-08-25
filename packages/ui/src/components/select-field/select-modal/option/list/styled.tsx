@@ -88,7 +88,7 @@ export const SelectFieldRadio = styled.div<{
       `};
   }
 
-  &:hover:before {
+  &:hover::before {
     background-color: ${({ theme }) => theme.colors.accent.primary};
   }
 

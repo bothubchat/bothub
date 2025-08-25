@@ -1,7 +1,6 @@
 import { css, styled } from 'styled-components';
 import { getTypographyStyles } from '@/ui/components/typography/styled';
-import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
-import { ArrowDownIcon } from '@/ui/icons';
+import { ArrowDownIcon, ArrowNarrowLeftIcon } from '@/ui/icons';
 
 export const Container = styled.div`
   display: inline-flex;

@@ -64,9 +64,7 @@ export const SelectFieldCheckboxGroupOption = ({
 
   const handleCheckboxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (onGroupCheckboxClick) {
-      onGroupCheckboxClick(item);
-    }
+    onGroupCheckboxClick?.(item);
   };
 
   let isDisabled: boolean;
@@ -89,7 +87,7 @@ export const SelectFieldCheckboxGroupOption = ({
   const shouldShow = data.length > MAX_SHOW_ONCE;
   const visibleData = showAll ? data : data.slice(0, MAX_SHOW_ONCE);
 
-  const selectedText = () => {
+  const getSelectedText = () => {
     if (!data || data.length === 0) {
       return null;
     }
@@ -142,7 +140,7 @@ export const SelectFieldCheckboxGroupOption = ({
               {label}
             </SelectFieldCheckboxGroupOptionHeadText>
             <SelectFieldCheckboxGroupOptionHeadCounter>
-              {selectedText() !== null && `(${selectedText()})`}
+              {getSelectedText() !== null && `(${getSelectedText()})`}
             </SelectFieldCheckboxGroupOptionHeadCounter>
           </SelectFieldCheckboxGroupOptionHeadTextWrapper>
         </SelectFieldCheckboxGroupOptionHeadLeftSide>
