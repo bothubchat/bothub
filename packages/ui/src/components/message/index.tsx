@@ -170,15 +170,22 @@ export const Message: React.FC<MessageProps> = ({
         html.innerHTML,
         'text/html',
       );
+
       const codeNodes = htmlStr.getElementsByTagName('code');
+
       for (const codeNode of codeNodes) {
         const el = htmlStr.createElement('span');
         el.innerText = codeNode.innerText;
         codeNode.replaceWith(el);
       }
+
+      const wrapper = htmlStr.createElement('div');
+      wrapper.style.whiteSpace = 'pre-wrap';
+      wrapper.innerHTML = htmlStr.body.innerHTML;
+
       const clipboardItem = new ClipboardItem({
         'text/plain': new Blob([content!], { type: 'text/plain' }),
-        'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' }),
+        'text/html': new Blob([wrapper.outerHTML], { type: 'text/html' }),
       });
       return [clipboardItem];
     },
