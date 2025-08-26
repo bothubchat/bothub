@@ -31,6 +31,7 @@ export type UploadedFileProps = {
         action: () => void;
       }
     | (() => void);
+  bottomContent?: React.ReactNode;
   onPause?: () => void;
   onResume?: () => void;
   onRetry?: () => void;
@@ -46,6 +47,7 @@ export const UploadedFile = forwardRef<HTMLDivElement, UploadedFileProps>(
       errorLabel,
       className,
       onDelete,
+      bottomContent,
       onPause,
       onResume,
       onRetry,
@@ -169,6 +171,8 @@ export const UploadedFile = forwardRef<HTMLDivElement, UploadedFileProps>(
             </S.UploadedFileProgressValue>
           )}
         </S.UploadedFileFooter>
+
+        {bottomContent}
       </S.UploadedFileStyled>
     );
   },
