@@ -20,12 +20,6 @@ export const UploadedFileStyled = styled.div<
   border-radius: 20px;
   transition: height 0.2s;
 
-  ${({ $fullWidth }) =>
-    $fullWidth &&
-    css`
-      width: 100%;
-    `}
-
   ${({ $isPrimary, theme }) =>
     $isPrimary
       ? css`
@@ -44,6 +38,12 @@ export const UploadedFileStyled = styled.div<
           border: 1px solid ${theme.colors.grayScale.gray2};
           background-color: ${theme.colors.base.black};
         `}
+
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    css`
+      width: 100%;
+    `}
 `;
 
 export const UploadedFileHeader = styled.div`

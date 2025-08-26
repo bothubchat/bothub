@@ -10,7 +10,6 @@ import { UploadedFileStatus } from './types';
 export type Primary = {
   variant?: 'primary';
   sizeInBytes: number;
-  fullWidth?: boolean;
 };
 
 export type Secondary = {
@@ -32,6 +31,7 @@ export type UploadedFileProps = {
       }
     | (() => void);
   bottomContent?: React.ReactNode;
+  fullWidth?: boolean;
   onPause?: () => void;
   onResume?: () => void;
   onRetry?: () => void;
@@ -48,6 +48,7 @@ export const UploadedFile = forwardRef<HTMLDivElement, UploadedFileProps>(
       className,
       onDelete,
       bottomContent,
+      fullWidth,
       onPause,
       onResume,
       onRetry,
@@ -61,7 +62,7 @@ export const UploadedFile = forwardRef<HTMLDivElement, UploadedFileProps>(
     return (
       <S.UploadedFileStyled
         ref={ref}
-        $fullWidth={isPrimary ? props.fullWidth : undefined}
+        $fullWidth={fullWidth}
         $isPrimary={isPrimary}
         className={className}
       >
