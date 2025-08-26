@@ -15,14 +15,16 @@ export const UploadedFileStyled = styled.div<
     $fullWidth?: boolean;
   } & IsPrimary
 >`
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  transition: height 0.2s;
+
   ${({ $fullWidth }) =>
     $fullWidth &&
     css`
       width: 100%;
     `}
-  display: flex;
-  flex-direction: column;
-  border-radius: 20px;
 
   ${({ $isPrimary, theme }) =>
     $isPrimary
