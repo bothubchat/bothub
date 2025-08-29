@@ -74,6 +74,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
         <MessageMarkdownStyled ref={ref}>
           {parsedBlocks.map((block, index) => (
             <MessageMarkdownLine
+              key={index}
               $typing={disableTyping ? false : typing}
               $color={color}
               $singleDollarTextMath={singleDollarTextMath}
