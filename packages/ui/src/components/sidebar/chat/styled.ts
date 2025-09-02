@@ -10,7 +10,7 @@ export const SidebarChatStyled = styled.div`
   gap: 8px;
   cursor: pointer;
   padding: 8px;
-  height: fit-content;
+  height: 38px;
   position: relative;
   border-radius: 8px;
   &::before {

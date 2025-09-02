@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   SidebarMenuListItem,
   SidebarMenuItemIconBox,
@@ -7,22 +8,29 @@ import { useSidebar } from '../../context';
 
 type SidebarMenuItemProps = {
   icon: React.ReactNode;
-  label: string;
   active?: boolean;
-};
+  as?: React.ElementType;
+} & React.PropsWithChildren &
+  React.HTMLAttributes<HTMLElement>;
 
 export const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
   icon,
-  label,
+  children,
   active,
+  as,
+  ...props
 }) => {
   const { isOpen } = useSidebar();
 
   return (
-    <SidebarMenuListItem>
+    <SidebarMenuListItem
+      {...props}
+      as={as}
+      data-test="sidebar-menu-item"
+    >
       <SidebarMenuItemIconBox $active={!!active}>{icon}</SidebarMenuItemIconBox>
       {isOpen && (
-        <SidebarMenuItemText $active={!!active}>{label}</SidebarMenuItemText>
+        <SidebarMenuItemText $active={!!active}>{children}</SidebarMenuItemText>
       )}
     </SidebarMenuListItem>
   );

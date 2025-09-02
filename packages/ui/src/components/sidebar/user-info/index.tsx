@@ -1,18 +1,14 @@
 import React from 'react';
-import {
-  SidebarUserInfoContent,
-  SidebarUserInfoName,
-  SidebarUserInfoStyled,
-  SidebarUserInfoText,
-  SidebarUserInfoCaps,
-  SidebarUserInfoLeft,
-  SidebarUserInfoUpdateTariffContainer,
-  SidebarUserInfoMain,
-  SidebarUserInfoLogoutButtonContainer,
-  SidebarUserInfoBottom,
-} from './styled';
 import { useSidebar } from '../context';
-import { SidebarUserInfoProvider } from './context';
+import {
+  SidebarUserAvatarBox,
+  SidebarUserBox,
+  SidebarUserCaps,
+  SidebarUserInfo,
+  SidebarUserName,
+  SidebarUserStyled,
+  SidebarUserTextBox,
+} from './styled';
 
 export interface SidebarUserInfoProps {
   avatar?: React.ReactNode;
@@ -20,12 +16,12 @@ export interface SidebarUserInfoProps {
   caps?: string;
   updateTariff?: React.ReactNode;
   logout?: React.ReactNode;
-  linkAs?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  linkAs?: React.ElementType;
   to?: string;
   onClick?: React.MouseEventHandler;
 }
 
-export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
+export const SidebarUser: React.FC<SidebarUserInfoProps> = ({
   avatar,
   name,
   caps,
@@ -37,38 +33,30 @@ export const SidebarUserInfo: React.FC<SidebarUserInfoProps> = ({
 }) => {
   const { isOpen } = useSidebar();
 
+  if (!isOpen) {
+    return avatar;
+  }
+
   return (
-    <SidebarUserInfoProvider caps={caps}>
-      <SidebarUserInfoStyled $open={isOpen}>
-        <SidebarUserInfoContent>
-          <SidebarUserInfoMain
-            as={linkAs}
-            to={to}
-            onClick={onClick}
-          >
-            <SidebarUserInfoLeft>
-              {avatar}
-              <SidebarUserInfoText>
-                {name && <SidebarUserInfoName>{name}</SidebarUserInfoName>}
-                {caps && <SidebarUserInfoCaps>{caps}</SidebarUserInfoCaps>}
-              </SidebarUserInfoText>
-            </SidebarUserInfoLeft>
-            <SidebarUserInfoLogoutButtonContainer $open={isOpen}>
-              {logout}
-            </SidebarUserInfoLogoutButtonContainer>
-          </SidebarUserInfoMain>
-          <SidebarUserInfoBottom>
-            <SidebarUserInfoUpdateTariffContainer $open={isOpen}>
-              {updateTariff}
-            </SidebarUserInfoUpdateTariffContainer>
-          </SidebarUserInfoBottom>
-        </SidebarUserInfoContent>
-      </SidebarUserInfoStyled>
-    </SidebarUserInfoProvider>
+    <SidebarUserStyled>
+      <SidebarUserBox>
+        <SidebarUserInfo
+          as={linkAs}
+          to={to}
+          onClick={onClick}
+        >
+          <SidebarUserAvatarBox>{avatar}</SidebarUserAvatarBox>
+          <SidebarUserTextBox>
+            <SidebarUserName>{name}</SidebarUserName>
+            <SidebarUserCaps>{caps}</SidebarUserCaps>
+          </SidebarUserTextBox>
+        </SidebarUserInfo>
+        {logout}
+      </SidebarUserBox>
+      {updateTariff}
+    </SidebarUserStyled>
   );
 };
 
 export * from './styled';
-export * from './context';
 export * from './avatar';
-export * from './skeleton';

@@ -1,21 +1,18 @@
 import { css, styled } from 'styled-components';
+import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 
-export const SidebarToggleButtonStyled = styled.button<{ $isOpen: boolean }>`
-  all: unset;
-  display: flex;
-  align-items: center;
+export const SidebarToggleButtonStyled = styled(Button).attrs({
+  variant: 'text',
+})<{ $isOpen: boolean }>`
   &:hover {
-    cursor: pointer;
-    filter: brightness(1.2);
+    svg path {
+      fill: ${({ theme }) =>
+        theme.mode === 'light'
+          ? theme.default.colors.accent.primary
+          : theme.colors.base.white} !important;
+    }
   }
-  &:active {
-    transform: translateY(1px);
-    filter: brightness(0.9);
-  }
-  transition:
-    filter 0.05s ease-out,
-    transform 0.1s ease-out;
   ${adaptive({
     mobile: css`
       display: none;
