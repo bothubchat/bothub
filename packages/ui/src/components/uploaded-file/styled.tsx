@@ -6,14 +6,10 @@ import { colorToRgba } from '@/ui/utils';
 import { Button } from '../button';
 import { CloseIcon, LoaderCircularGradientIcon } from '@/ui/icons';
 
-type IsPrimary = {
-  $isPrimary: boolean;
-};
+type IsPrimary = { $isPrimary: boolean };
 
 export const UploadedFileStyled = styled.div<
-  {
-    $fullWidth?: boolean;
-  } & IsPrimary
+  { $fullWidth?: boolean } & IsPrimary
 >`
   display: flex;
   flex-direction: column;
@@ -93,9 +89,7 @@ export const UploadedFileStatusChip = styled.div`
 
 export const UploadedFileStatusChipText = styled(Typography).attrs({
   variant: 'body-s-medium',
-})<{
-  $status: UploadedFileStatus;
-}>`
+})<{ $status: UploadedFileStatus }>`
   color: ${({ theme, $status }) => {
     switch ($status) {
       case 'done':
@@ -126,11 +120,7 @@ export const UploadedFileFooter = styled.div`
 
 export const UploadedFileProgressBar = styled(Progress).attrs({
   fullWidth: true,
-})<
-  {
-    $error: boolean;
-  } & IsPrimary
->`
+})<{ $error: boolean } & IsPrimary>`
   & > div {
     height: 6px;
     border-radius: 4px;
@@ -160,7 +150,8 @@ export const UploadedFileLoaderIcon = styled(LoaderCircularGradientIcon)`
 
 export const UploadedFileProgressValue = styled(Typography).attrs({
   variant: 'body-s-medium',
-})`
+})<{ $isMax: boolean }>`
   flex: 0 0 fit-content;
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme, $isMax }) =>
+    $isMax ? theme.colors.accent.primaryLight : theme.colors.grayScale.gray1};
 `;

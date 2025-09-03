@@ -7,15 +7,9 @@ import { FileIcon } from '@/ui/components/file-icon';
 import * as S from './styled';
 import { UploadedFileStatus } from './types';
 
-export type Primary = {
-  variant?: 'primary';
-  sizeInBytes: number;
-};
+export type Primary = { variant?: 'primary'; sizeInBytes: number };
 
-export type Secondary = {
-  variant: 'secondary';
-  loading?: boolean;
-};
+export type Secondary = { variant: 'secondary'; loading?: boolean };
 
 export type UploadedFileProps = {
   filename: string;
@@ -24,12 +18,7 @@ export type UploadedFileProps = {
   doneLabel?: React.ReactNode;
   errorLabel?: React.ReactNode;
   className?: string;
-  onDelete?:
-    | {
-        disabled?: boolean;
-        action: () => void;
-      }
-    | (() => void);
+  onDelete?: { disabled?: boolean; action: () => void } | (() => void);
   bottomContent?: React.ReactNode;
   fullWidth?: boolean;
   onPause?: () => void;
@@ -167,7 +156,7 @@ export const UploadedFile = forwardRef<HTMLDivElement, UploadedFileProps>(
           {isSecondary && props.loading ? (
             <S.UploadedFileLoaderIcon />
           ) : (
-            <S.UploadedFileProgressValue>
+            <S.UploadedFileProgressValue $isMax={progress === 100}>
               {progress}%
             </S.UploadedFileProgressValue>
           )}
