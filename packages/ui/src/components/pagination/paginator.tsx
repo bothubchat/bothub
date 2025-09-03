@@ -2,7 +2,12 @@ import * as S from './styled';
 import { PaginatorProps } from './types';
 import { emptySpace, usePaginatorPages } from './utils';
 
-export const Paginator = ({ current, onChange, lastPage }: PaginatorProps) => {
+export const Paginator = ({
+  current,
+  onChange,
+  lastPage,
+  arrowStyles = 'default',
+}: PaginatorProps) => {
   const pages = usePaginatorPages(current ?? 1, lastPage);
 
   const changePage = (page: number) => {
@@ -31,7 +36,7 @@ export const Paginator = ({ current, onChange, lastPage }: PaginatorProps) => {
         $disabled={lastPage === 1}
         onClick={handlePrevPage}
       >
-        <S.ArrowIcon />
+        {arrowStyles === 'caret' ? <S.ArrowCaretIcon /> : <S.ArrowIcon />}
       </S.ControlButton>
       {pages.map((page) => (
         <S.PaginatorItem
@@ -51,7 +56,11 @@ export const Paginator = ({ current, onChange, lastPage }: PaginatorProps) => {
         $disabled={lastPage === 1}
         onClick={handleNextPage}
       >
-        <S.ArrowNextIcon />
+        {arrowStyles === 'caret' ? (
+          <S.ArrowCaretNextIcon />
+        ) : (
+          <S.ArrowNextIcon />
+        )}
       </S.ControlButton>
     </S.Container>
   );

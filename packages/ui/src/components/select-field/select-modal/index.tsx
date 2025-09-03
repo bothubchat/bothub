@@ -21,6 +21,7 @@ import {
   ResetStyleStateType,
   SelectFieldData,
   SelectFieldDataItem,
+  SelectFieldGroupCheckboxClickEventHandler,
   SelectFieldInputChangeEventHandler,
   SelectFieldOptionClickEventHandler,
   SelectFieldSize,
@@ -48,6 +49,7 @@ export type SelectModalGeneralProps = {
   compactWidth?: boolean;
   modalStyles?: React.CSSProperties;
   onOptionClick?: SelectFieldOptionClickEventHandler;
+  onGroupCheckboxClick?: SelectFieldGroupCheckboxClickEventHandler;
 };
 
 export type SelectModalProps = SelectModalGeneralProps &
@@ -87,6 +89,7 @@ export const SelectModal = ({
   modalStyles,
   onSearch,
   onOptionClick,
+  onGroupCheckboxClick,
   handleClose,
   setValue,
 }: SelectModalProps) => {
@@ -123,12 +126,25 @@ export const SelectModal = ({
 
       onOptionClick?.(item);
 
-      if (!disableSelect) {
+      if (
+        !disableSelect &&
+        !(
+          typeof item === 'object' &&
+          (item.type === 'checkbox' || item.type === 'checkbox-group')
+        )
+      ) {
         if (multiple && Array.isArray(value)) {
           setValue([...new Set([...value, item])]);
         } else {
           setValue(item);
         }
+      }
+
+      if (
+        typeof item === 'object' &&
+        (item.type === 'checkbox' || item.type === 'checkbox-group')
+      ) {
+        return;
       }
 
       handleClose();
@@ -297,6 +313,7 @@ export const SelectModal = ({
                     data={onSearch ? data : filterData(data, searchValue)}
                     size={size}
                     disableSelect={disableSelect}
+                    onGroupCheckboxClick={onGroupCheckboxClick}
                     onOptionClick={handleOptionClick}
                     selectedColor={selectedColor}
                   />

@@ -20,6 +20,9 @@ export type SelectFieldMultiValueChangeEventHandler = (
 export type SelectFieldOptionClickEventHandler = (
   item: SelectFieldDataItem,
 ) => unknown;
+export type SelectFieldGroupCheckboxClickEventHandler = (
+  item: SelectFieldDataItem,
+) => unknown;
 
 export type SelectFieldInputChangeEventHandler = (value: string) => unknown;
 
@@ -29,7 +32,9 @@ export type SelectFieldItemType =
   | 'collapse'
   | 'empty'
   | 'label'
-  | 'radio';
+  | 'radio'
+  | 'checkbox'
+  | 'checkbox-group';
 
 export type SelectFieldDataItemSimple = string;
 
@@ -38,6 +43,7 @@ export type SelectFieldDataItemComplex = {
   type?: SelectFieldItemType;
   color?: string;
   value?: string;
+  email?: string;
   icon?: React.ReactNode;
   label?: string | null;
   bold?: boolean;
@@ -51,8 +57,10 @@ export type SelectFieldDataItemComplex = {
   noSelect?: boolean;
   description?: string;
   selected?: boolean;
+  checkedIcon?: React.ReactNode;
   radioName?: string;
   onClick?: SelectFieldOptionClickEventHandler;
+  onGroupCheckboxClick?: SelectFieldGroupCheckboxClickEventHandler;
 };
 
 export type SelectFieldDataItem = string | SelectFieldDataItemComplex;
