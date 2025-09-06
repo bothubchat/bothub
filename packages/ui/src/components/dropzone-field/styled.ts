@@ -59,7 +59,7 @@ export const DropzoneFieldInput = styled.input`
   position: absolute;
   opacity: 0;
   inset: 0;
-  z-index: 30;
+  z-index: 1;
 `;
 
 export const DropzoneFieldPlaceholder = styled.div`
@@ -68,30 +68,4 @@ export const DropzoneFieldPlaceholder = styled.div`
   justify-content: center;
   position: relative;
   padding: 20px;
-`;
-
-export const DropzoneFieldFilesStyled = styled.div`
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  padding: 20px;
-`;
-
-export const DropzoneFieldFile = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-  position: relative;
-  z-index: 40;
-
-  padding: 8px 6px;
-  border-radius: 10px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
 `;
