@@ -179,17 +179,39 @@ export const Message: React.FC<MessageProps> = ({
         codeNode.replaceWith(el);
       }
 
-      const wrapper = htmlStr.createElement('div');
-      wrapper.style.whiteSpace = 'pre-wrap';
-      wrapper.innerHTML = htmlStr.body.innerHTML;
+      const liToBulletReg = /<li[^>]*>\s*(.*?)\s*<\/li>\s*/g;
+      const ulReg = /\s*<ul[^>]*>\s*([\s\S]*?)\s*<\/ul>\s*/g;
+      const multipleNewLinesReg = /\n\s*\n/g;
+      const hReg = /(<\/h[1-6]>)\n*/g;
+      const newLineReg = /\n/g;
+      const multipleBr = /(<br\/>){2,}/g;
+
+      const plainContent =
+        content?.replace(/(#+.*)$/g, '$1\n')?.replace(/\n{2,}/g, '\n') ?? '';
+
+      const htmlContent = htmlStr.body.innerHTML
+        .replace(liToBulletReg, '• $1\n')
+        .replace(ulReg, '$1')
+        .replace(multipleNewLinesReg, '\n')
+        .replace(hReg, '$1')
+        .replace(newLineReg, '<br/>')
+        .replace(multipleBr, '<br/>');
 
       const clipboardItem = new ClipboardItem({
-        'text/plain': new Blob([content!], { type: 'text/plain' }),
-        'text/html': new Blob([wrapper.outerHTML], { type: 'text/html' }),
+        'text/plain': new Blob([plainContent], { type: 'text/plain' }),
+        /* 
+          At the moment (Sep, 2025) we don't support
+          rich text inside user messages so enabling 
+          them to copy with 'text/html' would break 
+          the layout inside rich text editors
+        */
+        ...(variant === 'assistant' && {
+          'text/html': new Blob([htmlContent], { type: 'text/html' }),
+        }),
       });
       return [clipboardItem];
     },
-    [content],
+    [content, variant],
   );
 
   const getPlainText = useCallback((html: HTMLElement) => {
