@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { marked } from 'marked';
 import {
   MessageBlock,
   MessageBlockBottomPanel,
@@ -164,37 +165,24 @@ export const Message: React.FC<MessageProps> = ({
     [],
   );
 
-  const getRichText = useCallback(
-    (html: HTMLElement) => {
-      const htmlStr = new DOMParser().parseFromString(
-        html.innerHTML,
-        'text/html',
-      );
+  const getRichText = useCallback(async () => {
+    const htmlContent = (await marked.parse(messageText.current!)).replace(
+      /<p>([\s\S]*?)<\/p>/g,
+      '<pre>$1</pre>',
+    );
 
-      const codeNodes = htmlStr.getElementsByTagName('code');
-
-      for (const codeNode of codeNodes) {
-        const el = htmlStr.createElement('span');
-        el.innerText = codeNode.innerText;
-        codeNode.replaceWith(el);
-      }
-
-      const wrapper = htmlStr.createElement('div');
-      wrapper.style.whiteSpace = 'pre-wrap';
-      wrapper.innerHTML = htmlStr.body.innerHTML;
-
-      const clipboardItem = new ClipboardItem({
-        'text/plain': new Blob([content!], { type: 'text/plain' }),
-        'text/html': new Blob([wrapper.outerHTML], { type: 'text/html' }),
-      });
-      return [clipboardItem];
-    },
-    [content],
-  );
+    const clipboardItem = new ClipboardItem({
+      'text/plain': new Blob([messageText.current!], { type: 'text/plain' }),
+      'text/html': new Blob([htmlContent], { type: 'text/html' }),
+    });
+    return [clipboardItem];
+  }, []);
 
   const getPlainText = useCallback((html: HTMLElement) => {
     const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([html.innerText], { type: 'text/plain' }),
+      'text/plain': new Blob([html.innerText.replace(/\n{3,}/g, '\n\n')], {
+        type: 'text/plain',
+      }),
     });
     return [clipboardItem];
   }, []);
@@ -220,11 +208,11 @@ export const Message: React.FC<MessageProps> = ({
     }
   }, [messageText.current]);
 
-  const handleRichTextCopy = useCallback(() => {
-    if (messageBlockContentRef.current && content) {
-      return onCopy?.(getRichText(messageBlockContentRef.current));
+  const handleRichTextCopy = useCallback(async () => {
+    if (messageText.current) {
+      return onCopy?.(await getRichText());
     }
-  }, [messageBlockContentRef.current, content]);
+  }, [messageText.current]);
 
   if (
     !(
