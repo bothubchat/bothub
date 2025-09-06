@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.49.1-develop-c853eb6a-aff3-4f52-8342-214bb20620b1",
+  "version": "2.50.1-develop-b9ad4ec8-809e-40ae-8c86-0501e620e1b0",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
@@ -59,6 +59,7 @@
     "dompurify": "^3.2.6",
     "highlight.js": "^11.11.0",
     "katex": "^0.16.10",
+    "marked": "^16.2.1",
     "normalize.css": "^8.0.1",
     "rc-slider": "^11.1.8",
     "react-markdown": "^10.0.0",
