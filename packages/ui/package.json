@@ -59,6 +59,7 @@
     "dompurify": "^3.2.6",
     "highlight.js": "^11.11.0",
     "katex": "^0.16.10",
+    "marked": "^16.2.1",
     "normalize.css": "^8.0.1",
     "rc-slider": "^11.1.8",
     "react-markdown": "^10.0.0",
