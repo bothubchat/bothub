@@ -27,7 +27,7 @@ export const Datepicker = ({
     <>
       {refs && (
         <div onClick={(e) => e.stopPropagation()}>
-          {children(refs.setReference, setOpen)}
+          {children(refs.setReference, setOpen, open)}
         </div>
       )}
       {open &&
