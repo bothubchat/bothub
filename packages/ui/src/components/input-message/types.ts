@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface IInputMessageFile {
   name: string;
   previewUrl: string | null;
@@ -9,4 +11,10 @@ export interface IInputMessageVoiceFile {
   waveData: number[];
   src: string;
   blob: Blob;
+}
+
+export interface IConfigureOption {
+  icon?: React.ReactNode;
+  children?: React.ReactNode;
+  onClick?: () => unknown;
 }
