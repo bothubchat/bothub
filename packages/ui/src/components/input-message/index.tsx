@@ -2,9 +2,13 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useTransition } from '@react-spring/web';
 import { useOnClickOutside } from '@/ui/utils/useOnClickOutside';
 import {
-  InputMessageBottom,
-  InputMessageBottomGroup,
+  InputMessageButtons,
   InputMessageConcatenateWarning,
+  InputMessageConfigure,
+  InputMessageConfigureButton,
+  InputMessageConfigureMenu,
+  InputMessageMenuOption,
+  InputMessageMenuHr,
   InputMessageContent,
   InputMessageFile,
   InputMessageFiles,
@@ -17,8 +21,6 @@ import {
   InputMessageToggleSendModalOption,
   InputMessageToggleSendModalStyled,
   InputMessageToggleSendStyled,
-  InputMessageUploadFile,
-  InputMessageUploadFileButton,
   InputMessageUploadFileInput,
   InputMessageVoiceButton,
   InputMessageVoiceFileDelete,
@@ -29,14 +31,21 @@ import {
   InputMessageVoiceRecordDot,
   InputMessageVoiceRecordTimeText,
   InputMessageVoiceTrack,
+  InputMessageUploadFileLabel,
+  InputMessageUploadFile,
 } from './styled';
 import { ChipImage } from '@/ui/components/chip';
 import { PdfIcon } from '@/ui/icons/pdf';
 import { TxtIcon } from '@/ui/icons/txt';
 import { WordIcon } from '@/ui/icons/word';
 import { XlsIcon } from '@/ui/icons/xls';
-import { IInputMessageFile, IInputMessageVoiceFile } from './types';
+import {
+  IConfigureOption,
+  IInputMessageFile,
+  IInputMessageVoiceFile,
+} from './types';
 import { IconProvider } from '@/ui/components/icon';
+import { Typography } from '@/ui/components/typography';
 import {
   formatUploadFiles,
   getPreviewUrlForFile,
@@ -49,6 +58,7 @@ import { useTheme } from '@/ui/theme';
 import { getSupportedAudioMimeType } from '@/ui/utils/getSupportedAudioMimeType';
 import { MessageVoice } from '../message';
 import { getWaveData } from '@/ui/utils/audio/getWaveData';
+import { AttachIcon } from '@/ui/icons/attach';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
@@ -79,6 +89,7 @@ export interface InputMessageProps
   uploadFileLimit?: number;
   uploadFileDisabled?: boolean;
   uploadFileAccept?: string;
+  uploadFileText?: string;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
   useAlternativeKeyDefaultValue?: boolean;
@@ -94,7 +105,8 @@ export interface InputMessageProps
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
   onSend?: InputMessageSendEventHandler;
   emitError?(event: InputMessageErrorEvent): void;
-  rightActions?: React.ReactNode;
+  configureOptions?: IConfigureOption[];
+  actions?: React.ReactNode;
 }
 
 export const InputMessage: React.FC<InputMessageProps> = ({
@@ -113,6 +125,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   hideUploadFile = false,
   uploadFileDisabled = false,
   uploadFileAccept,
+  uploadFileText,
   autoFocus = true,
   voice = false,
   onSetAlternativeKeyValue,
@@ -124,7 +137,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   onFocus,
   onBlur,
   emitError,
-  rightActions,
+  actions,
+  configureOptions,
   ...props
 }) => {
   const theme = useTheme();
@@ -163,19 +177,23 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const [useAlternativeKey, setUseAlternativeKey] = useState(
     useAlternativeKeyDefaultValue,
   );
-  const [alternativeKeyModalShown, setAlternativeKeyModalShown] =
+  const [isAltKeyModalShown, setAltKeyModalShown] = useState<boolean>(false);
+
+  const configureMenuRef = useRef<HTMLDivElement | null>(null);
+
+  const [isConfigureMenuShown, setConfigureMenuShown] =
     useState<boolean>(false);
 
   const handleDefaultKey = useCallback(() => {
     setUseAlternativeKey(false);
     onSetAlternativeKeyValue?.(false);
-    setAlternativeKeyModalShown(false);
+    setAltKeyModalShown(false);
   }, []);
 
   const handleAlternativeKey = useCallback(() => {
     setUseAlternativeKey(true);
     onSetAlternativeKeyValue?.(true);
-    setAlternativeKeyModalShown(false);
+    setAltKeyModalShown(false);
   }, []);
 
   const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
@@ -257,6 +275,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         ...event.target.files,
       ]);
       setFiles(formattedFiles.slice(0, uploadFileLimit));
+      setConfigureMenuShown(false);
     },
     [files, setFiles, uploadFileLimit],
   );
@@ -337,7 +356,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   }, [disabled, autoFocus]);
 
   const handleUploadFileClick = useCallback<
-    React.MouseEventHandler<HTMLDivElement>
+    React.MouseEventHandler<HTMLElement>
   >((event) => {
     event.stopPropagation();
   }, []);
@@ -450,6 +469,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     setTextareaHeight(`${textareaEl.scrollHeight}px`);
   }, [message, autoFocus]);
 
+  /* Runs when deps of handleInput change */
   useEffect(() => {
     handleInput();
   }, [handleInput]);
@@ -545,15 +565,29 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   }, [voiceMediaRecorderRef.current]);
 
   useOnClickOutside(inputMessageToggleSendKeyRef, () => {
-    setAlternativeKeyModalShown(false);
+    setAltKeyModalShown(false);
   });
 
-  const modalTransition = useTransition(alternativeKeyModalShown, {
+  useOnClickOutside(configureMenuRef, () => {
+    setConfigureMenuShown(false);
+  });
+
+  const modalTransition = useTransition(!disabled && isAltKeyModalShown, {
     from: { opacity: 0, y: 10 },
     enter: { opacity: 1, y: 0 },
     leave: { opacity: 0, y: 10 },
-    config: { duration: 150, ease: 'easeOut' },
+    config: { duration: 100, ease: 'easeOut' },
   });
+
+  const configureMenuTransition = useTransition(
+    !disabled && isConfigureMenuShown,
+    {
+      from: { opacity: 0, y: 10 },
+      enter: { opacity: 1, y: 0 },
+      leave: { opacity: 0, y: 10 },
+      config: { duration: 100, ease: 'easeOut' },
+    },
+  );
 
   return (
     <InputMessageStyled
@@ -582,7 +616,63 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       }}
     >
       <InputMessageContent>
-        <InputMessageMain>
+        {(!hideUploadFile || !!configureOptions) && (
+          <InputMessageConfigure ref={configureMenuRef}>
+            <InputMessageConfigureButton
+              $disabled={disabled}
+              onClick={(e) => {
+                e.stopPropagation();
+                setConfigureMenuShown(!isConfigureMenuShown);
+              }}
+            />
+            {configureMenuTransition(
+              (style, item) =>
+                item && (
+                  <InputMessageConfigureMenu style={style}>
+                    <InputMessageUploadFile>
+                      <InputMessageUploadFileLabel
+                        $disabled={
+                          files.length >= uploadFileLimit ||
+                          disabled ||
+                          uploadFileDisabled
+                        }
+                        onClick={handleUploadFileClick}
+                      >
+                        <AttachIcon size={18} />
+                        <Typography variant="body-m-medium">
+                          {uploadFileText}
+                        </Typography>
+                      </InputMessageUploadFileLabel>
+                      <InputMessageUploadFileInput
+                        key={files.length}
+                        type="file"
+                        accept={uploadFileAccept}
+                        multiple
+                        disabled={
+                          files.length >= uploadFileLimit ||
+                          disabled ||
+                          uploadFileDisabled
+                        }
+                        onChange={handleUploadFileChange}
+                      />
+                    </InputMessageUploadFile>
+                    {!!configureOptions && <InputMessageMenuHr />}
+                    {configureOptions?.map(({ onClick, ...props }) => (
+                      <InputMessageMenuOption
+                        {...props}
+                        onClick={() => {
+                          onClick?.();
+                          setConfigureMenuShown(false);
+                        }}
+                      />
+                    ))}
+                  </InputMessageConfigureMenu>
+                ),
+            )}
+            {actions}
+          </InputMessageConfigure>
+        )}
+        <InputMessageMain onClick={handleClick}>
           {isVoiceRecording && voiceRecordingTime !== null && (
             <InputMessageVoiceRecord>
               <InputMessageVoiceRecordDot />
@@ -675,100 +765,72 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             />
           )}
         </InputMessageMain>
-        <InputMessageBottom>
-          <InputMessageBottomGroup>
-            {!hideUploadFile && !isVoiceRecording && (
-              <InputMessageUploadFile onClick={handleUploadFileClick}>
-                <InputMessageUploadFileInput
-                  key={files.length}
-                  type="file"
-                  accept={uploadFileAccept}
-                  multiple
-                  disabled={
-                    files.length >= uploadFileLimit ||
-                    disabled ||
-                    uploadFileDisabled
-                  }
-                  onChange={handleUploadFileChange}
-                />
-                <InputMessageUploadFileButton
-                  disabled={
-                    files.length >= uploadFileLimit ||
-                    disabled ||
-                    uploadFileDisabled
-                  }
-                />
-              </InputMessageUploadFile>
-            )}
-            {rightActions}
-          </InputMessageBottomGroup>
-          <InputMessageBottomGroup>
-            {!!defaultKeySendText && !!alternativeKeySendText && (
-              <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
-                <InputMessageToggleSendButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setAlternativeKeyModalShown(!alternativeKeyModalShown);
-                  }}
-                  disabled={disabled}
-                />
-                {modalTransition(
-                  (style, item) =>
-                    item && (
-                      <InputMessageToggleSendModalStyled
-                        key="alternative-key-modal"
-                        style={style}
-                      >
-                        <InputMessageToggleSendModalOption
-                          active={!useAlternativeKey}
-                          onClick={handleDefaultKey}
-                        >
-                          {defaultKeySendText}
-                        </InputMessageToggleSendModalOption>
-                        <InputMessageToggleSendModalOption
-                          active={useAlternativeKey}
-                          onClick={handleAlternativeKey}
-                        >
-                          {alternativeKeySendText}
-                        </InputMessageToggleSendModalOption>
-                      </InputMessageToggleSendModalStyled>
-                    ),
-                )}
-              </InputMessageToggleSendStyled>
-            )}
-            {isVoiceRecording && (
-              <>
-                {isVoicePaused ? (
-                  <InputMessageVoicePlayButton onClick={handleVoiceResume} />
-                ) : (
-                  <InputMessageVoicePauseButton onClick={handleVoicePause} />
-                )}
-              </>
-            )}
-            {voice && (
-              <InputMessageVoiceButton
-                $isRecording={isVoiceRecording}
-                disabled={disabled || sendDisabled}
-                onClick={
-                  !isVoiceRecording
-                    ? handleVoiceRecordStart
-                    : handleVoiceRecordEnd
-                }
-                data-test="submit-message"
+        <InputMessageButtons>
+          {!!defaultKeySendText && !!alternativeKeySendText && (
+            <InputMessageToggleSendStyled ref={inputMessageToggleSendKeyRef}>
+              <InputMessageToggleSendButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setAltKeyModalShown(!isAltKeyModalShown);
+                }}
+                disabled={disabled}
               />
-            )}
-            <InputMessageSendButton
-              disabled={disabled || sendDisabled || isVoiceRecording}
-              onClick={handleSend}
-              {...(theme.bright && {
-                iconFill: theme.default.colors.base.black,
-              })}
+              {modalTransition(
+                (style, item) =>
+                  item && (
+                    <InputMessageToggleSendModalStyled
+                      key="alternative-key-modal"
+                      style={style}
+                    >
+                      <InputMessageToggleSendModalOption
+                        active={!useAlternativeKey}
+                        onClick={handleDefaultKey}
+                      >
+                        {defaultKeySendText}
+                      </InputMessageToggleSendModalOption>
+                      <InputMessageToggleSendModalOption
+                        active={useAlternativeKey}
+                        onClick={handleAlternativeKey}
+                      >
+                        {alternativeKeySendText}
+                      </InputMessageToggleSendModalOption>
+                    </InputMessageToggleSendModalStyled>
+                  ),
+              )}
+            </InputMessageToggleSendStyled>
+          )}
+          {isVoiceRecording && (
+            <>
+              {isVoicePaused ? (
+                <InputMessageVoicePlayButton onClick={handleVoiceResume} />
+              ) : (
+                <InputMessageVoicePauseButton onClick={handleVoicePause} />
+              )}
+            </>
+          )}
+          {voice && (
+            <InputMessageVoiceButton
+              $isRecording={isVoiceRecording}
+              disabled={disabled || sendDisabled}
+              onClick={
+                !isVoiceRecording
+                  ? handleVoiceRecordStart
+                  : handleVoiceRecordEnd
+              }
               data-test="submit-message"
-            >
-              <InputMessageSendIcon />
-            </InputMessageSendButton>
-          </InputMessageBottomGroup>
-        </InputMessageBottom>
+            />
+          )}
+          <InputMessageSendButton
+            disabled={disabled || sendDisabled || isVoiceRecording}
+            onClick={handleSend}
+            {...(theme.bright && {
+              iconFill: theme.default.colors.base.black,
+            })}
+            data-test="submit-message"
+          >
+            <InputMessageSendIcon />
+          </InputMessageSendButton>
+        </InputMessageButtons>
       </InputMessageContent>
     </InputMessageStyled>
   );

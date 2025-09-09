@@ -1,15 +1,17 @@
+import React from 'react';
 import { css, keyframes, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { Button } from '@/ui/components/button';
 import { EnterIcon } from '@/ui/icons/enter';
-import { AttachIcon } from '@/ui/icons/attach';
 import { SendIcon } from '@/ui/icons/send';
 import { CloseIcon } from '@/ui/icons/close';
 import { Chip } from '@/ui/components/chip';
 import { VoiceIcon } from '@/ui/icons/voice';
 import { PauseIcon } from '@/ui/icons/pause';
 import { PlayIcon } from '@/ui/icons/play';
+import { Plus2Icon } from '@/ui/icons/plus-2';
 import { ExclamationIcon } from '@/ui/icons/exclamation';
+import { IconProvider } from '@/ui/components/icon';
 import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
 
@@ -23,6 +25,8 @@ export interface InputMessageStyledProps {
 
 export const InputMessageStyled = styled.div<InputMessageStyledProps>`
   display: flex;
+  flex-direction: column;
+  gap: 14px;
   position: relative;
   border-radius: 10px;
   border: 1px solid
@@ -74,21 +78,108 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
 `;
 
 export const InputMessageContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 14px;
   width: 100%;
-`;
-
-export const InputMessageBottomGroup = styled.div`
-  display: flex;
-  gap: 10px;
+  gap: 14px;
+  display: grid;
+  grid-template-areas: 'input input input' 'configure . buttons';
+  grid-auto-rows: min-content;
+  grid-auto-columns: min-content auto min-content;
   align-items: center;
 `;
 
-export const InputMessageBottom = styled(InputMessageBottomGroup)`
-  justify-content: space-between;
+export const InputMessageConfigure = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+  width: fit-content;
+  height: 100%;
+  user-select: none;
+  grid-area: configure;
+`;
+
+export const InputMessageConfigureButton = styled.button.attrs<{
+  $disabled?: boolean;
+}>({
+  children: <Plus2Icon />,
+})`
+  all: unset;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+  transition:
+    background-color 300ms ease-in-out,
+    transform 50ms ease-in;
+  &:hover {
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+  }
+  &:active {
+    transform: scale(0.98) translateY(1px);
+  }
+  ${({ theme, $disabled }) =>
+    $disabled &&
+    css`
+      background-color: ${theme.colors.grayScale.gray2} !important;
+    `}
+`;
+
+export const InputMessageConfigureMenu = styled(animated.div)`
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  width: max-content;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+`;
+
+export interface InputMessageMenuOptionProps {
+  icon?: React.ReactNode;
+  children?: string | React.ReactNode;
+}
+
+const menuOptionStyles = css`
+  all: unset;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding: 10px 12px;
+  gap: 8px;
+  border-radius: 8px;
+`;
+
+export const InputMessageMenuOption = styled.button.attrs<InputMessageMenuOptionProps>(
+  ({ theme, children, icon }) => ({
+    children: (
+      <>
+        {icon && (
+          <IconProvider
+            fill={theme.colors.base.white}
+            size={18}
+          >
+            {icon}
+          </IconProvider>
+        )}
+        <Typography variant="body-m-medium">{children}</Typography>
+      </>
+    ),
+  }),
+)`
+  ${menuOptionStyles}
+  &:hover {
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+  }
+  &:active {
+    transform: scale(0.98) translateY(1px);
+  }
 `;
 
 export const InputMessageUploadFile = styled.div`
@@ -101,14 +192,38 @@ export const InputMessageUploadFileInput = styled.input.attrs({
   display: none;
 `;
 
-export const InputMessageUploadFileButton = styled(Button).attrs({
-  variant: 'secondary',
-  component: 'label',
-  htmlFor: 'inputMessageUploadFileInput',
-  children: <AttachIcon />,
-})`
-  flex-shrink: 0;
-  user-select: none;
+export interface InputMessageUploadFileLabelProps {
+  $disabled?: boolean;
+}
+
+export const InputMessageUploadFileLabel = styled.label.attrs<InputMessageUploadFileLabelProps>(
+  {
+    htmlFor: 'inputMessageUploadFileInput',
+  },
+)`
+  ${menuOptionStyles}
+  ${({ theme, $disabled }) =>
+    $disabled
+      ? css`
+          background-color: ${theme.colors.grayScale.gray2};
+        `
+      : css`
+          &:hover {
+            cursor: pointer;
+            background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+          }
+          &:active {
+            transform: scale(0.98) translateY(1px);
+          }
+        `}
+`;
+
+export const InputMessageMenuHr = styled.hr`
+  all: unset;
+  margin-block: 8px;
+  height: 1px;
+  width: 100%;
+  background-color: ${({ theme }) => theme.colors.grayScale.gray2};
 `;
 
 export const InputMessageMain = styled.div`
@@ -118,6 +233,14 @@ export const InputMessageMain = styled.div`
   align-items: flex-start;
   gap: 14px;
   width: 100%;
+  grid-area: input;
+`;
+
+export const InputMessageButtons = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  grid-area: buttons;
 `;
 
 export const InputMessageFiles = styled.div`
