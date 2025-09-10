@@ -9,7 +9,6 @@ import { Chip } from '@/ui/components/chip';
 import { VoiceIcon } from '@/ui/icons/voice';
 import { PauseIcon } from '@/ui/icons/pause';
 import { PlayIcon } from '@/ui/icons/play';
-import { Plus2Icon } from '@/ui/icons/plus-2';
 import { ExclamationIcon } from '@/ui/icons/exclamation';
 import { IconProvider } from '@/ui/components/icon';
 import { Typography } from '@/ui/components/typography';
@@ -98,17 +97,18 @@ export const InputMessageConfigure = styled.div`
   grid-area: configure;
 `;
 
-export const InputMessageConfigureButton = styled.button.attrs<{
+export const InputMessageConfigureButton = styled.button<{
   $disabled?: boolean;
-}>({
-  children: <Plus2Icon />,
-})`
+}>`
   all: unset;
   display: flex;
   align-items: center;
   padding: 10px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+  background-color: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? theme.colors.grayScale.gray4
+      : theme.colors.base.black};
   transition:
     background-color 300ms ease-in-out,
     transform 50ms ease-in;

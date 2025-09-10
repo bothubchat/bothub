@@ -59,6 +59,7 @@ import { getSupportedAudioMimeType } from '@/ui/utils/getSupportedAudioMimeType'
 import { MessageVoice } from '../message';
 import { getWaveData } from '@/ui/utils/audio/getWaveData';
 import { AttachIcon } from '@/ui/icons/attach';
+import { Plus2Icon } from '@/ui/icons';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
@@ -624,7 +625,9 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                 e.stopPropagation();
                 setConfigureMenuShown(!isConfigureMenuShown);
               }}
-            />
+            >
+              <Plus2Icon fill={theme.colors.base.white} />
+            </InputMessageConfigureButton>
             {configureMenuTransition(
               (style, item) =>
                 item && (
