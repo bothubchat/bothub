@@ -13,6 +13,7 @@ export const SidebarChatStyled = styled.div`
   height: 38px;
   position: relative;
   border-radius: 8px;
+
   &::before {
     content: '';
     position: absolute;
@@ -35,11 +36,15 @@ export const SidebarChatStyled = styled.div`
 export const SidebarChatName = styled(Typography).attrs({
   variant: 'body-m-medium',
   component: 'p',
-})`
-  display: flex;
+})<{
+  $skeleton?: boolean;
+}>`
+  ${({ $skeleton }) =>
+    $skeleton ? 'display: flex; align-items: center;' : 'display: block;'}
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
+  z-index: 1;
   text-overflow: ellipsis;
 `;
 

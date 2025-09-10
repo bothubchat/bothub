@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { useSidebar } from '../context';
 import {
   SidebarChatStyled,
@@ -36,6 +37,29 @@ export type SidebarChatProps = (
 export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
   const { isOpen: sidebarOpen } = useSidebar();
   const { isEdit } = useSidebar();
+  const [showTooltip, setShowTooltip] = useState(false);
+  const ref = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      if (ref.current && ref.current.scrollWidth > ref.current.clientWidth) {
+        setShowTooltip(true);
+      } else {
+        setShowTooltip(false);
+      }
+    });
+
+    if (ref.current && ref.current.scrollWidth > ref.current.clientWidth) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
+
   if (props.skeleton) {
     return <SidebarChatSkeleton />;
   }
@@ -68,7 +92,24 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
       <IconProvider size={18}>
         {!isEdit ? props.icon || <SidebarChatIconStyled /> : <DragDotIcon />}
       </IconProvider>
-      <SidebarChatName>{props.name}</SidebarChatName>
+      <Tooltip
+        label={props.name}
+        placement="top"
+        align="center"
+        disabled={isEdit || !showTooltip}
+      >
+        <TooltipConsumer>
+          {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+            <SidebarChatName
+              ref={ref}
+              onPointerEnter={handleTooltipMouseEnter}
+              onPointerLeave={handleTooltipMouseLeave}
+            >
+              {props.name}
+            </SidebarChatName>
+          )}
+        </TooltipConsumer>
+      </Tooltip>
       {!isEdit && props.actions}
       {isEdit && props.checkbox}
     </SidebarChatStyled>

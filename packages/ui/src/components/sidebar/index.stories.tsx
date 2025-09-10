@@ -95,7 +95,7 @@ const Chat: React.FC<{ skeleton?: boolean }> = ({ skeleton = false }) => (
     <SidebarChat
       id="chat-1"
       actions={<ChatsActions />}
-      name="ЧатЧатЧатЧатЧатЧатЧатЧатЧатЧатЧатЧат"
+      name="ЧатЧатЧатЧатЧат ЧатЧатЧатЧатЧатЧатЧат ЧатЧатЧатЧатЧатЧатЧат ЧатЧатЧатЧатЧатЧатЧат ЧатЧатЧатЧатЧатЧатЧат"
       icon={<Gpt35Icon />}
       skeleton={skeleton}
     />

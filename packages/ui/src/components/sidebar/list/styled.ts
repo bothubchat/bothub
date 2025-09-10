@@ -8,5 +8,4 @@ export const SidebarListChatsStyled = styled.div<{
   gap: ${({ $isSidebarOpen }) => ($isSidebarOpen ? '4px' : '8px')};
   border-top: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   padding-top: 8px;
-  ${({ $isSidebarOpen }) => $isSidebarOpen && 'padding-right: 8px;'}
 `;

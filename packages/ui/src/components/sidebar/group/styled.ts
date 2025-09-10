@@ -58,10 +58,12 @@ export const SidebarGroupName = styled(Typography).attrs({
   variant: 'body-l-medium',
   component: 'p',
 })`
+  display: block;
+  width: 100%;
+  z-index: 1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 100%;
 `;
 
 export const SidebarGroupsList = styled.div<{

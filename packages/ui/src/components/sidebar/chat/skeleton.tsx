@@ -13,7 +13,7 @@ export const SidebarChatSkeleton: React.FC = () => {
   if (sidebarOpen) {
     return (
       <SidebarChatStyled>
-        <SidebarChatName>
+        <SidebarChatName $skeleton>
           <SidebarChatIconSkeleton />
           <SidebarChatSkeletonStyled />
         </SidebarChatName>

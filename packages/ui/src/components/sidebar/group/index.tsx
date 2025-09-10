@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   SidebarArrowDownIcon,
@@ -53,6 +53,8 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
     isEdit,
     setIsOpen: setSidebarOpen,
   } = useSidebar();
+  const [showTooltip, setShowTooltip] = useState(false);
+  const ref = useRef<HTMLParagraphElement>(null);
   const listTransition = useTransition(open, {
     from: { opacity: 0, scale: 0.8 },
     enter: { opacity: 1, scale: 1 },
@@ -73,6 +75,26 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
     },
     [open],
   );
+
+  useEffect(() => {
+    const observer = new ResizeObserver(() => {
+      if (ref.current && ref.current.scrollWidth > ref.current.clientWidth) {
+        setShowTooltip(true);
+      } else {
+        setShowTooltip(false);
+      }
+    });
+
+    if (ref.current && ref.current.scrollWidth > ref.current.clientWidth) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
 
   if (props.skeleton) {
     return <SidebarGroupSkeleton>{children}</SidebarGroupSkeleton>;
@@ -126,11 +148,29 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
             {...(props.color && { fill: props.color })}
           />
         )}
-        <SidebarGroupName>{props.name}</SidebarGroupName>
+        <Tooltip
+          label={props.name}
+          placement="top"
+          align="center"
+          disabled={!showTooltip}
+        >
+          <TooltipConsumer>
+            {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+              <SidebarGroupName
+                onPointerEnter={handleTooltipMouseEnter}
+                onPointerLeave={handleTooltipMouseLeave}
+                ref={ref}
+              >
+                {props.name}
+              </SidebarGroupName>
+            )}
+          </TooltipConsumer>
+        </Tooltip>
         <SidebarArrowDownIcon $isOpen={open} />
         {!isEdit && props.actions}
         {isEdit && props.checkbox}
       </SidebarGroupBox>
+
       {listTransition(
         (style, item) =>
           item && <SidebarGroupList style={style}>{children}</SidebarGroupList>,
