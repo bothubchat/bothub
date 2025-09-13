@@ -28,13 +28,17 @@ export const MessageFileName = styled(Typography).attrs({
 })<MessageFileNameProps>`
   color: ${({ theme, $variant, $color }) => {
     if ($variant === 'assistant') {
-      if ($color !== 'default') {
-        return theme.default.colors.base.white;
-      }
       return theme.colors.base.white;
     }
 
-    return theme.colors.base.white;
+    if ($color !== 'default') {
+      return theme.default.colors.base.white;
+    }
+
+    return theme.bright ||
+      (theme.sceme === 'standard' && theme.mode === 'light')
+      ? theme.default.colors.base.black
+      : theme.default.colors.base.white;
   }};
 `;
 
@@ -43,21 +47,9 @@ export interface MessageFileSizeProps {
   $color: MessageColor;
 }
 
-export const MessageFileSize = styled(Typography).attrs({
+export const MessageFileSize = styled(MessageFileName).attrs({
   variant: 'body-m-regular',
-})<MessageFileSizeProps>`
-  color: ${({ theme, $variant, $color }) => {
-    if ($variant === 'assistant') {
-      if ($color !== 'default') {
-        return theme.default.colors.base.white;
-      }
-
-      return theme.colors.base.white;
-    }
-
-    return theme.colors.base.white;
-  }};
-`;
+})``;
 
 export const MessageFiles = styled.div`
   display: flex;

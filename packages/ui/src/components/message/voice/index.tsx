@@ -130,27 +130,31 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       >
         <MessageVoiceToggleButton onClick={handleToggle}>
           <IconProvider
-            {...(color === 'default'
-              ? theme.mode === 'dark'
+            {...(variant === 'message' &&
+              (theme.scheme !== 'standard'
                 ? {
-                    fill: theme.default.colors.base.white,
-                    stroke: theme.colors.accent.primary,
+                    fill: theme.colors.grayScale.gray4,
                   }
                 : {
-                    fill: theme.colors.accent.primaryLight,
-                    stroke: theme.default.colors.base.white,
-                  }
-              : color === 'green'
-                ? { fill: theme.colors.gpt3 }
-                : color === 'purple'
-                  ? { fill: theme.colors.gpt4 }
-                  : { fill: color })}
+                    fill:
+                      theme.mode === 'dark'
+                        ? theme.default.colors.base.white
+                        : theme.default.colors.accent.primary,
+                  }))}
+            {...(variant === 'input' &&
+              color === 'default' && {
+                fill:
+                  theme.scheme === 'standard'
+                    ? '#A4C1FA'
+                    : isBright(theme.colors.grayScale.gray4)
+                      ? theme.colors.accent.strongDown
+                      : theme.colors.accent.primary,
+              })}
             {...(variant === 'input' && {
               size: 22,
             })}
           >
-            {isPlayed && <MessageVoicePauseIcon />}
-            {!isPlayed && <MessageVoicePlayIcon />}
+            {isPlayed ? <MessageVoicePauseIcon /> : <MessageVoicePlayIcon />}
           </IconProvider>
         </MessageVoiceToggleButton>
         <MessageVoiceWaves
@@ -213,7 +217,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
             </clipPath>
           </defs>
         </MessageVoiceWaves>
-        <MessageVoiceDurationText>
+        <MessageVoiceDurationText $variant={variant}>
           {currentTime !== null && formatSeconds(currentTime)}
           {currentTime === null && formatSeconds(duration)}
         </MessageVoiceDurationText>
@@ -221,14 +225,25 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
           <MessageVoiceToggleTextButton onClick={handleTextToggle}>
             <IconProvider
               fill={
-                theme.mode === 'light'
-                  ? theme.colors.accent.primaryLight
-                  : theme.colors.accent.primary
+                theme.scheme === 'standard'
+                  ? theme.mode === 'dark'
+                    ? theme.colors.accent.primary
+                    : theme.colors.accent.primaryLight
+                  : theme.bright
+                    ? theme.colors.accent.strongDown
+                    : theme.colors.accent.primaryLight
               }
-              stroke={theme.default.colors.base.white}
+              stroke={
+                theme.scheme === 'standard'
+                  ? theme.default.colors.base.white
+                  : theme.default.colors.base.black
+              }
             >
-              {isTextShowed && <MessageVoiceHideTextIcon />}
-              {!isTextShowed && <MessageVoiceShowTextIcon />}
+              {isTextShowed ? (
+                <MessageVoiceHideTextIcon />
+              ) : (
+                <MessageVoiceShowTextIcon />
+              )}
             </IconProvider>
           </MessageVoiceToggleTextButton>
         )}

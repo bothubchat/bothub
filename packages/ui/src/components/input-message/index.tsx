@@ -642,7 +642,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                           }
                           onClick={handleUploadFileClick}
                         >
-                          <AttachIcon size={18} />
+                          <AttachIcon
+                            size={18}
+                            fill={theme.colors.base.white}
+                          />
                           <Typography variant="body-m-medium">
                             {uploadFileText}
                           </Typography>
