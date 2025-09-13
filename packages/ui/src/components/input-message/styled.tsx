@@ -13,6 +13,7 @@ import { ExclamationIcon } from '@/ui/icons/exclamation';
 import { IconProvider } from '@/ui/components/icon';
 import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
+import { isBright } from '@/ui/utils';
 
 export interface InputMessageStyledProps {
   $active: boolean;
@@ -284,7 +285,14 @@ export const InputMessageConcatenateWarning = styled(Typography).attrs(
 export const InputMessageVoiceFileDelete = styled(Button).attrs({
   variant: 'text',
   children: <CloseIcon />,
-})``;
+  disableHoverColor: true,
+})`
+  &:hover {
+    svg path {
+      fill: ${({ theme }) => theme.colors.accent.primary};
+    }
+  }
+`;
 
 export interface InputMessageTextAreaProps {
   $disabled: boolean;
@@ -365,9 +373,9 @@ export const InputMessageVoiceButton = styled(
   startIcon: <VoiceIcon />,
   iconFill: disabled
     ? theme.colors.grayScale.gray1
-    : theme.bright
+    : isBright(theme.colors.grayScale.gray4)
       ? theme.default.colors.base.black
-      : theme.colors.base.white,
+      : theme.default.colors.base.white,
   disableHoverColor: true,
 }))`
   margin-inline: 10px;
