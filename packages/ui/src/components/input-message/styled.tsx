@@ -244,7 +244,7 @@ export const InputMessageButtons = styled.div`
   grid-area: buttons;
 `;
 
-export const InputMessageFiles = styled.div`
+export const InputMessageFilesStyled = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px 14px;
@@ -255,7 +255,7 @@ export const InputMessageFiles = styled.div`
 
 export const InputMessageFile = styled(Chip).attrs({ variant: 'input' })``;
 
-export const InputMessageVoiceFiles = styled(InputMessageFiles)`
+export const InputMessageVoiceFiles = styled(InputMessageFilesStyled)`
   width: 100%;
 `;
 
@@ -441,7 +441,7 @@ export const InputMessageVoiceRecordTimeText = styled(Typography).attrs({
   cursor: default;
 `;
 
-export const InputMessageToggleSendStyled = styled.div`
+export const InputMessageAltKeyStyled = styled.div`
   position: relative;
   width: fit-content;
   height: fit-content;
@@ -456,7 +456,7 @@ export const InputMessageToggleSendStyled = styled.div`
   })}
 `;
 
-export const InputMessageToggleSendButton = styled(Button).attrs({
+export const InputMessageAltKeyButton = styled(Button).attrs({
   variant: 'text',
   startIcon: <EnterIcon />,
   iconSize: 24,
@@ -480,7 +480,7 @@ export const InputMessageToggleSendButton = styled(Button).attrs({
   }
 `;
 
-export const InputMessageToggleSendModalStyled = styled(animated.div)`
+export const InputMessageAltKeyModalStyled = styled(animated.div)`
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -503,7 +503,7 @@ export const InputMessageToggleSendModalStyled = styled(animated.div)`
   -webkit-user-select: none;
 `;
 
-export const InputMessageToggleSendModalOption = styled.button<{
+export const InputMessageAltKeyModalOption = styled.button<{
   active: boolean;
 }>`
   all: unset;
