@@ -20,23 +20,18 @@ export const MessageFileInfo = styled.div`
 
 export interface MessageFileNameProps {
   $variant: MessageVariant;
-  $color: MessageColor;
 }
 
 export const MessageFileName = styled(Typography).attrs({
   variant: 'body-m-medium',
 })<MessageFileNameProps>`
-  color: ${({ theme, $variant, $color }) => {
+  color: ${({ theme, $variant }) => {
     if ($variant === 'assistant') {
       return theme.colors.base.white;
     }
 
-    if ($color !== 'default') {
-      return theme.default.colors.base.white;
-    }
-
     return theme.bright ||
-      (theme.sceme === 'standard' && theme.mode === 'light')
+      (theme.scheme === 'standard' && theme.mode === 'light')
       ? theme.default.colors.base.black
       : theme.default.colors.base.white;
   }};
