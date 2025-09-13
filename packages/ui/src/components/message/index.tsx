@@ -33,6 +33,7 @@ import {
   MessageVariant,
   MessageVersionEventHandler,
 } from './types';
+import { Loader } from '@/ui/components/loader';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
 import { colorToRgba, getTgMarkdown } from '@/ui/utils';
@@ -86,6 +87,7 @@ export interface MessageProps {
   version?: number;
   totalVersions?: number;
   hideActions?: boolean;
+  loader?: boolean;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
   onEdit?: MessageActionEventHandler;
@@ -140,6 +142,7 @@ export const Message: React.FC<MessageProps> = ({
   version,
   totalVersions,
   hideActions,
+  loader,
   onCopy,
   onCodeCopy,
   onEdit,
@@ -349,16 +352,21 @@ export const Message: React.FC<MessageProps> = ({
                     >
                       {!isEditing ? (
                         <>
-                          {!skeleton && (
-                            <>
-                              {typeof children === 'string' && (
-                                <MessageMarkdown components={components}>
-                                  {children}
-                                </MessageMarkdown>
-                              )}
-                              {typeof children !== 'string' && children}
-                            </>
-                          )}
+                          {!skeleton &&
+                            (!loader ? (
+                              <>
+                                {typeof children === 'string' && (
+                                  <MessageMarkdown components={components}>
+                                    {children}
+                                  </MessageMarkdown>
+                                )}
+                                {typeof children !== 'string' && children}
+                              </>
+                            ) : (
+                              <MessageParagraph disableMargin>
+                                <Loader />
+                              </MessageParagraph>
+                            ))}
                           {skeleton && (
                             <MessageParagraph disableMargin>
                               <Skeleton

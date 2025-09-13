@@ -104,11 +104,12 @@ export const TooltipStyled = styled(animated.div)<TooltipStyledProps>`
 
 export interface TooltipBlockProps {
   $variant: TooltipVariant;
-  $contentWidth?: number;
 }
 
 export const TooltipBlock = styled.span<TooltipBlockProps>`
   display: inline-flex;
+  width: max-content;
+  max-width: 260px;
   padding: 8px;
   background: ${({ theme, $variant }) => {
     switch ($variant) {
@@ -121,8 +122,6 @@ export const TooltipBlock = styled.span<TooltipBlockProps>`
   overflow: hidden;
   border-radius: 6px;
   box-sizing: border-box;
-  max-width: ${({ $contentWidth }) =>
-    $contentWidth ? `${$contentWidth}px` : '260px'};
 `;
 
 export const TooltipLabel = styled(Typography).attrs({

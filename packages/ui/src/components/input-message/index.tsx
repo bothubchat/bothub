@@ -632,34 +632,41 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               (style, item) =>
                 item && (
                   <InputMessageConfigureMenu style={style}>
-                    <InputMessageUploadFile>
-                      <InputMessageUploadFileLabel
-                        $disabled={
-                          files.length >= uploadFileLimit ||
-                          disabled ||
-                          uploadFileDisabled
-                        }
-                        onClick={handleUploadFileClick}
-                      >
-                        <AttachIcon size={18} />
-                        <Typography variant="body-m-medium">
-                          {uploadFileText}
-                        </Typography>
-                      </InputMessageUploadFileLabel>
-                      <InputMessageUploadFileInput
-                        key={files.length}
-                        type="file"
-                        accept={uploadFileAccept}
-                        multiple
-                        disabled={
-                          files.length >= uploadFileLimit ||
-                          disabled ||
-                          uploadFileDisabled
-                        }
-                        onChange={handleUploadFileChange}
-                      />
-                    </InputMessageUploadFile>
-                    {!!configureOptions && <InputMessageMenuHr />}
+                    {!hideUploadFile && (
+                      <InputMessageUploadFile>
+                        <InputMessageUploadFileLabel
+                          $disabled={
+                            files.length >= uploadFileLimit ||
+                            disabled ||
+                            uploadFileDisabled
+                          }
+                          onClick={handleUploadFileClick}
+                        >
+                          <AttachIcon
+                            size={18}
+                            fill={theme.colors.base.white}
+                          />
+                          <Typography variant="body-m-medium">
+                            {uploadFileText}
+                          </Typography>
+                        </InputMessageUploadFileLabel>
+                        <InputMessageUploadFileInput
+                          key={files.length}
+                          type="file"
+                          accept={uploadFileAccept}
+                          multiple
+                          disabled={
+                            files.length >= uploadFileLimit ||
+                            disabled ||
+                            uploadFileDisabled
+                          }
+                          onChange={handleUploadFileChange}
+                        />
+                      </InputMessageUploadFile>
+                    )}
+                    {!hideUploadFile && !!configureOptions && (
+                      <InputMessageMenuHr />
+                    )}
                     {configureOptions?.map(({ onClick, ...props }) => (
                       <InputMessageMenuOption
                         {...props}
