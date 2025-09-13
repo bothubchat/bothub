@@ -29,7 +29,6 @@ export interface TooltipProps extends React.PropsWithChildren {
   align?: TooltipAlign;
   inverted?: boolean;
   label?: React.ReactNode;
-  contentWidth?: number;
   disabled?: boolean;
   disableHiddenAnimation?: boolean;
   markdown?: boolean;
@@ -45,7 +44,6 @@ export const Tooltip: React.FC<TooltipProps> = ({
   align = 'auto',
   inverted = false,
   label,
-  contentWidth,
   disabled = false,
   disableHiddenAnimation = false,
   markdown = false,
@@ -229,10 +227,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
               inverted={inverted}
             />
           )}
-          <TooltipBlock
-            $contentWidth={contentWidth}
-            $variant={variant}
-          >
+          <TooltipBlock $variant={variant}>
             {typeof label === 'string' && !markdown && (
               <TooltipLabel>
                 {label.slice(0, 272)}
