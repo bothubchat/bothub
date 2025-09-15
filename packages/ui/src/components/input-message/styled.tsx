@@ -13,6 +13,7 @@ import { ExclamationIcon } from '@/ui/icons/exclamation';
 import { IconProvider } from '@/ui/components/icon';
 import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
+import { isBright } from '@/ui/utils';
 
 export interface InputMessageStyledProps {
   $active: boolean;
@@ -243,7 +244,7 @@ export const InputMessageButtons = styled.div`
   grid-area: buttons;
 `;
 
-export const InputMessageFiles = styled.div`
+export const InputMessageFilesStyled = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 10px 14px;
@@ -254,7 +255,7 @@ export const InputMessageFiles = styled.div`
 
 export const InputMessageFile = styled(Chip).attrs({ variant: 'input' })``;
 
-export const InputMessageVoiceFiles = styled(InputMessageFiles)`
+export const InputMessageVoiceFiles = styled(InputMessageFilesStyled)`
   width: 100%;
 `;
 
@@ -284,7 +285,14 @@ export const InputMessageConcatenateWarning = styled(Typography).attrs(
 export const InputMessageVoiceFileDelete = styled(Button).attrs({
   variant: 'text',
   children: <CloseIcon />,
-})``;
+  disableHoverColor: true,
+})`
+  &:hover {
+    svg path {
+      fill: ${({ theme }) => theme.colors.accent.primary};
+    }
+  }
+`;
 
 export interface InputMessageTextAreaProps {
   $disabled: boolean;
@@ -365,9 +373,9 @@ export const InputMessageVoiceButton = styled(
   startIcon: <VoiceIcon />,
   iconFill: disabled
     ? theme.colors.grayScale.gray1
-    : theme.bright
+    : isBright(theme.colors.grayScale.gray4)
       ? theme.default.colors.base.black
-      : theme.colors.base.white,
+      : theme.default.colors.base.white,
   disableHoverColor: true,
 }))`
   margin-inline: 10px;
@@ -433,7 +441,7 @@ export const InputMessageVoiceRecordTimeText = styled(Typography).attrs({
   cursor: default;
 `;
 
-export const InputMessageToggleSendStyled = styled.div`
+export const InputMessageAltKeyStyled = styled.div`
   position: relative;
   width: fit-content;
   height: fit-content;
@@ -448,7 +456,7 @@ export const InputMessageToggleSendStyled = styled.div`
   })}
 `;
 
-export const InputMessageToggleSendButton = styled(Button).attrs({
+export const InputMessageAltKeyButton = styled(Button).attrs({
   variant: 'text',
   startIcon: <EnterIcon />,
   iconSize: 24,
@@ -472,7 +480,7 @@ export const InputMessageToggleSendButton = styled(Button).attrs({
   }
 `;
 
-export const InputMessageToggleSendModalStyled = styled(animated.div)`
+export const InputMessageAltKeyModalStyled = styled(animated.div)`
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -495,7 +503,7 @@ export const InputMessageToggleSendModalStyled = styled(animated.div)`
   -webkit-user-select: none;
 `;
 
-export const InputMessageToggleSendModalOption = styled.button<{
+export const InputMessageAltKeyModalOption = styled.button<{
   active: boolean;
 }>`
   all: unset;

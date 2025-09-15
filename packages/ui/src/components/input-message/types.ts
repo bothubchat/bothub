@@ -18,3 +18,5 @@ export interface IConfigureOption {
   children?: React.ReactNode;
   onClick?: () => unknown;
 }
+
+export type InputMessageErrorEvent = { name: 'WRONG_FILES'; payload: File[] };
