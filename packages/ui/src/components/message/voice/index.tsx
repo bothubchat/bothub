@@ -14,11 +14,10 @@ import {
   MessageVoiceWaves,
   StyledRect,
 } from './styled';
-import { formatSeconds } from './utils';
-import { useMessage } from '../context';
-import { useTheme } from '@/ui/theme';
 import { IconProvider } from '@/ui/components/icon';
-import { isBright } from '@/ui/utils';
+import { useTheme } from '@/ui/theme';
+import { isBright, formatSeconds } from '@/ui/utils';
+import { useMessage } from '../context';
 
 export type MessageVoiceVariant = 'input' | 'message';
 

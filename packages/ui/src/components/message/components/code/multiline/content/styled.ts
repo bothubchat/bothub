@@ -9,6 +9,7 @@ export const MessageMultilineCodeContentContainer = styled.div`
 
 export const contentStyles = css<MessageMultilineCodeContentProps>`
   ${ScrollbarStyle}
+  overflow-x: auto;
   line-height: 1.3;
   span {
     line-height: 1.3;
