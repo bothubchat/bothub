@@ -1,7 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import { ScrollbarRef } from '../scrollbar';
 
-export const useSlider = () => {
+export interface UseSliderProps {
+  options?: ScrollIntoViewOptions;
+}
+
+export const useSlider = ({
+  options = {
+    behavior: 'smooth',
+    block: 'nearest',
+    inline: 'center',
+  },
+}: UseSliderProps) => {
   const [isLeftDisabled, setIsLeftDisabled] = useState(true);
   const [isRightDisabled, setIsRightDisabled] = useState(true);
 
@@ -30,11 +40,7 @@ export const useSlider = () => {
 
     if (isMinMinusX === -9999 && isNearFirstPosition === 0) return;
 
-    children[isNearFirstPosition].scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'center',
-    });
+    children[isNearFirstPosition].scrollIntoView(options);
   };
 
   const onScrollRight = () => {
@@ -63,11 +69,7 @@ export const useSlider = () => {
 
     if (isMaxPlusX === 9999 && isNearFirstPosition === 0) return;
 
-    children[isNearFirstPosition].scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'center',
-    });
+    children[isNearFirstPosition].scrollIntoView(options);
   };
 
   useEffect(() => {
