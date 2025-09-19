@@ -1,18 +1,20 @@
 import { PropsWithChildren } from 'react';
 import * as S from './styled';
 import { ArrowDownIcon } from '@/ui/icons';
-import { useSlider } from './useSlider';
+import { UseSliderProps, useSlider } from './useSlider';
 import { ArrowsSize } from './types';
 
 type SliderProps = {
   arrowsSize?: ArrowsSize;
   gap?: number;
-} & PropsWithChildren;
+} & UseSliderProps &
+  PropsWithChildren;
 
 export const Slider = ({
   arrowsSize = 'md',
   gap = 10,
   children,
+  options,
 }: SliderProps) => {
   const {
     isLeftDisabled,
@@ -20,7 +22,7 @@ export const Slider = ({
     onScrollLeft,
     onScrollRight,
     scrollbarRef,
-  } = useSlider();
+  } = useSlider({ options });
 
   return (
     <S.SliderContainer>
