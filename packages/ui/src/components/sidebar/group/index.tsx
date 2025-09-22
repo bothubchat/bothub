@@ -22,7 +22,6 @@ export interface SidebarGroupDefaultProps {
   name: string;
   skeleton?: false;
   id: string;
-  edit?: boolean;
   actions?: React.ReactNode;
   checkbox?: React.ReactNode;
   over?: boolean;
@@ -58,7 +57,7 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   const { setNodeRef } = useDroppable({
     id: !props.skeleton ? props.id : 'draggable-skeleton',
   });
-  const { isOpen: sidebarOpen } = useSidebar();
+  const { isOpen: sidebarOpen, isEdit } = useSidebar();
   const ref = useRef<HTMLDivElement>(null);
   const onHandleOpen = useCallback(() => {
     setOpen?.(!open);
@@ -73,11 +72,11 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
     }
   }, [!props.skeleton && props.name]);
 
-  const over = !props.skeleton && props.edit && props.over;
+  const over = !props.skeleton && isEdit && props.over;
   return (
     <SidebarGroupStyled
       $over={over}
-      ref={!props.skeleton && props.edit ? setNodeRef : undefined}
+      ref={!props.skeleton && isEdit ? setNodeRef : undefined}
     >
       {!props.isDefault && (
         <SidebarGroupNameWithOutline
@@ -88,10 +87,10 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
             <SidebarGroupName
               $open={open}
               $skeleton={!!props.skeleton}
-              $edit={!props.skeleton && props.edit}
+              $edit={!props.skeleton && isEdit}
               onClick={!props.skeleton ? onHandleOpen : undefined}
             >
-              {!props.skeleton && props.edit && <SidebarGroupDragHandle />}
+              {!props.skeleton && isEdit && <SidebarGroupDragHandle />}
               {!props.skeleton && (
                 <>
                   <SidebarGroupTooltip
@@ -141,8 +140,8 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
                 </Tooltip>
               )}
               {!props.skeleton && <SidebarGroupArrowDown />}
-              {!props.skeleton && props.edit && props.checkbox}
-              {!props.skeleton && !props.edit && props.actions}
+              {!props.skeleton && isEdit && props.checkbox}
+              {!props.skeleton && !isEdit && props.actions}
               {props.skeleton && <SidebarGroupSkeleton />}
             </SidebarGroupName>
           </SidebarGroupNameWithBg>
