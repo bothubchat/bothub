@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { SidebarToggleButtonStyled } from './styled';
 
@@ -18,7 +18,12 @@ export const SidebarToggleButton: React.FC<SidebarToggleButtonProps> = (
   props,
 ) => {
   const theme = useTheme();
-  const { isOpen, setIsOpen } = useSidebar();
+  const { isOpen, setIsOpen, setSearch, setEdit } = useSidebar();
+
+  useEffect(() => {
+    setSearch(false);
+    setEdit(false);
+  }, [isOpen]);
 
   return (
     <SidebarToggleButtonStyled
