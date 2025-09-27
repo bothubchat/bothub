@@ -342,3 +342,4 @@ export const SelectModal = ({
 };
 
 export * from './styled';
+export * from './option';
