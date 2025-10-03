@@ -21,6 +21,7 @@ import {
 import { TooltipConsumer } from '@/ui/components/tooltip';
 import { Typography } from '../../typography';
 import { LoaderCircularGradientIcon } from '@/ui/icons';
+import { useSidebar } from '../context';
 
 export interface SidebarChatDefaultProps {
   color: string;
@@ -32,7 +33,6 @@ export interface SidebarChatDefaultProps {
   skeleton?: false;
   id: string;
   isDndOverflow?: boolean;
-  edit?: boolean;
   checkbox?: React.ReactNode;
   dragging?: boolean;
   isDefault?: boolean;
@@ -63,9 +63,9 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
     });
     const ref = useRef<HTMLDivElement>(null);
     const [disableTooltip, setDisableTooltip] = useState(true);
-
+    const { isEdit } = useSidebar();
     const draggable =
-      !props.skeleton && props.edit
+      !props.skeleton && isEdit
         ? {
             ...listeners,
             ...attributes,
@@ -123,10 +123,10 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
               !!props.progress &&
               props.progress.value === props.progress.max
             }
-            ref={!props.skeleton && props.edit ? setNodeRef : undefined}
+            ref={!props.skeleton && isEdit ? setNodeRef : undefined}
             onClick={
               !props.skeleton
-                ? !props.edit
+                ? !isEdit
                   ? onClick
                   : onToggleCheckbox
                 : undefined
@@ -134,7 +134,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
           >
             <SidebarChatContent>
               {!props.skeleton && !props.progress ? (
-                props.edit ? (
+                isEdit ? (
                   <SidebarChatDragHandle {...draggable} />
                 ) : (
                   <SidebarChatIconContainer $isDefault={props.isDefault}>
@@ -194,8 +194,8 @@ export const SidebarChat: React.FC<SidebarChatProps> = React.memo(
               {!props.skeleton && props.caps && (
                 <SidebarChatCaps>{props.caps}</SidebarChatCaps>
               )}
-              {!props.skeleton && !props.edit && props.actions}
-              {!props.skeleton && props.edit && props.checkbox}
+              {!props.skeleton && !isEdit && props.actions}
+              {!props.skeleton && isEdit && props.checkbox}
             </SidebarChatContent>
 
             {!props.skeleton && props.progress && (

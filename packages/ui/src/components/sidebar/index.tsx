@@ -98,6 +98,8 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
       typeof initialIsOpen === 'boolean'
         ? [initialIsOpen, setInitialIsOpen]
         : useState(defaultOpen);
+    const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [isSearch, setIsSearch] = useState<boolean>(false);
     const [isBottom, setIsBottom] = useState<boolean>(false);
     const handleOpen = useCallback<
       React.Dispatch<React.SetStateAction<boolean>>
@@ -141,6 +143,10 @@ export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
       <SidebarProvider
         isOpen={isOpen}
         setIsOpen={handleOpen}
+        isEdit={isEdit}
+        setEdit={setIsEdit}
+        isSearch={isSearch}
+        setSearch={setIsSearch}
       >
         <SidebarStyled
           id={id}
