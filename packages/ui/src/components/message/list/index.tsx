@@ -72,10 +72,10 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(
           >
             <MessagesContent>
               <MessagesContainer $fullWidth={fullWidth}>
-                <MessagesStart ref={startRef} />
                 <MessagesScrollProvider scrollbarRef={scrollbarRef}>
                   <MessageList>{children}</MessageList>
                 </MessagesScrollProvider>
+                <MessagesStart ref={startRef} />
               </MessagesContainer>
             </MessagesContent>
           </MessagesScrollbarWrapper>
