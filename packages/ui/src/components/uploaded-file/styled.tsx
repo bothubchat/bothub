@@ -120,7 +120,7 @@ export const UploadedFileFooter = styled.div`
 
 export const UploadedFileProgressBar = styled(Progress).attrs({
   fullWidth: true,
-})<{ $error: boolean } & IsPrimary>`
+})<{ $status: UploadedFileStatus } & IsPrimary>`
   & > div {
     height: 6px;
     border-radius: 4px;
@@ -128,12 +128,20 @@ export const UploadedFileProgressBar = styled(Progress).attrs({
 
     & > div {
       border-radius: 4px;
-      background: ${({ theme, $error, $isPrimary }) =>
-        $error
-          ? theme.colors.critic
-          : $isPrimary
-            ? theme.colors.accent.primary
-            : theme.colors.gradient.elite};
+      background: ${({ theme, $status, $isPrimary }) => {
+        switch ($status) {
+          case 'error':
+            return `${theme.colors.critic}`;
+          case 'paused':
+            return `${theme.colors.grayScale.gray1}`;
+          default:
+            return `${
+              $isPrimary
+                ? theme.colors.gradient.light
+                : theme.colors.gradient.elite
+            }`;
+        }
+      }};
     }
   }
 `;

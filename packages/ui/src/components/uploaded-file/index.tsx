@@ -147,7 +147,7 @@ export const UploadedFile = forwardRef<HTMLDivElement, UploadedFileProps>(
 
         <S.UploadedFileFooter>
           <S.UploadedFileProgressBar
-            $error={status === 'error'}
+            $status={status}
             $isPrimary={isPrimary}
             value={progress}
             min={0}
