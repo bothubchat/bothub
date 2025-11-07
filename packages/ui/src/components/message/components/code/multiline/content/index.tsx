@@ -30,15 +30,17 @@ export const MessageMultilineCodeContent = memo(
       >
         <Suspense
           fallback={
-            <MessageMultilineCodeContentStyled
-              $messageColor={$messageColor}
-              className={className}
-            >
-              {message.slice(0, -2).join('\n')}
-              <MessageMultilineCodeLastLine>
-                {message.slice(-2)}
-              </MessageMultilineCodeLastLine>
-            </MessageMultilineCodeContentStyled>
+            <pre>
+              <MessageMultilineCodeContentStyled
+                $messageColor={$messageColor}
+                className={className}
+              >
+                {message.slice(0, -2).join('\n')}
+                <MessageMultilineCodeLastLine>
+                  {message.slice(-2)}
+                </MessageMultilineCodeLastLine>
+              </MessageMultilineCodeContentStyled>
+            </pre>
           }
         >
           <MessageMultilineCodeContentHighlighted

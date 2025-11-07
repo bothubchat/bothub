@@ -8,7 +8,6 @@ export const HeaderOffset = styled.div`
   min-width: ${({ theme }) => theme.mobile.minWidth};
   width: 100%;
   height: ${({ theme }) => theme.header.height};
-  background: ${({ theme }) => theme.colors.base.black};
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     height: ${({ theme }) => theme.header.mobile.height};
   }

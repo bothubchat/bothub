@@ -259,7 +259,7 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
                   size={16}
                 />
               </SelectFieldCheckBoxWrapper>
-              {includeLabel && (
+              {includeLabel && item.email && (
                 <SelectFieldCheckBoxMail>{item.email}</SelectFieldCheckBoxMail>
               )}
             </SelectFieldCheckBox>

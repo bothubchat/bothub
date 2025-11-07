@@ -15,7 +15,7 @@ import { visualizer } from 'rollup-plugin-visualizer';
 import commonjs from '@rollup/plugin-commonjs';
 import eslint from '@rollup/plugin-eslint';
 
-function createConfig({ packageName }) {
+function createConfig({ packageName, }) {
     const rootPath = process.cwd();
     const packagesPath = join(rootPath, './packages');
     const packagePath = join(packagesPath, packageName);
@@ -29,10 +29,10 @@ function createConfig({ packageName }) {
         'remark-parse',
         'remark-gfm',
         'mdast',
-        'mdast-util-to-markdown'
+        'mdast-util-to-markdown',
     ];
     const aliasPlugin = alias({
-        entries: [{ find: `@/${packageName}`, replacement: srcPath }]
+        entries: [{ find: `@/${packageName}`, replacement: srcPath }],
     });
     return [
         {
@@ -43,26 +43,26 @@ function createConfig({ packageName }) {
                     format: 'es',
                     externalLiveBindings: false,
                     preserveModules: true,
-                    preserveModulesRoot: path.resolve(rootPath, `packages/${packageName}/src`)
-                }
+                    preserveModulesRoot: path.resolve(rootPath, `packages/${packageName}/src`),
+                },
             ],
             plugins: [
                 commonjs({
-                    include: 'node_modules/**'
+                    include: 'node_modules/**',
                 }),
                 del({
                     targets: [join(distPath, './*')],
-                    runOnce: true
+                    runOnce: true,
                 }),
                 aliasPlugin,
                 nodeExternals(),
                 nodeResolve({
-                    extensions: ['.css', '.ts', '.tsx', '.js', '.jsx']
+                    extensions: ['.css', '.ts', '.tsx', '.js', '.jsx'],
                 }),
                 esbuild({
                     tsconfig: join(rootPath, './tsconfig.json'),
                     exclude: ['**/*.stories.ts'],
-                    sourceMap: false
+                    sourceMap: false,
                 }),
                 visualizer(),
                 babel({
@@ -75,13 +75,13 @@ function createConfig({ packageName }) {
                             'babel-plugin-styled-components',
                             {
                                 ssr: true,
-                                displayName: true
-                            }
-                        ]
-                    ]
+                                displayName: true,
+                            },
+                        ],
+                    ],
                 }),
                 image({
-                    include: ['**/*.png', '**/*.svg', '**/*.webp']
+                    include: ['**/*.png', '**/*.svg', '**/*.webp'],
                 }),
                 postcss(),
                 terser(),
@@ -95,17 +95,17 @@ function createConfig({ packageName }) {
                         './**/*.stories.tsx',
                         './packages/*/tests',
                         './**/*.test.ts',
-                        './**/*.test.tsx'
-                    ]
+                        './**/*.test.tsx',
+                    ],
                 }),
-                eslint({})
+                eslint({}),
             ],
-            external
-        }
+            external,
+        },
     ];
 }
 const createUiConfig = () => createConfig({
-    packageName: 'ui'
+    packageName: 'ui',
 });
 var rollup_config = defineConfig([...createUiConfig()]);
 

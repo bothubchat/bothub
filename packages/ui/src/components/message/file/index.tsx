@@ -27,7 +27,7 @@ export const MessageFile: React.FC<MessageFileProps> = ({
   ...props
 }) => {
   const theme = useTheme();
-  const { variant, color } = useMessage();
+  const { variant } = useMessage();
 
   let iconNode: React.ReactNode;
 
@@ -57,22 +57,14 @@ export const MessageFile: React.FC<MessageFileProps> = ({
       </IconProvider>
       <MessageFileInfo>
         {typeof name === 'string' && (
-          <MessageFileName
-            $variant={variant}
-            $color={color}
-          >
+          <MessageFileName $variant={variant}>
             {name.length > 32 && '...'}
             {name.slice(-32)}
           </MessageFileName>
         )}
         {typeof name !== 'string' && name}
         {typeof size === 'string' && (
-          <MessageFileSize
-            $variant={variant}
-            $color={color}
-          >
-            {size}
-          </MessageFileSize>
+          <MessageFileSize $variant={variant}>{size}</MessageFileSize>
         )}
         {typeof size !== 'string' && size}
       </MessageFileInfo>

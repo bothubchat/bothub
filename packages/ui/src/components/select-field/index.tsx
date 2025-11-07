@@ -112,7 +112,7 @@ export const SelectField = ({
   );
 
   const labelNode = useMemo(() => {
-    if (skeleton) {
+    if (skeleton && label !== undefined && label !== null) {
       return (
         <S.SelectFieldLabel>
           <Skeleton width={100} />

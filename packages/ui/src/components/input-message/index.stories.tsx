@@ -41,7 +41,7 @@ export const WithAlternativeKeyModalTexts: InputMessageStory = {
         <span style={{ color: '#fff' }}>Enter</span> - перенос строки
       </h6>
     ),
-    rightActions: (
+    actions: (
       <Button
         variant="text"
         startIcon={<QueueIcon />}
