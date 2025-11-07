@@ -267,7 +267,7 @@ export const MessageBlockContent = styled.div<{
     }
   }};
   max-width: 100%;
-  overflow: auto;
+  overflow: hidden;
 `;
 
 export const MessageBlockTextArea = styled.span.attrs({
