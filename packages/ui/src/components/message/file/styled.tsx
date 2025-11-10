@@ -20,21 +20,20 @@ export const MessageFileInfo = styled.div`
 
 export interface MessageFileNameProps {
   $variant: MessageVariant;
-  $color: MessageColor;
 }
 
 export const MessageFileName = styled(Typography).attrs({
   variant: 'body-m-medium',
 })<MessageFileNameProps>`
-  color: ${({ theme, $variant, $color }) => {
+  color: ${({ theme, $variant }) => {
     if ($variant === 'assistant') {
-      if ($color !== 'default') {
-        return theme.default.colors.base.white;
-      }
       return theme.colors.base.white;
     }
 
-    return theme.colors.base.white;
+    return theme.bright ||
+      (theme.scheme === 'standard' && theme.mode === 'light')
+      ? theme.default.colors.base.black
+      : theme.default.colors.base.white;
   }};
 `;
 
@@ -43,21 +42,9 @@ export interface MessageFileSizeProps {
   $color: MessageColor;
 }
 
-export const MessageFileSize = styled(Typography).attrs({
+export const MessageFileSize = styled(MessageFileName).attrs({
   variant: 'body-m-regular',
-})<MessageFileSizeProps>`
-  color: ${({ theme, $variant, $color }) => {
-    if ($variant === 'assistant') {
-      if ($color !== 'default') {
-        return theme.default.colors.base.white;
-      }
-
-      return theme.colors.base.white;
-    }
-
-    return theme.colors.base.white;
-  }};
-`;
+})``;
 
 export const MessageFiles = styled.div`
   display: flex;

@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { Typography } from '@/ui/components/typography';
 import { Skeleton } from '@/ui/components/skeleton';
+import { isBright } from '@/ui/utils';
 
 export type CheckedColor = { $checkedColor?: string };
 
@@ -78,7 +79,13 @@ export const CheckboxLabel = styled(Typography).attrs({ variant: 'input-sm' })`
   cursor: inherit;
 `;
 
-export const CheckboxCheckedIcon = styled(CheckSmallIcon)``;
+export const CheckboxCheckedIcon = styled(CheckSmallIcon).attrs(
+  ({ theme }) => ({
+    fill: isBright(theme.colors.accent.primary)
+      ? theme.default.colors.base.black
+      : theme.default.colors.base.white,
+  }),
+)``;
 
 export const CheckboxInput = styled.input<CheckedColor>`
   width: 0;

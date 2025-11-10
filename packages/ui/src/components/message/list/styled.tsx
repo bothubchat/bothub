@@ -38,7 +38,7 @@ export const MessagesContent = styled.div`
 
 export const MessagesContainer = styled.div<{ $fullWidth: boolean }>`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse; /* This is needed to automatically scroll down when adding new messages */
   width: inherit;
   max-width: ${({ theme, $fullWidth }) =>
     $fullWidth ? 'none' : theme.dashboard.chat.containerWidth};

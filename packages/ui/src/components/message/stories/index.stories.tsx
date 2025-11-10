@@ -124,7 +124,7 @@ export const MultilineCode: MessageStory = {
     children: `Конечно! Вот пример кода на JavaScript для вывода фразы "Hello, World!":
 \`\`\`javascript
 function main() {
-  console.log("Hello, World!");
+  console.log("Hello, World!"); const response = await fetch('example.com', { method: 'GET' })
 }
 \`\`\``,
   },

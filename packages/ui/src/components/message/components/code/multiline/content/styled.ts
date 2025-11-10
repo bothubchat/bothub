@@ -9,7 +9,10 @@ export const MessageMultilineCodeContentContainer = styled.div`
 
 export const contentStyles = css<MessageMultilineCodeContentProps>`
   ${ScrollbarStyle}
+  overflow-x: auto;
   line-height: 1.3;
+  padding: 1em;
+  display: block;
   span {
     line-height: 1.3;
   }
@@ -69,10 +72,9 @@ export const contentStyles = css<MessageMultilineCodeContentProps>`
       }
     `,
   })}
-  padding: 1em;
 `;
 
-export const MessageMultilineCodeContentStyled = styled.div<MessageMultilineCodeContentProps>`
+export const MessageMultilineCodeContentStyled = styled.code<MessageMultilineCodeContentProps>`
   ${contentStyles}
   background-color: #002635;
   color: #fff;

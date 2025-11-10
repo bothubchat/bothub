@@ -140,6 +140,7 @@ export const MessageActionsButton = styled.button`
 
 export const MessageEditButtonsStyled = styled.div`
   display: flex;
+  gap: 16px;
   align-items: center;
 `;
 

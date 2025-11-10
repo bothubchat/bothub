@@ -10,6 +10,7 @@ export type SingleDatepickerProps = {
   children: (
     setRef: UseFloatingReturn['refs']['setReference'],
     setOpen: Dispatch<SetStateAction<boolean>>,
+    open?: boolean,
   ) => ReactNode;
   defaultOpen?: boolean;
   buttonSaveText?: string;

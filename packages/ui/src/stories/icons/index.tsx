@@ -288,6 +288,12 @@ import {
   TextIcon,
   CodeIcon,
   BlueGrokIcon,
+  HistoryIcon,
+  MoneyPlusIcon,
+  MoneyStackIcon,
+  SortNumericBottomIcon,
+  SortNumericTopIcon,
+  BulbIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -629,6 +635,14 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TextIcon">{TextIcon}</IconItem>
         <IconItem name="CodeIcon">{CodeIcon}</IconItem>
         <IconItem name="BlueGrokIcon">{BlueGrokIcon}</IconItem>
+        <IconItem name="HistoryIcon">{HistoryIcon}</IconItem>
+        <IconItem name="MoneyPlusIcon">{MoneyPlusIcon}</IconItem>
+        <IconItem name="MoneyStackIcon">{MoneyStackIcon}</IconItem>
+        <IconItem name="SortNumericBottomIcon">
+          {SortNumericBottomIcon}
+        </IconItem>
+        <IconItem name="SortNumericTopIcon">{SortNumericTopIcon}</IconItem>
+        <IconItem name="BulbIcon">{BulbIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
