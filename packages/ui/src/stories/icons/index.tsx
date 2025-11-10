@@ -289,6 +289,7 @@ import {
   SortNumericBottomIcon,
   SortNumericTopIcon,
   BulbIcon,
+  DoubleImageIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -633,6 +634,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         </IconItem>
         <IconItem name="SortNumericTopIcon">{SortNumericTopIcon}</IconItem>
         <IconItem name="BulbIcon">{BulbIcon}</IconItem>
+        <IconItem name="DoubleImageIcon">{DoubleImageIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
