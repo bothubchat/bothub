@@ -304,3 +304,4 @@ export * from './image';
 export * from './text';
 export * from './code';
 export * from './blue-grok';
+export * from './double-image';
