@@ -32,6 +32,9 @@ export const All = () => (
 
     <Typography variant="body-s-medium">{SecondaryLoading.name}</Typography>
     <SecondaryLoading />
+
+    <Typography variant="body-s-medium">{WithBottomContent.name}</Typography>
+    <WithBottomContent />
   </div>
 );
 
@@ -127,6 +130,22 @@ export const SecondaryLoading = () => (
     }}
     onPause={() => {}}
     loading
+  />
+);
+
+export const WithBottomContent = () => (
+  <UploadedFile
+    variant="secondary"
+    filename="Table Name.xls"
+    progress={66}
+    status="in-progress"
+    onDelete={{
+      action: () => {},
+      disabled: true,
+    }}
+    onPause={() => {}}
+    loading
+    bottomContent={<Typography>Bottom content</Typography>}
   />
 );
 

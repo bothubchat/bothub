@@ -289,6 +289,11 @@ import {
   SortNumericBottomIcon,
   SortNumericTopIcon,
   BulbIcon,
+  PromptQueueIcon,
+  ImageIcon,
+  TextIcon,
+  CodeIcon,
+  BlueGrokIcon,
   DoubleImageIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
@@ -634,6 +639,11 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         </IconItem>
         <IconItem name="SortNumericTopIcon">{SortNumericTopIcon}</IconItem>
         <IconItem name="BulbIcon">{BulbIcon}</IconItem>
+        <IconItem name="PromptQueueIcon">{PromptQueueIcon}</IconItem>
+        <IconItem name="ImageIcon">{ImageIcon}</IconItem>
+        <IconItem name="TextIcon">{TextIcon}</IconItem>
+        <IconItem name="CodeIcon">{CodeIcon}</IconItem>
+        <IconItem name="BlueGrokIcon">{BlueGrokIcon}</IconItem>
         <IconItem name="DoubleImageIcon">{DoubleImageIcon}</IconItem>
       </IconList>
     </IconsStyled>

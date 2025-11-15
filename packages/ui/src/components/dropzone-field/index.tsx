@@ -5,7 +5,7 @@ import * as S from './styled';
 export type DropzoneFieldChangeEventHandler = (files: File[]) => void;
 
 export type DropzoneFieldProps = {
-  leftLabel?: string;
+  leftLabel?: string | React.ReactNode;
   rightLabels?: string[] | React.ReactNode[];
   placeholder?: React.ReactNode;
   error?: string;
@@ -108,8 +108,10 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
         {...props}
       >
         <S.DropzoneFieldLabels>
-          {leftLabel && (
+          {!!leftLabel && typeof leftLabel === 'string' ? (
             <Typography variant="body-m-regular">{leftLabel}</Typography>
+          ) : (
+            leftLabel
           )}
           {!!rightLabels && (
             <S.DropzoneFieldRightLabelsContainer>
