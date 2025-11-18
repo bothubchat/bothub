@@ -1,4 +1,4 @@
-import React, { useCallback, useId, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 import {
   MessageVoiceAudio,
   MessageVoiceDurationText,
@@ -18,6 +18,8 @@ import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { isBright, formatSeconds } from '@/ui/utils';
 import { useMessage } from '../context';
+
+const AUDIO_PLAY_EVENT = 'messageVoicePlay';
 
 export type MessageVoiceVariant = 'input' | 'message';
 
@@ -52,6 +54,42 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   const [isPlayed, setIsPlayed] = useState(false);
   const [isTextShowed, setIsTextShowed] = useState(false);
   const [currentTime, setCurrentTime] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleOtherAudioPlay = (event: CustomEvent) => {
+      const currentAudio = audioRef.current;
+      const playingAudio = event.detail.audio;
+
+      if (
+        currentAudio &&
+        playingAudio !== currentAudio &&
+        !currentAudio.paused
+      ) {
+        currentAudio.pause();
+      }
+    };
+
+    window.addEventListener(
+      AUDIO_PLAY_EVENT,
+      handleOtherAudioPlay as EventListener,
+    );
+
+    return () => {
+      window.removeEventListener(
+        AUDIO_PLAY_EVENT,
+        handleOtherAudioPlay as EventListener,
+      );
+    };
+  }, []);
+
+  const handlePlay = useCallback(() => {
+    const event = new CustomEvent(AUDIO_PLAY_EVENT, {
+      detail: { audio: audioRef.current },
+    });
+    window.dispatchEvent(event);
+
+    setIsPlayed(true);
+  }, []);
 
   const handleToggle = useCallback(() => {
     const audioEl = audioRef.current;
@@ -117,7 +155,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       <MessageVoiceAudio
         ref={audioRef}
         src={src}
-        onPlay={setIsPlayed.bind(null, true)}
+        onPlay={handlePlay}
         onPause={setIsPlayed.bind(null, false)}
         onCanPlayThrough={setIsLoading.bind(null, false)}
         onTimeUpdate={handleTimeUpdate}
