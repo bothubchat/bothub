@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
+import { useDroppable } from '@dnd-kit/core';
 import {
   SidebarArrowDownIcon,
   SidebarGroupBox,
@@ -9,11 +10,7 @@ import {
   SidebarGroupStyled,
 } from './styled';
 import { useSidebar } from '../context';
-import {
-  FolderIcon,
-  LoaderCircularGradientIcon,
-  DragDotIcon,
-} from '@/ui/icons';
+import { FolderIcon, LoaderCircularGradientIcon } from '@/ui/icons';
 import { SidebarGroupSkeleton } from './skeleton';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 
@@ -28,13 +25,13 @@ export interface SidebarGroupDefaultProps {
   checkbox?: React.ReactNode;
   open?: boolean;
   active?: boolean;
-  onHandleOpen?: () => void;
+  onHandleOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface SidebarGroupSkeletonProps {
   skeleton: true;
   open?: boolean;
-  onHandleOpen?: () => void;
+  onHandleOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type SidebarGroupProps = (
@@ -47,7 +44,10 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   children,
   ...props
 }) => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] =
+    typeof props.open === 'boolean'
+      ? [props.open, props.onHandleOpen]
+      : useState<boolean>(false);
   const {
     isOpen: sidebarOpen,
     isEdit,
@@ -55,6 +55,13 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   } = useSidebar();
   const [showTooltip, setShowTooltip] = useState(false);
   const ref = useRef<HTMLParagraphElement>(null);
+  const { setNodeRef, isOver } = useDroppable({
+    id: props.skeleton ? 'skeleton' : props.id,
+    data: {
+      accepts: ['chat'],
+      type: 'group',
+    },
+  });
   const listTransition = useTransition(open, {
     from: { opacity: 0, scale: 0.8 },
     enter: { opacity: 1, scale: 1 },
@@ -67,10 +74,10 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
       e.preventDefault();
       e.stopPropagation();
       if (!open && !sidebarOpen) {
-        setOpen(true);
+        setOpen?.(true);
         setSidebarOpen(true);
       } else {
-        setOpen(!open);
+        setOpen?.(!open);
       }
     },
     [open],
@@ -136,11 +143,16 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
   }
 
   return (
-    <SidebarGroupStyled id={props.id}>
-      <SidebarGroupBox onClick={handleOpen}>
-        {isEdit ? (
-          <DragDotIcon size={18} />
-        ) : props.loading ? (
+    <SidebarGroupStyled
+      id={props.id}
+      ref={setNodeRef}
+      $isOver={isOver}
+    >
+      <SidebarGroupBox
+        $active={props.active}
+        onClick={handleOpen}
+      >
+        {props.loading ? (
           <LoaderCircularGradientIcon size={18} />
         ) : (
           <FolderIcon
@@ -170,7 +182,6 @@ export const SidebarGroup: React.FC<SidebarGroupProps> = ({
         {!isEdit && props.actions}
         {isEdit && props.checkbox}
       </SidebarGroupBox>
-
       {listTransition(
         (style, item) =>
           item && <SidebarGroupList style={style}>{children}</SidebarGroupList>,

@@ -18,9 +18,11 @@ export const SidebarGroupSkeleton: React.FC<PropsWithChildren> = ({
         <SidebarGroupIconSkeleton />
         <SidebarGroupSkeletonStyled />
       </SidebarGroupSkeletonContainer>
-      <SidebarGroupList $isSidebarOpen={sidebarOpen}>
-        {children}
-      </SidebarGroupList>
+      {!!children && (
+        <SidebarGroupList $isSidebarOpen={sidebarOpen}>
+          {children}
+        </SidebarGroupList>
+      )}
     </SidebarGroupStyled>
   );
 };

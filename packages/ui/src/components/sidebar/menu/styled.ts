@@ -1,5 +1,5 @@
 import { animated } from '@react-spring/web';
-import { styled } from 'styled-components';
+import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 
 export const SidebarMenuStyled = styled.div`
@@ -11,6 +11,7 @@ export const SidebarMenuList = styled(animated.ul)<{ $isOpen: boolean }>`
   display: flex;
   flex-direction: column;
   margin: 0;
+  z-index: 1;
   gap: 20px;
   ${({ $isOpen, theme }) =>
     $isOpen &&
@@ -32,12 +33,12 @@ export const SidebarMenuList = styled(animated.ul)<{ $isOpen: boolean }>`
   `}
   margin-top: 20px;
   left: 0;
-  z-index: 1;
   list-style-type: none;
 `;
 
 export const SidebarMenuListItem = styled.li`
   display: flex;
+  position: relative;
   align-items: center;
   gap: 10px;
   cursor: pointer;
@@ -66,6 +67,59 @@ export const SidebarMenuItemText = styled(Typography).attrs({
   variant: 'body-m-medium',
 })<{
   $active: boolean;
+  $isOpen: boolean;
 }>`
+  ${({ $isOpen }) => !$isOpen && 'display: none;'}
   opacity: ${({ $active }) => ($active ? 1 : 0.5)};
+  @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
+    display: block;
+  }
+`;
+
+export const SidebarMenuItemTooltipStyled = styled.div<{
+  $isOpen: boolean;
+  $isHovered: boolean;
+}>`
+  transition:
+    all 0.2s ease-in-out,
+    left 150ms ease-in-out;
+  position: fixed;
+  display: flex;
+  align-items: center;
+  z-index: 100;
+  ${({ $isOpen }) =>
+    !$isOpen
+      ? `opacity: 0; pointer-events: none; visibility: hidden; left: 64px;`
+      : `
+    opacity: 0.8;
+    left: 90px;
+  `}
+  @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
+    display: none;
+  }
+  ${({ $isHovered }) =>
+    $isHovered &&
+    css`
+      left: 74px;
+      opacity: 1;
+    `}
+`;
+
+export const SidebarMenuTooltipArrow = styled.svg`
+  display: inline-flex;
+  position: relative;
+  rotate: 90deg;
+`;
+
+export const SidebarMenuTooltipText = styled(Typography).attrs({
+  variant: 'body-s-medium',
+})`
+  display: inline-flex;
+  background: ${({ theme }) =>
+    theme.mode === 'light'
+      ? theme.colors.grayScale.gray2
+      : theme.colors.grayScale.gray3};
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-left: -2px;
 `;

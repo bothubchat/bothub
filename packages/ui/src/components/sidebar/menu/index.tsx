@@ -5,12 +5,13 @@ import { CloseIcon } from '@/ui/icons/close';
 import { MenuIcon } from '@/ui/icons/menu';
 import { SidebarMenuStyled, SidebarMenuList } from './styled';
 import { useSidebar } from '../context';
+import { SidebarMenuProvider } from './context';
 
 export const SidebarMenu = ({ children }: { children: React.ReactNode }) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const { isOpen: sidebarOpen } = useSidebar();
   const [isOpen, setIsOpen] = useState(false);
-
+  const [isShowTooltips, setShowTooltips] = useState(false);
   const handleToggle = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, [isOpen]);
@@ -35,6 +36,14 @@ export const SidebarMenu = ({ children }: { children: React.ReactNode }) => {
     config: { duration: 150 },
   });
 
+  const handleMouseEnter = useCallback(() => {
+    setShowTooltips(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setShowTooltips(false);
+  }, []);
+
   return (
     <SidebarMenuStyled ref={sidebarRef}>
       <Button
@@ -44,17 +53,21 @@ export const SidebarMenu = ({ children }: { children: React.ReactNode }) => {
         {isOpen && <CloseIcon />}
         {!isOpen && <MenuIcon />}
       </Button>
-      {menuTransition(
-        (style, item) =>
-          item && (
-            <SidebarMenuList
-              $isOpen={sidebarOpen}
-              style={style}
-            >
-              {children}
-            </SidebarMenuList>
-          ),
-      )}
+      <SidebarMenuProvider value={{ isShowTooltips, setShowTooltips }}>
+        {menuTransition(
+          (style, item) =>
+            item && (
+              <SidebarMenuList
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                $isOpen={sidebarOpen}
+                style={style}
+              >
+                {children}
+              </SidebarMenuList>
+            ),
+        )}
+      </SidebarMenuProvider>
     </SidebarMenuStyled>
   );
 };

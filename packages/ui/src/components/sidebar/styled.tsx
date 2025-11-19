@@ -5,18 +5,31 @@ import { Divider } from '@/ui/components/divider';
 export const SidebarStyled = styled.div<{
   $isOpen: boolean;
   $isHide: boolean;
+  $isOpenOnTablet: boolean;
 }>`
   display: flex;
+  max-height: 100vh;
   flex-direction: column;
   height: 100%;
   width: ${({ $isOpen, $isHide }) =>
     $isHide ? '0px' : $isOpen ? '324px' : '74px'};
-  ${({ $isOpen }) => !$isOpen && 'justify-content: center;'}
+  ${({ $isOpen }) => !$isOpen && 'justify-content: flex-start;'}
   padding: 20px 0;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
   border-radius: 18px;
   transition: all 0.3s ease-in-out;
   overflow: hidden;
+  @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
+    width: 424px;
+    transform: translateX(
+      ${({ $isOpenOnTablet }) => ($isOpenOnTablet ? '0' : 'calc(-100% - 16px)')}
+    );
+    transition: all 0.3s ease-in-out;
+  }
+  @media (max-width: ${({ theme }) => theme.dashboard.mobile.maxWidth}) {
+    width: 100%;
+    border-radius: 0;
+  }
 `;
 
 export const SidebarTop = styled.div<{
@@ -112,6 +125,9 @@ export const SidebarHead = styled.div<{
   align-items: center;
   gap: 14px;
   margin-bottom: 20px;
+  @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
+    display: none;
+  }
 `;
 
 export const SidebarDivider = styled(Divider)<{
@@ -138,6 +154,12 @@ export const SidebarSearchBox = styled.div`
   display: flex;
   margin-top: 16px;
   &:empty {
+    display: none;
+  }
+`;
+
+export const SidebarToggleBox = styled.div`
+  @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
     display: none;
   }
 `;

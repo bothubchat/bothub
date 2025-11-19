@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
+import { useDraggable } from '@dnd-kit/core';
 import { useSidebar } from '../context';
 import {
   SidebarChatStyled,
   SidebarChatName,
   SidebarChatIconStyled,
   SidebarChatButton,
+  SidebarChatDraggbleButton,
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { IconProvider } from '@/ui/components/icon';
@@ -30,7 +32,7 @@ export type SidebarChatProps = (
   | SidebarChatDefaultProps
   | SidebarChatSkeletonProps
 ) & {
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: () => unknown;
   onToggleCheckbox?: () => unknown;
 };
 
@@ -39,7 +41,13 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
   const { isEdit } = useSidebar();
   const [showTooltip, setShowTooltip] = useState(false);
   const ref = useRef<HTMLParagraphElement>(null);
-
+  const { attributes, listeners, setNodeRef } = useDraggable({
+    disabled: !isEdit || props.skeleton,
+    id: props.skeleton ? 'skeleton' : props.id,
+    data: {
+      type: 'chat',
+    },
+  });
   useEffect(() => {
     const observer = new ResizeObserver(() => {
       if (ref.current && ref.current.scrollWidth > ref.current.clientWidth) {
@@ -60,6 +68,12 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
     };
   }, []);
 
+  const handleClick = () => {
+    if (props.onClick) {
+      props.onClick();
+    }
+  };
+
   if (props.skeleton) {
     return <SidebarChatSkeleton />;
   }
@@ -74,6 +88,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
         <TooltipConsumer>
           {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
             <SidebarChatButton
+              onClick={handleClick}
               onMouseEnter={handleTooltipMouseEnter}
               onMouseLeave={handleTooltipMouseLeave}
             >
@@ -88,9 +103,21 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
   }
 
   return (
-    <SidebarChatStyled>
+    <SidebarChatStyled
+      ref={setNodeRef}
+      $active={props.active}
+    >
       <IconProvider size={18}>
-        {!isEdit ? props.icon || <SidebarChatIconStyled /> : <DragDotIcon />}
+        {!isEdit ? (
+          props.icon || <SidebarChatIconStyled />
+        ) : (
+          <SidebarChatDraggbleButton
+            {...attributes}
+            {...listeners}
+          >
+            <DragDotIcon />
+          </SidebarChatDraggbleButton>
+        )}
       </IconProvider>
       <Tooltip
         label={props.name}
@@ -102,6 +129,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
           {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
             <SidebarChatName
               ref={ref}
+              onClick={handleClick}
               onPointerEnter={handleTooltipMouseEnter}
               onPointerLeave={handleTooltipMouseLeave}
             >

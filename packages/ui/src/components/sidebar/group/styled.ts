@@ -5,17 +5,25 @@ import { ArrowDownIcon } from '@/ui/icons';
 import { colorToRgba } from '@/ui/utils';
 import { Skeleton } from '@/ui/components/skeleton';
 
-export const SidebarGroupStyled = styled.div`
+export const SidebarGroupStyled = styled.div<{
+  $isOver?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   position: relative;
   gap: 8px;
   user-select: none;
+  ${({ $isOver, theme }) =>
+    $isOver &&
+    `
+    background: ${colorToRgba(theme.colors.accent.primaryLight, 0.4)};
+    border-radius: 8px;
+    `}
 `;
 
-export const SidebarGroupBackground = styled.div``;
-
-export const SidebarGroupBox = styled.div`
+export const SidebarGroupBox = styled.div<{
+  $active?: boolean;
+}>`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -38,9 +46,10 @@ export const SidebarGroupBox = styled.div`
   &:hover {
     background: ${({ theme }) =>
       colorToRgba(theme.colors.accent.primaryLight, 0.5)};
-    &::before {
-      border-left: 3px solid ${({ theme }) => theme.colors.accent.primary};
-    }
+  }
+  &::before {
+    ${({ theme, $active }) =>
+      $active && `border-left: 3px solid ${theme.colors.accent.primary};`}
   }
 `;
 
@@ -98,16 +107,14 @@ export const SidebarGroupButton = styled.button`
   cursor: pointer;
 `;
 
-export const SidebarGroupSkeletonStyled = styled(Skeleton)``;
+export const SidebarGroupSkeletonStyled = styled(Skeleton)`
+  height: 23px;
+`;
 
 export const SidebarGroupIconSkeleton = styled(Skeleton)`
   aspect-ratio: 1/1;
-  width: 24px;
-  height: 24px;
-  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-    width: 22px;
-    height: 22px;
-  }
+  width: 23px;
+  height: 23px;
 `;
 export const SidebarGroupSkeletonContainer = styled(Typography).attrs({
   component: 'div',

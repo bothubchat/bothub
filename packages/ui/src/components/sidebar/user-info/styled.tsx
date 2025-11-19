@@ -2,6 +2,13 @@ import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { LogoutIcon } from '@/ui/icons/logout';
+import { Skeleton } from '@/ui/components/skeleton';
+
+export const SidebarAvatarSkeleton = styled(Skeleton).attrs({
+  variant: 'circular',
+  width: 40,
+  height: 40,
+})``;
 
 export interface SidebarUserInfoStyledProps {
   $open: boolean;

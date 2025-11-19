@@ -60,3 +60,4 @@ export const SidebarUser: React.FC<SidebarUserInfoProps> = ({
 
 export * from './styled';
 export * from './avatar';
+export * from './skeleton';

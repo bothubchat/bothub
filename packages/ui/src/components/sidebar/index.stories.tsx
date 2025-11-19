@@ -101,6 +101,7 @@ const Chat: React.FC<{ skeleton?: boolean }> = ({ skeleton = false }) => (
     />
     <SidebarChat
       id="chat-2"
+      active
       actions={<ChatsActions />}
       name="Чат"
       icon={<Gpt35Icon />}
@@ -173,21 +174,11 @@ const Chats = ({
   actions?: React.ReactNode;
 }) => (
   <>
-    <SidebarGroup
-      id="group-1"
-      skeleton={loading}
-      actions={actions}
-      name="Чаты"
-    >
+    <SidebarGroup skeleton />
+    <SidebarGroup skeleton />
+    <SidebarGroup skeleton />
+    <SidebarGroup skeleton>
       <Chat skeleton />
-    </SidebarGroup>
-    <SidebarGroup
-      id="group-2"
-      skeleton={loading}
-      actions={actions}
-      name="Пресеты"
-    >
-      <Chat />
     </SidebarGroup>
     <SidebarGroup
       id="group-3"
@@ -257,7 +248,6 @@ const User = () => (
 
 export const Basic: SidebarStory = {
   args: {
-    section: 'chats',
     logo: <Logo />,
     deleteButton: <SidebarDeleteButton />,
     lang: <LangDropdown />,

@@ -4,10 +4,11 @@ import { adaptive } from '@/ui/adaptive';
 
 export const SidebarToggleButtonStyled = styled(Button).attrs({
   variant: 'text',
+  disableHoverColor: true,
 })<{ $isOpen: boolean }>`
   &:hover {
     svg path {
-      fill: ${({ theme }) =>
+      stroke: ${({ theme }) =>
         theme.mode === 'light'
           ? theme.default.colors.accent.primary
           : theme.colors.base.white} !important;
