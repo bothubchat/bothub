@@ -134,13 +134,13 @@ export const ImageFullScreenImage = styled(ZoommableImage)`
     object-fit: cover;
     width: auto;
     height: auto;
-    max-height: min(60vh, 512px);
+    max-height: 60vh;
     pointer-events: none;
     user-select: none;
     ${adaptive({
       merge: true,
       desktop: css`
-        max-width: 512px;
+        max-width: 80vw;
       `,
       mobile: css`
         max-width: 256px;
@@ -192,10 +192,10 @@ export const ImageFullScreenCarouselButtons = styled.div<ImageFullScreenCarousel
   ${adaptive(({ $imageWidth }) => ({
     merge: true,
     desktop: css`
-      gap: calc(min(512px, ${$imageWidth}px) + 48px);
+      gap: calc(${$imageWidth}px + 48px);
     `,
     mobile: css`
-      gap: calc(min(256px, ${$imageWidth}px) + 48px);
+      gap: calc(${$imageWidth}px + 48px);
     `,
   }))}
   @media (max-height: 600px) {
