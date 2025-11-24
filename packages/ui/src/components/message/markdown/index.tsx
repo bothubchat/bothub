@@ -15,7 +15,7 @@ function formatString(string: string) {
       // math formulas
       .replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
       .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$$${content}$$`)
-      .replace(/<!--.*-->/g, '')
+    // .replace(/<!--.*-->/g, '')
   );
 }
 
