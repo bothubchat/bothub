@@ -3,6 +3,7 @@ import * as S from './styled';
 import {
   SelectFieldChangeEventHandler,
   SelectFieldDataItem,
+  SelectFieldSize,
   SelectFieldValueChangeEventHandler,
   SelectModal,
   useSelectField,
@@ -19,6 +20,11 @@ export type BadgeSelectDropdownProps = {
   className?: string;
   compactWidth?: boolean;
   modalStyles?: React.CSSProperties;
+  size?: SelectFieldSize;
+  search?: boolean;
+  contentWidth?: number;
+  searchPlaceholder?: string;
+  openedModel?: string;
   onChange?: SelectFieldChangeEventHandler;
   onValueChange?: SelectFieldValueChangeEventHandler;
 } & Omit<
@@ -35,6 +41,11 @@ export const BadgeSelectDropdown = memo(
     className,
     compactWidth,
     modalStyles,
+    size = 'small',
+    search,
+    contentWidth,
+    searchPlaceholder,
+    openedModel,
     ...useSelectFieldProps
   }: BadgeSelectDropdownProps) => {
     const theme = useTheme();
@@ -91,6 +102,11 @@ export const BadgeSelectDropdown = memo(
           compactWidth={compactWidth}
           selectedColor={theme.colors.grayScale.gray2}
           modalStyles={modalStyles}
+          size={size}
+          search={search}
+          contentWidth={contentWidth}
+          searchPlaceholder={searchPlaceholder}
+          openedModel={openedModel}
           {...selectModalProps}
         />
       </>

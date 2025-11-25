@@ -17,6 +17,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   size = 40,
   src,
   children,
+  alt,
   ...props
 }) => {
   const isChildren = React.isValidElement(children);
@@ -37,12 +38,14 @@ export const Avatar: React.FC<AvatarProps> = ({
       $variant={variant}
       className={className}
       style={style}
+      aria-label={alt}
     >
       {!isSkeleton && !isChildren && (
         <AvatarObject
           data={src}
           width={size}
           height={size}
+          aria-label={alt}
         />
       )}
       {isChildren && !isSkeleton && (
@@ -58,6 +61,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       $variant={variant}
       className={className}
       style={style}
+      aria-label={alt}
     >
       <AvatarBg
         $size={size}

@@ -74,3 +74,9 @@ export function isFileTypeAccepted(
     return acceptType === fileType;
   });
 }
+
+export const isMobileDevice = (): boolean =>
+  /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent,
+  ) ||
+  ('ontouchstart' in window && window.innerWidth <= 768);

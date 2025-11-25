@@ -47,6 +47,7 @@ export const MessageParagraphStyled = styled(
   ${({ $wrap }) =>
     $wrap &&
     css`
+      word-break: keep-all;
       white-space: pre-wrap;
     `}
   &::selection {

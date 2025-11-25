@@ -88,7 +88,7 @@ export const SelectFieldRadio = styled.div<{
       `};
   }
 
-  &:hover:before {
+  &:hover::before {
     background-color: ${({ theme }) => theme.colors.accent.primary};
   }
 
@@ -144,4 +144,53 @@ export const SelectFieldOptionLabel = styled(Typography).attrs({
   variant: 'body-m-medium',
 })`
   padding-right: 8px;
+`;
+
+export const SelectFieldCheckBox = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px;
+  cursor: pointer;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    border-radius: 8px;
+    inset: 0;
+    opacity: 0.2;
+    transition: background 0.2s;
+  }
+
+  &:hover:before {
+    background-color: ${({ theme }) => theme.colors.accent.primary};
+  }
+`;
+
+export const SelectFieldCheckBoxLeftSide = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+export const SelectFieldCheckBoxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const SelectFieldCheckBoxName = styled(Typography).attrs({
+  variant: 'body-s-medium',
+})`
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
+export const SelectFieldCheckBoxMail = styled(Typography).attrs({
+  variant: 'body-s-regular',
+})`
+  color: ${({ theme }) => theme.colors.grayScale.gray6};
 `;

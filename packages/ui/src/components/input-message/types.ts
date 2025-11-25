@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface IInputMessageFile {
   name: string;
   previewUrl: string | null;
@@ -10,3 +12,11 @@ export interface IInputMessageVoiceFile {
   src: string;
   blob: Blob;
 }
+
+export interface IConfigureOption {
+  icon?: React.ReactNode;
+  children?: React.ReactNode;
+  onClick?: () => unknown;
+}
+
+export type InputMessageErrorEvent = { name: 'WRONG_FILES'; payload: File[] };

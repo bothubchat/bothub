@@ -1,4 +1,4 @@
-import React, { useCallback, useId, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
 import {
   MessageVoiceAudio,
   MessageVoiceDurationText,
@@ -14,11 +14,12 @@ import {
   MessageVoiceWaves,
   StyledRect,
 } from './styled';
-import { formatSeconds } from './utils';
-import { useMessage } from '../context';
-import { useTheme } from '@/ui/theme';
 import { IconProvider } from '@/ui/components/icon';
-import { isBright } from '@/ui/utils';
+import { useTheme } from '@/ui/theme';
+import { isBright, formatSeconds } from '@/ui/utils';
+import { useMessage } from '../context';
+
+const AUDIO_PLAY_EVENT = 'messageVoicePlay';
 
 export type MessageVoiceVariant = 'input' | 'message';
 
@@ -53,6 +54,42 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   const [isPlayed, setIsPlayed] = useState(false);
   const [isTextShowed, setIsTextShowed] = useState(false);
   const [currentTime, setCurrentTime] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleOtherAudioPlay = (event: CustomEvent) => {
+      const currentAudio = audioRef.current;
+      const playingAudio = event.detail.audio;
+
+      if (
+        currentAudio &&
+        playingAudio !== currentAudio &&
+        !currentAudio.paused
+      ) {
+        currentAudio.pause();
+      }
+    };
+
+    window.addEventListener(
+      AUDIO_PLAY_EVENT,
+      handleOtherAudioPlay as EventListener,
+    );
+
+    return () => {
+      window.removeEventListener(
+        AUDIO_PLAY_EVENT,
+        handleOtherAudioPlay as EventListener,
+      );
+    };
+  }, []);
+
+  const handlePlay = useCallback(() => {
+    const event = new CustomEvent(AUDIO_PLAY_EVENT, {
+      detail: { audio: audioRef.current },
+    });
+    window.dispatchEvent(event);
+
+    setIsPlayed(true);
+  }, []);
 
   const handleToggle = useCallback(() => {
     const audioEl = audioRef.current;
@@ -118,7 +155,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       <MessageVoiceAudio
         ref={audioRef}
         src={src}
-        onPlay={setIsPlayed.bind(null, true)}
+        onPlay={handlePlay}
         onPause={setIsPlayed.bind(null, false)}
         onCanPlayThrough={setIsLoading.bind(null, false)}
         onTimeUpdate={handleTimeUpdate}
@@ -130,27 +167,31 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       >
         <MessageVoiceToggleButton onClick={handleToggle}>
           <IconProvider
-            {...(color === 'default'
-              ? theme.mode === 'dark'
+            {...(variant === 'message' &&
+              (theme.scheme !== 'standard'
                 ? {
-                    fill: theme.default.colors.base.white,
-                    stroke: theme.colors.accent.primary,
+                    fill: theme.colors.grayScale.gray4,
                   }
                 : {
-                    fill: theme.colors.accent.primaryLight,
-                    stroke: theme.default.colors.base.white,
-                  }
-              : color === 'green'
-                ? { fill: theme.colors.gpt3 }
-                : color === 'purple'
-                  ? { fill: theme.colors.gpt4 }
-                  : { fill: color })}
+                    fill:
+                      theme.mode === 'dark'
+                        ? theme.default.colors.base.white
+                        : theme.default.colors.accent.primary,
+                  }))}
+            {...(variant === 'input' &&
+              color === 'default' && {
+                fill:
+                  theme.scheme === 'standard'
+                    ? '#A4C1FA'
+                    : isBright(theme.colors.grayScale.gray4)
+                      ? theme.colors.accent.strongDown
+                      : theme.colors.accent.primary,
+              })}
             {...(variant === 'input' && {
               size: 22,
             })}
           >
-            {isPlayed && <MessageVoicePauseIcon />}
-            {!isPlayed && <MessageVoicePlayIcon />}
+            {isPlayed ? <MessageVoicePauseIcon /> : <MessageVoicePlayIcon />}
           </IconProvider>
         </MessageVoiceToggleButton>
         <MessageVoiceWaves
@@ -213,7 +254,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
             </clipPath>
           </defs>
         </MessageVoiceWaves>
-        <MessageVoiceDurationText>
+        <MessageVoiceDurationText $variant={variant}>
           {currentTime !== null && formatSeconds(currentTime)}
           {currentTime === null && formatSeconds(duration)}
         </MessageVoiceDurationText>
@@ -221,14 +262,25 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
           <MessageVoiceToggleTextButton onClick={handleTextToggle}>
             <IconProvider
               fill={
-                theme.mode === 'light'
-                  ? theme.colors.accent.primaryLight
-                  : theme.colors.accent.primary
+                theme.scheme === 'standard'
+                  ? theme.mode === 'dark'
+                    ? theme.colors.accent.primary
+                    : theme.colors.accent.primaryLight
+                  : theme.bright
+                    ? theme.colors.accent.strongDown
+                    : theme.colors.accent.primaryLight
               }
-              stroke={theme.default.colors.base.white}
+              stroke={
+                theme.scheme === 'standard'
+                  ? theme.default.colors.base.white
+                  : theme.default.colors.base.black
+              }
             >
-              {isTextShowed && <MessageVoiceHideTextIcon />}
-              {!isTextShowed && <MessageVoiceShowTextIcon />}
+              {isTextShowed ? (
+                <MessageVoiceHideTextIcon />
+              ) : (
+                <MessageVoiceShowTextIcon />
+              )}
             </IconProvider>
           </MessageVoiceToggleTextButton>
         )}

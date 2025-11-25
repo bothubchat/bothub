@@ -61,7 +61,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   search,
   lang,
   isOpenOnTablet,
-  // themeSwitcher,
   isHide = false,
   children,
   style,

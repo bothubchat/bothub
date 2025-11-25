@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.48.1-fix-refactor-52c7a9bf-87e5-47fe-a770-a9f37cf1293c",
+  "version": "2.57.5-develop-64d1ac94-7c06-4035-a1a5-8b5ac4278d2f",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
@@ -56,9 +56,9 @@
     "@floating-ui/react-dom": "^2.1.0",
     "@react-spring/web": "^10",
     "date-fns": "^3.6.0",
-    "dompurify": "^3.2.6",
     "highlight.js": "^11.11.0",
     "katex": "^0.16.10",
+    "marked": "^16.2.1",
     "normalize.css": "^8.0.1",
     "rc-slider": "^11.1.8",
     "react-markdown": "^10.0.0",

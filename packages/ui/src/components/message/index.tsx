@@ -5,6 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { marked } from 'marked';
 import {
   MessageBlock,
   MessageBlockBottomPanel,
@@ -32,6 +33,7 @@ import {
   MessageVariant,
   MessageVersionEventHandler,
 } from './types';
+import { Loader } from '@/ui/components/loader';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
 import { colorToRgba, getTgMarkdown } from '@/ui/utils';
@@ -85,6 +87,7 @@ export interface MessageProps {
   version?: number;
   totalVersions?: number;
   hideActions?: boolean;
+  loader?: boolean;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
   onEdit?: MessageActionEventHandler;
@@ -139,6 +142,7 @@ export const Message: React.FC<MessageProps> = ({
   version,
   totalVersions,
   hideActions,
+  loader,
   onCopy,
   onCodeCopy,
   onEdit,
@@ -164,30 +168,24 @@ export const Message: React.FC<MessageProps> = ({
     [],
   );
 
-  const getRichText = useCallback(
-    (html: HTMLElement) => {
-      const htmlStr = new DOMParser().parseFromString(
-        html.innerHTML,
-        'text/html',
-      );
-      const codeNodes = htmlStr.getElementsByTagName('code');
-      for (const codeNode of codeNodes) {
-        const el = htmlStr.createElement('span');
-        el.innerText = codeNode.innerText;
-        codeNode.replaceWith(el);
-      }
-      const clipboardItem = new ClipboardItem({
-        'text/plain': new Blob([content!], { type: 'text/plain' }),
-        'text/html': new Blob([htmlStr.body.innerHTML], { type: 'text/html' }),
-      });
-      return [clipboardItem];
-    },
-    [content],
-  );
+  const getRichText = useCallback(async () => {
+    const htmlContent = (await marked.parse(messageText.current!)).replace(
+      /<p>([\s\S]*?)<\/p>/g,
+      '<pre>$1</pre>',
+    );
+
+    const clipboardItem = new ClipboardItem({
+      'text/plain': new Blob([messageText.current!], { type: 'text/plain' }),
+      'text/html': new Blob([htmlContent], { type: 'text/html' }),
+    });
+    return [clipboardItem];
+  }, []);
 
   const getPlainText = useCallback((html: HTMLElement) => {
     const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([html.innerText], { type: 'text/plain' }),
+      'text/plain': new Blob([html.innerText.replace(/\n{3,}/g, '\n\n')], {
+        type: 'text/plain',
+      }),
     });
     return [clipboardItem];
   }, []);
@@ -205,19 +203,19 @@ export const Message: React.FC<MessageProps> = ({
     if (messageBlockContentRef.current) {
       return onCopy?.(getPlainText(messageBlockContentRef.current));
     }
-  }, [messageBlockContentRef.current, content]);
+  }, [content]);
 
   const handleTgTextCopy = useCallback(() => {
     if (messageText.current) {
       return onCopy?.(getTgText(messageText.current));
     }
-  }, [messageText.current]);
+  }, []);
 
-  const handleRichTextCopy = useCallback(() => {
-    if (messageBlockContentRef.current && content) {
-      return onCopy?.(getRichText(messageBlockContentRef.current));
+  const handleRichTextCopy = useCallback(async () => {
+    if (messageText.current) {
+      return onCopy?.(await getRichText());
     }
-  }, [messageBlockContentRef.current, content]);
+  }, []);
 
   if (
     !(
@@ -354,16 +352,21 @@ export const Message: React.FC<MessageProps> = ({
                     >
                       {!isEditing ? (
                         <>
-                          {!skeleton && (
-                            <>
-                              {typeof children === 'string' && (
-                                <MessageMarkdown components={components}>
-                                  {children}
-                                </MessageMarkdown>
-                              )}
-                              {typeof children !== 'string' && children}
-                            </>
-                          )}
+                          {!skeleton &&
+                            (!loader ? (
+                              <>
+                                {typeof children === 'string' && (
+                                  <MessageMarkdown components={components}>
+                                    {children}
+                                  </MessageMarkdown>
+                                )}
+                                {typeof children !== 'string' && children}
+                              </>
+                            ) : (
+                              <MessageParagraph disableMargin>
+                                <Loader />
+                              </MessageParagraph>
+                            ))}
                           {skeleton && (
                             <MessageParagraph disableMargin>
                               <Skeleton
@@ -448,7 +451,6 @@ export const Message: React.FC<MessageProps> = ({
                     encryptionTooltipLabel={encryptionTooltipLabel}
                     editing={isEditing}
                     editedText={editedText}
-                    messageRef={messageRef}
                     onEditing={setIsEditing}
                     onEditedText={setEditedText}
                     onEdit={onEdit}

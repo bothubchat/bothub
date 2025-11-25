@@ -180,10 +180,6 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
     );
 
     useEffect(() => {
-      setScroll();
-    }, [children, setScroll]);
-
-    useEffect(() => {
       const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
       if (scrollbarEl === null) {
         return;

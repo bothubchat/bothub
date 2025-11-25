@@ -52,17 +52,33 @@ export const MessageVoiceWaves = styled.svg`
   height: 36px;
 `;
 
-export const MessageVoiceDurationText = styled(Typography).attrs({
+export const MessageVoiceDurationText = styled(Typography).attrs<{
+  $variant: 'input' | 'message';
+}>({
   variant: 'body-s-medium',
 })`
-  color: ${({ theme }) =>
-    theme.bright ||
-    (theme.scheme === 'custom' &&
-      isBright(theme.colors.custom.message.user.background))
-      ? theme.mode === 'dark'
-        ? theme.colors.base.black
-        : theme.default.colors.base.black
-      : theme.colors.base.white};
+  color: ${({ theme, $variant }) => {
+    if ($variant === 'input') {
+      if (theme.scheme === 'standard') {
+        return '#A4C1FA';
+      }
+
+      return theme.colors.accent.primary;
+    }
+
+    /* In standard theme, theme.bright is false, but message background is light */
+    if (theme.scheme === 'standard') {
+      return theme.mode === 'dark'
+        ? theme.default.colors.base.white
+        : theme.default.colors.base.black;
+    }
+
+    return theme.bright ||
+      (theme.scheme === 'custom' &&
+        isBright(theme.colors.custom.message.user.background))
+      ? theme.default.colors.base.black
+      : theme.default.colors.base.white;
+  }};
   user-select: none;
 `;
 
@@ -84,7 +100,15 @@ export const MessageVoiceText = styled(Typography).attrs({
   variant: 'body-m-regular',
 })<MessageVoiceTextProps>`
   width: 100%;
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => {
+    if (
+      theme.bright ||
+      (theme.scheme === 'standard' && theme.mode === 'light')
+    ) {
+      return theme.default.colors.base.black;
+    }
+    return theme.default.colors.base.white;
+  }};
   &::selection {
     ${({ $messageColor }) => {
       switch ($messageColor) {

@@ -22,6 +22,7 @@ export type SelectFieldProps = {
   fullWidth?: boolean;
   error?: string;
   skeleton?: boolean;
+  searchSampleIcon?: boolean;
   enableInput?: boolean;
   inputType?: SelectFieldInputType;
   inputValue?: string;
@@ -50,6 +51,7 @@ export const SelectField = ({
   empty,
   after,
   loading = false,
+  searchSampleIcon = false,
   enableInput = false,
   inputType = 'text',
   inputValue: initialInputValue,
@@ -68,6 +70,7 @@ export const SelectField = ({
   openedModel,
   onSearch,
   onOptionClick,
+  onGroupCheckboxClick,
   onInputChange,
   onPointerLeave,
   ...useSelectFieldProps
@@ -109,7 +112,7 @@ export const SelectField = ({
   );
 
   const labelNode = useMemo(() => {
-    if (skeleton) {
+    if (skeleton && label !== undefined && label !== null) {
       return (
         <S.SelectFieldLabel>
           <Skeleton width={100} />
@@ -215,9 +218,16 @@ export const SelectField = ({
                 <S.SelectFieldInputLeftSide>
                   {(!value || (Array.isArray(value) && value.length === 0)) && (
                     <>
-                      {isSearch && (
-                        <S.SelectFieldSearchIcon $focus={isInputNativeFocus} />
-                      )}
+                      {isSearch &&
+                        (searchSampleIcon ? (
+                          <S.SelectFieldSearchSimpleIcon
+                            $focus={isInputNativeFocus}
+                          />
+                        ) : (
+                          <S.SelectFieldSearchIcon
+                            $focus={isInputNativeFocus}
+                          />
+                        ))}
                       {enableInput ? (
                         <S.SelectFieldInputNative
                           type={inputType}
@@ -273,6 +283,7 @@ export const SelectField = ({
           multiple={multiple}
           onSearch={onSearch}
           onOptionClick={onOptionClick}
+          onGroupCheckboxClick={onGroupCheckboxClick}
           handleClose={handleClose}
           setValue={setValue}
           modalWidth={modalWidth}

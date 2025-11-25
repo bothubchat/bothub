@@ -1,73 +1,36 @@
-import React, {
-  useEffect,
-  useRef,
-  ReactNode,
-  ElementType,
-  useCallback,
-} from 'react';
+import React, { useEffect, useRef, ReactNode, memo } from 'react';
 import hljs from 'highlight.js/lib/common';
-import DOMPurify from 'dompurify';
+
+hljs.configure({
+  ignoreUnescapedHTML: true,
+});
 
 export interface HighlightProps {
   children: ReactNode;
   className?: string;
-  element?: ElementType;
-  innerHTML?: boolean;
 }
 
-export const Highlight: React.FC<HighlightProps> = ({
-  children,
-  className = '',
-  element: Element,
-  innerHTML = false,
-}) => {
-  const elRef = useRef<HTMLDivElement | HTMLPreElement>(null);
+export const Highlight: React.FC<HighlightProps> = memo(
+  ({ children, className = '' }) => {
+    const elRef = useRef<HTMLElement>(null);
 
-  const highlightCode = useCallback(() => {
-    if (!elRef.current) return;
-    const nodes = elRef.current.querySelectorAll('pre code');
+    useEffect(() => {
+      if (!elRef.current) {
+        return;
+      }
 
-    for (let i = 0; i < nodes.length; i++) {
-      hljs.highlightElement(nodes[i] as HTMLElement);
-    }
-  }, []);
+      hljs.highlightElement(elRef.current);
+    }, [className, children]);
 
-  useEffect(() => {
-    highlightCode();
-  }, [className, children, highlightCode]);
-
-  if (innerHTML) {
-    const safeHTML = DOMPurify.sanitize(children as string);
-    const props = {
-      ref: elRef,
-      className,
-      dangerouslySetInnerHTML: { __html: safeHTML },
-    };
-    if (Element) {
-      return <Element {...props} />;
-    }
     return (
-      <div
-        {...props}
-        ref={elRef as React.RefObject<HTMLDivElement>}
-      />
+      <pre>
+        <code
+          className={className}
+          ref={elRef}
+        >
+          {children}
+        </code>
+      </pre>
     );
-  }
-
-  if (Element) {
-    return (
-      <Element
-        ref={elRef}
-        className={className}
-      >
-        {children}
-      </Element>
-    );
-  }
-
-  return (
-    <pre ref={elRef as React.RefObject<HTMLPreElement>}>
-      <code className={className}>{children}</code>
-    </pre>
-  );
-};
+  },
+);

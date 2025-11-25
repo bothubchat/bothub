@@ -6,23 +6,15 @@ import { colorToRgba } from '@/ui/utils';
 import { Button } from '../button';
 import { CloseIcon, LoaderCircularGradientIcon } from '@/ui/icons';
 
-type IsPrimary = {
-  $isPrimary: boolean;
-};
+type IsPrimary = { $isPrimary: boolean };
 
 export const UploadedFileStyled = styled.div<
-  {
-    $fullWidth?: boolean;
-  } & IsPrimary
+  { $fullWidth?: boolean } & IsPrimary
 >`
-  ${({ $fullWidth }) =>
-    $fullWidth &&
-    css`
-      width: 100%;
-    `}
   display: flex;
   flex-direction: column;
   border-radius: 20px;
+  transition: height 0.2s;
 
   ${({ $isPrimary, theme }) =>
     $isPrimary
@@ -42,6 +34,12 @@ export const UploadedFileStyled = styled.div<
           border: 1px solid ${theme.colors.grayScale.gray2};
           background-color: ${theme.colors.base.black};
         `}
+
+  ${({ $fullWidth }) =>
+    $fullWidth &&
+    css`
+      width: 100%;
+    `}
 `;
 
 export const UploadedFileHeader = styled.div`
@@ -91,9 +89,7 @@ export const UploadedFileStatusChip = styled.div`
 
 export const UploadedFileStatusChipText = styled(Typography).attrs({
   variant: 'body-s-medium',
-})<{
-  $status: UploadedFileStatus;
-}>`
+})<{ $status: UploadedFileStatus }>`
   color: ${({ theme, $status }) => {
     switch ($status) {
       case 'done':
@@ -124,11 +120,7 @@ export const UploadedFileFooter = styled.div`
 
 export const UploadedFileProgressBar = styled(Progress).attrs({
   fullWidth: true,
-})<
-  {
-    $error: boolean;
-  } & IsPrimary
->`
+})<{ $status: UploadedFileStatus } & IsPrimary>`
   & > div {
     height: 6px;
     border-radius: 4px;
@@ -136,12 +128,20 @@ export const UploadedFileProgressBar = styled(Progress).attrs({
 
     & > div {
       border-radius: 4px;
-      background: ${({ theme, $error, $isPrimary }) =>
-        $error
-          ? theme.colors.critic
-          : $isPrimary
-            ? theme.colors.accent.primary
-            : theme.colors.gradient.elite};
+      background: ${({ theme, $status, $isPrimary }) => {
+        switch ($status) {
+          case 'error':
+            return `${theme.colors.critic}`;
+          case 'paused':
+            return `${theme.colors.grayScale.gray1}`;
+          default:
+            return `${
+              $isPrimary
+                ? theme.colors.gradient.light
+                : theme.colors.gradient.elite
+            }`;
+        }
+      }};
     }
   }
 `;
@@ -158,7 +158,8 @@ export const UploadedFileLoaderIcon = styled(LoaderCircularGradientIcon)`
 
 export const UploadedFileProgressValue = styled(Typography).attrs({
   variant: 'body-s-medium',
-})`
+})<{ $isMax: boolean }>`
   flex: 0 0 fit-content;
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme, $isMax }) =>
+    $isMax ? theme.colors.accent.primaryLight : theme.colors.grayScale.gray1};
 `;

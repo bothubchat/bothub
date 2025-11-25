@@ -20,7 +20,6 @@ export interface SidebarGroupDefaultProps {
   loading?: boolean;
   color?: string;
   id: string;
-  edit?: boolean;
   actions?: React.ReactNode;
   checkbox?: React.ReactNode;
   open?: boolean;

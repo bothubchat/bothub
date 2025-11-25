@@ -21,7 +21,7 @@ import {
 } from './styled';
 import { ImageFullScreenData, ImageFullScreenDataItem } from './types';
 import { ImageFullScreenProvider } from './context';
-import { useCarousel } from '../../utils/useCarousel';
+import { useCarousel } from '@/ui/utils';
 
 export type ImageFullScreenCloseEventHandler = () => unknown;
 

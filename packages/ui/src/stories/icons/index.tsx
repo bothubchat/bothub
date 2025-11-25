@@ -283,6 +283,18 @@ import {
   TelegramFilledIcon,
   ExchangeIcon,
   TimeIcon,
+  HistoryIcon,
+  MoneyPlusIcon,
+  MoneyStackIcon,
+  SortNumericBottomIcon,
+  SortNumericTopIcon,
+  BulbIcon,
+  PromptQueueIcon,
+  ImageIcon,
+  TextIcon,
+  CodeIcon,
+  BlueGrokIcon,
+  DoubleImageIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -619,6 +631,20 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TelegramFilledIcon">{TelegramFilledIcon}</IconItem>
         <IconItem name="ExchangeIcon">{ExchangeIcon}</IconItem>
         <IconItem name="TimeIcon">{TimeIcon}</IconItem>
+        <IconItem name="HistoryIcon">{HistoryIcon}</IconItem>
+        <IconItem name="MoneyPlusIcon">{MoneyPlusIcon}</IconItem>
+        <IconItem name="MoneyStackIcon">{MoneyStackIcon}</IconItem>
+        <IconItem name="SortNumericBottomIcon">
+          {SortNumericBottomIcon}
+        </IconItem>
+        <IconItem name="SortNumericTopIcon">{SortNumericTopIcon}</IconItem>
+        <IconItem name="BulbIcon">{BulbIcon}</IconItem>
+        <IconItem name="PromptQueueIcon">{PromptQueueIcon}</IconItem>
+        <IconItem name="ImageIcon">{ImageIcon}</IconItem>
+        <IconItem name="TextIcon">{TextIcon}</IconItem>
+        <IconItem name="CodeIcon">{CodeIcon}</IconItem>
+        <IconItem name="BlueGrokIcon">{BlueGrokIcon}</IconItem>
+        <IconItem name="DoubleImageIcon">{DoubleImageIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
