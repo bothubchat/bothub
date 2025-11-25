@@ -38,7 +38,7 @@ export const SidebarDeleteButton = styled(Button).attrs({
 
 export const SidebarCreateChatButton = styled(Button).attrs({
   children: <AddChatIcon />,
-})``;
+})<React.HTMLAttributes<HTMLButtonElement>>``;
 
 export const SidebarAddGroupButton = styled(Button).attrs({
   children: <AddGroupIcon />,

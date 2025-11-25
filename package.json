@@ -120,7 +120,6 @@
     "styled-components": "6.0.7",
     "stylis": "^4.3.1",
     "terser": "5.43.1",
-    "tsx": "^4.19.2",
     "yaml": "2.8.0"
   },
   "lint-staged": {

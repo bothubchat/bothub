@@ -7,10 +7,13 @@ import {
   SidebarChatIconStyled,
   SidebarChatButton,
   SidebarChatDraggbleButton,
+  SidebarChatBox,
+  SidebarChatPromtLine,
+  SidebarChatLoadingText,
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { IconProvider } from '@/ui/components/icon';
-import { DragDotIcon } from '@/ui/icons';
+import { CheckCircleIcon, DragDotIcon } from '@/ui/icons';
 import { SidebarChatSkeleton } from './skeleton';
 
 export interface SidebarChatDefaultProps {
@@ -21,6 +24,11 @@ export interface SidebarChatDefaultProps {
   skeleton?: false;
   id: string;
   checkbox?: React.ReactNode;
+  promtQueue?: boolean;
+  progress?: {
+    max?: number;
+    value?: number;
+  };
 }
 
 export interface SidebarChatSkeletonProps {
@@ -103,43 +111,68 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
   }
 
   return (
-    <SidebarChatStyled
-      ref={setNodeRef}
-      $active={props.active}
-    >
-      <IconProvider size={18}>
-        {!isEdit ? (
-          props.icon || <SidebarChatIconStyled />
-        ) : (
-          <SidebarChatDraggbleButton
-            {...attributes}
-            {...listeners}
-          >
-            <DragDotIcon />
-          </SidebarChatDraggbleButton>
-        )}
-      </IconProvider>
-      <Tooltip
-        label={props.name}
-        placement="top"
-        align="center"
-        disabled={isEdit || !showTooltip}
-      >
-        <TooltipConsumer>
-          {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-            <SidebarChatName
-              ref={ref}
-              onClick={handleClick}
-              onPointerEnter={handleTooltipMouseEnter}
-              onPointerLeave={handleTooltipMouseLeave}
+    <SidebarChatBox $active={props.active}>
+      <SidebarChatStyled ref={setNodeRef}>
+        <IconProvider size={18}>
+          {props.promtQueue &&
+            typeof props.progress === 'object' &&
+            typeof props.progress?.max === 'number' &&
+            typeof props.progress?.value === 'number' &&
+            props.progress.max > 0 &&
+            props.progress.value !== props.progress.max && (
+              <SidebarChatLoadingText>
+                {Math.round((props.progress.value / props.progress.max) * 100)}%
+              </SidebarChatLoadingText>
+            )}
+          {props.promtQueue &&
+            typeof props.progress === 'object' &&
+            typeof props.progress?.max === 'number' &&
+            typeof props.progress?.value === 'number' &&
+            props.progress.max > 0 &&
+            props.progress.value === props.progress.max && <CheckCircleIcon />}
+          {!isEdit ? (
+            !props.promtQueue && (props.icon || <SidebarChatIconStyled />)
+          ) : (
+            <SidebarChatDraggbleButton
+              {...attributes}
+              {...listeners}
             >
-              {props.name}
-            </SidebarChatName>
+              <DragDotIcon />
+            </SidebarChatDraggbleButton>
           )}
-        </TooltipConsumer>
-      </Tooltip>
-      {!isEdit && props.actions}
-      {isEdit && props.checkbox}
-    </SidebarChatStyled>
+        </IconProvider>
+        <Tooltip
+          label={props.name}
+          placement="top"
+          align="center"
+          disabled={isEdit || !showTooltip}
+        >
+          <TooltipConsumer>
+            {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+              <SidebarChatName
+                ref={ref}
+                onClick={handleClick}
+                onPointerEnter={handleTooltipMouseEnter}
+                onPointerLeave={handleTooltipMouseLeave}
+              >
+                {props.name}
+              </SidebarChatName>
+            )}
+          </TooltipConsumer>
+        </Tooltip>
+        {!isEdit && props.actions}
+        {isEdit && props.checkbox}
+      </SidebarChatStyled>
+      {props.promtQueue &&
+        typeof props.progress === 'object' &&
+        typeof props.progress?.max === 'number' &&
+        typeof props.progress?.value === 'number' && (
+          <SidebarChatPromtLine
+            percent={Math.round(
+              (props.progress.value / props.progress.max) * 100,
+            )}
+          />
+        )}
+    </SidebarChatBox>
   );
 };

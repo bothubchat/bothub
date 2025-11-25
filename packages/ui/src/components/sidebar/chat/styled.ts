@@ -5,15 +5,22 @@ import { Skeleton } from '@/ui/components/skeleton';
 import { colorToRgba } from '@/ui/utils';
 import { Button } from '../../button';
 
-export const SidebarChatStyled = styled.div<{ $active?: boolean }>`
+export const SidebarChatStyled = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  cursor: pointer;
-  padding: 8px;
-  height: 38px;
+`;
+
+export const SidebarChatBox = styled.div<{
+  $active?: boolean;
+}>`
   position: relative;
+  cursor: pointer;
+  display: flex;
   border-radius: 8px;
+  flex-direction: column;
+  padding: 8px;
+  min-height: 38px;
   &::before {
     content: '';
     position: absolute;
@@ -38,6 +45,28 @@ export const SidebarChatStyled = styled.div<{ $active?: boolean }>`
       background: ${({ theme }) =>
         colorToRgba(theme.colors.accent.primaryLight, 0.5)};
     `}
+`;
+
+export const SidebarChatPromtLine = styled.div<{
+  percent: number;
+}>`
+  position: relative;
+  height: 3px;
+  width: 100%;
+  margin-top: 8px;
+  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  &::before {
+    content: '';
+    position: absolute;
+    border-radius: 8px;
+    top: 0;
+    height: 3px;
+    left: 0px;
+    width: ${({ percent }) => percent}%;
+    height: 100%;
+    transition: all 0.15s ease-in-out;
+    background: ${({ theme }) => theme.colors.premiumGradient};
+  }
 `;
 
 export const SidebarChatName = styled(Typography).attrs({
@@ -100,3 +129,8 @@ export const SidebarChatDraggbleButton = styled(Button).attrs({
   z-index: 1;
   cursor: grab;
 `;
+
+export const SidebarChatLoadingText = styled(Typography).attrs({
+  variant: 'body-s-medium',
+  component: 'p',
+})``;

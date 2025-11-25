@@ -178,7 +178,7 @@ const Chats = ({
     <SidebarGroup skeleton />
     <SidebarGroup skeleton />
     <SidebarGroup skeleton>
-      <Chat skeleton />
+      <Chat />
     </SidebarGroup>
     <SidebarGroup
       id="group-3"
@@ -274,7 +274,12 @@ export const Basic: SidebarStory = {
         <SidebarEditButton variant="secondary" />
       </>
     ),
-    children: <Chats actions={<ChatsActions />} />,
+    children: (
+      <Chats
+        loading={false}
+        actions={<ChatsActions />}
+      />
+    ),
   },
 };
 

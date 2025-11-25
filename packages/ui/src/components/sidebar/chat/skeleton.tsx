@@ -5,6 +5,7 @@ import {
   SidebarChatName,
   SidebarChatSkeleton as SidebarChatSkeletonStyled,
   SidebarChatButton,
+  SidebarChatBox,
 } from './styled';
 
 export const SidebarChatSkeleton: React.FC = () => {
@@ -12,12 +13,14 @@ export const SidebarChatSkeleton: React.FC = () => {
 
   if (sidebarOpen) {
     return (
-      <SidebarChatStyled>
-        <SidebarChatName $skeleton>
-          <SidebarChatIconSkeleton />
-          <SidebarChatSkeletonStyled />
-        </SidebarChatName>
-      </SidebarChatStyled>
+      <SidebarChatBox>
+        <SidebarChatStyled>
+          <SidebarChatName $skeleton>
+            <SidebarChatIconSkeleton />
+            <SidebarChatSkeletonStyled />
+          </SidebarChatName>
+        </SidebarChatStyled>
+      </SidebarChatBox>
     );
   }
   return (

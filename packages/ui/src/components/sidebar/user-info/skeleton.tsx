@@ -12,7 +12,6 @@ import {
 import { useSidebar } from '../context';
 import { Skeleton } from '@/ui/components/skeleton';
 import { Button } from '@/ui/components/button';
-import { AvatarSkeleton } from '@/ui/components/avatar/styled';
 import { LogoutIcon } from '@/ui/icons';
 import { Typography } from '@/ui/components/typography';
 import { useTheme } from '@/ui/theme';
@@ -20,8 +19,9 @@ import { useTheme } from '@/ui/theme';
 export const SidebarUserSkeleton: React.FC = () => {
   const { isOpen } = useSidebar();
   const theme = useTheme();
+
   if (!isOpen) {
-    return <AvatarSkeleton />;
+    return <SidebarAvatarSkeleton />;
   }
 
   return (
