@@ -24,6 +24,8 @@ import {
   OrganizationIcon,
   SimpleGearIcon,
   Gpt35Icon,
+  GiftIcon,
+  CardIcon,
 } from '@/ui/icons';
 import { SidebarToggleButton } from './toggle-button';
 import {
@@ -79,6 +81,8 @@ const Menu = () => (
     <SidebarMenuItem icon={<OrganizationIcon />}>Организации</SidebarMenuItem>
     <SidebarMenuItem icon={<SimpleGearIcon />}>Настройки</SidebarMenuItem>
     <SidebarMenuItem icon={<CoderIcon />}>Для кодеров</SidebarMenuItem>
+    <SidebarMenuItem icon={<GiftIcon />}>Подарки</SidebarMenuItem>
+    <SidebarMenuItem icon={<CardIcon />}>Транзакции</SidebarMenuItem>
   </SidebarMenu>
 );
 

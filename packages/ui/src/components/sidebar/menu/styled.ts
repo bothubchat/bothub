@@ -54,7 +54,7 @@ export const SidebarMenuItemIconBox = styled.div<{
   width: 38px;
   height: 38px;
   border-radius: 8px;
-  opacity: ${({ $active }) => ($active ? 1 : 0.5)};
+  opacity: ${({ $active }) => ($active ? 1 : 0.75)};
   background: ${({ theme, $active }) =>
     $active ? theme.colors.grayScale.gray3 : theme.colors.grayScale.gray4};
   svg path {
@@ -70,7 +70,7 @@ export const SidebarMenuItemText = styled(Typography).attrs({
   $isOpen: boolean;
 }>`
   ${({ $isOpen }) => !$isOpen && 'display: none;'}
-  opacity: ${({ $active }) => ($active ? 1 : 0.5)};
+  opacity: ${({ $active }) => ($active ? 1 : 0.75)};
   @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
     display: block;
   }
