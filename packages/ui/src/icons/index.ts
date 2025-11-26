@@ -305,3 +305,7 @@ export * from './text';
 export * from './code';
 export * from './blue-grok';
 export * from './double-image';
+export * from './pdf-black';
+export * from './csv';
+export * from './xls-black';
+export * from './word-black';
