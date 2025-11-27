@@ -39,6 +39,7 @@ export type ButtonProps = Omit<
   skeleton?: boolean;
   htmlFor?: string;
   href?: string;
+  to?: string;
   color?: string;
   disableHoverColor?: boolean;
   children?: React.ReactNode;
@@ -61,6 +62,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
       disabled = false,
       skeleton = false,
       color,
+      to,
       disableHoverColor = false,
       ...props
     },
@@ -173,6 +175,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
           type,
           disabled,
         })}
+        {...(to && { to })}
         {...(component === 'a' && { href: props.href })}
         {...(component === 'label' && { htmlFor: props.htmlFor })}
         ref={elementRef}

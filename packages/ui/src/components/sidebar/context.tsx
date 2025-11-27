@@ -2,19 +2,17 @@ import React, { useContext } from 'react';
 
 export interface SidebarContextValue {
   isOpen: boolean;
-  isSearch: boolean;
   isEdit: boolean;
-  setEdit: React.Dispatch<React.SetStateAction<boolean>>;
-  setSearch: React.Dispatch<React.SetStateAction<boolean>>;
+  scrollbarElement: Element | null;
+  setIsEdit: React.Dispatch<React.SetStateAction<boolean>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const SidebarContext = React.createContext<SidebarContextValue>({
   isOpen: false,
-  isSearch: false,
   isEdit: false,
-  setEdit() {},
-  setSearch() {},
+  scrollbarElement: null,
+  setIsEdit() {},
   setIsOpen() {},
 });
 

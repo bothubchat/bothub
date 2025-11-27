@@ -1,43 +1,31 @@
 import React, {
-  forwardRef,
   StyleHTMLAttributes,
   useCallback,
+  useEffect,
   useState,
 } from 'react';
 import {
-  SidebarArrowDownButton,
-  SidebarArrowUpButton,
-  SidebarBanner,
-  SidebarBody,
-  SidebarBodyContent,
   SidebarBodyScrollbarWrapper,
   SidebarBottom,
+  SidebarButtons,
   SidebarContent,
-  SidebarContentNav,
-  SidebarContentNavContainer,
-  SidebarContentNavMenuScrollbarWrapper,
-  SidebarContentNavMenuWrapper,
-  SidebarDeleteButtonContainer,
-  SidebarDivider,
-  SidebarGlobalStyle,
-  SidebarHeader,
-  SidebarSearchContainer,
+  SidebarHead,
   SidebarStyled,
-  SidebarTabletThemeSwitcher,
-  SidebarToggle,
   SidebarToolbar,
+  SidebarTop,
   SidebarWrapper,
+  SidebarDivider,
+  SidebarBoxContainer,
+  SidebarSearchBox,
+  SidebarToggleBox,
 } from './styled';
 import { SidebarProvider } from './context';
-import { SidebarMenu } from './menu';
-import { ScrollbarRef, ScrollbarScrollEventHandler } from '../scrollbar';
-import { SidebarSectionProp } from './types';
+import { ScrollbarRef } from '../scrollbar';
 
 export type SidebarOpenEventHandler = (open: boolean) => unknown;
 
 export interface SidebarProps extends React.PropsWithChildren {
   open?: boolean;
-  section?: SidebarSectionProp;
   defaultOpen?: boolean;
   className?: string;
   id?: string;
@@ -51,189 +39,141 @@ export interface SidebarProps extends React.PropsWithChildren {
   search?: React.ReactNode;
   deleteButton?: React.ReactNode;
   isHide?: boolean;
-  themeSwitcher?: React.ReactNode;
+  isOpenOnTablet: boolean;
+  // themeSwitcher?: React.ReactNode;
   style?: StyleHTMLAttributes<HTMLElement>;
   onOpen?: SidebarOpenEventHandler;
   banner?: React.ReactNode;
 }
 
-export const Sidebar = forwardRef<ScrollbarRef, SidebarProps>(
-  (
-    {
-      open,
-      section,
-      defaultOpen = true,
-      className,
-      id,
-      user,
-      logo,
-      menu,
-      buttons,
-      buttonsModal,
-      toggle,
-      deleteButton,
-      search,
-      lang,
-      themeSwitcher,
-      isHide = false,
-      children,
-      style,
-      banner,
-      onOpen,
+export const Sidebar: React.FC<SidebarProps> = ({
+  open,
+  defaultOpen = true,
+  className,
+  id,
+  user,
+  logo,
+  menu,
+  buttons,
+  buttonsModal,
+  toggle,
+  deleteButton,
+  search,
+  lang,
+  isOpenOnTablet,
+  isHide = false,
+  children,
+  style,
+  banner,
+  onOpen,
+}) => {
+  const initialIsOpen = open;
+  const setInitialIsOpen = useCallback<
+    React.Dispatch<React.SetStateAction<boolean>>
+  >(
+    (open) => {
+      if (typeof open === 'boolean') {
+        onOpen?.(open);
+      }
     },
-    ref,
-  ) => {
-    const initialIsOpen = open;
-    const setInitialIsOpen = useCallback<
-      React.Dispatch<React.SetStateAction<boolean>>
-    >(
-      (open) => {
-        if (typeof open === 'boolean') {
-          onOpen?.(open);
-        }
-      },
-      [onOpen],
-    );
-    const [isOpen, setIsOpen] =
-      typeof initialIsOpen === 'boolean'
-        ? [initialIsOpen, setInitialIsOpen]
-        : useState(defaultOpen);
-    const [isEdit, setIsEdit] = useState<boolean>(false);
-    const [isSearch, setIsSearch] = useState<boolean>(false);
-    const [isBottom, setIsBottom] = useState<boolean>(false);
-    const handleOpen = useCallback<
-      React.Dispatch<React.SetStateAction<boolean>>
-    >(
-      (open) => {
-        setIsOpen(open);
+    [onOpen],
+  );
+  const [isOpen, setIsOpen] =
+    typeof initialIsOpen === 'boolean'
+      ? [initialIsOpen, setInitialIsOpen]
+      : useState(defaultOpen);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const ref = React.useRef<ScrollbarRef>(null);
+  const scrollbarElement = ref.current?.element ?? null;
+  const [isScrolling, setIsScrolling] = useState<boolean>(false);
 
-        if (typeof open === 'boolean' && !initialIsOpen && onOpen) {
-          onOpen(open);
-        }
-      },
-      [setIsOpen, initialIsOpen, onOpen],
-    );
+  useEffect(() => {
+    if (!ref.current?.element) return;
 
-    const handleScroll = useCallback<ScrollbarScrollEventHandler>(
-      ({ isBottom }) => {
-        setIsBottom(isBottom);
-      },
-      [setIsBottom],
-    );
-
-    const handleScrollTop = useCallback(() => {
-      if (ref && typeof ref !== 'function' && ref.current?.element) {
-        ref.current.element.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
+    const observer = new ResizeObserver(() => {
+      if (
+        ref.current?.element?.clientHeight !==
+        ref.current?.element?.scrollHeight
+      ) {
+        setIsScrolling(true);
+      } else {
+        setIsScrolling(false);
       }
-    }, [ref]);
+    });
 
-    const handleScrollBottom = useCallback(() => {
-      if (ref && typeof ref !== 'function' && ref.current?.element) {
-        ref.current.element.scrollTo({
-          top: ref.current.element.scrollHeight,
-          behavior: 'smooth',
-        });
-      }
-    }, [ref]);
+    observer.observe(ref.current.element);
 
-    return (
-      <SidebarProvider
-        isOpen={isOpen}
-        setIsOpen={handleOpen}
-        isEdit={isEdit}
-        setEdit={setIsEdit}
-        isSearch={isSearch}
-        setSearch={setIsSearch}
+    return () => {
+      observer.disconnect();
+    };
+  }, [ref.current?.element]);
+
+  return (
+    <SidebarProvider
+      isOpen={isOpen}
+      isEdit={isEdit}
+      scrollbarElement={scrollbarElement}
+      setIsEdit={setIsEdit}
+      setIsOpen={setIsOpen}
+    >
+      <SidebarStyled
+        style={style}
+        $isOpenOnTablet={isOpenOnTablet}
+        $isHide={isHide}
+        $isOpen={isOpen}
+        className={className}
+        id={id}
       >
-        <SidebarStyled
-          id={id}
-          className={className}
-          $isHide={isHide}
-          $open={isOpen}
-          style={style}
-        >
-          <SidebarContent
-            $open={isOpen}
-            $section={section}
-          >
-            <SidebarHeader $open={isOpen}>
-              {logo}
-              {lang}
-              <SidebarMenu>{menu}</SidebarMenu>
-            </SidebarHeader>
-            <SidebarToolbar $open={isOpen}>
+        <SidebarTop $isOpen={isOpen}>
+          <SidebarHead $isOpen={isOpen}>
+            {isOpen && logo}
+            {isOpen && lang}
+            {!isOpen && toggle}
+            {menu}
+          </SidebarHead>
+          {!isOpen && <SidebarDivider $isOpen={isOpen} />}
+          <SidebarToolbar $isOpen={isOpen}>
+            <SidebarButtons>
               {buttons}
               {buttonsModal}
-              {!isOpen && <SidebarMenu>{menu}</SidebarMenu>}
-              <SidebarToggle data-test="sidebar-toggle">{toggle}</SidebarToggle>
-            </SidebarToolbar>
-            <SidebarSearchContainer>{search}</SidebarSearchContainer>
-            <SidebarDivider />
-            <SidebarBody>
-              {!isOpen && (
-                <SidebarArrowUpButton
-                  $hidden={isBottom && !isOpen}
-                  onClick={handleScrollTop}
-                />
-              )}
-              <SidebarWrapper>
-                <SidebarBodyScrollbarWrapper
-                  ref={ref}
-                  size={!isOpen ? 0 : 6}
-                  onScroll={handleScroll}
-                >
-                  <SidebarBodyContent>{children}</SidebarBodyContent>
-                </SidebarBodyScrollbarWrapper>
-              </SidebarWrapper>
-              {!isOpen && (
-                <SidebarArrowDownButton
-                  $hidden={!isBottom}
-                  onClick={handleScrollBottom}
-                />
-              )}
-            </SidebarBody>
-            <SidebarDeleteButtonContainer>
-              {deleteButton}
-            </SidebarDeleteButtonContainer>
-            {banner && <SidebarBanner $open={isOpen}>{banner}</SidebarBanner>}
-            <SidebarBottom>{user}</SidebarBottom>
-          </SidebarContent>
-          <SidebarContentNav
-            $open={isOpen}
-            $section={section}
+            </SidebarButtons>
+            {isOpen && <SidebarToggleBox>{toggle}</SidebarToggleBox>}
+          </SidebarToolbar>
+          {isOpen && <SidebarSearchBox>{search}</SidebarSearchBox>}
+          <SidebarDivider $isOpen={isOpen} />
+        </SidebarTop>
+        <SidebarContent>
+          <SidebarWrapper
+            $isScrollable={isScrolling}
+            $isOpen={isOpen}
           >
-            <SidebarContentNavContainer>
-              <SidebarTabletThemeSwitcher>
-                {themeSwitcher}
-              </SidebarTabletThemeSwitcher>
-              <SidebarContentNavMenuWrapper>
-                <SidebarContentNavMenuScrollbarWrapper>
-                  {menu}
-                </SidebarContentNavMenuScrollbarWrapper>
-              </SidebarContentNavMenuWrapper>
-            </SidebarContentNavContainer>
-            {user}
-          </SidebarContentNav>
-        </SidebarStyled>
-        <SidebarGlobalStyle $open={isOpen} />
-      </SidebarProvider>
-    );
-  },
-);
-
+            <SidebarBodyScrollbarWrapper
+              ref={ref}
+              $isOpen={isOpen}
+            >
+              {children}
+            </SidebarBodyScrollbarWrapper>
+          </SidebarWrapper>
+        </SidebarContent>
+        {isOpen && (
+          <SidebarBoxContainer>
+            {!isEdit && banner}
+            {isEdit && deleteButton}
+          </SidebarBoxContainer>
+        )}
+        <SidebarBottom>{user}</SidebarBottom>
+      </SidebarStyled>
+    </SidebarProvider>
+  );
+};
+export * from './user-info';
 export * from './styled';
 export * from './context';
-export * from './toggle-button';
-export * from './buttons';
-export * from './user-info';
-export * from './chat';
-export * from './group';
-export * from './empty';
-export * from './menu';
 export * from './dropdown';
-export * from './group-empty';
+export * from './group';
+export * from './buttons';
+export * from './chat';
+export * from './toggle-button';
+export * from './menu';
 export * from './lang';
-export * from './types';
+export * from './list';

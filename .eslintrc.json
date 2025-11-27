@@ -28,6 +28,7 @@
     "@typescript-eslint",
     "prettier",
     "testing-library",
+    "storybook",
     "@vitest"
   ],
   "rules": {

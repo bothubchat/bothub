@@ -1,58 +1,24 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
-import {
-  SidebarMenuBlock,
-  SidebarMenuBlockContent,
-  SidebarMenuBlockScrollbarWrapper,
-  SidebarMenuStyled,
-  SidebarMenuToggleButton,
-} from './styled';
+import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
 import { MenuIcon } from '@/ui/icons/menu';
-import { SidebarMenuProvider } from './context';
+import { SidebarMenuStyled, SidebarMenuList } from './styled';
 import { useSidebar } from '../context';
-import { useTheme } from '@/ui/theme';
+import { SidebarMenuProvider } from './context';
 
-export type SidebarMenuProps = React.ComponentProps<'div'> & {
-  disabled?: boolean;
-};
-
-export const SidebarMenu: React.FC<SidebarMenuProps> = ({
-  children,
-  disabled = false,
-  ...props
-}) => {
-  const theme = useTheme();
-
+export const SidebarMenu = ({ children }: { children: React.ReactNode }) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState(false);
-
   const { isOpen: sidebarOpen } = useSidebar();
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [isShowTooltips, setShowTooltips] = useState(false);
   const handleToggle = useCallback(() => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   }, [isOpen]);
 
   useEffect(() => {
-    const clickListener = (event: Event) => {
-      const sidebarEl: HTMLDivElement | null = sidebarRef.current;
-
-      if (sidebarEl === null) {
-        return;
-      }
-      if (sidebarEl.contains(event.target as Element)) {
-        return;
-      }
-
-      setIsOpen(false);
-    };
-
-    document.addEventListener('click', clickListener);
-
-    return () => {
-      document.removeEventListener('click', clickListener);
-    };
-  }, []);
+    setIsOpen(false);
+  }, [sidebarOpen]);
 
   const menuTransition = useTransition(isOpen, {
     from: {
@@ -70,56 +36,40 @@ export const SidebarMenu: React.FC<SidebarMenuProps> = ({
     config: { duration: 150 },
   });
 
+  const handleMouseEnter = useCallback(() => {
+    setShowTooltips(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setShowTooltips(false);
+  }, []);
+
   return (
-    <SidebarMenuProvider
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-    >
-      <SidebarMenuStyled
-        {...props}
-        ref={sidebarRef}
+    <SidebarMenuStyled ref={sidebarRef}>
+      <Button
+        size="small"
+        onClick={handleToggle}
       >
-        <SidebarMenuToggleButton
-          disabled={disabled}
-          onClick={handleToggle}
-          data-test="sidebar-toggle-button"
-        >
-          {isOpen ? (
-            <CloseIcon
-              fill={
-                theme.bright
-                  ? theme.default.colors.base.black
-                  : theme.default.colors.base.white
-              }
-            />
-          ) : (
-            <MenuIcon
-              fill={
-                theme.bright
-                  ? theme.default.colors.base.black
-                  : theme.default.colors.base.white
-              }
-            />
-          )}
-        </SidebarMenuToggleButton>
+        {isOpen && <CloseIcon />}
+        {!isOpen && <MenuIcon />}
+      </Button>
+      <SidebarMenuProvider value={{ isShowTooltips, setShowTooltips }}>
         {menuTransition(
           (style, item) =>
             item && (
-              <SidebarMenuBlock
+              <SidebarMenuList
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                $isOpen={sidebarOpen}
                 style={style}
-                $sidebarOpen={sidebarOpen}
               >
-                <SidebarMenuBlockScrollbarWrapper>
-                  <SidebarMenuBlockContent>{children}</SidebarMenuBlockContent>
-                </SidebarMenuBlockScrollbarWrapper>
-              </SidebarMenuBlock>
+                {children}
+              </SidebarMenuList>
             ),
         )}
-      </SidebarMenuStyled>
-    </SidebarMenuProvider>
+      </SidebarMenuProvider>
+    </SidebarMenuStyled>
   );
 };
 
-export * from './styled';
-export * from './context';
-export * from './nav';
+export * from './item';

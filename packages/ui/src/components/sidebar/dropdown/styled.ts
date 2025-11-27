@@ -1,98 +1,91 @@
-import React from 'react';
 import { styled } from 'styled-components';
-import { animated, AnimatedProps } from '@react-spring/web';
-import { ArrowDownIcon } from '@/ui/icons/arrow-down';
+import { animated } from '@react-spring/web';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
 import { Typography } from '@/ui/components/typography';
+import { colorToRgba } from '@/ui/utils';
 
 export const SidebarDropdownStyled = styled.div`
-  width: 24px;
-  margin-left: 16px;
+  display: flex;
   position: relative;
 `;
 
 export const SidebarDropdownTogglerIcon = styled(MenuDotIcon).attrs({
-  size: 16,
+  size: 18,
 })`
-  pointer-events: none;
+  rotate: 90deg;
 `;
 
-export const SidebarDropdownTogglerText = styled(Typography)`
-  text-transform: uppercase;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 22px;
-  pointer-events: none;
-`;
+export const SidebarDropdownTogglerText = styled(Typography)``;
 
-export const SidebarDropdownTogglerArrow = styled(ArrowDownIcon).attrs({
-  size: 16,
-})`
-  pointer-events: none;
-`;
-
-export const SidebarDropdownToggler = styled.button<{ $open: boolean }>`
-  display: flex;
+export const SidebarDropdownToggler = styled.button`
   background: none;
-  border: none;
-  transform: rotate(90deg);
-  outline: none;
-  align-items: center;
-  cursor: pointer;
-  gap: 6px;
   padding: 0;
-  &:hover {
-    ${SidebarDropdownTogglerIcon} circle {
-      fill: ${({ theme }) => theme.colors.grayScale.gray6};
-      transition: fill 200ms ease-in-out;
-    }
-  }
-  &:active {
-    ${SidebarDropdownTogglerIcon} circle {
-      fill: ${({ theme }) => theme.colors.grayScale.gray1};
-      transition: fill 50ms ease-in-out;
-    }
-  }
+  margin: 0;
+  display: flex;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  align-items: center;
 `;
 
-export const SidebarDropdownContent: React.FC<
-  AnimatedProps<React.ComponentProps<'div'>>
-> = styled(animated.div)`
-  display: flex;
+export const SidebarDropdownContent = styled(animated.div)`
   position: fixed;
   transform-origin: top right;
+  width: fit-content;
+  margin-top: 16px;
+  transform: translateX(-100%);
+  top: 16px;
+  right: -2px;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid
-    ${({ theme }) =>
-      theme.mode === 'light'
-        ? theme.colors.grayScale.gray3
-        : theme.colors.grayScale.gray2};
-  background: ${({ theme }) =>
-    theme.mode === 'light'
-      ? 'rgba(255, 255, 255, 0.65)'
-      : 'rgba(18, 24, 37, 0.75)'};
-  opacity: 0.8;
-  padding: 0;
-  // Performance optimization for Safari
-  transform: translate3d(0, 0, 0);
-  backdrop-filter: blur(2px);
-  z-index: ${({ theme }) => theme.zIndex.menu + 1};
-  @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
-    transform: translate3d(-100%, 0, 0);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 8px;
+  z-index: 3;
+  &::before {
+    content: '';
+    position: absolute;
+    border-radius: 8px;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    background: rgba(
+      ${({ theme }) => colorToRgba(theme.colors.grayScale.gray4)},
+      0.75
+    );
   }
 `;
 
-export const SidebarDropdownList = styled.ul`
+export const SidebarDropdownList = styled.div`
+  min-width: 150px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   overflow: hidden;
-
-  list-style: none;
-  margin: 0;
-  opacity: 0.8;
-  padding: 8px;
-  box-sizing: border-box;
 `;
+
+export const SidebarDropdownItemStyled = styled.button`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  z-index: 2;
+  gap: 10px;
+  padding: 10px;
+  background: none;
+  margin: 0;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  &:hover {
+    background: ${({ theme }) => theme.colors.grayScale.gray3};
+  }
+`;
+
+export const SidebarDropdownItemText = styled(Typography).attrs({
+  variant: 'body-m-regular',
+  component: 'span',
+})``;
