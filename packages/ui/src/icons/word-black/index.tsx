@@ -8,12 +8,12 @@ export const WordBlackIcon = icon(({ ...props }) => (
     {...props}
   >
     <IconConsumer>
-      {() => (
+      {({ fill = '#0E0C15' } = { fill: '#0E0C15' }) => (
         <>
           <g clipPath="url(#clip0_134_17226)">
             <path
               d="M16.3845 1H37.3777L54.9373 19.3096V55.6787C54.9371 59.717 51.6558 62.9999 47.6033 63H16.3845C12.3454 62.9998 9.06341 59.7179 9.06323 55.6787V8.32129C9.06333 4.28212 12.3453 1.00013 16.3845 1Z"
-              fill="#0E0C15"
+              fill={fill}
               stroke="#4785FF"
               strokeWidth="2"
             />

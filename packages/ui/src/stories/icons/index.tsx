@@ -299,6 +299,8 @@ import {
   CsvBlackIcon,
   XlsBlackIcon,
   WordBlackIcon,
+  BrainBlackIcon,
+  TxtBlackIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -653,6 +655,8 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="CsvBlackIcon">{CsvBlackIcon}</IconItem>
         <IconItem name="XlsBlackIcon">{XlsBlackIcon}</IconItem>
         <IconItem name="WordBlackIcon">{WordBlackIcon}</IconItem>
+        <IconItem name="BrainBlackIcon">{BrainBlackIcon}</IconItem>
+        <IconItem name="TxtBlackIcon">{TxtBlackIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

@@ -8,12 +8,12 @@ export const CsvBlackIcon = icon(({ ...props }) => (
     {...props}
   >
     <IconConsumer>
-      {() => (
+      {({ fill = '#0E0C15' } = { fill: '#0E0C15' }) => (
         <>
           <g clipPath="url(#clip0_134_17263)">
             <path
               d="M16.3855 1H37.3777L54.9294 19.3203V55.6611C54.9294 59.7138 51.6603 62.9998 47.615 63H16.3855C12.3615 63 9.07007 59.7122 9.07007 55.6611V8.31543C9.07 4.28964 12.3597 1 16.3855 1Z"
-              fill="#0E0C15"
+              fill={fill}
               stroke="#66E8FA"
               strokeWidth="2"
             />

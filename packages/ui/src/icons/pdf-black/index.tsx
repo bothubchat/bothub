@@ -8,12 +8,12 @@ export const PdfBlackIcon = icon(({ ...props }) => (
     {...props}
   >
     <IconConsumer>
-      {() => (
+      {({ fill = '#0E0C15' } = { fill: '#0E0C15' }) => (
         <>
           <g clipPath="url(#clip0_134_17234)">
             <path
               d="M16.4001 1H37.3708L54.9324 19.3037V55.668C54.9324 59.7226 51.6522 63 47.616 63H16.4001C12.3468 63 9.06812 59.7214 9.06812 55.668V8.33203C9.06804 4.27866 12.3467 1 16.4001 1Z"
-              fill="#0E0C15"
+              fill={fill}
               stroke="#F4575A"
               strokeWidth="2"
             />
