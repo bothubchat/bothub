@@ -40,6 +40,9 @@ export const SidebarUserInfo = styled.div`
   width: 100%;
   cursor: pointer;
 `;
+export const SidebarUserBoxAvatar = styled.div`
+  display: flex;
+`;
 
 export const SidebarUserAvatarBox = styled.div`
   padding: 0 5px;

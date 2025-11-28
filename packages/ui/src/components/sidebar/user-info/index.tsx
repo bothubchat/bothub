@@ -3,6 +3,7 @@ import { useSidebar } from '../context';
 import {
   SidebarUserAvatarBox,
   SidebarUserBox,
+  SidebarUserBoxAvatar,
   SidebarUserCaps,
   SidebarUserInfo,
   SidebarUserName,
@@ -17,6 +18,7 @@ export interface SidebarUserInfoProps {
   updateTariff?: React.ReactNode;
   logout?: React.ReactNode;
   linkAs?: React.ElementType;
+  alwaysOpen?: boolean;
   to?: string;
   onClick?: React.MouseEventHandler;
 }
@@ -28,13 +30,20 @@ export const SidebarUser: React.FC<SidebarUserInfoProps> = ({
   updateTariff,
   logout,
   linkAs,
+  alwaysOpen,
   to,
   onClick,
 }) => {
   const { isOpen } = useSidebar();
-
-  if (!isOpen) {
-    return avatar;
+  if (!alwaysOpen && !isOpen) {
+    return (
+      <SidebarUserBoxAvatar
+        as={linkAs}
+        to={to}
+      >
+        {avatar}
+      </SidebarUserBoxAvatar>
+    );
   }
 
   return (

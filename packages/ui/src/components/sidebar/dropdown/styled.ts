@@ -36,6 +36,7 @@ export const SidebarDropdownContent = styled(animated.div)`
   transform: translateX(-100%);
   top: 16px;
   right: -2px;
+  background: ${({ theme }) => colorToRgba(theme.colors.grayScale.gray4, 0.75)};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   border-radius: 8px;
   backdrop-filter: blur(6px);
@@ -51,10 +52,6 @@ export const SidebarDropdownContent = styled(animated.div)`
     height: 100%;
     top: 0px;
     right: 0px;
-    background: rgba(
-      ${({ theme }) => colorToRgba(theme.colors.grayScale.gray4)},
-      0.75
-    );
   }
 `;
 
