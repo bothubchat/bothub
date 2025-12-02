@@ -90,8 +90,8 @@ export const HeaderMenuNavContentChildList = styled(animated.div)<{
   $columns?: number;
 }>`
   display: grid;
-  grid-template-columns: ${({ $columns = 1 }) =>
-    `repeat(${$columns}, max-content)`};
+  ${({ $columns = 1 }) =>
+    $columns > 1 && `grid-template-columns: repeat(${$columns}, max-content);`}
   flex-direction: column;
   row-gap: 8px;
   column-gap: 16px;
