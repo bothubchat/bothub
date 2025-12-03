@@ -8,7 +8,7 @@ import {
   SidebarUserName,
   SidebarUserStyled,
   SidebarUserTextBox,
-} from '.';
+} from './styled';
 import { useSidebar } from '../context';
 import { Skeleton } from '@/ui/components/skeleton';
 import { Button } from '@/ui/components/button';
