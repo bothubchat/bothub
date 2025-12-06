@@ -311,3 +311,4 @@ export * from './xls-black';
 export * from './word-black';
 export * from './brain-black';
 export * from './txt-black';
+export * from './folder';

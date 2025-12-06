@@ -301,6 +301,7 @@ import {
   WordBlackIcon,
   BrainBlackIcon,
   TxtBlackIcon,
+  FolderIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -657,6 +658,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="WordBlackIcon">{WordBlackIcon}</IconItem>
         <IconItem name="BrainBlackIcon">{BrainBlackIcon}</IconItem>
         <IconItem name="TxtBlackIcon">{TxtBlackIcon}</IconItem>
+        <IconItem name="FolderIcon">{FolderIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
