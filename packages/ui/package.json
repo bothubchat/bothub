@@ -45,8 +45,8 @@
   },
   "peerDependencies": {
     "@uidotdev/usehooks": "^2.4.1",
-    "react": "19.1.1",
-    "react-dom": "19.1.1",
+    "react": "^19",
+    "react-dom": "^19",
     "react-helmet": ">=2",
     "styled-components": "^6.0.7"
   },
