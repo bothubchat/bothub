@@ -1,193 +1,128 @@
-import { css, keyframes, styled } from 'styled-components';
+import { styled } from 'styled-components';
+import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
-import { Tooltip } from '@/ui/components/tooltip';
+import { ArrowDownIcon } from '@/ui/icons';
+import { colorToRgba } from '@/ui/utils';
 import { Skeleton } from '@/ui/components/skeleton';
-import { ArrowDownIcon } from '@/ui/icons/arrow-down';
-import { DragDotIcon } from '@/ui/icons/drag-dot';
-import { FolderIcon } from '@/ui/icons/folder';
-import { Checkbox } from '@/ui/components/checkbox';
-import { adaptive } from '@/ui/adaptive';
-import { SidebarDropdownStyled } from '../dropdown';
-import { colorToRgba } from '@/ui/utils/colors';
 
-export const SidebarGroupsStyled = styled.div`
-  display: flex;
-  position: relative;
-  flex-direction: column;
-  width: 100%;
-`;
-
-export const SidebarGroupStyled = styled.div<{ $over?: boolean }>`
+export const SidebarGroupStyled = styled.div<{
+  $isOver?: boolean;
+}>`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  ${({ $over, theme }) => {
-    if ($over) {
-      return css`
-        background: ${colorToRgba(theme.colors.accent.primaryLight, 0.4)};
-        border-radius: 10px;
-      `;
-    }
-  }}
-`;
-export const SidebarGroupArrowDown = styled(ArrowDownIcon)`
-  transition: transform 0.2s ease;
-`;
-
-const SidebarGroupNameOutlineAnimation = keyframes`
-  from {
-    opacity: 0;
-    left: 0;
-  }
-  to {
-    opacity: 1;
-    left: -3px;
-  }
-`;
-
-export interface SidebarGroupNameWithOutlineProps {
-  $active?: boolean;
-  $open?: boolean;
-}
-
-export const SidebarGroupNameWithOutline = styled.div<SidebarGroupNameWithOutlineProps>`
-  width: 100%;
   position: relative;
-  &:before {
-    content: '';
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-radius: 10px;
-    z-index: 0;
-  }
-  &:hover {
-    &:before {
-      background-color: ${({ theme }) => theme.colors.accent.primary};
-    }
-  }
-  ${({ $active, theme }) =>
-    $active &&
-    css`
-      width: calc(100% - 3px);
-      margin-left: 3px;
-      &:before {
-        background-color: ${theme.colors.accent.primary};
-        animation: ${SidebarGroupNameOutlineAnimation} 0.3s ease-out 1 forwards;
-      }
+  gap: 8px;
+  user-select: none;
+  ${({ $isOver, theme }) =>
+    $isOver &&
+    `
+    background: ${colorToRgba(theme.colors.accent.primaryLight, 0.4)};
+    border-radius: 8px;
     `}
 `;
 
-export const SidebarGroupNameWithBg = styled.div`
-  width: 100%;
-  border-radius: 10px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+export const SidebarGroupBox = styled.div<{
+  $active?: boolean;
+}>`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 8px;
+  height: fit-content;
   position: relative;
+  transition: all 0.15s ease-in-out;
+  border-radius: 8px;
+  &::before {
+    content: '';
+    position: absolute;
+    border-radius: 8px;
+    top: 0;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    transition: all 0.15s ease-in-out;
+  }
+  &:hover {
+    background: ${({ theme }) =>
+      colorToRgba(theme.colors.accent.primaryLight, 0.5)};
+  }
+  &::before {
+    ${({ theme, $active }) =>
+      $active && `border-left: 3px solid ${theme.colors.accent.primary};`}
+  }
 `;
 
-export interface SidebarGroupNameProps {
-  $open?: boolean;
-  $skeleton?: boolean;
-  $edit?: boolean;
-}
+export const SidebarGroupList = styled(animated.div)<{
+  $isSidebarOpen?: boolean;
+}>`
+  transform-origin: top center;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: ${({ $isSidebarOpen }) => ($isSidebarOpen ? '4px' : '8px')};
+`;
 
 export const SidebarGroupName = styled(Typography).attrs({
   variant: 'body-l-medium',
-  component: 'div',
-})<SidebarGroupNameProps>`
-  display: flex;
-  cursor: ${({ $skeleton }) => ($skeleton ? 'not-allowed' : 'pointer')};
-  padding: 8px;
-  align-items: center;
-  position: relative;
-  width: 100%;
-  &:hover {
-    background-color: ${({ theme }) =>
-      colorToRgba(theme.colors.accent.primaryLight, 0.5)};
-    border-radius: 10px;
-    transition: background-color 0.3s ease-out;
-  }
-  & > ${SidebarDropdownStyled} {
-    display: flex;
-    width: 24px;
-    margin-left: 16px;
-  }
-  & > ${SidebarGroupArrowDown} {
-    transform: ${({ $open }) => ($open ? 'rotate(180deg)' : 'rotate(0deg)')};
-  }
-`;
-
-export const SidebarGroupNameBox = styled.div`
-  width: 100%;
-  white-space: nowrap;
+  component: 'p',
+})`
   display: block;
-  margin-right: 8px;
+  width: 100%;
+  z-index: 1;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
-export const SidebarChatList = styled.div<{
-  $open?: boolean;
+export const SidebarGroupsList = styled.div<{
+  $isSidebarOpen?: boolean;
 }>`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  min-height: 40px;
-  ${({ $open }) => {
-    if (!$open) {
-      return css`
-        display: none;
-      `;
-    }
-    return css`
-      margin-top: 3px;
-    `;
-  }}
-  transition: opacity 0.3s;
+  ${({ $isSidebarOpen }) => $isSidebarOpen && 'padding-right: 8px;'}
+  gap: 8px;
 `;
 
-export const SidebarGroupCheckbox = styled(Checkbox)`
-  margin-left: 16px !important;
+export const SidebarArrowDownIcon = styled(ArrowDownIcon)<{
+  $isOpen: boolean;
+}>`
+  transform: rotate(${({ $isOpen }) => ($isOpen ? '180deg' : '0deg')});
+  transition: transform 0.1 s linear;
 `;
 
-export const SidebarGroupDragHandle = styled(DragDotIcon)`
-  margin-right: 8px;
+export const SidebarGroupButton = styled.button`
+  display: flex;
+  background: none;
+  outline: none;
+  flex-grow: 1;
+  padding: 0;
+  border: none;
+  max-height: 42px;
+  aspect-ratio: 1/1;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 `;
 
-export const SidebarGroupDragFolder = styled(FolderIcon)`
-  margin-right: 10px;
+export const SidebarGroupSkeletonStyled = styled(Skeleton)`
+  height: 23px;
 `;
 
-export const SidebarGroupTooltip = styled(Tooltip)`
-  overflow: hidden;
-  ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
-      display: flex;
-    `,
-    tablet: css`
-      display: none;
-    `,
-  })}
+export const SidebarGroupIconSkeleton = styled(Skeleton)`
+  aspect-ratio: 1/1;
+  width: 23px;
+  height: 23px;
 `;
-
-export const SidebarGroupIconContainer = styled.div`
-  ${adaptive({
-    variant: 'dashboard',
-    desktop: css`
-      display: none;
-    `,
-    tablet: css`
-      display: flex;
-    `,
-  })}
+export const SidebarGroupSkeletonContainer = styled(Typography).attrs({
+  component: 'div',
+  variant: 'body-l-medium',
+})`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  height: fit-content;
 `;
-
-export const SidebarGroupSkeleton = styled(Skeleton)`
-  margin-left: 10px;
-`;
-
-export const SidebarGroupSkeletonIcon = styled(Skeleton)``;

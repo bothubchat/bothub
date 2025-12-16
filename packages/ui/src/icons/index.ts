@@ -293,6 +293,7 @@ export * from './tg';
 export * from './gift';
 export * from './exchange';
 export * from './time';
+export * from './folder';
 export * from './history';
 export * from './money-plus';
 export * from './money-stack';

@@ -123,18 +123,13 @@ export const HeaderMenuNav: React.FC<{
           <HeaderMenuNavItem
             key={item.id}
             onMouseEnter={() => handleMouseEnterParent(item.id)}
+            onPointerDown={(e) => {
+              e.stopPropagation();
+              handleMouseEnterParent(item.id);
+            }}
           >
             <HeaderMenuNavLabel
               variant={isDesktop ? 'body-m-semibold' : 'body-l-semibold'}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (!isDesktop && item.id === parent?.id) {
-                  handleClose();
-                } else {
-                  handleMouseEnterParent(item.id);
-                }
-              }}
               data-test={item.label}
             >
               {item.label}

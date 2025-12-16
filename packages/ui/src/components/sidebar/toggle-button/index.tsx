@@ -1,16 +1,10 @@
-import React, { useEffect } from 'react';
-
+import React from 'react';
 import { SidebarToggleButtonStyled } from './styled';
-
-import { SidebarToggleLeft } from '@/ui/icons/sidebar-toggle-left';
-import { SidebarToggleRight } from '@/ui/icons/sidebar-toggle-right';
-
-import { IconProvider } from '@/ui/components/icon';
-import { ButtonProps } from '@/ui/components/button';
-
 import { useSidebar } from '../context';
-
+import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
+import { ButtonProps } from '@/ui/components/button';
+import { SidebarToggleLeft, SidebarToggleRight } from '@/ui/icons';
 
 export type SidebarToggleButtonProps = ButtonProps;
 
@@ -18,24 +12,24 @@ export const SidebarToggleButton: React.FC<SidebarToggleButtonProps> = (
   props,
 ) => {
   const theme = useTheme();
-  const { isOpen, setIsOpen, setSearch, setEdit } = useSidebar();
+  const { isOpen, setIsOpen } = useSidebar();
 
-  useEffect(() => {
-    setSearch(false);
-    setEdit(false);
-  }, [isOpen]);
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
 
+  const ToggleIcon = isOpen ? SidebarToggleLeft : SidebarToggleRight;
   return (
     <SidebarToggleButtonStyled
       {...props}
       $isOpen={isOpen}
-      onClick={() => setIsOpen(!isOpen)}
+      onClick={handleToggle}
     >
       <IconProvider
         fill={theme.colors.grayScale.gray1}
         size={24}
       >
-        {isOpen ? <SidebarToggleLeft /> : <SidebarToggleRight />}
+        <ToggleIcon />
       </IconProvider>
     </SidebarToggleButtonStyled>
   );

@@ -2,31 +2,30 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   SidebarDropdownContent,
+  SidebarDropdownList,
   SidebarDropdownStyled,
   SidebarDropdownToggler,
   SidebarDropdownTogglerIcon,
 } from './styled';
 import { SidebarDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
-import { Portal } from '@/ui/components/portal';
 import { useTheme } from '@/ui/theme';
-import { isBright } from '@/ui/utils';
 
 export interface SidebarDropdownProps
   extends React.ComponentProps<typeof SidebarDropdownStyled> {}
 
-export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
+export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
   children,
   ...props
 }) => {
   const theme = useTheme();
-
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-
   const handleToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     setIsOpen((prev) => !prev);
   };
 
@@ -40,13 +39,15 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
         }
       };
       const blurListener = () => setIsOpen(false);
+      const scrollListener = () => setIsOpen(false);
 
       document.addEventListener('click', clickListener, true);
       window.addEventListener('blur', blurListener, true);
-
+      window.addEventListener('scroll', scrollListener, true);
       return () => {
         document.removeEventListener('click', clickListener, true);
         window.removeEventListener('blur', blurListener, true);
+        window.removeEventListener('scroll', scrollListener, true);
       };
     }
   }, []);
@@ -77,41 +78,32 @@ export const SidebarDropdown: React.FC<SidebarDropdownProps> = ({
         {...props}
         ref={dropdownRef}
       >
-        <IconProvider
-          fill={
-            isBright(theme.colors.grayScale.gray4)
-              ? theme.default.colors.base.black
-              : theme.default.colors.base.white
-          }
+        <SidebarDropdownToggler
+          ref={buttonRef}
+          onClick={handleToggle}
         >
-          <SidebarDropdownToggler
-            $open={isOpen}
-            onClick={handleToggle}
-          >
+          <IconProvider fill={theme.colors.base.white}>
             <SidebarDropdownTogglerIcon />
-          </SidebarDropdownToggler>
-        </IconProvider>
-        <Portal>
-          {dropdownTransition(
-            (style, item) =>
-              item && (
-                <SidebarDropdownContent
-                  ref={contentRef}
-                  style={{
-                    ...style,
-                    left: contentPosition.right,
-                    top: contentPosition.bottom,
-                  }}
-                >
-                  {children}
-                </SidebarDropdownContent>
-              ),
-          )}
-        </Portal>
+          </IconProvider>
+        </SidebarDropdownToggler>
+        {dropdownTransition(
+          (style, item) =>
+            item && (
+              <SidebarDropdownContent
+                style={{
+                  ...style,
+                  top: contentPosition.bottom,
+                  left: contentPosition.right,
+                }}
+                ref={contentRef}
+              >
+                <SidebarDropdownList>{children}</SidebarDropdownList>
+              </SidebarDropdownContent>
+            ),
+        )}
       </SidebarDropdownStyled>
     </SidebarDropdownProvider>
   );
 };
 
-export * from './styled';
-export * from './item';
+export { SidebarDropdownItem } from './item';

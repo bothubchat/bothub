@@ -1,23 +1,33 @@
-import React, { useContext } from 'react';
+import React, { createContext, ReactNode } from 'react';
 
-export interface SidebarMenuContextValue {
-  isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+export type SidebarMenuContextValue = {
+  isShowTooltips: boolean;
+  setShowTooltips: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-export const SidebarMenuContext = React.createContext<SidebarMenuContextValue>({
-  isOpen: false,
-  setIsOpen() {},
+export const SidebarMenuContext = createContext<SidebarMenuContextValue>({
+  isShowTooltips: false,
+  setShowTooltips: () => {},
 });
 
-export const SidebarMenuProvider: React.FC<
-  SidebarMenuContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
+export const SidebarMenuProvider = ({
+  children,
+  value,
+}: {
+  children: ReactNode;
+  value: SidebarMenuContextValue;
+}) => (
   <SidebarMenuContext.Provider value={value}>
     {children}
   </SidebarMenuContext.Provider>
 );
 
-export const useSidebarMenu = () => useContext(SidebarMenuContext);
+export const useSidebarMenu = () => {
+  const context = React.useContext(SidebarMenuContext);
 
-export const SidebarMenuConsumer = SidebarMenuContext.Consumer;
+  if (!context) {
+    throw new Error('useSidebarMenu must be used within SidebarMenuProvider');
+  }
+
+  return context;
+};

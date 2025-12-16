@@ -5,7 +5,7 @@ import {
   createGlobalStyle,
 } from 'styled-components';
 import { THEMES } from './themes';
-import { ColorSchemeNames, Theme, ThemeMode } from './types';
+import { ColorSchemeNames, Theme, ThemeMode } from './types.js';
 
 export const StorybookGlobalStyle = createGlobalStyle`
   body {

@@ -14,7 +14,6 @@ import { useTheme } from '@/ui/theme';
 
 export interface SidebarLangDropdownProps
   extends React.ComponentProps<typeof SidebarLangDropdownStyled> {
-  children?: React.ReactNode;
   lang: string;
 }
 

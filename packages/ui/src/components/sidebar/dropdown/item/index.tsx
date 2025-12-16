@@ -1,35 +1,28 @@
-import React, { useCallback } from 'react';
-import { useSidebarDropdown } from '../context';
-import { SidebarDropdownItemStyled, SidebarDropdownItemText } from './styled';
+import { IconProvider } from '@/ui/components/icon';
+import { SidebarDropdownItemStyled, SidebarDropdownItemText } from '../styled';
+import { useTheme } from '@/ui/theme';
 
-export type SidebarDropdownItemProps = React.ComponentProps<
-  typeof SidebarDropdownItemStyled
-> & {
-  startIcon?: React.ReactElement;
-};
+type SidebarDropdownItemProps = {
+  icon?: React.ReactNode;
+} & React.HTMLAttributes<HTMLButtonElement>;
 
 export const SidebarDropdownItem: React.FC<SidebarDropdownItemProps> = ({
-  onClick,
-  startIcon,
+  icon,
   ...props
 }) => {
-  const { setIsOpen } = useSidebarDropdown();
+  const theme = useTheme();
 
-  const handleClick = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      onClick?.(event);
-      setIsOpen(false);
-    },
-    [onClick],
-  );
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   return (
     <SidebarDropdownItemStyled
-      {...props}
       onClick={handleClick}
-      data-test={props.children}
+      {...props}
     >
-      {startIcon}
+      <IconProvider fill={theme.colors.grayScale.gray1}>{icon}</IconProvider>
       <SidebarDropdownItemText>{props.children}</SidebarDropdownItemText>
     </SidebarDropdownItemStyled>
   );
