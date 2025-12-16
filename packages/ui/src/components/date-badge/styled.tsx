@@ -10,6 +10,7 @@ export const DateBadgeStyled = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   background-color: ${({ theme }) =>
     colorToRgba(theme.colors.grayScale.gray4, 0.75)};
+  pointer-events: none; // allow to select text in message under this badge
 `;
 
 export const DateBadgeText = styled(Typography).attrs({
