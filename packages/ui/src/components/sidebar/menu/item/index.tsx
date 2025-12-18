@@ -12,6 +12,7 @@ type SidebarMenuItemProps = {
   icon: React.ReactNode;
   active?: boolean;
   to?: string;
+  href?: string;
   as?: React.ElementType;
 } & React.PropsWithChildren &
   React.HTMLAttributes<HTMLElement>;
@@ -22,6 +23,7 @@ export const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
   active,
   as,
   to,
+  href,
   ...props
 }) => {
   const { isOpen } = useSidebar();
@@ -41,6 +43,7 @@ export const SidebarMenuItem: React.FC<SidebarMenuItemProps> = ({
       {...props}
       as={as}
       to={to}
+      href={href}
       ref={ref}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
