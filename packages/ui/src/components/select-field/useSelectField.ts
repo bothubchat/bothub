@@ -234,8 +234,13 @@ export const useSelectField = <
           contentHeight > top &&
           windowHeight - bottom > top)
       ) {
-        if (newPlacement === 'bottom-center') {
+        if (initialPlacement === 'bottom-center') {
           newPlacement = 'bottom-center';
+        } else if (
+          initialPlacement === 'bottom-right' ||
+          initialPlacement === 'top-right'
+        ) {
+          newPlacement = 'bottom-right';
         } else {
           newPlacement = 'bottom-left';
         }
@@ -245,7 +250,10 @@ export const useSelectField = <
           contentHeight > windowHeight - bottom &&
           windowHeight - bottom < top)
       ) {
-        if (initialPlacement === 'top-right') {
+        if (
+          initialPlacement === 'top-right' ||
+          initialPlacement === 'bottom-right'
+        ) {
           newPlacement = 'top-right';
         } else {
           newPlacement = 'top-left';
@@ -264,6 +272,10 @@ export const useSelectField = <
           break;
         case 'bottom-center':
           x = Math.floor((left + right) / 2 + window.scrollX - modalWidth / 2);
+          y = top + window.scrollY + height;
+          break;
+        case 'bottom-right':
+          x = left + window.scrollX + width - modalWidth;
           y = top + window.scrollY + height;
           break;
         case 'top-left':
@@ -287,7 +299,14 @@ export const useSelectField = <
         setIsOpen(!isOpen);
       }
     },
-    [disabled, isOpen, placement, initialPlacement, onSelectClick],
+    [
+      disabled,
+      isOpen,
+      placement,
+      initialPlacement,
+      onSelectClick,
+      contentHeight,
+    ],
   );
 
   return {
