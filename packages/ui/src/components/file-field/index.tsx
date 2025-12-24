@@ -32,6 +32,7 @@ export interface FileFieldProps
   files?: File[];
   disabled?: boolean;
   fullWidth?: boolean;
+  fullNameFiles?: boolean;
   onChange?: FileFieldChangeEventHandler;
   icon?: React.ReactNode;
   multiple?: boolean;
@@ -49,6 +50,7 @@ export const FileField: React.FC<FileFieldProps> = ({
   disabled = false,
   multiple = true,
   accept,
+  fullNameFiles,
   onChange,
   id,
   open = true,
@@ -149,8 +151,8 @@ export const FileField: React.FC<FileFieldProps> = ({
                     <FileFieldFile key={file.name}>
                       <IconProvider size={12}>{iconNode}</IconProvider>
                       <BadgeText>
-                        {file.name.length > 18 && '...'}
-                        {file.name.slice(-18)}
+                        {!fullNameFiles && file.name.length > 18 && '...'}
+                        {fullNameFiles ? file.name : file.name.slice(-18)}
                       </BadgeText>
                       <FileFieldFileDeleteButton
                         disabled={disabled}
