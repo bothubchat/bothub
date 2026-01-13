@@ -48,7 +48,7 @@ export const SidebarMenuItemIconBox = styled.div<{
   $active: boolean;
 }>`
   display: flex;
-  outline: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
   align-items: center;
   justify-content: center;
   width: 38px;

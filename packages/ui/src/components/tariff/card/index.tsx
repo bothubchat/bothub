@@ -114,3 +114,4 @@ export const TariffCard: React.FC<
 };
 
 export { TariffCardEnterpriseButton, TariffCardArrow } from './styled';
+export { type TariffType };

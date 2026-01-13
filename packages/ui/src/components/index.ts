@@ -73,3 +73,4 @@ export * from './theme-preview';
 export * from './color-picker';
 export * from './theme-switcher';
 export * from './lang-switcher';
+export * from './switcher-select';
