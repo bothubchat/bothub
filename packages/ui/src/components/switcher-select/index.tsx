@@ -61,8 +61,10 @@ export const SwitcherSelect: React.FC<SwitcherProps> = ({
       className={className}
     >
       <SwitcherSlider
-        position={sliderPosition}
-        width={sliderWidth}
+        style={{
+          left: sliderPosition,
+          width: sliderWidth,
+        }}
       />
       <SwitcherOption
         ref={option0Ref}
