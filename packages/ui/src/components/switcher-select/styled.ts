@@ -28,11 +28,9 @@ export const SwitcherOption = styled(Typography).attrs({
   outline: none;
 `;
 
-export const SwitcherSlider = styled.div<{ position: number; width: number }>`
+export const SwitcherSlider = styled.div`
   position: absolute;
   top: 4px;
-  left: ${({ position }) => position}px;
-  width: ${({ width }) => width}px;
   height: calc(100% - 8px);
   background-color: ${({ theme }) => theme.colors.accent.primary};
   border-radius: 20px;
