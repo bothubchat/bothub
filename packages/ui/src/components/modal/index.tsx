@@ -4,10 +4,12 @@ import { Backdrop } from '@/ui/components/backdrop';
 import { Portal } from '@/ui/components/portal';
 import { ModalWindow, ModalWindowlProps } from './modal-window';
 
-export type ModalProps = ModalWindowlProps;
+export type ModalProps = ModalWindowlProps & {
+  hasBackdrop?: boolean;
+};
 
 export const Modal = (props: ModalProps) => {
-  const { open, onClose } = props;
+  const { open, onClose, hasBackdrop = true } = props;
 
   let modalNode: ReactNode;
 
@@ -16,10 +18,12 @@ export const Modal = (props: ModalProps) => {
   } else {
     modalNode = (
       <S.ModalStyled>
-        <Backdrop
-          open={open}
-          onClick={onClose}
-        />
+        {hasBackdrop && (
+          <Backdrop
+            open={open}
+            onClick={onClose}
+          />
+        )}
 
         <ModalWindow {...props} />
       </S.ModalStyled>

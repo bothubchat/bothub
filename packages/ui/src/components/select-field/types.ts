@@ -72,6 +72,7 @@ export type SelectFieldSize = 'small' | 'md' | 'large';
 export type SelectFieldPlacement =
   | 'bottom-left'
   | 'bottom-center'
+  | 'bottom-right'
   | 'top-left'
   | 'top-right';
 
