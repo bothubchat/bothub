@@ -295,6 +295,15 @@ import {
   CodeIcon,
   BlueGrokIcon,
   DoubleImageIcon,
+  PdfBlackIcon,
+  CsvBlackIcon,
+  XlsBlackIcon,
+  WordBlackIcon,
+  BrainBlackIcon,
+  TxtBlackIcon,
+  FolderIcon,
+  ChatDocIcon,
+  WorkspaceIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -645,6 +654,15 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="CodeIcon">{CodeIcon}</IconItem>
         <IconItem name="BlueGrokIcon">{BlueGrokIcon}</IconItem>
         <IconItem name="DoubleImageIcon">{DoubleImageIcon}</IconItem>
+        <IconItem name="PdfBlackIcon">{PdfBlackIcon}</IconItem>
+        <IconItem name="CsvBlackIcon">{CsvBlackIcon}</IconItem>
+        <IconItem name="XlsBlackIcon">{XlsBlackIcon}</IconItem>
+        <IconItem name="WordBlackIcon">{WordBlackIcon}</IconItem>
+        <IconItem name="BrainBlackIcon">{BrainBlackIcon}</IconItem>
+        <IconItem name="TxtBlackIcon">{TxtBlackIcon}</IconItem>
+        <IconItem name="FolderIcon">{FolderIcon}</IconItem>
+        <IconItem name="ChatDocIcon">{ChatDocIcon}</IconItem>
+        <IconItem name="WorkspaceIcon">{WorkspaceIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
