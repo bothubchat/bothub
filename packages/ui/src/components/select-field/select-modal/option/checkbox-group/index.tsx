@@ -63,8 +63,24 @@ export const SelectFieldCheckboxGroupOption = ({
   };
 
   const handleCheckboxClick = (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
+
+    const scrollContainer = document.querySelector(
+      '[class*="SelectModalPositionWrapper"]',
+    );
+    const scrollTop = scrollContainer?.scrollTop ?? 0;
+
     onGroupCheckboxClick?.(item);
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // двойной RAF для надёжности
+        if (scrollContainer) {
+          scrollContainer.scrollTop = scrollTop;
+        }
+      });
+    });
   };
 
   let isDisabled: boolean;
@@ -152,12 +168,19 @@ export const SelectFieldCheckboxGroupOption = ({
               }}
             />
           )}
-          <div onClick={handleCheckboxClick}>
+          <div
+            onMouseDown={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onClick={handleCheckboxClick}
+          >
             <Checkbox
               displayFlex
               checkedIcon={checkedIcon}
               checked={isChecked}
               size={16}
+              style={{ pointerEvents: 'none' }}
             />
           </div>
         </SelectFieldCheckboxGroupOptionHeadRightSide>
