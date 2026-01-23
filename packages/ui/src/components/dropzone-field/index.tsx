@@ -67,11 +67,27 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
       [files, setFiles, multiple],
     );
 
+    const isFileAccepted = (file: File, accept?: string): boolean => {
+      if (!accept) return true;
+
+      const acceptTypes = accept.split(',').map((type) => type.trim());
+
+      return acceptTypes.some((type) => {
+        if (type.startsWith('.')) {
+          return file.name.toLowerCase().endsWith(type.toLowerCase());
+        }
+        if (type.endsWith('/*')) {
+          return file.type.startsWith(type.replace('/*', ''));
+        }
+        return file.type === type;
+      });
+    };
+
     const handleDrop = useCallback(
       (e: React.DragEvent) => {
         e.preventDefault();
         const droppedFiles = [...(e.dataTransfer.files ?? [])].filter((file) =>
-          accept?.includes(file.type),
+          isFileAccepted(file, accept),
         );
 
         if (multiple) {
