@@ -57,7 +57,7 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
         if (multiple) {
           setFiles([
             ...new Map(
-              [...files, ...droppedFiles].map((file) => [file.name, file]),
+              [...droppedFiles, ...files].map((file) => [file.name, file]),
             ).values(),
           ]);
         } else {
@@ -93,7 +93,7 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
         if (multiple) {
           setFiles([
             ...new Map(
-              [...files, ...droppedFiles].map((file) => [file.name, file]),
+              [...droppedFiles, ...files].map((file) => [file.name, file]),
             ).values(),
           ]);
         } else {
