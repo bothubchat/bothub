@@ -317,3 +317,4 @@ export * from './workspace';
 export * from './chat-doc';
 export * from './money-spend';
 export * from './money-minus';
+export * from './max-logo-gradient';
