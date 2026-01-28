@@ -315,3 +315,5 @@ export * from './txt-black';
 export * from './folder';
 export * from './workspace';
 export * from './chat-doc';
+export * from './money-spend';
+export * from './money-minus';
