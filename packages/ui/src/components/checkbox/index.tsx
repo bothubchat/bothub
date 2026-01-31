@@ -24,6 +24,7 @@ export interface CheckboxProps
   checkedIcon?: React.ReactNode;
   checkedColor?: string;
   dataTest?: string;
+  preventScrollOnFocus?: boolean;
   onValueChange?: CheckboxValueChangeEventHandler;
   onPointerLeave?: React.PointerEventHandler<HTMLLabelElement>;
 }
@@ -36,6 +37,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   skeleton = false,
   rowReverse,
   fullWidth = false,
+  preventScrollOnFocus = false,
   checkedIcon,
   checkedColor,
   dataTest,
@@ -58,6 +60,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       $disabled={props.disabled ?? false}
       $fullWidth={fullWidth}
       $rowReverse={rowReverse}
+      $preventScrollOnFocus={preventScrollOnFocus}
       className={className}
       onMouseEnter={handleTooltipMouseEnter}
       onMouseLeave={handleTooltipMouseLeave}
@@ -69,6 +72,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
           <CheckboxInput
             {...props}
             $checkedColor={checkedColor}
+            $preventScrollOnFocus={preventScrollOnFocus}
             type="checkbox"
             onChange={handleChange}
           />
