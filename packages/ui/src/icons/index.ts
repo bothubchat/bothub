@@ -318,3 +318,7 @@ export * from './chat-doc';
 export * from './money-spend';
 export * from './money-minus';
 export * from './max-logo-gradient';
+export * from './empty-word';
+export * from './music-file';
+export * from './sad-file';
+export * from './happy-file';
