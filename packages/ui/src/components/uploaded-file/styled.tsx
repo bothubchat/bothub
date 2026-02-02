@@ -158,8 +158,14 @@ export const UploadedFileLoaderIcon = styled(LoaderCircularGradientIcon)`
 
 export const UploadedFileProgressValue = styled(Typography).attrs({
   variant: 'body-s-medium',
-})<{ $isMax: boolean }>`
+})<{ $isMax: boolean; $status?: UploadedFileStatus }>`
   flex: 0 0 fit-content;
-  color: ${({ theme, $isMax }) =>
-    $isMax ? theme.colors.accent.primaryLight : theme.colors.grayScale.gray1};
+  color: ${({ theme, $isMax, $status }) => {
+    if ($status === 'error') {
+      return theme.colors.critic;
+    }
+    return $isMax
+      ? theme.colors.accent.primaryLight
+      : theme.colors.grayScale.gray1;
+  }};
 `;

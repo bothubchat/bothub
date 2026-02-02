@@ -1,11 +1,17 @@
 import { forwardRef } from 'react';
-import { PauseIcon, PlayIcon, Restore2Icon } from '@/ui/icons';
+import {
+  LoaderCircularGradientIcon,
+  PauseIcon,
+  PlayIcon,
+  Restore2Icon,
+} from '@/ui/icons';
 import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { FileSize } from '@/ui/components/file-size';
 import { FileIcon } from '@/ui/components/file-icon';
 import * as S from './styled';
 import { UploadedFileStatus } from './types';
+import { useTheme } from '@/ui/theme';
 
 export type Primary = { variant?: 'primary'; sizeInBytes: number };
 
@@ -24,6 +30,7 @@ export type UploadedFileProps = {
   onPause?: () => void;
   onResume?: () => void;
   onRetry?: () => void;
+  waitUpload?: boolean;
 } & (Primary | Secondary);
 
 export const UploadedFile = forwardRef<HTMLDivElement, UploadedFileProps>(
@@ -41,10 +48,12 @@ export const UploadedFile = forwardRef<HTMLDivElement, UploadedFileProps>(
       onPause,
       onResume,
       onRetry,
+      waitUpload,
       ...props
     },
     ref,
   ) => {
+    const theme = useTheme();
     const isSecondary = props.variant === 'secondary';
     const isPrimary = !isSecondary;
 
@@ -77,6 +86,12 @@ export const UploadedFile = forwardRef<HTMLDivElement, UploadedFileProps>(
           )}
 
           <S.UploadedFileActions>
+            {waitUpload && (
+              <LoaderCircularGradientIcon
+                size={18}
+                fill={theme.colors.grayScale.gray1}
+              />
+            )}
             {onPause && (
               <>
                 {status === 'in-progress' && (
@@ -156,7 +171,10 @@ export const UploadedFile = forwardRef<HTMLDivElement, UploadedFileProps>(
           {isSecondary && props.loading ? (
             <S.UploadedFileLoaderIcon />
           ) : (
-            <S.UploadedFileProgressValue $isMax={progress === 100}>
+            <S.UploadedFileProgressValue
+              $status={status}
+              $isMax={progress === 100}
+            >
               {progress}%
             </S.UploadedFileProgressValue>
           )}
