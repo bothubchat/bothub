@@ -11,13 +11,18 @@ export interface CheckboxStyledProps {
   $fullWidth: boolean;
   $rowReverse?: boolean;
   $displayFlex?: boolean;
+  $preventScrollOnFocus?: boolean;
 }
 
 export const CheckboxStyled = styled.label<CheckboxStyledProps>`
+  ${({ $preventScrollOnFocus }) =>
+    $preventScrollOnFocus &&
+    css`
+      position: relative;
+    `}
   display: ${({ $displayFlex }) => ($displayFlex ? 'flex' : 'inline-flex')};
   align-items: center;
   gap: 8px;
-  cursor: pointer;
   user-select: none;
   ${({ $disabled }) => {
     if ($disabled) {
@@ -87,12 +92,23 @@ export const CheckboxCheckedIcon = styled(CheckSmallIcon).attrs(
   }),
 )``;
 
-export const CheckboxInput = styled.input<CheckedColor>`
+export const CheckboxInput = styled.input<
+  CheckedColor & { $preventScrollOnFocus?: boolean }
+>`
   width: 0;
   height: 0;
   opacity: 0;
   cursor: pointer;
   position: absolute;
+
+  ${({ $preventScrollOnFocus }) =>
+    $preventScrollOnFocus &&
+    css`
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    `}
+
   &:checked + span {
     ${({ theme, $checkedColor }) => {
       const color = $checkedColor || theme.colors.accent.primary;
