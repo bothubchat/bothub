@@ -154,6 +154,7 @@ export const SelectFieldCheckboxGroupOption = ({
           )}
           <div onClick={handleCheckboxClick}>
             <Checkbox
+              preventScrollOnFocus
               displayFlex
               checkedIcon={checkedIcon}
               checked={isChecked}

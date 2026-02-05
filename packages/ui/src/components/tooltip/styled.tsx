@@ -129,6 +129,9 @@ export const TooltipLabel = styled(Typography).attrs({
   variant: 'body-s-medium',
 })`
   white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  width: 100%;
 `;
 
 export const TooltipMarkdown = styled.div`
