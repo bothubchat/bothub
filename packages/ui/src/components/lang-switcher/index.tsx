@@ -1,12 +1,5 @@
 import { useTransition } from '@react-spring/web';
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   LangSwitcherButton,
   LangSwitcherIcon,
@@ -44,7 +37,6 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
 }) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const id = useId();
 
   const currentRegion = useMemo(
     () =>
@@ -65,35 +57,6 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
     setIsOpen((prev) => !prev);
   }, []);
 
-  useEffect(() => {
-    const checkDropdownPosition = () => {
-      const dropdownElement = document.getElementById(id);
-      const rect = dropdownElement?.getBoundingClientRect();
-      if (!rect || !dropdownElement) return;
-      if (rect.left < 0) {
-        dropdownElement.style.transform = `translateX(${-rect.left - 4}px)`;
-      }
-      if (rect.right > window.innerWidth) {
-        dropdownElement.style.transform = `translateX(${
-          window.innerWidth - rect.right - 4
-        }px)`;
-      }
-    };
-    if (!isOpen) return;
-
-    dropdownRef.current?.addEventListener(
-      'transitionend',
-      checkDropdownPosition,
-    );
-
-    return () => {
-      dropdownRef.current?.removeEventListener(
-        'transitionend',
-        checkDropdownPosition,
-      );
-    };
-  }, [isOpen]);
-
   const handleClose = useCallback(() => {
     setIsOpen(false);
   }, []);
@@ -107,7 +70,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
         });
       }
     },
-    [onChange],
+    [onChange, lang.value, region.value],
   );
 
   useEffect(() => {
@@ -150,28 +113,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
     return () => {
       window.removeEventListener('scroll', handleScrollEvent, true);
     };
-  }, [isOpen]);
-
-  useEffect(() => {
-    const dropdownEl: HTMLDivElement | null = dropdownRef.current;
-
-    if (dropdownEl !== null) {
-      const clickListener = (event: Event) => {
-        if (!dropdownEl.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      const blurListener = () => setIsOpen(false);
-
-      document.addEventListener('click', clickListener);
-      window.addEventListener('blur', blurListener);
-
-      return () => {
-        document.removeEventListener('click', clickListener);
-        window.removeEventListener('blur', blurListener);
-      };
-    }
-  }, []);
+  }, [isOpen, handleClose]);
 
   const dropdownTransition = useTransition(isOpen, {
     from: {
@@ -202,10 +144,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
       {dropdownTransition(
         (style, item) =>
           item && (
-            <LangSwitcherList
-              style={style}
-              id={id}
-            >
+            <LangSwitcherList style={style}>
               <LangSwitcherLabel>{lang.label}</LangSwitcherLabel>
               <LangSwitcherInput
                 contentHeight="fit-content"
