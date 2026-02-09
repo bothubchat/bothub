@@ -15,7 +15,8 @@ export const LangSwitcherStyled = styled.div`
 
 export const LangSwitcherList = styled(animated.ul)`
   position: absolute;
-  margin-top: 28px;
+  margin-top: 40px;
+  right: 0;
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
