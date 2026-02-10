@@ -10,10 +10,13 @@ import {
   SearchResultsItemNumber,
   SearchResultsItemTitle,
   SearchResultsList,
+  SearchResultsItemDownload,
 } from './styled';
 import { MessageMarkdown } from '../markdown';
 import { markdownComponents } from '../reasoning-block/markdown-components';
 import { useMeasure } from '@/ui/utils';
+import { DownloadImgIcon } from '@/ui/icons';
+import { Tooltip, TooltipConsumer } from '../../tooltip';
 
 export type MessageSearchResultsItemType = {
   url: string;
@@ -25,15 +28,30 @@ export type MessageSearchResultsItemType = {
 
 export type MessageSearchResultsProps = {
   results: MessageSearchResultsItemType[];
+  downloadHandler?: (
+    result: MessageSearchResultsItemType,
+    index: number,
+  ) => void;
+  regexFilterDownloadHandler: RegExp;
+  downloadText?: string;
 };
 
-export const MessageSearchResults = (props: MessageSearchResultsProps) => (
+export const MessageSearchResults: React.FC<MessageSearchResultsProps> = ({
+  downloadHandler,
+  downloadText,
+  regexFilterDownloadHandler,
+  ...props
+}) => (
   <SearchResultsList>
     {props.results.map((result, index) => (
       <MessageSearchResultsItem
         result={result}
         index={index}
         key={index}
+        downloadText={downloadText}
+        {...(regexFilterDownloadHandler.test(result.url) && {
+          downloadHandler: () => downloadHandler?.(result, index),
+        })}
       />
     ))}
   </SearchResultsList>
@@ -43,9 +61,13 @@ const MessageSearchResultsItem = memo(
   ({
     result,
     index,
+    downloadHandler,
+    downloadText,
   }: {
     result: MessageSearchResultsItemType;
     index: number;
+    downloadHandler?: () => void;
+    downloadText?: string;
   }) => {
     const [wrapperRef, wrapperDimensions] = useMeasure<HTMLDivElement>();
     const [contentRef, contentDimensions] = useMeasure<HTMLDivElement>();
@@ -84,6 +106,21 @@ const MessageSearchResultsItem = memo(
               {index + 1}
             </Typography>
           </SearchResultsItemNumber>
+          {downloadHandler && (
+            <Tooltip label={downloadText}>
+              <TooltipConsumer>
+                {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                  <SearchResultsItemDownload
+                    onClick={downloadHandler}
+                    onMouseEnter={handleTooltipMouseEnter}
+                    onMouseLeave={handleTooltipMouseLeave}
+                  >
+                    <DownloadImgIcon />
+                  </SearchResultsItemDownload>
+                )}
+              </TooltipConsumer>
+            </Tooltip>
+          )}
         </SearchResultsItemHeader>
 
         <SearchResultsItemTitle

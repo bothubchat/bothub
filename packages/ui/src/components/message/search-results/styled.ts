@@ -79,6 +79,14 @@ export const SearchResultsItemNumber = styled.div`
     color: #fff;
   }
 `;
+export const SearchResultsItemDownload = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  padding: 7px;
+  cursor: pointer;
+`;
 
 export const SearchResultsItemTitle = styled(Typography)`
   &[data-source-title] {
