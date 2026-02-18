@@ -32,7 +32,7 @@ export type MessageSearchResultsProps = {
     result: MessageSearchResultsItemType,
     index: number,
   ) => void;
-  regexFilterDownloadHandler: RegExp;
+  regexFilterDownloadHandler?: RegExp;
   downloadText?: string;
 };
 
@@ -49,7 +49,7 @@ export const MessageSearchResults: React.FC<MessageSearchResultsProps> = ({
         index={index}
         key={index}
         downloadText={downloadText}
-        {...(regexFilterDownloadHandler.test(result.url) && {
+        {...(regexFilterDownloadHandler?.test(result.url) && {
           downloadHandler: () => downloadHandler?.(result, index),
         })}
       />
