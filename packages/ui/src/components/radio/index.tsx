@@ -12,7 +12,7 @@ export type RadioValueChangeEventHandler = (checked: boolean) => unknown;
 
 export interface RadioProps extends React.ComponentProps<'input'> {
   className?: string;
-  label?: string | boolean;
+  label?: string | boolean | React.ReactNode;
   skeleton?: boolean;
   onValueChange?: RadioValueChangeEventHandler;
   icon?: React.ReactNode;
@@ -61,7 +61,7 @@ export const Radio: React.FC<RadioProps> = ({
           as={Skeleton}
         />
       )}
-      {typeof label === 'string' && <RadioLabel>{label}</RadioLabel>}
+      {typeof label !== 'boolean' && <RadioLabel>{label}</RadioLabel>}
       {skeleton && label && (
         <RadioLabel>
           <Skeleton />
