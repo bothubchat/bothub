@@ -1,10 +1,11 @@
 import React from 'react';
 import { BreadcrumbsContainer, BreadcrumbsSeparator } from './styled';
 
-export const Breadcrumbs: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => (
-  <BreadcrumbsContainer>
+export const Breadcrumbs: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className }) => (
+  <BreadcrumbsContainer className={className}>
     {React.Children.map(children, (child, index) => (
       <>
         <React.Fragment key={index}>{child}</React.Fragment>
