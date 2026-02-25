@@ -453,3 +453,4 @@ export const InputMessage: React.FC<InputMessageProps> = ({
 };
 
 export * from './types';
+export * from './input-files';
