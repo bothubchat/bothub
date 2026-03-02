@@ -25,6 +25,13 @@ export const Basic: ReferralCardStory = {
       minText: '0 ₽',
       maxText: '20000 ₽',
     },
+    capsReward: {
+      value: 16000,
+      min: 0,
+      max: 16000,
+      rewardText: 'Получено по реферальной программе:',
+      maxText: '2000000000 CAPS',
+    },
     withdraw: (
       <ReferralCardWithdrawButton>Вывести средства</ReferralCardWithdrawButton>
     ),

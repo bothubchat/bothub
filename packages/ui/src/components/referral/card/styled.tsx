@@ -109,6 +109,13 @@ export const ReferralCardName = styled(Typography).attrs({
   variant: 'body-m-medium',
 })``;
 
+export const ReferralRewardName = styled(Typography).attrs({
+  variant: 'body-s-regular',
+})`
+  display: flex;
+  margin-bottom: 10px;
+`;
+
 export const ReferralCardPrice = styled.div`
   display: flex;
   width: 100%;
@@ -125,12 +132,18 @@ export const ReferralCardPriceRange = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: 8px;
+  gap: 8px;
+  min-width: 0;
 `;
 
 export const ReferralCardPriceRangeText = styled(Typography).attrs({
   variant: 'body-m-regular',
 })`
   color: ${({ theme }) => theme.colors.grayScale.gray1};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 `;
 
 export const ReferralCardTable = styled.div`

@@ -24,7 +24,7 @@ export const Basic: ReferralsStory = {
         name="Реферальная система с ChatGPT-4"
         aiName={'ChatGPT\n4.0'}
         price={{
-          value: 16000,
+          value: 12000,
           min: 0,
           max: 20000,
           minText: '0 ₽',
