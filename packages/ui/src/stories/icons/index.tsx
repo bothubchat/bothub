@@ -311,6 +311,7 @@ import {
   EmptyWordIcon,
   SadFileIcon,
   HappyFileIcon,
+  VolumeOffIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -575,6 +576,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TextGenerationIcon">{TextGenerationIcon}</IconItem>
         <IconItem name="TrafficAnalisysIcon">{TrafficAnalisysIcon}</IconItem>
         <IconItem name="VolumeIcon">{VolumeIcon}</IconItem>
+        <IconItem name="VolumeOffIcon">{VolumeOffIcon}</IconItem>
         <IconItem name="ImageGenerationIcon">{ImageGenerationIcon}</IconItem>
         <IconItem name="SpeechSynthesysIcon">{SpeechSynthesysIcon}</IconItem>
         <IconItem name="StarUnfilledIcon">{StarUnfilledIcon}</IconItem>
