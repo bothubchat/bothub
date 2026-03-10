@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
@@ -116,11 +123,14 @@ export const MessageActions = ({
   const theme = useTheme();
 
   const [menuShown, setMenuShown] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<number>();
   const [invertedX, setInvertedX] = useState<boolean>(false);
   const [invertedY, setInvertedY] = useState<boolean>(false);
+
+  const timeoutIdRef = useRef<number | null>(null);
   const messageActionsRef = useRef<HTMLDivElement | null>(null);
   const messageActionsMenuRef = useRef<HTMLDivElement | null>(null);
+
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   const useScrollRef = useScrollbarRef();
 
@@ -146,39 +156,72 @@ export const MessageActions = ({
           ? false
           : !disableEdit || !disableDelete || !disableResend;
     }
-  }, [disableEdit, disableDelete, disableResend]);
+  }, [
+    skeleton,
+    variant,
+    disableModal,
+    disableEdit,
+    disableDelete,
+    disableResend,
+  ]);
 
-  const handleInvertedModalState = () => {
+  const calculateInversion = useCallback(() => {
     const container = useScrollRef?.current?.element;
     const actions = messageActionsRef?.current;
+    const modal = modalRef?.current;
 
     if (!container || !actions) return;
 
     const containerRect = container.getBoundingClientRect();
     const actionsRect = actions.getBoundingClientRect();
 
-    setInvertedY(containerRect.bottom - actionsRect.bottom <= 300);
-    setInvertedX(
-      (variant === 'assistant' &&
-        actionsRect.left - containerRect.left <= 160) ||
-        (variant === 'user' && containerRect.right - actionsRect.right <= 160),
-    );
-  };
+    const menuHeight = modal?.offsetHeight ?? 300;
+    const menuWidth = modal?.offsetWidth ?? 160;
+
+    const PADDING = 8;
+
+    const spaceBelow = containerRect.bottom - actionsRect.bottom;
+    const spaceAbove = actionsRect.top - containerRect.top;
+
+    const shouldInvertY =
+      spaceBelow < menuHeight + PADDING && spaceAbove > menuHeight + PADDING;
+
+    const spaceLeft = actionsRect.left - containerRect.left;
+    const spaceRight = containerRect.right - actionsRect.right;
+
+    let shouldInvertX = false;
+    if (variant === 'assistant') {
+      shouldInvertX = spaceLeft < menuWidth + PADDING;
+    } else {
+      shouldInvertX = spaceRight < menuWidth + PADDING;
+    }
+
+    setInvertedY(shouldInvertY);
+    setInvertedX(shouldInvertX);
+  }, [variant, useScrollRef]);
+
+  useLayoutEffect(() => {
+    if (menuShown) {
+      calculateInversion();
+    }
+  }, [menuShown, calculateInversion]);
 
   const handleButtonHoverIn = useCallback(() => {
-    if (timeoutId) {
-      window.clearTimeout(timeoutId);
+    if (timeoutIdRef.current) {
+      window.clearTimeout(timeoutIdRef.current);
+      timeoutIdRef.current = null;
     }
-    handleInvertedModalState();
     setMenuShown(true);
-  }, [timeoutId]);
+  }, []);
 
   const handleButtonHoverOut = useCallback(() => {
-    setTimeoutId(window.setTimeout(() => setMenuShown(false), 300));
+    timeoutIdRef.current = window.setTimeout(() => {
+      setMenuShown(false);
+      timeoutIdRef.current = null;
+    }, 300);
   }, []);
 
   const handleButtonClick = useCallback(() => {
-    handleInvertedModalState();
     setMenuShown((prev) => !prev);
   }, []);
 
@@ -202,7 +245,7 @@ export const MessageActions = ({
       }
       setMenuShown(false);
     },
-    [id, message],
+    [id, message, onEditing, onEditedText, onDelete, onResend],
   );
 
   const handleConfirmEdit = useCallback(
@@ -210,27 +253,28 @@ export const MessageActions = ({
       onEditing?.(false);
       onEdit?.({ id, message, variant });
     },
-    [id, message],
+    [variant, onEditing, onEdit],
   );
+
   const handleDiscardEdit = useCallback(() => {
     onEditing?.(false);
     onEditedText?.(message ?? '');
-  }, [message]);
+  }, [message, onEditing, onEditedText]);
 
   const handleTgCopy = useCallback(() => {
     onTgCopy?.();
     setMenuShown(false);
-  }, []);
+  }, [onTgCopy]);
 
   const handlePlainTextCopy = useCallback(() => {
     onPlainTextCopy?.();
     setMenuShown(false);
-  }, []);
+  }, [onPlainTextCopy]);
 
   const handleReportClick = useCallback(() => {
     onReport?.({ id, message });
     setMenuShown(false);
-  }, [id, message]);
+  }, [id, message, onReport]);
 
   const modalTransition = useTransition(menuShown, {
     from: {
@@ -252,6 +296,8 @@ export const MessageActions = ({
   });
 
   useEffect(() => {
+    if (!menuShown) return;
+
     const handleGlobalClose = () => {
       setMenuShown(false);
     };
@@ -262,10 +308,25 @@ export const MessageActions = ({
   }, [menuShown]);
 
   useEffect(() => {
-    if (timeoutId) {
-      window.clearTimeout(timeoutId);
-    }
-  }, []);
+    if (!menuShown) return;
+
+    const handleResize = () => {
+      calculateInversion();
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [menuShown, calculateInversion]);
+
+  useEffect(
+    () => () => {
+      if (timeoutIdRef.current) {
+        window.clearTimeout(timeoutIdRef.current);
+      }
+    },
+    [],
+  );
 
   return (
     <S.MessageActionsStyled
@@ -299,6 +360,7 @@ export const MessageActions = ({
                       <S.MessageActionsMenuModal
                         style={style}
                         key="message-actions-modal"
+                        ref={modalRef} // ✅ Передаём ref на модалку
                         onMouseEnter={handleButtonHoverIn}
                         onMouseLeave={handleButtonHoverOut}
                         $variant={variant}
