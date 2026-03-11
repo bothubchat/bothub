@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { BookmarkCloseButton, BookmarkName, BookmarkStyled } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 
@@ -15,18 +15,26 @@ export interface BookmarkSkeletonProps {
 export type BookmarkProps = (BookmarkDefaultProps | BookmarkSkeletonProps) & {
   className?: string;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
-  onClose?: React.MouseEventHandler<HTMLButtonElement>;
+  onClose?: React.MouseEventHandler<HTMLSpanElement>;
 };
 
 export const Bookmark: React.FC<BookmarkProps> = ({ className, ...props }) => {
   const isActive = (props.skeleton ? false : props.active) ?? false;
-
+  const handleWheelClick = useCallback(
+    (event: React.MouseEvent<HTMLSpanElement>) => {
+      if (event.button === 1) {
+        props.onClose?.(event);
+      }
+    },
+    [props.onClose],
+  );
   return (
     <BookmarkStyled
       $active={isActive}
       $skeleton={props.skeleton}
       className={className}
       onClick={props.onClick}
+      onAuxClick={handleWheelClick}
     >
       <BookmarkName>
         {!props.skeleton && props.children}
