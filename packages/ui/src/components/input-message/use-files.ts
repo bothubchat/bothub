@@ -89,8 +89,8 @@ export const useFiles = ({
   );
 
   const handleDeleteFile = useCallback(
-    (file: IInputMessageFile) => {
-      setFiles?.(files.filter(({ name }) => name !== file.name));
+    (index: number) => {
+      setFiles?.(files.filter((_, i) => i !== index));
     },
     [setFiles, files],
   );
