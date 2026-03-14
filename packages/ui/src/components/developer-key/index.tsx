@@ -106,12 +106,14 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
               }
             />
           </DeveloperKeyStyled>
-          <DeveloperKeyDeleteButton
-            onClick={handleDelete}
-            $skeleton={skeleton}
-          >
-            <DeveloperKeyDeleteIcon size={20} />
-          </DeveloperKeyDeleteButton>
+          {onDelete && (
+            <DeveloperKeyDeleteButton
+              onClick={handleDelete}
+              $skeleton={skeleton}
+            >
+              <DeveloperKeyDeleteIcon size={20} />
+            </DeveloperKeyDeleteButton>
+          )}
         </DeveloperKeyContent>
       </DeveloperKeyWrapper>
     </IconProvider>
