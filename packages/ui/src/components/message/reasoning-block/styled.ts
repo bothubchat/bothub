@@ -50,6 +50,10 @@ export const ReasoningBlockContentWrapper = styled.div<{
     color: ${({ theme }) =>
       theme.mode === 'dark' ? '#CDD5DA' : defaultTheme.colors.grayScale.gray1};
   }
+
+  & li {
+    font-size: 0.875rem;
+  }
 `;
 
 export const ReasoningBlockButton = styled.button`
