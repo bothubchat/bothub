@@ -13,10 +13,10 @@ import {
   SearchResultsItemDownload,
 } from './styled';
 import { MessageMarkdown } from '../markdown';
-import { markdownComponents } from '../reasoning-block/markdown-components';
 import { useMeasure } from '@/ui/utils';
 import { DownloadImgIcon } from '@/ui/icons';
 import { Tooltip, TooltipConsumer } from '../../tooltip';
+import { reasoningComponentsOverride } from '../reasoning-block/markdown-components';
 
 export type MessageSearchResultsItemType = {
   url: string;
@@ -137,7 +137,7 @@ const MessageSearchResultsItem = memo(
           data-has-overflow={hasOverflow}
         >
           <MessageMarkdown
-            componentsOverride={markdownComponents()}
+            componentsOverride={reasoningComponentsOverride}
             disableTyping
             ref={contentRef}
           >
