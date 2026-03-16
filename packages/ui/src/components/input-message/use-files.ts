@@ -62,9 +62,21 @@ export const useFiles = ({
 
   const handleFilePaste = useCallback<React.ClipboardEventHandler>(
     async (event) => {
-      if (!uploadFileDisabled && event.clipboardData.files.length > 0) {
+      if (uploadFileDisabled) return;
+
+      const { clipboardData } = event;
+
+      const hasText =
+        clipboardData.getData('text/plain')?.length > 0 ||
+        clipboardData.getData('text/html')?.length > 0;
+
+      if (hasText) {
+        return;
+      }
+
+      if (clipboardData.files.length > 0) {
         event.preventDefault();
-        await handleSideUploadFiles([...event.clipboardData.files]);
+        await handleSideUploadFiles([...clipboardData.files]);
       }
     },
     [handleSideUploadFiles, uploadFileDisabled],
