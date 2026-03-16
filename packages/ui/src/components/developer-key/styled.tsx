@@ -9,12 +9,8 @@ export interface DeveloperKeyStyledProps {
 
 export const DeveloperKeyWrapper = styled.div<{ $skeleton?: boolean }>`
   display: flex;
-  ${({ $skeleton }) =>
-    $skeleton &&
-    css`
-      width: 100%;
-    `}
-  max-width: 100%;
+  width: 100%;
+  max-width: 1000px;
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
@@ -25,7 +21,6 @@ export const DeveloperKeyStyled = styled.div<DeveloperKeyStyledProps>`
   align-items: center;
   gap: 10px;
   width: 100%;
-  max-width: 1000px;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
   padding: 18px 16px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
