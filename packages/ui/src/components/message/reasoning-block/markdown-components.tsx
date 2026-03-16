@@ -1,60 +1,54 @@
-import ReactMarkdown from 'react-markdown';
+import type { Components } from 'react-markdown';
+
 import {
   MessageBold,
-  MessageImageProps,
   MessageItalic,
   MessageLink,
-  MessageMultilineCodeProps,
   MessageParagraph,
+  MessageTitle,
 } from '@/ui/components/message/components';
 
-export function markdownComponents(): Partial<
-  React.ComponentProps<typeof ReactMarkdown>['components']
-> & {
-  code?: Partial<MessageMultilineCodeProps>;
-  image?: Omit<Partial<MessageImageProps>, 'buttons'> & {
-    buttons?: (imageProps: MessageImageProps) => React.ReactNode;
-  };
-} {
-  return {
-    p: ({ children }) => (
-      <MessageParagraph
-        wrap
-        variant="body-m-regular"
-      >
-        {children}
-      </MessageParagraph>
-    ),
-    b: ({ children }) => (
-      <MessageBold variant="body-m-regular">{children}</MessageBold>
-    ),
-    strong: ({ children }) => (
-      <MessageBold
-        component="strong"
-        variant="body-m-regular"
-      >
-        {children}
-      </MessageBold>
-    ),
-    i: ({ children }) => (
-      <MessageItalic variant="body-m-regular">{children}</MessageItalic>
-    ),
-    em: ({ children }) => (
-      <MessageItalic
-        component="em"
-        variant="body-m-regular"
-      >
-        {children}
-      </MessageItalic>
-    ),
-    a: ({ href, children }) => (
-      <MessageLink
-        href={href}
-        target="_blank"
-        variant="body-m-regular"
-      >
-        {children}
-      </MessageLink>
-    ),
-  };
-}
+const VARIANT = 'body-s-regular';
+
+export const reasoningComponentsOverride: Partial<Components> = {
+  p: ({ children }) => (
+    <MessageParagraph
+      wrap
+      variant={VARIANT}
+    >
+      {children}
+    </MessageParagraph>
+  ),
+  b: ({ children }) => <MessageBold variant={VARIANT}>{children}</MessageBold>,
+  strong: ({ children }) => (
+    <MessageBold
+      component="strong"
+      variant={VARIANT}
+    >
+      {children}
+    </MessageBold>
+  ),
+  i: ({ children }) => (
+    <MessageItalic variant={VARIANT}>{children}</MessageItalic>
+  ),
+  em: ({ children }) => (
+    <MessageItalic
+      component="em"
+      variant={VARIANT}
+    >
+      {children}
+    </MessageItalic>
+  ),
+  a: ({ href, children }) => (
+    <MessageLink
+      href={href}
+      target="_blank"
+      variant={VARIANT}
+    >
+      {children}
+    </MessageLink>
+  ),
+  h1: ({ children }) => <MessageTitle variant="h3">{children}</MessageTitle>,
+  h2: ({ children }) => <MessageTitle variant="h4">{children}</MessageTitle>,
+  h3: ({ children }) => <MessageTitle variant="h5">{children}</MessageTitle>,
+};

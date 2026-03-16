@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useState } from 'react';
+import { ReactNode, useCallback, useMemo, useState } from 'react';
 import { useDelayedVisible } from '@/ui/utils';
 import { LoaderCircularGradient2Icon } from '@/ui/icons/loader-circular-gradient-2';
 import { MessageMarkdown } from '../markdown';
@@ -9,14 +9,28 @@ import {
   ReasoningBlockHeader,
   ReasoningBlockStyled,
 } from './styled';
-import { markdownComponents } from './markdown-components';
+
 import { useMeasure } from '@/ui/utils/useMeasure';
+import { reasoningComponentsOverride } from './markdown-components';
 
 export type ReasoningBlockProps = {
   content?: string | ReactNode;
   buttonText: ReactNode;
   isReasoning?: boolean;
   fullWidth?: boolean;
+};
+
+const preprocessReasoningContent = (content: string): string => {
+  let processed = content;
+
+  processed = processed.replace(
+    /([.!?…»")\]])[ \t]*\n?(\*\*[A-ZА-ЯЁ])/g,
+    '$1\n\n$2',
+  );
+
+  processed = processed.replace(/([^\n])\n(#{1,6}\s)/g, '$1\n\n$2');
+
+  return processed;
 };
 
 export const MessageReasoningBlock = ({
@@ -28,12 +42,17 @@ export const MessageReasoningBlock = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = useCallback(() => {
-    if (isReasoning) {
-      return;
-    }
-
+    if (isReasoning) return;
     setIsOpen((prev) => !prev);
   }, [isReasoning]);
+
+  const processedContent = useMemo(
+    () =>
+      typeof content === 'string'
+        ? preprocessReasoningContent(content)
+        : content,
+    [content],
+  );
 
   const [ref, bounds] = useMeasure<HTMLDivElement>();
   const animationDuration = Math.max(Math.min(bounds.height, 650), 300);
@@ -51,7 +70,6 @@ export const MessageReasoningBlock = ({
           disabled={isReasoning || !content}
         >
           {buttonText}
-
           {!isReasoning && !!content && (
             <ReasoningBlockButtonArrow
               $isOpen={isOpen}
@@ -59,7 +77,6 @@ export const MessageReasoningBlock = ({
             />
           )}
         </ReasoningBlockButton>
-
         {isReasoning && <LoaderCircularGradient2Icon size={16} />}
       </ReasoningBlockHeader>
 
@@ -75,15 +92,15 @@ export const MessageReasoningBlock = ({
           <div ref={ref}>
             <div />
             <div>
-              {typeof content === 'string' ? (
+              {typeof processedContent === 'string' ? (
                 <MessageMarkdown
-                  componentsOverride={markdownComponents()}
+                  componentsOverride={reasoningComponentsOverride}
                   disableTyping
                 >
-                  {content}
+                  {processedContent}
                 </MessageMarkdown>
               ) : (
-                content
+                processedContent
               )}
             </div>
           </div>
