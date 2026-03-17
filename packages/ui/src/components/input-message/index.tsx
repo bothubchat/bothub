@@ -30,6 +30,14 @@ import {
   InputMessageVoiceTrack,
   InputMessageUploadFileLabel,
   InputMessageUploadFile,
+  InputMessageCloseEditButton,
+  InputMessageEditWrapper,
+  InputMessageContentWrapper,
+  InputMessageContentActionText,
+  InputMessageContentTextFiles,
+  InputMessageContentTextMessage,
+  InputMessageContentTextWrapper,
+  InputMessageContentInfo,
 } from './styled';
 import { MessageVoice } from '../message';
 import { Typography } from '@/ui/components/typography';
@@ -47,6 +55,8 @@ import { useVoice } from './use-voice';
 import { useFiles } from './use-files';
 import { useInput } from './use-input';
 import { InputMessageFiles } from './input-files';
+import { IconProvider } from '../icon';
+import { CheckSmallIcon, CloseIcon, EditIcon } from '@/ui/icons';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
@@ -69,6 +79,9 @@ export interface InputMessageProps
   extends Omit<React.ComponentProps<'textarea'>, 'value' | 'onChange'> {
   className?: string;
   placeholder?: string;
+  isEditing?: boolean;
+  editString?: string;
+  resetEdit?: () => void;
   message?: string;
   files?: IInputMessageFile[];
   hideUploadFile?: boolean;
@@ -98,6 +111,9 @@ export interface InputMessageProps
 export const InputMessage: React.FC<InputMessageProps> = ({
   className,
   placeholder,
+  isEditing,
+  editString,
+  resetEdit,
   message: initialMessage,
   files: initialFiles,
   disabled = false,
@@ -328,6 +344,33 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           </InputMessageConfigure>
         )}
         <InputMessageMain onClick={handleClick}>
+          {isEditing && (
+            <InputMessageEditWrapper>
+              <IconProvider size={24}>
+                <EditIcon />
+              </IconProvider>
+              <InputMessageContentWrapper>
+                <InputMessageContentInfo>
+                  <InputMessageContentActionText>
+                    Редактирование
+                  </InputMessageContentActionText>
+                  <InputMessageContentTextWrapper>
+                    <InputMessageContentTextFiles>
+                      {editString}
+                    </InputMessageContentTextFiles>
+                    <InputMessageContentTextMessage>
+                      {editString}
+                    </InputMessageContentTextMessage>
+                  </InputMessageContentTextWrapper>
+                </InputMessageContentInfo>
+                <InputMessageCloseEditButton onClick={resetEdit}>
+                  <IconProvider size={18}>
+                    <CloseIcon />
+                  </IconProvider>
+                </InputMessageCloseEditButton>
+              </InputMessageContentWrapper>
+            </InputMessageEditWrapper>
+          )}
           {isVoiceRecording && voiceRecordingTime !== null && (
             <InputMessageVoiceRecord>
               <InputMessageVoiceRecordDot />
@@ -444,7 +487,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             })}
             data-test="submit-message"
           >
-            <InputMessageSendIcon />
+            {isEditing ? <CheckSmallIcon /> : <InputMessageSendIcon />}
           </InputMessageSendButton>
         </InputMessageButtons>
       </InputMessageContent>

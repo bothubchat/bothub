@@ -1,10 +1,4 @@
-import React, {
-  ReactNode,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
 import { marked } from 'marked';
 import {
   MessageBlock,
@@ -12,7 +6,6 @@ import {
   MessageBlockTransaction,
   MessageBlockContent,
   MessageBlockScrollbarWrapper,
-  MessageBlockTextArea,
   MessageBlockWrapper,
   MessageContent,
   MessageName,
@@ -70,8 +63,6 @@ export interface MessageProps {
   resendText?: string | null;
   deleteText?: string | null;
   onReportText?: string | null;
-  submitEditTooltipLabel?: string | null;
-  discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
   downloadTooltipLabel?: string | null;
@@ -126,8 +117,6 @@ export const Message: React.FC<MessageProps> = ({
   deleteText,
   onReportText,
   downloadTooltipLabel,
-  submitEditTooltipLabel,
-  discardEditTooltipLabel,
   updateTooltipLabel,
   copyTooltipLabel,
   encryptionTooltipLabel,
@@ -158,15 +147,6 @@ export const Message: React.FC<MessageProps> = ({
   const messageRef = useRef<HTMLDivElement | null>(null);
   const messageBlockContentRef = useRef<HTMLDivElement | null>(null);
   const messageText = useRef<string | null>(null);
-  const editFieldRef = useRef<HTMLSpanElement | null>(null);
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [editedText, setEditedText] = useState<string>(content ?? '');
-  const handleEditText = useCallback(
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-      setEditedText(e.target.textContent ?? '');
-    },
-    [],
-  );
 
   const getRichText = useCallback(async () => {
     const htmlContent = (await marked.parse(messageText.current!)).replace(
@@ -279,18 +259,6 @@ export const Message: React.FC<MessageProps> = ({
   }
 
   useEffect(() => {
-    if (editFieldRef.current) {
-      editFieldRef.current.focus();
-      const range = document.createRange();
-      const selection = window.getSelection();
-      range.selectNodeContents(editFieldRef.current);
-      range.collapse(false);
-      selection?.removeAllRanges();
-      selection?.addRange(range);
-    }
-  }, [editFieldRef, isEditing]);
-
-  useEffect(() => {
     if (!content) return;
     messageText.current = content;
   }, [content]);
@@ -350,53 +318,42 @@ export const Message: React.FC<MessageProps> = ({
                       ref={messageBlockContentRef}
                       $variant={variant}
                     >
-                      {!isEditing ? (
-                        <>
-                          {!skeleton &&
-                            (!loader ? (
-                              <>
-                                {typeof children === 'string' && (
-                                  <MessageMarkdown components={components}>
-                                    {children}
-                                  </MessageMarkdown>
-                                )}
-                                {typeof children !== 'string' && children}
-                              </>
-                            ) : (
-                              <MessageParagraph disableMargin>
-                                <Loader />
-                              </MessageParagraph>
-                            ))}
-                          {skeleton && (
+                      <>
+                        {!skeleton &&
+                          (!loader ? (
+                            <>
+                              {typeof children === 'string' && (
+                                <MessageMarkdown components={components}>
+                                  {children}
+                                </MessageMarkdown>
+                              )}
+                              {typeof children !== 'string' && children}
+                            </>
+                          ) : (
                             <MessageParagraph disableMargin>
-                              <Skeleton
-                                width={260}
-                                opacity={[
-                                  theme.mode === 'light' ? 0.1 : 0.15,
-                                  theme.mode === 'light' ? 0.225 : 0.45,
-                                ]}
-                                colors={[
-                                  variant === 'user'
-                                    ? theme.colors.base.white
-                                    : theme.mode === 'light'
-                                      ? theme.default.colors.base.black
-                                      : theme.colors.grayScale.gray6,
-                                ]}
-                              />
+                              <Loader />
                             </MessageParagraph>
-                          )}
-                          {after}
-                        </>
-                      ) : (
-                        <MessageParagraph disableMargin>
-                          <MessageBlockTextArea
-                            onInput={handleEditText}
-                            ref={editFieldRef}
-                          >
-                            {content}
-                          </MessageBlockTextArea>
-                        </MessageParagraph>
-                      )}
+                          ))}
+                        {skeleton && (
+                          <MessageParagraph disableMargin>
+                            <Skeleton
+                              width={260}
+                              opacity={[
+                                theme.mode === 'light' ? 0.1 : 0.15,
+                                theme.mode === 'light' ? 0.225 : 0.45,
+                              ]}
+                              colors={[
+                                variant === 'user'
+                                  ? theme.colors.base.white
+                                  : theme.mode === 'light'
+                                    ? theme.default.colors.base.black
+                                    : theme.colors.grayScale.gray6,
+                              ]}
+                            />
+                          </MessageParagraph>
+                        )}
+                        {after}
+                      </>
                     </MessageBlockContent>
                     {timestamp && variant === 'user' && (
                       <MessageTimestamp
@@ -444,15 +401,9 @@ export const Message: React.FC<MessageProps> = ({
                     deleteText={deleteText}
                     onReportText={onReportText}
                     downloadTooltipLabel={downloadTooltipLabel}
-                    submitEditTooltipLabel={submitEditTooltipLabel}
-                    discardEditTooltipLabel={discardEditTooltipLabel}
                     updateTooltipLabel={updateTooltipLabel}
                     copyTooltipLabel={copyTooltipLabel}
                     encryptionTooltipLabel={encryptionTooltipLabel}
-                    editing={isEditing}
-                    editedText={editedText}
-                    onEditing={setIsEditing}
-                    onEditedText={setEditedText}
                     onEdit={onEdit}
                     onResend={onResend}
                     onDelete={onDelete}
@@ -470,7 +421,6 @@ export const Message: React.FC<MessageProps> = ({
                   totalVersions={totalVersions}
                   onNextVersion={onNextVersion}
                   onPrevVersion={onPrevVersion}
-                  editing={isEditing}
                   variant={variant}
                 />
               </MessageBlockBottomPanel>
