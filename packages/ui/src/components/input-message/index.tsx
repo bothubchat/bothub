@@ -45,6 +45,7 @@ import { AttachIcon } from '@/ui/icons/attach';
 import { Plus2Icon } from '@/ui/icons/plus-2';
 import { useTheme } from '@/ui/theme';
 import {
+  EditingProps,
   IConfigureOption,
   IInputMessageFile,
   IInputMessageVoiceFile,
@@ -79,9 +80,7 @@ export interface InputMessageProps
   extends Omit<React.ComponentProps<'textarea'>, 'value' | 'onChange'> {
   className?: string;
   placeholder?: string;
-  isEditing?: boolean;
-  editString?: string;
-  resetEdit?: () => void;
+  editingProps?: EditingProps;
   message?: string;
   files?: IInputMessageFile[];
   hideUploadFile?: boolean;
@@ -111,9 +110,7 @@ export interface InputMessageProps
 export const InputMessage: React.FC<InputMessageProps> = ({
   className,
   placeholder,
-  isEditing,
-  editString,
-  resetEdit,
+  editingProps,
   message: initialMessage,
   files: initialFiles,
   disabled = false,
@@ -344,7 +341,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           </InputMessageConfigure>
         )}
         <InputMessageMain onClick={handleClick}>
-          {isEditing && (
+          {editingProps?.isEditing && (
             <InputMessageEditWrapper>
               <IconProvider size={24}>
                 <EditIcon />
@@ -352,18 +349,18 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               <InputMessageContentWrapper>
                 <InputMessageContentInfo>
                   <InputMessageContentActionText>
-                    Редактирование
+                    {editingProps.editingTitle}
                   </InputMessageContentActionText>
                   <InputMessageContentTextWrapper>
                     <InputMessageContentTextFiles>
-                      {editString}
+                      {editingProps.editFiles}
                     </InputMessageContentTextFiles>
                     <InputMessageContentTextMessage>
-                      {editString}
+                      {editingProps.editString}
                     </InputMessageContentTextMessage>
                   </InputMessageContentTextWrapper>
                 </InputMessageContentInfo>
-                <InputMessageCloseEditButton onClick={resetEdit}>
+                <InputMessageCloseEditButton onClick={editingProps.resetEdit}>
                   <IconProvider size={18}>
                     <CloseIcon />
                   </IconProvider>
@@ -487,7 +484,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             })}
             data-test="submit-message"
           >
-            {isEditing ? <CheckSmallIcon /> : <InputMessageSendIcon />}
+            {editingProps?.isEditing ? (
+              <CheckSmallIcon />
+            ) : (
+              <InputMessageSendIcon />
+            )}
           </InputMessageSendButton>
         </InputMessageButtons>
       </InputMessageContent>

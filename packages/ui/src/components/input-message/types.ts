@@ -13,6 +13,14 @@ export interface IInputMessageVoiceFile {
   blob: Blob;
 }
 
+export interface EditingProps {
+  editingTitle?: string;
+  isEditing?: boolean;
+  editString?: string;
+  editFiles?: string;
+  resetEdit?: () => void;
+}
+
 export interface IConfigureOption {
   icon?: React.ReactNode;
   children?: React.ReactNode;
