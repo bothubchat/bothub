@@ -94,6 +94,7 @@ export interface InputMessageProps
   defaultKeySendText?: React.ReactNode;
   alternativeKeySendText?: React.ReactNode;
   concatenateText?: React.ReactNode;
+  concatenateVideo?: React.ReactNode;
   autoFocus?: boolean;
   voice?: boolean;
   onSetAlternativeKeyValue?: (value: boolean) => unknown;
@@ -121,6 +122,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   alternativeKeySendText,
   concatenateText,
   uploadFileLimit = 20,
+  concatenateVideo,
   hideUploadFile = false,
   uploadFileDisabled = false,
   uploadFileAccept,
@@ -247,6 +249,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       config: { duration: 100, ease: 'easeOut' },
     },
   );
+
+  const videoFiles = files?.filter((f) => f.native.type.startsWith('video/'));
 
   return (
     <InputMessageStyled
@@ -383,6 +387,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           {voiceFiles.length > 1 && (
             <InputMessageConcatenateWarning>
               {concatenateText}
+            </InputMessageConcatenateWarning>
+          )}
+          {videoFiles.length > 1 && (
+            <InputMessageConcatenateWarning>
+              {concatenateVideo}
             </InputMessageConcatenateWarning>
           )}
           {voiceFiles.length > 0 && (
