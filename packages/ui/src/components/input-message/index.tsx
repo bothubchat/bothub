@@ -120,7 +120,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   defaultKeySendText,
   alternativeKeySendText,
   concatenateText,
-  uploadFileLimit = 5,
+  uploadFileLimit = 20,
   hideUploadFile = false,
   uploadFileDisabled = false,
   uploadFileAccept,

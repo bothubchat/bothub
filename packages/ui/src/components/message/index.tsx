@@ -82,7 +82,7 @@ export interface MessageProps {
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
   onEdit?: MessageActionEventHandler;
-  onResend?: MessageActionEventHandler;
+  // onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
   onReport?: MessageActionEventHandler;
@@ -135,7 +135,7 @@ export const Message: React.FC<MessageProps> = ({
   onCopy,
   onCodeCopy,
   onEdit,
-  onResend,
+  // onResend,
   onDelete,
   onUpdate,
   onReport,
@@ -405,7 +405,7 @@ export const Message: React.FC<MessageProps> = ({
                     copyTooltipLabel={copyTooltipLabel}
                     encryptionTooltipLabel={encryptionTooltipLabel}
                     onEdit={onEdit}
-                    onResend={onResend}
+                    onResend={onUpdate}
                     onDelete={onDelete}
                     onUpdate={onUpdate}
                     onReport={onReport}

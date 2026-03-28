@@ -1,6 +1,10 @@
 import React from 'react';
 
 export interface IInputMessageFile {
+  imageId?: string;
+  voiceId?: string;
+  videoId?: string;
+  attachmentId?: string;
   name: string;
   previewUrl: string | null;
   native: File;

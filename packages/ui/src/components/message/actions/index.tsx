@@ -224,13 +224,16 @@ export const MessageActions = ({
         case 'delete':
           onDelete?.(data);
           break;
+        case 'update':
+          onUpdate?.({ id });
+          break;
         case 'resend':
           onResend?.(data);
           break;
       }
       setMenuShown(false);
     },
-    [id, message, onDelete, onResend, onEdit],
+    [id, message, onDelete, onResend, onEdit, onUpdate],
   );
 
   const handleTgCopy = useCallback(() => {
