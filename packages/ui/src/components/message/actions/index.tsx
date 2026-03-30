@@ -14,8 +14,6 @@ import { ResendIcon } from '@/ui/icons/resend';
 import { EditIcon } from '@/ui/icons/edit';
 import { TrashIcon } from '@/ui/icons/trash';
 import { ThumbDownIcon } from '@/ui/icons/thumb-down';
-import { CheckSmallIcon } from '@/ui/icons/check-small';
-import { CloseIcon } from '@/ui/icons/close';
 import { CopyIcon } from '@/ui/icons/copy';
 import { DownloadImgIcon } from '@/ui/icons/download-img';
 
@@ -60,15 +58,9 @@ type MessageActionsProps = {
   deleteText?: string | null;
   onReportText?: string | null;
   downloadTooltipLabel?: string | null;
-  submitEditTooltipLabel?: string | null;
-  discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
   encryptionTooltipLabel?: string | null;
-  editing?: boolean;
-  editedText?: string;
-  onEditing?: (value: boolean) => unknown;
-  onEditedText?: (value: string) => unknown;
   onEdit?: MessageActionEditEventHandler;
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
@@ -101,15 +93,9 @@ export const MessageActions = ({
   deleteText,
   onReportText,
   downloadTooltipLabel,
-  submitEditTooltipLabel,
-  discardEditTooltipLabel,
   encryptionTooltipLabel,
   updateTooltipLabel,
   copyTooltipLabel,
-  editing,
-  editedText,
-  onEditing,
-  onEditedText,
   onEdit,
   onResend,
   onDelete,
@@ -233,11 +219,13 @@ export const MessageActions = ({
       };
       switch (option) {
         case 'edit':
-          onEditing?.(true);
-          onEditedText?.(message ?? '');
+          onEdit?.({ id, message, variant });
           break;
         case 'delete':
           onDelete?.(data);
+          break;
+        case 'update':
+          onUpdate?.({ id });
           break;
         case 'resend':
           onResend?.(data);
@@ -245,21 +233,8 @@ export const MessageActions = ({
       }
       setMenuShown(false);
     },
-    [id, message, onEditing, onEditedText, onDelete, onResend],
+    [id, message, onDelete, onResend, onEdit, onUpdate],
   );
-
-  const handleConfirmEdit = useCallback(
-    ({ id, message }: { id?: string; message?: string }) => {
-      onEditing?.(false);
-      onEdit?.({ id, message, variant });
-    },
-    [variant, onEditing, onEdit],
-  );
-
-  const handleDiscardEdit = useCallback(() => {
-    onEditing?.(false);
-    onEditedText?.(message ?? '');
-  }, [message, onEditing, onEditedText]);
 
   const handleTgCopy = useCallback(() => {
     onTgCopy?.();
@@ -333,7 +308,7 @@ export const MessageActions = ({
       $variant={variant}
       ref={messageActionsRef}
     >
-      {!editing ? (
+      {
         <>
           <IconProvider fill={iconColor}>
             {modalEnabled && (
@@ -505,30 +480,7 @@ export const MessageActions = ({
               )}
           </IconProvider>
         </>
-      ) : (
-        <S.MessageEditButtonsStyled>
-          <ActionButton
-            id={id}
-            message={editedText}
-            tooltipLabel={submitEditTooltipLabel}
-            onClick={handleConfirmEdit}
-          >
-            <CheckSmallIcon
-              size={20}
-              fill={theme.colors.accent.primary}
-            />
-          </ActionButton>
-          <ActionButton
-            tooltipLabel={discardEditTooltipLabel}
-            onClick={handleDiscardEdit}
-          >
-            <CloseIcon
-              size={14}
-              fill={theme.colors.grayScale.gray2}
-            />
-          </ActionButton>
-        </S.MessageEditButtonsStyled>
-      )}
+      }
       {!disableDownload && (
         <ActionButton
           tooltipLabel={downloadTooltipLabel}

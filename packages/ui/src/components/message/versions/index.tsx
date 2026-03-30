@@ -7,7 +7,6 @@ export type MessageVersionsType = {
   variant?: MessageVariant;
   version?: number;
   totalVersions?: number;
-  editing?: boolean;
   onNextVersion?: MessageVersionEventHandler;
   onPrevVersion?: MessageVersionEventHandler;
 };
@@ -17,15 +16,10 @@ export const MessageVersions = ({
   variant,
   version,
   totalVersions,
-  editing,
   onNextVersion,
   onPrevVersion,
 }: MessageVersionsType) => {
-  if (
-    typeof version !== 'number' ||
-    typeof totalVersions !== 'number' ||
-    editing
-  ) {
+  if (typeof version !== 'number' || typeof totalVersions !== 'number') {
     return null;
   }
 

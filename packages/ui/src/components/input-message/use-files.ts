@@ -89,12 +89,13 @@ export const useFiles = ({
       if (!setFiles || !event.target.files) {
         return;
       }
-      const formattedFiles = await formatUploadFiles([
-        ...files.map(({ native }) => native),
-        ...event.target.files,
-      ]);
-      setFiles(formattedFiles.slice(0, uploadFileLimit));
-      // setConfigureMenuShown(false);
+
+      const newFormatted = await formatUploadFiles([...event.target.files]);
+
+      const existingNames = new Set(newFormatted.map((f) => f.name));
+      const keptExisting = files.filter((f) => !existingNames.has(f.name));
+
+      setFiles([...keptExisting, ...newFormatted].slice(0, uploadFileLimit));
       onUploadFileChange?.();
     },
     [files, setFiles, uploadFileLimit],
