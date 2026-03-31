@@ -191,7 +191,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     autoFocus,
     altKeyDefaultValue,
     onChange,
-    onSendMessage: () => onSend?.(message, files),
+    onSendMessage: () => {
+      onSend?.(message, files);
+      setFiles?.([]);
+      setVoiceFiles?.([]);
+    },
     onTextAreaChange,
     onSetAlternativeKeyValue,
     onFocus,
