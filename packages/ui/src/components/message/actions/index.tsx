@@ -136,7 +136,7 @@ export const MessageActions = ({
     }
     switch (variant) {
       case 'assistant':
-        return !disableEdit;
+        return !disableModal;
       case 'user':
         return disableModal
           ? false
