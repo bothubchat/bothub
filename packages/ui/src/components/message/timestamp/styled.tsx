@@ -13,6 +13,7 @@ export interface TimestampProps {
 }
 export const TimestampStyled = styled.div<TimestampProps>`
   display: flex;
+  gap: 6px;
   justify-content: flex-end;
   grid-area: timestamp;
   text-align: right;

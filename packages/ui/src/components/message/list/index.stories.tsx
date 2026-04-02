@@ -18,18 +18,32 @@ export const Basic: MessagesStory = {
   args: {
     children: (
       <>
-        <Message avatar={<MessageAvatar />}>Привет бот</Message>
         <Message
+          edited
+          editedText="Изменено"
+          avatar={<MessageAvatar />}
+        >
+          Привет бот
+        </Message>
+        <Message
+          edited={false}
+          editedText="Изменено"
           variant="assistant"
           avatar={<MessageAvatar variant="bot" />}
           transaction={<MessageTransaction>-223 CAPS</MessageTransaction>}
         >
           Привет! Чем я могу помочь?
         </Message>
-        <Message avatar={<MessageAvatar />}>
+        <Message
+          edited
+          editedText="Изменено"
+          avatar={<MessageAvatar />}
+        >
           Напиши код Helloworld на Javascript
         </Message>
         <Message
+          edited={false}
+          editedText="Изменено"
           variant="assistant"
           avatar={<MessageAvatar variant="bot" />}
           transaction={<MessageTransaction>-1571 CAPS</MessageTransaction>}
@@ -39,7 +53,13 @@ export const Basic: MessagesStory = {
 console.log("Hello, world!");
 \`\`\``}
         </Message>
-        <Message avatar={<MessageAvatar />}>Спасибо бот! то что нужно</Message>
+        <Message
+          edited
+          editedText="Изменено"
+          avatar={<MessageAvatar />}
+        >
+          Спасибо бот! то что нужно
+        </Message>
         <ActionMessage>Контекст сброшен</ActionMessage>
       </>
     ),
@@ -51,6 +71,8 @@ export const Skeleton: MessagesStory = {
     children: [...Array(3)].map((_, index) => (
       <React.Fragment key={index}>
         <Message
+          edited
+          editedText="Изменено"
           avatar={
             <MessageAvatar>
               <BothubSkeleton />
@@ -59,6 +81,8 @@ export const Skeleton: MessagesStory = {
           skeleton
         />
         <Message
+          edited={false}
+          editedText="Изменено"
           variant="assistant"
           avatar={
             <MessageAvatar>
