@@ -534,3 +534,64 @@ export const InputMessageAltKeyModalOption = styled.button<{
     transform: translateY(1px);
   }
 `;
+
+export const InputMessageEditWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 16px;
+  align-items: center;
+`;
+
+export const InputMessageContentWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
+
+export const InputMessageContentInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
+`;
+
+export const InputMessageContentTextWrapper = styled.div`
+  display: flex;
+  overflow: hidden;
+  min-width: 0;
+`;
+
+export const InputMessageContentActionText = styled(Typography).attrs({
+  variant: 'body-l-regular',
+})`
+  color: ${({ theme }) => theme.colors.accent.primary};
+`;
+
+export const InputMessageContentTextMessage = styled(Typography).attrs({
+  variant: 'body-m-regular',
+})`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: ${({ theme }) =>
+    theme.mode === 'dark' ? theme.colors.base.white : theme.colors.base.black};
+`;
+
+export const InputMessageContentTextFiles = styled(
+  InputMessageContentTextMessage,
+)`
+  color: ${({ theme }) => theme.colors.grayScale.gray1};
+`;
+
+export const InputMessageCloseEditButton = styled.button`
+  margin: 0;
+  cursor: pointer;
+  padding: 0;
+  border: none;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
