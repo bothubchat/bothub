@@ -48,6 +48,8 @@ export interface MessageProps {
   tags?: React.ReactNode;
   avatar?: React.ReactNode;
   transaction?: React.ReactNode;
+  edited?: boolean;
+  editedText?: string;
   disableModal?: boolean;
   disableResend?: boolean;
   disableEdit?: boolean;
@@ -101,6 +103,8 @@ export const Message: React.FC<MessageProps> = ({
   tags,
   avatar,
   transaction,
+  edited = false,
+  editedText,
   disableModal = false,
   disableResend = false,
   disableEdit = false,
@@ -355,8 +359,10 @@ export const Message: React.FC<MessageProps> = ({
                         {after}
                       </>
                     </MessageBlockContent>
-                    {timestamp && variant === 'user' && (
+                    {variant === 'user' && (
                       <MessageTimestamp
+                        edited={edited}
+                        editedText={editedText}
                         time={timestamp}
                         position={timestampPosition}
                         color={hexColor}
