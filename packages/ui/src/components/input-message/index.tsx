@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   InputMessageButtons,
@@ -30,6 +30,14 @@ import {
   InputMessageVoiceTrack,
   InputMessageUploadFileLabel,
   InputMessageUploadFile,
+  InputMessageCloseEditButton,
+  InputMessageEditWrapper,
+  InputMessageContentWrapper,
+  InputMessageContentActionText,
+  InputMessageContentTextFiles,
+  InputMessageContentTextMessage,
+  InputMessageContentTextWrapper,
+  InputMessageContentInfo,
 } from './styled';
 import { MessageVoice } from '../message';
 import { Typography } from '@/ui/components/typography';
@@ -37,6 +45,7 @@ import { AttachIcon } from '@/ui/icons/attach';
 import { Plus2Icon } from '@/ui/icons/plus-2';
 import { useTheme } from '@/ui/theme';
 import {
+  EditingProps,
   IConfigureOption,
   IInputMessageFile,
   IInputMessageVoiceFile,
@@ -47,6 +56,8 @@ import { useVoice } from './use-voice';
 import { useFiles } from './use-files';
 import { useInput } from './use-input';
 import { InputMessageFiles } from './input-files';
+import { IconProvider } from '../icon';
+import { CheckSmallIcon, CloseIcon, EditIcon } from '@/ui/icons';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
@@ -69,6 +80,7 @@ export interface InputMessageProps
   extends Omit<React.ComponentProps<'textarea'>, 'value' | 'onChange'> {
   className?: string;
   placeholder?: string;
+  editingProps?: EditingProps;
   message?: string;
   files?: IInputMessageFile[];
   hideUploadFile?: boolean;
@@ -82,6 +94,7 @@ export interface InputMessageProps
   defaultKeySendText?: React.ReactNode;
   alternativeKeySendText?: React.ReactNode;
   concatenateText?: React.ReactNode;
+  concatenateVideo?: React.ReactNode;
   autoFocus?: boolean;
   voice?: boolean;
   onSetAlternativeKeyValue?: (value: boolean) => unknown;
@@ -98,6 +111,7 @@ export interface InputMessageProps
 export const InputMessage: React.FC<InputMessageProps> = ({
   className,
   placeholder,
+  editingProps,
   message: initialMessage,
   files: initialFiles,
   disabled = false,
@@ -107,7 +121,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   defaultKeySendText,
   alternativeKeySendText,
   concatenateText,
-  uploadFileLimit = 5,
+  uploadFileLimit = 20,
+  concatenateVideo,
   hideUploadFile = false,
   uploadFileDisabled = false,
   uploadFileAccept,
@@ -176,7 +191,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     autoFocus,
     altKeyDefaultValue,
     onChange,
-    onSendMessage: () => onSend?.(message, files),
+    onSendMessage: () => {
+      onSend?.(message, files);
+      setFiles?.([]);
+      setVoiceFiles?.([]);
+    },
     onTextAreaChange,
     onSetAlternativeKeyValue,
     onFocus,
@@ -234,6 +253,16 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       config: { duration: 100, ease: 'easeOut' },
     },
   );
+
+  const videoFiles = files?.filter((f) => f.native.type.startsWith('video/'));
+
+  useEffect(() => {
+    const handler = (e: ClipboardEvent) => {
+      e.stopImmediatePropagation();
+    };
+    document.addEventListener('copy', handler, true);
+    return () => document.removeEventListener('copy', handler, true);
+  }, []);
 
   return (
     <InputMessageStyled
@@ -328,6 +357,33 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           </InputMessageConfigure>
         )}
         <InputMessageMain onClick={handleClick}>
+          {editingProps?.isEditing && (
+            <InputMessageEditWrapper>
+              <IconProvider size={24}>
+                <EditIcon />
+              </IconProvider>
+              <InputMessageContentWrapper>
+                <InputMessageContentInfo>
+                  <InputMessageContentActionText>
+                    {editingProps.editingTitle}
+                  </InputMessageContentActionText>
+                  <InputMessageContentTextWrapper>
+                    <InputMessageContentTextFiles>
+                      {editingProps.editFiles}
+                    </InputMessageContentTextFiles>
+                    <InputMessageContentTextMessage>
+                      {editingProps.editString}
+                    </InputMessageContentTextMessage>
+                  </InputMessageContentTextWrapper>
+                </InputMessageContentInfo>
+                <InputMessageCloseEditButton onClick={editingProps.resetEdit}>
+                  <IconProvider size={18}>
+                    <CloseIcon />
+                  </IconProvider>
+                </InputMessageCloseEditButton>
+              </InputMessageContentWrapper>
+            </InputMessageEditWrapper>
+          )}
           {isVoiceRecording && voiceRecordingTime !== null && (
             <InputMessageVoiceRecord>
               <InputMessageVoiceRecordDot />
@@ -343,6 +399,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           {voiceFiles.length > 1 && (
             <InputMessageConcatenateWarning>
               {concatenateText}
+            </InputMessageConcatenateWarning>
+          )}
+          {videoFiles.length > 1 && (
+            <InputMessageConcatenateWarning>
+              {concatenateVideo}
             </InputMessageConcatenateWarning>
           )}
           {voiceFiles.length > 0 && (
@@ -444,7 +505,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             })}
             data-test="submit-message"
           >
-            <InputMessageSendIcon />
+            {editingProps?.isEditing ? (
+              <CheckSmallIcon />
+            ) : (
+              <InputMessageSendIcon />
+            )}
           </InputMessageSendButton>
         </InputMessageButtons>
       </InputMessageContent>
