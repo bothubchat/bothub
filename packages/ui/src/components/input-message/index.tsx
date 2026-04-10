@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   InputMessageButtons,
@@ -255,6 +255,14 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   );
 
   const videoFiles = files?.filter((f) => f.native.type.startsWith('video/'));
+
+  useEffect(() => {
+    const handler = (e: ClipboardEvent) => {
+      e.stopImmediatePropagation();
+    };
+    document.addEventListener('copy', handler, true);
+    return () => document.removeEventListener('copy', handler, true);
+  }, []);
 
   return (
     <InputMessageStyled
