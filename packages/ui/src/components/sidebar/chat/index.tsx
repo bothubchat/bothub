@@ -111,7 +111,10 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
   }
 
   return (
-    <SidebarChatBox $active={props.active}>
+    <SidebarChatBox
+      onClick={handleClick}
+      $active={props.active}
+    >
       <SidebarChatStyled ref={setNodeRef}>
         <IconProvider size={18}>
           {props.promtQueue &&
@@ -151,7 +154,6 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
             {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
               <SidebarChatName
                 ref={ref}
-                onClick={handleClick}
                 onPointerEnter={handleTooltipMouseEnter}
                 onPointerLeave={handleTooltipMouseLeave}
               >
