@@ -288,7 +288,7 @@ export const Basic: SidebarStory = {
 };
 
 export default {
-  title: 'Components/Sidebar-Copy',
+  title: 'Components/Sidebar',
   component: Sidebar,
   decorators: [StoryDecorator({ scale: 'dashboard' })],
   argTypes: {

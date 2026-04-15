@@ -67,7 +67,6 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
     }
 
     setIsFocus(true);
-    handleClick();
   }, [skeleton]);
 
   const handleDelete = useCallback(() => {
