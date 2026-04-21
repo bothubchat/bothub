@@ -118,6 +118,7 @@ export interface RangeFieldRangeTrackProps {
 
 export interface RangeFieldRangeThumbProps {
   $disabled: boolean;
+  $x?: number;
 }
 
 export const RangeFieldRangeThumb = styled.span<RangeFieldRangeThumbProps>`
