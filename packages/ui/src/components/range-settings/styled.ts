@@ -108,7 +108,7 @@ export const RangeSettingsSlider: React.FC<
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      content: attr(aria-valuenow);
+      content: attr(aria-valuetext);
       font-size: 10px;
       line-height: 1;
       font-weight: 600;

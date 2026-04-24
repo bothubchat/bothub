@@ -37,6 +37,16 @@ export const Disabled: RangeSettingsStory = {
   },
 };
 
+export const FormattedValue: RangeSettingsStory = {
+  args: {
+    min: 0,
+    max: 100,
+    step: 1,
+    defaultValue: 45,
+    valueFormatter: (value) => `${Math.round(value)}%`,
+  },
+};
+
 export default {
   title: 'UI Components/RangeSettings',
   component: RangeSettings,

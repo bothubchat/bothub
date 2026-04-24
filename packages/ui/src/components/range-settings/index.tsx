@@ -32,6 +32,7 @@ export const RangeSettings: React.FC<RangeSettingsProps> = ({
   value: valueProp,
   defaultValue,
   disabled = false,
+  valueFormatter,
   onChange,
   onChangeComplete,
 }) => {
@@ -69,6 +70,7 @@ export const RangeSettings: React.FC<RangeSettingsProps> = ({
       value={value}
       disabled={disabled}
       $disabled={disabled}
+      ariaValueTextFormatterForHandle={valueFormatter}
       onChange={handleChange}
       onChangeComplete={handleChangeComplete}
     />
