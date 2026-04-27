@@ -82,6 +82,7 @@ export interface InputMessageProps
   placeholder?: string;
   editingProps?: EditingProps;
   message?: string;
+  hiddenSend?: boolean;
   files?: IInputMessageFile[];
   hideUploadFile?: boolean;
   uploadFileLimit?: number;
@@ -112,6 +113,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   className,
   placeholder,
   editingProps,
+  hiddenSend = false,
   message: initialMessage,
   files: initialFiles,
   disabled = false,
@@ -497,20 +499,22 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               data-test="submit-message"
             />
           )}
-          <InputMessageSendButton
-            disabled={disabled || sendDisabled || isVoiceRecording}
-            onClick={handleSend}
-            {...(theme.bright && {
-              iconFill: theme.default.colors.base.black,
-            })}
-            data-test="submit-message"
-          >
-            {editingProps?.isEditing ? (
-              <CheckSmallIcon />
-            ) : (
-              <InputMessageSendIcon />
-            )}
-          </InputMessageSendButton>
+          {!hiddenSend && (
+            <InputMessageSendButton
+              disabled={disabled || sendDisabled || isVoiceRecording}
+              onClick={handleSend}
+              {...(theme.bright && {
+                iconFill: theme.default.colors.base.black,
+              })}
+              data-test="submit-message"
+            >
+              {editingProps?.isEditing ? (
+                <CheckSmallIcon />
+              ) : (
+                <InputMessageSendIcon />
+              )}
+            </InputMessageSendButton>
+          )}
         </InputMessageButtons>
       </InputMessageContent>
     </InputMessageStyled>

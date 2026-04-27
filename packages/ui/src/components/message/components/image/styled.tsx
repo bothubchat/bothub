@@ -50,6 +50,7 @@ export const MessageImageNative = styled(Image)<MessageImageNativeProps>`
     css`
       display: none;
     `}
+  image-orientation: from-image;
   max-width: inherit;
   object-fit: cover;
   cursor: ${({ $progress, $clickable }) => {
