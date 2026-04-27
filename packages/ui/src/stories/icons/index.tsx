@@ -312,6 +312,7 @@ import {
   SadFileIcon,
   HappyFileIcon,
   VolumeOffIcon,
+  EraseIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -679,6 +680,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="MoneySpendIcon">{MoneySpendIcon}</IconItem>
         <IconItem name="MoneyMinusIcon">{MoneyMinusIcon}</IconItem>
         <IconItem name="MaxLogoGradient">{MaxLogoGradient}</IconItem>
+        <IconItem name="EraseIcon">{EraseIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
