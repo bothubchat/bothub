@@ -16,12 +16,12 @@ import { IconProvider } from '@/ui/components/icon';
 import { CheckCircleIcon, DragDotIcon } from '@/ui/icons';
 import { SidebarChatSkeleton } from './skeleton';
 
-export interface SidebarChatDefaultProps {
+export interface SidebarChatDefaultProps
+  extends React.HTMLAttributes<HTMLDivElement | HTMLButtonElement> {
   name: string;
   icon?: React.ReactNode;
   active?: boolean;
   actions?: React.ReactNode;
-  skeleton?: false;
   id: string;
   checkbox?: React.ReactNode;
   promtQueue?: boolean;
@@ -29,29 +29,30 @@ export interface SidebarChatDefaultProps {
     max?: number;
     value?: number;
   };
-}
-
-export interface SidebarChatSkeletonProps {
-  skeleton: true;
+  skeleton?: boolean;
   isDefault?: boolean;
+  onToggleCheckbox?: () => unknown;
 }
 
-export type SidebarChatProps = (
-  | SidebarChatDefaultProps
-  | SidebarChatSkeletonProps
-) & {
-  onClick?: () => unknown;
-  onToggleCheckbox?: () => unknown;
-};
-
-export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
+export const SidebarChat: React.FC<SidebarChatDefaultProps> = ({
+  id,
+  name,
+  icon,
+  active,
+  actions,
+  checkbox,
+  promtQueue,
+  progress,
+  skeleton,
+  ...props
+}) => {
   const { isOpen: sidebarOpen } = useSidebar();
   const { isEdit } = useSidebar();
   const [showTooltip, setShowTooltip] = useState(false);
   const ref = useRef<HTMLParagraphElement>(null);
   const { attributes, listeners, setNodeRef } = useDraggable({
-    disabled: !isEdit || props.skeleton,
-    id: props.skeleton ? 'skeleton' : props.id,
+    disabled: !isEdit || skeleton,
+    id: skeleton ? 'skeleton' : id,
     data: {
       type: 'chat',
     },
@@ -76,32 +77,26 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
     };
   }, []);
 
-  const handleClick = () => {
-    if (props.onClick) {
-      props.onClick();
-    }
-  };
-
-  if (props.skeleton) {
+  if (skeleton) {
     return <SidebarChatSkeleton />;
   }
 
   if (!sidebarOpen) {
     return (
       <Tooltip
-        label={props.name}
+        label={name}
         placement="center-right"
         align="center"
       >
         <TooltipConsumer>
           {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
             <SidebarChatButton
-              onClick={handleClick}
+              {...props}
               onMouseEnter={handleTooltipMouseEnter}
               onMouseLeave={handleTooltipMouseLeave}
             >
               <IconProvider size={18}>
-                {props.icon || <SidebarChatIconStyled />}
+                {icon || <SidebarChatIconStyled />}
               </IconProvider>
             </SidebarChatButton>
           )}
@@ -112,29 +107,29 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
 
   return (
     <SidebarChatBox
-      onClick={handleClick}
-      $active={props.active}
+      {...props}
+      $active={active}
     >
       <SidebarChatStyled ref={setNodeRef}>
         <IconProvider size={18}>
-          {props.promtQueue &&
-            typeof props.progress === 'object' &&
-            typeof props.progress?.max === 'number' &&
-            typeof props.progress?.value === 'number' &&
-            props.progress.max > 0 &&
-            props.progress.value !== props.progress.max && (
+          {promtQueue &&
+            typeof progress === 'object' &&
+            typeof progress?.max === 'number' &&
+            typeof progress?.value === 'number' &&
+            progress.max > 0 &&
+            progress.value !== progress.max && (
               <SidebarChatLoadingText>
-                {Math.round((props.progress.value / props.progress.max) * 100)}%
+                {Math.round((progress.value / progress.max) * 100)}%
               </SidebarChatLoadingText>
             )}
-          {props.promtQueue &&
-            typeof props.progress === 'object' &&
-            typeof props.progress?.max === 'number' &&
-            typeof props.progress?.value === 'number' &&
-            props.progress.max > 0 &&
-            props.progress.value === props.progress.max && <CheckCircleIcon />}
+          {promtQueue &&
+            typeof progress === 'object' &&
+            typeof progress?.max === 'number' &&
+            typeof progress?.value === 'number' &&
+            progress.max > 0 &&
+            progress.value === progress.max && <CheckCircleIcon />}
           {!isEdit ? (
-            !props.promtQueue && (props.icon || <SidebarChatIconStyled />)
+            !promtQueue && (icon || <SidebarChatIconStyled />)
           ) : (
             <SidebarChatDraggbleButton
               {...attributes}
@@ -145,7 +140,7 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
           )}
         </IconProvider>
         <Tooltip
-          label={props.name}
+          label={name}
           placement="top"
           align="center"
           disabled={isEdit || !showTooltip}
@@ -157,22 +152,20 @@ export const SidebarChat: React.FC<SidebarChatProps> = (props) => {
                 onPointerEnter={handleTooltipMouseEnter}
                 onPointerLeave={handleTooltipMouseLeave}
               >
-                {props.name}
+                {name}
               </SidebarChatName>
             )}
           </TooltipConsumer>
         </Tooltip>
-        {!isEdit && props.actions}
-        {isEdit && props.checkbox}
+        {!isEdit && actions}
+        {isEdit && checkbox}
       </SidebarChatStyled>
-      {props.promtQueue &&
-        typeof props.progress === 'object' &&
-        typeof props.progress?.max === 'number' &&
-        typeof props.progress?.value === 'number' && (
+      {promtQueue &&
+        typeof progress === 'object' &&
+        typeof progress?.max === 'number' &&
+        typeof progress?.value === 'number' && (
           <SidebarChatPromtLine
-            percent={Math.round(
-              (props.progress.value / props.progress.max) * 100,
-            )}
+            percent={Math.round((progress.value / progress.max) * 100)}
           />
         )}
     </SidebarChatBox>

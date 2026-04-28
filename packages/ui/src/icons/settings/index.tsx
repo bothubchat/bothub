@@ -7,7 +7,7 @@ export const SettingsIcon = icon(({ ...props }) => {
   return (
     <Icon
       size={18}
-      viewBox="0 0 18 19"
+      viewBox="0 0 16 18"
       {...props}
     >
       <IconConsumer>
