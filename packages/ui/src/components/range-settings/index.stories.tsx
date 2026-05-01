@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
-import { RangeSettings } from '.';
 import type { RangeSettingsValue } from './types';
 import { StoryDecorator } from '@/ui/story-decorator';
+import { RangeSettings } from '.';
 
 export type RangeSettingsMeta = Meta<typeof RangeSettings>;
 

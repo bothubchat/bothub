@@ -17,7 +17,7 @@ import { useTheme } from '@/ui/theme';
 import { SearchCircleIcon } from '@/ui/icons/search-circle';
 import { TextFieldType, Variant } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
-import { EyeIcon } from '@/ui/icons';
+import { EyeIcon } from '@/ui/icons/eye';
 
 export type TextFieldValueChangeEventHandler = (value: string) => unknown;
 
