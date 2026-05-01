@@ -2,7 +2,8 @@ import React, { useCallback } from 'react';
 import { HeaderMenuToggleIcon } from './icon';
 import { HeaderMenuToggleButtonStyled } from './styled';
 import { useHeader } from '../../context';
-import { HeaderTabletToggleEventHandler } from '../..';
+
+type HeaderTabletToggleEventHandler = () => unknown;
 
 export interface HeaderMenuToggleButtonProps {
   isOpen?: boolean;

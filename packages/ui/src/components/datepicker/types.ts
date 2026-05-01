@@ -1,6 +1,6 @@
 import { UseFloatingReturn } from '@floating-ui/react-dom';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
-import { locales } from './utils';
+import { locales } from './utils/constants';
 
 export type SingleDatepickerProps = {
   range: false;
