@@ -323,3 +323,5 @@ export * from './music-file';
 export * from './sad-file';
 export * from './happy-file';
 export * from './volume-off';
+export * from './erase';
+export * from './arrow-narrow-stars-right';
