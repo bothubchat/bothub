@@ -1,15 +1,16 @@
 import { css, styled } from 'styled-components';
 import { Scrollbar } from '../scrollbar';
 
-export const ModalStyled = styled.div.attrs<{ $scrollbarEnabled: boolean }>(
-  ({ $scrollbarEnabled }) => ({
-    as: $scrollbarEnabled ? Scrollbar : 'div',
-  }),
-)`
+export const ModalStyled = styled.div.attrs<{
+  $scrollbarEnabled: boolean;
+  $align: 'center' | 'flex-start';
+}>(({ $scrollbarEnabled }) => ({
+  as: $scrollbarEnabled ? Scrollbar : 'div',
+}))`
   display: flex;
   justify-content: center;
-  align-items: ${({ $scrollbarEnabled }) =>
-    $scrollbarEnabled ? 'flex-start' : 'center'};
+  align-items: ${({ $scrollbarEnabled, $align }) =>
+    $scrollbarEnabled ? $align : 'center'};
   position: fixed;
   inset: 0;
   z-index: ${({ theme }) => theme.zIndex.modal};

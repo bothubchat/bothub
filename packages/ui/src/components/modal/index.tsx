@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 import * as S from './styled';
 import { Backdrop } from '@/ui/components/backdrop';
 import { Portal } from '@/ui/components/portal';
@@ -16,13 +16,24 @@ export const Modal = ({
   onClose,
   ...props
 }: ModalProps) => {
+  const [align, setAlign] = useState<'center' | 'flex-start'>('center');
+
+  const handleHeightChange = useCallback((height: number) => {
+    const currentAlign =
+      height + 32 > window.innerHeight ? 'flex-start' : 'center';
+    setAlign((prev) => (prev === currentAlign ? prev : currentAlign));
+  }, []);
+
   let modalNode: ReactNode;
 
   if (!open) {
     modalNode = null;
   } else {
     modalNode = (
-      <S.ModalStyled $scrollbarEnabled={scrollModal}>
+      <S.ModalStyled
+        $scrollbarEnabled={scrollModal}
+        $align={align}
+      >
         {hasBackdrop && (
           <Backdrop
             open={open}
@@ -30,9 +41,10 @@ export const Modal = ({
           />
         )}
         <ModalWindow
+          {...props}
           open={open}
           onClose={onClose}
-          {...props}
+          onHeightChange={handleHeightChange}
         />
       </S.ModalStyled>
     );

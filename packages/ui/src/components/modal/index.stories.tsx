@@ -41,6 +41,7 @@ export const CreateReferralWithScrollModal: ModalStory = {
   args: {
     scrollModal: true,
     hasBackdrop: true,
+    onHeightChange: () => {},
     children: (
       <div>
         {[...Array(100)].map((_, index) => (
