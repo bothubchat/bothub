@@ -324,3 +324,5 @@ export * from './sad-file';
 export * from './happy-file';
 export * from './volume-off';
 export * from './github';
+export * from './erase';
+export * from './arrow-narrow-stars-right';
