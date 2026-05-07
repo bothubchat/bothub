@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconProps } from '.';
+import { type IconProps } from '.';
 
 export type IconComponent = React.FC<IconProps> & {
   bothubType?: 'Icon';

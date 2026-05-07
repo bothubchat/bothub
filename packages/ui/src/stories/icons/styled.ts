@@ -19,5 +19,4 @@ export const IconList = styled.div`
   border-radius: 8px;
   padding: 24px;
   gap: 20px;
-  max-width: 800px;
 `;

@@ -23,7 +23,6 @@ export const useFiles = ({
   uploadFileDisabled,
   emitError,
   onFilesChange,
-  onUploadFileChange,
 }: UseFilesProps) => {
   const [files, setFiles] = Array.isArray(initialFiles)
     ? [initialFiles, onFilesChange]
@@ -96,7 +95,6 @@ export const useFiles = ({
       const keptExisting = files.filter((f) => !existingNames.has(f.name));
 
       setFiles([...keptExisting, ...newFormatted].slice(0, uploadFileLimit));
-      onUploadFileChange?.();
     },
     [files, setFiles, uploadFileLimit],
   );

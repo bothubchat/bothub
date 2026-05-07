@@ -1,13 +1,8 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   InputMessageButtons,
   InputMessageConcatenateWarning,
-  InputMessageConfigure,
-  InputMessageConfigureButton,
-  InputMessageConfigureMenu,
-  InputMessageMenuOption,
-  InputMessageMenuHr,
   InputMessageContent,
   InputMessageMain,
   InputMessageSendButton,
@@ -38,11 +33,10 @@ import {
   InputMessageContentTextMessage,
   InputMessageContentTextWrapper,
   InputMessageContentInfo,
+  InputMessageActions,
 } from './styled';
 import { MessageVoice } from '../message';
-import { Typography } from '@/ui/components/typography';
 import { AttachIcon } from '@/ui/icons/attach';
-import { Plus2Icon } from '@/ui/icons/plus-2';
 import { useTheme } from '@/ui/theme';
 import {
   EditingProps,
@@ -128,7 +122,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   hideUploadFile = false,
   uploadFileDisabled = false,
   uploadFileAccept,
-  uploadFileText,
   autoFocus = true,
   voice = false,
   onSetAlternativeKeyValue,
@@ -141,17 +134,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   onBlur,
   emitError,
   actions,
-  configureOptions,
   ...props
 }) => {
   const theme = useTheme();
-
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [dragActive, setDragActive] = useState(false);
-
-  const configureMenuRef = useRef<HTMLDivElement | null>(null);
-
-  const [isConfigureMenuShown, setConfigureMenuShown] =
-    useState<boolean>(false);
 
   const {
     files,
@@ -167,7 +154,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     initialFiles,
     emitError,
     onFilesChange,
-    onUploadFileChange: () => setConfigureMenuShown(false),
   });
 
   const {
@@ -231,12 +217,18 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     [message, files, onSend, setMessage, setFiles, setVoiceFiles],
   );
 
+  const handleOpenFiles = useCallback<
+    React.MouseEventHandler<HTMLButtonElement>
+  >(
+    (e) => {
+      e.stopPropagation();
+      fileInputRef.current?.click();
+    },
+    [fileInputRef],
+  );
+
   useOnClickOutside(altKeyButtonRef, () => {
     setAltKeyModalShown(false);
-  });
-
-  useOnClickOutside(configureMenuRef, () => {
-    setConfigureMenuShown(false);
   });
 
   const modalTransition = useTransition(!disabled && isAltKeyModalShown, {
@@ -245,16 +237,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     leave: { opacity: 0, y: 10 },
     config: { duration: 100, ease: 'easeOut' },
   });
-
-  const configureMenuTransition = useTransition(
-    !disabled && isConfigureMenuShown,
-    {
-      from: { opacity: 0, y: 10 },
-      enter: { opacity: 1, y: 0 },
-      leave: { opacity: 0, y: 10 },
-      config: { duration: 100, ease: 'easeOut' },
-    },
-  );
 
   const videoFiles = files?.filter((f) => f.native.type.startsWith('video/'));
 
@@ -293,71 +275,39 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       }}
     >
       <InputMessageContent>
-        {(!hideUploadFile || !!configureOptions) && (
-          <InputMessageConfigure ref={configureMenuRef}>
-            <InputMessageConfigureButton
-              $disabled={disabled}
-              onClick={(e) => {
-                e.stopPropagation();
-                setConfigureMenuShown(!isConfigureMenuShown);
-              }}
-            >
-              <Plus2Icon fill={theme.colors.base.white} />
-            </InputMessageConfigureButton>
-            {configureMenuTransition(
-              (style, item) =>
-                item && (
-                  <InputMessageConfigureMenu style={style}>
-                    {!hideUploadFile && (
-                      <InputMessageUploadFile>
-                        <InputMessageUploadFileLabel
-                          $disabled={
-                            files.length >= uploadFileLimit ||
-                            disabled ||
-                            uploadFileDisabled
-                          }
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <AttachIcon
-                            size={18}
-                            fill={theme.colors.base.white}
-                          />
-                          <Typography variant="body-m-medium">
-                            {uploadFileText}
-                          </Typography>
-                        </InputMessageUploadFileLabel>
-                        <InputMessageUploadFileInput
-                          key={files.length}
-                          type="file"
-                          accept={uploadFileAccept}
-                          multiple
-                          disabled={
-                            files.length >= uploadFileLimit ||
-                            disabled ||
-                            uploadFileDisabled
-                          }
-                          onChange={handleFileInputChange}
-                        />
-                      </InputMessageUploadFile>
-                    )}
-                    {!hideUploadFile && !!configureOptions && (
-                      <InputMessageMenuHr />
-                    )}
-                    {configureOptions?.map(({ onClick, ...props }) => (
-                      <InputMessageMenuOption
-                        {...props}
-                        onClick={() => {
-                          onClick?.();
-                          setConfigureMenuShown(false);
-                        }}
-                      />
-                    ))}
-                  </InputMessageConfigureMenu>
-                ),
-            )}
-            {actions}
-          </InputMessageConfigure>
-        )}
+        <InputMessageActions>
+          {!hideUploadFile && (
+            <InputMessageUploadFile>
+              <InputMessageUploadFileLabel
+                $disabled={
+                  files.length >= uploadFileLimit ||
+                  disabled ||
+                  uploadFileDisabled
+                }
+                onClick={handleOpenFiles}
+              >
+                <AttachIcon
+                  size={18}
+                  fill={theme.colors.base.white}
+                />
+              </InputMessageUploadFileLabel>
+              <InputMessageUploadFileInput
+                ref={fileInputRef}
+                key={files.length}
+                type="file"
+                accept={uploadFileAccept}
+                multiple
+                disabled={
+                  files.length >= uploadFileLimit ||
+                  disabled ||
+                  uploadFileDisabled
+                }
+                onChange={handleFileInputChange}
+              />
+            </InputMessageUploadFile>
+          )}
+          {actions}
+        </InputMessageActions>
         <InputMessageMain onClick={handleClick}>
           {editingProps?.isEditing && (
             <InputMessageEditWrapper>
@@ -414,7 +364,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                 <InputMessageVoiceTrack key={file.src}>
                   <MessageVoice
                     variant="input"
-                    height={24}
+                    height={18}
                     src={file.src}
                     duration={file.duration}
                     waveData={file.waveData}

@@ -10,7 +10,6 @@ import { VoiceIcon } from '@/ui/icons/voice';
 import { PauseIcon } from '@/ui/icons/pause';
 import { PlayIcon } from '@/ui/icons/play';
 import { ExclamationIcon } from '@/ui/icons/exclamation';
-import { IconProvider } from '@/ui/components/icon';
 import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
 import { isBright } from '@/ui/utils';
@@ -75,6 +74,9 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
     `
     opacity: 0.85;
   `}
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    padding: 12px 12px;
+  }
 `;
 
 export const InputMessageContent = styled.div`
@@ -98,98 +100,16 @@ export const InputMessageConfigure = styled.div`
   grid-area: configure;
 `;
 
-export const InputMessageConfigureButton = styled.button<{
-  $disabled?: boolean;
-}>`
-  all: unset;
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: ${({ theme }) =>
-    theme.mode === 'dark'
-      ? theme.colors.grayScale.gray4
-      : theme.colors.base.black};
-  transition:
-    background-color 300ms ease-in-out,
-    transform 50ms ease-in;
-  &:hover {
-    cursor: pointer;
-    background-color: ${({ theme }) => theme.colors.grayScale.gray3};
-  }
-  &:active {
-    transform: scale(0.98) translateY(1px);
-  }
-  ${({ theme, $disabled }) =>
-    $disabled &&
-    css`
-      background-color: ${theme.colors.grayScale.gray2} !important;
-    `}
-`;
-
-export const InputMessageConfigureMenu = styled(animated.div)`
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 0;
-  width: max-content;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  padding: 8px;
-  border-radius: 10px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
-`;
-
 export interface InputMessageMenuOptionProps {
   icon?: React.ReactNode;
   children?: string | React.ReactNode;
 }
 
-const menuOptionStyles = css`
-  all: unset;
-  display: flex;
-  flex: 1;
-  align-items: center;
-  padding: 10px 12px;
-  gap: 8px;
-  border-radius: 8px;
-`;
-
-export const InputMessageMenuOption = styled.button.attrs<InputMessageMenuOptionProps>(
-  ({ theme, children, icon }) => ({
-    children: (
-      <>
-        {icon && (
-          <IconProvider
-            fill={theme.colors.base.white}
-            size={18}
-          >
-            {icon}
-          </IconProvider>
-        )}
-        <Typography variant="body-m-medium">{children}</Typography>
-      </>
-    ),
-  }),
-)`
-  ${menuOptionStyles}
-  &:hover {
-    cursor: pointer;
-    background-color: ${({ theme }) => theme.colors.grayScale.gray3};
-  }
-  &:active {
-    transform: scale(0.98) translateY(1px);
-  }
-`;
-
 export const InputMessageUploadFile = styled.div`
   display: inline-flex;
 `;
 
-export const InputMessageUploadFileInput = styled.input.attrs({
-  id: 'inputMessageUploadFileInput',
-})`
+export const InputMessageUploadFileInput = styled.input`
   display: none;
 `;
 
@@ -197,34 +117,25 @@ export interface InputMessageUploadFileLabelProps {
   $disabled?: boolean;
 }
 
-export const InputMessageUploadFileLabel = styled.label.attrs<InputMessageUploadFileLabelProps>(
-  {
-    htmlFor: 'inputMessageUploadFileInput',
-  },
-)`
-  ${menuOptionStyles}
-  ${({ theme, $disabled }) =>
-    $disabled
-      ? css`
-          background-color: ${theme.colors.grayScale.gray2};
-        `
-      : css`
-          &:hover {
-            cursor: pointer;
-            background-color: ${({ theme }) => theme.colors.grayScale.gray3};
-          }
-          &:active {
-            transform: scale(0.98) translateY(1px);
-          }
-        `}
+export const InputMessageUploadFileLabel = styled(
+  Button,
+).attrs<InputMessageUploadFileLabelProps>({
+  variant: 'secondary',
+})`
+  border: none !important;
+  display: inline-flex;
+  width: auto;
+  cursor: pointer;
+  outline: none !important;
+  border-radius: 50% !important;
+  box-shadow: none !important;
+  aspect-ratio: 1/1;
 `;
 
-export const InputMessageMenuHr = styled.hr`
-  all: unset;
-  margin-block: 8px;
-  height: 1px;
-  width: 100%;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray2};
+export const InputMessageActions = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
 `;
 
 export const InputMessageMain = styled.div`
