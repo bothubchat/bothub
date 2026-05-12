@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { useTransition } from '@react-spring/web';
 import {
   InputMessageButtons,
   InputMessageConcatenateWarning,
@@ -9,10 +8,6 @@ import {
   InputMessageSendIcon,
   InputMessageStyled,
   InputMessageTextArea,
-  InputMessageAltKeyButton,
-  InputMessageAltKeyModalOption,
-  InputMessageAltKeyModalStyled,
-  InputMessageAltKeyStyled,
   InputMessageUploadFileInput,
   InputMessageVoiceButton,
   InputMessageVoiceFileDelete,
@@ -45,10 +40,10 @@ import {
   IInputMessageVoiceFile,
   InputMessageErrorEvent,
 } from './types';
-import { useOnClickOutside, formatSeconds } from '@/ui/utils';
+import { formatSeconds } from '@/ui/utils';
 import { useVoice } from './use-voice';
 import { useFiles } from './use-files';
-import { useInput } from './use-input';
+import { useInput, type MessageSubmitKey } from './use-input';
 import { InputMessageFiles } from './input-files';
 import { IconProvider } from '../icon';
 import { CheckSmallIcon, CloseIcon, EditIcon } from '@/ui/icons';
@@ -70,6 +65,8 @@ export type InputMessageSendEventHandler = (
 
 export type InputMessageVoiceEventHandler = (blob: Blob) => unknown;
 
+export type { MessageSubmitKey };
+
 export interface InputMessageProps
   extends Omit<React.ComponentProps<'textarea'>, 'value' | 'onChange'> {
   className?: string;
@@ -85,14 +82,11 @@ export interface InputMessageProps
   uploadFileText?: string;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
-  altKeyDefaultValue?: boolean;
-  defaultKeySendText?: React.ReactNode;
-  alternativeKeySendText?: React.ReactNode;
+  messageSubmitKey?: MessageSubmitKey;
   concatenateText?: React.ReactNode;
   concatenateVideo?: React.ReactNode;
   autoFocus?: boolean;
   voice?: boolean;
-  onSetAlternativeKeyValue?: (value: boolean) => unknown;
   onChange?: InputMessageChangeEventHandler;
   onFilesChange?: InputMessageFilesChangeEventHandler;
   onVoiceFilesChange?: InputMessageVoiceFilesChangeEventHandler;
@@ -113,9 +107,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   disabled = false,
   sendDisabled = false,
   textAreaDisabled = false,
-  altKeyDefaultValue = false,
-  defaultKeySendText,
-  alternativeKeySendText,
+  messageSubmitKey = 'enter',
   concatenateText,
   uploadFileLimit = 20,
   concatenateVideo,
@@ -124,7 +116,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   uploadFileAccept,
   autoFocus = true,
   voice = false,
-  onSetAlternativeKeyValue,
   onChange,
   onFilesChange,
   onVoiceFilesChange,
@@ -157,40 +148,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   });
 
   const {
-    textareaRef,
-    altKeyButtonRef,
-    isFocus,
-    isAltKey,
-    height,
-    message,
-    isAltKeyModalShown,
-    setHeight,
-    setMessage,
-    setAltKeyModalShown,
-    handleDefaultKey,
-    handleAlternativeKey,
-    handleFocus,
-    handleBlur,
-    handleClick,
-    handleChange,
-  } = useInput({
-    initialMessage,
-    disabled,
-    autoFocus,
-    altKeyDefaultValue,
-    onChange,
-    onSendMessage: () => {
-      onSend?.(message, files);
-      setFiles?.([]);
-      setVoiceFiles?.([]);
-    },
-    onTextAreaChange,
-    onSetAlternativeKeyValue,
-    onFocus,
-    onBlur,
-  });
-
-  const {
     voiceFiles,
     isVoiceRecording,
     isVoicePaused,
@@ -203,6 +160,33 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     handleVoiceFileDelete,
   } = useVoice({
     onVoiceFilesChange,
+  });
+
+  const {
+    textareaRef,
+    isFocus,
+    height,
+    message,
+    setHeight,
+    setMessage,
+    handleFocus,
+    handleBlur,
+    handleClick,
+    handleChange,
+  } = useInput({
+    initialMessage,
+    disabled,
+    autoFocus,
+    messageSubmitKey,
+    onChange,
+    onSendMessage: () => {
+      onSend?.(message, files);
+      setFiles?.([]);
+      setVoiceFiles?.([]);
+    },
+    onTextAreaChange,
+    onFocus,
+    onBlur,
   });
 
   const handleSend = useCallback<React.MouseEventHandler<HTMLButtonElement>>(
@@ -226,17 +210,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     },
     [fileInputRef],
   );
-
-  useOnClickOutside(altKeyButtonRef, () => {
-    setAltKeyModalShown(false);
-  });
-
-  const modalTransition = useTransition(!disabled && isAltKeyModalShown, {
-    from: { opacity: 0, y: 10 },
-    enter: { opacity: 1, y: 0 },
-    leave: { opacity: 0, y: 10 },
-    config: { duration: 100, ease: 'easeOut' },
-  });
 
   const videoFiles = files?.filter((f) => f.native.type.startsWith('video/'));
 
@@ -398,39 +371,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           )}
         </InputMessageMain>
         <InputMessageButtons>
-          {!!defaultKeySendText && !!alternativeKeySendText && (
-            <InputMessageAltKeyStyled ref={altKeyButtonRef}>
-              <InputMessageAltKeyButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setAltKeyModalShown(!isAltKeyModalShown);
-                }}
-                disabled={disabled}
-              />
-              {modalTransition(
-                (style, item) =>
-                  item && (
-                    <InputMessageAltKeyModalStyled
-                      key="alternative-key-modal"
-                      style={style}
-                    >
-                      <InputMessageAltKeyModalOption
-                        active={!isAltKey}
-                        onClick={handleDefaultKey}
-                      >
-                        {defaultKeySendText}
-                      </InputMessageAltKeyModalOption>
-                      <InputMessageAltKeyModalOption
-                        active={isAltKey}
-                        onClick={handleAlternativeKey}
-                      >
-                        {alternativeKeySendText}
-                      </InputMessageAltKeyModalOption>
-                    </InputMessageAltKeyModalStyled>
-                  ),
-              )}
-            </InputMessageAltKeyStyled>
-          )}
           {isVoiceRecording &&
             (isVoicePaused ? (
               <InputMessageVoicePlayButton onClick={handleVoiceResume} />
