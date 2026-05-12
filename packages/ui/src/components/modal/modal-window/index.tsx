@@ -1,5 +1,12 @@
 import { useTransition } from '@react-spring/web';
-import { forwardRef, type PropsWithChildren, type ReactNode } from 'react';
+import {
+  forwardRef,
+  useCallback,
+  useRef,
+  type PropsWithChildren,
+  type ReactNode,
+  type Ref,
+} from 'react';
 import * as S from './styled';
 
 export type ModalCloseEventHandler = () => unknown;
@@ -12,7 +19,16 @@ export type ModalWindowlProps = {
   className?: string;
   hideCloseButton?: boolean;
   onClose?: ModalCloseEventHandler;
+  onHeightChange?: (height: number) => void;
 } & PropsWithChildren;
+
+function assignRef<T>(ref: Ref<T> | undefined, value: T | null): void {
+  if (typeof ref === 'function') {
+    ref(value);
+  } else if (ref != null) {
+    ref.current = value;
+  }
+}
 
 export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
   (
@@ -25,9 +41,37 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
       className,
       hideCloseButton = false,
       onClose,
+      onHeightChange,
     },
     ref,
   ) => {
+    const modalWindowRef = useRef<HTMLDivElement | null>(null);
+    const resizeObserverRef = useRef<ResizeObserver | null>(null);
+
+    const setModalWindowRef = useCallback(
+      (node: HTMLDivElement | null) => {
+        resizeObserverRef.current?.disconnect();
+        resizeObserverRef.current = null;
+
+        modalWindowRef.current = node;
+        assignRef(ref, node);
+
+        if (node) {
+          onHeightChange?.(node.getBoundingClientRect().height);
+          const observer = new ResizeObserver(() => {
+            if (modalWindowRef.current) {
+              onHeightChange?.(
+                modalWindowRef.current.getBoundingClientRect().height,
+              );
+            }
+          });
+          observer.observe(node);
+          resizeObserverRef.current = observer;
+        }
+      },
+      [onHeightChange, ref],
+    );
+
     const modalTransition = useTransition(open, {
       from: { opacity: 0, transform: 'scale(0.9)' },
       enter: { opacity: 1, transform: 'scale(1)' },
@@ -41,7 +85,7 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
       (style, item) =>
         item && (
           <S.ModalWindowStyled
-            ref={ref}
+            ref={setModalWindowRef}
             style={style}
             className={className}
           >

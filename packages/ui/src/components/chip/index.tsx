@@ -46,7 +46,7 @@ export const Chip: React.FC<ChipProps> = ({
       </Tooltip>
     )}
     {typeof children !== 'string' && children}
-    <ChipDeleteButton onClick={onDelete} />
+    {onDelete && <ChipDeleteButton onClick={onDelete} />}
   </ChipStyled>
 );
 

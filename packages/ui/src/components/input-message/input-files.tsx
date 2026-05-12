@@ -13,7 +13,7 @@ import { InputMessageFile, InputMessageFilesStyled } from './styled';
 
 export interface InputMessageFilesProps {
   files: IInputMessageFile[];
-  handleDeleteFile: (file: IInputMessageFile) => unknown;
+  handleDeleteFile?: (index: number) => void;
 }
 
 export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
@@ -24,7 +24,7 @@ export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
 
     return (
       <InputMessageFilesStyled>
-        {files.map((file) => {
+        {files.map((file, index) => {
           let iconNode: React.ReactNode;
 
           if (
@@ -52,7 +52,9 @@ export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
             <InputMessageFile
               key={file.name}
               start={iconNode}
-              onDelete={handleDeleteFile.bind(null, file)}
+              {...(handleDeleteFile && {
+                onDelete: () => handleDeleteFile(index),
+              })}
             >
               {file.name.length > 20 ? `...${file.name.slice(-20)}` : file.name}
             </InputMessageFile>

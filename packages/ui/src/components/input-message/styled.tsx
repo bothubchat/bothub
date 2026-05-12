@@ -1,8 +1,6 @@
 import React from 'react';
 import { css, keyframes, styled } from 'styled-components';
-import { animated } from '@react-spring/web';
 import { Button } from '@/ui/components/button';
-import { EnterIcon } from '@/ui/icons/enter';
 import { SendIcon } from '@/ui/icons/send';
 import { CloseIcon } from '@/ui/icons/close';
 import { Chip } from '@/ui/components/chip';
@@ -10,9 +8,7 @@ import { VoiceIcon } from '@/ui/icons/voice';
 import { PauseIcon } from '@/ui/icons/pause';
 import { PlayIcon } from '@/ui/icons/play';
 import { ExclamationIcon } from '@/ui/icons/exclamation';
-import { IconProvider } from '@/ui/components/icon';
 import { Typography } from '@/ui/components/typography';
-import { adaptive } from '@/ui/adaptive';
 import { isBright } from '@/ui/utils';
 
 export interface InputMessageStyledProps {
@@ -75,6 +71,9 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
     `
     opacity: 0.85;
   `}
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    padding: 12px 12px;
+  }
 `;
 
 export const InputMessageContent = styled.div`
@@ -98,98 +97,16 @@ export const InputMessageConfigure = styled.div`
   grid-area: configure;
 `;
 
-export const InputMessageConfigureButton = styled.button<{
-  $disabled?: boolean;
-}>`
-  all: unset;
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: ${({ theme }) =>
-    theme.mode === 'dark'
-      ? theme.colors.grayScale.gray4
-      : theme.colors.base.black};
-  transition:
-    background-color 300ms ease-in-out,
-    transform 50ms ease-in;
-  &:hover {
-    cursor: pointer;
-    background-color: ${({ theme }) => theme.colors.grayScale.gray3};
-  }
-  &:active {
-    transform: scale(0.98) translateY(1px);
-  }
-  ${({ theme, $disabled }) =>
-    $disabled &&
-    css`
-      background-color: ${theme.colors.grayScale.gray2} !important;
-    `}
-`;
-
-export const InputMessageConfigureMenu = styled(animated.div)`
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 0;
-  width: max-content;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  padding: 8px;
-  border-radius: 10px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
-`;
-
 export interface InputMessageMenuOptionProps {
   icon?: React.ReactNode;
   children?: string | React.ReactNode;
 }
 
-const menuOptionStyles = css`
-  all: unset;
-  display: flex;
-  flex: 1;
-  align-items: center;
-  padding: 10px 12px;
-  gap: 8px;
-  border-radius: 8px;
-`;
-
-export const InputMessageMenuOption = styled.button.attrs<InputMessageMenuOptionProps>(
-  ({ theme, children, icon }) => ({
-    children: (
-      <>
-        {icon && (
-          <IconProvider
-            fill={theme.colors.base.white}
-            size={18}
-          >
-            {icon}
-          </IconProvider>
-        )}
-        <Typography variant="body-m-medium">{children}</Typography>
-      </>
-    ),
-  }),
-)`
-  ${menuOptionStyles}
-  &:hover {
-    cursor: pointer;
-    background-color: ${({ theme }) => theme.colors.grayScale.gray3};
-  }
-  &:active {
-    transform: scale(0.98) translateY(1px);
-  }
-`;
-
 export const InputMessageUploadFile = styled.div`
   display: inline-flex;
 `;
 
-export const InputMessageUploadFileInput = styled.input.attrs({
-  id: 'inputMessageUploadFileInput',
-})`
+export const InputMessageUploadFileInput = styled.input`
   display: none;
 `;
 
@@ -197,34 +114,25 @@ export interface InputMessageUploadFileLabelProps {
   $disabled?: boolean;
 }
 
-export const InputMessageUploadFileLabel = styled.label.attrs<InputMessageUploadFileLabelProps>(
-  {
-    htmlFor: 'inputMessageUploadFileInput',
-  },
-)`
-  ${menuOptionStyles}
-  ${({ theme, $disabled }) =>
-    $disabled
-      ? css`
-          background-color: ${theme.colors.grayScale.gray2};
-        `
-      : css`
-          &:hover {
-            cursor: pointer;
-            background-color: ${({ theme }) => theme.colors.grayScale.gray3};
-          }
-          &:active {
-            transform: scale(0.98) translateY(1px);
-          }
-        `}
+export const InputMessageUploadFileLabel = styled(
+  Button,
+).attrs<InputMessageUploadFileLabelProps>({
+  variant: 'secondary',
+})`
+  border: none !important;
+  display: inline-flex;
+  width: auto;
+  cursor: pointer;
+  outline: none !important;
+  border-radius: 50% !important;
+  box-shadow: none !important;
+  aspect-ratio: 1/1;
 `;
 
-export const InputMessageMenuHr = styled.hr`
-  all: unset;
-  margin-block: 8px;
-  height: 1px;
-  width: 100%;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray2};
+export const InputMessageActions = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
 `;
 
 export const InputMessageMain = styled.div`
@@ -441,96 +349,63 @@ export const InputMessageVoiceRecordTimeText = styled(Typography).attrs({
   cursor: default;
 `;
 
-export const InputMessageAltKeyStyled = styled.div`
-  position: relative;
-  width: fit-content;
-  height: fit-content;
-
-  ${adaptive({
-    tablet: css`
-      display: none;
-    `,
-    mobile: css`
-      display: none;
-    `,
-  })}
-`;
-
-export const InputMessageAltKeyButton = styled(Button).attrs({
-  variant: 'text',
-  startIcon: <EnterIcon />,
-  iconSize: 24,
-})`
-  svg {
-    g path {
-      fill: ${({ theme }) => theme.colors.grayScale.gray3} !important;
-    }
-  }
-
+export const InputMessageEditWrapper = styled.div`
   display: flex;
-  &:hover {
-    svg {
-      path {
-        fill: ${({ theme }) =>
-          theme.mode === 'dark'
-            ? theme.colors.grayScale.gray2
-            : theme.colors.grayScale.gray1} !important;
-      }
-    }
-  }
+  width: 100%;
+  gap: 16px;
+  align-items: center;
 `;
 
-export const InputMessageAltKeyModalStyled = styled(animated.div)`
+export const InputMessageContentWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
+
+export const InputMessageContentInfo = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  max-height: fit-content;
-  width: max-content;
-  max-width: 60vw;
-  padding: 6px;
-  position: absolute;
-  bottom: calc(100% + 10px);
-  right: 0;
-  border-radius: 10px;
-  border: 1px ${({ theme }) => theme.colors.grayScale.gray2} solid;
-  background-color: ${({ theme }) =>
-    theme.mode === 'dark'
-      ? theme.colors.grayScale.gray4
-      : theme.default.colors.base.white};
-  z-index: 50;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
 `;
 
-export const InputMessageAltKeyModalOption = styled.button<{
-  active: boolean;
-}>`
-  all: unset;
+export const InputMessageContentTextWrapper = styled.div`
+  display: flex;
+  overflow: hidden;
+  min-width: 0;
+`;
+
+export const InputMessageContentActionText = styled(Typography).attrs({
+  variant: 'body-l-regular',
+})`
+  color: ${({ theme }) => theme.colors.accent.primary};
+`;
+
+export const InputMessageContentTextMessage = styled(Typography).attrs({
+  variant: 'body-m-regular',
+})`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: ${({ theme }) =>
+    theme.mode === 'dark' ? theme.colors.base.white : theme.colors.base.black};
+`;
+
+export const InputMessageContentTextFiles = styled(
+  InputMessageContentTextMessage,
+)`
+  color: ${({ theme }) => theme.colors.grayScale.gray1};
+`;
+
+export const InputMessageCloseEditButton = styled.button`
   margin: 0;
-  padding: 12px;
-  border-radius: 8px;
-  background-color: ${({ theme, active }) => {
-    if (theme.mode === 'dark') {
-      return active
-        ? theme.colors.grayScale.gray3
-        : theme.colors.grayScale.gray4;
-    }
-    return active
-      ? theme.colors.grayScale.gray3
-      : theme.default.colors.base.white;
-  }};
   cursor: pointer;
-  transition:
-    opacity 0.1s ease-in-out,
-    transform 0.1s ease-in-out,
-    filter 0.1s ease-in-out;
-  &:hover {
-    filter: ${({ theme }) =>
-      theme.mode === 'dark' ? 'brightness(120%)' : 'brightness(80%)'};
-    transition: filter 100ms ease-in-out;
-  }
-  &:active {
-    transform: translateY(1px);
-  }
+  padding: 0;
+  border: none;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

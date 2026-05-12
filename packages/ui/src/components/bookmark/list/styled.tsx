@@ -17,16 +17,7 @@ export const BookmarksContent = styled.div`
     variant: 'dashboard',
     merge: true,
     desktop: css`
-      padding: 16px 20px;
-      padding-bottom: 8px;
-    `,
-    tablet: css`
-      padding: 16px 18px;
-      padding-bottom: 8px;
-    `,
-    mobile: css`
-      padding: 10px 16px;
-      padding-bottom: 5px;
+      padding-top: 8px;
     `,
   })}
 `;
@@ -47,14 +38,12 @@ export const BookmarkListScrollbarWrapper = styled(Scrollbar).attrs({
 })`
   display: flex;
   overflow: auto;
+  padding-left: 20px;
   ${adaptive({
     variant: 'dashboard',
     merge: true,
     desktop: css`
       padding-bottom: 8px;
-    `,
-    mobile: css`
-      padding-bottom: 5px;
     `,
   })}
 `;

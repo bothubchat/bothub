@@ -6,8 +6,9 @@ import {
   SelectFieldMultiValueChangeEventHandler,
   SelectFieldPlacement,
   SelectFieldValueChangeEventHandler,
+  ValueSetter,
+  ValueType,
 } from './types';
-import { ValueSetter, ValueType } from '.';
 import { findNearestScrollableParent } from '@/ui/utils';
 
 export interface UseSelectFieldDefaultProps {

@@ -16,7 +16,7 @@ import { SelectFieldGroup } from './select-field-group';
 import { SelectFieldOptions } from './option';
 import { filterData } from './filterData';
 
-import { UseSelectFieldReturnType } from '..';
+import { UseSelectFieldReturnType } from '../useSelectField';
 import {
   ResetStyleStateType,
   SelectFieldData,

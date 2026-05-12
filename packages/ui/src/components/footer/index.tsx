@@ -7,8 +7,13 @@ export interface FooterProps extends React.PropsWithChildren {
   nav?: React.ReactNode;
 }
 
-export const Footer: React.FC<FooterProps> = ({ id, logo, nav, children }) => (
-  <FooterStyled id={id}>
+export const Footer: React.FC<
+  FooterProps & React.HTMLAttributes<HTMLElement>
+> = ({ id, logo, nav, children, ...rest }) => (
+  <FooterStyled
+    {...rest}
+    id={id}
+  >
     <FooterContainer>
       <FooterMainColumn>
         {logo}

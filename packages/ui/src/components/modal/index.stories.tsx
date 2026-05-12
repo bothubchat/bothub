@@ -37,6 +37,21 @@ export const CreateReferral: ModalStory = {
   },
 };
 
+export const CreateReferralWithScrollModal: ModalStory = {
+  args: {
+    scrollModal: true,
+    hasBackdrop: true,
+    onHeightChange: () => {},
+    children: (
+      <div>
+        {[...Array(100)].map((_, index) => (
+          <div key={index}>{index}</div>
+        ))}
+      </div>
+    ),
+  },
+};
+
 export default {
   title: 'UI Components/Modal',
   component: Modal,

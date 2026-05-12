@@ -311,6 +311,10 @@ import {
   EmptyWordIcon,
   SadFileIcon,
   HappyFileIcon,
+  VolumeOffIcon,
+  GitHubIcon,
+  EraseIcon,
+  ArrowNarrowStarsRightIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -318,7 +322,10 @@ import { IconProvider, IconProviderProps } from '@/ui/components/icon';
 export type IconsProps = IconProviderProps;
 
 export const Icons: React.FC<IconsProps> = ({ ...props }) => (
-  <IconProvider {...props}>
+  <IconProvider
+    {...props}
+    size={24}
+  >
     <IconsStyled>
       <IconsTitle>Icons</IconsTitle>
       <IconList>
@@ -575,6 +582,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="TextGenerationIcon">{TextGenerationIcon}</IconItem>
         <IconItem name="TrafficAnalisysIcon">{TrafficAnalisysIcon}</IconItem>
         <IconItem name="VolumeIcon">{VolumeIcon}</IconItem>
+        <IconItem name="VolumeOffIcon">{VolumeOffIcon}</IconItem>
         <IconItem name="ImageGenerationIcon">{ImageGenerationIcon}</IconItem>
         <IconItem name="SpeechSynthesysIcon">{SpeechSynthesysIcon}</IconItem>
         <IconItem name="StarUnfilledIcon">{StarUnfilledIcon}</IconItem>
@@ -677,6 +685,11 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="MoneySpendIcon">{MoneySpendIcon}</IconItem>
         <IconItem name="MoneyMinusIcon">{MoneyMinusIcon}</IconItem>
         <IconItem name="MaxLogoGradient">{MaxLogoGradient}</IconItem>
+        <IconItem name="GitHubIcon">{GitHubIcon}</IconItem>
+        <IconItem name="EraseIcon">{EraseIcon}</IconItem>
+        <IconItem name="ArrowNarrowStarsRightIcon">
+          {ArrowNarrowStarsRightIcon}
+        </IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

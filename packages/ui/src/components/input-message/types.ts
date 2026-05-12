@@ -1,6 +1,10 @@
 import React from 'react';
 
 export interface IInputMessageFile {
+  imageId?: string;
+  voiceId?: string;
+  videoId?: string;
+  attachmentId?: string;
   name: string;
   previewUrl: string | null;
   native: File;
@@ -11,6 +15,14 @@ export interface IInputMessageVoiceFile {
   waveData: number[];
   src: string;
   blob: Blob;
+}
+
+export interface EditingProps {
+  editingTitle?: string;
+  isEditing?: boolean;
+  editString?: string;
+  editFiles?: string;
+  resetEdit?: () => void;
 }
 
 export interface IConfigureOption {

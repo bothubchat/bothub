@@ -23,7 +23,6 @@ export const useFiles = ({
   uploadFileDisabled,
   emitError,
   onFilesChange,
-  onUploadFileChange,
 }: UseFilesProps) => {
   const [files, setFiles] = Array.isArray(initialFiles)
     ? [initialFiles, onFilesChange]
@@ -62,9 +61,21 @@ export const useFiles = ({
 
   const handleFilePaste = useCallback<React.ClipboardEventHandler>(
     async (event) => {
-      if (!uploadFileDisabled && event.clipboardData.files.length > 0) {
+      if (uploadFileDisabled) return;
+
+      const { clipboardData } = event;
+
+      const hasText =
+        clipboardData.getData('text/plain')?.length > 0 ||
+        clipboardData.getData('text/html')?.length > 0;
+
+      if (hasText) {
+        return;
+      }
+
+      if (clipboardData.files.length > 0) {
         event.preventDefault();
-        await handleSideUploadFiles([...event.clipboardData.files]);
+        await handleSideUploadFiles([...clipboardData.files]);
       }
     },
     [handleSideUploadFiles, uploadFileDisabled],
@@ -77,20 +88,20 @@ export const useFiles = ({
       if (!setFiles || !event.target.files) {
         return;
       }
-      const formattedFiles = await formatUploadFiles([
-        ...files.map(({ native }) => native),
-        ...event.target.files,
-      ]);
-      setFiles(formattedFiles.slice(0, uploadFileLimit));
-      // setConfigureMenuShown(false);
-      onUploadFileChange?.();
+
+      const newFormatted = await formatUploadFiles([...event.target.files]);
+
+      const existingNames = new Set(newFormatted.map((f) => f.name));
+      const keptExisting = files.filter((f) => !existingNames.has(f.name));
+
+      setFiles([...keptExisting, ...newFormatted].slice(0, uploadFileLimit));
     },
     [files, setFiles, uploadFileLimit],
   );
 
   const handleDeleteFile = useCallback(
-    (file: IInputMessageFile) => {
-      setFiles?.(files.filter(({ name }) => name !== file.name));
+    (index: number) => {
+      setFiles?.(files.filter((_, i) => i !== index));
     },
     [setFiles, files],
   );

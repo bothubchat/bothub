@@ -1,1 +1,1 @@
-export type ModalOption = 'edit' | 'resend' | 'delete';
+export type ModalOption = 'edit' | 'resend' | 'delete' | 'update';

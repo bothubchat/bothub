@@ -14,6 +14,7 @@ import {
   ReferralCardPriceRangeText,
   ReferralCardStyled,
   ReferralCardTop,
+  ReferralRewardName,
 } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 
@@ -28,10 +29,22 @@ export interface ReferralCardPriceProps {
   maxText: string;
 }
 
+export interface ReferralCardCapsRewardProps {
+  className?: string;
+  value?: number;
+  min?: number;
+  max?: number;
+  rewardText: string;
+  fullWidth?: boolean;
+  skeleton?: boolean;
+  maxText: string;
+}
+
 export interface ReferralCardDefaultProps {
   name: string;
   aiName?: string;
-  price: ReferralCardPriceProps;
+  price?: ReferralCardPriceProps;
+  capsReward?: ReferralCardCapsRewardProps;
   dateCreated: string;
   skeleton?: false;
 }
@@ -68,33 +81,62 @@ export const ReferralCard: React.FC<ReferralCardProps> = ({
               {!props.skeleton && props.name}
               {props.skeleton && <Skeleton width={265} />}
             </ReferralCardName>
-            <ReferralCardPrice>
-              {!props.skeleton && (
+            {!props.skeleton && props.price && (
+              <ReferralCardPrice>
                 <ReferralCardPriceProgress {...props.price} />
-              )}
-              {props.skeleton && <ReferralCardPriceProgress skeleton />}
-              <ReferralCardPriceRange>
-                <ReferralCardPriceRangeText>
-                  {!props.skeleton && props.price.minText}
-                  {props.skeleton && <Skeleton width={60} />}
-                </ReferralCardPriceRangeText>
-                <ReferralCardPriceRangeText>
-                  {!props.skeleton && props.price.maxText}
-                  {props.skeleton && <Skeleton width={60} />}
-                </ReferralCardPriceRangeText>
-              </ReferralCardPriceRange>
-            </ReferralCardPrice>
+                <ReferralCardPriceRange>
+                  <ReferralCardPriceRangeText>
+                    {props.price.minText}
+                  </ReferralCardPriceRangeText>
+                  <ReferralCardPriceRangeText>
+                    {props.price.maxText}
+                  </ReferralCardPriceRangeText>
+                </ReferralCardPriceRange>
+              </ReferralCardPrice>
+            )}
+
+            {!props.skeleton && props.capsReward && (
+              <ReferralCardPrice>
+                <ReferralRewardName>
+                  {props.capsReward.rewardText}
+                </ReferralRewardName>
+                <ReferralCardPriceProgress {...props.capsReward} />
+                <ReferralCardPriceRange>
+                  <ReferralCardPriceRangeText>
+                    {props.capsReward.maxText}
+                  </ReferralCardPriceRangeText>
+                </ReferralCardPriceRange>
+              </ReferralCardPrice>
+            )}
+
+            {props.skeleton && (
+              <ReferralCardPrice>
+                <ReferralCardPriceProgress skeleton />
+                <ReferralCardPriceRange>
+                  <ReferralCardPriceRangeText>
+                    <Skeleton width={60} />
+                  </ReferralCardPriceRangeText>
+                  <ReferralCardPriceRangeText>
+                    <Skeleton width={60} />
+                  </ReferralCardPriceRangeText>
+                </ReferralCardPriceRange>
+              </ReferralCardPrice>
+            )}
           </ReferralCardInfo>
         </ReferralCardMain>
         {children}
       </ReferralCardTop>
-      <ReferralCardBottom>
-        {withdraw}
-        <ReferralCardDateCreated>
-          {!props.skeleton && props.dateCreated}
-          {props.skeleton && <Skeleton width={330} />}
-        </ReferralCardDateCreated>
-      </ReferralCardBottom>
+      {props.skeleton && (
+        <ReferralCardBottom>
+          <Skeleton width={330} />
+        </ReferralCardBottom>
+      )}
+      {!props.skeleton && props.price && (
+        <ReferralCardBottom>
+          {withdraw}
+          <ReferralCardDateCreated>{props.dateCreated}</ReferralCardDateCreated>
+        </ReferralCardBottom>
+      )}
     </ReferralCardContent>
   </ReferralCardStyled>
 );

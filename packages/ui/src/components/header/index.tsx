@@ -31,6 +31,7 @@ export interface HeaderProps
   tabletMenuOpen?: boolean;
   onOpen?: HeaderOpenEventHandler;
   onTabletOpen?: HeaderTabletToggleEventHandler;
+  infoBlock?: React.ReactNode;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -47,6 +48,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpen,
   onTabletOpen,
   isPreset = false,
+  infoBlock,
   ...props
 }) => {
   const initialIsMenuOpen = open;
@@ -85,6 +87,7 @@ export const Header: React.FC<HeaderProps> = ({
         $variant={variant}
         id={id}
       >
+        {infoBlock}
         <HeaderContent $variant={variant}>
           <HeaderContainer disabled={variant === 'dashboard'}>
             <HeaderContainerContent

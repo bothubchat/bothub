@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
@@ -7,8 +14,6 @@ import { ResendIcon } from '@/ui/icons/resend';
 import { EditIcon } from '@/ui/icons/edit';
 import { TrashIcon } from '@/ui/icons/trash';
 import { ThumbDownIcon } from '@/ui/icons/thumb-down';
-import { CheckSmallIcon } from '@/ui/icons/check-small';
-import { CloseIcon } from '@/ui/icons/close';
 import { CopyIcon } from '@/ui/icons/copy';
 import { DownloadImgIcon } from '@/ui/icons/download-img';
 
@@ -53,15 +58,9 @@ type MessageActionsProps = {
   deleteText?: string | null;
   onReportText?: string | null;
   downloadTooltipLabel?: string | null;
-  submitEditTooltipLabel?: string | null;
-  discardEditTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
   encryptionTooltipLabel?: string | null;
-  editing?: boolean;
-  editedText?: string;
-  onEditing?: (value: boolean) => unknown;
-  onEditedText?: (value: string) => unknown;
   onEdit?: MessageActionEditEventHandler;
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
@@ -94,15 +93,9 @@ export const MessageActions = ({
   deleteText,
   onReportText,
   downloadTooltipLabel,
-  submitEditTooltipLabel,
-  discardEditTooltipLabel,
   encryptionTooltipLabel,
   updateTooltipLabel,
   copyTooltipLabel,
-  editing,
-  editedText,
-  onEditing,
-  onEditedText,
   onEdit,
   onResend,
   onDelete,
@@ -116,11 +109,14 @@ export const MessageActions = ({
   const theme = useTheme();
 
   const [menuShown, setMenuShown] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<number>();
   const [invertedX, setInvertedX] = useState<boolean>(false);
   const [invertedY, setInvertedY] = useState<boolean>(false);
+
+  const timeoutIdRef = useRef<number | null>(null);
   const messageActionsRef = useRef<HTMLDivElement | null>(null);
   const messageActionsMenuRef = useRef<HTMLDivElement | null>(null);
+
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   const useScrollRef = useScrollbarRef();
 
@@ -140,45 +136,78 @@ export const MessageActions = ({
     }
     switch (variant) {
       case 'assistant':
-        return !disableEdit;
+        return !disableModal;
       case 'user':
         return disableModal
           ? false
           : !disableEdit || !disableDelete || !disableResend;
     }
-  }, [disableEdit, disableDelete, disableResend]);
+  }, [
+    skeleton,
+    variant,
+    disableModal,
+    disableEdit,
+    disableDelete,
+    disableResend,
+  ]);
 
-  const handleInvertedModalState = () => {
+  const calculateInversion = useCallback(() => {
     const container = useScrollRef?.current?.element;
     const actions = messageActionsRef?.current;
+    const modal = modalRef?.current;
 
     if (!container || !actions) return;
 
     const containerRect = container.getBoundingClientRect();
     const actionsRect = actions.getBoundingClientRect();
 
-    setInvertedY(containerRect.bottom - actionsRect.bottom <= 300);
-    setInvertedX(
-      (variant === 'assistant' &&
-        actionsRect.left - containerRect.left <= 160) ||
-        (variant === 'user' && containerRect.right - actionsRect.right <= 160),
-    );
-  };
+    const menuHeight = modal?.offsetHeight ?? 300;
+    const menuWidth = modal?.offsetWidth ?? 160;
+
+    const PADDING = 8;
+
+    const spaceBelow = containerRect.bottom - actionsRect.bottom;
+    const spaceAbove = actionsRect.top - containerRect.top;
+
+    const shouldInvertY =
+      spaceBelow < menuHeight + PADDING && spaceAbove > menuHeight + PADDING;
+
+    const spaceLeft = actionsRect.left - containerRect.left;
+    const spaceRight = containerRect.right - actionsRect.right;
+
+    let shouldInvertX = false;
+    if (variant === 'assistant') {
+      shouldInvertX = spaceLeft < menuWidth + PADDING;
+    } else {
+      shouldInvertX = spaceRight < menuWidth + PADDING;
+    }
+
+    setInvertedY(shouldInvertY);
+    setInvertedX(shouldInvertX);
+  }, [variant, useScrollRef]);
+
+  useLayoutEffect(() => {
+    if (menuShown) {
+      calculateInversion();
+    }
+  }, [menuShown, calculateInversion]);
 
   const handleButtonHoverIn = useCallback(() => {
-    if (timeoutId) {
-      window.clearTimeout(timeoutId);
+    if (timeoutIdRef.current) {
+      window.clearTimeout(timeoutIdRef.current);
+      timeoutIdRef.current = null;
     }
-    handleInvertedModalState();
     setMenuShown(true);
-  }, [timeoutId]);
+  }, []);
 
   const handleButtonHoverOut = useCallback(() => {
-    setTimeoutId(window.setTimeout(() => setMenuShown(false), 300));
+    timeoutIdRef.current = window.setTimeout(() => {
+      setMenuShown(false);
+      timeoutIdRef.current = null;
+    }, 300);
   }, []);
 
   const handleButtonClick = useCallback(() => {
-    handleInvertedModalState();
     setMenuShown((prev) => !prev);
   }, []);
 
@@ -190,11 +219,13 @@ export const MessageActions = ({
       };
       switch (option) {
         case 'edit':
-          onEditing?.(true);
-          onEditedText?.(message ?? '');
+          onEdit?.({ id, message, variant });
           break;
         case 'delete':
           onDelete?.(data);
+          break;
+        case 'update':
+          onUpdate?.({ id });
           break;
         case 'resend':
           onResend?.(data);
@@ -202,35 +233,23 @@ export const MessageActions = ({
       }
       setMenuShown(false);
     },
-    [id, message],
+    [id, message, onDelete, onResend, onEdit, onUpdate],
   );
-
-  const handleConfirmEdit = useCallback(
-    ({ id, message }: { id?: string; message?: string }) => {
-      onEditing?.(false);
-      onEdit?.({ id, message, variant });
-    },
-    [id, message],
-  );
-  const handleDiscardEdit = useCallback(() => {
-    onEditing?.(false);
-    onEditedText?.(message ?? '');
-  }, [message]);
 
   const handleTgCopy = useCallback(() => {
     onTgCopy?.();
     setMenuShown(false);
-  }, []);
+  }, [onTgCopy]);
 
   const handlePlainTextCopy = useCallback(() => {
     onPlainTextCopy?.();
     setMenuShown(false);
-  }, []);
+  }, [onPlainTextCopy]);
 
   const handleReportClick = useCallback(() => {
     onReport?.({ id, message });
     setMenuShown(false);
-  }, [id, message]);
+  }, [id, message, onReport]);
 
   const modalTransition = useTransition(menuShown, {
     from: {
@@ -252,6 +271,8 @@ export const MessageActions = ({
   });
 
   useEffect(() => {
+    if (!menuShown) return;
+
     const handleGlobalClose = () => {
       setMenuShown(false);
     };
@@ -262,17 +283,32 @@ export const MessageActions = ({
   }, [menuShown]);
 
   useEffect(() => {
-    if (timeoutId) {
-      window.clearTimeout(timeoutId);
-    }
-  }, []);
+    if (!menuShown) return;
+
+    const handleResize = () => {
+      calculateInversion();
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [menuShown, calculateInversion]);
+
+  useEffect(
+    () => () => {
+      if (timeoutIdRef.current) {
+        window.clearTimeout(timeoutIdRef.current);
+      }
+    },
+    [],
+  );
 
   return (
     <S.MessageActionsStyled
       $variant={variant}
       ref={messageActionsRef}
     >
-      {!editing ? (
+      {
         <>
           <IconProvider fill={iconColor}>
             {modalEnabled && (
@@ -299,6 +335,7 @@ export const MessageActions = ({
                       <S.MessageActionsMenuModal
                         style={style}
                         key="message-actions-modal"
+                        ref={modalRef} // ✅ Передаём ref на модалку
                         onMouseEnter={handleButtonHoverIn}
                         onMouseLeave={handleButtonHoverOut}
                         $variant={variant}
@@ -443,30 +480,7 @@ export const MessageActions = ({
               )}
           </IconProvider>
         </>
-      ) : (
-        <S.MessageEditButtonsStyled>
-          <ActionButton
-            id={id}
-            message={editedText}
-            tooltipLabel={submitEditTooltipLabel}
-            onClick={handleConfirmEdit}
-          >
-            <CheckSmallIcon
-              size={20}
-              fill={theme.colors.accent.primary}
-            />
-          </ActionButton>
-          <ActionButton
-            tooltipLabel={discardEditTooltipLabel}
-            onClick={handleDiscardEdit}
-          >
-            <CloseIcon
-              size={14}
-              fill={theme.colors.grayScale.gray2}
-            />
-          </ActionButton>
-        </S.MessageEditButtonsStyled>
-      )}
+      }
       {!disableDownload && (
         <ActionButton
           tooltipLabel={downloadTooltipLabel}
