@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { isMobileDevice } from './utils';
 
+export type MessageSubmitKey = 'enter' | 'ctrlEnter';
+
 interface UseInputProps {
   initialMessage?: string;
   disabled?: boolean;
   autoFocus?: boolean;
-  altKeyDefaultValue?: boolean;
+  messageSubmitKey?: MessageSubmitKey;
   onChange?: (value: string) => unknown;
   onSendMessage?: () => unknown;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
-  onSetAlternativeKeyValue?: (value: boolean) => unknown;
   onFocus?: (e: React.FocusEvent<HTMLTextAreaElement, Element>) => unknown;
   onBlur?: (e: React.FocusEvent<HTMLTextAreaElement, Element>) => unknown;
 }
@@ -18,16 +19,14 @@ export const useInput = ({
   initialMessage,
   disabled,
   autoFocus,
-  altKeyDefaultValue,
+  messageSubmitKey = 'enter',
   onChange,
   onSendMessage,
   onTextAreaChange,
-  onSetAlternativeKeyValue,
   onFocus,
   onBlur,
 }: UseInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const altKeyButtonRef = useRef<HTMLDivElement | null>(null);
 
   const [isFocus, setIsFocus] = useState((!disabled && autoFocus) ?? false);
   const [height, setHeight] = useState('calc(var(--bothub-scale, 1) * 22px)');
@@ -35,21 +34,6 @@ export const useInput = ({
     typeof initialMessage === 'string'
       ? [initialMessage, onChange]
       : useState('');
-
-  const [isAltKey, setIsAltKey] = useState(altKeyDefaultValue ?? false);
-  const [isAltKeyModalShown, setAltKeyModalShown] = useState<boolean>(false);
-
-  const handleDefaultKey = useCallback(() => {
-    setIsAltKey(false);
-    onSetAlternativeKeyValue?.(false);
-    setAltKeyModalShown(false);
-  }, []);
-
-  const handleAlternativeKey = useCallback(() => {
-    setIsAltKey(true);
-    onSetAlternativeKeyValue?.(true);
-    setAltKeyModalShown(false);
-  }, []);
 
   const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
     (event) => {
@@ -71,7 +55,7 @@ export const useInput = ({
     if (!disabled) {
       textareaRef.current?.focus();
     }
-  }, [disabled, autoFocus]);
+  }, [disabled]);
 
   const handleChange = useCallback<
     React.ChangeEventHandler<HTMLTextAreaElement>
@@ -105,48 +89,58 @@ export const useInput = ({
       return;
     }
 
+    const insertNewlineAtCursor = () => {
+      const el = textareaRef.current;
+      if (!el) return;
+
+      const allText = el.value;
+      const currentPos = el.selectionStart ?? 0;
+      const beforeText = allText.slice(0, currentPos);
+      const afterText = allText.slice(currentPos);
+
+      setMessage?.(`${beforeText}\n${afterText}`);
+      setCursorPosition(el, currentPos + 1);
+    };
+
     const handleKeyDown = (event: KeyboardEvent) => {
       event.stopPropagation();
 
+      if (event.key !== 'Enter') {
+        return;
+      }
+
       const isMobile = isMobileDevice();
-      if (isMobile && event.key === 'Enter') {
-        return;
-      }
-      const newLineKey = isAltKey ? 'enter' : 'ctrl/shift+enter';
-
-      let keyboardEvent = '';
-      if (event.key === 'Enter' && (event.shiftKey || event.ctrlKey)) {
-        keyboardEvent = 'ctrl/shift+enter';
-      } else if (event.key === 'Enter') {
-        keyboardEvent = 'enter';
-      } else {
+      if (isMobile) {
         return;
       }
 
-      if (isFocus && event.key === 'Enter') {
-        if (keyboardEvent === newLineKey) {
-          // handle only ctrlKey, other cases are handled by browsers
-          if (event.ctrlKey) {
-            event.preventDefault();
+      if (event.shiftKey) {
+        return;
+      }
 
-            const el = textareaRef.current;
-            if (!el) return;
+      if (!isFocus) {
+        return;
+      }
 
-            const allText = el.value;
-            const currentPos = el.selectionStart;
-            const beforeText = allText.slice(0, currentPos);
-            const afterText = allText.slice(currentPos);
+      const ctrlOrMeta = event.ctrlKey || event.metaKey;
 
-            setMessage?.(`${beforeText}\n${afterText}`);
-            setCursorPosition(el, currentPos + 1);
-          }
-        }
-        // Message is submitted
-        if (newLineKey !== keyboardEvent && keyboardEvent !== '') {
+      if (messageSubmitKey === 'enter') {
+        if (ctrlOrMeta) {
           event.preventDefault();
-          onSendMessage?.();
-          setHeight('calc(var(--bothub-scale, 1) * 22px)');
+          insertNewlineAtCursor();
+          return;
         }
+        event.preventDefault();
+        onSendMessage?.();
+        setHeight('calc(var(--bothub-scale, 1) * 22px)');
+        return;
+      }
+
+      // messageSubmitKey === 'ctrlEnter'
+      if (ctrlOrMeta) {
+        event.preventDefault();
+        onSendMessage?.();
+        setHeight('calc(var(--bothub-scale, 1) * 22px)');
       }
     };
 
@@ -154,7 +148,7 @@ export const useInput = ({
     return () => {
       textareaEl.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isFocus, message, onSendMessage, setMessage]);
+  }, [isFocus, message, messageSubmitKey, onSendMessage, setMessage]);
 
   useEffect(() => {
     const textareaEl = textareaRef.current;
@@ -168,17 +162,11 @@ export const useInput = ({
 
   return {
     textareaRef,
-    altKeyButtonRef,
     isFocus,
-    isAltKey,
     height,
     message,
-    isAltKeyModalShown,
     setHeight,
     setMessage,
-    setAltKeyModalShown,
-    handleDefaultKey,
-    handleAlternativeKey,
     handleFocus,
     handleBlur,
     handleClick,

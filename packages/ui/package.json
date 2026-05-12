@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.71.3-feat-range-28d88e2f-f624-4c5f-8fe2-6951666449a0",
+  "version": "2.80.0-fix-alt-key-input-5340fb68-1dff-4eee-9265-8bced5152ed1",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
