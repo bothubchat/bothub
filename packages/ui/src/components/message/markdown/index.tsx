@@ -14,7 +14,7 @@ function formatString(string: string) {
     string
       // math formulas
       .replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
-      .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$$${content}$$`)
+      .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$${content}$`)
     // .replace(/<!--.*-->/g, '')
   );
 }
@@ -49,7 +49,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
     }, [children, isDisabled]);
 
     const { remarkPlugins, rehypePlugins, singleDollarTextMath } =
-      useMarkdownPlugins({ children: formattedChildren });
+      useMarkdownPlugins();
 
     const markdownNode = useMemo(() => {
       const blocks = formattedChildren.split('\n\n');
