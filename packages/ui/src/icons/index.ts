@@ -326,3 +326,4 @@ export * from './volume-off';
 export * from './github';
 export * from './erase';
 export * from './arrow-narrow-stars-right';
+export * from './literature-list';
