@@ -25,22 +25,19 @@ export const Disabled: InputMessageStory = {
   args: { disabled: true },
 };
 
-export const WithAlternativeKeyModalTexts: InputMessageStory = {
+/** Отправка по Enter, новая строка: Ctrl+Enter / Cmd+Enter, Shift+Enter — перенос */
+export const SubmitOnEnter: InputMessageStory = {
   args: {
     ...Basic.args,
-    defaultKeySendText: (
-      <h6 style={{ margin: 0, color: '#616D8D' }}>
-        <span style={{ color: '#fff' }}>Enter</span> - отправить,{' '}
-        <span style={{ color: '#fff' }}>Ctrl/Shift + Enter</span> - перенос
-        строки
-      </h6>
-    ),
-    alternativeKeySendText: (
-      <h6 style={{ margin: 0, color: '#616D8D' }}>
-        <span style={{ color: '#fff' }}>Ctrl/Shift + Enter</span> - отправить,{' '}
-        <span style={{ color: '#fff' }}>Enter</span> - перенос строки
-      </h6>
-    ),
+    messageSubmitKey: 'enter',
+  },
+};
+
+/** Отправка по Ctrl+Enter / Cmd+Enter, новая строка: Enter, Shift+Enter — перенос */
+export const SubmitOnCtrlEnter: InputMessageStory = {
+  args: {
+    ...Basic.args,
+    messageSubmitKey: 'ctrlEnter',
     actions: (
       <Button
         variant="text"
