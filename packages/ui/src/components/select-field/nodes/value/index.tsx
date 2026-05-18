@@ -76,7 +76,9 @@ export const SelectFieldInputValue: React.FC<SelectFieldInputValueProps> = ({
         <Tooltip
           label={value.label}
           placement="top-left"
-          disabled={value.label.length <= 128}
+          disabled={
+            typeof value.label !== 'string' || value.label.length <= 128
+          }
         >
           <TooltipConsumer>
             {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (

@@ -63,7 +63,7 @@ export const BadgeSelectDropdown = memo(
       multiple: false,
     });
 
-    let label = '';
+    let label: React.ReactNode = '';
     if (typeof value === 'string') {
       label = value;
     }
