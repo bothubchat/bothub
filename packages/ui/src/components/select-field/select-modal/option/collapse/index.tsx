@@ -4,6 +4,7 @@ import {
   SelectFieldSize,
 } from '@/ui/components/select-field';
 import {
+  SelectFieldCollapseIconSide,
   SelectFieldCollapseOptionArrow,
   SelectFieldCollapseOptionBody,
   SelectFieldCollapseOptionHead,
@@ -90,14 +91,17 @@ export const SelectFieldCollapseOption = ({
               {item.icon}
             </IconProvider>
           )}
-          <SelectFieldCollapseOptionText
-            $size={size}
-            $bold={typeof item === 'object' && item.bold}
-          >
-            {label}
-          </SelectFieldCollapseOptionText>
+          {typeof label === 'string' && label && label.length && (
+            <SelectFieldCollapseOptionText
+              $size={size}
+              $bold={typeof item === 'object' && item.bold}
+            >
+              {label}
+            </SelectFieldCollapseOptionText>
+          )}
+          {typeof label !== 'string' && label && label}
         </SelectFieldCollapseOptionHeadSide>
-        <SelectFieldCollapseOptionHeadSide $size={size}>
+        <SelectFieldCollapseIconSide $size={size}>
           {icon || (
             <SelectFieldCollapseOptionArrow
               style={{
@@ -105,7 +109,7 @@ export const SelectFieldCollapseOption = ({
               }}
             />
           )}
-        </SelectFieldCollapseOptionHeadSide>
+        </SelectFieldCollapseIconSide>
       </SelectFieldCollapseOptionHead>
       {isOpen && (
         <SelectFieldCollapseOptionBody>
