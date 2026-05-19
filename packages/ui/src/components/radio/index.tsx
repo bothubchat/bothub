@@ -61,7 +61,7 @@ export const Radio: React.FC<RadioProps> = ({
           as={Skeleton}
         />
       )}
-      {typeof label !== 'boolean' && <RadioLabel>{label}</RadioLabel>}
+      {typeof label !== 'boolean' && label && <RadioLabel>{label}</RadioLabel>}
       {skeleton && label && (
         <RadioLabel>
           <Skeleton />

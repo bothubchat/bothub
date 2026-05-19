@@ -140,11 +140,12 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
             children: (
               <>
                 <SelectFieldRadioTitleAndRadio>
-                  {item.label && (
+                  {typeof item.label === 'string' && item.label.length && (
                     <SelectFieldRadioLabel $size={size}>
                       {item.label}
                     </SelectFieldRadioLabel>
                   )}
+                  {typeof item.label !== 'string' && item.label}
                   <Radio
                     type="radio"
                     checked={item.selected ?? false}
