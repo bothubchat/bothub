@@ -47,7 +47,7 @@ export const SelectFieldOption = ({
             $size={size}
             $bold={item.bold}
           >
-            {item.label && (
+            {typeof item.label === 'string' && item.label && (
               <>
                 {item.label.slice(0, 64)}
                 {item.label.length > 64 && '...'}
@@ -65,15 +65,17 @@ export const SelectFieldOption = ({
             }
           />
         )}
+        {typeof item.label !== 'string' && item.label && item.label}
         {item.color && (
           <S.SelectFieldColorOptionText $selected={selected}>
-            {item.label && (
+            {typeof item.label === 'string' && item.label && (
               <>
-                {item.label.slice(0, 64)}
-                {item.label.length > 64 && '...'}
+                {typeof item.label === 'string' && item.label.slice(0, 64)}
+                {typeof item.label === 'string' &&
+                  item.label.length > 64 &&
+                  '...'}
               </>
             )}
-
             {!item.label && item.value}
           </S.SelectFieldColorOptionText>
         )}

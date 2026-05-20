@@ -17,7 +17,11 @@ export const filterData = (
             if (typeof child === 'string') {
               return hasSubstring(child, searchValue) ? child : null;
             }
-            if (child.label) {
+            if (
+              typeof child.label === 'string' &&
+              child.label &&
+              child.label.length
+            ) {
               return hasSubstring(child.label, searchValue) ? child : null;
             }
             return child;
@@ -34,7 +38,7 @@ export const filterData = (
           : null;
       }
 
-      if (item.label) {
+      if (typeof item.label === 'string' && item.label && item.label.length) {
         return hasSubstring(item.label, searchValue) ? item : null;
       }
 

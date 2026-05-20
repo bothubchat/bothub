@@ -140,11 +140,12 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
             children: (
               <>
                 <SelectFieldRadioTitleAndRadio>
-                  {item.label && (
+                  {typeof item.label === 'string' && item.label.length && (
                     <SelectFieldRadioLabel $size={size}>
                       {item.label}
                     </SelectFieldRadioLabel>
                   )}
+                  {typeof item.label !== 'string' && item.label}
                   <Radio
                     type="radio"
                     checked={item.selected ?? false}
@@ -163,11 +164,16 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
             ),
           };
 
-          return item.tooltip || (item.label && item.label.length > 64) ? (
+          return item.tooltip ||
+            (item.label &&
+              typeof item.label === 'string' &&
+              item.label.length &&
+              item.label.length > 64) ? (
             <Tooltip
               key={key}
               {...item.tooltip}
               {...(item.label &&
+                typeof item.label === 'string' &&
                 item.label.length > 64 && {
                   placement: 'top-left',
                   label: item.label,
@@ -284,11 +290,17 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           };
           const key = item.id ?? item.value ?? `collapse-${index}`;
 
-          return item.tooltip || (item.label && item.label.length > 64) ? (
+          return item.tooltip ||
+            (item.label &&
+              typeof item.label === 'string' &&
+              item.label.length &&
+              item.label.length > 64) ? (
             <Tooltip
               key={key}
               {...item.tooltip}
               {...(item.label &&
+                typeof item.label === 'string' &&
+                item.label.length &&
                 item.label.length > 64 && {
                   placement: 'top-left',
                   label: item.label,
@@ -354,11 +366,17 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
           onClick: handleOptionClick.bind(null, item),
         };
 
-        return item.tooltip || (item.label && item.label.length > 64) ? (
+        return item.tooltip ||
+          (item.label &&
+            typeof item.label === 'string' &&
+            item.label.length &&
+            item.label.length > 64) ? (
           <Tooltip
             key={key}
             {...item.tooltip}
             {...(item.label &&
+              typeof item.label === 'string' &&
+              item.label.length &&
               item.label.length > 64 && {
                 placement: 'top-left',
                 label: item.label,

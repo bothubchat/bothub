@@ -45,7 +45,7 @@ export type SelectFieldDataItemComplex = {
   value?: string;
   email?: string;
   icon?: React.ReactNode;
-  label?: string | null;
+  label?: string | null | React.ReactNode;
   bold?: boolean;
   disabled?: boolean;
   end?: React.ReactNode;

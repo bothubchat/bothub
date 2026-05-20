@@ -78,11 +78,27 @@ export const SelectFieldCollapseOptionHead = styled.div<SelectFieldCollapseOptio
   user-select: none;
 `;
 
-export interface SelectFieldCollapseOptionHeadSideProps {
+export interface SelectFieldCollapseIconSideProps {
   $size: SelectFieldSize;
 }
 
-export const SelectFieldCollapseOptionHeadSide = styled.div<SelectFieldCollapseOptionHeadSideProps>`
+export const SelectFieldCollapseOptionHeadSide = styled.div<SelectFieldCollapseIconSideProps>`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: ${({ $size }) => {
+    switch ($size) {
+      case 'small':
+        return 8;
+      case 'md':
+        return 10;
+      case 'large':
+        return 8;
+    }
+  }}px;
+`;
+
+export const SelectFieldCollapseIconSide = styled.div<SelectFieldCollapseIconSideProps>`
   display: flex;
   align-items: center;
   gap: ${({ $size }) => {
