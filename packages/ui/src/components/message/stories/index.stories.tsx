@@ -96,6 +96,43 @@ export const Assistant: MessageStory = {
     transaction: <MessageTransaction>-1571 CAPS</MessageTransaction>,
     timestamp: 'Date Mon Oct 07 2024 21:20:03 GMT+0400 (Samara Standard Time)',
     children: 'Привет! Чем я могу помочь? $2+3/2$',
+    onCopy: () => {
+      console.log('onCopy');
+    },
+    onCodeCopy: () => {
+      console.log('onCodeCopy');
+    },
+    onEdit: () => {
+      console.log('onEdit');
+    },
+    onDelete: () => {
+      console.log('onDelete');
+    },
+    onUpdate: () => {
+      console.log('onUpdate');
+    },
+    onReport: () => {
+      console.log('onReport');
+    },
+    onNextVersion: () => {
+      console.log('onNextVersion');
+    },
+    onPrevVersion: () => {
+      console.log('onPrevVersion');
+    },
+    onDownload: () => {
+      console.log('onDownload');
+    },
+    editText: 'Редактировать',
+    copyPlainText: 'Копировать без форматирования',
+    copyTgText: 'Копировать в TG',
+    resendText: 'Переотправить',
+    deleteText: 'Удалить',
+    onReportText: 'Пожаловаться',
+    downloadTooltipLabel: 'Скачать',
+    updateTooltipLabel: 'Повторная генерация',
+    copyTooltipLabel: 'Копировать',
+    encryptionTooltipLabel: 'Зашифровать',
   },
 };
 

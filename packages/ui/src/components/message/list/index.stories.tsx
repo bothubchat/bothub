@@ -14,52 +14,86 @@ export type MessagesMeta = Meta<typeof Messages>;
 
 export type MessagesStory = StoryObj<typeof Messages>;
 
+const MessageAssistant = () => (
+  <Message
+    edited
+    editedText="Изменено"
+    variant="assistant"
+    avatar={<MessageAvatar variant="bot" />}
+    transaction={<MessageTransaction>-223 CAPS</MessageTransaction>}
+    onCopy={() => {
+      console.log('onCopy');
+    }}
+    onCodeCopy={() => {
+      console.log('onCodeCopy');
+    }}
+    onEdit={() => {
+      console.log('onEdit');
+    }}
+    onDelete={() => {
+      console.log('onDelete');
+    }}
+    onUpdate={() => {
+      console.log('onUpdate');
+    }}
+    onReport={() => {
+      console.log('onReport');
+    }}
+    onNextVersion={() => {
+      console.log('onNextVersion');
+    }}
+    onPrevVersion={() => {
+      console.log('onPrevVersion');
+    }}
+    onDownload={() => {
+      console.log('onDownload');
+    }}
+    editText="Редактировать"
+    copyPlainText="Копировать без форматирования"
+    copyTgText="Копировать в TG"
+    resendText="Переотправить"
+    deleteText="Удалить"
+    onReportText="Пожаловаться"
+    downloadTooltipLabel="Скачать"
+    updateTooltipLabel="Повторная генерация"
+    copyTooltipLabel="Копировать"
+    encryptionTooltipLabel="Зашифровать"
+    disableModal={false}
+    disableResend={false}
+    disableEdit={false}
+    disableDelete={false}
+    disableUpdate={false}
+    disableCopy={false}
+    disableDownload={false}
+    disableEncryption={false}
+    editOutOfMenu={false}
+  >
+    Привет! Чем я могу помочь?
+  </Message>
+);
+
+const MessageUser = () => (
+  <Message
+    edited
+    editedText="Изменено"
+    avatar={<MessageAvatar />}
+  >
+    Привет бот
+  </Message>
+);
 export const Basic: MessagesStory = {
   args: {
     children: (
       <>
-        <Message
-          edited
-          editedText="Изменено"
-          avatar={<MessageAvatar />}
-        >
-          Привет бот
-        </Message>
-        <Message
-          edited={false}
-          editedText="Изменено"
-          variant="assistant"
-          avatar={<MessageAvatar variant="bot" />}
-          transaction={<MessageTransaction>-223 CAPS</MessageTransaction>}
-        >
-          Привет! Чем я могу помочь?
-        </Message>
-        <Message
-          edited
-          editedText="Изменено"
-          avatar={<MessageAvatar />}
-        >
-          Напиши код Helloworld на Javascript
-        </Message>
-        <Message
-          edited={false}
-          editedText="Изменено"
-          variant="assistant"
-          avatar={<MessageAvatar variant="bot" />}
-          transaction={<MessageTransaction>-1571 CAPS</MessageTransaction>}
-        >
-          {`Конечно! Вот пример кода на JavaScript для вывода фразы "Hello, World!":
-\`\`\`javascript
-console.log("Hello, world!");
-\`\`\``}
-        </Message>
-        <Message
-          edited
-          editedText="Изменено"
-          avatar={<MessageAvatar />}
-        >
-          Спасибо бот! то что нужно
-        </Message>
+        <MessageUser />
+        <MessageAssistant />
+        <MessageUser />
+        <MessageUser />
+        <MessageAssistant />
+        <MessageUser />
+        <MessageAssistant />
+        <MessageUser />
+        <MessageAssistant />
         <ActionMessage>Контекст сброшен</ActionMessage>
       </>
     ),
