@@ -18,7 +18,6 @@ export const BlackFridayBannerStyled = styled.div<BlackFridayBannerStyledProps>`
   position: relative;
   display: flex;
   align-items: center;
-  height: 200px;
   padding: 60px 40px;
   background: ${({ theme }) => theme.default.colors.grayScale.gray7};
   border-radius: 24px;
@@ -37,7 +36,6 @@ export const BlackFridayBannerStyled = styled.div<BlackFridayBannerStyledProps>`
             height: 306px;
           `,
           mobile: css`
-            height: 350px;
             align-items: flex-start;
             padding: 40px 34px;
           `,
@@ -46,12 +44,11 @@ export const BlackFridayBannerStyled = styled.div<BlackFridayBannerStyledProps>`
         return adaptive({
           variant: 'main',
           tablet: css`
-            height: 208px;
             padding: 28px 40px;
           `,
           mobile: css`
             gap: 10px;
-            height: 250px;
+            height: 300px;
             align-items: flex-start;
             padding: 32px 34px;
           `,
@@ -227,7 +224,7 @@ export const BlackFridayBannerBackgroundMainDesktop = styled(
     variant: 'main',
     desktop: css`
       display: block;
-      right: clamp(-13.75rem, -80rem + 100vw, 0rem);
+      left: 600px;
     `,
   })}
 `;
@@ -241,7 +238,7 @@ export const BlackFridayBannerBackgroundMainTablet = styled(
     variant: 'main',
     tablet: css`
       display: block;
-      right: clamp(-18.75rem, -53.125rem + 100vw, 0rem);
+      left: 450px;
     `,
   })}
 `;
@@ -337,7 +334,6 @@ export const BlackFridayDescription = styled.div<{
       case 'dashboard':
         return adaptive({
           variant: 'dashboard',
-          desktop: css``,
           tablet: css`
             font-size: 16px;
             line-height: 20px;
@@ -374,21 +370,8 @@ export const BlackFridayBannerText = styled(Typography).attrs({
   $variant: 'dashboard' | 'main';
 }>`
   line-height: 28px;
-  white-space: nowrap;
   text-align: left;
+  width: max-content;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
-  ${({ $variant }) => {
-    switch ($variant) {
-      case 'dashboard':
-        return adaptive({
-          variant: 'dashboard',
-        });
-      case 'main':
-        return adaptive({
-          variant: 'main',
-          mobile: css``,
-        });
-    }
-  }}
 `;
