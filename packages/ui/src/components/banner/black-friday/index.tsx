@@ -6,7 +6,6 @@ import {
   BlackFridayDescription,
   BlackFridayBannerTitle,
   BlackFridayBannerText,
-  BlackFridayBannerDate,
   BlackFridayBannerBackgroundDashboardDesktop,
   BlackFridayBannerBackgroundDashboardTablet,
   BlackFridayBannerBackgroundDashboardMobile,
@@ -23,7 +22,6 @@ export const BlackFridayBanner: React.FC<BlackFridayBannerProps> = ({
   backgroundText,
   title,
   text,
-  date,
 }) => {
   const images = {
     dashboard: [
@@ -54,7 +52,6 @@ export const BlackFridayBanner: React.FC<BlackFridayBannerProps> = ({
           <BlackFridayBannerText $variant={$variant}>
             {text}
           </BlackFridayBannerText>
-          <BlackFridayBannerDate>{date}</BlackFridayBannerDate>
         </BlackFridayDescription>
       </BlackFridayContainer>
     </BlackFridayBannerStyled>

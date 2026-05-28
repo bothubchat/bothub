@@ -8,6 +8,7 @@ import mainDesktop from './assets/main/desktop.svg';
 import mainTablet from './assets/main/tablet.svg';
 import mainMobile from './assets/main/mobile.svg';
 import wave from './assets/wave.svg';
+import { Typography } from '@/ui/components/typography';
 
 interface BlackFridayBannerStyledProps {
   $variant?: 'dashboard' | 'main';
@@ -295,7 +296,10 @@ export const BlackFridayContainer = styled.div<{
   }}
 `;
 
-export const BlackFridayBannerTitle = styled.span<{
+export const BlackFridayBannerTitle = styled(Typography).attrs({
+  variant: 'banner-h3-black',
+  component: 'h3',
+})<{
   $variant: 'dashboard' | 'main';
 }>`
   font-family: inherit;
@@ -360,9 +364,17 @@ export const BlackFridayDescription = styled.div<{
   text-decoration-skip-ink: none;
 `;
 
-export const BlackFridayBannerText = styled.div<{
+export const BlackFridayBannerText = styled(Typography).attrs({
+  variant: 'body-xxl-semibold',
+  component: 'p',
+})<{
   $variant: 'dashboard' | 'main';
 }>`
+  line-height: 28px;
+  white-space: pre-wrap;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
   ${({ $variant }) => {
     switch ($variant) {
       case 'dashboard':
@@ -379,5 +391,3 @@ export const BlackFridayBannerText = styled.div<{
     }
   }}
 `;
-
-export const BlackFridayBannerDate = styled.div``;

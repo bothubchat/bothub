@@ -3,5 +3,4 @@ export interface BlackFridayBannerProps {
   backgroundText: string;
   title: string;
   text: string;
-  date: string;
 }

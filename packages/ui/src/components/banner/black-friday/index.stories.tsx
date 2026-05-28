@@ -7,9 +7,8 @@ export type BlackFridayBannerMeta = Meta<typeof BlackFridayBanner>;
 export const Basic: StoryObj<typeof BlackFridayBanner> = {
   args: {
     backgroundText: 'Черная \nпятница',
-    title: 'Волна\nскидок \nДо 30%',
-    text: 'Только в эту пятницу',
-    date: '29.11-30.11',
+    title: 'Скидки до 25%\nна наши \nнейросети',
+    text: '-25% на модели GEMINI \n-10% на все остальные',
     $variant: 'dashboard',
   },
 };
