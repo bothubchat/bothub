@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.80.3-fix-message-trigger-menu-34247cc9-dabf-41f9-812e-0311eff8e937",
+  "version": "2.80.5-feat-revert-banner-88ccdc72-c7c4-4a70-85ee-1d34d2b9390d",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
