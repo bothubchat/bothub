@@ -269,6 +269,7 @@ export const BlackFridayContainer = styled.div<{
   white-space: pre-wrap;
   align-items: flex-start;
   gap: 20px;
+  flex-direction: column;
   color: ${({ theme }) => theme.default.colors.base.white};
   ${({ $variant }) => {
     switch ($variant) {
@@ -286,7 +287,9 @@ export const BlackFridayContainer = styled.div<{
       case 'main':
         return adaptive({
           variant: 'main',
-          tablet: css``,
+          tablet: css`
+            flex-direction: column;
+          `,
           mobile: css`
             flex-direction: column-reverse;
             gap: 10px;
@@ -365,13 +368,13 @@ export const BlackFridayDescription = styled.div<{
 `;
 
 export const BlackFridayBannerText = styled(Typography).attrs({
-  variant: 'body-xxl-semibold',
+  variant: 'body-xl-semibold',
   component: 'p',
 })<{
   $variant: 'dashboard' | 'main';
 }>`
   line-height: 28px;
-  white-space: pre-wrap;
+  white-space: nowrap;
   text-align: left;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
@@ -384,9 +387,7 @@ export const BlackFridayBannerText = styled(Typography).attrs({
       case 'main':
         return adaptive({
           variant: 'main',
-          mobile: css`
-            display: none;
-          `,
+          mobile: css``,
         });
     }
   }}

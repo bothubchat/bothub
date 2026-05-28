@@ -6,10 +6,10 @@ export type BlackFridayBannerMeta = Meta<typeof BlackFridayBanner>;
 
 export const Basic: StoryObj<typeof BlackFridayBanner> = {
   args: {
-    backgroundText: 'Черная \nпятница',
+    backgroundText: 'Волна \nскидок',
     title: 'Скидки до 25%\nна наши \nнейросети',
-    text: '-25% на модели GEMINI \n-10% на все остальные',
-    $variant: 'dashboard',
+    text: '-25% на GEMINI, -10% на все остальные',
+    $variant: 'main',
   },
 };
 

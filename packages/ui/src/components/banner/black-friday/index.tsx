@@ -18,7 +18,7 @@ import {
 import { BlackFridayBannerProps } from './types';
 
 export const BlackFridayBanner: React.FC<BlackFridayBannerProps> = ({
-  $variant = 'dashboard',
+  $variant = 'main',
   backgroundText,
   title,
   text,
