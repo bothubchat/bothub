@@ -8,7 +8,7 @@ export const Basic: StoryObj<typeof BlackFridayBanner> = {
   args: {
     backgroundText: 'Волна \nскидок',
     title: 'Скидки до 25%\nна наши \nнейросети',
-    text: '-25% на GEMINI, -10% на все остальные',
+    text: '-25% на GEMINI\n -10% на все остальные',
     $variant: 'main',
   },
 };
@@ -16,5 +16,5 @@ export const Basic: StoryObj<typeof BlackFridayBanner> = {
 export default {
   title: 'Components/Banner/BlackFriday',
   component: BlackFridayBanner,
-  decorators: [StoryDecorator({ scale: 'dashboard' })],
+  decorators: [StoryDecorator({ scale: 'main' })],
 } as BlackFridayBannerMeta;
