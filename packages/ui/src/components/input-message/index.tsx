@@ -389,7 +389,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               data-test="submit-message"
             />
           )}
-          {!hiddenSend && (
+          {!hiddenSend && !isVoiceRecording && (
             <InputMessageSendButton
               disabled={disabled || sendDisabled || isVoiceRecording}
               onClick={handleSend}
