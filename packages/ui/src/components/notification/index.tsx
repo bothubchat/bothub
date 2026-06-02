@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useTransition } from '@react-spring/web';
+import { useTransition, useSpring } from '@react-spring/web'; // Добавлен useSpring
 import {
   NotificationCloseButton,
   NotificationContent,
@@ -10,6 +10,7 @@ import {
   NotificationStyled,
   NotificationText,
   NotificationTitle,
+  NotifyProgressBar,
 } from './styled';
 import { ErrorBigIcon } from '@/ui/icons/error-big';
 import { InfoBigIcon } from '@/ui/icons/info-big';
@@ -68,23 +69,32 @@ export const Notification: React.FC<NotificationProps> = ({
     }
   }, [isOpen, onClose, notificationId]);
 
+  const [{ width }, api] = useSpring(() => ({
+    width: '0%',
+  }));
+
   useEffect(() => {
-    let closeTimeout: number | null;
-
     if (isOpen && autoClose) {
-      closeTimeout = window.setTimeout(() => {
-        setIsOpen(false);
-      }, autoClose);
-    } else {
-      closeTimeout = null;
+      api.start({
+        from: { width: '0%' },
+        to: { width: '100%' },
+        config: { duration: autoClose },
+        onRest: (result) => {
+          if (result.finished) {
+            setIsOpen(false);
+          }
+        },
+      });
     }
+  }, [isOpen, autoClose, api]);
 
-    return () => {
-      if (closeTimeout !== null) {
-        window.clearTimeout(closeTimeout);
-      }
-    };
-  }, [autoClose]);
+  const handleMouseEnter = useCallback(() => {
+    if (autoClose) api.pause();
+  }, [api, autoClose]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (autoClose) api.resume();
+  }, [api, autoClose]);
 
   const notificationTransition = useTransition(
     isOpen,
@@ -108,7 +118,16 @@ export const Notification: React.FC<NotificationProps> = ({
           style={style}
           $variant={variant}
           className={className}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
+          {autoClose && (
+            <NotifyProgressBar
+              $variant={variant}
+              style={{ width }}
+            />
+          )}
+
           <NotificationContent $text={hasTitleAndChildren}>
             <NotificationLeft $text={hasTitleAndChildren}>
               <NotificationIcon as={iconComponent} />
