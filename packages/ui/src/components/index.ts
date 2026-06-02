@@ -76,3 +76,4 @@ export * from './theme-switcher';
 export * from './lang-switcher';
 export * from './switcher-select';
 export * from './range-settings';
+export * from './menu';
