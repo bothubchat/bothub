@@ -56,9 +56,7 @@ export const MessageReasoningBlock = ({
 
   const [ref, bounds] = useMeasure<HTMLDivElement>();
 
-  const animationDuration = isReasoning
-    ? 150
-    : Math.max(Math.min(bounds.height, 650), 300);
+  const animationDuration = Math.max(Math.min(bounds.height, 650), 300);
 
   const { delayedVisible, mounted } = useDelayedVisible(
     isOpen,
@@ -96,10 +94,12 @@ export const MessageReasoningBlock = ({
           style={{
             // @ts-expect-error
             '--reasoning-block-animation-duration': `${animationDuration / 1000}s`,
-            '--reasoning-block-timing': isReasoning
-              ? 'ease-out'
-              : 'ease-in-out',
-            height: isOpen && delayedVisible ? bounds.height : 0,
+            height:
+              isOpen && delayedVisible
+                ? isReasoning
+                  ? 'auto'
+                  : bounds.height
+                : 0,
           }}
         >
           <div ref={ref}>
