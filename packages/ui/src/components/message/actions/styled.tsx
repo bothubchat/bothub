@@ -63,6 +63,8 @@ export const MessageActionsMenuModal = styled(animated.div)<{
   flex-direction: column;
   gap: 0;
   padding: 8px;
+  max-height: min(320px, calc(100vh - 32px));
+  overflow-y: auto;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.grayScale.gray4};
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};

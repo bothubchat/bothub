@@ -38,6 +38,7 @@ export const NotificationStyled = styled(animated.div)<NotificationStyledProps>`
   padding: 20px;
   flex-shrink: 0;
   pointer-events: auto;
+  position: relative;
 `;
 
 export interface NotificationContentProps {
@@ -95,3 +96,27 @@ export const NotificationCloseButton = styled(Button).attrs({
   variant: 'text',
   children: <CloseIcon />,
 })``;
+
+export const NotifyProgressBar = styled(animated.div)<{
+  $variant: NotificationVariant;
+}>`
+  top: 0;
+  left: 0;
+  position: absolute;
+  height: 2px;
+  background: ${({ theme, $variant }) => {
+    switch ($variant) {
+      case 'info':
+      case 'loading':
+        return theme.colors.accent.primary;
+      case 'warn':
+        return theme.colors.orange;
+      case 'error':
+        return theme.colors.critic;
+      case 'success':
+        return theme.colors.green;
+      default:
+        return theme.colors.accent.primary;
+    }
+  }};
+`;
