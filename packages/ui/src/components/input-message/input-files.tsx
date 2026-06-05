@@ -14,10 +14,11 @@ import { InputMessageFile, InputMessageFilesStyled } from './styled';
 export interface InputMessageFilesProps {
   files: IInputMessageFile[];
   handleDeleteFile?: (index: number) => void;
+  handleImageClick?: (payload: IInputMessageFile) => IInputMessageFile;
 }
 
 export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
-  ({ files, handleDeleteFile }) => {
+  ({ files, handleDeleteFile, handleImageClick }) => {
     if (files.length === 0) {
       return null;
     }
@@ -26,6 +27,7 @@ export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
       <InputMessageFilesStyled>
         {files.map((file, index) => {
           let iconNode: React.ReactNode;
+          let isImage: boolean = false;
 
           if (
             file.previewUrl &&
@@ -33,6 +35,7 @@ export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
               file.name.match(/.jpg$/i) ||
               file.name.match(/.jpeg$/i))
           ) {
+            isImage = true;
             iconNode = <ChipImage src={file.previewUrl} />;
           } else if (file.name.match(/.txt$/i)) {
             iconNode = <TxtIcon />;
@@ -52,6 +55,11 @@ export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
             <InputMessageFile
               key={file.name}
               start={iconNode}
+              isImage={isImage}
+              {...(isImage &&
+                handleImageClick && {
+                  onClick: () => handleImageClick(file),
+                })}
               {...(handleDeleteFile && {
                 onDelete: () => handleDeleteFile(index),
               })}

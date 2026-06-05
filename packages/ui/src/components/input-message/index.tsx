@@ -92,6 +92,7 @@ export interface InputMessageProps
   onVoiceFilesChange?: InputMessageVoiceFilesChangeEventHandler;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
   onSend?: InputMessageSendEventHandler;
+  handleImageClick?: (payload: IInputMessageFile) => IInputMessageFile;
   emitError?(event: InputMessageErrorEvent): void;
   configureOptions?: IConfigureOption[];
   actions?: React.ReactNode;
@@ -117,6 +118,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   autoFocus = true,
   voice = false,
   onChange,
+  handleImageClick,
   onFilesChange,
   onVoiceFilesChange,
   onTextAreaChange,
@@ -319,6 +321,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           )}
           <InputMessageFiles
             files={files}
+            handleImageClick={handleImageClick}
             handleDeleteFile={handleDeleteFile}
           />
           {voiceFiles.length > 1 && (
