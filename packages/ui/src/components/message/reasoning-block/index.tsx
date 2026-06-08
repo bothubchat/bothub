@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useMemo, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useDelayedVisible } from '@/ui/utils';
 import { LoaderCircularGradient2Icon } from '@/ui/icons/loader-circular-gradient-2';
 import { MessageMarkdown } from '../markdown';
@@ -55,12 +55,20 @@ export const MessageReasoningBlock = ({
   );
 
   const [ref, bounds] = useMeasure<HTMLDivElement>();
+
   const animationDuration = Math.max(Math.min(bounds.height, 650), 300);
+
   const { delayedVisible, mounted } = useDelayedVisible(
     isOpen,
     0,
     animationDuration,
   );
+
+  useEffect(() => {
+    if (isReasoning) {
+      setIsOpen(true);
+    } else setIsOpen(false);
+  }, [isReasoning]);
 
   return (
     <ReasoningBlockStyled $fullWidth={fullWidth}>
@@ -79,14 +87,19 @@ export const MessageReasoningBlock = ({
         </ReasoningBlockButton>
         {isReasoning && <LoaderCircularGradient2Icon size={16} />}
       </ReasoningBlockHeader>
-
       {mounted && (
         <ReasoningBlockContentWrapper
+          $isReasoning={!!isReasoning}
           $fullWidth={fullWidth}
           style={{
             // @ts-expect-error
             '--reasoning-block-animation-duration': `${animationDuration / 1000}s`,
-            height: isOpen && delayedVisible ? bounds.height : 0,
+            height:
+              isOpen && delayedVisible
+                ? isReasoning
+                  ? 'auto'
+                  : bounds.height
+                : 0,
           }}
         >
           <div ref={ref}>

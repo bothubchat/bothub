@@ -23,12 +23,14 @@ export const ReasoningBlockHeader = styled.div`
 
 export const ReasoningBlockContentWrapper = styled.div<{
   $fullWidth: boolean;
+  $isReasoning: boolean;
 }>`
   overflow: hidden;
   --reasoning-block-animation-duration: 0.5s;
-  transition:
-    height var(--reasoning-block-animation-duration) ease-in-out,
-    padding-top var(--reasoning-block-animation-duration) ease-in-out;
+  transition: ${({ $isReasoning }) =>
+    $isReasoning
+      ? 'none'
+      : 'height var(--reasoning-block-animation-duration) ease-in-out, padding-top var(--reasoning-block-animation-duration) ease-in-out'};
 
   ${({ $fullWidth }) =>
     $fullWidth &&
