@@ -37,6 +37,14 @@ export const ChipStyled = styled.div<ChipStyledProps>`
   }}
 `;
 
+export const ChipIncludes = styled(ChipStyled)`
+  border: none;
+  padding: 0;
+  height: auto;
+  background: transparent;
+  border-radius: 0;
+`;
+
 export const ChipImage = styled(Image).attrs({ width: 18, height: 18 })`
   border-radius: 2px;
 `;
