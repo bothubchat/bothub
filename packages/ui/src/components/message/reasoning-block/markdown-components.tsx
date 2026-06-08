@@ -2,9 +2,12 @@ import type { Components } from 'react-markdown';
 
 import {
   MessageBold,
+  MessageInlineCode,
   MessageItalic,
   MessageLink,
+  MessageMultilineCode,
   MessageParagraph,
+  MessagePre,
   MessageTitle,
 } from '@/ui/components/message/components';
 
@@ -20,6 +23,23 @@ export const reasoningComponentsOverride: Partial<Components> = {
     </MessageParagraph>
   ),
   b: ({ children }) => <MessageBold variant={VARIANT}>{children}</MessageBold>,
+  pre: ({ children }) => <MessagePre>{children}</MessagePre>,
+  code: ({ className, children }) => {
+    const code = String(children);
+    if (!code) {
+      return null;
+    }
+
+    const isInline = !className || !className.startsWith('language-');
+
+    if (isInline) {
+      return <MessageInlineCode>{code}</MessageInlineCode>;
+    }
+
+    return (
+      <MessageMultilineCode className={className}>{code}</MessageMultilineCode>
+    );
+  },
   strong: ({ children }) => (
     <MessageBold
       component="strong"
