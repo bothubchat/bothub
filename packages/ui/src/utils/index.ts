@@ -10,3 +10,4 @@ export * from './colors';
 export * from './findNearestScrollableParent';
 export * from './formatSeconds';
 export * from './audio';
+export * from './formatGithubContextToMarkdown';

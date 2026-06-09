@@ -1,111 +1,139 @@
 import { useEffect } from 'react';
 import { getTgMarkdown } from './getTgMarkdown';
 
-const shouldProcessElement = (
-  element: Element,
-): element is Element & {
-  style: HTMLElement['style'];
-} => {
-  if (!('style' in element)) {
-    return false;
-  }
-
-  return true;
-};
-
-const excludedProperties = [
-  'color',
-  'background',
-  'background-color',
-  'font-size',
+const INLINE_TAGS = [
+  'STRONG',
+  'B',
+  'EM',
+  'I',
+  'U',
+  'S',
+  'STRIKE',
+  'DEL',
+  'CODE',
+  'A',
+  'SPAN',
 ];
 
 export const buildOnCopy = (copyTgMarkdown?: boolean) =>
   function onCopy(e: ClipboardEvent) {
+    const target = e.target as HTMLElement;
+    if (
+      target &&
+      (target.tagName === 'TEXTAREA' || target.tagName === 'INPUT')
+    ) {
+      return;
+    }
+
     if (!e.clipboardData) {
       return;
     }
+
     const selection = window.getSelection();
     if (!selection || !selection.rangeCount) {
       return;
     }
 
     const range = selection.getRangeAt(0);
-    let originalElements: HTMLCollectionOf<Element> | null = null;
-    // @ts-ignore
-    if (range.commonAncestorContainer.getElementsByTagName) {
-      originalElements = (
-        range.commonAncestorContainer as HTMLElement
-      ).getElementsByTagName('*');
+
+    if (range.collapsed) {
+      return;
+    }
+
+    let container = range.commonAncestorContainer;
+    if (container.nodeType === Node.TEXT_NODE && container.parentNode) {
+      container = container.parentNode;
     }
 
     const tempDiv = document.createElement('div');
     tempDiv.appendChild(range.cloneContents());
 
+    let htmlContent = tempDiv.innerHTML;
+
+    let wrapperNode = container as HTMLElement | null;
+
+    while (
+      wrapperNode &&
+      wrapperNode.tagName &&
+      wrapperNode.tagName !== 'DIV' &&
+      wrapperNode.tagName !== 'P'
+    ) {
+      if (INLINE_TAGS.includes(wrapperNode.tagName)) {
+        const cleanElement = document.createElement(wrapperNode.tagName);
+        cleanElement.innerHTML = htmlContent;
+        htmlContent = cleanElement.outerHTML;
+      }
+      wrapperNode = wrapperNode.parentNode as HTMLElement | null;
+    }
+
+    tempDiv.innerHTML = htmlContent;
+
     const elements = tempDiv.getElementsByTagName('*');
-    Array.from(elements).forEach((element, index) => {
-      if (shouldProcessElement(element)) {
-        const originalElement = originalElements
-          ? originalElements[index]
-          : null;
+    Array.from(elements).forEach((element) => {
+      if ('style' in element) {
+        const htmlElement = element as HTMLElement;
 
-        if (originalElement) {
-          const computedStyle = window.getComputedStyle(originalElement);
-          const preservedStyles: Record<string, string> = {};
+        htmlElement.removeAttribute('class');
+        htmlElement.removeAttribute('style');
 
-          for (const prop of computedStyle) {
-            if (!excludedProperties.includes(prop)) {
-              const value = computedStyle.getPropertyValue(prop);
-              if (value) {
-                preservedStyles[prop] = value;
-              }
-            }
-          }
-
-          for (const [prop, value] of Object.entries(preservedStyles)) {
-            element.style.setProperty(prop, value);
-          }
+        if (htmlElement.tagName === 'TABLE') {
+          htmlElement.style.setProperty('border-collapse', 'collapse');
+          htmlElement.style.setProperty('border', '1px solid black');
         }
-
-        element.style.removeProperty('color');
-        element.style.removeProperty('background');
-        element.style.removeProperty('background-color');
-        element.removeAttribute('class');
-
-        if (element.tagName === 'TABLE') {
-          element.style.setProperty('border-collapse', 'collapse');
-          element.style.setProperty('border', '1px solid black');
+        if (htmlElement.tagName === 'TD' || htmlElement.tagName === 'TH') {
+          htmlElement.style.setProperty('border', '1px solid black');
+          htmlElement.style.setProperty('padding', '4px');
         }
-        if (element.tagName === 'TD' || element.tagName === 'TH') {
-          element.style.setProperty('border', '1px solid black');
-          element.style.setProperty('padding', '4px');
+        if (htmlElement.tagName === 'HR') {
+          htmlElement.style.setProperty('width', '100%');
+          htmlElement.style.setProperty('height', '1px');
+          htmlElement.style.setProperty('background-color', 'black');
         }
-        if (element.tagName === 'HR') {
-          element.style.setProperty('width', '100%');
-          element.style.setProperty('height', '1px');
-          element.style.setProperty('background-color', 'black');
-        }
-        if (element.tagName === 'LI') {
-          element.style.textAlign = 'start';
-          element.style.textIndent = '-24pt';
-          element.style.paddingLeft = '24pt';
+        if (htmlElement.tagName === 'LI') {
+          htmlElement.style.textAlign = 'start';
+          htmlElement.style.textIndent = '-24pt';
+          htmlElement.style.paddingLeft = '24pt';
         }
       }
     });
 
-    // @ts-expect-error
-    const isInCodeBlock = !!e.target?.closest('[data-codeblock="true"]');
+    const finalHtml = tempDiv.innerHTML;
+    e.clipboardData.setData('text/html', finalHtml);
 
-    e.clipboardData.setData('text/html', tempDiv.innerHTML);
+    const isInCodeBlock = !!(e.target as HTMLElement)?.closest?.(
+      '[data-codeblock="true"]',
+    );
+
     if (copyTgMarkdown && !isInCodeBlock) {
-      const tgMarkdown = getTgMarkdown(tempDiv.innerText);
+      const markdownDiv = tempDiv.cloneNode(true) as HTMLElement;
+
+      const formats = [
+        { tags: ['STRONG', 'B'], mark: '**' },
+        { tags: ['EM', 'I'], mark: '*' },
+        { tags: ['S', 'STRIKE', 'DEL'], mark: '~~' },
+        { tags: ['CODE'], mark: '`' },
+      ];
+
+      formats.forEach(({ tags, mark }) => {
+        tags.forEach((tag) => {
+          const els = markdownDiv.getElementsByTagName(tag);
+          Array.from(els).forEach((el) => {
+            el.insertAdjacentText('afterbegin', mark);
+            el.insertAdjacentText('beforeend', mark);
+          });
+        });
+      });
+
+      const innerTextWithMarks = markdownDiv.innerText;
+
+      const tgMarkdown = getTgMarkdown(innerTextWithMarks);
       e.clipboardData.setData('text/plain', tgMarkdown);
     } else {
-      e.clipboardData.setData('text/plain', tempDiv.innerText);
+      const plainText = tempDiv.innerText;
+      e.clipboardData.setData('text/plain', plainText);
     }
+
     e.preventDefault();
-    e.stopImmediatePropagation();
-    e.stopPropagation();
   };
 
 export const useMessageCopyHandler = <
@@ -116,14 +144,20 @@ export const useMessageCopyHandler = <
 ): void => {
   useEffect(() => {
     const onCopy = buildOnCopy(copyTgMarkdown);
-    ref.current?.addEventListener('copy', onCopy, {
-      capture: false, // listen bubbling phase
-    });
+    const currentRef = ref.current;
 
-    return () => {
-      ref.current?.removeEventListener('copy', onCopy, {
+    if (currentRef) {
+      currentRef.addEventListener('copy', onCopy as EventListener, {
         capture: false,
       });
+    }
+
+    return () => {
+      if (currentRef) {
+        currentRef.removeEventListener('copy', onCopy as EventListener, {
+          capture: false,
+        });
+      }
     };
-  }, [copyTgMarkdown]);
+  }, [copyTgMarkdown, ref]);
 };
