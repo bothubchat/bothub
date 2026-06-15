@@ -40,6 +40,15 @@ export const buildOnCopy = (copyTgMarkdown?: boolean) =>
       return;
     }
 
+    let firstSelectedLi: HTMLElement | null = null;
+    if (range.startContainer) {
+      const startNode =
+        range.startContainer.nodeType === Node.TEXT_NODE
+          ? range.startContainer.parentElement
+          : range.startContainer;
+      firstSelectedLi = (startNode as HTMLElement)?.closest?.('li') || null;
+    }
+
     let container = range.commonAncestorContainer;
     if (container.nodeType === Node.TEXT_NODE && container.parentNode) {
       container = container.parentNode;
@@ -58,8 +67,27 @@ export const buildOnCopy = (copyTgMarkdown?: boolean) =>
       wrapperNode.tagName !== 'DIV' &&
       wrapperNode.tagName !== 'P'
     ) {
-      if (INLINE_TAGS.includes(wrapperNode.tagName)) {
+      if (
+        INLINE_TAGS.includes(wrapperNode.tagName) ||
+        ['UL', 'OL', 'LI'].includes(wrapperNode.tagName)
+      ) {
         const cleanElement = document.createElement(wrapperNode.tagName);
+
+        if (wrapperNode.tagName === 'OL') {
+          let startVal = parseInt(wrapperNode.getAttribute('start') || '1', 10);
+          if (
+            firstSelectedLi &&
+            firstSelectedLi.closest('ol') === wrapperNode
+          ) {
+            let prev = firstSelectedLi.previousElementSibling;
+            while (prev) {
+              startVal++;
+              prev = prev.previousElementSibling;
+            }
+          }
+          cleanElement.setAttribute('start', startVal.toString());
+        }
+
         cleanElement.innerHTML = htmlContent;
         htmlContent = cleanElement.outerHTML;
       }
@@ -104,8 +132,44 @@ export const buildOnCopy = (copyTgMarkdown?: boolean) =>
       '[data-codeblock="true"]',
     );
 
+    const injectListMarkers = (
+      el: HTMLElement,
+      isMarkdown: boolean = false,
+    ) => {
+      const listItems = el.querySelectorAll('li');
+      listItems.forEach((li) => {
+        let depth = 0;
+        let current = li.parentElement;
+        while (current && current !== el) {
+          if (current.tagName === 'UL' || current.tagName === 'OL') {
+            depth++;
+          }
+          current = current.parentElement;
+        }
+
+        const indent = '  '.repeat(Math.max(0, depth - 1));
+        let marker = '• ';
+
+        const closestList = li.closest('ul, ol');
+        if (closestList?.tagName === 'OL') {
+          const items = Array.from(closestList.querySelectorAll('li')).filter(
+            (item) => item.closest('ul, ol') === closestList,
+          );
+          const index = items.indexOf(li);
+          const start = parseInt(closestList.getAttribute('start') || '1', 10);
+
+          const dot = isMarkdown ? '\\.' : '.';
+          marker = `${start + index}${dot} `;
+        }
+
+        li.insertAdjacentText('afterbegin', indent + marker);
+      });
+    };
+
     if (copyTgMarkdown && !isInCodeBlock) {
       const markdownDiv = tempDiv.cloneNode(true) as HTMLElement;
+
+      injectListMarkers(markdownDiv, true);
 
       const formats = [
         { tags: ['STRONG', 'B'], mark: '**' },
@@ -129,7 +193,11 @@ export const buildOnCopy = (copyTgMarkdown?: boolean) =>
       const tgMarkdown = getTgMarkdown(innerTextWithMarks);
       e.clipboardData.setData('text/plain', tgMarkdown);
     } else {
-      const plainText = tempDiv.innerText;
+      const plainDiv = tempDiv.cloneNode(true) as HTMLElement;
+
+      injectListMarkers(plainDiv, false);
+
+      const plainText = plainDiv.innerText;
       e.clipboardData.setData('text/plain', plainText);
     }
 
