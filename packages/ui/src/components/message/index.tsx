@@ -58,6 +58,7 @@ export interface MessageProps {
   disableCopy?: boolean;
   disableDownload?: boolean;
   disableEncryption?: boolean;
+  hasCacheTokens?: boolean;
   copyPlainText?: string | null;
   copyTgText?: string | null;
   editText?: string | null;
@@ -69,6 +70,7 @@ export interface MessageProps {
   copyTooltipLabel?: string | null;
   downloadTooltipLabel?: string | null;
   encryptionTooltipLabel?: string | null;
+  cacheTokenTooltipLabel?: string | null;
   typing?: boolean;
   timestamp?: string | number;
   timestampPosition?: MessageTimestampPosition;
@@ -113,6 +115,7 @@ export const Message: React.FC<MessageProps> = ({
   disableCopy = false,
   disableDownload = true,
   disableEncryption = true,
+  hasCacheTokens = false,
   editOutOfMenu = false,
   copyPlainText,
   copyTgText,
@@ -124,6 +127,7 @@ export const Message: React.FC<MessageProps> = ({
   updateTooltipLabel,
   copyTooltipLabel,
   encryptionTooltipLabel,
+  cacheTokenTooltipLabel,
   typing = false,
   timestamp,
   timestampPosition = 'right',
@@ -399,6 +403,7 @@ export const Message: React.FC<MessageProps> = ({
                     disableUpdate={disableUpdate}
                     disableCopy={disableCopy}
                     disableEncryption={disableEncryption}
+                    hasCacheTokens={hasCacheTokens}
                     editOutOfMenu={editOutOfMenu}
                     copyPlainText={copyPlainText}
                     copyTgText={copyTgText}
@@ -410,6 +415,7 @@ export const Message: React.FC<MessageProps> = ({
                     updateTooltipLabel={updateTooltipLabel}
                     copyTooltipLabel={copyTooltipLabel}
                     encryptionTooltipLabel={encryptionTooltipLabel}
+                    cacheTokenTooltipLabel={cacheTokenTooltipLabel}
                     onEdit={onEdit}
                     onResend={onUpdate}
                     onDelete={onDelete}
