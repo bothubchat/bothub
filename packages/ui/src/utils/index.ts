@@ -11,3 +11,4 @@ export * from './findNearestScrollableParent';
 export * from './formatSeconds';
 export * from './audio';
 export * from './formatGithubContextToMarkdown';
+export * from './processSelection';
