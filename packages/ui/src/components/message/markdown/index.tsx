@@ -13,9 +13,8 @@ function formatString(string: string) {
   return (
     string
       // math formulas
-      .replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
-      .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$${content}$`)
-    // .replace(/<!--.*-->/g, '')
+      .replace(/\\$$((.|[\r\n])*?)\\$$/g, (_, content) => `$$${content}$$`)
+      .replace(/\\$((.|[\r\n])*?)\\$/g, (_, content) => `$${content}$`)
   );
 }
 
@@ -85,7 +84,12 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
                 remarkPlugins={remarkPlugins}
                 // @ts-ignore
                 rehypePlugins={rehypePlugins}
-                components={markdownComponents(components, componentsOverride)}
+                components={markdownComponents(
+                  components,
+                  componentsOverride,
+                  remarkPlugins,
+                  rehypePlugins,
+                )}
               >
                 {block}
               </ReactMarkdown>
@@ -100,6 +104,8 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
       remarkPlugins,
       rehypePlugins,
       ref,
+      components,
+      componentsOverride,
     ]);
 
     return (

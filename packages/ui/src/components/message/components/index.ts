@@ -9,3 +9,4 @@ export * from './list';
 export * from './title';
 export * from './link';
 export * from './image';
+export * from './document-copy';
