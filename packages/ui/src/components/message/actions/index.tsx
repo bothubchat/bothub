@@ -35,7 +35,7 @@ import { ModalOption } from './types';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { colorToRgba } from '@/ui/utils';
-import { ShieldIcon } from '@/ui/icons';
+import { MoneyPlusIcon, ShieldIcon } from '@/ui/icons';
 
 const MENU_OFFSET = 36;
 const MENU_PADDING = 8;
@@ -56,6 +56,7 @@ type MessageActionsProps = {
   disableCopy?: boolean;
   disableDownload?: boolean;
   disableEncryption?: boolean;
+  hasCacheTokens?: boolean;
   editOutOfMenu?: boolean;
   editText?: string | null;
   copyTgText?: string | null;
@@ -67,6 +68,7 @@ type MessageActionsProps = {
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
   encryptionTooltipLabel?: string | null;
+  cacheTokenTooltipLabel?: string | null;
   onEdit?: MessageActionEditEventHandler;
   onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
@@ -91,6 +93,7 @@ export const MessageActions = ({
   disableCopy,
   disableDownload,
   disableEncryption,
+  hasCacheTokens,
   editOutOfMenu,
   editText,
   copyTgText,
@@ -100,6 +103,7 @@ export const MessageActions = ({
   onReportText,
   downloadTooltipLabel,
   encryptionTooltipLabel,
+  cacheTokenTooltipLabel,
   updateTooltipLabel,
   copyTooltipLabel,
   onEdit,
@@ -555,6 +559,16 @@ export const MessageActions = ({
       {!disableEncryption && (
         <ActionButton tooltipLabel={encryptionTooltipLabel}>
           <ShieldIcon size={18} />
+        </ActionButton>
+      )}
+      {hasCacheTokens && (
+        <ActionButton tooltipLabel={cacheTokenTooltipLabel}>
+          <IconProvider
+            size={18}
+            stroke={theme.colors.grayScale.gray1}
+          >
+            <MoneyPlusIcon />
+          </IconProvider>
         </ActionButton>
       )}
     </S.MessageActionsStyled>

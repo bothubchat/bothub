@@ -2,6 +2,7 @@ import { useTransition } from '@react-spring/web';
 import {
   forwardRef,
   useCallback,
+  useEffect,
   useRef,
   type PropsWithChildren,
   type ReactNode,
@@ -71,6 +72,25 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
       },
       [onHeightChange, ref],
     );
+
+    useEffect(() => {
+      if (!open) {
+        return;
+      }
+
+      const handleEscape = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          event.stopPropagation();
+          onClose?.();
+        }
+      };
+
+      document.addEventListener('keyup', handleEscape, true);
+
+      return () => {
+        document.removeEventListener('keyup', handleEscape, true);
+      };
+    }, [open, onClose]);
 
     const modalTransition = useTransition(open, {
       from: { opacity: 0, transform: 'scale(0.9)' },

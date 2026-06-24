@@ -13,9 +13,8 @@ function formatString(string: string) {
   return (
     string
       // math formulas
-      .replace(/\\\[((.|[\r\n])*?)\\\]/g, (_, content) => `$$${content}$$`)
-      .replace(/\\\(((.|[\r\n])*?)\\\)/g, (_, content) => `$${content}$`)
-    // .replace(/<!--.*-->/g, '')
+      .replace(/\\$$((.|[\r\n])*?)\\$$/g, (_, content) => `$$${content}$$`)
+      .replace(/\\$((.|[\r\n])*?)\\$/g, (_, content) => `$${content}$`)
   );
 }
 
@@ -48,8 +47,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
       return children;
     }, [children, isDisabled]);
 
-    const { remarkPlugins, rehypePlugins, singleDollarTextMath } =
-      useMarkdownPlugins();
+    const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
 
     const markdownNode = useMemo(() => {
       const blocks = formattedChildren.split('\n\n');
@@ -74,18 +72,22 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
         <MessageMarkdownStyled ref={ref}>
           {parsedBlocks.map((block, index) => (
             <MessageMarkdownLine
-              key={`${rehypePlugins.length}-${remarkPlugins.length}-${index}`}
+              key={index}
               $typing={disableTyping ? false : typing}
               $color={color}
-              $singleDollarTextMath={singleDollarTextMath}
             >
               <ReactMarkdown
-                key={`${rehypePlugins.length}-${remarkPlugins.length}-${index}`}
+                key={index}
                 // @ts-ignore
                 remarkPlugins={remarkPlugins}
                 // @ts-ignore
                 rehypePlugins={rehypePlugins}
-                components={markdownComponents(components, componentsOverride)}
+                components={markdownComponents(
+                  components,
+                  componentsOverride,
+                  remarkPlugins,
+                  rehypePlugins,
+                )}
               >
                 {block}
               </ReactMarkdown>
@@ -96,10 +98,11 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
     }, [
       typing,
       formattedChildren,
-      singleDollarTextMath,
       remarkPlugins,
       rehypePlugins,
       ref,
+      components,
+      componentsOverride,
     ]);
 
     return (

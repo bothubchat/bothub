@@ -1,5 +1,7 @@
+import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import {
+  GeneratedDocumentBlock,
   MessageBold,
   MessageComponentsProps,
   MessageImage,
@@ -23,8 +25,14 @@ import {
 export function markdownComponents(
   components: MessageComponentsProps,
   componentsOverride?: React.ComponentProps<typeof ReactMarkdown>['components'],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  remarkPlugins?: any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  rehypePlugins?: any,
 ): React.ComponentProps<typeof ReactMarkdown>['components'] {
-  return {
+  const baseComponents: React.ComponentProps<
+    typeof ReactMarkdown
+  >['components'] = {
     p: ({ children }) => <MessageParagraph wrap>{children}</MessageParagraph>,
     b: ({ children }) => <MessageBold>{children}</MessageBold>,
     strong: ({ children }) => (
@@ -35,27 +43,6 @@ export function markdownComponents(
       <MessageItalic component="em">{children}</MessageItalic>
     ),
     pre: ({ children }) => <MessagePre>{children}</MessagePre>,
-    code: ({ className, children }) => {
-      const code = String(children);
-      if (!code) {
-        return null;
-      }
-
-      const isInline = !className || !className.startsWith('language-');
-
-      if (isInline) {
-        return <MessageInlineCode>{code}</MessageInlineCode>;
-      }
-
-      return (
-        <MessageMultilineCode
-          {...components.code}
-          className={className}
-        >
-          {code}
-        </MessageMultilineCode>
-      );
-    },
     table: ({ children }) => <MessageTable>{children}</MessageTable>,
     thead: ({ children }) => <MessageTableHead>{children}</MessageTableHead>,
     tbody: ({ children }) => <MessageTableBody>{children}</MessageTableBody>,
@@ -87,10 +74,7 @@ export function markdownComponents(
       </MessageLink>
     ),
     img: ({ src, alt }) => {
-      if (!src) {
-        return null;
-      }
-
+      if (!src) return null;
       const imageProps: MessageImageProps = {
         ...components.image,
         src,
@@ -98,7 +82,6 @@ export function markdownComponents(
         disableSkeleton: true,
         buttons: null,
       };
-
       return (
         <MessageImage
           {...imageProps}
@@ -107,6 +90,47 @@ export function markdownComponents(
               buttons: components.image.buttons(imageProps),
             })}
         />
+      );
+    },
+  };
+
+  return {
+    ...baseComponents,
+    code: ({ className, children }) => {
+      const code = String(children).replace(/\n$/, '');
+      if (!code) return null;
+
+      const isInline = !className || !className.startsWith('language-');
+      const match = /language-(\w+)/.exec(className || '');
+      const language = match ? match[1] : '';
+
+      const isDoc = language === 'doc' || language === 'result';
+      const isTg = language === 'tg';
+
+      if (isDoc || isTg) {
+        return (
+          <GeneratedDocumentBlock
+            code={code}
+            copyLabel={components.document?.copyLabel}
+            remarkPlugins={remarkPlugins}
+            rehypePlugins={rehypePlugins}
+            baseComponents={baseComponents}
+            isTg={isTg}
+          />
+        );
+      }
+
+      if (isInline) {
+        return <MessageInlineCode>{code}</MessageInlineCode>;
+      }
+
+      return (
+        <MessageMultilineCode
+          {...components.code}
+          className={className}
+        >
+          {code}
+        </MessageMultilineCode>
       );
     },
     ...componentsOverride,
