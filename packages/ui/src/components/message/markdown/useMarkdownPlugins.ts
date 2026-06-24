@@ -1,20 +1,14 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import remarkGfm from 'remark-gfm';
 import { useTheme } from '@/ui/theme';
 import { remarkMath, rehypeKatex } from './markdown-plugins';
 
 export const useMarkdownPlugins = () => {
   const theme = useTheme();
-  const [singleDollarTextMath, setSingleDollarTextMath] = useState(true);
-
-  const handleKatexStrict = useCallback(() => {
-    if (singleDollarTextMath)
-      queueMicrotask(() => setSingleDollarTextMath(false));
-  }, [singleDollarTextMath]);
 
   const remarkPlugins = useMemo(
-    () => [remarkGfm, [remarkMath, { singleDollarTextMath }]],
-    [singleDollarTextMath],
+    () => [remarkGfm, [remarkMath, { singleDollarTextMath: true }]],
+    [],
   );
 
   const rehypePlugins = useMemo(
@@ -22,15 +16,14 @@ export const useMarkdownPlugins = () => {
       [
         rehypeKatex,
         {
-          displayMode: true,
           output: 'html',
           errorColor: theme.colors.orange,
-          strict: handleKatexStrict,
+          strict: false,
         },
       ],
     ],
-    [handleKatexStrict, theme],
+    [theme],
   );
 
-  return { remarkPlugins, rehypePlugins, singleDollarTextMath };
+  return { remarkPlugins, rehypePlugins };
 };

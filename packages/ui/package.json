@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.80.9-develop-ad7e49f9-2fa3-45bc-bd3b-e918bd213634",
+  "version": "2.80.10",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
@@ -39,7 +39,10 @@
     "./fonts/*": "./fonts/*",
     "./utils/*": "./dist/utils/*"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "**/*.css",
+    "**/markdown-plugins.ts"
+  ],
   "resolutions": {
     "react-helmet/react": "^19.0.0"
   },

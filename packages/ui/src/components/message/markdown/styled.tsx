@@ -32,7 +32,6 @@ export const MessageMarkdownStyled = styled.div`
 export interface MessageMarkdownStyledProps {
   $typing: boolean;
   $color: MessageColor;
-  $singleDollarTextMath: boolean;
 }
 
 export const MessageMarkdownLine = React.memo(
@@ -121,8 +120,7 @@ export const MessageMarkdownLine = React.memo(
   (prevProps, nextProps) =>
     prevProps.children === nextProps.children &&
     prevProps.$typing === nextProps.$typing &&
-    prevProps.$color === nextProps.$color &&
-    prevProps.$singleDollarTextMath === nextProps.$singleDollarTextMath,
+    prevProps.$color === nextProps.$color,
 );
 
 export const messageTextCursorOpacity = keyframes`
