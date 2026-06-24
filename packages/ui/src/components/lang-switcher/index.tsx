@@ -1,5 +1,4 @@
-import { useTransition } from '@react-spring/web';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   LangSwitcherButton,
   LangSwitcherIcon,
@@ -13,6 +12,7 @@ import {
   SelectFieldDataItem,
   SelectFieldDataItemComplex,
 } from '../select-field';
+import { useDropdown } from '@/ui/hooks';
 
 export type LangSwitcherProps = {
   region: {
@@ -35,9 +35,8 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
   dataLanguages,
   onChange,
 }) => {
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-
+  const { ref: dropdownRef, dropdownTransition } = useDropdown({ isOpen });
   const currentRegion = useMemo(
     () =>
       dataRegions.find(
@@ -114,19 +113,6 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
       window.removeEventListener('scroll', handleScrollEvent, true);
     };
   }, [isOpen, handleClose]);
-
-  const dropdownTransition = useTransition(isOpen, {
-    from: {
-      opacity: 0,
-      transform: 'scale(0)',
-    },
-    enter: {
-      opacity: isOpen ? 1 : 0.5,
-      transform: `scale(${isOpen ? 1 : 0.999})`,
-    },
-    leave: { opacity: 0, transform: 'scale(0.999)' },
-    config: { duration: 150 },
-  });
 
   return (
     <LangSwitcherStyled ref={dropdownRef}>

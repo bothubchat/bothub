@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useTransition } from '@react-spring/web';
+import React, { useCallback, useState } from 'react';
 import {
   SidebarLangDropdownContent,
   SidebarLangDropdownStyled,
@@ -11,6 +10,7 @@ import {
 import { SidebarLangDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
+import { useDropdown, useEventListener } from '@/ui/hooks';
 
 export interface SidebarLangDropdownProps
   extends React.ComponentProps<typeof SidebarLangDropdownStyled> {
@@ -23,47 +23,28 @@ export const SidebarLangDropdown: React.FC<SidebarLangDropdownProps> = ({
   ...props
 }) => {
   const theme = useTheme();
-
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const { ref: dropdownRef, dropdownTransition } = useDropdown({ isOpen });
 
   const handleToggle = useCallback(() => {
     setIsOpen(!isOpen);
   }, [isOpen]);
 
-  useEffect(() => {
-    const dropdownEl: HTMLDivElement | null = dropdownRef.current;
+  const clickListener = useCallback(
+    (event: Event) => {
+      if (!dropdownRef.current?.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    },
+    [dropdownRef],
+  );
 
-    if (dropdownEl !== null) {
-      const clickListener = (event: Event) => {
-        if (!dropdownEl.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      const blurListener = () => setIsOpen(false);
-
-      document.addEventListener('click', clickListener);
-      window.addEventListener('blur', blurListener);
-
-      return () => {
-        document.removeEventListener('click', clickListener);
-        window.removeEventListener('blur', blurListener);
-      };
-    }
+  const blurListener = useCallback(() => {
+    setIsOpen(false);
   }, []);
 
-  const dropdownTransition = useTransition(isOpen, {
-    from: {
-      opacity: 0,
-      transform: 'scale(0)',
-    },
-    enter: {
-      opacity: isOpen ? 1 : 0.5,
-      transform: `scale(${isOpen ? 1 : 0.999})`,
-    },
-    leave: { opacity: 0, transform: 'scale(0.999)' },
-    config: { duration: 150 },
-  });
+  useEventListener(document, 'click', clickListener);
+  useEventListener(window, 'blur', blurListener);
 
   return (
     <SidebarLangDropdownProvider setIsOpen={setIsOpen}>

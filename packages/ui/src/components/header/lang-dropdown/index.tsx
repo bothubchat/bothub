@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useTransition } from '@react-spring/web';
+import React, { useCallback, useState } from 'react';
 import {
   HeaderLangDropdownContent,
   HeaderLangDropdownStyled,
@@ -11,6 +10,7 @@ import {
 import { HeaderLangDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
+import { useDropdown, useEventListener } from '@/ui/hooks';
 
 export interface HeaderLangDropdownProps
   extends React.ComponentProps<typeof HeaderLangDropdownStyled> {
@@ -24,9 +24,10 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
   ...props
 }) => {
   const theme = useTheme();
-
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const { ref: dropdownRef, dropdownTransition } = useDropdown({
+    isOpen,
+  });
 
   const handleToggle = useCallback(() => {
     setIsOpen(!isOpen);
@@ -36,10 +37,21 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
     setIsOpen(false);
   }, []);
 
-  useEffect(() => {
-    if (!isOpen) return;
+  const clickListener = useCallback(
+    (event: Event) => {
+      if (!dropdownRef.current?.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    },
+    [dropdownRef],
+  );
 
-    const handleScrollEvent = (event: Event) => {
+  const blurListener = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const handleScrollEvent = useCallback(
+    (event: Event) => {
       const dropdownEl = dropdownRef.current;
       const scrollTarget = event.target as Element;
 
@@ -48,48 +60,16 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
       }
 
       handleClose();
-    };
-
-    window.addEventListener('scroll', handleScrollEvent, true);
-
-    return () => {
-      window.removeEventListener('scroll', handleScrollEvent, true);
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
-    const dropdownEl: HTMLDivElement | null = dropdownRef.current;
-
-    if (dropdownEl !== null) {
-      const clickListener = (event: Event) => {
-        if (!dropdownEl.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      const blurListener = () => setIsOpen(false);
-
-      document.addEventListener('click', clickListener);
-      window.addEventListener('blur', blurListener);
-
-      return () => {
-        document.removeEventListener('click', clickListener);
-        window.removeEventListener('blur', blurListener);
-      };
-    }
-  }, []);
-
-  const dropdownTransition = useTransition(isOpen, {
-    from: {
-      opacity: 0,
-      transform: 'scale(0)',
     },
-    enter: {
-      opacity: isOpen ? 1 : 0.5,
-      transform: `scale(${isOpen ? 1 : 0.999})`,
-    },
-    leave: { opacity: 0, transform: 'scale(0.999)' },
-    config: { duration: 150 },
+    [dropdownRef, handleClose],
+  );
+
+  useEventListener(window, 'scroll', handleScrollEvent, {
+    capture: true,
+    enabled: isOpen,
   });
+  useEventListener(document, 'click', clickListener);
+  useEventListener(window, 'blur', blurListener);
 
   return (
     <HeaderLangDropdownProvider setIsOpen={setIsOpen}>
