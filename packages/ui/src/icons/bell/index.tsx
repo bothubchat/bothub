@@ -1,4 +1,4 @@
-import { icon, Icon, IconConsumer } from '@/ui/components';
+import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
 export const BellIcon = icon(({ ...props }) => {

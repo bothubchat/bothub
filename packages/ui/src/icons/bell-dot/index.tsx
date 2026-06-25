@@ -1,5 +1,5 @@
 import { useTheme } from '@/ui/theme';
-import { icon, Icon, IconConsumer } from '@/ui/components';
+import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const BellDotIcon = icon(({ ...props }) => {
   const theme = useTheme();
