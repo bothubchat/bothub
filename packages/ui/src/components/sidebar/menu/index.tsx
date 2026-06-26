@@ -6,6 +6,7 @@ import { MenuIcon } from '@/ui/icons/menu';
 import { SidebarMenuStyled, SidebarMenuList } from './styled';
 import { useSidebar } from '../context';
 import { SidebarMenuProvider } from './context';
+import { useOnClickOutside } from '@/ui/utils';
 
 export const SidebarMenu = ({ children }: { children: React.ReactNode }) => {
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -43,6 +44,10 @@ export const SidebarMenu = ({ children }: { children: React.ReactNode }) => {
   const handleMouseLeave = useCallback(() => {
     setShowTooltips(false);
   }, []);
+
+  useOnClickOutside(sidebarRef, () => {
+    setIsOpen(false);
+  });
 
   return (
     <SidebarMenuStyled ref={sidebarRef}>
