@@ -329,3 +329,4 @@ export * from './arrow-narrow-stars-right';
 export * from './literature-list';
 export * from './bell-dot';
 export * from './bell';
+export * from './kwaivgi';
