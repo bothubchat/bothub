@@ -316,6 +316,9 @@ import {
   EraseIcon,
   ArrowNarrowStarsRightIcon,
   LiteratureListIcon,
+  BellDotIcon,
+  BellIcon,
+  KwaivgiIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -692,6 +695,9 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
           {ArrowNarrowStarsRightIcon}
         </IconItem>
         <IconItem name="LiteratureListIcon">{LiteratureListIcon}</IconItem>
+        <IconItem name="BellDotIcon">{BellDotIcon}</IconItem>
+        <IconItem name="BellIcon">{BellIcon}</IconItem>
+        <IconItem name="KwaivgiIcon">{KwaivgiIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
