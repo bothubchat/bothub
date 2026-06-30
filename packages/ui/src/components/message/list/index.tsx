@@ -63,7 +63,10 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(
 
     return (
       <MessagesProvider setScroll={setScroll}>
-        <MessagesStyled className={className}>
+        <MessagesStyled
+          data-openreplay-masked
+          className={className}
+        >
           <MessagesScrollbarWrapper
             ref={scrollbarRef}
             scrollShadows={scrollShadows}
