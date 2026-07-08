@@ -7,16 +7,8 @@ import {
 } from '@/ui/components/message/components';
 import { MessageMarkdownLine, MessageMarkdownStyled } from './styled';
 import { markdownComponents } from './markdown-components';
+import { normalizeMessageMarkdown } from './utils';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
-
-function formatString(string: string) {
-  return (
-    string
-      // math formulas
-      .replace(/\\$$((.|[\r\n])*?)\\$$/g, (_, content) => `$$${content}$$`)
-      .replace(/\\$((.|[\r\n])*?)\\$/g, (_, content) => `$${content}$`)
-  );
-}
 
 export interface MessageMarkdownProps {
   children: string;
@@ -42,7 +34,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
 
     const formattedChildren = useMemo(() => {
       if (typeof children === 'string' && !isDisabled) {
-        return formatString(children);
+        return normalizeMessageMarkdown(children);
       }
       return children;
     }, [children, isDisabled]);
