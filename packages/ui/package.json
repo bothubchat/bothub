@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.80.13",
+  "version": "2.80.13-fix-18065-color-picker-buttons-3d660dd9-236e-4676-96de-075b499899fd",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
