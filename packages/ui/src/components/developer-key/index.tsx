@@ -41,11 +41,9 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
 }) => {
   const theme = useTheme();
 
-  const [isFocus, setIsFocus] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
   const handleBlur = useCallback(() => {
-    setIsFocus(false);
     setIsCopied(false);
   }, []);
 
@@ -60,14 +58,6 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
 
     setIsCopied(true);
   }, [skeleton, isCopied, children, onCopy]);
-
-  const handleFocus = useCallback(() => {
-    if (skeleton) {
-      return;
-    }
-
-    setIsFocus(true);
-  }, [skeleton]);
 
   const handleDelete = useCallback(() => {
     if (skeleton) {
@@ -85,7 +75,6 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
             $skeleton={skeleton}
             className={className}
             tabIndex={tabIndex}
-            onFocus={handleFocus}
             onBlur={handleBlur}
             onClick={handleClick}
           >
@@ -96,10 +85,10 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
               </DeveloperKeyValue>
             )}
             <DeveloperKeyCopyIcon
-              as={isFocus ? CheckSmallIcon : CopyIcon}
+              as={isCopied ? CheckSmallIcon : CopyIcon}
               size={18}
               fill={
-                isFocus
+                isCopied
                   ? theme.colors.accent.primaryLight
                   : theme.colors.grayScale.gray1
               }
