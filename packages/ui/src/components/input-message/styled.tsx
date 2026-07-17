@@ -409,3 +409,9 @@ export const InputMessageCloseEditButton = styled.button`
   justify-content: center;
   align-items: center;
 `;
+
+export const InputMessageFilesMenuBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
