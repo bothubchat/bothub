@@ -75,7 +75,7 @@ export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
             </InputMessageFile>
           );
         })}
-        {files.length > 3 && (
+        {files?.length > 3 && (
           <Menu
             trigger={
               <Button variant="text">
@@ -86,7 +86,7 @@ export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
             }
           >
             <InputMessageFilesMenuBox>
-              {files.slice(3, files.length).map((file, index) => {
+              {files?.slice(3)?.map((file, index) => {
                 let iconNode: React.ReactNode;
                 let isImage: boolean = false;
 
