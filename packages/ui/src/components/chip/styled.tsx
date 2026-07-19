@@ -43,6 +43,7 @@ export const ChipIncludes = styled(ChipStyled)`
   height: auto;
   background: transparent;
   border-radius: 0;
+  flex: 1;
 `;
 
 export const ChipImage = styled(Image).attrs({ width: 18, height: 18 })`
@@ -52,6 +53,7 @@ export const ChipImage = styled(Image).attrs({ width: 18, height: 18 })`
 export const ChipText = styled(Typography).attrs({ variant: 'body-s-medium' })`
   cursor: inherit;
   user-select: none;
+  flex: 1;
 `;
 
 export const ChipDeleteButton = styled(Button).attrs({
