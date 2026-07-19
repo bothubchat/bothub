@@ -13,8 +13,8 @@ import {
   InputMessageFile,
   InputMessageFilesMenuBox,
   InputMessageFilesStyled,
+  InputMessageFilesTriggerButton,
 } from './styled';
-import { Button } from '../button';
 import { Menu } from '../menu';
 import { Typography } from '../typography';
 
@@ -78,11 +78,11 @@ export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
         {files?.length > 3 && (
           <Menu
             trigger={
-              <Button variant="text">
+              <InputMessageFilesTriggerButton variant="text">
                 <Typography variant="body-s-medium">
                   +{files.length - 3}
                 </Typography>
-              </Button>
+              </InputMessageFilesTriggerButton>
             }
           >
             <InputMessageFilesMenuBox>

@@ -415,3 +415,7 @@ export const InputMessageFilesMenuBox = styled.div`
   flex-direction: column;
   gap: 10px;
 `;
+
+export const InputMessageFilesTriggerButton = styled(Button)`
+  transform: none !important;
+`;
