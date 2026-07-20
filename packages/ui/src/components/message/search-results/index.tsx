@@ -96,8 +96,6 @@ const MessageSearchResultsItem = memo(
             {result.name}
           </SearchResultsItemName>
 
-          <SearchResultsItemDate date={result.date} />
-
           <SearchResultsItemNumber>
             <Typography
               data-source-number={index + 1}
@@ -148,17 +146,3 @@ const MessageSearchResultsItem = memo(
     );
   },
 );
-
-const SearchResultsItemDate = memo(({ date }: { date: string }) => {
-  const dateObject = new Date(date);
-  const utcDay = dateObject.getUTCDate(); // 10
-  const utcMonth = dateObject.getUTCMonth() + 1; // 2
-  const utcYear = dateObject.getUTCFullYear(); // 2025
-
-  return (
-    <Typography variant="body-s-regular">
-      <span>{utcDay.toString().padStart(2, '0')}</span>/
-      <span>{utcMonth.toString().padStart(2, '0')}</span>/<span>{utcYear}</span>
-    </Typography>
-  );
-});
