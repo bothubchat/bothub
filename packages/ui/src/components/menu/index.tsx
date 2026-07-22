@@ -89,16 +89,14 @@ export const Menu: React.FC<MenuProps> = ({
 
   const updatePosition = useCallback(() => {
     const triggerEl = triggerRef.current;
-    const measureEl = measureRef.current ?? contentRef.current;
+    const contentEl = contentRef.current;
 
-    if (!triggerEl || !measureEl) {
-      return false;
-    }
+    if (!triggerEl || !contentEl) return false;
 
     const triggerRect = triggerEl.getBoundingClientRect();
-    const contentRect = measureEl.getBoundingClientRect();
-    const dropdownWidth = contentRect.width;
-    const dropdownHeight = contentRect.height;
+    // offsetWidth/offsetHeight — без влияния transform scale(0.98)
+    const dropdownWidth = contentEl.offsetWidth;
+    const dropdownHeight = contentEl.offsetHeight;
 
     if (dropdownWidth <= 0 || dropdownHeight <= 0) {
       return false;
