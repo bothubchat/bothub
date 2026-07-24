@@ -79,13 +79,29 @@ export const NotificationInfo = styled.div`
 export const NotificationTitle = styled(Typography).attrs({
   component: 'h3',
   variant: 'body-m-semibold',
-})``;
+})`
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+`;
 
 export const NotificationText = styled(Typography).attrs({
   component: 'p',
   variant: 'body-m-regular',
 })`
   margin-top: 10px;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 15;
+  line-clamp: 15;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
   color: ${({ theme }) =>
     theme.mode === 'light'
       ? theme.default.colors.base.black
