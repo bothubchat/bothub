@@ -35,7 +35,6 @@ import { AttachIcon } from '@/ui/icons/attach';
 import { useTheme } from '@/ui/theme';
 import {
   EditingProps,
-  IConfigureOption,
   IInputMessageFile,
   IInputMessageVoiceFile,
   InputMessageErrorEvent,
@@ -94,7 +93,6 @@ export interface InputMessageProps
   onSend?: InputMessageSendEventHandler;
   handleImageClick?: (payload: IInputMessageFile) => IInputMessageFile;
   emitError?(event: InputMessageErrorEvent): void;
-  configureOptions?: IConfigureOption[];
   actions?: React.ReactNode;
 }
 
@@ -115,6 +113,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   hideUploadFile = false,
   uploadFileDisabled = false,
   uploadFileAccept,
+  uploadFileText,
   autoFocus = true,
   voice = false,
   onChange,
@@ -251,6 +250,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                   disabled ||
                   uploadFileDisabled
                 }
+                aria-label={uploadFileText}
                 onClick={handleOpenFiles}
               >
                 <AttachIcon
