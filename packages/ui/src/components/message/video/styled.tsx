@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
+import { Skeleton } from '@/ui/components/skeleton';
 
 export const MessageVideoControls = styled.div<{
   $isVisible?: boolean;
@@ -81,6 +82,10 @@ export const MessageVideoControlsButton = styled.button`
   border-radius: 50%;
   svg path {
     stroke: white;
+  }
+
+  &:disabled {
+    opacity: 0.5;
   }
 `;
 
@@ -181,3 +186,11 @@ export const MessageVideoVolumeContainer = styled.div`
 export const MessageVideoDownload = styled(Button).attrs({
   variant: 'text',
 })``;
+
+export const MessageVideoSkeleton = styled(Skeleton)<{
+  $isFullScreen: boolean;
+}>`
+  width: 100%;
+  aspect-ratio: ${({ $isFullScreen }) => ($isFullScreen ? 'auto' : '16/9')};
+  height: ${({ $isFullScreen }) => ($isFullScreen ? '100vh' : '200px')};
+`;
