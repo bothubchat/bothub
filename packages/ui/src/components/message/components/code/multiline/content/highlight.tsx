@@ -19,8 +19,11 @@ export const Highlight: React.FC<HighlightProps> = memo(
       if (!el) return;
 
       el.textContent = String(children ?? '');
-      delete el.dataset.highlighted;
       hljs.highlightElement(el);
+
+      return () => {
+        delete el.dataset.highlighted;
+      };
     }, [className, children]);
 
     return (
