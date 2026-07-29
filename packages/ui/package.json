@@ -1,7 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.80.13-fix-18193-insert-node-8773f542-c53c-4e88-bcc0-14547bf1109e",
-  "description": "Bothub UI Components",
+  "version": "2.80.13-feat-17666-coin-icon-dceaa2ee-310c-4669-9579-158095f9bec5",
   "keywords": [
     "bot",
     "chat",
