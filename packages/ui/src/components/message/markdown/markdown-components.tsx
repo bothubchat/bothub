@@ -97,10 +97,12 @@ export function markdownComponents(
   return {
     ...baseComponents,
     code: ({ className, children }) => {
-      const code = String(children).replace(/\n$/, '');
+      const rawCode = String(children);
+      const code = rawCode.replace(/\n$/, '');
       if (!code) return null;
 
-      const isInline = !className || !className.startsWith('language-');
+      const isInline =
+        !className?.startsWith('language-') && !rawCode.endsWith('\n');
       const match = /language-(\w+)/.exec(className || '');
       const language = match ? match[1] : '';
 
