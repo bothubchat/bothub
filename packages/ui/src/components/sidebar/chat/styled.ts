@@ -3,7 +3,6 @@ import { SidebarChatIcon } from '@/ui/icons';
 import { Typography } from '@/ui/components/typography';
 import { Skeleton } from '@/ui/components/skeleton';
 import { colorToRgba } from '@/ui/utils';
-import { Button } from '../../button';
 
 export const SidebarChatStyled = styled.div`
   display: flex;
@@ -123,10 +122,22 @@ export const SidebarChatButton = styled.button<{
     `background: ${colorToRgba(theme.colors.accent.primaryLight, 0.5)} `}
 `;
 
-export const SidebarChatDraggbleButton = styled(Button).attrs({
-  variant: 'text',
-})`
+export const SidebarChatDragHandle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
   z-index: 1;
+  cursor: grab;
+  touch-action: none;
+`;
+
+export const SidebarChatDraggbleButton = styled.span`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   cursor: grab;
 `;
 

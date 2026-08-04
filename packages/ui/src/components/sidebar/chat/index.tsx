@@ -7,6 +7,7 @@ import {
   SidebarChatIconStyled,
   SidebarChatButton,
   SidebarChatDraggbleButton,
+  SidebarChatDragHandle,
   SidebarChatBox,
   SidebarChatPromtLine,
   SidebarChatLoadingText,
@@ -111,53 +112,60 @@ export const SidebarChat: React.FC<SidebarChatDefaultProps> = ({
       $active={active}
     >
       <SidebarChatStyled ref={setNodeRef}>
-        <IconProvider size={18}>
-          {promtQueue &&
-            typeof progress === 'object' &&
-            typeof progress?.max === 'number' &&
-            typeof progress?.value === 'number' &&
-            progress.max > 0 &&
-            progress.value !== progress.max && (
-              <SidebarChatLoadingText>
-                {Math.round((progress.value / progress.max) * 100)}%
-              </SidebarChatLoadingText>
-            )}
-          {promtQueue &&
-            typeof progress === 'object' &&
-            typeof progress?.max === 'number' &&
-            typeof progress?.value === 'number' &&
-            progress.max > 0 &&
-            progress.value === progress.max && <CheckCircleIcon />}
-          {!isEdit ? (
-            !promtQueue && (icon || <SidebarChatIconStyled />)
-          ) : (
-            <SidebarChatDraggbleButton
-              {...attributes}
-              {...listeners}
+        {isEdit ? (
+          <SidebarChatDragHandle
+            {...attributes}
+            {...listeners}
+          >
+            <IconProvider size={18}>
+              <SidebarChatDraggbleButton>
+                <DragDotIcon />
+              </SidebarChatDraggbleButton>
+            </IconProvider>
+            <SidebarChatName ref={ref}>{name}</SidebarChatName>
+          </SidebarChatDragHandle>
+        ) : (
+          <>
+            <IconProvider size={18}>
+              {promtQueue &&
+                typeof progress === 'object' &&
+                typeof progress?.max === 'number' &&
+                typeof progress?.value === 'number' &&
+                progress.max > 0 &&
+                progress.value !== progress.max && (
+                  <SidebarChatLoadingText>
+                    {Math.round((progress.value / progress.max) * 100)}%
+                  </SidebarChatLoadingText>
+                )}
+              {promtQueue &&
+                typeof progress === 'object' &&
+                typeof progress?.max === 'number' &&
+                typeof progress?.value === 'number' &&
+                progress.max > 0 &&
+                progress.value === progress.max && <CheckCircleIcon />}
+              {!promtQueue && (icon || <SidebarChatIconStyled />)}
+            </IconProvider>
+            <Tooltip
+              label={name}
+              placement="top"
+              align="center"
+              disabled={!showTooltip}
             >
-              <DragDotIcon />
-            </SidebarChatDraggbleButton>
-          )}
-        </IconProvider>
-        <Tooltip
-          label={name}
-          placement="top"
-          align="center"
-          disabled={isEdit || !showTooltip}
-        >
-          <TooltipConsumer>
-            {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-              <SidebarChatName
-                ref={ref}
-                onPointerEnter={handleTooltipMouseEnter}
-                onPointerLeave={handleTooltipMouseLeave}
-              >
-                {name}
-              </SidebarChatName>
-            )}
-          </TooltipConsumer>
-        </Tooltip>
-        {!isEdit && actions}
+              <TooltipConsumer>
+                {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+                  <SidebarChatName
+                    ref={ref}
+                    onPointerEnter={handleTooltipMouseEnter}
+                    onPointerLeave={handleTooltipMouseLeave}
+                  >
+                    {name}
+                  </SidebarChatName>
+                )}
+              </TooltipConsumer>
+            </Tooltip>
+            {actions}
+          </>
+        )}
         {isEdit && checkbox}
       </SidebarChatStyled>
       {promtQueue &&

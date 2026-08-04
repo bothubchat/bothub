@@ -6,6 +6,7 @@ import {
   MessageVideoControlsButton,
   MessageVideoControlsButtons,
   MessageVideoDownload,
+  MessageVideoSkeleton,
   MessageVideoStyled,
   MessageVideoTimeLine,
   MessageVideoTimeText,
@@ -20,6 +21,9 @@ import { getVideoMimeType } from '@/ui/utils/getVideoMimeType';
 
 export type MessageVideoProps = {
   src: string;
+  isLoading?: boolean;
+  checkAlive?: () => Promise<boolean>;
+  refreshSrc?: () => void;
   downloadVideo?: () => void;
 };
 
@@ -31,6 +35,9 @@ const formatTime = (time: number) => {
 
 export const MessageVideo: React.FC<MessageVideoProps> = ({
   src,
+  isLoading: externalLoading = false,
+  checkAlive,
+  refreshSrc,
   downloadVideo,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -39,18 +46,29 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
   const [videoDuration, setVideoDuration] = useState('00:00');
   const [videoProgress, setVideoProgress] = useState(0);
   const [videoFullScreen, setVideoFullScreen] = useState(false);
+  const [internalLoading, setInternalLoading] = useState(true);
   const [timeLineMouseMove, setTimeLineMouseMove] = useState(false);
   const videoContainer = useRef<HTMLDivElement>(null);
   const iconSize = videoFullScreen ? 28 : 24;
 
+  const isLoading = internalLoading || externalLoading;
   const mimeType = getVideoMimeType(src);
 
-  const handleStart = useCallback(() => {
+  const handleStart = useCallback(async () => {
+    if (isLoading) return;
+
+    const isAlive = await checkAlive?.();
+
+    if (!isAlive) {
+      refreshSrc?.();
+      return;
+    }
+
     if (videoRef.current) {
-      videoRef.current.play();
+      await videoRef.current.play();
       setVideoPlayed(true);
     }
-  }, []);
+  }, [checkAlive, refreshSrc, isLoading]);
 
   const handlePause = useCallback(() => {
     if (videoRef.current) {
@@ -78,6 +96,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
 
       const time = formatTime(duration);
       setVideoDuration(time);
+      setInternalLoading(false);
     },
     [],
   );
@@ -130,6 +149,18 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
   }, []);
 
   useEffect(() => {
+    setVideoPlayed(false);
+    setVideoCurrentTime('00:00');
+    setVideoDuration('00:00');
+    setVideoProgress(0);
+    setInternalLoading(true);
+
+    if (videoRef.current) {
+      videoRef.current.load();
+    }
+  }, [src]);
+
+  useEffect(() => {
     const handleDocumentFullscreenChange = () => {
       setVideoFullScreen(document.fullscreenElement !== null);
     };
@@ -157,63 +188,76 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
         onTimeUpdate={handleTimeUpdate}
         onEnded={handlePause}
         $isFullScreen={videoFullScreen}
+        style={{ display: isLoading ? 'none' : 'block' }}
       >
         <MessageSourceStyled
           src={src}
           type={mimeType}
         />
       </MessageVideoStyled>
-      <MessageVideoControls
-        $isFullScreen={videoFullScreen}
-        $isVisible={!videoPlayed}
-      >
-        <MessageVideoTimeLine
-          onClick={handleTimeUpdateClick}
-          onMouseDown={handleStartMouseMove}
-          $progress={videoProgress}
+      {isLoading && (
+        <MessageVideoSkeleton
+          $isFullScreen={videoFullScreen}
+          fullWidth
+          variant="rounded"
         />
-        <MessageVideoControlsButtons $isFullScreen={videoFullScreen}>
-          {videoPlayed ? (
-            <MessageVideoControlsButton onClick={handlePause}>
-              <PauseButtonIcon size={iconSize} />
-            </MessageVideoControlsButton>
-          ) : (
-            <MessageVideoControlsButton onClick={handleStart}>
-              <PlayButtonIcon size={iconSize} />
-            </MessageVideoControlsButton>
-          )}
-          <MessageVideoVolume
-            iconSize={iconSize}
-            handleChangeVolume={handleChangeVolume}
+      )}
+      {!isLoading && (
+        <MessageVideoControls
+          $isFullScreen={videoFullScreen}
+          $isVisible={!videoPlayed}
+        >
+          <MessageVideoTimeLine
+            onClick={handleTimeUpdateClick}
+            onMouseDown={handleStartMouseMove}
+            $progress={videoProgress}
           />
-          <MessageVideoTimeText>
-            {videoCurrentTime} / {videoDuration}
-          </MessageVideoTimeText>
-          {downloadVideo && (
-            <MessageVideoDownload
-              iconFill="#fff"
-              disableHoverColor
-              iconSize={iconSize}
-              onClick={downloadVideo}
-            >
-              <DownloadImgIcon />
-            </MessageVideoDownload>
-          )}
-          <MessageVideoControlsButton onClick={handleFullscreen}>
-            {videoFullScreen ? (
-              <MinWindowIcon
-                fill="#fff"
-                size={iconSize}
-              />
+          <MessageVideoControlsButtons $isFullScreen={videoFullScreen}>
+            {videoPlayed ? (
+              <MessageVideoControlsButton onClick={handlePause}>
+                <PauseButtonIcon size={iconSize} />
+              </MessageVideoControlsButton>
             ) : (
-              <MaxWindowIcon
-                stroke="#fff"
-                size={iconSize}
-              />
+              <MessageVideoControlsButton
+                onClick={handleStart}
+                disabled={isLoading}
+              >
+                <PlayButtonIcon size={iconSize} />
+              </MessageVideoControlsButton>
             )}
-          </MessageVideoControlsButton>
-        </MessageVideoControlsButtons>
-      </MessageVideoControls>
+            <MessageVideoVolume
+              iconSize={iconSize}
+              handleChangeVolume={handleChangeVolume}
+            />
+            <MessageVideoTimeText>
+              {videoCurrentTime} / {videoDuration}
+            </MessageVideoTimeText>
+            {downloadVideo && (
+              <MessageVideoDownload
+                iconFill="#fff"
+                disableHoverColor
+                iconSize={iconSize}
+                onClick={downloadVideo}
+              >
+                <DownloadImgIcon />
+              </MessageVideoDownload>
+            )}
+            <MessageVideoControlsButton onClick={handleFullscreen}>
+              {videoFullScreen ? (
+                <MinWindowIcon
+                  fill="#fff"
+                  size={iconSize}
+                />
+              ) : (
+                <MaxWindowIcon
+                  stroke="#fff"
+                  size={iconSize}
+                />
+              )}
+            </MessageVideoControlsButton>
+          </MessageVideoControlsButtons>
+        </MessageVideoControls>
+      )}
     </MessageVideoContainer>
   );
 };

@@ -319,6 +319,7 @@ import {
   BellDotIcon,
   BellIcon,
   KwaivgiIcon,
+  DollarIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -698,6 +699,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="BellDotIcon">{BellDotIcon}</IconItem>
         <IconItem name="BellIcon">{BellIcon}</IconItem>
         <IconItem name="KwaivgiIcon">{KwaivgiIcon}</IconItem>
+        <IconItem name="DollarIcon">{DollarIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
