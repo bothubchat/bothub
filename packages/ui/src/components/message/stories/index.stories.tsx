@@ -22,6 +22,7 @@ import {
   MessageTag,
   MessageTransaction,
   MessageVoice,
+  MessageMusic,
   MessageReasoningBlock,
 } from '@/ui/components/message';
 import { StoryDecorator } from '@/ui/story-decorator';
@@ -634,6 +635,19 @@ export const Video: MessageStory = {
   args: {
     ...User.args,
     children: <MessageVideo src={videoWebm} />,
+  },
+};
+
+export const Music: MessageStory = {
+  args: {
+    ...User.args,
+    children: (
+      <MessageMusic
+        src={sound}
+        coverSrc={image}
+        title="Track name"
+      />
+    ),
   },
 };
 

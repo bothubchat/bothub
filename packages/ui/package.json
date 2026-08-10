@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.80.22",
+  "version": "2.80.22-fix-music-component-a2ababa2-0bc0-4a82-9915-c9823420b23f",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
