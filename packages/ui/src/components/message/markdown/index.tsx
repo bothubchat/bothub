@@ -42,53 +42,35 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
     const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
 
     const markdownNode = useMemo(() => {
-      const blocks = formattedChildren.split('\n\n');
-      const parsedBlocks: string[] = [];
-      let inCodeBlock = false;
-
-      for (const block of blocks) {
-        if (inCodeBlock) {
-          parsedBlocks[parsedBlocks.length - 1] += `${block}\n\n`;
-        } else if (block.match(/\n*\s*```/g)) {
-          inCodeBlock = !inCodeBlock;
-
-          if (inCodeBlock) {
-            parsedBlocks.push(`${block}\n\n`);
-          }
-        } else {
-          parsedBlocks.push(block);
-        }
+      if (typeof formattedChildren !== 'string') {
+        return null;
       }
 
       return (
         <MessageMarkdownStyled ref={ref}>
-          {parsedBlocks.map((block, index) => (
-            <MessageMarkdownLine
-              key={index}
-              $typing={disableTyping ? false : typing}
-              $color={color}
+          <MessageMarkdownLine
+            $typing={disableTyping ? false : typing}
+            $color={color}
+          >
+            <ReactMarkdown
+              remarkPlugins={remarkPlugins}
+              rehypePlugins={rehypePlugins}
+              components={markdownComponents(
+                components,
+                componentsOverride,
+                remarkPlugins,
+                rehypePlugins,
+              )}
             >
-              <ReactMarkdown
-                key={index}
-                // @ts-ignore
-                remarkPlugins={remarkPlugins}
-                // @ts-ignore
-                rehypePlugins={rehypePlugins}
-                components={markdownComponents(
-                  components,
-                  componentsOverride,
-                  remarkPlugins,
-                  rehypePlugins,
-                )}
-              >
-                {block}
-              </ReactMarkdown>
-            </MessageMarkdownLine>
-          ))}
+              {formattedChildren}
+            </ReactMarkdown>
+          </MessageMarkdownLine>
         </MessageMarkdownStyled>
       );
     }, [
       typing,
+      disableTyping,
+      color,
       formattedChildren,
       remarkPlugins,
       rehypePlugins,
