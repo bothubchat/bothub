@@ -163,7 +163,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
       e.preventDefault();
       if (!videoRef.current) return;
 
-      const duration = videoRef.current.duration;
+      const { duration } = videoRef.current;
       if (!Number.isFinite(duration) || duration <= 0) return;
 
       const { clientX } = e;
