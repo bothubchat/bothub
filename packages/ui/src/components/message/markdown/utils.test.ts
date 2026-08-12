@@ -48,4 +48,32 @@ describe('normalizeMessageMarkdown', () => {
       'Total: \\$ already and \\$12 more',
     );
   });
+
+  test('keeps inline math that starts with a digit', () => {
+    expect(normalizeMessageMarkdown('$3k^2 = n^2$')).toBe('$3k^2 = n^2$');
+    expect(normalizeMessageMarkdown('$3 = \\frac{m^2}{n^2}$')).toBe(
+      '$3 = \\frac{m^2}{n^2}$',
+    );
+    expect(normalizeMessageMarkdown('$2 \\cdot (3n^2)$')).toBe(
+      '$2 \\cdot (3n^2)$',
+    );
+    expect(normalizeMessageMarkdown('$100$')).toBe('$100$');
+  });
+
+  test('does not merge adjacent digit-starting math with surrounding text', () => {
+    const input = [
+      'Разделим обе части на 3:',
+      '$3k^2 = n^2$',
+      'Или, переписав наоборот:',
+      '$n^2 = 3k^2$',
+    ].join('\n');
+
+    expect(normalizeMessageMarkdown(input)).toBe(input);
+  });
+
+  test('escapes currency before a later math span', () => {
+    expect(normalizeMessageMarkdown('Price is $10 and value $x$')).toBe(
+      'Price is \\$10 and value $x$',
+    );
+  });
 });
