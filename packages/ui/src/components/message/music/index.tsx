@@ -5,12 +5,15 @@ import {
   MessageMusicControlButton,
   MessageMusicCover,
   MessageMusicCoverImage,
+  MessageMusicIconBadge,
+  MessageMusicMeta,
   MessageMusicPlayerRow,
   MessageMusicSkeleton,
   MessageMusicSlider,
   MessageMusicSliderWrap,
   MessageMusicStyled,
   MessageMusicTime,
+  MessageMusicTitle,
 } from './styled';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
@@ -24,7 +27,7 @@ const AUDIO_PLAY_EVENT = 'messageVoicePlay';
 
 export interface MessageMusicProps extends React.ComponentProps<'div'> {
   src: string;
-  coverSrc: string;
+  coverSrc?: string;
   isLoading?: boolean;
   title?: string;
   checkAlive?: () => Promise<boolean>;
@@ -53,6 +56,8 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
   const [coverError, setCoverError] = useState(false);
 
   const isLoading = internalLoading || externalLoading;
+  const hasCover = Boolean(coverSrc) && !coverError;
+  const showSkeleton = isLoading && duration <= 0;
 
   useEffect(() => {
     const handleOtherAudioPlay = (event: CustomEvent) => {
@@ -92,6 +97,10 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
       audioRef.current.load();
     }
   }, [src]);
+
+  useEffect(() => {
+    setCoverError(false);
+  }, [coverSrc]);
 
   const handleStart = useCallback(async () => {
     if (isLoading) return;
@@ -188,10 +197,18 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
         ? theme.default.colors.base.black
         : theme.default.colors.base.white;
 
-  const showSkeleton = isLoading && duration <= 0;
+  const playLabel = isPlayed ? 'Pause' : 'Play';
+  const timeLabel = `${formatSeconds(currentTime)} / ${formatSeconds(duration)}`;
+  const sliderMax = duration > 0 ? duration : 1;
+  const sliderDisabled = isLoading || duration <= 0;
 
   return (
-    <MessageMusicStyled {...props}>
+    <MessageMusicStyled
+      {...props}
+      $hasCover={hasCover}
+      role="group"
+      aria-label={title ? `Music: ${title}` : 'Music player'}
+    >
       <MessageMusicAudio
         ref={audioRef}
         src={src}
@@ -204,30 +221,44 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
         onEnded={handleEnded}
       />
       {showSkeleton ? (
-        <MessageMusicSkeleton />
+        <MessageMusicSkeleton $hasCover={Boolean(coverSrc)} />
       ) : (
         <>
-          <MessageMusicCover>
-            {!coverError ? (
+          {hasCover ? (
+            <MessageMusicCover>
               <MessageMusicCoverImage
                 src={coverSrc}
-                alt={title}
+                alt={title || 'Track cover'}
                 onError={() => setCoverError(true)}
               />
-            ) : (
+            </MessageMusicCover>
+          ) : (
+            <MessageMusicIconBadge aria-hidden>
               <IconProvider
                 size={48}
                 fill={theme.colors.grayScale.gray1}
               >
                 <MusicNoteIcon />
               </IconProvider>
-            )}
-          </MessageMusicCover>
+            </MessageMusicIconBadge>
+          )}
           <MessageMusicContent>
+            {title && (
+              <MessageMusicMeta>
+                <MessageMusicTitle
+                  $variant={variant}
+                  title={title}
+                >
+                  {title}
+                </MessageMusicTitle>
+              </MessageMusicMeta>
+            )}
             <MessageMusicPlayerRow>
               <MessageMusicControlButton
                 variant="secondary"
                 disabled={isLoading}
+                aria-label={playLabel}
+                aria-pressed={isPlayed}
                 onClick={handleToggle}
               >
                 <IconProvider
@@ -237,22 +268,27 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
                   {isPlayed ? <PauseButtonIcon /> : <PlayButtonIcon />}
                 </IconProvider>
               </MessageMusicControlButton>
-              <MessageMusicSliderWrap>
-                <MessageMusicSlider
-                  min={0}
-                  max={duration || 0}
-                  step={0.1}
-                  value={currentTime}
-                  disabled={isLoading || duration <= 0}
-                  $disabled={isLoading || duration <= 0}
-                  onChange={handleSliderChange}
-                  onChangeComplete={handleSliderChangeComplete}
-                />
-              </MessageMusicSliderWrap>
-              <MessageMusicTime $variant={variant}>
-                {formatSeconds(currentTime)} / {formatSeconds(duration)}
+
+              <MessageMusicTime
+                $variant={variant}
+                aria-live="off"
+              >
+                {timeLabel}
               </MessageMusicTime>
             </MessageMusicPlayerRow>
+            <MessageMusicSliderWrap>
+              <MessageMusicSlider
+                min={0}
+                max={sliderMax}
+                step={0.1}
+                value={Math.min(currentTime, sliderMax)}
+                disabled={sliderDisabled}
+                $disabled={sliderDisabled}
+                ariaLabelForHandle={playLabel}
+                onChange={handleSliderChange}
+                onChangeComplete={handleSliderChangeComplete}
+              />
+            </MessageMusicSliderWrap>
           </MessageMusicContent>
         </>
       )}

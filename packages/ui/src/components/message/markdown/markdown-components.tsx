@@ -1,9 +1,12 @@
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
+import { type Components } from 'react-markdown';
+import type { PluggableList } from 'unified';
 import {
   GeneratedDocumentBlock,
+  MessageBlockquote,
   MessageBold,
   MessageComponentsProps,
+  MessageHr,
   MessageImage,
   MessageImageProps,
   MessageInlineCode,
@@ -14,6 +17,7 @@ import {
   MessageMultilineCode,
   MessageParagraph,
   MessagePre,
+  MessageStrike,
   MessageTable,
   MessageTableBody,
   MessageTableCell,
@@ -24,15 +28,11 @@ import {
 
 export function markdownComponents(
   components: MessageComponentsProps,
-  componentsOverride?: React.ComponentProps<typeof ReactMarkdown>['components'],
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  remarkPlugins?: any,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  rehypePlugins?: any,
-): React.ComponentProps<typeof ReactMarkdown>['components'] {
-  const baseComponents: React.ComponentProps<
-    typeof ReactMarkdown
-  >['components'] = {
+  componentsOverride?: Components,
+  remarkPlugins?: PluggableList,
+  rehypePlugins?: PluggableList,
+): Components {
+  const baseComponents: Components = {
     p: ({ children }) => <MessageParagraph wrap>{children}</MessageParagraph>,
     b: ({ children }) => <MessageBold>{children}</MessageBold>,
     strong: ({ children }) => (
@@ -42,6 +42,11 @@ export function markdownComponents(
     em: ({ children }) => (
       <MessageItalic component="em">{children}</MessageItalic>
     ),
+    del: ({ children }) => <MessageStrike>{children}</MessageStrike>,
+    blockquote: ({ children }) => (
+      <MessageBlockquote>{children}</MessageBlockquote>
+    ),
+    hr: () => <MessageHr />,
     pre: ({ children }) => <MessagePre>{children}</MessagePre>,
     table: ({ children }) => <MessageTable>{children}</MessageTable>,
     thead: ({ children }) => <MessageTableHead>{children}</MessageTableHead>,
