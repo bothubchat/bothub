@@ -1,5 +1,5 @@
 import React, { forwardRef, useMemo } from 'react';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { type Components } from 'react-markdown';
 import { useMessage } from '@/ui/components/message/context';
 import {
   MessageComponentsProps,
@@ -13,7 +13,7 @@ import { useMarkdownPlugins } from './useMarkdownPlugins';
 export interface MessageMarkdownProps {
   children: string;
   components?: MessageComponentsProps;
-  componentsOverride?: React.ComponentProps<typeof ReactMarkdown>['components'];
+  componentsOverride?: Components;
   disableTyping?: boolean;
   forceMarkdown?: boolean;
 }
