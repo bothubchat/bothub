@@ -39,33 +39,51 @@ export const MessageVideoContainer = styled.div`
   justify-content: center;
   overflow: hidden;
   border-radius: inherit;
+  width: 100%;
+  max-width: 640px;
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    max-width: none;
+  }
   &:hover {
     ${MessageVideoControls} {
       opacity: 1;
       transform: translateY(0);
     }
   }
-`;
-
-export const MessageVideoStyled = styled.video<{ $isFullScreen?: boolean }>`
-  width: 100%;
-  max-width: ${({ $isFullScreen }) => ($isFullScreen ? '100%' : '640px')};
-  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+  &:fullscreen,
+  &:-webkit-full-screen {
     max-width: none;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    border-radius: 0;
+    align-items: center;
   }
 `;
 
-export const MessageSourceStyled = styled.source<{ $isFullScreen?: boolean }>`
-  ${({ $isFullScreen }) =>
-    $isFullScreen &&
+export const MessageVideoStyled = styled.video<{
+  $isFullScreen?: boolean;
+  $isLoading?: boolean;
+}>`
+  width: 100%;
+  max-width: ${({ $isFullScreen }) => ($isFullScreen ? '100%' : '640px')};
+  ${({ $isLoading }) =>
+    $isLoading &&
     css`
-      width: 100%;
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -3;
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
     `}
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    max-width: none;
+  }
+  ${MessageVideoContainer}:fullscreen &,
+  ${MessageVideoContainer}:-webkit-full-screen & {
+    max-width: none;
+    height: 100%;
+    object-fit: contain;
+  }
 `;
 
 export const MessageVideoControlsButton = styled.button`
