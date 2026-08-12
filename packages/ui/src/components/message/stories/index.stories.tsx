@@ -651,6 +651,18 @@ export const Music: MessageStory = {
   },
 };
 
+export const MusicWithoutCover: MessageStory = {
+  args: {
+    ...User.args,
+    children: (
+      <MessageMusic
+        src={sound}
+        title="Suno track"
+      />
+    ),
+  },
+};
+
 export const MarkdownImage: MessageStory = {
   args: {
     ...Assistant.args,

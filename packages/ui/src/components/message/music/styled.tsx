@@ -8,27 +8,32 @@ import { adaptive } from '@/ui/adaptive';
 import { isBright } from '@/ui/utils';
 import { MessageVariant } from '../types';
 
-export const MessageMusicStyled = styled.div`
+export interface MessageMusicStyledProps {
+  $hasCover: boolean;
+}
+
+export const MessageMusicStyled = styled.div<MessageMusicStyledProps>`
   display: flex;
-  flex-direction: column;
+  align-items: ${({ $hasCover }) => ($hasCover ? 'stretch' : 'center')};
   gap: 12px;
   width: 100%;
-  max-width: 560px;
   box-sizing: border-box;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   padding: 12px;
   border-radius: 12px;
+  max-width: ${({ $hasCover }) => ($hasCover ? '480px' : '720px')};
 
-  ${adaptive({
-    tablet: css`
-      max-width: 420px;
-    `,
-    mobile: css`
-      max-width: 100%;
-      padding: 10px;
-      gap: 10px;
-    `,
-  })}
+  ${({ $hasCover }) =>
+    adaptive({
+      tablet: css`
+        max-width: ${$hasCover ? '420px' : '100%'};
+      `,
+      mobile: css`
+        max-width: 100%;
+        padding: 10px;
+        gap: 10px;
+      `,
+    })}
 `;
 
 export const MessageMusicAudio = styled.audio`
@@ -37,8 +42,9 @@ export const MessageMusicAudio = styled.audio`
 
 export const MessageMusicCover = styled.div`
   position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  width: 96px;
+  height: 96px;
   border-radius: 10px;
   overflow: hidden;
   background: ${({ theme }) => theme.colors.grayScale.gray3};
@@ -47,10 +53,9 @@ export const MessageMusicCover = styled.div`
   justify-content: center;
 
   ${adaptive({
-    tablet: css`
-      border-radius: 8px;
-    `,
     mobile: css`
+      width: 72px;
+      height: 72px;
       border-radius: 8px;
     `,
   })}
@@ -63,12 +68,33 @@ export const MessageMusicCoverImage = styled.img`
   display: block;
 `;
 
+export const MessageMusicIconBadge = styled.div`
+  position: relative;
+  flex-shrink: 0;
+  width: 96px;
+  height: 96px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${({ theme }) => theme.colors.grayScale.gray3};
+
+  ${adaptive({
+    mobile: css`
+      width: 72px;
+      height: 72px;
+      border-radius: 8px;
+    `,
+  })}
+`;
+
 export const MessageMusicContent = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 8px;
   min-width: 0;
-  width: 100%;
+  flex: 1;
 `;
 
 const textColor = css<{ $variant: MessageVariant }>`
@@ -94,6 +120,7 @@ export const MessageMusicTitle = styled(Typography).attrs({
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 100%;
+  line-height: 1.3;
 `;
 
 export const MessageMusicArtist = styled(Typography).attrs({
@@ -107,6 +134,14 @@ export const MessageMusicArtist = styled(Typography).attrs({
   width: 100%;
 `;
 
+export const MessageMusicMeta = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  width: 100%;
+`;
+
 export const MessageMusicPlayerRow = styled.div`
   display: flex;
   align-items: center;
@@ -115,8 +150,12 @@ export const MessageMusicPlayerRow = styled.div`
 `;
 
 export const MessageMusicSliderWrap = styled.div`
-  flex: 1;
-  min-width: 0;
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 48px;
+  width: 100%;
+  display: flex;
+  align-items: center;
 `;
 
 export const MessageMusicControlButton = styled(Button).attrs({
@@ -125,6 +164,29 @@ export const MessageMusicControlButton = styled(Button).attrs({
   max-width: 38px;
   max-height: 38px;
   border-radius: 50%;
+  flex-shrink: 0;
+  transition:
+    transform 160ms ease-out,
+    opacity 160ms ease-out;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover:not(:disabled) {
+      transform: scale(1.06);
+    }
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.94);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover:not(:disabled),
+    &:active:not(:disabled) {
+      transform: none;
+    }
+  }
 `;
 
 export const MessageMusicTime = styled(Typography).attrs({
@@ -133,6 +195,9 @@ export const MessageMusicTime = styled(Typography).attrs({
   ${textColor}
   opacity: 0.7;
   user-select: none;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 `;
 
 export interface MessageMusicSliderProps {
@@ -144,7 +209,7 @@ export const MessageMusicSlider: React.FC<
 > = styled(Slider)`
   position: relative;
   width: 100%;
-  height: 40px;
+  height: 24px;
   padding: 4px 0;
   box-sizing: border-box;
   touch-action: none;
@@ -155,30 +220,30 @@ export const MessageMusicSlider: React.FC<
   }
 
   .rc-slider-rail {
-    position: absolute;
+    position: absolute !important;
     left: 0;
     right: 0;
     top: 50%;
     transform: translateY(-50%);
     width: 100%;
-    height: 24px;
-    border-radius: 12px;
-    background: ${({ theme }) => theme.colors.grayScale.gray3};
+    height: 12px !important;
+    border-radius: 6px;
+    background: ${({ theme }) => theme.colors.grayScale.gray3} !important;
   }
 
   .rc-slider-track {
-    position: absolute;
+    position: absolute !important;
     top: 50%;
     transform: translateY(-50%);
-    height: 24px;
-    border-radius: 12px;
+    height: 12px !important;
+    border-radius: 6px;
     opacity: 0.7;
     background: ${({ theme, $disabled }) => {
       if (!$disabled) {
         return theme.colors.gradient.elite;
       }
       return theme.colors.grayScale.gray1;
-    }};
+    }} !important;
     ${({ $disabled }) =>
       $disabled &&
       css`
@@ -192,36 +257,59 @@ export const MessageMusicSlider: React.FC<
   }
 
   .rc-slider-handle {
-    position: absolute;
+    position: absolute !important;
     top: 50%;
     z-index: 1;
-    opacity: 0;
-    border: none;
+    opacity: 1 !important;
+    border: none !important;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    margin-top: -16px;
-    background: transparent;
+    width: 14px !important;
+    height: 14px !important;
+    margin-top: -7px !important;
+    background: ${({ theme, $disabled }) => {
+      if (!$disabled) {
+        return theme.default.colors.base.white;
+      }
+      return theme.colors.grayScale.gray1;
+    }} !important;
     box-shadow: none;
     outline: none;
     cursor: ${({ $disabled }) => ($disabled ? 'not-allowed' : 'pointer')};
+
+    &:hover,
+    &:focus,
+    &:active {
+      opacity: 1 !important;
+      box-shadow: none;
+      border: none !important;
+    }
+  }
+
+  .rc-slider-handle-dragging {
+    box-shadow: none !important;
+    border: none !important;
   }
 `;
 
+export interface MessageMusicSkeletonProps {
+  $hasCover: boolean;
+}
+
 export const MessageMusicSkeleton = styled(Skeleton).attrs({
   variant: 'rounded',
-})`
+})<MessageMusicSkeletonProps>`
   width: 100%;
-  max-width: 560px;
-  aspect-ratio: 1 / 1;
-  height: auto;
+  max-width: ${({ $hasCover }) => ($hasCover ? '480px' : '720px')};
+  height: ${({ $hasCover }) => ($hasCover ? '120px' : '64px')};
 
-  ${adaptive({
-    tablet: css`
-      max-width: 420px;
-    `,
-    mobile: css`
-      max-width: 100%;
-    `,
-  })}
+  ${({ $hasCover }) =>
+    adaptive({
+      tablet: css`
+        max-width: ${$hasCover ? '420px' : '100%'};
+      `,
+      mobile: css`
+        max-width: 100%;
+        height: ${$hasCover ? '96px' : '72px'};
+      `,
+    })}
 `;
