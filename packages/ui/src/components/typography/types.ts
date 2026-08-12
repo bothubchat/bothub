@@ -47,6 +47,7 @@ export type TypographyComponent =
   | 'b'
   | 'em'
   | 'i'
+  | 'del'
   | 'li'
   | 'blockquote'
   | 'figcaption'

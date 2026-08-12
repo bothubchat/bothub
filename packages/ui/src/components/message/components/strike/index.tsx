@@ -7,18 +7,15 @@ export type MessageStrikeProps = Omit<
   keyof MessageStrikeStyledProps
 >;
 
-export const MessageStrike: React.FC<MessageStrikeProps> = ({
-  component = 'del',
-  ...props
-}) => {
+export const MessageStrike: React.FC<MessageStrikeProps> = ({ ...props }) => {
   const { color } = useMessage();
 
   return (
     <MessageStrikeStyled
       $messageColor={color}
+      component="del"
       variant="body-l-regular"
       {...props}
-      component={component}
     />
   );
 };
