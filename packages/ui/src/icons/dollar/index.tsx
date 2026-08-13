@@ -3,14 +3,14 @@ import { Icon, icon } from '@/ui/components/icon';
 export const DollarIcon = icon(({ ...props }) => (
   <Icon
     size={24}
-    viewBox="-0.5 -0.5 25 25"
+    viewBox="0 0 24 24"
     fill="none"
     {...props}
   >
     <circle
       cx="12"
       cy="12"
-      r="12"
+      r="11.5"
       fill="#FFCC4D"
     />
     <circle
