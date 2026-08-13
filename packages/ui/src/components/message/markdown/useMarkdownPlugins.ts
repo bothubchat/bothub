@@ -1,17 +1,21 @@
 import { useMemo } from 'react';
 import remarkGfm from 'remark-gfm';
+import type { PluggableList } from 'unified';
 import { useTheme } from '@/ui/theme';
 import { remarkMath, rehypeKatex } from './markdown-plugins';
 
-export const useMarkdownPlugins = () => {
+export const useMarkdownPlugins = (): {
+  remarkPlugins: PluggableList;
+  rehypePlugins: PluggableList;
+} => {
   const theme = useTheme();
 
-  const remarkPlugins = useMemo(
+  const remarkPlugins = useMemo<PluggableList>(
     () => [remarkGfm, [remarkMath, { singleDollarTextMath: true }]],
     [],
   );
 
-  const rehypePlugins = useMemo(
+  const rehypePlugins = useMemo<PluggableList>(
     () => [
       [
         rehypeKatex,

@@ -2,6 +2,7 @@ import { css, keyframes, styled } from 'styled-components';
 import React from 'react';
 import { MessageColor } from '@/ui/components/message/types';
 import {
+  MessageBlockquoteStyled,
   MessageBoldStyled,
   MessageInlineCodeStyled,
   MessageItalicStyled,
@@ -11,6 +12,7 @@ import {
   MessageMultilineCodeStyled,
   MessageParagraphStyled,
   MessagePre,
+  MessageStrikeStyled,
   MessageTableCellStyled,
   MessageTableRow,
   MessageTableStyled,
@@ -73,6 +75,10 @@ export const MessageMarkdownLine = React.memo(
           > ${MessageBoldStyled}:last-child,
           &:last-child
           > ${MessageItalicStyled}:last-child,
+          &:last-child
+          > ${MessageStrikeStyled}:last-child,
+          &:last-child
+          > ${MessageBlockquoteStyled}:last-child,
           &:last-child
           > ${MessageInlineCodeStyled}:last-child,
           &:last-child
