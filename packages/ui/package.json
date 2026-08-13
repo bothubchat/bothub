@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.80.24-fix-parse-formulas-643bc0f4-3ef4-415d-9647-b0b6806bb621",
+  "version": "2.80.24-fix-dollar-icon-overflow-ed2a7872-e20d-4aee-a20f-63a1e3ecf48a",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
