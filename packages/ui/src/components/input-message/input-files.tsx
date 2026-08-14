@@ -22,10 +22,11 @@ export interface InputMessageFilesProps {
   files: IInputMessageFile[];
   handleDeleteFile?: (index: number) => void;
   handleImageClick?: (payload: IInputMessageFile) => IInputMessageFile;
+  deleteFileAriaLabel?: string;
 }
 
 export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
-  ({ files, handleDeleteFile, handleImageClick }) => {
+  ({ files, handleDeleteFile, handleImageClick, deleteFileAriaLabel }) => {
     if (files.length === 0) {
       return null;
     }
@@ -70,6 +71,7 @@ export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
               {...(handleDeleteFile && {
                 onDelete: () => handleDeleteFile(index),
               })}
+              deleteAriaLabel={deleteFileAriaLabel}
             >
               {file.name.length > 20 ? `...${file.name.slice(-20)}` : file.name}
             </InputMessageFile>
@@ -124,6 +126,7 @@ export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
                     {...(handleDeleteFile && {
                       onDelete: () => handleDeleteFile(index + 3),
                     })}
+                    deleteAriaLabel={deleteFileAriaLabel}
                   >
                     {file.name.length > 20
                       ? `...${file.name.slice(-20)}`

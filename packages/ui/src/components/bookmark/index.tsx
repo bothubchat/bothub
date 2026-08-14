@@ -16,9 +16,14 @@ export type BookmarkProps = (BookmarkDefaultProps | BookmarkSkeletonProps) & {
   className?: string;
   onClick?: React.MouseEventHandler<HTMLSpanElement>;
   onClose?: React.MouseEventHandler<HTMLSpanElement>;
+  closeAriaLabel?: string;
 };
 
-export const Bookmark: React.FC<BookmarkProps> = ({ className, ...props }) => {
+export const Bookmark: React.FC<BookmarkProps> = ({
+  className,
+  closeAriaLabel,
+  ...props
+}) => {
   const isActive = (props.skeleton ? false : props.active) ?? false;
   const handleWheelClick = useCallback(
     (event: React.MouseEvent<HTMLSpanElement>) => {
@@ -41,7 +46,10 @@ export const Bookmark: React.FC<BookmarkProps> = ({ className, ...props }) => {
         {props.skeleton && <Skeleton width={80} />}
       </BookmarkName>
       {!props.skeleton && !props.disableClose && (
-        <BookmarkCloseButton onClick={props.onClose} />
+        <BookmarkCloseButton
+          aria-label={closeAriaLabel}
+          onClick={props.onClose}
+        />
       )}
       {props.skeleton && (
         <Skeleton
