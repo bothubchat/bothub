@@ -30,6 +30,7 @@ export interface NotificationProps {
   title?: string;
   children?: React.ReactNode;
   onClose?: NotificationCloseEventHandler;
+  closeAriaLabel?: string;
 }
 
 export const Notification: React.FC<NotificationProps> = ({
@@ -40,6 +41,7 @@ export const Notification: React.FC<NotificationProps> = ({
   title,
   children,
   onClose,
+  closeAriaLabel,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const { isInNotificationList } = useNotifications();
@@ -142,7 +144,10 @@ export const Notification: React.FC<NotificationProps> = ({
               </NotificationInfo>
             </NotificationLeft>
             <NotificationRight>
-              <NotificationCloseButton onClick={setIsOpen.bind(null, false)} />
+              <NotificationCloseButton
+                aria-label={closeAriaLabel}
+                onClick={setIsOpen.bind(null, false)}
+              />
             </NotificationRight>
           </NotificationContent>
         </NotificationStyled>

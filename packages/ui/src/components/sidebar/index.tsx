@@ -44,6 +44,7 @@ export interface SidebarProps extends React.PropsWithChildren {
   style?: StyleHTMLAttributes<HTMLElement>;
   onOpen?: SidebarOpenEventHandler;
   banner?: React.ReactNode;
+  'aria-label'?: string;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -66,6 +67,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   style,
   banner,
   onOpen,
+  'aria-label': ariaLabel,
 }) => {
   const initialIsOpen = open;
   const setInitialIsOpen = useCallback<
@@ -123,6 +125,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         $isOpen={isOpen}
         className={className}
         id={id}
+        aria-label={ariaLabel}
+        aria-hidden={isHide || undefined}
       >
         <SidebarTop $isOpen={isOpen}>
           <SidebarHead $isOpen={isOpen}>
