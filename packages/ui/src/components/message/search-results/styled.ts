@@ -38,14 +38,15 @@ export const SearchResultsItemStyled = styled.li`
   }
 `;
 
-export const SearchResultsItemLink = styled.a`
+export const SearchResultsItemLink = styled.a<{ $pendingMessage: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
   z-index: 2;
   width: 100%;
   height: 100%;
-  cursor: pointer;
+  cursor: ${({ $pendingMessage }) =>
+    $pendingMessage ? 'not-allowed' : 'pointer'};
 `;
 
 export const SearchResultsItemHeader = styled.div`

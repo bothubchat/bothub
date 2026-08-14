@@ -34,12 +34,14 @@ export type MessageSearchResultsProps = {
   ) => void;
   regexFilterDownloadHandler?: RegExp;
   downloadText?: string;
+  pendingMessage: boolean;
 };
 
 export const MessageSearchResults: React.FC<MessageSearchResultsProps> = ({
   downloadHandler,
   downloadText,
   regexFilterDownloadHandler,
+  pendingMessage,
   ...props
 }) => (
   <SearchResultsList>
@@ -48,6 +50,7 @@ export const MessageSearchResults: React.FC<MessageSearchResultsProps> = ({
         result={result}
         index={index}
         key={index}
+        pendingMessage={pendingMessage}
         downloadText={downloadText}
         {...(regexFilterDownloadHandler?.test(result.url) && {
           downloadHandler: () => downloadHandler?.(result, index),
@@ -61,9 +64,11 @@ const MessageSearchResultsItem = memo(
   ({
     result,
     index,
+    pendingMessage,
     downloadHandler,
     downloadText,
   }: {
+    pendingMessage: boolean;
     result: MessageSearchResultsItemType;
     index: number;
     downloadHandler?: () => void;
@@ -80,6 +85,7 @@ const MessageSearchResultsItem = memo(
     return (
       <SearchResultsItemStyled>
         <SearchResultsItemLink
+          $pendingMessage={pendingMessage}
           target="_blank"
           href={result.url}
           rel="noreferrer"
@@ -95,8 +101,6 @@ const MessageSearchResultsItem = memo(
           >
             {result.name}
           </SearchResultsItemName>
-
-          <SearchResultsItemDate date={result.date} />
 
           <SearchResultsItemNumber>
             <Typography
@@ -148,17 +152,3 @@ const MessageSearchResultsItem = memo(
     );
   },
 );
-
-const SearchResultsItemDate = memo(({ date }: { date: string }) => {
-  const dateObject = new Date(date);
-  const utcDay = dateObject.getUTCDate(); // 10
-  const utcMonth = dateObject.getUTCMonth() + 1; // 2
-  const utcYear = dateObject.getUTCFullYear(); // 2025
-
-  return (
-    <Typography variant="body-s-regular">
-      <span>{utcDay.toString().padStart(2, '0')}</span>/
-      <span>{utcMonth.toString().padStart(2, '0')}</span>/<span>{utcYear}</span>
-    </Typography>
-  );
-});
