@@ -309,8 +309,8 @@ export const Menu: React.FC<MenuProps> = ({
     return React.cloneElement(triggerElement, {
       id: triggerElement.props.id ?? triggerId,
       'aria-expanded': isOpen,
-      'aria-haspopup': true,
-      'aria-controls': contentId,
+      'aria-haspopup': 'menu',
+      'aria-controls': isOpen ? contentId : undefined,
       onClick: (event: React.MouseEvent) => {
         triggerOnClick?.(event);
         if (!event.defaultPrevented) {
@@ -360,8 +360,8 @@ export const Menu: React.FC<MenuProps> = ({
             {...buttonProps}
             id={triggerId}
             aria-expanded={isOpen}
-            aria-haspopup
-            aria-controls={contentId}
+            aria-haspopup="menu"
+            aria-controls={isOpen ? contentId : undefined}
             onClick={handleTriggerClick}
           >
             {buttonLabel}

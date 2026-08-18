@@ -47,10 +47,7 @@ export const MessageMultilineCodeContent = memo(
             $messageColor={$messageColor}
             className={className}
           >
-            {message.slice(0, -1).join('\n')}
-            <MessageMultilineCodeLastLine>
-              {message.slice(-1)}
-            </MessageMultilineCodeLastLine>
+            {children?.toString() ?? ''}
           </MessageMultilineCodeContentHighlighted>
         </Suspense>
       </MessageMultilineCodeContentContainer>

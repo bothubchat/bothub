@@ -80,6 +80,7 @@ export interface InputMessageProps
   uploadFileDisabled?: boolean;
   uploadFileAccept?: string;
   uploadFileText?: string;
+  imageRequiredText?: string;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
   messageSubmitKey?: MessageSubmitKey;
@@ -96,6 +97,16 @@ export interface InputMessageProps
   emitError?(event: InputMessageErrorEvent): void;
   configureOptions?: IConfigureOption[];
   actions?: React.ReactNode;
+  attachAriaLabel?: string;
+  sendAriaLabel?: string;
+  saveAriaLabel?: string;
+  voiceAriaLabel?: string;
+  stopVoiceAriaLabel?: string;
+  pauseVoiceAriaLabel?: string;
+  resumeVoiceAriaLabel?: string;
+  cancelEditAriaLabel?: string;
+  deleteVoiceAriaLabel?: string;
+  deleteFileAriaLabel?: string;
 }
 
 export const InputMessage: React.FC<InputMessageProps> = ({
@@ -105,6 +116,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   hiddenSend = false,
   message: initialMessage,
   files: initialFiles,
+  imageRequiredText,
   disabled = false,
   sendDisabled = false,
   textAreaDisabled = false,
@@ -127,6 +139,16 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   onBlur,
   emitError,
   actions,
+  attachAriaLabel,
+  sendAriaLabel,
+  saveAriaLabel,
+  voiceAriaLabel,
+  stopVoiceAriaLabel,
+  pauseVoiceAriaLabel,
+  resumeVoiceAriaLabel,
+  cancelEditAriaLabel,
+  deleteVoiceAriaLabel,
+  deleteFileAriaLabel,
   ...props
 }) => {
   const theme = useTheme();
@@ -251,6 +273,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                   disabled ||
                   uploadFileDisabled
                 }
+                aria-label={attachAriaLabel}
                 onClick={handleOpenFiles}
               >
                 <AttachIcon
@@ -295,7 +318,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                     </InputMessageContentTextMessage>
                   </InputMessageContentTextWrapper>
                 </InputMessageContentInfo>
-                <InputMessageCloseEditButton onClick={editingProps.resetEdit}>
+                <InputMessageCloseEditButton
+                  aria-label={cancelEditAriaLabel}
+                  onClick={editingProps.resetEdit}
+                >
                   <IconProvider size={18}>
                     <CloseIcon />
                   </IconProvider>
@@ -315,7 +341,13 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             files={files}
             handleImageClick={handleImageClick}
             handleDeleteFile={handleDeleteFile}
+            deleteFileAriaLabel={deleteFileAriaLabel}
           />
+          {imageRequiredText && (
+            <InputMessageConcatenateWarning>
+              {imageRequiredText}
+            </InputMessageConcatenateWarning>
+          )}
           {voiceFiles.length > 1 && (
             <InputMessageConcatenateWarning>
               {concatenateText}
@@ -339,6 +371,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
                     disableTranscription
                   />
                   <InputMessageVoiceFileDelete
+                    aria-label={deleteVoiceAriaLabel}
                     onClick={handleVoiceFileDelete.bind(null, file)}
                   />
                 </InputMessageVoiceTrack>
@@ -368,14 +401,24 @@ export const InputMessage: React.FC<InputMessageProps> = ({
         <InputMessageButtons>
           {isVoiceRecording &&
             (isVoicePaused ? (
-              <InputMessageVoicePlayButton onClick={handleVoiceResume} />
+              <InputMessageVoicePlayButton
+                aria-label={resumeVoiceAriaLabel}
+                onClick={handleVoiceResume}
+              />
             ) : (
-              <InputMessageVoicePauseButton onClick={handleVoicePause} />
+              <InputMessageVoicePauseButton
+                aria-label={pauseVoiceAriaLabel}
+                onClick={handleVoicePause}
+              />
             ))}
           {voice && (
             <InputMessageVoiceButton
               $isRecording={isVoiceRecording}
               disabled={disabled || sendDisabled}
+              aria-label={
+                isVoiceRecording ? stopVoiceAriaLabel : voiceAriaLabel
+              }
+              aria-pressed={isVoiceRecording}
               onClick={
                 !isVoiceRecording
                   ? handleVoiceRecordStart
@@ -387,6 +430,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           {!hiddenSend && !isVoiceRecording && (
             <InputMessageSendButton
               disabled={disabled || sendDisabled || isVoiceRecording}
+              aria-label={
+                editingProps?.isEditing
+                  ? (saveAriaLabel ?? sendAriaLabel)
+                  : sendAriaLabel
+              }
               onClick={handleSend}
               {...(theme.bright && {
                 iconFill: theme.default.colors.base.black,

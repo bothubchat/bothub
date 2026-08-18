@@ -22,6 +22,7 @@ import {
   MessageTag,
   MessageTransaction,
   MessageVoice,
+  MessageMusic,
   MessageReasoningBlock,
 } from '@/ui/components/message';
 import { StoryDecorator } from '@/ui/story-decorator';
@@ -637,6 +638,31 @@ export const Video: MessageStory = {
   },
 };
 
+export const Music: MessageStory = {
+  args: {
+    ...User.args,
+    children: (
+      <MessageMusic
+        src={sound}
+        coverSrc={image}
+        title="Track name"
+      />
+    ),
+  },
+};
+
+export const MusicWithoutCover: MessageStory = {
+  args: {
+    ...User.args,
+    children: (
+      <MessageMusic
+        src={sound}
+        title="Suno track"
+      />
+    ),
+  },
+};
+
 export const MarkdownImage: MessageStory = {
   args: {
     ...Assistant.args,
@@ -715,6 +741,7 @@ export const Reasoning = () => {
         }
         content={
           <MessageSearchResults
+            pendingMessage
             results={[
               {
                 url: 'https://www.google.com',

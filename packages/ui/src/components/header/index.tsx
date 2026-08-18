@@ -32,6 +32,7 @@ export interface HeaderProps
   onOpen?: HeaderOpenEventHandler;
   onTabletOpen?: HeaderTabletToggleEventHandler;
   infoBlock?: React.ReactNode;
+  menuToggleAriaLabel?: string;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -49,6 +50,7 @@ export const Header: React.FC<HeaderProps> = ({
   onTabletOpen,
   isPreset = false,
   infoBlock,
+  menuToggleAriaLabel,
   ...props
 }) => {
   const initialIsMenuOpen = open;
@@ -102,7 +104,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {themeSwitcher}
                 {lang}
                 {user}
-                <HeaderMenuToggleButton />
+                <HeaderMenuToggleButton aria-label={menuToggleAriaLabel} />
               </HeaderRight>
             </HeaderContainerContent>
             <HeaderContainerContent
@@ -113,6 +115,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <HeaderMenuToggleButton
                   isOpen={tabletMenuOpen}
                   onTabletOpen={onTabletOpen}
+                  aria-label={menuToggleAriaLabel}
                 />
                 {buttonsTablet}
               </HeaderLeft>
@@ -129,7 +132,9 @@ export const Header: React.FC<HeaderProps> = ({
               <HeaderCenter>{logo}</HeaderCenter>
               <HeaderRight>
                 {lang}
-                {variant === 'main' && <HeaderMenuToggleButton />}
+                {variant === 'main' && (
+                  <HeaderMenuToggleButton aria-label={menuToggleAriaLabel} />
+                )}
               </HeaderRight>
             </HeaderContainerContent>
           </HeaderContainer>

@@ -12,6 +12,7 @@ export interface ChipProps extends React.ComponentProps<'div'> {
   isImage?: boolean;
   onDelete?: ChipDeleteEventHandler;
   handleImageClick?: () => void;
+  deleteAriaLabel?: string;
 }
 
 export const Chip: React.FC<ChipProps> = ({
@@ -22,6 +23,7 @@ export const Chip: React.FC<ChipProps> = ({
   isImage,
   onDelete,
   handleImageClick,
+  deleteAriaLabel,
   ...props
 }) => (
   <ChipStyled
@@ -59,6 +61,7 @@ export const Chip: React.FC<ChipProps> = ({
     {typeof children !== 'string' && children}
     {onDelete && (
       <ChipDeleteButton
+        aria-label={deleteAriaLabel}
         onClick={(e) => {
           e.stopPropagation();
           onDelete(e);

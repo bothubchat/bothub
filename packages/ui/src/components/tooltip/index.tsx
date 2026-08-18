@@ -216,6 +216,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           $inverted={inverted}
           ref={tooltipRef as React.RefObject<HTMLDivElement>}
           className={className}
+          role="tooltip"
           style={{
             ...style,
             top: top.length <= 1 ? top[0] : `calc(${top.join(' + ')})`,

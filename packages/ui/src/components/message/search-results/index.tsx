@@ -34,12 +34,14 @@ export type MessageSearchResultsProps = {
   ) => void;
   regexFilterDownloadHandler?: RegExp;
   downloadText?: string;
+  pendingMessage: boolean;
 };
 
 export const MessageSearchResults: React.FC<MessageSearchResultsProps> = ({
   downloadHandler,
   downloadText,
   regexFilterDownloadHandler,
+  pendingMessage,
   ...props
 }) => (
   <SearchResultsList>
@@ -48,6 +50,7 @@ export const MessageSearchResults: React.FC<MessageSearchResultsProps> = ({
         result={result}
         index={index}
         key={index}
+        pendingMessage={pendingMessage}
         downloadText={downloadText}
         {...(regexFilterDownloadHandler?.test(result.url) && {
           downloadHandler: () => downloadHandler?.(result, index),
@@ -61,9 +64,11 @@ const MessageSearchResultsItem = memo(
   ({
     result,
     index,
+    pendingMessage,
     downloadHandler,
     downloadText,
   }: {
+    pendingMessage: boolean;
     result: MessageSearchResultsItemType;
     index: number;
     downloadHandler?: () => void;
@@ -80,6 +85,7 @@ const MessageSearchResultsItem = memo(
     return (
       <SearchResultsItemStyled>
         <SearchResultsItemLink
+          $pendingMessage={pendingMessage}
           target="_blank"
           href={result.url}
           rel="noreferrer"

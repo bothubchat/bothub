@@ -78,6 +78,7 @@ type MessageActionsProps = {
   onTgCopy?: MessageTgCopyEventHandler;
   onCopy?: MessageActionEventHandler;
   onDownload?: () => void;
+  menuAriaLabel?: string | null;
 };
 
 export const MessageActions = ({
@@ -115,6 +116,7 @@ export const MessageActions = ({
   onTgCopy,
   onCopy,
   onDownload,
+  menuAriaLabel,
 }: MessageActionsProps) => {
   const theme = useTheme();
 
@@ -390,6 +392,9 @@ export const MessageActions = ({
               }}
             >
               <ActionButton
+                tooltipLabel={menuAriaLabel}
+                aria-expanded={menuShown}
+                aria-haspopup="menu"
                 onMouseEnter={
                   'ontouchstart' in window ? undefined : handleButtonHoverIn
                 }
