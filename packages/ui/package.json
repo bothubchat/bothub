@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.80.10-fix-18095-date-561aa42b-ff62-44d9-9071-d8660549d0ad",
+  "version": "2.80.25-feat-aria-props-c1fdebde-3061-485d-a53e-4610276fd848",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",

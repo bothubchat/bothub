@@ -38,7 +38,10 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
       {label && <ColorPickerLabel>{label}</ColorPickerLabel>}
       <ColorPickerBottom
         $active={open}
-        onClick={() => setOpen(!open)}
+        onClick={(event) => {
+          event.preventDefault();
+          setOpen(!open);
+        }}
       >
         <ColorPickerHex>{color}</ColorPickerHex>
         {preview && <ColorPickerPreview style={{ backgroundColor: color }} />}

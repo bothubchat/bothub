@@ -33,6 +33,8 @@ export interface SidebarChatDefaultProps
   skeleton?: boolean;
   isDefault?: boolean;
   onToggleCheckbox?: () => unknown;
+  dragAriaLabel?: string;
+  progressAriaLabel?: string;
 }
 
 export const SidebarChat: React.FC<SidebarChatDefaultProps> = ({
@@ -45,6 +47,8 @@ export const SidebarChat: React.FC<SidebarChatDefaultProps> = ({
   promtQueue,
   progress,
   skeleton,
+  dragAriaLabel,
+  progressAriaLabel,
   ...props
 }) => {
   const { isOpen: sidebarOpen } = useSidebar();
@@ -93,6 +97,8 @@ export const SidebarChat: React.FC<SidebarChatDefaultProps> = ({
           {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
             <SidebarChatButton
               {...props}
+              aria-label={props['aria-label'] ?? name}
+              aria-current={active ? 'page' : undefined}
               onMouseEnter={handleTooltipMouseEnter}
               onMouseLeave={handleTooltipMouseLeave}
             >
@@ -110,12 +116,14 @@ export const SidebarChat: React.FC<SidebarChatDefaultProps> = ({
     <SidebarChatBox
       {...props}
       $active={active}
+      aria-current={active ? 'page' : undefined}
     >
       <SidebarChatStyled ref={setNodeRef}>
         {isEdit ? (
           <SidebarChatDragHandle
             {...attributes}
             {...listeners}
+            aria-label={dragAriaLabel}
           >
             <IconProvider size={18}>
               <SidebarChatDraggbleButton>
@@ -174,6 +182,7 @@ export const SidebarChat: React.FC<SidebarChatDefaultProps> = ({
         typeof progress?.value === 'number' && (
           <SidebarChatPromtLine
             percent={Math.round((progress.value / progress.max) * 100)}
+            aria-label={progressAriaLabel}
           />
         )}
     </SidebarChatBox>

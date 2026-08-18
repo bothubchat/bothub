@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  MessageSourceStyled,
   MessageVideoContainer,
   MessageVideoControls,
   MessageVideoControlsButton,
   MessageVideoControlsButtons,
   MessageVideoDownload,
+  MessageVideoSkeleton,
   MessageVideoStyled,
   MessageVideoTimeLine,
   MessageVideoTimeText,
@@ -16,21 +16,76 @@ import { PauseButtonIcon } from '@/ui/icons/pause-button';
 import { PlayButtonIcon } from '@/ui/icons/play-button';
 import { MessageVideoVolume } from './volume';
 import { DownloadImgIcon } from '@/ui/icons';
-import { getVideoMimeType } from '@/ui/utils/getVideoMimeType';
 
 export type MessageVideoProps = {
   src: string;
+  isLoading?: boolean;
+  checkAlive?: () => Promise<boolean>;
+  refreshSrc?: () => void;
   downloadVideo?: () => void;
 };
 
+type FullscreenElement = HTMLElement & {
+  webkitRequestFullscreen?: () => Promise<void> | void;
+  webkitRequestFullScreen?: () => Promise<void> | void;
+};
+
+type FullscreenDocument = Document & {
+  webkitExitFullscreen?: () => Promise<void> | void;
+  webkitFullscreenElement?: Element | null;
+};
+
 const formatTime = (time: number) => {
+  if (!Number.isFinite(time) || time < 0) {
+    return '00:00';
+  }
+
   const minutes = Math.floor(time / 60);
   const seconds = Math.floor(time % 60);
   return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 };
 
+const getFullscreenElement = () => {
+  const doc = document as FullscreenDocument;
+  return doc.fullscreenElement ?? doc.webkitFullscreenElement ?? null;
+};
+
+const requestElementFullscreen = async (element: HTMLElement) => {
+  const el = element as FullscreenElement;
+
+  if (el.requestFullscreen) {
+    await el.requestFullscreen();
+    return;
+  }
+
+  if (el.webkitRequestFullscreen) {
+    await el.webkitRequestFullscreen();
+    return;
+  }
+
+  if (el.webkitRequestFullScreen) {
+    await el.webkitRequestFullScreen();
+  }
+};
+
+const exitDocumentFullscreen = async () => {
+  const doc = document as FullscreenDocument;
+
+  if (doc.exitFullscreen && doc.fullscreenElement) {
+    await doc.exitFullscreen();
+    return;
+  }
+
+  if (doc.webkitExitFullscreen && doc.webkitFullscreenElement) {
+    await doc.webkitExitFullscreen();
+  }
+};
+
 export const MessageVideo: React.FC<MessageVideoProps> = ({
   src,
+  isLoading: externalLoading = false,
+  checkAlive,
+  refreshSrc,
   downloadVideo,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -39,23 +94,44 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
   const [videoDuration, setVideoDuration] = useState('00:00');
   const [videoProgress, setVideoProgress] = useState(0);
   const [videoFullScreen, setVideoFullScreen] = useState(false);
+  const [internalLoading, setInternalLoading] = useState(true);
   const [timeLineMouseMove, setTimeLineMouseMove] = useState(false);
   const videoContainer = useRef<HTMLDivElement>(null);
   const iconSize = videoFullScreen ? 28 : 24;
 
-  const mimeType = getVideoMimeType(src);
+  const isLoading = internalLoading || externalLoading;
 
-  const handleStart = useCallback(() => {
-    if (videoRef.current) {
-      videoRef.current.play();
-      setVideoPlayed(true);
+  const markReady = useCallback((video: HTMLVideoElement) => {
+    if (Number.isFinite(video.duration) && video.duration > 0) {
+      setVideoDuration(formatTime(video.duration));
     }
+    setInternalLoading(false);
   }, []);
+
+  const handleStart = useCallback(async () => {
+    if (isLoading) return;
+
+    if (checkAlive) {
+      const isAlive = await checkAlive();
+
+      if (!isAlive) {
+        refreshSrc?.();
+        return;
+      }
+    }
+
+    if (videoRef.current) {
+      try {
+        await videoRef.current.play();
+      } catch {
+        setVideoPlayed(false);
+      }
+    }
+  }, [checkAlive, refreshSrc, isLoading]);
 
   const handlePause = useCallback(() => {
     if (videoRef.current) {
       videoRef.current.pause();
-      setVideoPlayed(false);
     }
   }, []);
 
@@ -63,35 +139,38 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
     (e: React.SyntheticEvent<HTMLVideoElement>) => {
       const { currentTime, duration } = e.currentTarget;
 
-      const time = formatTime(currentTime);
-      setVideoCurrentTime(time);
+      setVideoCurrentTime(formatTime(currentTime));
 
-      const progress = (currentTime / duration) * 100;
-      setVideoProgress(progress);
+      if (!Number.isFinite(duration) || duration <= 0) {
+        setVideoProgress(0);
+        return;
+      }
+
+      setVideoProgress((currentTime / duration) * 100);
     },
     [],
   );
 
   const handleVideoLoaded = useCallback(
     (e: React.SyntheticEvent<HTMLVideoElement>) => {
-      const { duration } = e.currentTarget;
-
-      const time = formatTime(duration);
-      setVideoDuration(time);
+      markReady(e.currentTarget);
     },
-    [],
+    [markReady],
   );
 
   const handleTimeUpdateClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       e.preventDefault();
       if (!videoRef.current) return;
+
+      const { duration } = videoRef.current;
+      if (!Number.isFinite(duration) || duration <= 0) return;
+
       const { clientX } = e;
       const { width, left } = e.currentTarget.getBoundingClientRect();
       const progress = ((clientX - left) / width) * 100;
       setVideoProgress(progress);
-      videoRef.current.currentTime =
-        (progress / 100) * videoRef.current.duration;
+      videoRef.current.currentTime = (progress / 100) * duration;
     },
     [],
   );
@@ -105,43 +184,78 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
       if (!timeLineMouseMove) return;
       handleTimeUpdateClick(event);
     },
-    [timeLineMouseMove],
+    [timeLineMouseMove, handleTimeUpdateClick],
   );
 
   const handleStartMouseLeave = useCallback(() => {
     setTimeLineMouseMove(false);
   }, []);
 
-  const handleFullscreen = useCallback(() => {
+  const handleFullscreen = useCallback(async () => {
     if (!videoContainer.current) return;
-    if (videoFullScreen) {
-      document.exitFullscreen();
-    } else {
-      videoContainer.current.requestFullscreen();
+
+    try {
+      if (getFullscreenElement()) {
+        await exitDocumentFullscreen();
+      } else {
+        await requestElementFullscreen(videoContainer.current);
+      }
+    } catch {
+      // Safari may reject fullscreen outside a user gesture or without prefix support.
     }
-    setVideoFullScreen(!videoFullScreen);
-  }, [videoFullScreen]);
+  }, []);
 
   const handleChangeVolume = useCallback((volume: number) => {
     if (videoRef.current) {
       const newVolume = Math.floor(volume) / 100;
       videoRef.current.volume = newVolume;
+      videoRef.current.muted = newVolume === 0;
     }
   }, []);
 
   useEffect(() => {
+    setVideoPlayed(false);
+    setVideoCurrentTime('00:00');
+    setVideoDuration('00:00');
+    setVideoProgress(0);
+    setInternalLoading(true);
+
+    const video = videoRef.current;
+    if (!video) return;
+
+    video.load();
+
+    // Safari иногда уже имеет metadata к моменту смены src.
+    if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+      markReady(video);
+    }
+  }, [src, markReady]);
+
+  useEffect(() => {
     const handleDocumentFullscreenChange = () => {
-      setVideoFullScreen(document.fullscreenElement !== null);
+      setVideoFullScreen(getFullscreenElement() !== null);
     };
 
-    window.addEventListener('fullscreenchange', handleDocumentFullscreenChange);
+    document.addEventListener(
+      'fullscreenchange',
+      handleDocumentFullscreenChange,
+    );
+    document.addEventListener(
+      'webkitfullscreenchange',
+      handleDocumentFullscreenChange,
+    );
+
     return () => {
-      window.removeEventListener(
+      document.removeEventListener(
         'fullscreenchange',
         handleDocumentFullscreenChange,
       );
+      document.removeEventListener(
+        'webkitfullscreenchange',
+        handleDocumentFullscreenChange,
+      );
     };
-  }, [videoPlayed]);
+  }, []);
 
   return (
     <MessageVideoContainer
@@ -151,69 +265,85 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
       onMouseUp={handleStartMouseLeave}
     >
       <MessageVideoStyled
+        key={src}
         ref={videoRef}
+        src={src}
+        playsInline
+        preload="metadata"
         onClick={videoPlayed ? handlePause : handleStart}
-        onLoadedData={handleVideoLoaded}
+        onLoadedMetadata={handleVideoLoaded}
+        onCanPlay={handleVideoLoaded}
         onTimeUpdate={handleTimeUpdate}
+        onPlay={() => setVideoPlayed(true)}
+        onPause={() => setVideoPlayed(false)}
         onEnded={handlePause}
+        onError={() => setInternalLoading(false)}
         $isFullScreen={videoFullScreen}
-      >
-        <MessageSourceStyled
-          src={src}
-          type={mimeType}
+        $isLoading={isLoading}
+      />
+      {isLoading && (
+        <MessageVideoSkeleton
+          $isFullScreen={videoFullScreen}
+          fullWidth
+          variant="rounded"
         />
-      </MessageVideoStyled>
-      <MessageVideoControls
-        $isFullScreen={videoFullScreen}
-        $isVisible={!videoPlayed}
-      >
-        <MessageVideoTimeLine
-          onClick={handleTimeUpdateClick}
-          onMouseDown={handleStartMouseMove}
-          $progress={videoProgress}
-        />
-        <MessageVideoControlsButtons $isFullScreen={videoFullScreen}>
-          {videoPlayed ? (
-            <MessageVideoControlsButton onClick={handlePause}>
-              <PauseButtonIcon size={iconSize} />
-            </MessageVideoControlsButton>
-          ) : (
-            <MessageVideoControlsButton onClick={handleStart}>
-              <PlayButtonIcon size={iconSize} />
-            </MessageVideoControlsButton>
-          )}
-          <MessageVideoVolume
-            iconSize={iconSize}
-            handleChangeVolume={handleChangeVolume}
+      )}
+      {!isLoading && (
+        <MessageVideoControls
+          $isFullScreen={videoFullScreen}
+          $isVisible={!videoPlayed}
+        >
+          <MessageVideoTimeLine
+            onClick={handleTimeUpdateClick}
+            onMouseDown={handleStartMouseMove}
+            $progress={videoProgress}
           />
-          <MessageVideoTimeText>
-            {videoCurrentTime} / {videoDuration}
-          </MessageVideoTimeText>
-          {downloadVideo && (
-            <MessageVideoDownload
-              iconFill="#fff"
-              disableHoverColor
-              iconSize={iconSize}
-              onClick={downloadVideo}
-            >
-              <DownloadImgIcon />
-            </MessageVideoDownload>
-          )}
-          <MessageVideoControlsButton onClick={handleFullscreen}>
-            {videoFullScreen ? (
-              <MinWindowIcon
-                fill="#fff"
-                size={iconSize}
-              />
+          <MessageVideoControlsButtons $isFullScreen={videoFullScreen}>
+            {videoPlayed ? (
+              <MessageVideoControlsButton onClick={handlePause}>
+                <PauseButtonIcon size={iconSize} />
+              </MessageVideoControlsButton>
             ) : (
-              <MaxWindowIcon
-                stroke="#fff"
-                size={iconSize}
-              />
+              <MessageVideoControlsButton
+                onClick={handleStart}
+                disabled={isLoading}
+              >
+                <PlayButtonIcon size={iconSize} />
+              </MessageVideoControlsButton>
             )}
-          </MessageVideoControlsButton>
-        </MessageVideoControlsButtons>
-      </MessageVideoControls>
+            <MessageVideoVolume
+              iconSize={iconSize}
+              handleChangeVolume={handleChangeVolume}
+            />
+            <MessageVideoTimeText>
+              {videoCurrentTime} / {videoDuration}
+            </MessageVideoTimeText>
+            {downloadVideo && (
+              <MessageVideoDownload
+                iconFill="#fff"
+                disableHoverColor
+                iconSize={iconSize}
+                onClick={downloadVideo}
+              >
+                <DownloadImgIcon />
+              </MessageVideoDownload>
+            )}
+            <MessageVideoControlsButton onClick={handleFullscreen}>
+              {videoFullScreen ? (
+                <MinWindowIcon
+                  fill="#fff"
+                  size={iconSize}
+                />
+              ) : (
+                <MaxWindowIcon
+                  stroke="#fff"
+                  size={iconSize}
+                />
+              )}
+            </MessageVideoControlsButton>
+          </MessageVideoControlsButtons>
+        </MessageVideoControls>
+      )}
     </MessageVideoContainer>
   );
 };

@@ -15,11 +15,15 @@ export const Highlight: React.FC<HighlightProps> = memo(
     const elRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
-      if (!elRef.current) {
-        return;
-      }
+      const el = elRef.current;
+      if (!el) return;
 
-      hljs.highlightElement(elRef.current);
+      el.textContent = String(children ?? '');
+      hljs.highlightElement(el);
+
+      return () => {
+        delete el.dataset.highlighted;
+      };
     }, [className, children]);
 
     return (
@@ -27,9 +31,7 @@ export const Highlight: React.FC<HighlightProps> = memo(
         <code
           className={className}
           ref={elRef}
-        >
-          {children}
-        </code>
+        />
       </pre>
     );
   },

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { MessageMultilineCodeCopyButtonStyled } from './styled';
 import { useMessage } from '@/ui/components/message/context';
 import { MessageVariant } from '@/ui/components/message/types';
@@ -16,7 +16,7 @@ export const MessageMultilineCodeCopyButton: React.FC<
 > = ({ code, messageVariant, messageColor }) => {
   const { onCodeCopy } = useMessage();
 
-  const [isFocus, setIsFocus] = useState(false);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
   const [isCopied, setIsCopied] = useState(false);
 
   const handleClick = useCallback(() => {
@@ -24,29 +24,35 @@ export const MessageMultilineCodeCopyButton: React.FC<
       return;
     }
 
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    setIsCopied(true);
     if (typeof code === 'string') {
       onCodeCopy?.(code);
     }
 
-    setIsFocus(true);
-    setIsCopied(true);
+    setTimeoutId(setTimeout(() => setIsCopied(false), 1000));
   }, [isCopied, code, onCodeCopy]);
 
-  const handleBlur = useCallback(() => {
-    setIsFocus(false);
-    setIsCopied(false);
-  }, []);
+  useEffect(
+    () => () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    },
+    [],
+  );
 
   return (
     <MessageMultilineCodeCopyButtonStyled
-      $focus={isFocus}
+      $focus={isCopied}
       $messageVariant={messageVariant}
       $messageColor={messageColor}
-      onBlur={handleBlur}
       onClick={handleClick}
     >
-      {!isFocus && <CopyIcon />}
-      {isFocus && <CheckSmallIcon />}
+      {!isCopied && <CopyIcon />}
+      {isCopied && <CheckSmallIcon />}
     </MessageMultilineCodeCopyButtonStyled>
   );
 };

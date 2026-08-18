@@ -28,6 +28,9 @@ export interface MessageVoiceProps extends React.ComponentProps<'div'> {
   src: string;
   waveData: number[];
   duration: number;
+  isLoading?: boolean;
+  checkAlive?: () => Promise<boolean>;
+  refreshSrc?: () => void;
   disableTranscription?: boolean;
   variant?: MessageVoiceVariant;
 }
@@ -38,6 +41,9 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   waveData,
   duration,
   tabIndex = 0,
+  isLoading: externalLoading = false,
+  checkAlive,
+  refreshSrc,
   disableTranscription,
   variant = 'message',
   children,
@@ -50,10 +56,12 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   const audioRef = useRef<HTMLAudioElement>(null);
   const wavesRef = useRef<SVGSVGElement>(null);
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [internalLoading, setInternalLoading] = useState<boolean>(true);
   const [isPlayed, setIsPlayed] = useState(false);
   const [isTextShowed, setIsTextShowed] = useState(false);
   const [currentTime, setCurrentTime] = useState<number | null>(null);
+
+  const isLoading = internalLoading || externalLoading;
 
   useEffect(() => {
     const handleOtherAudioPlay = (event: CustomEvent) => {
@@ -82,28 +90,51 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
     };
   }, []);
 
-  const handlePlay = useCallback(() => {
-    const event = new CustomEvent(AUDIO_PLAY_EVENT, {
-      detail: { audio: audioRef.current },
-    });
-    window.dispatchEvent(event);
+  useEffect(() => {
+    setIsPlayed(false);
+    setCurrentTime(null);
+    setInternalLoading(true);
 
-    setIsPlayed(true);
-  }, []);
+    if (audioRef.current) {
+      audioRef.current.load();
+    }
+  }, [src]);
 
-  const handleToggle = useCallback(() => {
-    const audioEl = audioRef.current;
+  const handleStart = useCallback(async () => {
+    if (isLoading) return;
 
-    if (!audioEl) {
+    const isAlive = await checkAlive?.();
+
+    if (!isAlive) {
+      refreshSrc?.();
       return;
     }
 
-    if (!isPlayed) {
-      audioEl.play();
-    } else {
-      audioEl.pause();
+    if (audioRef.current) {
+      const event = new CustomEvent(AUDIO_PLAY_EVENT, {
+        detail: { audio: audioRef.current },
+      });
+      window.dispatchEvent(event);
+
+      audioRef.current.play();
     }
-  }, [isPlayed, audioRef.current]);
+  }, [checkAlive, refreshSrc, isLoading]);
+
+  const handlePause = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+  }, []);
+
+  const handleToggle = useCallback(() => {
+    if (!audioRef.current || isLoading) return;
+
+    if (!isPlayed) {
+      handleStart();
+    } else {
+      handlePause();
+    }
+  }, [isPlayed, isLoading, handleStart, handlePause]);
 
   const handleTimeUpdate = useCallback(() => {
     const audioEl = audioRef.current;
@@ -113,7 +144,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
     }
 
     setCurrentTime(audioEl.currentTime);
-  }, [audioRef.current]);
+  }, []);
 
   const handleWavesClick = useCallback<React.MouseEventHandler>(
     (event) => {
@@ -122,23 +153,27 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       const audioEl = audioRef.current;
       const wavesEl = wavesRef.current;
 
-      if (!audioEl || !wavesEl) {
+      if (!audioEl || !wavesEl || isLoading) {
         return;
       }
 
       const rect = wavesEl.getBoundingClientRect();
       const { width } = rect;
       const x = event.clientX - rect.left;
-      const currentTime = (x / width) * duration;
+      const newTime = (x / width) * duration;
 
-      audioEl.play();
-      audioEl.currentTime = currentTime;
+      audioEl.currentTime = newTime;
+
+      if (!isPlayed) {
+        handleStart();
+      }
     },
-    [audioRef.current, duration],
+    [duration, isPlayed, isLoading, handleStart],
   );
 
   const handleEnded = useCallback(() => {
     setCurrentTime(null);
+    setIsPlayed(false);
   }, []);
 
   const handleTextToggle = useCallback<React.MouseEventHandler>(
@@ -155,9 +190,9 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       <MessageVoiceAudio
         ref={audioRef}
         src={src}
-        onPlay={handlePlay}
-        onPause={setIsPlayed.bind(null, false)}
-        onCanPlayThrough={setIsLoading.bind(null, false)}
+        onPlay={() => setIsPlayed(true)}
+        onPause={() => setIsPlayed(false)}
+        onCanPlayThrough={() => setInternalLoading(false)}
         onTimeUpdate={handleTimeUpdate}
         onEnded={handleEnded}
       />
