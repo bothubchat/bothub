@@ -8,11 +8,13 @@ type HeaderTabletToggleEventHandler = () => unknown;
 export interface HeaderMenuToggleButtonProps {
   isOpen?: boolean;
   onTabletOpen?: HeaderTabletToggleEventHandler;
+  'aria-label'?: string;
 }
 
 export const HeaderMenuToggleButton: React.FC<HeaderMenuToggleButtonProps> = ({
   isOpen,
   onTabletOpen,
+  'aria-label': ariaLabel,
 }) => {
   const { variant, isMenuOpen, setIsMenuOpen } = useHeader();
 
@@ -27,7 +29,8 @@ export const HeaderMenuToggleButton: React.FC<HeaderMenuToggleButtonProps> = ({
   return (
     <HeaderMenuToggleButtonStyled
       $variant={variant}
-      aria-label="Menu Toggle Button"
+      aria-label={ariaLabel}
+      aria-expanded={isOpen ?? isMenuOpen}
       onClick={toggleMenu}
     >
       <HeaderMenuToggleIcon isOpen={isOpen} />
