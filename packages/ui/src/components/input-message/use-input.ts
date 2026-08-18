@@ -6,6 +6,7 @@ export type MessageSubmitKey = 'enter' | 'ctrlEnter';
 interface UseInputProps {
   initialMessage?: string;
   disabled?: boolean;
+  sendDisabled?: boolean;
   autoFocus?: boolean;
   messageSubmitKey?: MessageSubmitKey;
   onChange?: (value: string) => unknown;
@@ -18,6 +19,7 @@ interface UseInputProps {
 export const useInput = ({
   initialMessage,
   disabled,
+  sendDisabled,
   autoFocus,
   messageSubmitKey = 'enter',
   onChange,
@@ -104,6 +106,8 @@ export const useInput = ({
 
     const handleKeyDown = (event: KeyboardEvent) => {
       event.stopPropagation();
+
+      if (sendDisabled) return;
 
       if (event.key !== 'Enter') {
         return;
