@@ -80,6 +80,7 @@ export interface InputMessageProps
   uploadFileDisabled?: boolean;
   uploadFileAccept?: string;
   uploadFileText?: string;
+  imageRequiredText?: string;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
   messageSubmitKey?: MessageSubmitKey;
@@ -115,6 +116,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   hiddenSend = false,
   message: initialMessage,
   files: initialFiles,
+  imageRequiredText,
   disabled = false,
   sendDisabled = false,
   textAreaDisabled = false,
@@ -341,6 +343,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             handleDeleteFile={handleDeleteFile}
             deleteFileAriaLabel={deleteFileAriaLabel}
           />
+          {imageRequiredText && (
+            <InputMessageConcatenateWarning>
+              {imageRequiredText}
+            </InputMessageConcatenateWarning>
+          )}
           {voiceFiles.length > 1 && (
             <InputMessageConcatenateWarning>
               {concatenateText}
