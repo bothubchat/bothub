@@ -3,6 +3,7 @@ import {
   forwardRef,
   useCallback,
   useEffect,
+  useId,
   useRef,
   type PropsWithChildren,
   type ReactNode,
@@ -21,6 +22,8 @@ export type ModalWindowlProps = {
   hideCloseButton?: boolean;
   onClose?: ModalCloseEventHandler;
   onHeightChange?: (height: number) => void;
+  'aria-label'?: string;
+  closeAriaLabel?: string;
 } & PropsWithChildren;
 
 function assignRef<T>(ref: Ref<T> | undefined, value: T | null): void {
@@ -43,9 +46,12 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
       hideCloseButton = false,
       onClose,
       onHeightChange,
+      'aria-label': ariaLabel,
+      closeAriaLabel,
     },
     ref,
   ) => {
+    const titleId = useId();
     const modalWindowRef = useRef<HTMLDivElement | null>(null);
     const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
@@ -108,17 +114,22 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
             ref={setModalWindowRef}
             style={style}
             className={className}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={typeof title === 'string' ? titleId : undefined}
+            aria-label={typeof title === 'string' ? undefined : ariaLabel}
           >
             {images}
             <S.ModalWindowBody>
               {typeof title === 'string' ? (
-                <S.ModalWindowTitle>{title}</S.ModalWindowTitle>
+                <S.ModalWindowTitle id={titleId}>{title}</S.ModalWindowTitle>
               ) : (
                 title
               )}
               {!hideCloseButton && (
                 <S.ModalWindowCloseButton
                   onClick={onClose}
+                  aria-label={closeAriaLabel}
                   data-test="close modal"
                 >
                   <S.ModalWindowCloseButtonIcon size={24} />

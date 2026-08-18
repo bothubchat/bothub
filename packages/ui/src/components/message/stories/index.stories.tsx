@@ -741,6 +741,7 @@ export const Reasoning = () => {
         }
         content={
           <MessageSearchResults
+            pendingMessage
             results={[
               {
                 url: 'https://www.google.com',

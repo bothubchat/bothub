@@ -30,6 +30,7 @@ export const MessageImage: React.FC<MessageImageProps> = ({
   progress = false,
   fetchImage = false,
   disableSkeleton = false,
+  alt = '',
   ...props
 }) => {
   const theme = useTheme();
@@ -82,6 +83,7 @@ export const MessageImage: React.FC<MessageImageProps> = ({
           $clickable={clickable}
           $progress={progress}
           $loading={isLoading && !disableSkeleton}
+          alt={alt}
           {...props}
           {...(fetchImage &&
             imageUrl && {
