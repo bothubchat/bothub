@@ -6,11 +6,17 @@ import { useTheme } from '@/ui/theme';
 import { ButtonProps } from '@/ui/components/button';
 import { SidebarToggleLeft, SidebarToggleRight } from '@/ui/icons';
 
-export type SidebarToggleButtonProps = ButtonProps;
+export type SidebarToggleButtonProps = ButtonProps & {
+  expandAriaLabel?: string;
+  collapseAriaLabel?: string;
+};
 
-export const SidebarToggleButton: React.FC<SidebarToggleButtonProps> = (
-  props,
-) => {
+export const SidebarToggleButton: React.FC<SidebarToggleButtonProps> = ({
+  expandAriaLabel,
+  collapseAriaLabel,
+  'aria-label': ariaLabel,
+  ...props
+}) => {
   const theme = useTheme();
   const { isOpen, setIsOpen } = useSidebar();
 
@@ -23,6 +29,8 @@ export const SidebarToggleButton: React.FC<SidebarToggleButtonProps> = (
     <SidebarToggleButtonStyled
       {...props}
       $isOpen={isOpen}
+      aria-label={ariaLabel ?? (isOpen ? collapseAriaLabel : expandAriaLabel)}
+      aria-expanded={isOpen}
       onClick={handleToggle}
     >
       <IconProvider

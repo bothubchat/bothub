@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useId, useMemo, useRef, useState } from 'react';
 import {
   TextFieldErrorText,
   TextFieldInput,
@@ -59,6 +59,10 @@ export interface TextFieldProps
   onMouseLeave?: React.MouseEventHandler<HTMLInputElement>;
   onValueChange?: TextFieldValueChangeEventHandler;
   onClearButtonClick?: () => void;
+  'aria-label'?: string;
+  clearAriaLabel?: string;
+  showPasswordAriaLabel?: string;
+  hidePasswordAriaLabel?: string;
 }
 
 export const TextField: React.FC<TextFieldProps> = ({
@@ -88,11 +92,18 @@ export const TextField: React.FC<TextFieldProps> = ({
   inputStyles,
   clearable = false,
   bigClearButton = false,
+  'aria-label': ariaLabel,
+  clearAriaLabel,
+  showPasswordAriaLabel,
+  hidePasswordAriaLabel,
   ...props
 }) => {
   const theme = useTheme();
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const inputId = useId();
+  const labelId = useId();
+  const errorId = useId();
 
   const [isFocus, setIsFocus] = useState(false);
   const [isHover, setIsHover] = useState(false);
@@ -181,7 +192,7 @@ export const TextField: React.FC<TextFieldProps> = ({
         </TextFieldLabel>
       )}
       {typeof label === 'string' && !skeleton && (
-        <TextFieldLabel>{label}</TextFieldLabel>
+        <TextFieldLabel id={labelId}>{label}</TextFieldLabel>
       )}
       {typeof label !== 'string' && !skeleton && label}
       {!skeleton && (
@@ -214,6 +225,7 @@ export const TextField: React.FC<TextFieldProps> = ({
             )}
           <TextFieldInput
             ref={inputRef}
+            id={inputId}
             value={value}
             type={inputType}
             name={name}
@@ -229,12 +241,20 @@ export const TextField: React.FC<TextFieldProps> = ({
             $variant={variant}
             autoFocus={autoFocus}
             autoComplete={autoComplete}
+            aria-labelledby={typeof label === 'string' ? labelId : undefined}
+            aria-label={typeof label === 'string' ? undefined : ariaLabel}
+            aria-invalid={Boolean(error)}
+            aria-describedby={error ? errorId : undefined}
           />
           {!!value && type === 'password' && (
             <TextFieldShowpassButton
               onClick={handlePasswordToggle}
               type="button"
               data-test="show-password"
+              aria-label={
+                showPassword ? hidePasswordAriaLabel : showPasswordAriaLabel
+              }
+              aria-pressed={showPassword}
             >
               <EyeIcon
                 fill={theme.colors.grayScale.gray1}
@@ -246,6 +266,7 @@ export const TextField: React.FC<TextFieldProps> = ({
             <TextFieldClearButton
               $big={bigClearButton}
               onClick={handleClear}
+              aria-label={clearAriaLabel}
             />
           )}
           {type !== 'search' && endIcon && (
@@ -265,7 +286,7 @@ export const TextField: React.FC<TextFieldProps> = ({
           <TextFieldSkeleton />
         </TextFieldBlock>
       )}
-      {error && <TextFieldErrorText>{error}</TextFieldErrorText>}
+      {error && <TextFieldErrorText id={errorId}>{error}</TextFieldErrorText>}
     </TextFieldStyled>
   );
 };

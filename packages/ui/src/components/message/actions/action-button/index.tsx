@@ -12,6 +12,8 @@ interface ActionButtonProps {
   onClick?: MessageActionEventHandler;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  'aria-expanded'?: boolean;
+  'aria-haspopup'?: boolean | 'true' | 'false' | 'menu' | 'dialog' | 'listbox';
 }
 
 export const ActionButton = ({
@@ -34,6 +36,7 @@ export const ActionButton = ({
       {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
         <S.MessageActionsButton
           ref={ref}
+          aria-label={tooltipLabel ?? undefined}
           onClick={() => {
             onClick?.({ id, message });
           }}
