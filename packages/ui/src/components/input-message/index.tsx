@@ -199,6 +199,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     handleChange,
   } = useInput({
     initialMessage,
+    sendDisabled,
     disabled,
     autoFocus,
     messageSubmitKey,
