@@ -1,6 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.80.26",
+  "version": "2.80.26-fix-18360-formula-normalization-9c41cd8e-c128-41c0-9c7d-bb016541ffa0",
   "description": "Bothub UI Components",
   "keywords": [
     "bot",
