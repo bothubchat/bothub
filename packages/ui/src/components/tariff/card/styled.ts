@@ -67,14 +67,16 @@ export const TariffCardBackground = styled.div`
 export const TariffCardStyled = styled.div<{
   $variant: TariffType | 'ENTERPRISE';
   $active?: boolean;
+  $clickable?: boolean;
 }>`
   position: relative;
   z-index: 2;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.colors.grayScale.gray7};
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  cursor: ${({ $variant }) =>
-    $variant !== 'ENTERPRISE' ? 'pointer' : 'default'};
+  cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'default')};
   padding: 20px 34px;
   transition: background 0.3s ease;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
@@ -101,10 +103,13 @@ export const TariffCardStyled = styled.div<{
 
 export const TariffCardStyledContent = styled.div<{
   $variant: TariffType | 'ENTERPRISE';
+  $control: 'radio' | 'button';
 }>`
   display: grid;
-  grid-template-columns: ${({ $variant }) =>
-    $variant === 'ENTERPRISE' ? '1fr auto' : 'auto 1fr auto'};
+  grid-template-columns: ${({ $variant, $control }) =>
+    $variant === 'ENTERPRISE' || $control === 'button'
+      ? '1fr auto'
+      : 'auto 1fr auto'};
   align-items: center;
   gap: 14px;
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
@@ -188,6 +193,28 @@ export const TariffCardDescription = styled(Typography).attrs({
   component: 'p',
 })`
   margin-top: 16px;
+`;
+
+export const TariffCardButtonContainer = styled.div`
+  margin-top: auto;
+  padding-top: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(6px);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+
+  ${TariffCardStyled}:hover &,
+  ${TariffCardStyled}:focus-within & {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  @media (hover: none) {
+    display: none;
+  }
 `;
 
 export const TariffCardEnterpriseButtonContainer = styled.div`
