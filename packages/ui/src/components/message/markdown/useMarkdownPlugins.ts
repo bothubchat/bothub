@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import remarkGfm from 'remark-gfm';
 import type { PluggableList } from 'unified';
 import { useTheme } from '@/ui/theme';
-import { remarkMath, rehypeKatex } from './markdown-plugins';
+import { remarkMath, rehypeKatex, remarkCite } from './markdown-plugins';
 
 export const useMarkdownPlugins = (): {
   remarkPlugins: PluggableList;
@@ -11,7 +11,7 @@ export const useMarkdownPlugins = (): {
   const theme = useTheme();
 
   const remarkPlugins = useMemo<PluggableList>(
-    () => [remarkGfm, [remarkMath, { singleDollarTextMath: true }]],
+    () => [remarkGfm, [remarkMath, { singleDollarTextMath: true }], remarkCite],
     [],
   );
 

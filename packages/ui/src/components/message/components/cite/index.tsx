@@ -1,10 +1,21 @@
 import React from 'react';
-import { MessageCiteStyled } from './styled';
+import { useMessage } from '../../context';
+import { MessageCiteStyled, MessageCiteStyledProps } from './styled';
 
-export type MessageCiteProps = React.ComponentProps<typeof MessageCiteStyled>;
+export type MessageCiteProps = Omit<
+  React.ComponentProps<typeof MessageCiteStyled>,
+  keyof MessageCiteStyledProps
+>;
 
-export const MessageCite: React.FC<MessageCiteProps> = (props) => (
-  <MessageCiteStyled {...props} />
-);
+export const MessageCite: React.FC<MessageCiteProps> = ({ ...props }) => {
+  const { color } = useMessage();
+
+  return (
+    <MessageCiteStyled
+      $messageColor={color}
+      {...props}
+    />
+  );
+};
 
 export * from './styled';
