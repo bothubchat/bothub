@@ -5,6 +5,7 @@ import {
   GeneratedDocumentBlock,
   MessageBlockquote,
   MessageBold,
+  MessageCite,
   MessageComponentsProps,
   MessageHr,
   MessageImage,
@@ -46,6 +47,7 @@ export function markdownComponents(
     blockquote: ({ children }) => (
       <MessageBlockquote>{children}</MessageBlockquote>
     ),
+    cite: ({ children }) => <MessageCite>{children}</MessageCite>,
     hr: () => <MessageHr />,
     pre: ({ children }) => <MessagePre>{children}</MessagePre>,
     table: ({ children }) => <MessageTable>{children}</MessageTable>,
