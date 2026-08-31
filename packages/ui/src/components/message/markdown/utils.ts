@@ -1,6 +1,7 @@
 const CODE_SEGMENT_PATTERN = /(```[\s\S]*?```|`[^`\n]*`)/g;
 const DISPLAY_MATH_PATTERN = /(\$\$[\s\S]*?\$\$)/g;
 const MATH_OPERATOR_PATTERN = /[=^_\\{}]/;
+const MATH_BODY_PATTERN = /[=^_{}]|\\[a-zA-Z]+|[+\-*/<>]\s*\d|\d\s*[+\-*/<>]/;
 
 function isCodeSegment(segment: string): boolean {
   return segment.startsWith('```') || segment.startsWith('`');
@@ -47,23 +48,21 @@ function looksLikeCurrencySpan(body: string): boolean {
   return /^\d[\d.,]*\s/.test(body);
 }
 
+function looksLikeMathBody(body: string): boolean {
+  return MATH_BODY_PATTERN.test(body);
+}
+
 function normalizeExplicitMathDelimiters(content: string): string {
   return content
     .replace(
       /\\\$\$([\s\S]*?)\\\$\$/g,
       (_, expression: string) => `$$\n${expression.trim()}\n$$`,
     )
-    .replace(
-      /\\\[([\s\S]*?)\\]/g,
-      (_, expression: string) => `$$\n${expression.trim()}\n$$`,
+    .replace(/(?<!\\)\\\[([\s\S]*?)(?<!\\)\\]/g, (match, expression: string) =>
+      looksLikeMathBody(expression) ? `$$\n${expression.trim()}\n$$` : match,
     )
-    .replace(
-      /\\\((.+?)\\\)/g,
-      (_, expression: string) => `$${expression.trim()}$`,
-    )
-    .replace(
-      /\\\$(.+?)\\\$/g,
-      (_, expression: string) => `$${expression.trim()}$`,
+    .replace(/(?<!\\)\\\((.+?)(?<!\\)\\\)/g, (match, expression: string) =>
+      looksLikeMathBody(expression) ? `$${expression.trim()}$` : match,
     );
 }
 
