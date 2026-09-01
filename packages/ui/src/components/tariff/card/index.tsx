@@ -18,10 +18,11 @@ import {
   TariffCardStarUnfilledIcon,
   TariffCardBackground,
   TariffCardDiscount,
+  TariffCardButtonContainer,
 } from './styled';
 import { TariffType } from './types';
 
-type TariffCardProps = {
+type TariffCardCommonProps = {
   label: string;
   variant: TariffType;
   description?: string;
@@ -29,11 +30,24 @@ type TariffCardProps = {
   currency: string;
   price: string;
   discount?: string;
-  selected?: boolean;
   caps: string;
   popularText?: string;
   onClick?: (e: React.MouseEvent) => void;
 };
+
+type TariffCardRadioProps = TariffCardCommonProps & {
+  control?: 'radio';
+  selected?: boolean;
+  button?: never;
+};
+
+type TariffCardButtonProps = TariffCardCommonProps & {
+  control: 'button';
+  button: React.ReactNode;
+  selected?: never;
+};
+
+type TariffCardProps = TariffCardRadioProps | TariffCardButtonProps;
 
 type TariffCardEnterpriseProps = {
   label: string;
@@ -51,6 +65,11 @@ export const TariffCard: React.FC<
       props.onClick?.(e);
     }
   };
+
+  const control =
+    props.variant === 'ENTERPRISE' ? 'button' : (props.control ?? 'radio');
+  const selected =
+    props.variant !== 'ENTERPRISE' && control === 'radio' && !!props.selected;
 
   return (
     <TariffCardIsPopular
@@ -71,14 +90,18 @@ export const TariffCard: React.FC<
         <TariffCardStyled
           onClick={handleClick}
           $variant={props.variant}
-          $active={props.variant !== 'ENTERPRISE' && !!props.selected}
+          $active={selected}
+          $clickable={
+            props.variant !== 'ENTERPRISE' &&
+            (control === 'radio' || !!props.onClick)
+          }
         >
-          <TariffCardStyledContent $variant={props.variant}>
-            {props.variant !== 'ENTERPRISE' && (
-              <Radio
-                onClick={handleClick}
-                checked={!!props.selected}
-              />
+          <TariffCardStyledContent
+            $variant={props.variant}
+            $control={control}
+          >
+            {props.variant !== 'ENTERPRISE' && control === 'radio' && (
+              <Radio checked={selected} />
             )}
             <TariffCardContainer>
               <TariffCardLabel $color={props.variant}>
@@ -104,6 +127,11 @@ export const TariffCard: React.FC<
             )}
           </TariffCardStyledContent>
           <TariffCardDescription>{props.description}</TariffCardDescription>
+          {props.variant !== 'ENTERPRISE' && props.control === 'button' && (
+            <TariffCardButtonContainer onClick={(e) => e.stopPropagation()}>
+              {props.button}
+            </TariffCardButtonContainer>
+          )}
           {props.variant !== 'ENTERPRISE' && props.discount && (
             <TariffCardDiscount>{props.discount}</TariffCardDiscount>
           )}

@@ -13,3 +13,4 @@ export * from './title';
 export * from './link';
 export * from './image';
 export * from './document-copy';
+export * from './cite';

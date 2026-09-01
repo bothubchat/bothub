@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryDecorator } from '@/ui/story-decorator';
+import { Button } from '@/ui/components/button';
 import { TariffCard, TariffCardEnterpriseButton } from '.';
 
 export type TariffCardMeta = Meta<typeof TariffCard>;
@@ -43,6 +44,21 @@ export const Deluxe: TariffCardStory = {
     currency: '₽',
     extraText: 'Вы получаете',
     variant: 'DELUXE',
+    description:
+      'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя',
+  },
+};
+
+export const Purchase: TariffCardStory = {
+  args: {
+    label: 'Elite',
+    price: '5 500',
+    caps: '38 000 000',
+    currency: '₽',
+    extraText: 'Вы получаете',
+    variant: 'ELITE',
+    control: 'button',
+    button: <Button fullWidth>Приобрести</Button>,
     description:
       'Хватит, чтобы написать роман «Евгений Онегин» АС. Пушкина и повесть «Старик и море» Э. Хемингуэя',
   },
