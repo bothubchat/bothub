@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { HeaderVariant } from './types';
 
 export interface HeaderContextValue {
@@ -7,16 +7,29 @@ export interface HeaderContextValue {
   setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const HeaderContext = React.createContext<HeaderContextValue>({
-  variant: 'main',
-  isMenuOpen: false,
-  setIsMenuOpen: () => {},
-});
+export const HeaderContext = React.createContext<
+  HeaderContextValue | undefined
+>(undefined);
 
 export const HeaderProvider: React.FC<
   HeaderContextValue & React.PropsWithChildren
 > = ({ children, ...value }) => (
-  <HeaderContext.Provider value={value}>{children}</HeaderContext.Provider>
+  <HeaderContext.Provider
+    value={useMemo(
+      () => value,
+      [value.isMenuOpen, value.setIsMenuOpen, value.variant],
+    )}
+  >
+    {children}
+  </HeaderContext.Provider>
 );
 
-export const useHeader = () => useContext(HeaderContext);
+export const useHeader = () => {
+  const context = useContext(HeaderContext);
+
+  if (context === undefined) {
+    throw new Error('useHeader must be used within HeaderProvider.');
+  }
+
+  return context;
+};

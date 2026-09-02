@@ -1,5 +1,6 @@
 import React, {
   useCallback,
+  useMemo,
   useRef,
   useState,
   useEffect,
@@ -64,13 +65,19 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
     const [isRight, setIsRight] = useState<boolean>(false);
     const [isTop, setIsTop] = useState<boolean>(false);
     const [isBottom, setIsBottom] = useState<boolean>(false);
+    const previousScrollTopRef = useRef<number>(0);
+    const stickyRef = useRef<boolean>(defaultStickyBottom);
+    const rafIdRef = useRef<number | null>(null);
     const advancedMode = !!scrollShadows;
     const lockedMode = !!scrollLocked;
     const [sticky, setSticky] = useState<boolean>(defaultStickyBottom);
-    const [previousScrollTop, setPreviousScrollTop] = useState<number>(0);
     const scrollShadowsSize = scrollShadows?.size ?? 60;
 
-    const handleScroll = useCallback(
+    useEffect(() => {
+      stickyRef.current = sticky;
+    }, [sticky]);
+
+    const handleScrollImmediately = useCallback(
       (scrollbarEl: HTMLDivElement) => {
         const {
           scrollTop,
@@ -88,25 +95,28 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
           !isBiggerThanContentHeight &&
           Math.round(scrollTop) + 1 < scrollHeight - clientHeight;
 
-        setIsTop(isTop);
-        setIsBottom(isBottom);
-        setIsLeft(!isBiggerThanContentWidth && scrollLeft !== 0);
-        setIsRight(
+        const nextIsLeft = !isBiggerThanContentWidth && scrollLeft !== 0;
+        const nextIsRight =
           !isBiggerThanContentWidth &&
-            Math.round(scrollLeft) + 1 < scrollWidth - clientWidth,
-        );
+          Math.round(scrollLeft) + 1 < scrollWidth - clientWidth;
 
+        setIsTop((prev) => (prev !== isTop ? isTop : prev));
+        setIsBottom((prev) => (prev !== isBottom ? isBottom : prev));
+        setIsLeft((prev) => (prev !== nextIsLeft ? nextIsLeft : prev));
+        setIsRight((prev) => (prev !== nextIsRight ? nextIsRight : prev));
+
+        const previousScrollTop = previousScrollTopRef.current;
         const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
-        setPreviousScrollTop(scrollbarEl.scrollTop);
+        previousScrollTopRef.current = scrollbarEl.scrollTop;
 
         if (withStickyBottom) {
           const scrollBottom =
             scrollbarEl.clientHeight -
             Math.ceil(scrollbarEl.scrollHeight - scrollbarEl.scrollTop);
           if (Math.abs(scrollBottom) < 20 && !isUpScroll) {
-            setSticky(true);
+            setSticky((prev) => prev || true);
           } else if (isUpScroll) {
-            setSticky(false);
+            setSticky((prev) => (!prev ? prev : false));
           }
         }
 
@@ -115,14 +125,21 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         }
         onScroll?.({ isTop, isBottom, previousScrollTop });
       },
-      [
-        scrollbarRef.current,
-        disabled,
-        previousScrollTop,
-        withStickyBottom,
-        scrollShadowsSize,
-        onScroll,
-      ],
+      [disabled, onScroll, scrollShadowsSize, withStickyBottom],
+    );
+
+    const handleScroll = useCallback(
+      (scrollbarEl: HTMLDivElement) => {
+        if (rafIdRef.current !== null) {
+          window.cancelAnimationFrame(rafIdRef.current);
+        }
+
+        rafIdRef.current = window.requestAnimationFrame(() => {
+          handleScrollImmediately(scrollbarEl);
+          rafIdRef.current = null;
+        });
+      },
+      [handleScrollImmediately],
     );
 
     useEffect(() => {
@@ -145,7 +162,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
           container.removeEventListener('wheel', handleWheel);
         }
       };
-    }, [isHorizontalScrollbar, scrollbarRef.current]);
+    }, [isHorizontalScrollbar]);
 
     const setScroll = useCallback<SetScrollFunction>(
       (options) => {
@@ -176,7 +193,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         element: scrollbarRef.current,
         setScroll,
       }),
-      [scrollbarRef.current, setScroll],
+      [setScroll],
     );
 
     useEffect(() => {
@@ -197,14 +214,13 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         observer = new MutationObserver(() => {
           handleScroll(scrollbarEl);
 
-          if (sticky && !lockedMode) {
+          if (stickyRef.current && !lockedMode) {
             scrollbarEl.scrollTop = scrollbarEl.scrollHeight;
           }
         });
 
         observer.observe(scrollbarEl, {
           childList: true,
-          subtree: true,
         });
       }
 
@@ -231,12 +247,16 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
       }
 
       return () => {
+        if (rafIdRef.current !== null) {
+          window.cancelAnimationFrame(rafIdRef.current);
+          rafIdRef.current = null;
+        }
         clearTimeout(slowScrollListener);
         observer?.disconnect();
         window.removeEventListener('resize', resizeListener);
         resizeObserver?.disconnect();
       };
-    }, [scrollbarRef.current, handleScroll, sticky]);
+    }, [handleScroll, lockedMode, sticky]);
 
     const contentNode: React.ReactNode = (
       <ScrollbarContent
@@ -259,17 +279,31 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
     if (!advancedMode) {
       return contentNode;
     }
+    const providerValue = useMemo(
+      () => ({
+        scrollbarSize: size,
+        scrollShadows,
+        setScroll,
+        disabled,
+        isLeft,
+        isRight,
+        isTop,
+        isBottom,
+      }),
+      [
+        disabled,
+        isBottom,
+        isLeft,
+        isRight,
+        isTop,
+        scrollShadows,
+        setScroll,
+        size,
+      ],
+    );
+
     return (
-      <ScrollbarProvider
-        scrollbarSize={size}
-        scrollShadows={scrollShadows}
-        setScroll={setScroll}
-        disabled={disabled}
-        isLeft={isLeft}
-        isRight={isRight}
-        isTop={isTop}
-        isBottom={isBottom}
-      >
+      <ScrollbarProvider {...providerValue}>
         <ScrollbarStyled
           $overflow={overflow}
           className={scrollbarClassName}

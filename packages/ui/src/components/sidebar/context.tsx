@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 export interface SidebarContextValue {
   isOpen: boolean;
@@ -8,20 +8,37 @@ export interface SidebarContextValue {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const SidebarContext = React.createContext<SidebarContextValue>({
-  isOpen: false,
-  isEdit: false,
-  scrollbarElement: null,
-  setIsEdit() {},
-  setIsOpen() {},
-});
+export const SidebarContext = React.createContext<
+  SidebarContextValue | undefined
+>(undefined);
 
 export const SidebarProvider: React.FC<
   SidebarContextValue & React.PropsWithChildren
 > = ({ children, ...value }) => (
-  <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>
+  <SidebarContext.Provider
+    value={useMemo(
+      () => value,
+      [
+        value.isEdit,
+        value.isOpen,
+        value.scrollbarElement,
+        value.setIsEdit,
+        value.setIsOpen,
+      ],
+    )}
+  >
+    {children}
+  </SidebarContext.Provider>
 );
 
-export const useSidebar = () => useContext(SidebarContext);
+export const useSidebar = () => {
+  const context = useContext(SidebarContext);
+
+  if (context === undefined) {
+    throw new Error('useSidebar must be used within SidebarProvider.');
+  }
+
+  return context;
+};
 
 export const SidebarConsumer = SidebarContext.Consumer;

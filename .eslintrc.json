@@ -25,6 +25,7 @@
   ],
   "plugins": [
     "react",
+    "react-hooks",
     "@typescript-eslint",
     "prettier",
     "testing-library",
@@ -86,5 +87,20 @@
     "testing-library/no-debugging-utils": "warn",
     "testing-library/no-dom-import": "off",
     "no-continue": "off"
-  }
+  },
+  "overrides": [
+    {
+      "files": [
+        "packages/ui/src/components/message/**/*.ts",
+        "packages/ui/src/components/message/**/*.tsx",
+        "packages/ui/src/components/header/nav/**/*.ts",
+        "packages/ui/src/components/header/nav/**/*.tsx",
+        "packages/ui/src/components/menu-dropdown/nav/**/*.ts",
+        "packages/ui/src/components/menu-dropdown/nav/**/*.tsx"
+      ],
+      "rules": {
+        "react-hooks/exhaustive-deps": "error"
+      }
+    }
+  ]
 }

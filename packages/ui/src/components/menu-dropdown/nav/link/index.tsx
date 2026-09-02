@@ -23,6 +23,7 @@ export const MenuDropdownNavLink: React.FC<MenuDropdownNavLinkProps> = ({
   icon,
   active = false,
   children,
+  onClick,
   ...props
 }) => {
   const { setIsOpen } = useMenuDropdown();
@@ -31,9 +32,9 @@ export const MenuDropdownNavLink: React.FC<MenuDropdownNavLinkProps> = ({
     (event) => {
       setIsOpen(false);
 
-      props.onClick?.(event);
+      onClick?.(event);
     },
-    [props.onClick],
+    [onClick, setIsOpen],
   );
 
   return (

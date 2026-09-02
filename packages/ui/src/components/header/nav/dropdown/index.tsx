@@ -50,7 +50,7 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({
         window.removeEventListener('blur', blurListener);
       };
     }
-  }, []);
+  }, [isInMenu]);
 
   const dropdownTransition = useTransition(isOpen, {
     from: {

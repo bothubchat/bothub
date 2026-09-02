@@ -4,6 +4,18 @@ import { customRender } from '@/ui/tests';
 import { Tooltip, TooltipAnimationDuration } from './index';
 import { Button } from '../button';
 
+if (typeof globalThis.ResizeObserver === 'undefined') {
+  class ResizeObserverMock {
+    observe = () => {};
+
+    unobserve = () => {};
+
+    disconnect = () => {};
+  }
+
+  globalThis.ResizeObserver = ResizeObserverMock as typeof ResizeObserver;
+}
+
 describe('tooltip', () => {
   afterEach(() => {
     cleanup();

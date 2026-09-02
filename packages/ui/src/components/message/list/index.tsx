@@ -49,7 +49,7 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(
     const setScroll = useCallback<SetScrollFunction>(
       (options) =>
         scrollbarRef.current?.setScroll(options ?? { side: 'bottom' }),
-      [scrollbarRef.current],
+      [],
     );
 
     useImperativeHandle(
@@ -58,7 +58,7 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(
         element: scrollbarRef.current?.element ?? null,
         setScroll,
       }),
-      [setScroll, scrollbarRef.current],
+      [setScroll],
     );
 
     return (

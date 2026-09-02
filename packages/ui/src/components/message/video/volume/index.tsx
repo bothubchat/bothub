@@ -42,7 +42,7 @@ export const MessageVideoVolume: React.FC<MessageVideoVolumeProps> = ({
       if (!volumeLineMouseMove) return;
       handleVolumeUpdateClick(event);
     },
-    [volumeLineMouseMove],
+    [handleVolumeUpdateClick, volumeLineMouseMove],
   );
 
   const handleStartMouseLeave = useCallback(() => {

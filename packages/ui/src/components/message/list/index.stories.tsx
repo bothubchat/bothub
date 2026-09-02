@@ -14,6 +14,8 @@ export type MessagesMeta = Meta<typeof Messages>;
 
 export type MessagesStory = StoryObj<typeof Messages>;
 
+const noop = () => {};
+
 const MessageAssistant = () => (
   <Message
     edited
@@ -21,33 +23,15 @@ const MessageAssistant = () => (
     variant="assistant"
     avatar={<MessageAvatar variant="bot" />}
     transaction={<MessageTransaction>-223 CAPS</MessageTransaction>}
-    onCopy={() => {
-      console.log('onCopy');
-    }}
-    onCodeCopy={() => {
-      console.log('onCodeCopy');
-    }}
-    onEdit={() => {
-      console.log('onEdit');
-    }}
-    onDelete={() => {
-      console.log('onDelete');
-    }}
-    onUpdate={() => {
-      console.log('onUpdate');
-    }}
-    onReport={() => {
-      console.log('onReport');
-    }}
-    onNextVersion={() => {
-      console.log('onNextVersion');
-    }}
-    onPrevVersion={() => {
-      console.log('onPrevVersion');
-    }}
-    onDownload={() => {
-      console.log('onDownload');
-    }}
+    onCopy={noop}
+    onCodeCopy={noop}
+    onEdit={noop}
+    onDelete={noop}
+    onUpdate={noop}
+    onReport={noop}
+    onNextVersion={noop}
+    onPrevVersion={noop}
+    onDownload={noop}
     editText="Редактировать"
     copyPlainText="Копировать без форматирования"
     copyTgText="Копировать в TG"

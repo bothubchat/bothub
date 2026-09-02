@@ -1,5 +1,4 @@
 import { css, styled } from 'styled-components';
-import React from 'react';
 import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { TooltipAlign, TooltipPlacement, TooltipVariant } from './types';
@@ -9,7 +8,6 @@ export interface TooltipStyledProps {
   $placement: TooltipPlacement;
   $align: TooltipAlign;
   $inverted?: boolean;
-  ref: React.RefObject<HTMLDivElement>;
 }
 
 export const TooltipStyled = styled(animated.div)<TooltipStyledProps>`

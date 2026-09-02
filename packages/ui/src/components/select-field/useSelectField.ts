@@ -39,6 +39,35 @@ export type UseSelectFieldProps = {
 
 export type UseSelectFieldReturnType = ReturnType<typeof useSelectField>;
 
+type UseControllableStateProps<T> = {
+  value?: T;
+  defaultValue: T;
+  onChange?: (value: T) => void;
+};
+
+function useControllableState<T>({
+  value: controlledValue,
+  defaultValue,
+  onChange,
+}: UseControllableStateProps<T>): [T, (value: T) => void] {
+  const [internalValue, setInternalValue] = useState(defaultValue);
+  const isControlled = typeof controlledValue !== 'undefined';
+  const value = isControlled ? controlledValue : internalValue;
+
+  const setValue = useCallback(
+    (nextValue: T) => {
+      if (!isControlled) {
+        setInternalValue(nextValue);
+      }
+
+      onChange?.(nextValue);
+    },
+    [isControlled, onChange],
+  );
+
+  return [value, setValue];
+}
+
 export const useSelectField = <
   TriggerType extends HTMLElement = HTMLDivElement,
 >({
@@ -101,22 +130,11 @@ export const useSelectField = <
     [multiple, onChange, onValueChange],
   );
 
-  let [value, setValue] = useState<ValueType>(multiple ? [] : null) as [
-    ValueType,
-    ValueSetter,
-  ];
-  if (typeof initialValue !== 'undefined') {
-    [value, setValue] = [initialValue, setExternalValue];
-  }
-
-  const setValueHandler = (value: ValueType) => {
-    if (setValue === setExternalValue) {
-      setValue(value);
-    } else {
-      setValue(value);
-      setExternalValue(value);
-    }
-  };
+  const [value, setValue] = useControllableState<ValueType>({
+    value: initialValue as ValueType | undefined,
+    defaultValue: multiple ? [] : null,
+    onChange: setExternalValue,
+  });
 
   const isKeyboardOpen = useRef(false);
   const triggerRef = useRef<TriggerType>(null);
@@ -152,12 +170,12 @@ export const useSelectField = <
     window.addEventListener('resize', listener);
 
     return () => window.removeEventListener('resize', listener);
-  }, [triggerRef.current, height, placement, contentHeight, isOpen]);
+  }, [height, placement, contentHeight, isOpen]);
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
     onClose?.();
-  }, []);
+  }, [onClose]);
 
   useEffect(() => {
     if (!isOpen || !triggerRef.current) return;
@@ -168,7 +186,7 @@ export const useSelectField = <
     scrollParent.addEventListener('scroll', handleClose);
 
     return () => scrollParent.removeEventListener('scroll', handleClose);
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -205,7 +223,7 @@ export const useSelectField = <
       window.removeEventListener('resize', listener);
       window.removeEventListener('orientationchange', listener);
     };
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
   const handleInputClick = useCallback(
     (native: boolean, event: React.MouseEvent<HTMLElement>) => {
@@ -325,6 +343,6 @@ export const useSelectField = <
     contentHeight: height,
     handleInputClick,
     handleClose,
-    setValue: setValueHandler,
+    setValue: setValue as ValueSetter,
   };
 };

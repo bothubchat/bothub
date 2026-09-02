@@ -17,6 +17,7 @@ export const HeaderUserInfoItem: React.FC<HeaderUserInfoItemProps> = ({
   icon,
   to,
   children,
+  onClick,
   ...props
 }) => {
   const theme = useTheme();
@@ -25,11 +26,11 @@ export const HeaderUserInfoItem: React.FC<HeaderUserInfoItemProps> = ({
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
-      props.onClick?.(event);
+      onClick?.(event);
       setIsOpen(false);
       setIsMenuOpen(false);
     },
-    [props.onClick],
+    [onClick, setIsMenuOpen, setIsOpen],
   );
 
   return (

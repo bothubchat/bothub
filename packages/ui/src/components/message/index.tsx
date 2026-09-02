@@ -1,5 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
-import { marked } from 'marked';
+import React, { ReactNode, useRef } from 'react';
 import {
   MessageBlock,
   MessageBlockBottomPanel,
@@ -29,7 +28,7 @@ import {
 import { Loader } from '@/ui/components/loader';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
-import { colorToRgba, getTgMarkdown } from '@/ui/utils';
+import { colorToRgba } from '@/ui/utils';
 import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
@@ -37,6 +36,52 @@ import { ScrollbarShadow } from '@/ui/components/scrollbar';
 import { MessageTimestamp } from './timestamp';
 import { MessageActions } from './actions';
 import { MessageVersions } from './versions';
+import { useMessageClipboard } from './hooks/useMessageClipboard';
+
+const resolveMessageHexColor = (
+  variant: MessageVariant,
+  color: string,
+  scheme: string,
+  mode: string,
+  theme: ReturnType<typeof useTheme>,
+) => {
+  switch (variant) {
+    case 'user':
+      switch (color) {
+        case 'default':
+          if (theme.scheme === 'custom') {
+            return theme.colors.custom.message.user.background;
+          }
+          if (theme.scheme === 'standard') {
+            return theme.mode === 'dark'
+              ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
+              : colorToRgba(theme.colors.accent.primaryLight, 0.2);
+          }
+          return theme.colors.accent.primary;
+        case 'green':
+          return theme.colors.gpt3;
+        case 'purple':
+          return theme.colors.gpt4;
+        default:
+          return color;
+      }
+    case 'assistant':
+      switch (color) {
+        case 'default':
+          return mode === 'dark'
+            ? theme.colors.grayScale.gray2
+            : theme.colors.grayScale.gray3;
+        case 'green':
+          return theme.colors.gpt3;
+        case 'purple':
+          return theme.colors.gpt4;
+        default:
+          return color;
+      }
+    default:
+      return scheme === 'custom' ? theme.colors.custom.background : color;
+  }
+};
 
 export interface MessageProps {
   id?: string;
@@ -71,6 +116,7 @@ export interface MessageProps {
   downloadTooltipLabel?: string | null;
   encryptionTooltipLabel?: string | null;
   cacheTokenTooltipLabel?: string | null;
+  menuAriaLabel?: string | null;
   typing?: boolean;
   timestamp?: string | number;
   timestampPosition?: MessageTimestampPosition;
@@ -86,7 +132,7 @@ export interface MessageProps {
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
   onEdit?: MessageActionEventHandler;
-  // onResend?: MessageActionEventHandler;
+  onResend?: MessageActionEventHandler;
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
   onReport?: MessageActionEventHandler;
@@ -128,6 +174,7 @@ export const Message: React.FC<MessageProps> = ({
   copyTooltipLabel,
   encryptionTooltipLabel,
   cacheTokenTooltipLabel,
+  menuAriaLabel,
   typing = false,
   timestamp,
   timestampPosition = 'right',
@@ -143,7 +190,7 @@ export const Message: React.FC<MessageProps> = ({
   onCopy,
   onCodeCopy,
   onEdit,
-  // onResend,
+  onResend,
   onDelete,
   onUpdate,
   onReport,
@@ -153,57 +200,15 @@ export const Message: React.FC<MessageProps> = ({
 }) => {
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
-  const messageBlockContentRef = useRef<HTMLDivElement | null>(null);
-  const messageText = useRef<string | null>(null);
-
-  const getRichText = useCallback(async () => {
-    const htmlContent = (await marked.parse(messageText.current!)).replace(
-      /<p>([\s\S]*?)<\/p>/g,
-      '<pre>$1</pre>',
-    );
-
-    const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([messageText.current!], { type: 'text/plain' }),
-      'text/html': new Blob([htmlContent], { type: 'text/html' }),
-    });
-    return [clipboardItem];
-  }, []);
-
-  const getPlainText = useCallback((html: HTMLElement) => {
-    const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([html.innerText.replace(/\n{3,}/g, '\n\n')], {
-        type: 'text/plain',
-      }),
-    });
-    return [clipboardItem];
-  }, []);
-
-  const getTgText = useCallback((string: string) => {
-    const tgMarkdown = getTgMarkdown(string);
-
-    const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([tgMarkdown], { type: 'text/plain' }),
-    });
-    return [clipboardItem];
-  }, []);
-
-  const handlePlainTextCopy = useCallback(() => {
-    if (messageBlockContentRef.current) {
-      return onCopy?.(getPlainText(messageBlockContentRef.current));
-    }
-  }, [content]);
-
-  const handleTgTextCopy = useCallback(() => {
-    if (messageText.current) {
-      return onCopy?.(getTgText(messageText.current));
-    }
-  }, []);
-
-  const handleRichTextCopy = useCallback(async () => {
-    if (messageText.current) {
-      return onCopy?.(await getRichText());
-    }
-  }, []);
+  const {
+    messageBlockContentRef,
+    handlePlainTextCopy,
+    handleTgTextCopy,
+    handleRichTextCopy,
+  } = useMessageClipboard({
+    content,
+    onCopy,
+  });
 
   if (
     !(
@@ -216,60 +221,13 @@ export const Message: React.FC<MessageProps> = ({
     color = 'default';
   }
 
-  let hexColor: string;
-  switch (variant) {
-    case 'user':
-      switch (color) {
-        case 'default':
-          if (theme.scheme === 'custom') {
-            hexColor = theme.colors.custom.message.user.background;
-            break;
-          }
-          if (theme.scheme === 'standard') {
-            hexColor =
-              theme.mode === 'dark'
-                ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
-                : colorToRgba(theme.colors.accent.primaryLight, 0.2);
-            break;
-          }
-          hexColor = theme.colors.accent.primary;
-          break;
-        case 'green':
-          hexColor = theme.colors.gpt3;
-          break;
-        case 'purple':
-          hexColor = theme.colors.gpt4;
-          break;
-        default:
-          hexColor = color;
-          break;
-      }
-      break;
-    case 'assistant':
-      switch (color) {
-        case 'default':
-          hexColor =
-            theme.mode === 'dark'
-              ? theme.colors.grayScale.gray2
-              : theme.colors.grayScale.gray3;
-          break;
-        case 'green':
-          hexColor = theme.colors.gpt3;
-          break;
-        case 'purple':
-          hexColor = theme.colors.gpt4;
-          break;
-        default:
-          hexColor = color;
-          break;
-      }
-      break;
-  }
-
-  useEffect(() => {
-    if (!content) return;
-    messageText.current = content;
-  }, [content]);
+  const hexColor = resolveMessageHexColor(
+    variant,
+    color,
+    theme.scheme,
+    theme.mode,
+    theme,
+  );
 
   return (
     <MessageProvider
@@ -416,8 +374,9 @@ export const Message: React.FC<MessageProps> = ({
                     copyTooltipLabel={copyTooltipLabel}
                     encryptionTooltipLabel={encryptionTooltipLabel}
                     cacheTokenTooltipLabel={cacheTokenTooltipLabel}
+                    menuAriaLabel={menuAriaLabel}
                     onEdit={onEdit}
-                    onResend={onUpdate}
+                    onResend={onResend}
                     onDelete={onDelete}
                     onUpdate={onUpdate}
                     onReport={onReport}

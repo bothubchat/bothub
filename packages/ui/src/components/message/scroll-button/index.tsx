@@ -41,7 +41,7 @@ export const ScrollButton: React.FC<IScrollButton> = ({ scrollbarRef }) => {
     return () => {
       element?.removeEventListener('scroll', checkScrollPosition);
     };
-  }, [scrollbarRef.current]);
+  }, [scrollbarRef]);
 
   if (isAtBottom || !isScrollable) return null;
   return (

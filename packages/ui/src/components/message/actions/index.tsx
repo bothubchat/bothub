@@ -1,11 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
 import { MenuDotIcon } from '@/ui/icons/menu-dot';
@@ -36,12 +29,15 @@ import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { colorToRgba } from '@/ui/utils';
 import { MoneyPlusIcon, ShieldIcon } from '@/ui/icons';
+import { useMessageActionsMenu } from './hooks/useMessageActionsMenu';
+import { useMessageActionsMenuPosition } from './hooks/useMessageActionsMenuPosition';
 
-const MENU_OFFSET = 36;
-const MENU_PADDING = 8;
-const MENU_ESTIMATED_WIDTH = 160;
-const MENU_ESTIMATED_OPTION_HEIGHT = 48;
-const MENU_ESTIMATED_VERTICAL_PADDING = 16;
+type MenuActionItem = {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+};
 
 type MessageActionsProps = {
   id?: string;
@@ -119,18 +115,10 @@ export const MessageActions = ({
   menuAriaLabel,
 }: MessageActionsProps) => {
   const theme = useTheme();
-
-  const [menuShown, setMenuShown] = useState(false);
-  const [invertedX, setInvertedX] = useState<boolean>(false);
-  const [invertedY, setInvertedY] = useState<boolean>(false);
-
-  const timeoutIdRef = useRef<number | null>(null);
   const messageActionsRef = useRef<HTMLDivElement | null>(null);
   const messageActionsMenuRef = useRef<HTMLDivElement | null>(null);
-
   const modalRef = useRef<HTMLDivElement | null>(null);
-
-  const useScrollRef = useScrollbarRef();
+  const scrollRef = useScrollbarRef();
 
   const iconColor = useMemo(() => {
     if (theme.scheme === 'custom') {
@@ -212,78 +200,32 @@ export const MessageActions = ({
     variant,
   ]);
 
-  const calculateInversion = useCallback(() => {
-    const container = useScrollRef?.current?.element;
-    const actions = messageActionsMenuRef.current ?? messageActionsRef.current;
-    const modal = modalRef?.current;
+  const { invertedX, invertedY, calculateInversion } =
+    useMessageActionsMenuPosition({
+      modalOptionsCount,
+      variant,
+      scrollRef,
+      messageActionsRef,
+      messageActionsMenuRef,
+      modalRef,
+    });
 
-    if (!container || !actions) return;
-
-    const containerRect = container.getBoundingClientRect();
-    const actionsRect = actions.getBoundingClientRect();
-
-    const menuHeight =
-      modal?.offsetHeight ??
-      modalOptionsCount * MENU_ESTIMATED_OPTION_HEIGHT +
-        MENU_ESTIMATED_VERTICAL_PADDING;
-    const menuWidth = modal?.offsetWidth ?? MENU_ESTIMATED_WIDTH;
-
-    const spaceBelow = containerRect.bottom - actionsRect.bottom;
-    const spaceAbove = actionsRect.top - containerRect.top;
-
-    const shouldInvertY =
-      spaceBelow < menuHeight + MENU_OFFSET + MENU_PADDING &&
-      spaceAbove > MENU_PADDING;
-
-    const spaceLeft = actionsRect.left - containerRect.left;
-    const spaceRight = containerRect.right - actionsRect.right;
-
-    let shouldInvertX = false;
-    if (variant === 'assistant') {
-      shouldInvertX = spaceLeft < menuWidth + MENU_PADDING;
-    } else {
-      shouldInvertX = spaceRight < menuWidth + MENU_PADDING;
-    }
-
-    setInvertedY(shouldInvertY);
-    setInvertedX(shouldInvertX);
-  }, [modalOptionsCount, useScrollRef, variant]);
+  const {
+    menuShown,
+    closeMenu,
+    handleMenuOpen,
+    handleButtonHoverIn,
+    handleButtonHoverOut,
+    handleButtonClick,
+  } = useMessageActionsMenu({
+    calculateInversion,
+  });
 
   useLayoutEffect(() => {
     if (menuShown) {
       calculateInversion();
     }
   }, [menuShown, calculateInversion]);
-
-  const handleMenuOpen = useCallback(() => {
-    if (timeoutIdRef.current) {
-      window.clearTimeout(timeoutIdRef.current);
-      timeoutIdRef.current = null;
-    }
-
-    calculateInversion();
-    setMenuShown(true);
-  }, [calculateInversion]);
-
-  const handleButtonHoverIn = useCallback(() => {
-    handleMenuOpen();
-  }, [handleMenuOpen]);
-
-  const handleButtonHoverOut = useCallback(() => {
-    timeoutIdRef.current = window.setTimeout(() => {
-      setMenuShown(false);
-      timeoutIdRef.current = null;
-    }, 300);
-  }, []);
-
-  const handleButtonClick = useCallback(() => {
-    if (menuShown) {
-      setMenuShown(false);
-      return;
-    }
-
-    handleMenuOpen();
-  }, [handleMenuOpen, menuShown]);
 
   const handleOptionClick = useCallback(
     (option: ModalOption) => {
@@ -305,26 +247,120 @@ export const MessageActions = ({
           onResend?.(data);
           break;
       }
-      setMenuShown(false);
+      closeMenu();
     },
-    [id, message, onDelete, onResend, onEdit, onUpdate],
+    [closeMenu, id, message, onDelete, onResend, onEdit, onUpdate, variant],
   );
 
   const handleTgCopy = useCallback(() => {
     onTgCopy?.();
-    setMenuShown(false);
-  }, [onTgCopy]);
+    closeMenu();
+  }, [closeMenu, onTgCopy]);
 
   const handlePlainTextCopy = useCallback(() => {
     onPlainTextCopy?.();
-    setMenuShown(false);
-  }, [onPlainTextCopy]);
+    closeMenu();
+  }, [closeMenu, onPlainTextCopy]);
 
   const handleReportClick = useCallback(() => {
     onReport?.({ id, message });
-    setMenuShown(false);
-  }, [id, message, onReport]);
+    closeMenu();
+  }, [closeMenu, id, message, onReport]);
 
+  const menuActions = useMemo<MenuActionItem[]>(
+    () => [
+      ...(!disableCopy && copyPlainText && onPlainTextCopy
+        ? [
+            {
+              id: 'copy-plain',
+              label: copyPlainText,
+              icon: <CopyIcon />,
+              onClick: handlePlainTextCopy,
+            },
+          ]
+        : []),
+      ...(!disableCopy && copyTgText && onTgCopy
+        ? [
+            {
+              id: 'copy-tg',
+              label: copyTgText,
+              icon: <CopyIcon />,
+              onClick: handleTgCopy,
+            },
+          ]
+        : []),
+      ...(!disableResend && variant === 'user' && resendText && onResend
+        ? [
+            {
+              id: 'resend',
+              label: resendText,
+              icon: <ResendIcon />,
+              onClick: () => {
+                handleOptionClick('resend');
+              },
+            },
+          ]
+        : []),
+      ...(!editOutOfMenu && !disableEdit && editText && onEdit
+        ? [
+            {
+              id: 'edit',
+              label: editText,
+              icon: <EditIcon />,
+              onClick: () => {
+                handleOptionClick('edit');
+              },
+            },
+          ]
+        : []),
+      ...(!disableDelete && deleteText && onDelete
+        ? [
+            {
+              id: 'delete',
+              label: deleteText,
+              icon: <TrashIcon />,
+              onClick: () => {
+                handleOptionClick('delete');
+              },
+            },
+          ]
+        : []),
+      ...(!disableDelete && onReportText && onReport && variant !== 'user'
+        ? [
+            {
+              id: 'report',
+              label: onReportText,
+              icon: <ThumbDownIcon size={18} />,
+              onClick: handleReportClick,
+            },
+          ]
+        : []),
+    ],
+    [
+      copyPlainText,
+      copyTgText,
+      deleteText,
+      disableCopy,
+      disableDelete,
+      disableEdit,
+      disableResend,
+      editOutOfMenu,
+      editText,
+      handleOptionClick,
+      handlePlainTextCopy,
+      handleReportClick,
+      handleTgCopy,
+      onDelete,
+      onEdit,
+      onPlainTextCopy,
+      onReport,
+      onReportText,
+      onResend,
+      onTgCopy,
+      resendText,
+      variant,
+    ],
+  );
   const modalTransition = useTransition(menuShown, {
     from: {
       opacity: 0,
@@ -344,39 +380,6 @@ export const MessageActions = ({
     },
   });
 
-  useEffect(() => {
-    if (!menuShown) return;
-
-    const handleGlobalClose = () => {
-      setMenuShown(false);
-    };
-    window.addEventListener('scroll', handleGlobalClose, true);
-    return () => {
-      window.removeEventListener('scroll', handleGlobalClose, true);
-    };
-  }, [menuShown]);
-
-  useEffect(() => {
-    if (!menuShown) return;
-
-    const handleResize = () => {
-      calculateInversion();
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [menuShown, calculateInversion]);
-
-  useEffect(
-    () => () => {
-      if (timeoutIdRef.current) {
-        window.clearTimeout(timeoutIdRef.current);
-      }
-    },
-    [],
-  );
-
   return (
     <S.MessageActionsStyled
       $variant={variant}
@@ -388,7 +391,7 @@ export const MessageActions = ({
             <S.MessageActionsMenuStyled
               ref={messageActionsMenuRef}
               onBlur={() => {
-                setMenuShown(false);
+                closeMenu();
               }}
             >
               <ActionButton
@@ -418,84 +421,19 @@ export const MessageActions = ({
                       $invertedX={invertedX}
                       $invertedY={invertedY}
                     >
-                      {!disableCopy && copyPlainText && onPlainTextCopy && (
-                        <MenuOption onClick={handlePlainTextCopy}>
-                          <S.MessageActionsMenuModalOptionContent>
-                            <CopyIcon />
-                            <S.MessageActionsButtonText>
-                              {copyPlainText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
-                      {!disableCopy && copyTgText && onTgCopy && (
-                        <MenuOption onClick={handleTgCopy}>
-                          <S.MessageActionsMenuModalOptionContent>
-                            <CopyIcon />
-                            <S.MessageActionsButtonText>
-                              {copyTgText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
-                      {!disableResend &&
-                        variant === 'user' &&
-                        resendText &&
-                        onResend && (
-                          <MenuOption
-                            onClick={() => {
-                              handleOptionClick('resend');
-                            }}
-                          >
-                            <S.MessageActionsMenuModalOptionContent>
-                              <ResendIcon />
-                              <S.MessageActionsButtonText>
-                                {resendText}
-                              </S.MessageActionsButtonText>
-                            </S.MessageActionsMenuModalOptionContent>
-                          </MenuOption>
-                        )}
-                      {!editOutOfMenu && !disableEdit && editText && onEdit && (
+                      {menuActions.map((action) => (
                         <MenuOption
-                          onClick={() => {
-                            handleOptionClick('edit');
-                          }}
+                          key={`${action.id}-${action.label}`}
+                          onClick={action.onClick}
                         >
                           <S.MessageActionsMenuModalOptionContent>
-                            <EditIcon />
+                            {action.icon}
                             <S.MessageActionsButtonText>
-                              {editText}
+                              {action.label}
                             </S.MessageActionsButtonText>
                           </S.MessageActionsMenuModalOptionContent>
                         </MenuOption>
-                      )}
-                      {!disableDelete && deleteText && onDelete && (
-                        <MenuOption
-                          onClick={() => {
-                            handleOptionClick('delete');
-                          }}
-                        >
-                          <S.MessageActionsMenuModalOptionContent>
-                            <TrashIcon />
-                            <S.MessageActionsButtonText>
-                              {deleteText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
-                      {!disableDelete &&
-                        onReportText &&
-                        onReport &&
-                        variant !== 'user' && (
-                          <MenuOption onClick={handleReportClick}>
-                            <S.MessageActionsMenuModalOptionContent>
-                              <ThumbDownIcon size={18} />
-                              <S.MessageActionsButtonText>
-                                {onReportText}
-                              </S.MessageActionsButtonText>
-                            </S.MessageActionsMenuModalOptionContent>
-                          </MenuOption>
-                        )}
+                      ))}
                     </S.MessageActionsMenuModal>
                   ),
               )}
@@ -555,8 +493,16 @@ export const MessageActions = ({
       </>
       {!disableDownload && (
         <ActionButton
+          id={id}
+          message={message}
           tooltipLabel={downloadTooltipLabel}
-          onClick={onDownload}
+          onClick={
+            onDownload
+              ? () => {
+                  onDownload();
+                }
+              : undefined
+          }
         >
           <DownloadImgIcon size={18} />
         </ActionButton>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSpring } from '@react-spring/web';
 
 import { CopyIcon } from '@/ui/icons/copy';
@@ -20,7 +20,7 @@ export const CopyButton = ({
   const theme = useTheme();
 
   const [copied, setCopied] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const copySpring = useSpring({
     opacity: copied ? 0 : 1,
@@ -35,19 +35,19 @@ export const CopyButton = ({
     },
   });
 
-  const handleClick = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
+  const handleClick = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
     setCopied(true);
     onCopy?.({});
-    setTimeoutId(setTimeout(() => setCopied(false), 1000));
-  };
+    timeoutRef.current = setTimeout(() => setCopied(false), 1000);
+  }, [onCopy]);
 
   useEffect(
     () => () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
     },
     [],

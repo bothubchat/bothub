@@ -53,7 +53,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   hideOnScroll = true,
 }) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const [hoveredElement, sethoveredElement] = useState<Element | null>();
+  const [hoveredElement, setHoveredElement] = useState<Element | null>(null);
   const [coords, setCoords] = useState<[number, number]>([0, 0]);
   const isDisabled = !label || disabled;
 
@@ -151,7 +151,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   }, [hoveredElement, getTooltipPosition]);
 
   const hideTooltip = useCallback(() => {
-    sethoveredElement(null);
+    setHoveredElement(null);
   }, []);
 
   const top: string[] = [`${coords[1]}px`];
@@ -214,7 +214,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
           $placement={placement}
           $align={align}
           $inverted={inverted}
-          ref={tooltipRef as React.RefObject<HTMLDivElement>}
+          ref={tooltipRef}
           className={className}
           role="tooltip"
           style={{
@@ -283,18 +283,18 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
   const handleMouseEnter = (e: React.MouseEvent<Element, MouseEvent>): void => {
     if (!isDisabled && e.currentTarget instanceof Element) {
-      sethoveredElement(e.currentTarget);
+      setHoveredElement(e.currentTarget);
     }
   };
 
   const handleMouseLeave = (): void => {
-    sethoveredElement(null);
+    setHoveredElement(null);
   };
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<Element>): void => {
       if (!isDisabled && e.currentTarget instanceof Element) {
-        sethoveredElement(e.currentTarget);
+        setHoveredElement(e.currentTarget);
         updatePosition();
       }
     },
@@ -302,6 +302,10 @@ export const Tooltip: React.FC<TooltipProps> = ({
   );
 
   useEffect(() => {
+    if (!hoveredElement) {
+      return;
+    }
+
     const handleGlobalMouseLeave = () => {
       hideTooltip();
     };
@@ -317,7 +321,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       window.removeEventListener('mouseleave', handleGlobalMouseLeave);
       window.removeEventListener('scroll', handleGlobalScroll, hideOnScroll);
     };
-  }, [hideTooltip]);
+  }, [hideOnScroll, hideTooltip, hoveredElement]);
 
   return (
     <TooltipProvider

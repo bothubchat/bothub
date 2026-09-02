@@ -23,6 +23,7 @@ export const HeaderNavLink: React.FC<HeaderNavLinkProps> = ({
   icon,
   active = false,
   children,
+  onClick,
   ...props
 }) => {
   const { variant, setIsMenuOpen } = useHeader();
@@ -30,10 +31,10 @@ export const HeaderNavLink: React.FC<HeaderNavLinkProps> = ({
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
-      props.onClick?.(event);
+      onClick?.(event);
       setIsMenuOpen(false);
     },
-    [props.onClick],
+    [onClick, setIsMenuOpen],
   );
 
   return (

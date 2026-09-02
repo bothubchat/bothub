@@ -37,6 +37,9 @@ export type SelectFieldMeta = Meta<typeof SelectField>;
 
 export type SelectFieldStory = StoryObj<typeof SelectField>;
 
+const onSelectValueChange = () => {};
+const onSelectChange = () => {};
+
 export const Basic: SelectFieldStory = {
   args: {
     label: 'Label',
@@ -56,8 +59,8 @@ export const Basic: SelectFieldStory = {
       'Midjourney',
       'o3-mini',
     ],
-    onValueChange: (value: unknown) => console.log('onValueChange', value),
-    onChange: (value: unknown) => console.log('onChange', value),
+    onValueChange: onSelectValueChange,
+    onChange: onSelectChange,
   },
 };
 
