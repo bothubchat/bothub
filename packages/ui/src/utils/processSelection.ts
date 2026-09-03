@@ -1,4 +1,8 @@
 import { getTgMarkdown } from './getTgMarkdown';
+import {
+  applyClipboardInlineStyles,
+  wrapHtmlForClipboard,
+} from './prepareClipboardHtml';
 
 const INLINE_TAGS = [
   'STRONG',
@@ -13,6 +17,8 @@ const INLINE_TAGS = [
   'A',
   'SPAN',
 ];
+
+const TABLE_TAGS = ['TABLE', 'THEAD', 'TBODY', 'TFOOT', 'TR', 'TD', 'TH'];
 
 export const processSelection = (
   range: Range,
@@ -67,8 +73,13 @@ export const processSelection = (
   ) {
     const isListTag = ['UL', 'OL', 'LI'].includes(wrapperNode.tagName);
     const shouldWrapList = isListTag && !(isSingleLi && !isAtStartOfLi);
+    const shouldWrapTable = TABLE_TAGS.includes(wrapperNode.tagName);
 
-    if (INLINE_TAGS.includes(wrapperNode.tagName) || shouldWrapList) {
+    if (
+      INLINE_TAGS.includes(wrapperNode.tagName) ||
+      shouldWrapList ||
+      shouldWrapTable
+    ) {
       const cleanElement = document.createElement(wrapperNode.tagName);
 
       if (wrapperNode.tagName === 'OL') {
@@ -81,6 +92,17 @@ export const processSelection = (
           }
         }
         cleanElement.setAttribute('start', startVal.toString());
+      }
+
+      if (wrapperNode.tagName === 'TD' || wrapperNode.tagName === 'TH') {
+        const colspan = wrapperNode.getAttribute('colspan');
+        const rowspan = wrapperNode.getAttribute('rowspan');
+        if (colspan) {
+          cleanElement.setAttribute('colspan', colspan);
+        }
+        if (rowspan) {
+          cleanElement.setAttribute('rowspan', rowspan);
+        }
       }
 
       cleanElement.innerHTML = htmlContent;
@@ -120,7 +142,9 @@ export const processSelection = (
     }
   });
 
-  const finalHtml = tempDiv.innerHTML;
+  applyClipboardInlineStyles(tempDiv);
+
+  const finalHtml = wrapHtmlForClipboard(tempDiv.innerHTML);
 
   const injectListMarkers = (el: HTMLElement, isMarkdown: boolean = false) => {
     const listItems = el.querySelectorAll('li');
