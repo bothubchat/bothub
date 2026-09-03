@@ -29,7 +29,12 @@ import {
 import { Loader } from '@/ui/components/loader';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
-import { colorToRgba, getTgMarkdown } from '@/ui/utils';
+import {
+  CLIPBOARD_NORMAL_STYLE,
+  colorToRgba,
+  getTgMarkdown,
+  prepareClipboardHtml,
+} from '@/ui/utils';
 import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
@@ -157,9 +162,11 @@ export const Message: React.FC<MessageProps> = ({
   const messageText = useRef<string | null>(null);
 
   const getRichText = useCallback(async () => {
-    const htmlContent = (await marked.parse(messageText.current!)).replace(
-      /<p>([\s\S]*?)<\/p>/g,
-      '<pre>$1</pre>',
+    const htmlContent = prepareClipboardHtml(
+      (await marked.parse(messageText.current!)).replace(
+        /<p>([\s\S]*?)<\/p>/g,
+        `<pre style="${CLIPBOARD_NORMAL_STYLE}font-family:inherit;white-space:pre-wrap;">$1</pre>`,
+      ),
     );
 
     const clipboardItem = new ClipboardItem({
