@@ -12,7 +12,7 @@ export const SidebarStyled = styled.div<{
   flex-direction: column;
   height: 100%;
   width: ${({ $isOpen, $isHide }) =>
-    $isHide ? '0px' : $isOpen ? '324px' : '74px'};
+    $isHide ? '0px' : $isOpen ? '360px' : '74px'};
   ${({ $isOpen }) => !$isOpen && 'justify-content: flex-start;'}
   padding: 20px 0;
   background: ${({ theme }) => theme.colors.grayScale.gray4};
@@ -20,7 +20,7 @@ export const SidebarStyled = styled.div<{
   transition: all 0.3s ease-in-out;
   overflow: hidden;
   @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
-    width: 424px;
+    width: 460px;
     transform: translateX(
       ${({ $isOpenOnTablet }) => ($isOpenOnTablet ? '0' : 'calc(-100% - 16px)')}
     );
