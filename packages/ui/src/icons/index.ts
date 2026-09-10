@@ -177,6 +177,7 @@ export * from './add-group';
 export * from './drag-dot';
 export * from './add-folder';
 export * from './temp-chat';
+export * from './fork-chat';
 export * from './delete-chat';
 export * from './sidebar-chat';
 export * from './organization';
