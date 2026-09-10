@@ -27,6 +27,7 @@ import {
 } from '../types';
 import { MenuOption } from './menu-option';
 import { CopyButton } from './copy-button';
+import { ForkButton } from './fork-button';
 import { ActionButton } from './action-button';
 
 import { useScrollbarRef } from '../list';
@@ -54,9 +55,11 @@ type MessageActionsProps = {
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
+  disableFork?: boolean;
   disableDownload?: boolean;
   disableEncryption?: boolean;
   hasCacheTokens?: boolean;
+  forkSelected?: boolean;
   editOutOfMenu?: boolean;
   editText?: string | null;
   copyTgText?: string | null;
@@ -67,6 +70,7 @@ type MessageActionsProps = {
   downloadTooltipLabel?: string | null;
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
+  forkTooltipLabel?: string | null;
   encryptionTooltipLabel?: string | null;
   cacheTokenTooltipLabel?: string | null;
   onEdit?: MessageActionEditEventHandler;
@@ -74,6 +78,7 @@ type MessageActionsProps = {
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
   onReport?: MessageActionEventHandler;
+  onFork?: MessageActionEventHandler;
   onPlainTextCopy?: MessagePlainTextCopyEventHandler;
   onTgCopy?: MessageTgCopyEventHandler;
   onCopy?: MessageActionEventHandler;
@@ -92,9 +97,11 @@ export const MessageActions = ({
   disableDelete,
   disableUpdate,
   disableCopy,
+  disableFork = true,
   disableDownload,
   disableEncryption,
   hasCacheTokens,
+  forkSelected = false,
   editOutOfMenu,
   editText,
   copyTgText,
@@ -107,11 +114,13 @@ export const MessageActions = ({
   cacheTokenTooltipLabel,
   updateTooltipLabel,
   copyTooltipLabel,
+  forkTooltipLabel,
   onEdit,
   onResend,
   onDelete,
   onUpdate,
   onReport,
+  onFork,
   onPlainTextCopy,
   onTgCopy,
   onCopy,
@@ -537,6 +546,16 @@ export const MessageActions = ({
             <CopyButton
               onCopy={onCopy}
               tooltipLabel={copyTooltipLabel}
+            />
+          )}
+          {!disableFork && (
+            <ForkButton
+              id={id}
+              message={message}
+              selected={forkSelected}
+              tooltipLabel={forkTooltipLabel}
+              iconColor={iconColor}
+              onFork={onFork}
             />
           )}
           {!modalEnabled &&

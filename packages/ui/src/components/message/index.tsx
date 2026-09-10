@@ -56,9 +56,11 @@ export interface MessageProps {
   disableDelete?: boolean;
   disableUpdate?: boolean;
   disableCopy?: boolean;
+  disableFork?: boolean;
   disableDownload?: boolean;
   disableEncryption?: boolean;
   hasCacheTokens?: boolean;
+  forkSelected?: boolean;
   copyPlainText?: string | null;
   copyTgText?: string | null;
   editText?: string | null;
@@ -68,6 +70,7 @@ export interface MessageProps {
   onReportText?: string | null;
   updateTooltipLabel?: string | null;
   copyTooltipLabel?: string | null;
+  forkTooltipLabel?: string | null;
   downloadTooltipLabel?: string | null;
   encryptionTooltipLabel?: string | null;
   cacheTokenTooltipLabel?: string | null;
@@ -90,6 +93,7 @@ export interface MessageProps {
   onDelete?: MessageActionEventHandler;
   onUpdate?: MessageActionEventHandler;
   onReport?: MessageActionEventHandler;
+  onFork?: MessageActionEventHandler;
   onNextVersion?: MessageVersionEventHandler;
   onPrevVersion?: MessageVersionEventHandler;
   onDownload?: () => void;
@@ -113,9 +117,11 @@ export const Message: React.FC<MessageProps> = ({
   disableDelete = false,
   disableUpdate = false,
   disableCopy = false,
+  disableFork = true,
   disableDownload = true,
   disableEncryption = true,
   hasCacheTokens = false,
+  forkSelected = false,
   editOutOfMenu = false,
   copyPlainText,
   copyTgText,
@@ -126,6 +132,7 @@ export const Message: React.FC<MessageProps> = ({
   downloadTooltipLabel,
   updateTooltipLabel,
   copyTooltipLabel,
+  forkTooltipLabel,
   encryptionTooltipLabel,
   cacheTokenTooltipLabel,
   typing = false,
@@ -147,6 +154,7 @@ export const Message: React.FC<MessageProps> = ({
   onDelete,
   onUpdate,
   onReport,
+  onFork,
   onNextVersion,
   onPrevVersion,
   onDownload,
@@ -281,6 +289,7 @@ export const Message: React.FC<MessageProps> = ({
     >
       <MessageStyledWrapper
         $variant={variant}
+        $forkSelected={forkSelected}
         ref={messageRef}
       >
         <MessageStyledWithBottomPanel>
@@ -402,8 +411,10 @@ export const Message: React.FC<MessageProps> = ({
                     disableDelete={disableDelete}
                     disableUpdate={disableUpdate}
                     disableCopy={disableCopy}
+                    disableFork={disableFork}
                     disableEncryption={disableEncryption}
                     hasCacheTokens={hasCacheTokens}
+                    forkSelected={forkSelected}
                     editOutOfMenu={editOutOfMenu}
                     copyPlainText={copyPlainText}
                     copyTgText={copyTgText}
@@ -414,6 +425,7 @@ export const Message: React.FC<MessageProps> = ({
                     downloadTooltipLabel={downloadTooltipLabel}
                     updateTooltipLabel={updateTooltipLabel}
                     copyTooltipLabel={copyTooltipLabel}
+                    forkTooltipLabel={forkTooltipLabel}
                     encryptionTooltipLabel={encryptionTooltipLabel}
                     cacheTokenTooltipLabel={cacheTokenTooltipLabel}
                     onEdit={onEdit}
@@ -421,6 +433,7 @@ export const Message: React.FC<MessageProps> = ({
                     onDelete={onDelete}
                     onUpdate={onUpdate}
                     onReport={onReport}
+                    onFork={onFork}
                     onPlainTextCopy={handlePlainTextCopy}
                     onTgCopy={handleTgTextCopy}
                     onCopy={handleRichTextCopy}
