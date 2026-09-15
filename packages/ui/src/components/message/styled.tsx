@@ -20,7 +20,11 @@ export interface MessageStyledProps {
   $variant: MessageVariant;
 }
 
-export const MessageStyledWrapper = styled.div<MessageStyledProps>`
+export interface MessageStyledWrapperProps extends MessageStyledProps {
+  $forkSelected?: boolean;
+}
+
+export const MessageStyledWrapper = styled.div<MessageStyledWrapperProps>`
   display: flex;
   align-items: flex-start;
   width: 100%;
@@ -38,6 +42,16 @@ export const MessageStyledWrapper = styled.div<MessageStyledProps>`
         `;
     }
   }}
+  ${({ theme, $forkSelected }) =>
+    $forkSelected &&
+    css`
+      outline: 1.5px dashed
+        ${theme.scheme === 'custom'
+          ? theme.colors.custom.icon
+          : theme.colors.accent.primaryLight};
+      outline-offset: 3px;
+      border-radius: 10px;
+    `}
 `;
 
 export const MessageStyledWithBottomPanel = styled.div`

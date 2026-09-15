@@ -1,5 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  autoUpdate,
+  flip,
+  offset,
+  shift,
+  useFloating,
+} from '@floating-ui/react';
+import { createPortal } from 'react-dom';
+import {
   ColorPickerMenuArea,
   ColorPickerMenuCloseButton,
   ColorPickerMenuHeader,
@@ -41,7 +49,15 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
     (color ?? theme.colors.accent.primary).toUpperCase(),
   );
 
-  const [centeredX, setCenteredX] = useState<boolean>(false);
+  const { refs, floatingStyles } = useFloating({
+    placement: 'right-end',
+    whileElementsMounted: autoUpdate,
+    middleware: [
+      offset(8),
+      flip({ fallbackAxisSideDirection: 'start' }),
+      shift({ padding: 8 }),
+    ],
+  });
 
   const initial = useRef<boolean>(true);
 
@@ -100,11 +116,20 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
     [],
   );
 
-  const handleOutsideClick = useCallback((e: MouseEvent) => {
-    if (!initial.current && !parentRef?.current?.contains(e.target as Node)) {
-      onClose?.();
-    }
-  }, []);
+  const handleOutsideClick = useCallback(
+    (e: MouseEvent) => {
+      const target = e.target as Node;
+
+      if (
+        !initial.current &&
+        !parentRef?.current?.contains(target) &&
+        !refs.floating.current?.contains(target)
+      ) {
+        onClose?.();
+      }
+    },
+    [onClose, parentRef, refs.floating],
+  );
 
   const handleColorInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,13 +157,8 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
   }, []);
 
   useEffect(() => {
-    const rect = parentRef?.current?.getBoundingClientRect?.();
-    if (window.innerWidth - (rect?.right ?? 0) <= 250) {
-      setCenteredX(true);
-      return;
-    }
-    setCenteredX(false);
-  }, []);
+    refs.setReference(parentRef?.current ?? null);
+  }, [parentRef, refs]);
 
   useEffect(() => {
     if (!initial.current || !color) return;
@@ -177,8 +197,11 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
   const colorPositionX = `${saturation}%`;
   const colorPositionY = `${100 - brightness}%`;
 
-  return (
-    <ColorPickerMenuStyled $centeredX={centeredX}>
+  return createPortal(
+    <ColorPickerMenuStyled
+      ref={refs.setFloating}
+      style={floatingStyles}
+    >
       <ColorPickerMenuHeader>
         <ColorPickerMenuHeaderLeft>
           <ColorPickerMenuHeaderHexCodeInput
@@ -220,6 +243,7 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
           }}
         />
       </ColorPickerMenuHueSlider>
-    </ColorPickerMenuStyled>
+    </ColorPickerMenuStyled>,
+    document.body,
   );
 };

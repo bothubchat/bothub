@@ -177,6 +177,7 @@ import {
   DeleteChatIcon,
   DragDotIcon,
   TempChatIcon,
+  ForkChatIcon,
   SidebarChatIcon,
   TextBoldIcon,
   TextItalicIcon,
@@ -538,6 +539,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="AddGroupIcon">{AddGroupIcon}</IconItem>
         <IconItem name="DeleteChatIcon">{DeleteChatIcon}</IconItem>
         <IconItem name="TempChatIcon">{TempChatIcon}</IconItem>
+        <IconItem name="ForkChatIcon">{ForkChatIcon}</IconItem>
         <IconItem name="SidebarChatIcon">{SidebarChatIcon}</IconItem>
         <IconItem name="OrganizationIcon">{OrganizationIcon}</IconItem>
         <IconItem name="SimpleGearIcon">{SimpleGearIcon}</IconItem>

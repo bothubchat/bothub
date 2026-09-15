@@ -10,19 +10,13 @@ import { isBright } from '@/ui/utils';
 const ColorPickerMenuAnimation = keyframes`
   from {
     opacity: 0;
-    transform: translateY(4px);
   }
   to {
     opacity: 1;
-    transform: translateY(0)
   }
 `;
 
-export interface ColorPickerMenuStyledProps {
-  $centeredX?: boolean;
-}
-
-export const ColorPickerMenuStyled = styled.div<ColorPickerMenuStyledProps>`
+export const ColorPickerMenuStyled = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -31,9 +25,6 @@ export const ColorPickerMenuStyled = styled.div<ColorPickerMenuStyledProps>`
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   padding: 8px;
   border-radius: 10px;
-  position: absolute;
-  bottom: 40px;
-  left: ${({ $centeredX }) => ($centeredX ? `0` : css`calc(100% + 8px)`)};
   animation: ${ColorPickerMenuAnimation} 0.1s ease-out;
   z-index: ${({ theme }) => theme.zIndex.menu};
   user-select: none;
