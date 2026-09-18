@@ -74,6 +74,16 @@ export const MessageListItemStyled = styled(Typography).attrs({
       }
     }
   }}
+  &.task-list-item {
+    padding-left: 0px;
+    &:before {
+      content: none;
+    }
+    > input[type='checkbox'] {
+      margin: 0px 8px 0px 0px;
+      vertical-align: middle;
+    }
+  }
   &::selection {
     ${({ $messageColor }) => {
       switch ($messageColor) {
