@@ -149,3 +149,58 @@ describe('normalizeMessageMarkdown', () => {
     expect(normalizeMessageMarkdown(input)).toBe(input);
   });
 });
+
+describe('normalizeMessageMarkdown while typing', () => {
+  const typing = (content: string) =>
+    normalizeMessageMarkdown(content, { typing: true });
+
+  test('hides an unclosed display math block', () => {
+    expect(typing('Текст\n\n$$\n\\frac{a}{b} + \\left(')).toBe('Текст\n\n');
+  });
+
+  test('hides unclosed explicit delimiters', () => {
+    expect(typing('Формула:\n\\[\n\\frac{a}{')).toBe('Формула:\n');
+    expect(typing('Формула \\(\\frac{1}{')).toBe('Формула ');
+    expect(typing('Формула \\$$\\frac{1}{')).toBe('Формула ');
+  });
+
+  test('hides unclosed inline math', () => {
+    expect(typing('Значит $x^{2')).toBe('Значит ');
+    expect(typing('Значит $')).toBe('Значит ');
+  });
+
+  test('hides a trailing backslash that may start a delimiter', () => {
+    expect(typing('Значит \\')).toBe('Значит ');
+  });
+
+  test('keeps closed formulas and text after them', () => {
+    const input = 'Готово $x^2$ и $$\na + b\n$$\nдальше \\(y\\) текст';
+    expect(typing(input)).toBe(normalizeMessageMarkdown(input));
+  });
+
+  test('keeps currency', () => {
+    expect(typing('Цена $10')).toBe('Цена \\$10');
+    expect(typing('От \\$5 до')).toBe('От \\$5 до');
+  });
+
+  test('limits a stray inline dollar to its line', () => {
+    expect(typing('Переменная $HOME\nи дальше')).toBe(
+      'Переменная $HOME\nи дальше',
+    );
+  });
+
+  test('keeps escaped brackets that are not math', () => {
+    expect(typing('Ссылка \\[1\\] и текст')).toBe('Ссылка \\[1\\] и текст');
+  });
+
+  test('ignores dollars inside code', () => {
+    expect(typing('Код `$x` и\n```bash\necho $HOME\n')).toBe(
+      'Код `$x` и\n```bash\necho $HOME\n',
+    );
+  });
+
+  test('does not trim anything once the message is complete', () => {
+    const input = 'Текст\n\n$$\n\\frac{a}{b';
+    expect(normalizeMessageMarkdown(input)).toBe(input);
+  });
+});

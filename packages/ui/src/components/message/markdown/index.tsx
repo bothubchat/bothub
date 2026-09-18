@@ -38,12 +38,14 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
     const isDisabled = forceMarkdown ? false : variant === 'user';
     const id = useId();
 
+    // `typing` comes from the message context, not `disableTyping`: that prop
+    // only hides the cursor while the content may still be streaming.
     const formattedChildren = useMemo(
       () =>
         typeof children === 'string' && !isDisabled
-          ? normalizeMessageMarkdown(children)
+          ? normalizeMessageMarkdown(children, { typing })
           : children,
-      [children, isDisabled],
+      [children, isDisabled, typing],
     );
 
     const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
