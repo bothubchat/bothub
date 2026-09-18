@@ -357,7 +357,134 @@ function normalizeInlineDollars(content: string): string {
   return result;
 }
 
-export function normalizeMessageMarkdown(content: string): string {
+interface UnfinishedMath {
+  segmentIndex: number;
+  offset: number;
+}
+
+// Mirrors which explicit delimiters `splitMath` converts once they are closed.
+const EXPLICIT_MATH_DELIMITERS = [
+  { open: '\\$$', close: '\\$$', isMath: () => true },
+  {
+    open: '\\[',
+    close: '\\]',
+    isMath: (body: string) => body.trim() === '' || looksLikeMathBody(body),
+  },
+  { open: '\\(', close: '\\)', isMath: (body: string) => !body.includes('\n') },
+];
+
+/**
+ * Finds the opening delimiter of a formula that has not been closed yet.
+ * Works on normalized text: closed `\[…\]` and `\(…\)` are already converted,
+ * currency dollars are already escaped. Inline math is limited to one line so a
+ * stray `$` can hide at most the current line.
+ */
+function findUnfinishedMath(segments: Segment[]): UnfinishedMath | null {
+  let display: UnfinishedMath | null = null;
+  let inline: UnfinishedMath | null = null;
+
+  for (let segmentIndex = 0; segmentIndex < segments.length; segmentIndex++) {
+    const { kind, value } = segments[segmentIndex];
+
+    if (kind === 'code') {
+      continue;
+    }
+
+    for (let offset = 0; offset < value.length; offset += 1) {
+      const char = value[offset];
+      const position = { segmentIndex, offset };
+
+      if (char === '\n' && !display) {
+        inline = null;
+        continue;
+      }
+
+      if (isEscaped(value, offset)) {
+        continue;
+      }
+
+      if (char === '\\' && !display && !inline) {
+        const explicit = EXPLICIT_MATH_DELIMITERS.find(({ open }) =>
+          value.startsWith(open, offset),
+        );
+
+        if (explicit) {
+          const bodyStart = offset + explicit.open.length;
+          const close = findUnescaped(value, explicit.close, bodyStart);
+
+          if (close === -1 && explicit.isMath(value.slice(bodyStart))) {
+            return position;
+          }
+
+          if (close !== -1) {
+            offset = close + explicit.close.length - 1;
+          }
+          continue;
+        }
+
+        // A lone trailing backslash may be the start of `\[` or `\(`.
+        if (offset === value.length - 1) {
+          return position;
+        }
+        continue;
+      }
+
+      if (char !== '$') {
+        continue;
+      }
+
+      if (value[offset + 1] === '$') {
+        display = display ? null : position;
+        offset += 1;
+        continue;
+      }
+
+      if (display) {
+        continue;
+      }
+
+      if (inline) {
+        inline = null;
+      } else if (!isWhitespace(value[offset + 1])) {
+        inline = position;
+      }
+    }
+  }
+
+  return display ?? inline;
+}
+
+function trimUnfinishedMath(segments: Segment[]): Segment[] {
+  const unfinished = findUnfinishedMath(segments);
+
+  if (!unfinished) {
+    return segments;
+  }
+
+  const { segmentIndex, offset } = unfinished;
+
+  return [
+    ...segments.slice(0, segmentIndex),
+    {
+      ...segments[segmentIndex],
+      value: segments[segmentIndex].value.slice(0, offset),
+    },
+  ];
+}
+
+export interface NormalizeMessageMarkdownOptions {
+  /**
+   * The message is still streaming: the last formula may be incomplete, so it
+   * is hidden until its closing delimiter arrives instead of rendering as a
+   * KaTeX error or raw LaTeX.
+   */
+  typing?: boolean;
+}
+
+export function normalizeMessageMarkdown(
+  content: string,
+  { typing = false }: NormalizeMessageMarkdownOptions = {},
+): string {
   const segments: Segment[] = [];
 
   splitFencedCode(content).forEach((block) => {
@@ -368,22 +495,27 @@ export function normalizeMessageMarkdown(content: string): string {
     segments.push(...splitInlineCode(block.value));
   });
 
-  return segments
-    .map((segment, index) => {
-      if (segment.kind !== 'text') {
-        return segment.value;
-      }
+  const normalized = segments.map((segment, index): Segment => {
+    if (segment.kind !== 'text') {
+      return segment;
+    }
 
-      const previous = segments[index - 1];
-      const startsAtLineStart = !previous || previous.value.endsWith('\n');
+    const previous = segments[index - 1];
+    const startsAtLineStart = !previous || previous.value.endsWith('\n');
 
-      return splitMath(segment.value, startsAtLineStart)
+    return {
+      kind: 'text',
+      value: splitMath(segment.value, startsAtLineStart)
         .map((part) =>
           part.kind === 'text'
             ? normalizeInlineDollars(part.value)
             : part.value,
         )
-        .join('');
-    })
+        .join(''),
+    };
+  });
+
+  return (typing ? trimUnfinishedMath(normalized) : normalized)
+    .map((segment) => segment.value)
     .join('');
 }

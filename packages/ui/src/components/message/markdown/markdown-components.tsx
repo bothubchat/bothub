@@ -25,6 +25,7 @@ import {
   MessageTableRow,
   MessageTitle,
 } from '@/ui/components/message/components';
+import { useMessage } from '@/ui/components/message/context';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
 import { normalizeMessageMarkdown } from './utils';
 
@@ -164,6 +165,7 @@ export const baseMarkdownComponents: Components = {
 
 const MarkdownCode: Components['code'] = ({ className, children }) => {
   const components = useContext(MessageMarkdownComponentsContext);
+  const { typing } = useMessage();
   const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
   const { code, language, isInline } = getMarkdownCodeInfo(className, children);
 
@@ -175,7 +177,7 @@ const MarkdownCode: Components['code'] = ({ className, children }) => {
   if (isDoc || isTg) {
     return (
       <GeneratedDocumentBlock
-        code={normalizeMessageMarkdown(code)}
+        code={normalizeMessageMarkdown(code, { typing })}
         copyLabel={components.document?.copyLabel}
         remarkPlugins={remarkPlugins}
         rehypePlugins={rehypePlugins}

@@ -594,6 +594,40 @@ export const UpdatedContent: MessageStory = {
   },
 };
 
+const STREAMED_FORMULA = [
+  'Решим уравнение по формуле корней квадратного уравнения:',
+  '',
+  '$$',
+  'x_{1,2} = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}',
+  '$$',
+  '',
+  'Где дискриминант \\(D = b^2 - 4ac\\), а цена решения — $10.',
+].join('\n');
+
+export const TypingFormula: MessageStory = {
+  args: {
+    ...Assistant.args,
+    typing: true,
+    children: React.createElement(() => {
+      const [length, setLength] = useState(0);
+
+      useEffect(() => {
+        const interval = window.setInterval(() => {
+          setLength((length) => (length + 3) % (STREAMED_FORMULA.length + 30));
+        }, 80);
+
+        return () => {
+          window.clearInterval(interval);
+        };
+      }, []);
+
+      return (
+        <MessageMarkdown>{STREAMED_FORMULA.slice(0, length)}</MessageMarkdown>
+      );
+    }),
+  },
+};
+
 export const Files: MessageStory = {
   args: {
     ...User.args,

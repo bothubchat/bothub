@@ -5,12 +5,12 @@ import { customRender } from '@/ui/tests';
 import { MessageProvider } from '../context';
 import { MessageMarkdown } from '.';
 
-const renderMarkdown = (text: string) =>
+const renderMarkdown = (text: string, typing = false) =>
   customRender(
     <MessageProvider
       variant="assistant"
       color="default"
-      typing={false}
+      typing={typing}
     >
       <MessageMarkdown>{text}</MessageMarkdown>
     </MessageProvider>,
@@ -83,5 +83,20 @@ describe('MessageMarkdown', () => {
 
     expect(container.querySelector('.katex')).toBeNull();
     expect(container.textContent).toContain('Цена $10, скидка $5');
+  });
+
+  const unfinishedFormula = 'Текст\n\n$$\n\\frac{a}{b} + \\left(';
+
+  test('hides an unfinished formula while typing', () => {
+    const { container } = renderMarkdown(unfinishedFormula, true);
+
+    expect(container.querySelector('.katex-error')).toBeNull();
+    expect(container.textContent).not.toContain('\\left(');
+  });
+
+  test('renders the formula as is once typing is finished', () => {
+    const { container } = renderMarkdown(unfinishedFormula);
+
+    expect(container.querySelector('.katex-error')).not.toBeNull();
   });
 });
