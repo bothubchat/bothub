@@ -1,12 +1,15 @@
-import React, { forwardRef, useMemo } from 'react';
-import ReactMarkdown, { type Components } from 'react-markdown';
+import React, { forwardRef, useId, useMemo } from 'react';
+import ReactMarkdown, { type Components, type Options } from 'react-markdown';
 import { useMessage } from '@/ui/components/message/context';
 import {
   MessageComponentsProps,
   MessageParagraph,
 } from '@/ui/components/message/components';
 import { MessageMarkdownLine, MessageMarkdownStyled } from './styled';
-import { markdownComponents } from './markdown-components';
+import {
+  MessageMarkdownComponentsProvider,
+  messageMarkdownComponents,
+} from './markdown-components';
 import { normalizeMessageMarkdown } from './utils';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
 
@@ -18,12 +21,14 @@ export interface MessageMarkdownProps {
   forceMarkdown?: boolean;
 }
 
+const EMPTY_COMPONENTS: MessageComponentsProps = {};
+
 export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
   (
     {
       children,
-      components = {},
-      componentsOverride = {},
+      components = EMPTY_COMPONENTS,
+      componentsOverride,
       disableTyping = false,
       forceMarkdown = false,
     },
@@ -31,22 +36,36 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
   ) => {
     const { typing, variant, color } = useMessage();
     const isDisabled = forceMarkdown ? false : variant === 'user';
+    const id = useId();
 
-    const formattedChildren = useMemo(() => {
-      if (typeof children === 'string' && !isDisabled) {
-        return normalizeMessageMarkdown(children);
-      }
-      return children;
-    }, [children, isDisabled]);
+    const formattedChildren = useMemo(
+      () =>
+        typeof children === 'string' && !isDisabled
+          ? normalizeMessageMarkdown(children)
+          : children,
+      [children, isDisabled],
+    );
 
     const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
 
-    const markdownNode = useMemo(() => {
-      if (typeof formattedChildren !== 'string') {
-        return null;
-      }
+    const markdownComponents = useMemo<Components>(
+      () =>
+        componentsOverride
+          ? { ...messageMarkdownComponents, ...componentsOverride }
+          : messageMarkdownComponents,
+      [componentsOverride],
+    );
 
-      return (
+    // Several messages on a page must not share footnote ids.
+    const remarkRehypeOptions = useMemo<Options['remarkRehypeOptions']>(
+      () => ({
+        clobberPrefix: `${id.replace(/[^a-zA-Z0-9_-]/g, '')}-`,
+      }),
+      [id],
+    );
+
+    const markdownNode = useMemo(
+      () => (
         <MessageMarkdownStyled ref={ref}>
           <MessageMarkdownLine
             $typing={disableTyping ? false : typing}
@@ -55,42 +74,46 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
             <ReactMarkdown
               remarkPlugins={remarkPlugins}
               rehypePlugins={rehypePlugins}
-              components={markdownComponents(
-                components,
-                componentsOverride,
-                remarkPlugins,
-                rehypePlugins,
-              )}
+              remarkRehypeOptions={remarkRehypeOptions}
+              components={markdownComponents}
             >
               {formattedChildren}
             </ReactMarkdown>
           </MessageMarkdownLine>
         </MessageMarkdownStyled>
+      ),
+      [
+        typing,
+        disableTyping,
+        color,
+        formattedChildren,
+        remarkPlugins,
+        rehypePlugins,
+        remarkRehypeOptions,
+        ref,
+        markdownComponents,
+      ],
+    );
+
+    if (typeof children !== 'string') {
+      return null;
+    }
+
+    if (isDisabled) {
+      return (
+        <MessageParagraph
+          wrap
+          disableMargin
+        >
+          {children}
+        </MessageParagraph>
       );
-    }, [
-      typing,
-      disableTyping,
-      color,
-      formattedChildren,
-      remarkPlugins,
-      rehypePlugins,
-      ref,
-      components,
-      componentsOverride,
-    ]);
+    }
 
     return (
-      <>
-        {isDisabled && typeof children === 'string' && (
-          <MessageParagraph
-            wrap
-            disableMargin
-          >
-            {formattedChildren}
-          </MessageParagraph>
-        )}
-        {!isDisabled && typeof children === 'string' && markdownNode}
-      </>
+      <MessageMarkdownComponentsProvider value={components}>
+        {markdownNode}
+      </MessageMarkdownComponentsProvider>
     );
   },
 );

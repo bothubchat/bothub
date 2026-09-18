@@ -10,6 +10,10 @@ import {
   MessagePre,
   MessageTitle,
 } from '@/ui/components/message/components';
+import {
+  getMarkdownCodeInfo,
+  markdownLinkTargetProps,
+} from '../markdown/markdown-components';
 
 const VARIANT = 'body-s-regular';
 
@@ -25,12 +29,10 @@ export const reasoningComponentsOverride: Partial<Components> = {
   b: ({ children }) => <MessageBold variant={VARIANT}>{children}</MessageBold>,
   pre: ({ children }) => <MessagePre>{children}</MessagePre>,
   code: ({ className, children }) => {
-    const code = String(children);
+    const { code, isInline } = getMarkdownCodeInfo(className, children);
     if (!code) {
       return null;
     }
-
-    const isInline = !className || !className.startsWith('language-');
 
     if (isInline) {
       return <MessageInlineCode>{code}</MessageInlineCode>;
@@ -59,10 +61,11 @@ export const reasoningComponentsOverride: Partial<Components> = {
       {children}
     </MessageItalic>
   ),
-  a: ({ href, children }) => (
+  a: ({ id, href, children }) => (
     <MessageLink
+      id={id}
       href={href}
-      target="_blank"
+      {...markdownLinkTargetProps(href)}
       variant={VARIANT}
     >
       {children}

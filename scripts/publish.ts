@@ -62,10 +62,19 @@ async function publish(): Promise<void> {
     }
 
     if (packageJson.version !== packageVersion) {
+      // --no-workspaces-update: inside a workspace npm otherwise runs a full
+      // install after bumping the version and creates package-lock.json
+      // (the repo is managed by yarn).
       // eslint-disable-next-line no-await-in-loop
       await run(
         'npm',
-        ['version', packageVersion, '--no-git-tag-version', '--ignore-scripts'],
+        [
+          'version',
+          packageVersion,
+          '--no-git-tag-version',
+          '--ignore-scripts',
+          '--no-workspaces-update',
+        ],
         packageDir,
       );
     }

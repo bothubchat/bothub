@@ -76,4 +76,76 @@ describe('normalizeMessageMarkdown', () => {
       'Price is \\$10 and value $x$',
     );
   });
+
+  test('escapes currency when a later formula contains operators', () => {
+    expect(normalizeMessageMarkdown('Цена $50 и формула $x = y$ тут')).toBe(
+      'Цена \\$50 и формула $x = y$ тут',
+    );
+  });
+
+  test('converts single-variable latex inline math', () => {
+    expect(normalizeMessageMarkdown('где \\( x \\) — число')).toBe(
+      'где $x$ — число',
+    );
+  });
+
+  test('keeps escaped currency pairs as text', () => {
+    const input = 'От \\$5 - \\$10';
+    expect(normalizeMessageMarkdown(input)).toBe(input);
+  });
+
+  test('does not escape inline math converted from latex delimiters', () => {
+    expect(normalizeMessageMarkdown('\\(3 + x\\)')).toBe('$3 + x$');
+  });
+
+  test('does not touch tilde and long backtick fences', () => {
+    const tilde = '~~~php\n$a = $5;\n~~~';
+    expect(normalizeMessageMarkdown(tilde)).toBe(tilde);
+
+    const long = '````md\n```\n$10\n```\n$20\n````';
+    expect(normalizeMessageMarkdown(long)).toBe(long);
+  });
+
+  test('does not touch unclosed fenced code while streaming', () => {
+    const input = 'Код:\n```bash\nx=`date` echo $10 \\(\\d+\\)\n';
+    expect(normalizeMessageMarkdown(input)).toBe(input);
+  });
+
+  test('does not touch fenced code inside list items', () => {
+    const input = '1. Шаг\n   ```bash\n   echo $10\n   ```\n2. Цена $5';
+    expect(normalizeMessageMarkdown(input)).toBe(
+      '1. Шаг\n   ```bash\n   echo $10\n   ```\n2. Цена \\$5',
+    );
+  });
+
+  test('handles multi-backtick inline code', () => {
+    const input = 'Код ``a ` $10`` и цена $5';
+    expect(normalizeMessageMarkdown(input)).toBe('Код ``a ` $10`` и цена \\$5');
+  });
+
+  test('keeps display math inside list items indented', () => {
+    expect(
+      normalizeMessageMarkdown('1. Шаг:\n   \\[\n   x^2 = 1\n   \\]\n2. Далее'),
+    ).toBe('1. Шаг:\n   $$\n   x^2 = 1\n   $$\n2. Далее');
+    expect(normalizeMessageMarkdown('- \\[x^2 = 1\\]')).toBe(
+      '- $$\n  x^2 = 1\n  $$',
+    );
+    expect(normalizeMessageMarkdown('> \\[x^2 = 1\\]')).toBe(
+      '> $$\n> x^2 = 1\n> $$',
+    );
+  });
+
+  test('renders mid-line display math inline', () => {
+    expect(
+      normalizeMessageMarkdown('Формула: \\[x^2 + 1\\] и дальше\n\nАбзац'),
+    ).toBe('Формула: $\\displaystyle x^2 + 1$ и дальше\n\nАбзац');
+    expect(normalizeMessageMarkdown('\\[x^2 + 1\\] — формула')).toBe(
+      '$\\displaystyle x^2 + 1$ — формула',
+    );
+  });
+
+  test('keeps escaped brackets that are not math', () => {
+    const input = 'Ссылка \\[1\\] и \\[примечание\\]';
+    expect(normalizeMessageMarkdown(input)).toBe(input);
+  });
 });
