@@ -12,3 +12,4 @@ stats.html
 debug-storybook.log
 .npmrc
 graphify-out
+.mcp.json
