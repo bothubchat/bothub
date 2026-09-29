@@ -184,6 +184,39 @@ export const Table: MessageStory = {
   },
 };
 
+export const MarkdownEdgeCases: MessageStory = {
+  args: {
+    ...Assistant.args,
+    children: [
+      '| Тариф | Цена | Описание |',
+      '|:--|:-:|--:|',
+      '| Basic | $10 | Строка 1<br>Строка 2 |',
+      '| Pro | $20 | Цена $50 и формула $x = y$ |',
+      '',
+      '- [x] Выполненная задача',
+      '- [ ] Невыполненная задача',
+      '',
+      '1. Формула внутри списка:',
+      '   \\[',
+      '   x^2 + y^2 = r^2',
+      '   \\]',
+      '2. Формула в строке: \\[a^2 + b^2\\] и текст после',
+      '',
+      'Переменная \\( x \\) и сноска[^1].',
+      '',
+      '<cite>',
+      'Источник цитаты',
+      '</cite>',
+      '',
+      '~~~php',
+      '$price = $10;',
+      '~~~',
+      '',
+      '[^1]: Текст сноски.',
+    ].join('\n'),
+  },
+};
+
 export const List: MessageStory = {
   args: {
     ...Assistant.args,
@@ -557,6 +590,40 @@ export const UpdatedContent: MessageStory = {
       }, []);
 
       return <MessageMarkdown>{content}</MessageMarkdown>;
+    }),
+  },
+};
+
+const STREAMED_FORMULA = [
+  'Решим уравнение по формуле корней квадратного уравнения:',
+  '',
+  '$$',
+  'x_{1,2} = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}',
+  '$$',
+  '',
+  'Где дискриминант \\(D = b^2 - 4ac\\), а цена решения — $10.',
+].join('\n');
+
+export const TypingFormula: MessageStory = {
+  args: {
+    ...Assistant.args,
+    typing: true,
+    children: React.createElement(() => {
+      const [length, setLength] = useState(0);
+
+      useEffect(() => {
+        const interval = window.setInterval(() => {
+          setLength((length) => (length + 3) % (STREAMED_FORMULA.length + 30));
+        }, 80);
+
+        return () => {
+          window.clearInterval(interval);
+        };
+      }, []);
+
+      return (
+        <MessageMarkdown>{STREAMED_FORMULA.slice(0, length)}</MessageMarkdown>
+      );
     }),
   },
 };

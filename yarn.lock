@@ -957,8 +957,8 @@
     "@babel/helper-string-parser" "^7.27.1"
     "@babel/helper-validator-identifier" "^7.27.1"
 
-"@bothub-chat/ui@file:C:\\Users\\User\\Desktop\\bh-projects\\bothub\\packages\\ui":
-  version "2.80.25-feat-add-fork-feat-52f68999-d982-4352-a48d-bd65547c5075"
+"@bothub-chat/ui@file:C:\\Users\\timyr\\Desktop\\Bothub\\ui\\packages\\ui":
+  version "2.80.31-fix-markdown-f76df24a-987c-4c16-a171-c844dfb821e4"
   resolved "file:packages/ui"
   dependencies:
     "@dnd-kit/core" "^6.1.0"
@@ -10753,11 +10753,6 @@ undici-types@~6.21.0:
   version "6.21.0"
   resolved "https://registry.npmjs.org/undici-types/-/undici-types-6.21.0.tgz"
   integrity sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==
-
-undici-types@~7.10.0:
-  version "7.10.0"
-  resolved "https://registry.npmjs.org/undici-types/-/undici-types-7.10.0.tgz"
-  integrity sha512-t5Fy/nfn+14LuOc2KNYg75vZqClpAiqscVvMygNnlsHBFpSXdJaYtXMcdNLpl/Qvc3P2cB3s6lOV51nqsFq4ag==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.1"

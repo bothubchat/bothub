@@ -1,0 +1,51 @@
+{
+  "mcpServers": {
+    "graphify": {
+      "type": "stdio",
+      "command": "graphify-mcp",
+      "args": ["--graph", "graphify-out/graph.json"]
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@playwright/mcp@latest",
+        "--browser",
+        "chrome",
+        "--isolated"
+      ]
+    },
+    "context7": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@upstash/context7-mcp@latest"]
+    },
+    "figma": {
+      "type": "http",
+      "url": "https://mcp.figma.com/mcp"
+    },
+    "storybook": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "storybook-mcp@latest"],
+      "env": {
+        "STORYBOOK_URL": "https://bothub-docs.vercel.app/index.json"
+      }
+    },
+    "ux-best-practices": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@elsahafy/ux-mcp-server"]
+    },
+    "21st": {
+      "type": "http",
+      "url": "https://21st.dev/api/mcp",
+      "headers": {
+        "x-api-key": "${TWENTY_FIRST_API_KEY}"
+      }
+    }
+  }
+}

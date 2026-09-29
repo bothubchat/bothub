@@ -8,11 +8,13 @@ import { useMessage } from '../../../context';
 
 export interface MessageTableCellProps extends React.PropsWithChildren {
   className?: string;
+  style?: React.CSSProperties;
   head?: boolean;
 }
 
 export const MessageTableCell: React.FC<MessageTableCellProps> = ({
   className,
+  style,
   head = false,
   children,
   ...props
@@ -22,6 +24,7 @@ export const MessageTableCell: React.FC<MessageTableCellProps> = ({
   return (
     <MessageTableCellStyled
       className={className}
+      style={style}
       as={head ? MessageTableHeadCell : MessageTableCellStyled}
       {...props}
     >
