@@ -48,6 +48,22 @@ export const SubmitOnCtrlEnter: InputMessageStory = {
   },
 };
 
+export const SendAddon: InputMessageStory = {
+  args: {
+    ...Basic.args,
+    sendAddon: '≈ 1 200 CAPS',
+  },
+};
+
+export const SendWarning: InputMessageStory = {
+  args: {
+    ...Basic.args,
+    sendAddon: '≈ 1 200 CAPS',
+    sendDisabled: true,
+    sendWarning: 'Не хватает CAPS: уменьшите длительность или пополните баланс',
+  },
+};
+
 export default {
   title: 'Components/Message/Input',
   component: InputMessage,

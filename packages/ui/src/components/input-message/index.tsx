@@ -81,6 +81,8 @@ export interface InputMessageProps
   uploadFileAccept?: string;
   uploadFileText?: string;
   imageRequiredText?: string;
+  sendWarning?: React.ReactNode;
+  sendAddon?: React.ReactNode;
   sendDisabled?: boolean;
   textAreaDisabled?: boolean;
   messageSubmitKey?: MessageSubmitKey;
@@ -117,6 +119,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   message: initialMessage,
   files: initialFiles,
   imageRequiredText,
+  sendWarning,
+  sendAddon,
   disabled = false,
   sendDisabled = false,
   textAreaDisabled = false,
@@ -349,6 +353,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               {imageRequiredText}
             </InputMessageConcatenateWarning>
           )}
+          {sendWarning && (
+            <InputMessageConcatenateWarning>
+              {sendWarning}
+            </InputMessageConcatenateWarning>
+          )}
           {voiceFiles.length > 1 && (
             <InputMessageConcatenateWarning>
               {concatenateText}
@@ -428,6 +437,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               data-test="submit-message"
             />
           )}
+          {!hiddenSend && !isVoiceRecording && sendAddon}
           {!hiddenSend && !isVoiceRecording && (
             <InputMessageSendButton
               disabled={disabled || sendDisabled || isVoiceRecording}
