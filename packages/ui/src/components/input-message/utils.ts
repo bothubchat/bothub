@@ -75,6 +75,35 @@ export function isFileTypeAccepted(
   });
 }
 
+export const getClipboardFiles = (clipboardData: DataTransfer): File[] => {
+  if (clipboardData.files.length > 0) {
+    return [...clipboardData.files];
+  }
+
+  // Safari и часть приложений отдают файл только через items
+  return [...clipboardData.items]
+    .filter((item) => item.kind === 'file')
+    .map((item) => item.getAsFile())
+    .filter((file): file is File => file !== null);
+};
+
+const hasHtmlText = (html: string): boolean => {
+  if (!html) return false;
+
+  const document = new DOMParser().parseFromString(html, 'text/html');
+
+  return (document.body.textContent ?? '').trim().length > 0;
+};
+
+/**
+ * Вставлять ли файлы из буфера вместо текста.
+ * Браузер при «Копировать изображение» кладёт рядом с картинкой `<img>` без текста,
+ * Finder — имя файла в text/plain: это не текст пользователя, вставляем файл.
+ * Word, Excel и выделение на странице кладут HTML с текстом (и PNG-превью): вставляем текст.
+ */
+export const shouldPasteClipboardFiles = (clipboardData: DataTransfer) =>
+  !hasHtmlText(clipboardData.getData('text/html'));
+
 export const isMobileDevice = (): boolean =>
   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent,
