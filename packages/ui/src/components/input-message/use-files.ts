@@ -2,8 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { IInputMessageFile, InputMessageErrorEvent } from './types';
 import {
   formatUploadFiles,
+  getClipboardFiles,
   getPreviewUrlForFile,
   isFileTypeAccepted,
+  shouldPasteClipboardFiles,
 } from './utils';
 
 interface UseFilesProps {
@@ -64,19 +66,17 @@ export const useFiles = ({
       if (uploadFileDisabled) return;
 
       const { clipboardData } = event;
+      const pastedFiles = getClipboardFiles(clipboardData);
 
-      const hasText =
-        clipboardData.getData('text/plain')?.length > 0 ||
-        clipboardData.getData('text/html')?.length > 0;
-
-      if (hasText) {
+      if (
+        pastedFiles.length === 0 ||
+        !shouldPasteClipboardFiles(clipboardData)
+      ) {
         return;
       }
 
-      if (clipboardData.files.length > 0) {
-        event.preventDefault();
-        await handleSideUploadFiles([...clipboardData.files]);
-      }
+      event.preventDefault();
+      await handleSideUploadFiles(pastedFiles);
     },
     [handleSideUploadFiles, uploadFileDisabled],
   );
