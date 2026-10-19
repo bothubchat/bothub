@@ -3,17 +3,42 @@ import { getSupportedAudioMimeType, getWaveData } from '@/ui/utils';
 import { IInputMessageVoiceFile } from './types';
 
 interface UseVoiceProps {
+  initialVoiceFiles?: IInputMessageVoiceFile[];
   onVoiceFilesChange?: (files: IInputMessageVoiceFile[]) => unknown;
 }
 
-export const useVoice = ({ onVoiceFilesChange }: UseVoiceProps) => {
+export const useVoice = ({
+  initialVoiceFiles,
+  onVoiceFilesChange,
+}: UseVoiceProps) => {
   const voiceMediaRecorderRef = useRef<MediaRecorder | null>(null);
   const voiceMediaStreamRef = useRef<MediaStream | null>(null);
   const voiceChunksRef = useRef<Blob[]>([]);
   const voiceTimerRef = useRef<number | null>(null);
   const voicePressedRef = useRef(false);
 
-  const [voiceFiles, setVoiceFiles] = useState<IInputMessageVoiceFile[]>([]);
+  const [innerVoiceFiles, setInnerVoiceFiles] = useState<
+    IInputMessageVoiceFile[]
+  >([]);
+  // Как с message и files: если передан проп, голосовыми управляет родитель
+  // и может вернуть их, например, после ошибки отправки
+  const isControlled = Array.isArray(initialVoiceFiles);
+  const voiceFiles = isControlled ? initialVoiceFiles : innerVoiceFiles;
+  // Запись дописывается по stop, а список мог смениться за время записи
+  // (например, родитель вернул голосовые после ошибки отправки)
+  const voiceFilesRef = useRef(voiceFiles);
+  voiceFilesRef.current = voiceFiles;
+  const setVoiceFiles = useCallback(
+    (files: IInputMessageVoiceFile[]) => {
+      if (isControlled) {
+        onVoiceFilesChange?.(files);
+        return;
+      }
+
+      setInnerVoiceFiles(files);
+    },
+    [isControlled, onVoiceFilesChange],
+  );
   const [isVoiceRecording, setIsVoiceRecording] = useState(false);
   const [isVoicePaused, setIsVoicePaused] = useState(false);
   const [voiceRecordingTime, setVoiceRecordingTime] = useState<number | null>(
@@ -141,7 +166,7 @@ export const useVoice = ({ onVoiceFilesChange }: UseVoiceProps) => {
         waveData,
       };
 
-      setVoiceFiles([...voiceFiles, newVoiceFile]);
+      setVoiceFiles([...voiceFilesRef.current, newVoiceFile]);
 
       voiceMediaRecorderRef.current = null;
       voiceMediaStreamRef.current = null;
@@ -171,8 +196,10 @@ export const useVoice = ({ onVoiceFilesChange }: UseVoiceProps) => {
   }, [voiceMediaRecorderRef.current]);
 
   useEffect(() => {
-    onVoiceFilesChange?.(voiceFiles);
-  }, [voiceFiles]);
+    if (!isControlled) {
+      onVoiceFilesChange?.(innerVoiceFiles);
+    }
+  }, [innerVoiceFiles]);
 
   return {
     voiceFiles,
