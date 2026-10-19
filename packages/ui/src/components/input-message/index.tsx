@@ -75,6 +75,8 @@ export interface InputMessageProps
   message?: string;
   hiddenSend?: boolean;
   files?: IInputMessageFile[];
+  /** Записанные голосовые. С пропом ими управляет родитель, как message и files */
+  voiceFiles?: IInputMessageVoiceFile[];
   hideUploadFile?: boolean;
   uploadFileLimit?: number;
   uploadFileDisabled?: boolean;
@@ -118,6 +120,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   hiddenSend = false,
   message: initialMessage,
   files: initialFiles,
+  voiceFiles: initialVoiceFiles,
   imageRequiredText,
   sendWarning,
   sendAddon,
@@ -187,6 +190,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     handleVoicePause,
     handleVoiceFileDelete,
   } = useVoice({
+    initialVoiceFiles,
     onVoiceFilesChange,
   });
 
