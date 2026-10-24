@@ -3,6 +3,12 @@ import { isMobileDevice } from './utils';
 
 export type MessageSubmitKey = 'enter' | 'ctrlEnter';
 
+/** Фокус «ничей» или уже в поле: возвращаем его, не отбирая у другого поля */
+const canRestoreFocus = (el: HTMLElement) => {
+  const active = document.activeElement;
+  return active === null || active === document.body || active === el;
+};
+
 interface UseInputProps {
   initialMessage?: string;
   disabled?: boolean;
@@ -69,19 +75,34 @@ export const useInput = ({
     [setMessage, onTextAreaChange],
   );
 
+  // Был ли фокус в поле, когда его заблокировали: после разблокировки вернём его
+  const restoreFocusRef = useRef(false);
+
   useEffect(() => {
     const textareaEl = textareaRef.current;
-    if (!textareaEl || disabled) return;
+    if (!textareaEl) return;
 
-    const shouldFocus = !disabled && !!autoFocus;
-
-    setIsFocus(shouldFocus);
-
-    if (shouldFocus) {
-      textareaEl.focus();
-    } else if (document.activeElement === textareaEl) {
-      textareaEl.blur();
+    if (disabled) {
+      // isFocus — состояние до блокировки: Chrome уже перевёл фокус на body,
+      // Firefox и Safari оставили его на поле
+      if (isFocus) restoreFocusRef.current = true;
+      return;
     }
+
+    const hadFocus = restoreFocusRef.current;
+    restoreFocusRef.current = false;
+
+    if (autoFocus) {
+      textareaEl.focus();
+    } else if (isMobileDevice()) {
+      // На телефоне закрываем клавиатуру, как раньше
+      if (document.activeElement === textareaEl) textareaEl.blur();
+    } else if (hadFocus && canRestoreFocus(textareaEl)) {
+      textareaEl.focus();
+    }
+
+    // Браузер может снять фокус с заблокированного поля без blur
+    setIsFocus(document.activeElement === textareaEl);
   }, [disabled, autoFocus]);
 
   useEffect(() => {

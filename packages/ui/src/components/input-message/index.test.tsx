@@ -1,6 +1,12 @@
 import React from 'react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { createClipboardData, customRender, TestProvider } from '@/ui/tests';
 import { InputMessage } from '.';
 
@@ -111,6 +117,109 @@ describe('InputMessage controlled voice files', () => {
     fireEvent.click(tracks()[0]);
 
     expect(onVoiceFilesChange).toHaveBeenLastCalledWith([two]);
+  });
+});
+
+describe('InputMessage focus', () => {
+  afterEach(cleanup);
+
+  type Props = Partial<React.ComponentProps<typeof InputMessage>>;
+
+  // В открытом чате клиент выключает autoFocus
+  const renderFocus = (props: Props = {}) => {
+    const onSend = vi.fn();
+    const element = (next: Props = {}) => (
+      <InputMessage
+        placeholder="Сообщение"
+        sendAriaLabel="Отправить"
+        autoFocus={false}
+        onSend={onSend}
+        {...props}
+        {...next}
+      />
+    );
+    const { rerender } = customRender(element());
+
+    return {
+      onSend,
+      textarea: screen.getByPlaceholderText('Сообщение'),
+      rerender: (next: Props) =>
+        rerender(<TestProvider>{element(next)}</TestProvider>),
+    };
+  };
+
+  const focusOutside = (tag: 'button' | 'input') => {
+    const el = document.createElement(tag);
+    document.body.append(el);
+    act(() => el.focus());
+    return el;
+  };
+
+  test('keeps focus in the field after it is enabled again', () => {
+    const { textarea, rerender } = renderFocus();
+    act(() => textarea.focus());
+
+    rerender({ disabled: true });
+    rerender({ disabled: false });
+
+    expect(document.activeElement).toBe(textarea);
+  });
+
+  test('returns focus lost while the field was disabled', () => {
+    const { textarea, rerender } = renderFocus();
+    act(() => textarea.focus());
+
+    rerender({ disabled: true });
+    // Chrome уводит фокус с заблокированного поля на body
+    const button = focusOutside('button');
+    act(() => button.remove());
+    expect(document.activeElement).toBe(document.body);
+
+    rerender({ disabled: false });
+
+    expect(document.activeElement).toBe(textarea);
+  });
+
+  test('does not take focus from another field', () => {
+    const { textarea, rerender } = renderFocus();
+    act(() => textarea.focus());
+
+    rerender({ disabled: true });
+    const other = focusOutside('input');
+    rerender({ disabled: false });
+
+    expect(document.activeElement).toBe(other);
+    other.remove();
+  });
+
+  test('does not focus the field the user was not typing in', () => {
+    const { rerender } = renderFocus();
+
+    rerender({ disabled: true });
+    rerender({ disabled: false });
+
+    expect(document.activeElement).toBe(document.body);
+  });
+
+  test('keeps focus when autoFocus turns off', () => {
+    // Первое сообщение нового чата: у чата появился id
+    const { textarea, rerender } = renderFocus({ autoFocus: true });
+    expect(document.activeElement).toBe(textarea);
+
+    rerender({ autoFocus: false });
+
+    expect(document.activeElement).toBe(textarea);
+  });
+
+  test('puts the cursor back after sending with the button', () => {
+    const { textarea, onSend } = renderFocus();
+    const send = screen.getByLabelText('Отправить');
+    act(() => send.focus());
+
+    fireEvent.click(send);
+
+    expect(onSend).toHaveBeenCalledTimes(1);
+    expect(document.activeElement).toBe(textarea);
   });
 });
 
