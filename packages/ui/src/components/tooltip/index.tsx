@@ -53,7 +53,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   hideOnScroll = true,
 }) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const [hoveredElement, sethoveredElement] = useState<Element | null>();
+  const [hoveredElement, sethoveredElement] = useState<Element | null>(null);
   const [coords, setCoords] = useState<[number, number]>([0, 0]);
   const isDisabled = !label || disabled;
 
@@ -302,6 +302,11 @@ export const Tooltip: React.FC<TooltipProps> = ({
   );
 
   useEffect(() => {
+    // Скрытая подсказка не слушает window: подсказок на странице сотни
+    if (hoveredElement === null) {
+      return;
+    }
+
     const handleGlobalMouseLeave = () => {
       hideTooltip();
     };
@@ -317,7 +322,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
       window.removeEventListener('mouseleave', handleGlobalMouseLeave);
       window.removeEventListener('scroll', handleGlobalScroll, hideOnScroll);
     };
-  }, [hideTooltip]);
+  }, [hoveredElement, hideTooltip, hideOnScroll]);
 
   return (
     <TooltipProvider

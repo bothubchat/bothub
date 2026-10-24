@@ -1,12 +1,13 @@
-import { describe, test, expect, afterEach } from 'vitest';
+import { describe, test, expect, afterEach, vi } from 'vitest';
 import { screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
-import { customRender } from '@/ui/tests';
+import { customRender, trackGlobalListeners } from '@/ui/tests';
 import { Tooltip, TooltipAnimationDuration } from './index';
 import { Button } from '../button';
 
 describe('tooltip', () => {
   afterEach(() => {
     cleanup();
+    vi.restoreAllMocks();
   });
 
   test('should become visible on button hover', async () => {
@@ -86,6 +87,69 @@ describe('tooltip', () => {
     );
 
     fireEvent.mouseLeave(button);
+    await waitFor(() => expect(screen.queryByText('Tooltip text')).toBeNull(), {
+      timeout: TooltipAnimationDuration.exit + 25,
+    });
+  });
+
+  test('should listen to the window only while it is visible', () => {
+    const countListeners = trackGlobalListeners(['mouseleave', 'scroll']);
+    customRender(
+      <Tooltip label="Tooltip text">
+        <Button>Hover me</Button>
+      </Tooltip>,
+    );
+
+    const button = screen.getByRole('button');
+    expect(countListeners()).toEqual({});
+
+    fireEvent.mouseEnter(button);
+    expect(countListeners()).toEqual({
+      'window mouseleave': 1,
+      'window scroll capture': 1,
+    });
+
+    fireEvent.mouseLeave(button);
+    expect(countListeners()).toEqual({});
+  });
+
+  test('should hide on scroll of any element', async () => {
+    customRender(
+      <>
+        <Tooltip label="Tooltip text">
+          <Button>Hover me</Button>
+        </Tooltip>
+        <div data-testid="feed" />
+      </>,
+    );
+
+    fireEvent.mouseEnter(screen.getByRole('button'));
+    expect(screen.getByText('Tooltip text')).not.toBeNull();
+
+    fireEvent.scroll(screen.getByTestId('feed'));
+    await waitFor(() => expect(screen.queryByText('Tooltip text')).toBeNull(), {
+      timeout: TooltipAnimationDuration.exit + 25,
+    });
+  });
+
+  test('should listen only to scroll of the page without hideOnScroll', async () => {
+    const countListeners = trackGlobalListeners(['mouseleave', 'scroll']);
+    customRender(
+      <Tooltip
+        label="Tooltip text"
+        hideOnScroll={false}
+      >
+        <Button>Hover me</Button>
+      </Tooltip>,
+    );
+
+    fireEvent.mouseEnter(screen.getByRole('button'));
+    expect(countListeners()).toEqual({
+      'window mouseleave': 1,
+      'window scroll': 1,
+    });
+
+    fireEvent.scroll(window);
     await waitFor(() => expect(screen.queryByText('Tooltip text')).toBeNull(), {
       timeout: TooltipAnimationDuration.exit + 25,
     });
