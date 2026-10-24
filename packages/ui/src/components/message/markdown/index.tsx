@@ -5,12 +5,13 @@ import {
   MessageComponentsProps,
   MessageParagraph,
 } from '@/ui/components/message/components';
+import { MessageCodeTypingContext } from '@/ui/components/message/components/code/multiline/content/typing';
 import { MessageMarkdownLine, MessageMarkdownStyled } from './styled';
 import {
   MessageMarkdownComponentsProvider,
   messageMarkdownComponents,
 } from './markdown-components';
-import { normalizeMessageMarkdown } from './utils';
+import { endsInOpenCodeFence, normalizeMessageMarkdown } from './utils';
 import { splitMarkdownBlocks } from './blocks';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
 
@@ -60,6 +61,12 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
           : [],
       [formattedChildren, isDisabled],
     );
+    const lastBlock = blocks[blocks.length - 1] ?? '';
+
+    const isCodeTyping = useMemo(
+      () => typing && endsInOpenCodeFence(lastBlock),
+      [typing, lastBlock],
+    );
 
     const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
 
@@ -87,15 +94,19 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
             $color={color}
           >
             {blocks.map((block, index) => (
-              <MarkdownBlock
+              <MessageCodeTypingContext.Provider
                 key={index}
-                remarkPlugins={remarkPlugins}
-                rehypePlugins={rehypePlugins}
-                remarkRehypeOptions={remarkRehypeOptions}
-                components={markdownComponents}
+                value={isCodeTyping && index === blocks.length - 1}
               >
-                {block}
-              </MarkdownBlock>
+                <MarkdownBlock
+                  remarkPlugins={remarkPlugins}
+                  rehypePlugins={rehypePlugins}
+                  remarkRehypeOptions={remarkRehypeOptions}
+                  components={markdownComponents}
+                >
+                  {block}
+                </MarkdownBlock>
+              </MessageCodeTypingContext.Provider>
             ))}
           </MessageMarkdownLine>
         </MessageMarkdownStyled>
@@ -105,6 +116,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
         disableTyping,
         color,
         blocks,
+        isCodeTyping,
         remarkPlugins,
         rehypePlugins,
         remarkRehypeOptions,

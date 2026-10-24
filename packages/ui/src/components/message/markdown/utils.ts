@@ -65,11 +65,17 @@ function looksLikeCurrencySpan(body: string): boolean {
   return /^\d[\d.,]*\s/.test(body);
 }
 
+interface FencedCodeSplit {
+  segments: Segment[];
+  /** The content ends inside a code block that is not closed yet. */
+  isFenceOpen: boolean;
+}
+
 /**
  * Splits content into fenced code blocks (``` and ~~~, including unclosed ones
  * while a message is streaming) and the rest of the text.
  */
-function splitFencedCode(content: string): Segment[] {
+function splitFencedCode(content: string): FencedCodeSplit {
   const segments: Segment[] = [];
   const lines = content.split('\n');
   let current: Segment = { kind: 'text', value: '' };
@@ -116,7 +122,11 @@ function splitFencedCode(content: string): Segment[] {
     segments.push(current);
   }
 
-  return segments;
+  return { segments, isFenceOpen: fence !== null };
+}
+
+export function endsInOpenCodeFence(content: string): boolean {
+  return splitFencedCode(content).isFenceOpen;
 }
 
 function splitInlineCode(content: string): Segment[] {
@@ -487,7 +497,7 @@ export function normalizeMessageMarkdown(
 ): string {
   const segments: Segment[] = [];
 
-  splitFencedCode(content).forEach((block) => {
+  splitFencedCode(content).segments.forEach((block) => {
     if (block.kind !== 'text') {
       segments.push(block);
       return;

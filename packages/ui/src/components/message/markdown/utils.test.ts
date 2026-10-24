@@ -1,5 +1,5 @@
 import { expect, test, describe } from 'vitest';
-import { normalizeMessageMarkdown } from './utils';
+import { endsInOpenCodeFence, normalizeMessageMarkdown } from './utils';
 
 describe('normalizeMessageMarkdown', () => {
   test('escapes currency dollars so they are not treated as math', () => {
@@ -202,5 +202,25 @@ describe('normalizeMessageMarkdown while typing', () => {
   test('does not trim anything once the message is complete', () => {
     const input = 'Текст\n\n$$\n\\frac{a}{b';
     expect(normalizeMessageMarkdown(input)).toBe(input);
+  });
+});
+
+describe('endsInOpenCodeFence', () => {
+  test.each([
+    ['code that is still typed', 'Пример:\n\n```ts\nconst a = 1;'],
+    ['a fence that has just opened', 'Пример:\n```'],
+    ['code in a list item', '1. Установите:\n   ```bash\n   npm i'],
+    ['a closing fence shorter than the opening', '````\ncode\n```'],
+  ])('detects %s', (_, content) => {
+    expect(endsInOpenCodeFence(content)).toBe(true);
+  });
+
+  test.each([
+    ['text', 'Просто текст'],
+    ['closed code', '```ts\nconst a = 1;\n```\n\nДальше'],
+    ['closed tilde code', '~~~\ncode\n~~~'],
+    ['inline code with three backticks', 'Код ```a``` в строке'],
+  ])('ignores %s', (_, content) => {
+    expect(endsInOpenCodeFence(content)).toBe(false);
   });
 });

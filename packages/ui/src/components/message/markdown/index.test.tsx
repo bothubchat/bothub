@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { describe, test, expect, afterEach, vi } from 'vitest';
-import { act, cleanup } from '@testing-library/react';
+import { act, cleanup, waitFor } from '@testing-library/react';
 import { customRender } from '@/ui/tests';
 import { MessageProvider } from '../context';
 import { MessageMarkdown } from '.';
@@ -183,5 +183,35 @@ describe('MessageMarkdown', () => {
     const { container } = renderMarkdown(unfinishedFormula);
 
     expect(container.querySelector('.katex-error')).not.toBeNull();
+  });
+
+  test('highlights streamed code once its fence is closed', async () => {
+    let setText: (text: string) => void = () => {};
+
+    const Streaming = () => {
+      const [text, set] = useState('Пример:\n\n```ts\nconst a = 1;');
+      setText = set;
+      return (
+        <MessageProvider
+          variant="assistant"
+          color="default"
+          typing
+        >
+          <MessageMarkdown>{text}</MessageMarkdown>
+        </MessageProvider>
+      );
+    };
+
+    const { container } = customRender(<Streaming />);
+    // Highlighting is a lazy chunk.
+    await waitFor(() => {
+      expect(container.querySelector('code.hljs')).not.toBeNull();
+    });
+
+    expect(container.querySelector('.hljs-keyword')).toBeNull();
+
+    act(() => setText('Пример:\n\n```ts\nconst a = 1;\n```'));
+
+    expect(container.querySelector('.hljs-keyword')?.textContent).toBe('const');
   });
 });
