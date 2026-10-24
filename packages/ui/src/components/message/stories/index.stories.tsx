@@ -60,7 +60,7 @@ import {
 import { Typography } from '@/ui/components/typography';
 import { MessageSearchResults } from '../search-results';
 import { MessageVideo } from '../video';
-import { createLongAnswer } from '../markdown/long-answer';
+import { createLongAnswer } from '@/ui/tests/long-answer';
 
 export type MessageMeta = Meta<typeof Message>;
 

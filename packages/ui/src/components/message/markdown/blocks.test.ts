@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
+import { createLongAnswer } from '@/ui/tests/long-answer';
 import { MIN_MARKDOWN_BLOCK_LENGTH, splitMarkdownBlocks } from './blocks';
-import { createLongAnswer } from './long-answer';
 
 const FILLER = 'а'.repeat(MIN_MARKDOWN_BLOCK_LENGTH);
 

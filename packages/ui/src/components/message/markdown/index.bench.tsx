@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { afterAll, beforeAll, bench, describe, vi } from 'vitest';
 import { act, cleanup, waitFor } from '@testing-library/react';
-import { customRender } from '@/ui/tests';
+import { createLongAnswer, customRender } from '@/ui/tests';
 import { MessageProvider } from '../context';
 import { MessageMarkdown } from '.';
-import { createLongAnswer } from './long-answer';
 
 /*
  * yarn vitest bench --run packages/ui/src/components/message/markdown

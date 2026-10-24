@@ -110,6 +110,8 @@ export function createConfig({
             './packages/*/tests',
             './**/*.test.ts',
             './**/*.test.tsx',
+            './**/*.bench.ts',
+            './**/*.bench.tsx',
           ],
         }),
         eslint({}),
