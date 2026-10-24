@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { isMobileDevice } from './utils';
+import { isMobileDevice, isTouchDevice } from './utils';
 
 export type MessageSubmitKey = 'enter' | 'ctrlEnter';
 
@@ -96,8 +96,8 @@ export const useInput = ({
 
     if (autoFocus) {
       textareaEl.focus();
-    } else if (isMobileDevice()) {
-      // На телефоне закрываем клавиатуру, как раньше
+    } else if (isTouchDevice()) {
+      // На телефоне и планшете закрываем клавиатуру, как раньше
       if (document.activeElement === textareaEl) textareaEl.blur();
     } else if (hadFocus && canRestoreFocus(textareaEl)) {
       textareaEl.focus();

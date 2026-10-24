@@ -109,3 +109,12 @@ export const isMobileDevice = (): boolean =>
     navigator.userAgent,
   ) ||
   ('ontouchstart' in window && window.innerWidth <= 768);
+
+/**
+ * Экранная клавиатура: телефон или планшет. iPadOS Safari представляется Mac'ом
+ * и шире 768px, поэтому смотрим ещё и на основной способ ввода
+ */
+export const isTouchDevice = (): boolean =>
+  isMobileDevice() ||
+  (typeof window.matchMedia === 'function' &&
+    window.matchMedia('(hover: none) and (pointer: coarse)').matches);

@@ -45,7 +45,7 @@ import { formatSeconds } from '@/ui/utils';
 import { useVoice } from './use-voice';
 import { useFiles } from './use-files';
 import { useInput, type MessageSubmitKey } from './use-input';
-import { isMobileDevice } from './utils';
+import { isTouchDevice } from './utils';
 import { InputMessageFiles } from './input-files';
 import { IconProvider } from '../icon';
 import { CheckSmallIcon, CloseIcon, EditIcon } from '@/ui/icons';
@@ -246,8 +246,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       setFiles?.([]);
       setVoiceFiles?.([]);
       setHeight('calc(var(--bothub-scale, 1) * 22px)');
-      // Курсор обратно в поле, чтобы печатать дальше; на телефоне клавиатуру не открываем
-      if (!isMobileDevice()) textareaRef.current?.focus();
+      // Курсор обратно в поле, чтобы печатать дальше; на тач-экране клавиатуру не открываем
+      if (!isTouchDevice()) textareaRef.current?.focus();
     },
     [message, files, onSend, setMessage, setFiles, setVoiceFiles],
   );

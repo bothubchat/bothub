@@ -224,6 +224,38 @@ describe('InputMessage focus', () => {
   });
 });
 
+describe('InputMessage focus on a touch screen', () => {
+  // iPad Safari: UA как у Mac, шире 768px, мыши нет
+  beforeEach(() => {
+    vi.stubGlobal('matchMedia', () => ({ matches: true }));
+  });
+  afterEach(() => {
+    cleanup();
+    vi.unstubAllGlobals();
+  });
+
+  test('does not open the keyboard after sending with the button', () => {
+    const { textarea, onSend } = renderComposer();
+    const send = screen.getByLabelText('Отправить');
+    act(() => send.focus());
+
+    fireEvent.click(send);
+
+    expect(onSend).toHaveBeenCalledTimes(1);
+    expect(document.activeElement).not.toBe(textarea);
+  });
+
+  test('closes the keyboard instead of keeping focus after the field is enabled again', () => {
+    const { textarea, rerender } = renderComposer();
+    act(() => textarea.focus());
+
+    rerender({ disabled: true });
+    rerender({ disabled: false });
+
+    expect(document.activeElement).toBe(document.body);
+  });
+});
+
 describe('InputMessage Enter', () => {
   afterEach(cleanup);
 
