@@ -190,6 +190,13 @@ export const InputMessageConcatenateWarning = styled(Typography).attrs(
   color: ${({ theme }) => theme.colors.accent.primaryLight};
 `;
 
+// Пустой остаётся в дереве доступности, но не занимает места и не добавляет gap
+export const InputMessageStatus = styled.div`
+  &:empty {
+    position: absolute;
+  }
+`;
+
 export const InputMessageVoiceFileDelete = styled(Button).attrs({
   variant: 'text',
   children: <CloseIcon />,

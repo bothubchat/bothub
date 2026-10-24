@@ -38,8 +38,8 @@ export const useInput = ({
 
   const [isFocus, setIsFocus] = useState((!disabled && autoFocus) ?? false);
   const [height, setHeight] = useState('calc(var(--bothub-scale, 1) * 22px)');
-  // Пытались отправить с клавиатуры, пока отправка недоступна
-  const [isSendBlocked, setIsSendBlocked] = useState(false);
+  // Сколько раз пытались отправить с клавиатуры, пока отправка недоступна
+  const [sendBlockedCount, setSendBlockedCount] = useState(0);
   const [message, setMessage] =
     typeof initialMessage === 'string'
       ? [initialMessage, onChange]
@@ -166,7 +166,7 @@ export const useInput = ({
 
       // Отправка недоступна: не переносим строку, а показываем причину
       if (sendDisabled) {
-        setIsSendBlocked(true);
+        setSendBlockedCount((count) => count + 1);
         return;
       }
 
@@ -188,7 +188,7 @@ export const useInput = ({
   ]);
 
   useEffect(() => {
-    if (!sendDisabled) setIsSendBlocked(false);
+    if (!sendDisabled) setSendBlockedCount(0);
   }, [sendDisabled]);
 
   useEffect(() => {
@@ -204,7 +204,7 @@ export const useInput = ({
   return {
     textareaRef,
     isFocus,
-    isSendBlocked,
+    sendBlockedCount,
     height,
     message,
     setHeight,

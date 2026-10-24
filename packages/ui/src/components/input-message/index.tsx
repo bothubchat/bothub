@@ -2,6 +2,7 @@ import React, { useState, useCallback, useRef } from 'react';
 import {
   InputMessageButtons,
   InputMessageConcatenateWarning,
+  InputMessageStatus,
   InputMessageContent,
   InputMessageMain,
   InputMessageSendButton,
@@ -212,7 +213,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const {
     textareaRef,
     isFocus,
-    isSendBlocked,
+    sendBlockedCount,
     height,
     message,
     setHeight,
@@ -380,11 +381,15 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               {sendWarning}
             </InputMessageConcatenateWarning>
           )}
-          {isSendBlocked && sendDisabledReason && (
-            <InputMessageConcatenateWarning role="status">
-              {sendDisabledReason}
-            </InputMessageConcatenateWarning>
-          )}
+          {/* Live region смонтирован заранее: экранный диктор объявляет то, что в нём появилось */}
+          <InputMessageStatus role="status">
+            {sendBlockedCount > 0 && sendDisabledReason && (
+              // Новый узел на каждую попытку, чтобы причину объявили снова
+              <InputMessageConcatenateWarning key={sendBlockedCount}>
+                {sendDisabledReason}
+              </InputMessageConcatenateWarning>
+            )}
+          </InputMessageStatus>
           {voiceFiles.length > 1 && (
             <InputMessageConcatenateWarning>
               {concatenateText}

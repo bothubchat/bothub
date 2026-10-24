@@ -270,18 +270,37 @@ describe('InputMessage Enter', () => {
   const pressEnter = (el: HTMLElement, init: KeyboardEventInit = {}) =>
     fireEvent.keyDown(el, { key: 'Enter', ...init });
 
+  const status = () => screen.getByRole('status');
+
   test('does not add a line break or send on Enter while sending is unavailable and shows why', () => {
     const { textarea, onSend } = renderFocused({
       sendDisabled: true,
       sendDisabledReason: reason,
     });
-    expect(screen.queryByRole('status')).toBeNull();
+    // Диктор объявляет текст, появившийся в уже смонтированном live region
+    const region = status();
+    expect(region.textContent).toBe('');
 
     const notPrevented = pressEnter(textarea);
 
     expect(notPrevented).toBe(false);
     expect(onSend).not.toHaveBeenCalled();
-    expect(screen.getByRole('status').textContent).toBe(reason);
+    expect(status()).toBe(region);
+    expect(region.textContent).toBe(reason);
+  });
+
+  test('announces the reason again on a repeated attempt', () => {
+    const { textarea } = renderFocused({
+      sendDisabled: true,
+      sendDisabledReason: reason,
+    });
+    pressEnter(textarea);
+    const announced = status().firstChild;
+
+    pressEnter(textarea);
+
+    expect(status().firstChild).not.toBe(announced);
+    expect(status().textContent).toBe(reason);
   });
 
   test('hides the reason and sends once sending is available', () => {
@@ -292,7 +311,7 @@ describe('InputMessage Enter', () => {
     pressEnter(textarea);
 
     rerender({ sendDisabled: false });
-    expect(screen.queryByRole('status')).toBeNull();
+    expect(status().textContent).toBe('');
     pressEnter(textarea);
 
     expect(onSend).toHaveBeenCalledTimes(1);
@@ -308,7 +327,7 @@ describe('InputMessage Enter', () => {
     rerender({ sendDisabled: false });
     rerender({ sendDisabled: true });
 
-    expect(screen.queryByRole('status')).toBeNull();
+    expect(status().textContent).toBe('');
   });
 
   test('keeps the Ctrl+Enter line break while sending is unavailable', () => {
@@ -328,11 +347,11 @@ describe('InputMessage Enter', () => {
     });
 
     expect(pressEnter(textarea)).toBe(true);
-    expect(screen.queryByRole('status')).toBeNull();
+    expect(status().textContent).toBe('');
 
     expect(pressEnter(textarea, { ctrlKey: true })).toBe(false);
     expect(onSend).not.toHaveBeenCalled();
-    expect(screen.getByRole('status').textContent).toBe(reason);
+    expect(status().textContent).toBe(reason);
   });
 
   test('does not send on the Enter that confirms an IME composition', () => {
