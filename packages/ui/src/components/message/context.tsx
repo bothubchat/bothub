@@ -22,9 +22,18 @@ export const MessageContext = React.createContext<MessageContextValue>({
 
 export const MessageProvider: React.FC<
   MessageContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <MessageContext.Provider value={value}>{children}</MessageContext.Provider>
-);
+> = ({ children, variant, color, typing, onCopy, onCodeCopy }) => {
+  // Every markdown node reads the context: a new value on each render of a
+  // streamed message re-rendered all of them on every chunk.
+  const value = React.useMemo(
+    () => ({ variant, color, typing, onCopy, onCodeCopy }),
+    [variant, color, typing, onCopy, onCodeCopy],
+  );
+
+  return (
+    <MessageContext.Provider value={value}>{children}</MessageContext.Provider>
+  );
+};
 
 export const useMessage = () => useContext(MessageContext);
 

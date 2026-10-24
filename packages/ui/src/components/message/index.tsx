@@ -201,23 +201,32 @@ export const Message: React.FC<MessageProps> = ({
     return [clipboardItem];
   }, []);
 
+  // The copy handlers go into the message context that every markdown node
+  // reads, so they must not change with each streamed chunk: `onCopy` usually
+  // does, the handlers take the latest one from a ref.
+  const onCopyRef = useRef(onCopy);
+
+  useEffect(() => {
+    onCopyRef.current = onCopy;
+  }, [onCopy]);
+
   const handlePlainTextCopy = useCallback(() => {
     if (messageBlockContentRef.current) {
-      return onCopy?.(getPlainText(messageBlockContentRef.current));
+      return onCopyRef.current?.(getPlainText(messageBlockContentRef.current));
     }
-  }, [content]);
+  }, [getPlainText]);
 
   const handleTgTextCopy = useCallback(() => {
     if (messageText.current) {
-      return onCopy?.(getTgText(messageText.current));
+      return onCopyRef.current?.(getTgText(messageText.current));
     }
-  }, []);
+  }, [getTgText]);
 
   const handleRichTextCopy = useCallback(async () => {
     if (messageText.current) {
-      return onCopy?.(await getRichText());
+      return onCopyRef.current?.(await getRichText());
     }
-  }, []);
+  }, [getRichText]);
 
   if (
     !(
