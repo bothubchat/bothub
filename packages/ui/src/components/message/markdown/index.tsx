@@ -17,7 +17,12 @@ import { useMarkdownPlugins } from './useMarkdownPlugins';
 
 export interface MessageMarkdownProps {
   children: string;
+  /**
+   * Keep the object stable while a message streams (`useMemo`): every code
+   * block and image of the message re-renders when it changes.
+   */
   components?: MessageComponentsProps;
+  /** Keep the object stable too: a new one parses the whole message again. */
   componentsOverride?: Components;
   disableTyping?: boolean;
   forceMarkdown?: boolean;
