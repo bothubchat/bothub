@@ -60,6 +60,7 @@ import {
 import { Typography } from '@/ui/components/typography';
 import { MessageSearchResults } from '../search-results';
 import { MessageVideo } from '../video';
+import { createLongAnswer } from '../markdown/long-answer';
 
 export type MessageMeta = Meta<typeof Message>;
 
@@ -674,6 +675,43 @@ export const TypingFormula: MessageStory = {
         <MessageMarkdown>{STREAMED_FORMULA.slice(0, length)}</MessageMarkdown>
       );
     }),
+  },
+};
+
+const LONG_ANSWER = createLongAnswer(20_000, true);
+
+/**
+ * Ответ на 20 КБ приходит, как в клиенте: по ~60 символов до 10 раз в секунду,
+ * и сообщение перерисовывается целиком. Готовые блоки не парсятся заново,
+ * а код подсвечивается, когда его блок закрыт.
+ */
+export const TypingLongAnswer: MessageStory = {
+  args: {
+    ...Assistant.args,
+    typing: true,
+  },
+  render: (args) => {
+    const [length, setLength] = useState(0);
+    const content = LONG_ANSWER.slice(0, length);
+
+    useEffect(() => {
+      const interval = window.setInterval(() => {
+        setLength((length) => (length + 60) % (LONG_ANSWER.length + 600));
+      }, 100);
+
+      return () => {
+        window.clearInterval(interval);
+      };
+    }, []);
+
+    return (
+      <Message
+        {...args}
+        content={content}
+      >
+        <MessageMarkdown>{content}</MessageMarkdown>
+      </Message>
+    );
   },
 };
 
