@@ -67,7 +67,9 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
     const advancedMode = !!scrollShadows;
     const lockedMode = !!scrollLocked;
     const [sticky, setSticky] = useState<boolean>(defaultStickyBottom);
-    const [previousScrollTop, setPreviousScrollTop] = useState<number>(0);
+    // Не state: иначе каждый scroll перерисовывает Scrollbar
+    // и пересоздаёт его наблюдатели и таймер
+    const previousScrollTopRef = useRef<number>(0);
     const scrollShadowsSize = scrollShadows?.size ?? 60;
 
     const handleScroll = useCallback(
@@ -96,8 +98,9 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
             Math.round(scrollLeft) + 1 < scrollWidth - clientWidth,
         );
 
+        const previousScrollTop = previousScrollTopRef.current;
         const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
-        setPreviousScrollTop(scrollbarEl.scrollTop);
+        previousScrollTopRef.current = scrollbarEl.scrollTop;
 
         if (withStickyBottom) {
           const scrollBottom =
@@ -118,7 +121,6 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
       [
         scrollbarRef.current,
         disabled,
-        previousScrollTop,
         withStickyBottom,
         scrollShadowsSize,
         onScroll,
