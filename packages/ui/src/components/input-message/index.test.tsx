@@ -314,6 +314,49 @@ describe('InputMessage Enter', () => {
   });
 });
 
+describe('InputMessage sendLoading', () => {
+  afterEach(cleanup);
+
+  const reason = 'Отправляем предыдущее сообщение…';
+
+  test('shows a loader and holds sending while the field stays open', () => {
+    const { textarea, onSend } = renderComposer({
+      sendLoading: true,
+      sendDisabledReason: reason,
+      voice: true,
+      voiceAriaLabel: 'Записать голосовое',
+    });
+    const send = screen.getByLabelText<HTMLButtonElement>('Отправить');
+    const voice =
+      screen.getByLabelText<HTMLButtonElement>('Записать голосовое');
+    act(() => textarea.focus());
+
+    expect(send.disabled).toBe(true);
+    expect(send.getAttribute('aria-busy')).toBe('true');
+    expect(voice.disabled).toBe(true);
+    expect(textarea.disabled).toBe(false);
+
+    expect(fireEvent.keyDown(textarea, { key: 'Enter' })).toBe(false);
+    expect(onSend).not.toHaveBeenCalled();
+    expect(screen.getByRole('status').textContent).toBe(reason);
+  });
+
+  test('sends again once the message is sent', () => {
+    const { textarea, onSend, rerender } = renderComposer({
+      sendLoading: true,
+    });
+    act(() => textarea.focus());
+
+    rerender({ sendLoading: false });
+    const send = screen.getByLabelText<HTMLButtonElement>('Отправить');
+
+    expect(send.disabled).toBe(false);
+    expect(send.hasAttribute('aria-busy')).toBe(false);
+    fireEvent.keyDown(textarea, { key: 'Enter' });
+    expect(onSend).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe('InputMessage paste', () => {
   afterEach(cleanup);
 

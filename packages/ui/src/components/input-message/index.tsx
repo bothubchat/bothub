@@ -32,6 +32,7 @@ import {
 } from './styled';
 import { MessageVoice } from '../message';
 import { AttachIcon } from '@/ui/icons/attach';
+import { LoaderCircularIcon } from '@/ui/icons/loader-circular';
 import { useTheme } from '@/ui/theme';
 import {
   EditingProps,
@@ -89,10 +90,12 @@ export interface InputMessageProps
   sendDisabled?: boolean;
   /**
    * Почему отправка недоступна. Показывается после попытки отправить
-   * с клавиатуры при sendDisabled и скрывается, когда отправка снова доступна.
-   * Постоянная подсказка — sendWarning
+   * с клавиатуры при sendDisabled или sendLoading и скрывается, когда отправка
+   * снова доступна. Постоянная подсказка — sendWarning
    */
   sendDisabledReason?: React.ReactNode;
+  /** Сообщение отправляется: лоадер в кнопке, поле остаётся доступным для ввода */
+  sendLoading?: boolean;
   textAreaDisabled?: boolean;
   messageSubmitKey?: MessageSubmitKey;
   concatenateText?: React.ReactNode;
@@ -134,6 +137,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   disabled = false,
   sendDisabled = false,
   sendDisabledReason,
+  sendLoading = false,
   textAreaDisabled = false,
   messageSubmitKey = 'enter',
   concatenateText,
@@ -202,6 +206,9 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     onVoiceFilesChange,
   });
 
+  // Пока сообщение отправляется, следующее отправить нельзя, а набирать можно
+  const isSendDisabled = sendDisabled || sendLoading;
+
   const {
     textareaRef,
     isFocus,
@@ -216,7 +223,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     handleChange,
   } = useInput({
     initialMessage,
-    sendDisabled,
+    sendDisabled: isSendDisabled,
     disabled: disabled || textAreaDisabled,
     autoFocus,
     messageSubmitKey,
@@ -444,7 +451,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           {voice && (
             <InputMessageVoiceButton
               $isRecording={isVoiceRecording}
-              disabled={disabled || sendDisabled}
+              disabled={disabled || isSendDisabled}
               aria-label={
                 isVoiceRecording ? stopVoiceAriaLabel : voiceAriaLabel
               }
@@ -460,7 +467,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           {!hiddenSend && !isVoiceRecording && sendAddon}
           {!hiddenSend && !isVoiceRecording && (
             <InputMessageSendButton
-              disabled={disabled || sendDisabled || isVoiceRecording}
+              disabled={disabled || isSendDisabled || isVoiceRecording}
+              aria-busy={sendLoading || undefined}
               aria-label={
                 editingProps?.isEditing
                   ? (saveAriaLabel ?? sendAriaLabel)
@@ -470,9 +478,13 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               {...(theme.bright && {
                 iconFill: theme.default.colors.base.black,
               })}
+              // Лоадер цветом иконок поля: серый заблокированной кнопки почти не виден
+              {...(sendLoading && { iconFill: theme.colors.base.white })}
               data-test="submit-message"
             >
-              {editingProps?.isEditing ? (
+              {sendLoading ? (
+                <LoaderCircularIcon />
+              ) : editingProps?.isEditing ? (
                 <CheckSmallIcon />
               ) : (
                 <InputMessageSendIcon />

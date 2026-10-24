@@ -129,6 +129,15 @@ export const SendDisabledReason: InputMessageStory = {
   },
 };
 
+/** Предыдущее сообщение отправляется: в кнопке лоадер, а следующее можно набирать */
+export const SendLoading: InputMessageStory = {
+  args: {
+    ...Basic.args,
+    sendLoading: true,
+    sendDisabledReason: 'Отправляем предыдущее сообщение…',
+  },
+};
+
 export default {
   title: 'Components/Message/Input',
   component: InputMessage,
