@@ -28,7 +28,7 @@ function isDigit(char: string | undefined): boolean {
   return char !== undefined && char >= '0' && char <= '9';
 }
 
-function isEscaped(content: string, index: number): boolean {
+export function isEscaped(content: string, index: number): boolean {
   let backslashes = 0;
   for (let i = index - 1; i >= 0 && content[i] === '\\'; i -= 1) {
     backslashes += 1;

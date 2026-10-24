@@ -1,4 +1,4 @@
-import React, { forwardRef, useId, useMemo } from 'react';
+import React, { forwardRef, memo, useId, useMemo } from 'react';
 import ReactMarkdown, { type Components, type Options } from 'react-markdown';
 import { useMessage } from '@/ui/components/message/context';
 import {
@@ -11,6 +11,7 @@ import {
   messageMarkdownComponents,
 } from './markdown-components';
 import { normalizeMessageMarkdown } from './utils';
+import { splitMarkdownBlocks } from './blocks';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
 
 export interface MessageMarkdownProps {
@@ -22,6 +23,10 @@ export interface MessageMarkdownProps {
 }
 
 const EMPTY_COMPONENTS: MessageComponentsProps = {};
+
+// A block whose text and options did not change keeps its rendered tree: while
+// a message streams, only its last block is parsed again.
+const MarkdownBlock = memo(ReactMarkdown);
 
 export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
   (
@@ -46,6 +51,14 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
           ? normalizeMessageMarkdown(children, { typing })
           : children,
       [children, isDisabled, typing],
+    );
+
+    const blocks = useMemo(
+      () =>
+        typeof formattedChildren === 'string' && !isDisabled
+          ? splitMarkdownBlocks(formattedChildren)
+          : [],
+      [formattedChildren, isDisabled],
     );
 
     const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
@@ -73,14 +86,17 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
             $typing={disableTyping ? false : typing}
             $color={color}
           >
-            <ReactMarkdown
-              remarkPlugins={remarkPlugins}
-              rehypePlugins={rehypePlugins}
-              remarkRehypeOptions={remarkRehypeOptions}
-              components={markdownComponents}
-            >
-              {formattedChildren}
-            </ReactMarkdown>
+            {blocks.map((block, index) => (
+              <MarkdownBlock
+                key={index}
+                remarkPlugins={remarkPlugins}
+                rehypePlugins={rehypePlugins}
+                remarkRehypeOptions={remarkRehypeOptions}
+                components={markdownComponents}
+              >
+                {block}
+              </MarkdownBlock>
+            ))}
           </MessageMarkdownLine>
         </MessageMarkdownStyled>
       ),
@@ -88,7 +104,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
         typing,
         disableTyping,
         color,
-        formattedChildren,
+        blocks,
         remarkPlugins,
         rehypePlugins,
         remarkRehypeOptions,
