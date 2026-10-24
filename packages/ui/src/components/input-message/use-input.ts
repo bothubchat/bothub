@@ -38,6 +38,8 @@ export const useInput = ({
 
   const [isFocus, setIsFocus] = useState((!disabled && autoFocus) ?? false);
   const [height, setHeight] = useState('calc(var(--bothub-scale, 1) * 22px)');
+  // Пытались отправить с клавиатуры, пока отправка недоступна
+  const [isSendBlocked, setIsSendBlocked] = useState(false);
   const [message, setMessage] =
     typeof initialMessage === 'string'
       ? [initialMessage, onChange]
@@ -128,9 +130,9 @@ export const useInput = ({
     const handleKeyDown = (event: KeyboardEvent) => {
       event.stopPropagation();
 
-      if (sendDisabled) return;
-
-      if (event.key !== 'Enter') {
+      // Enter, которым подтверждают ввод через IME, не отправляет сообщение.
+      // Safari к этому моменту уже закончил композицию и отдаёт keyCode 229
+      if (event.key !== 'Enter' || event.isComposing || event.keyCode === 229) {
         return;
       }
 
@@ -148,32 +150,46 @@ export const useInput = ({
       }
 
       const ctrlOrMeta = event.ctrlKey || event.metaKey;
+      const isSubmit = messageSubmitKey === 'enter' ? !ctrlOrMeta : ctrlOrMeta;
 
-      if (messageSubmitKey === 'enter') {
-        if (ctrlOrMeta) {
+      if (!isSubmit) {
+        // Ctrl+Enter / Cmd+Enter в режиме 'enter' — перенос строки,
+        // Enter в режиме 'ctrlEnter' переносит строку сам
+        if (messageSubmitKey === 'enter') {
           event.preventDefault();
           insertNewlineAtCursor();
-          return;
         }
-        event.preventDefault();
-        onSendMessage?.();
-        setHeight('calc(var(--bothub-scale, 1) * 22px)');
         return;
       }
 
-      // messageSubmitKey === 'ctrlEnter'
-      if (ctrlOrMeta) {
-        event.preventDefault();
-        onSendMessage?.();
-        setHeight('calc(var(--bothub-scale, 1) * 22px)');
+      event.preventDefault();
+
+      // Отправка недоступна: не переносим строку, а показываем причину
+      if (sendDisabled) {
+        setIsSendBlocked(true);
+        return;
       }
+
+      onSendMessage?.();
+      setHeight('calc(var(--bothub-scale, 1) * 22px)');
     };
 
     textareaEl.addEventListener('keydown', handleKeyDown);
     return () => {
       textareaEl.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isFocus, message, messageSubmitKey, onSendMessage, setMessage]);
+  }, [
+    isFocus,
+    message,
+    messageSubmitKey,
+    sendDisabled,
+    onSendMessage,
+    setMessage,
+  ]);
+
+  useEffect(() => {
+    if (!sendDisabled) setIsSendBlocked(false);
+  }, [sendDisabled]);
 
   useEffect(() => {
     const textareaEl = textareaRef.current;
@@ -188,6 +204,7 @@ export const useInput = ({
   return {
     textareaRef,
     isFocus,
+    isSendBlocked,
     height,
     message,
     setHeight,

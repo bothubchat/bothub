@@ -87,6 +87,12 @@ export interface InputMessageProps
   sendWarning?: React.ReactNode;
   sendAddon?: React.ReactNode;
   sendDisabled?: boolean;
+  /**
+   * Почему отправка недоступна. Показывается после попытки отправить
+   * с клавиатуры при sendDisabled и скрывается, когда отправка снова доступна.
+   * Постоянная подсказка — sendWarning
+   */
+  sendDisabledReason?: React.ReactNode;
   textAreaDisabled?: boolean;
   messageSubmitKey?: MessageSubmitKey;
   concatenateText?: React.ReactNode;
@@ -127,6 +133,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   sendAddon,
   disabled = false,
   sendDisabled = false,
+  sendDisabledReason,
   textAreaDisabled = false,
   messageSubmitKey = 'enter',
   concatenateText,
@@ -198,6 +205,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const {
     textareaRef,
     isFocus,
+    isSendBlocked,
     height,
     message,
     setHeight,
@@ -363,6 +371,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           {sendWarning && (
             <InputMessageConcatenateWarning>
               {sendWarning}
+            </InputMessageConcatenateWarning>
+          )}
+          {isSendBlocked && sendDisabledReason && (
+            <InputMessageConcatenateWarning role="status">
+              {sendDisabledReason}
             </InputMessageConcatenateWarning>
           )}
           {voiceFiles.length > 1 && (

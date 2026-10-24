@@ -110,12 +110,22 @@ export const SendAddon: InputMessageStory = {
   },
 };
 
+/** sendWarning показывается всегда, sendDisabledReason — только после попытки отправить */
 export const SendWarning: InputMessageStory = {
   args: {
     ...Basic.args,
     sendAddon: '≈ 1 200 CAPS',
     sendDisabled: true,
     sendWarning: 'Не хватает CAPS: уменьшите длительность или пополните баланс',
+  },
+};
+
+/** Нажмите Enter: сообщение не отправится, перенос строки не добавится, появится причина */
+export const SendDisabledReason: InputMessageStory = {
+  args: {
+    ...Basic.args,
+    sendDisabled: true,
+    sendDisabledReason: 'Сохраняем настройки чата…',
   },
 };
 

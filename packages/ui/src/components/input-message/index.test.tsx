@@ -120,33 +120,34 @@ describe('InputMessage controlled voice files', () => {
   });
 });
 
+type InputMessageTestProps = Partial<React.ComponentProps<typeof InputMessage>>;
+
+/** rerender перерисовывает с исходными пропсами и next поверх них */
+const renderComposer = (props: InputMessageTestProps = {}) => {
+  const onSend = vi.fn();
+  const element = (next: InputMessageTestProps = {}) => (
+    <InputMessage
+      placeholder="Сообщение"
+      sendAriaLabel="Отправить"
+      // В открытом чате клиент выключает autoFocus
+      autoFocus={false}
+      onSend={onSend}
+      {...props}
+      {...next}
+    />
+  );
+  const { rerender } = customRender(element());
+
+  return {
+    onSend,
+    textarea: screen.getByPlaceholderText<HTMLTextAreaElement>('Сообщение'),
+    rerender: (next: InputMessageTestProps) =>
+      rerender(<TestProvider>{element(next)}</TestProvider>),
+  };
+};
+
 describe('InputMessage focus', () => {
   afterEach(cleanup);
-
-  type Props = Partial<React.ComponentProps<typeof InputMessage>>;
-
-  // В открытом чате клиент выключает autoFocus
-  const renderFocus = (props: Props = {}) => {
-    const onSend = vi.fn();
-    const element = (next: Props = {}) => (
-      <InputMessage
-        placeholder="Сообщение"
-        sendAriaLabel="Отправить"
-        autoFocus={false}
-        onSend={onSend}
-        {...props}
-        {...next}
-      />
-    );
-    const { rerender } = customRender(element());
-
-    return {
-      onSend,
-      textarea: screen.getByPlaceholderText('Сообщение'),
-      rerender: (next: Props) =>
-        rerender(<TestProvider>{element(next)}</TestProvider>),
-    };
-  };
 
   const focusOutside = (tag: 'button' | 'input') => {
     const el = document.createElement(tag);
@@ -156,7 +157,7 @@ describe('InputMessage focus', () => {
   };
 
   test('keeps focus in the field after it is enabled again', () => {
-    const { textarea, rerender } = renderFocus();
+    const { textarea, rerender } = renderComposer();
     act(() => textarea.focus());
 
     rerender({ disabled: true });
@@ -166,7 +167,7 @@ describe('InputMessage focus', () => {
   });
 
   test('returns focus lost while the field was disabled', () => {
-    const { textarea, rerender } = renderFocus();
+    const { textarea, rerender } = renderComposer();
     act(() => textarea.focus());
 
     rerender({ disabled: true });
@@ -181,7 +182,7 @@ describe('InputMessage focus', () => {
   });
 
   test('does not take focus from another field', () => {
-    const { textarea, rerender } = renderFocus();
+    const { textarea, rerender } = renderComposer();
     act(() => textarea.focus());
 
     rerender({ disabled: true });
@@ -193,7 +194,7 @@ describe('InputMessage focus', () => {
   });
 
   test('does not focus the field the user was not typing in', () => {
-    const { rerender } = renderFocus();
+    const { rerender } = renderComposer();
 
     rerender({ disabled: true });
     rerender({ disabled: false });
@@ -203,7 +204,7 @@ describe('InputMessage focus', () => {
 
   test('keeps focus when autoFocus turns off', () => {
     // Первое сообщение нового чата: у чата появился id
-    const { textarea, rerender } = renderFocus({ autoFocus: true });
+    const { textarea, rerender } = renderComposer({ autoFocus: true });
     expect(document.activeElement).toBe(textarea);
 
     rerender({ autoFocus: false });
@@ -212,7 +213,7 @@ describe('InputMessage focus', () => {
   });
 
   test('puts the cursor back after sending with the button', () => {
-    const { textarea, onSend } = renderFocus();
+    const { textarea, onSend } = renderComposer();
     const send = screen.getByLabelText('Отправить');
     act(() => send.focus());
 
@@ -220,6 +221,96 @@ describe('InputMessage focus', () => {
 
     expect(onSend).toHaveBeenCalledTimes(1);
     expect(document.activeElement).toBe(textarea);
+  });
+});
+
+describe('InputMessage Enter', () => {
+  afterEach(cleanup);
+
+  const reason = 'Сохраняем настройки чата…';
+
+  const renderFocused = (props: InputMessageTestProps = {}) => {
+    const rendered = renderComposer(props);
+    act(() => rendered.textarea.focus());
+    return rendered;
+  };
+
+  const pressEnter = (el: HTMLElement, init: KeyboardEventInit = {}) =>
+    fireEvent.keyDown(el, { key: 'Enter', ...init });
+
+  test('does not add a line break or send on Enter while sending is unavailable and shows why', () => {
+    const { textarea, onSend } = renderFocused({
+      sendDisabled: true,
+      sendDisabledReason: reason,
+    });
+    expect(screen.queryByRole('status')).toBeNull();
+
+    const notPrevented = pressEnter(textarea);
+
+    expect(notPrevented).toBe(false);
+    expect(onSend).not.toHaveBeenCalled();
+    expect(screen.getByRole('status').textContent).toBe(reason);
+  });
+
+  test('hides the reason and sends once sending is available', () => {
+    const { textarea, onSend, rerender } = renderFocused({
+      sendDisabled: true,
+      sendDisabledReason: reason,
+    });
+    pressEnter(textarea);
+
+    rerender({ sendDisabled: false });
+    expect(screen.queryByRole('status')).toBeNull();
+    pressEnter(textarea);
+
+    expect(onSend).toHaveBeenCalledTimes(1);
+  });
+
+  test('waits for a new attempt before showing the reason again', () => {
+    const { textarea, rerender } = renderFocused({
+      sendDisabled: true,
+      sendDisabledReason: reason,
+    });
+    pressEnter(textarea);
+
+    rerender({ sendDisabled: false });
+    rerender({ sendDisabled: true });
+
+    expect(screen.queryByRole('status')).toBeNull();
+  });
+
+  test('keeps the Ctrl+Enter line break while sending is unavailable', () => {
+    const { textarea } = renderFocused({ sendDisabled: true });
+    fireEvent.change(textarea, { target: { value: 'Привет' } });
+
+    pressEnter(textarea, { ctrlKey: true });
+
+    expect(textarea.value).toBe('Привет\n');
+  });
+
+  test('explains Ctrl+Enter and keeps the Enter line break in Ctrl+Enter mode', () => {
+    const { textarea, onSend } = renderFocused({
+      messageSubmitKey: 'ctrlEnter',
+      sendDisabled: true,
+      sendDisabledReason: reason,
+    });
+
+    expect(pressEnter(textarea)).toBe(true);
+    expect(screen.queryByRole('status')).toBeNull();
+
+    expect(pressEnter(textarea, { ctrlKey: true })).toBe(false);
+    expect(onSend).not.toHaveBeenCalled();
+    expect(screen.getByRole('status').textContent).toBe(reason);
+  });
+
+  test('does not send on the Enter that confirms an IME composition', () => {
+    const { textarea, onSend } = renderFocused();
+
+    expect(pressEnter(textarea, { isComposing: true })).toBe(true);
+    // Safari: композиция уже закончилась, но keyCode у Enter — 229
+    expect(pressEnter(textarea, { keyCode: 229 })).toBe(true);
+
+    expect(onSend).not.toHaveBeenCalled();
   });
 });
 
