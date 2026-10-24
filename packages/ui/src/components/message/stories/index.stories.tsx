@@ -184,6 +184,55 @@ export const Table: MessageStory = {
   },
 };
 
+const WIDE_TABLE = [
+  '| Модель | Контекст | Ввод за 1M | Вывод за 1M | Картинки | Поиск | Релиз |',
+  '|--------|----------|------------|-------------|----------|-------|-------|',
+  '| GPT-4o | 128000 | 2500000 | 10000000 | да | да | 2024-11-20 |',
+  '| Claude 3.5 Sonnet | 200000 | 3000000 | 15000000 | да | да | 2024-10-22 |',
+  '| Gemini 1.5 Pro | 2000000 | 1250000 | 5000000 | да | нет | 2024-09-24 |',
+].join('\n');
+
+// Узкая колонка, как на телефоне: таблица не помещается в пузырь,
+// и у краёв появляются тени прокрутки
+const narrowColumn: MessageStory['decorators'] = [
+  (Story) => (
+    <div style={{ maxWidth: 420 }}>
+      <Story />
+    </div>
+  ),
+];
+
+export const WideTable: MessageStory = {
+  args: {
+    ...Assistant.args,
+    children: WIDE_TABLE,
+  },
+  decorators: narrowColumn,
+};
+
+export const TypingWideTable: MessageStory = {
+  args: {
+    ...Assistant.args,
+    typing: true,
+    children: React.createElement(() => {
+      const [length, setLength] = useState(0);
+
+      useEffect(() => {
+        const interval = window.setInterval(() => {
+          setLength((length) => (length + 4) % (WIDE_TABLE.length + 40));
+        }, 80);
+
+        return () => {
+          window.clearInterval(interval);
+        };
+      }, []);
+
+      return <MessageMarkdown>{WIDE_TABLE.slice(0, length)}</MessageMarkdown>;
+    }),
+  },
+  decorators: narrowColumn,
+};
+
 export const MarkdownEdgeCases: MessageStory = {
   args: {
     ...Assistant.args,

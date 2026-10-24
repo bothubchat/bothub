@@ -5,7 +5,6 @@ import {
   MessageBlockBottomPanel,
   MessageBlockTransaction,
   MessageBlockContent,
-  MessageBlockScrollbarWrapper,
   MessageBlockWrapper,
   MessageContent,
   MessageName,
@@ -38,7 +37,7 @@ import {
 import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
-import { ScrollbarShadow } from '@/ui/components/scrollbar';
+import { MessageBlockScroller } from './block-scroller';
 import { MessageTimestamp } from './timestamp';
 import { MessageActions } from './actions';
 import { MessageVersions } from './versions';
@@ -330,14 +329,7 @@ export const Message: React.FC<MessageProps> = ({
                   $hasTimestamp={!!timestamp}
                   $timestampPosition={timestampPosition}
                 >
-                  <MessageBlockScrollbarWrapper
-                    scrollShadows={{
-                      color: hexColor,
-                      size: 60,
-                      left: <ScrollbarShadow side="left" />,
-                      right: <ScrollbarShadow side="right" />,
-                    }}
-                  >
+                  <MessageBlockScroller color={hexColor}>
                     <MessageBlockContent
                       ref={messageBlockContentRef}
                       $variant={variant}
@@ -388,7 +380,7 @@ export const Message: React.FC<MessageProps> = ({
                         color={hexColor}
                       />
                     )}
-                  </MessageBlockScrollbarWrapper>
+                  </MessageBlockScroller>
                 </MessageBlock>
               </MessageBlockWrapper>
               {timestamp && variant === 'assistant' && (
