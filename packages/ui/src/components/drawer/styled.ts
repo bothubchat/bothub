@@ -11,6 +11,9 @@ export const Overlay = styled.div`
   transition: opacity 0.2s linear;
   z-index: ${({ theme }) => theme.zIndex.modal - 1};
   opacity: 0;
+  &:not(._opened) {
+    pointer-events: none;
+  }
   &._opened {
     opacity: 1;
   }
