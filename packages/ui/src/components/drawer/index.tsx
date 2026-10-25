@@ -3,8 +3,7 @@ import { PropsWithChildren, useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import * as S from './styled';
 import { CloseIcon } from '@/ui/icons/close';
-import { useEventCallback } from '@/ui/utils';
-import { useEscapeLayer } from '../modal/layers';
+import { useEventCallback, useEscapeLayer } from '@/ui/utils';
 
 export type DrawerProps = {
   title?: string | null;

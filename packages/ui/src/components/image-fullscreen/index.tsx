@@ -22,7 +22,7 @@ import {
 } from './styled';
 import { ImageFullScreenData, ImageFullScreenDataItem } from './types';
 import { ImageFullScreenProvider } from './context';
-import { useCarousel, useEventCallback } from '@/ui/utils';
+import { useCarousel, useEscapeLayer, useEventCallback } from '@/ui/utils';
 
 export type ImageFullScreenCloseEventHandler = () => unknown;
 
@@ -164,6 +164,9 @@ const ImageFullScreenOpened: React.FC<ImageFullScreenOpenedProps> = ({
     [goToSlide],
   );
 
+  // Only the topmost overlay closes on Escape, e.g. not a modal underneath.
+  useEscapeLayer(true, handleClose);
+
   useEffect(() => {
     const keyDownListener = (event: KeyboardEvent) => {
       switch (event.code) {
@@ -173,9 +176,6 @@ const ImageFullScreenOpened: React.FC<ImageFullScreenOpenedProps> = ({
         case 'ArrowRight':
           goNext();
           break;
-        case 'Escape':
-          handleClose();
-          break;
       }
     };
 
@@ -184,7 +184,7 @@ const ImageFullScreenOpened: React.FC<ImageFullScreenOpenedProps> = ({
     return () => {
       document.removeEventListener('keydown', keyDownListener);
     };
-  }, [goPrev, goNext, handleClose]);
+  }, [goPrev, goNext]);
 
   return (
     <ImageFullScreenProvider

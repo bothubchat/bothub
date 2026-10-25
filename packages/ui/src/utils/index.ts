@@ -3,6 +3,7 @@ export * from './useOnClickOutside';
 export * from './useControllableState';
 export * from './useEventCallback';
 export * from './useIsomorphicLayoutEffect';
+export * from './useEscapeLayer';
 export * from './useDelayedVisible';
 export * from './useMeasure';
 export * from './getTgMarkdown';

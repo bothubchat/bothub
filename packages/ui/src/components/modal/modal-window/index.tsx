@@ -9,8 +9,7 @@ import React, {
   type ReactNode,
   type Ref,
 } from 'react';
-import { useEventCallback } from '@/ui/utils';
-import { useEscapeLayer } from '../layers';
+import { useEventCallback, useEscapeLayer } from '@/ui/utils';
 import * as S from './styled';
 
 export type ModalCloseEventHandler = () => unknown;

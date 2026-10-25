@@ -7,9 +7,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { findNearestScrollableParent } from '@/ui/utils';
+import { findNearestScrollableParent, useEscapeLayer } from '@/ui/utils';
 import { Button, ButtonProps } from '../button';
-import { useEscapeLayer } from '../modal/layers';
 import { Portal } from '../portal';
 import * as S from './styled';
 import { MenuPosition } from './types';

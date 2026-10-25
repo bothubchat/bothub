@@ -81,7 +81,7 @@ describe('ImageFullScreen', () => {
 
     expect(screen.getByRole('dialog')).not.toBeNull();
 
-    fireEvent.keyDown(document, { code: 'Escape' });
+    fireEvent.keyUp(document, { key: 'Escape' });
     expect(onClose).toHaveBeenCalledTimes(1);
   });
 

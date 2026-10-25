@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { useEventCallback } from '@/ui/utils';
+import { useEventCallback } from './useEventCallback';
 
 interface EscapeLayer {
   order: number;
