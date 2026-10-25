@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { Typography } from '../typography';
+import { getTypographyStyles } from '../typography';
 
 export const SwitcherContainer = styled.div`
   display: inline-flex;
@@ -10,13 +10,16 @@ export const SwitcherContainer = styled.div`
   width: fit-content;
 `;
 
-export const SwitcherOption = styled(Typography).attrs({
-  forwardedAs: 'button',
-  variant: 'button-sm',
-})`
+export const SwitcherOption = styled.button`
+  ${getTypographyStyles('button-sm')}
   position: relative;
   z-index: 2;
+  margin: 0;
+  border: none;
   padding: 2px 12px;
+  font-family: inherit;
+  text-align: left;
+  text-decoration: none;
   cursor: pointer;
   user-select: none;
   font-size: 14px;
@@ -26,6 +29,10 @@ export const SwitcherOption = styled(Typography).attrs({
   border-radius: 20px;
   white-space: nowrap;
   outline: none;
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.accent.primary};
+    outline-offset: 2px;
+  }
 `;
 
 export const SwitcherSlider = styled.div`
