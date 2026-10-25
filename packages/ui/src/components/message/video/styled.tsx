@@ -10,7 +10,11 @@ export const MessageVideoControls = styled.div<{
   transform: ${({ $isVisible }) =>
     $isVisible ? 'translateY(0)' : 'translateY(100%)'};
   opacity: ${({ $isVisible }) => ($isVisible ? 1 : 0)};
-  transition: all 300ms ease-out;
+  transition:
+    transform 300ms ease-out,
+    opacity 300ms ease-out,
+    padding 300ms ease-out,
+    gap 300ms ease-out;
   position: absolute;
   left: 0;
   bottom: 0;
@@ -116,14 +120,18 @@ export const MessageVideoControlsButtons = styled.div<{
   align-items: center;
 `;
 
-export const MessageVideoTimeLine = styled.div<{ $progress: number }>`
+// Progress comes from the --video-progress CSS variable (0..1) set on the
+// element: interpolating it here created a new class on every timeupdate.
+export const MessageVideoTimeLine = styled.div`
   position: relative;
   height: 6px;
   border-radius: 4px;
   width: 100%;
   background: rgba(255, 255, 255, 0.5);
   cursor: pointer;
-  transition: all 100ms ease-out;
+  transition:
+    height 100ms ease-out,
+    opacity 100ms ease-out;
   &:hover {
     opacity: 0.8;
     height: 16px;
@@ -134,9 +142,11 @@ export const MessageVideoTimeLine = styled.div<{ $progress: number }>`
     bottom: 0;
     left: 0;
     height: inherit;
-    width: ${({ $progress }) => $progress}%;
+    width: 100%;
     right: 0;
     bottom: 0;
+    transform: scaleX(var(--video-progress, 0));
+    transform-origin: left;
     background: ${({ theme }) => theme.colors.accent.primary};
   }
 `;
@@ -147,10 +157,13 @@ export const MessageVideoTimeText = styled(Typography).attrs({
   color: ${({ theme }) => theme.default.colors.base.white};
 `;
 
-export const MessageVideoVolumeLine = styled.div<{ $volume: number }>`
+// Volume comes from the --video-volume CSS variable (a percentage).
+export const MessageVideoVolumeLine = styled.div`
   position: relative;
   height: 4px;
-  transition: all 300ms ease-out;
+  transition:
+    width 300ms ease-out,
+    opacity 300ms ease-out;
   border-radius: 4px;
   width: 0;
   max-width: 100px;
@@ -167,7 +180,7 @@ export const MessageVideoVolumeLine = styled.div<{ $volume: number }>`
     left: 0;
     border-radius: 4px;
     height: 4px;
-    width: ${({ $volume }) => $volume}%;
+    width: var(--video-volume, 100%);
     right: 0;
     bottom: 0;
     background: ${({ theme }) => theme.default.colors.base.white};
@@ -175,7 +188,7 @@ export const MessageVideoVolumeLine = styled.div<{ $volume: number }>`
   &:before {
     content: '';
     position: absolute;
-    left: ${({ $volume }) => $volume}%;
+    left: var(--video-volume, 100%);
     width: 12px;
     z-index: 1;
     margin-left: -8px;
