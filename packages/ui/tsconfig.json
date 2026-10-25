@@ -11,15 +11,14 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
     "importHelpers": true,
-    "baseUrl": "./src",
     "paths": {
-      "@/ui/*": ["./*"]
+      "@/ui/*": ["./src/*"]
     }
   },
-  "include": ["./src", "./dist"]
+  "include": ["./src"]
 }
