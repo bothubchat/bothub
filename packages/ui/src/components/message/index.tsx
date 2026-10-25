@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import { marked } from 'marked';
 import {
   MessageBlock,
@@ -34,6 +34,7 @@ import {
   colorToRgba,
   getTgMarkdown,
   prepareClipboardHtml,
+  useEventCallback,
 } from '@/ui/utils';
 import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
@@ -104,6 +105,39 @@ export interface MessageProps {
   onDownload?: () => void;
 }
 
+const getRichText = async (text: string) => {
+  const htmlContent = prepareClipboardHtml(
+    (await marked.parse(text)).replace(
+      /<p>([\s\S]*?)<\/p>/g,
+      `<pre style="${CLIPBOARD_NORMAL_STYLE}font-family:inherit;white-space:pre-wrap;">$1</pre>`,
+    ),
+  );
+
+  const clipboardItem = new ClipboardItem({
+    'text/plain': new Blob([text], { type: 'text/plain' }),
+    'text/html': new Blob([htmlContent], { type: 'text/html' }),
+  });
+  return [clipboardItem];
+};
+
+const getPlainText = (html: HTMLElement) => {
+  const clipboardItem = new ClipboardItem({
+    'text/plain': new Blob([html.innerText.replace(/\n{3,}/g, '\n\n')], {
+      type: 'text/plain',
+    }),
+  });
+  return [clipboardItem];
+};
+
+const getTgText = (string: string) => {
+  const tgMarkdown = getTgMarkdown(string);
+
+  const clipboardItem = new ClipboardItem({
+    'text/plain': new Blob([tgMarkdown], { type: 'text/plain' }),
+  });
+  return [clipboardItem];
+};
+
 export const Message: React.FC<MessageProps> = ({
   id,
   content,
@@ -167,58 +201,26 @@ export const Message: React.FC<MessageProps> = ({
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
   const messageBlockContentRef = useRef<HTMLDivElement | null>(null);
-  const messageText = useRef<string | null>(null);
-
-  const getRichText = useCallback(async () => {
-    const htmlContent = prepareClipboardHtml(
-      (await marked.parse(messageText.current!)).replace(
-        /<p>([\s\S]*?)<\/p>/g,
-        `<pre style="${CLIPBOARD_NORMAL_STYLE}font-family:inherit;white-space:pre-wrap;">$1</pre>`,
-      ),
-    );
-
-    const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([messageText.current!], { type: 'text/plain' }),
-      'text/html': new Blob([htmlContent], { type: 'text/html' }),
-    });
-    return [clipboardItem];
-  }, []);
-
-  const getPlainText = useCallback((html: HTMLElement) => {
-    const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([html.innerText.replace(/\n{3,}/g, '\n\n')], {
-        type: 'text/plain',
-      }),
-    });
-    return [clipboardItem];
-  }, []);
-
-  const getTgText = useCallback((string: string) => {
-    const tgMarkdown = getTgMarkdown(string);
-
-    const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([tgMarkdown], { type: 'text/plain' }),
-    });
-    return [clipboardItem];
-  }, []);
-
-  const handlePlainTextCopy = useCallback(() => {
+  // The handlers keep their identity, so the context and the memoized
+  // children don't rerender on every streaming chunk, and they always read
+  // the latest content and onCopy.
+  const handlePlainTextCopy = useEventCallback(() => {
     if (messageBlockContentRef.current) {
       return onCopy?.(getPlainText(messageBlockContentRef.current));
     }
-  }, [content]);
+  });
 
-  const handleTgTextCopy = useCallback(() => {
-    if (messageText.current) {
-      return onCopy?.(getTgText(messageText.current));
+  const handleTgTextCopy = useEventCallback(() => {
+    if (content) {
+      return onCopy?.(getTgText(content));
     }
-  }, []);
+  });
 
-  const handleRichTextCopy = useCallback(async () => {
-    if (messageText.current) {
-      return onCopy?.(await getRichText());
+  const handleRichTextCopy = useEventCallback(async () => {
+    if (content) {
+      return onCopy?.(await getRichText(content));
     }
-  }, []);
+  });
 
   if (
     !(
@@ -280,11 +282,6 @@ export const Message: React.FC<MessageProps> = ({
       }
       break;
   }
-
-  useEffect(() => {
-    if (!content) return;
-    messageText.current = content;
-  }, [content]);
 
   return (
     <MessageProvider
