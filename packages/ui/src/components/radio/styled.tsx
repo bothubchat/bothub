@@ -58,7 +58,14 @@ export const RadioLabel = styled(Typography).attrs({
 })``;
 
 export const RadioInput = styled.input`
-  display: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin: 0;
+  opacity: 0;
+  &:focus-visible:not(:disabled) + ${RadioCircle} {
+    border-color: ${({ theme }) => theme.colors.accent.primary};
+  }
   &:not(:disabled) + ${RadioCircle}:hover {
     border-color: ${({ theme }) => theme.colors.accent.primary};
   }
