@@ -21,7 +21,7 @@ export const AvatarStyled = styled.span<AvatarStyledProps>`
     `}
 `;
 
-export const AvatarObject = styled.object.attrs({ type: 'image/jpeg' })`
+export const AvatarImage = styled.img`
   display: inline-flex;
   width: inherit;
   height: inherit;
