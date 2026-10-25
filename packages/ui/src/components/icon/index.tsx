@@ -13,27 +13,38 @@ export interface IconProps
   enableTooltip?: boolean;
 }
 
+type IconSvgProps = React.ComponentProps<typeof IconStyled>;
+
+// Only icons with `enableTooltip` subscribe to the tooltip context, so the
+// rest don't rerender when a Tooltip above them does.
+const IconWithTooltip: React.FC<IconSvgProps> = (props) => {
+  const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
+
+  return (
+    <IconStyled
+      {...props}
+      onMouseEnter={handleTooltipMouseEnter}
+      onMouseLeave={handleTooltipMouseLeave}
+    />
+  );
+};
+
 export const Icon: React.FC<IconProps> = ({
   size: defaultSize = 18,
   fill: defaultFill,
   enableTooltip = false,
   ...props
 }) => {
-  const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
-
-  const { size = defaultSize } = useIconOrNull() ?? { size: defaultSize };
+  const size = useIconOrNull()?.size ?? defaultSize;
+  const IconComponent = enableTooltip ? IconWithTooltip : IconStyled;
 
   const iconNode: React.ReactNode = (
-    <IconStyled
+    <IconComponent
       {...props}
       width={size}
       height={size}
       {...(defaultFill === 'none' && {
         fill: 'none',
-      })}
-      {...(enableTooltip && {
-        onMouseEnter: handleTooltipMouseEnter,
-        onMouseLeave: handleTooltipMouseLeave,
       })}
     />
   );
