@@ -1,10 +1,5 @@
-import {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEventCallback } from './useEventCallback';
 
 const velocityThreshold = 0.4; // px/ms
 const dragThresholdPercent = 0.1; // %
@@ -26,16 +21,21 @@ export const useCarousel = ({
   align = 'center',
   onSlideChange,
 }: UseCarouselProps) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const dragStartXRef = useRef(0);
   const dragStartTimeRef = useRef(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isDraggingNow, setIsDraggingNow] = useState(false);
+  // Drag state is not rendered, so it lives in refs: a swipe does not
+  // rerender the slides on pointerdown and pointermove.
+  const isDraggingRef = useRef(false);
+  const isDraggingNowRef = useRef(false);
 
   const [activeSlideIndex, setActiveSlideIndex] = useState(defaultIndex ?? 0);
+  const activeSlideIndexRef = useRef(activeSlideIndex);
 
   const isPrevAllowed = activeSlideIndex >= slidesPerScreen;
   const isNextAllowed = activeSlideIndex + slidesPerScreen < slidesCount;
+
+  const handleSlideChange = useEventCallback(onSlideChange);
 
   const calculateVelocity = useCallback((endX: number, endTime: number) => {
     const deltaX = endX - dragStartXRef.current;
@@ -61,8 +61,10 @@ export const useCarousel = ({
     const totalGap =
       containerFullWidth -
       slideWidthsRef.current.reduce((sum, width) => sum + width, 0);
+    const gapsCount = slideWidthsRef.current.length - 1;
 
-    gapRef.current = totalGap / (slideWidthsRef.current.length - 1);
+    // A single slide has no gaps (dividing by zero gave NaN).
+    gapRef.current = gapsCount > 0 ? totalGap / gapsCount : 0;
   }, []);
 
   const updateTransform = useCallback(
@@ -102,33 +104,9 @@ export const useCarousel = ({
   );
 
   useEffect(() => {
-    if (!containerRef.current) return;
-
-    measureElements();
-
-    let timeoutId: number | undefined;
-    const update = () => {
-      clearTimeout(timeoutId);
-      timeoutId = window.setTimeout(() => {
-        measureElements();
-        updateTransform(activeSlideIndex);
-        timeoutId = undefined;
-      }, 30);
-    };
-
-    const resizeObserver = new ResizeObserver(update);
-    resizeObserver.observe(containerRef.current);
-
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-      resizeObserver.disconnect();
-    };
-  }, [measureElements, activeSlideIndex]);
-
-  useEffect(() => {
     if (!enableSwipes) {
-      setIsDragging(false);
-      setIsDraggingNow(false);
+      isDraggingRef.current = false;
+      isDraggingNowRef.current = false;
     }
   }, [enableSwipes]);
 
@@ -136,34 +114,40 @@ export const useCarousel = ({
     (newIndex: number) => {
       const groupIndex =
         Math.floor(newIndex / slidesPerScreen) * slidesPerScreen;
-      const finalIndex = Math.min(Math.max(0, groupIndex), slidesCount - 1);
+      const finalIndex = Math.max(0, Math.min(groupIndex, slidesCount - 1));
 
+      activeSlideIndexRef.current = finalIndex;
       setActiveSlideIndex(finalIndex);
       updateTransform(finalIndex);
-      onSlideChange?.(finalIndex);
+      handleSlideChange(finalIndex);
       return finalIndex;
     },
-    [updateTransform, slidesCount, onSlideChange, slidesPerScreen],
+    [updateTransform, slidesCount, handleSlideChange, slidesPerScreen],
   );
 
   const goPrev = useCallback(() => {
-    if (isPrevAllowed) {
-      return goToSlide(activeSlideIndex - slidesPerScreen);
+    const index = activeSlideIndexRef.current;
+
+    if (index >= slidesPerScreen) {
+      return goToSlide(index - slidesPerScreen);
     }
-    return activeSlideIndex;
-  }, [isPrevAllowed, activeSlideIndex, goToSlide, slidesPerScreen]);
+    return index;
+  }, [goToSlide, slidesPerScreen]);
 
   const goNext = useCallback(() => {
-    if (isNextAllowed) {
-      return goToSlide(activeSlideIndex + slidesPerScreen);
+    const index = activeSlideIndexRef.current;
+
+    if (index + slidesPerScreen < slidesCount) {
+      return goToSlide(index + slidesPerScreen);
     }
-    return activeSlideIndex;
-  }, [isNextAllowed, activeSlideIndex, goToSlide, slidesPerScreen]);
+    return index;
+  }, [goToSlide, slidesPerScreen, slidesCount]);
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
     if (!containerRef.current) return;
 
-    setIsDragging(true);
+    isDraggingRef.current = true;
+    isDraggingNowRef.current = false;
     dragStartXRef.current = e.clientX;
     dragStartTimeRef.current = Date.now();
 
@@ -172,69 +156,90 @@ export const useCarousel = ({
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent) => {
-      if (!isDragging) return;
+      if (!isDraggingRef.current) return;
 
-      setIsDraggingNow(true);
+      isDraggingNowRef.current = true;
       const delta = e.clientX - dragStartXRef.current;
 
-      updateTransform(activeSlideIndex, delta);
+      updateTransform(activeSlideIndexRef.current, delta);
     },
-    [isDragging, updateTransform, activeSlideIndex],
+    [updateTransform],
   );
 
   const onPointerUp = useCallback(
     (e: React.PointerEvent) => {
-      if (!isDragging || !containerRef.current) return;
+      if (!isDraggingRef.current || !containerRef.current) return;
 
+      isDraggingRef.current = false;
+      isDraggingNowRef.current = false;
+
+      const index = activeSlideIndexRef.current;
       const velocity = calculateVelocity(e.clientX, Date.now());
       const absVelocity = Math.abs(velocity);
       const currentOffset = e.clientX - dragStartXRef.current;
       const absDragOffset = Math.abs(currentOffset);
 
       containerRef.current.style.transition = 'transform 0.3s ease-in-out';
-      const slideWidth = slideWidthsRef.current[activeSlideIndex] ?? 100;
+      const slideWidth = slideWidthsRef.current[index] ?? 100;
 
       const dragThreshold = slideWidth * dragThresholdPercent;
 
+      // A long drag or a fast flick changes the slide.
       const shouldNavigate =
-        absDragOffset > dragThreshold ||
-        (absDragOffset > dragThreshold && absVelocity > velocityThreshold);
+        absDragOffset > dragThreshold || absVelocity > velocityThreshold;
 
       if (shouldNavigate) {
-        if (currentOffset > 0 && isPrevAllowed) {
-          goToSlide(activeSlideIndex - slidesPerScreen);
-        } else if (currentOffset < 0 && isNextAllowed) {
-          goToSlide(activeSlideIndex + slidesPerScreen);
+        if (currentOffset > 0 && index >= slidesPerScreen) {
+          goToSlide(index - slidesPerScreen);
+        } else if (currentOffset < 0 && index + slidesPerScreen < slidesCount) {
+          goToSlide(index + slidesPerScreen);
         } else {
-          updateTransform(activeSlideIndex);
+          updateTransform(index);
         }
       } else {
-        updateTransform(activeSlideIndex);
+        updateTransform(index);
       }
-
-      setIsDragging(false);
-      setIsDraggingNow(false);
     },
     [
-      isDragging,
-      isPrevAllowed,
-      isNextAllowed,
-      activeSlideIndex,
+      slidesPerScreen,
+      slidesCount,
       goToSlide,
       calculateVelocity,
       updateTransform,
     ],
   );
 
+  // A stable callback ref: it does not run again on every slide change, and
+  // the ResizeObserver is created once per mounted container.
   const ref = useCallback(
     (node: HTMLDivElement | null) => {
-      (containerRef as MutableRefObject<HTMLDivElement | null>).current = node;
-      if (node) {
-        measureElements();
-        updateTransform(activeSlideIndex);
-      }
+      containerRef.current = node;
+
+      if (!node) return;
+
+      measureElements();
+      updateTransform(activeSlideIndexRef.current);
+
+      if (typeof ResizeObserver === 'undefined') return;
+
+      let timeoutId: number | undefined;
+      const resizeObserver = new ResizeObserver(() => {
+        window.clearTimeout(timeoutId);
+        timeoutId = window.setTimeout(() => {
+          measureElements();
+          updateTransform(activeSlideIndexRef.current);
+          timeoutId = undefined;
+        }, 30);
+      });
+      resizeObserver.observe(node);
+
+      return () => {
+        window.clearTimeout(timeoutId);
+        resizeObserver.disconnect();
+        containerRef.current = null;
+      };
     },
-    [activeSlideIndex, measureElements, updateTransform],
+    [measureElements, updateTransform],
   );
 
   return {
@@ -244,8 +249,16 @@ export const useCarousel = ({
     goPrev,
     goNext,
     goToSlide,
-    isDragging,
-    isDraggingNow,
+    /**
+     * @deprecated The drag state is kept in a ref and no longer rerenders the
+     * component, so this value is only up to date at render time.
+     */
+    isDragging: isDraggingRef.current,
+    /**
+     * @deprecated The drag state is kept in a ref and no longer rerenders the
+     * component, so this value is only up to date at render time.
+     */
+    isDraggingNow: isDraggingNowRef.current,
     carouselProps: {
       ref,
       onPointerDown: enableSwipes ? onPointerDown : undefined,
