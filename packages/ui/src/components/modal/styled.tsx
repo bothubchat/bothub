@@ -4,6 +4,7 @@ import { Scrollbar } from '../scrollbar';
 export const ModalStyled = styled.div.attrs<{
   $scrollbarEnabled: boolean;
   $align: 'center' | 'flex-start';
+  $closing?: boolean;
 }>(({ $scrollbarEnabled }) => ({
   as: $scrollbarEnabled ? Scrollbar : 'div',
 }))`
@@ -20,5 +21,11 @@ export const ModalStyled = styled.div.attrs<{
     css`
       padding-top: 16px;
       padding-bottom: 16px;
+    `}
+
+  ${({ $closing }) =>
+    $closing &&
+    css`
+      pointer-events: none;
     `}
 `;

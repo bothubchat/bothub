@@ -17,6 +17,9 @@ export const ModalWindowStyled = styled(animated.div)`
   border-radius: 17px;
   position: relative;
   z-index: ${({ theme }) => theme.zIndex.modal};
+  &:focus {
+    outline: none;
+  }
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     margin: 0px 10px;
   }
