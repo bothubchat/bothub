@@ -92,7 +92,7 @@ export const BothubAppBannerStyled = styled.a`
       transform: scale(1.05);
     }
     ${BothubAppBannerBackgroundGradient} {
-      $:before {
+      &::before {
         @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
           opacity: 1;
         }
