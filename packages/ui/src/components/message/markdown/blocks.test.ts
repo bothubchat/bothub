@@ -50,9 +50,26 @@ describe('splitMarkdownBlocks', () => {
   });
 
   test.each([
-    ['footnotes', `Текст[^1]\n\n${FILLER}\n\n[^1]: Сноска`],
-    ['reference links', `[Ссылка][site]\n\n${FILLER}\n\n[site]: https://a.b`],
-  ])('keeps text with %s in one block', (_, text) => {
+    ['footnotes', 'Текст[^1]', '[^1]: Сноска'],
+    ['a footnote with spaces', 'Текст[^1]', '[^1]: Сноска тут'],
+    ['reference links', '[Ссылка][site]', '[site]: https://a.b'],
+    ['an escaped bracket', '[Ссылка][a\\]b]', '[a\\]b]: https://a.b'],
+    ['a label on two lines', '[Ссылка][a\nb]', '[a\nb]: https://a.b'],
+    ['a definition in a list', '[Ссылка][a]', '- [a]: https://a.b'],
+    ['a definition in a quote', '[Ссылка][a]', '> [a]: https://a.b'],
+  ])('keeps text with %s in one block', (_, reference, definition) => {
+    const text = `${reference}\n\n${FILLER}\n\n${definition}`;
+
     expect(splitMarkdownBlocks(text)).toEqual([text]);
+  });
+
+  test.each([
+    ['a code block', '```ts\ntype Dict = {\n  [key: string]: string;\n};\n```'],
+    ['code in a list', '- Тип:\n  ```ts\n  [K in keyof T]: boolean;\n  ```'],
+  ])('splits text with %s that looks like a definition', (_, code) => {
+    expect(splitMarkdownBlocks(`${code}\n\n${FILLER}\n\nПосле`)).toEqual([
+      `${code}\n\n${FILLER}\n\n`,
+      'После',
+    ]);
   });
 });

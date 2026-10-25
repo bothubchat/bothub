@@ -1,4 +1,4 @@
-import { Lexer } from 'marked';
+import { Lexer, type MarkedToken, type Token } from 'marked';
 import { isEscaped } from './utils';
 
 /*
@@ -9,8 +9,9 @@ import { isEscaped } from './utils';
  */
 export const MIN_MARKDOWN_BLOCK_LENGTH = 1500;
 
-// Reference links and footnotes may be defined in another block.
-const DEFINITION_PATTERN = /^ {0,3}\[[^\]\n]+\]:/m;
+// marked does not know footnotes: `[^1]: Сноска с пробелами` is a paragraph
+// for it.
+const DEFINITION_PATTERN = /^ {0,3}\[(?:\\[\s\S]|[^[\]\\])+\]:/m;
 const BLANK_LINE_END_PATTERN = /\n[ \t]*\n$/;
 const CITE_OPEN_PATTERN = /<cite>/gi;
 const CITE_CLOSE_PATTERN = /<\/cite>/gi;
@@ -33,6 +34,28 @@ const countMathFences = (value: string): number => {
 };
 
 /**
+ * Reference links and footnotes may be defined in another block. Code is
+ * skipped: `[key: string]: string;` of a TS interface is not a definition.
+ */
+const hasDefinition = (tokens: Token[]): boolean =>
+  // Without marked extensions every token is a MarkedToken.
+  (tokens as MarkedToken[]).some((token) => {
+    switch (token.type) {
+      case 'def':
+        return true;
+      case 'paragraph':
+      case 'text':
+        return DEFINITION_PATTERN.test(token.raw);
+      case 'blockquote':
+        return hasDefinition(token.tokens);
+      case 'list':
+        return token.items.some((item) => hasDefinition(item.tokens));
+      default:
+        return false;
+    }
+  });
+
+/**
  * Splits markdown into top-level blocks that render the same on their own. A
  * block ends only on a blank line between top-level elements (a list or a code
  * block is never split) and outside `$$` formulas and `<cite>` tags, which
@@ -40,10 +63,13 @@ const countMathFences = (value: string): number => {
  * them, so blocks that are already complete do not change while the text grows.
  */
 export const splitMarkdownBlocks = (markdown: string): string[] => {
-  if (
-    markdown.length < MIN_MARKDOWN_BLOCK_LENGTH ||
-    DEFINITION_PATTERN.test(markdown)
-  ) {
+  if (markdown.length < MIN_MARKDOWN_BLOCK_LENGTH) {
+    return [markdown];
+  }
+
+  const tokens = new Lexer().blockTokens(markdown, []);
+
+  if (hasDefinition(tokens)) {
     return [markdown];
   }
 
@@ -52,7 +78,7 @@ export const splitMarkdownBlocks = (markdown: string): string[] => {
   let mathFences = 0;
   let openCites = 0;
 
-  new Lexer().blockTokens(markdown, []).forEach((token) => {
+  tokens.forEach((token) => {
     block += token.raw;
 
     if (token.type !== 'code') {
