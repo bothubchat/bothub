@@ -13,7 +13,7 @@ export const LangSwitcherStyled = styled.div`
   position: relative;
 `;
 
-export const LangSwitcherList = styled(animated.ul)`
+export const LangSwitcherList = styled(animated.div)`
   position: absolute;
   margin-top: 40px;
   right: 0;

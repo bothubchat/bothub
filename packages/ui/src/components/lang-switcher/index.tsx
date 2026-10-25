@@ -1,5 +1,5 @@
 import { useTransition } from '@react-spring/web';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   LangSwitcherButton,
   LangSwitcherIcon,
@@ -28,7 +28,7 @@ export type LangSwitcherProps = {
   onChange: ({ lang, region }: { lang: string; region: string }) => void;
 };
 
-export const LangSwitcher: React.FC<LangSwitcherProps> = ({
+const LangSwitcherComponent: React.FC<LangSwitcherProps> = ({
   lang,
   region,
   dataRegions,
@@ -73,29 +73,29 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
     [onChange, lang.value, region.value],
   );
 
-  useEffect(() => {
-    const dropdownEl: HTMLDivElement | null = dropdownRef.current;
+  const handleLangChange = useCallback(
+    (item: SelectFieldDataItem) => handleChange(item, 'lang'),
+    [handleChange],
+  );
 
-    if (dropdownEl !== null) {
-      const clickListener = (event: Event) => {
-        if (!dropdownEl.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      const blurListener = () => setIsOpen(false);
+  const handleRegionChange = useCallback(
+    (item: SelectFieldDataItem) => handleChange(item, 'region'),
+    [handleChange],
+  );
 
-      document.addEventListener('click', clickListener);
-      window.addEventListener('blur', blurListener);
-
-      return () => {
-        document.removeEventListener('click', clickListener);
-        window.removeEventListener('blur', blurListener);
-      };
-    }
-  }, []);
-
+  // The document and the window are listened to only while the dropdown is
+  // open. A click (not mousedown) is used: options of the inner selects are
+  // rendered in a portal, and their click must land before this closes.
   useEffect(() => {
     if (!isOpen) return;
+
+    const clickListener = (event: Event) => {
+      const dropdownEl = dropdownRef.current;
+
+      if (dropdownEl && !dropdownEl.contains(event.target as Node)) {
+        handleClose();
+      }
+    };
 
     const handleScrollEvent = (event: Event) => {
       const dropdownEl = dropdownRef.current;
@@ -108,9 +108,13 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
       handleClose();
     };
 
+    document.addEventListener('click', clickListener);
+    window.addEventListener('blur', handleClose);
     window.addEventListener('scroll', handleScrollEvent, true);
 
     return () => {
+      document.removeEventListener('click', clickListener);
+      window.removeEventListener('blur', handleClose);
       window.removeEventListener('scroll', handleScrollEvent, true);
     };
   }, [isOpen, handleClose]);
@@ -149,7 +153,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
               <LangSwitcherInput
                 contentHeight="fit-content"
                 compactWidth
-                onOptionClick={(e) => handleChange(e, 'lang')}
+                onOptionClick={handleLangChange}
                 value={currentLanguage}
                 data={dataLanguages}
                 dataTest="lang-select"
@@ -158,7 +162,7 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
               <LangSwitcherInput
                 contentHeight="fit-content"
                 compactWidth
-                onOptionClick={(e) => handleChange(e, 'region')}
+                onOptionClick={handleRegionChange}
                 value={currentRegion}
                 data={dataRegions}
                 dataTest="region-select"
@@ -169,3 +173,5 @@ export const LangSwitcher: React.FC<LangSwitcherProps> = ({
     </LangSwitcherStyled>
   );
 };
+
+export const LangSwitcher = memo(LangSwitcherComponent);
