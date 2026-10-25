@@ -78,6 +78,8 @@ describe('TextField', () => {
     );
 
     expect(css).toContain('visibility:hidden');
+    // Hover and focus styles keep the specificity of a single class
+    expect(css).toMatch(/:where\(:hover, ?:focus-within\)\{border-color/);
     // The clear button rules used to end up inside the unclosed `svg path {`
     expect(css).not.toMatch(/svg path[^{]*\{[^}]*visibility/);
   });

@@ -90,8 +90,9 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
       css`
         border-color: ${theme.colors.accent.primary};
       `}
-      &:hover,
-      &:focus-within {
+      /* :where keeps the specificity of a single class, as with the
+         previous state classes, so overrides from wrappers still apply */
+      &:where(:hover, :focus-within) {
         border-color: ${theme.colors.accent.primary};
       }
     `;
@@ -149,7 +150,7 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
 
     return css`
       ${$focus ? focusStyles : idleStyles}
-      &:focus-within {
+      &:where(:focus-within) {
         ${focusStyles}
       }
     `;
