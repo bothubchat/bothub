@@ -2,15 +2,12 @@ import React, {
   forwardRef,
   useCallback,
   useImperativeHandle,
+  useMemo,
   useRef,
 } from 'react';
 import { ButtonStyled, ButtonText } from './styled';
 import { useTheme } from '@/ui/theme';
-import {
-  IconProvider,
-  IconProviderProps,
-  isIconComponent,
-} from '@/ui/components/icon';
+import { IconProvider, isIconComponent } from '@/ui/components/icon';
 import {
   ButtonComponent,
   ButtonCorner,
@@ -20,7 +17,7 @@ import {
 import { useTooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
 import { InfoIcon } from '@/ui/icons/info';
-import { isBright } from '@/ui/utils/colors';
+import { isBrightColor } from './utils';
 
 export type ButtonProps = Omit<
   React.ComponentProps<'button'>,
@@ -45,6 +42,8 @@ export type ButtonProps = Omit<
   children?: React.ReactNode;
 };
 
+const skeletonOpacity: [number, number] = [0.15, 0.45];
+
 export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
   (
     {
@@ -57,8 +56,8 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
       corner = 'brick',
       startIcon = null,
       endIcon = null,
-      iconSize,
-      iconFill,
+      iconSize: iconSizeProp,
+      iconFill: iconFillProp,
       disabled = false,
       skeleton = false,
       color,
@@ -76,7 +75,11 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
     const isIconButton: boolean = React.isValidElement(childrenArray[0])
       ? isIconComponent(childrenArray[0].type)
       : false;
-    if (typeof iconSize !== 'number') {
+
+    let iconSize: number;
+    if (typeof iconSizeProp === 'number') {
+      iconSize = iconSizeProp;
+    } else {
       switch (size) {
         case 'md':
           iconSize = 20;
@@ -86,51 +89,44 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
           break;
       }
     }
-    if (
-      typeof iconFill !== 'string' &&
-      variant !== 'text' &&
-      variant !== 'help'
-    ) {
-      if (disabled) {
-        iconFill = theme.colors.grayScale.gray1;
-      } else {
-        switch (variant) {
-          case 'primary':
-            if (theme.scheme === 'custom') {
-              if (isBright(theme.colors.accent.primary)) {
-                iconFill = isBright(theme.colors.custom.interface.text)
-                  ? theme.mode === 'dark'
-                    ? theme.colors.base.black
-                    : theme.default.colors.base.black
-                  : theme.colors.custom.interface.text;
-              }
 
-              iconFill = isBright(theme.colors.custom.interface.text)
-                ? theme.colors.custom.interface.text
-                : theme.default.colors.base.white;
-
-              break;
-            }
-
-            iconFill = theme.bright
-              ? theme.mode === 'dark'
-                ? theme.colors.base.black
-                : theme.default.colors.base.black
-              : theme.default.colors.base.white;
-            break;
-          default:
-            iconFill = theme.colors.base.white;
-            break;
-        }
+    const iconFill = useMemo<string | undefined>(() => {
+      if (
+        typeof iconFillProp === 'string' ||
+        variant === 'text' ||
+        variant === 'help'
+      ) {
+        return iconFillProp;
       }
-    }
+      if (disabled) {
+        return theme.colors.grayScale.gray1;
+      }
 
-    const iconProps: IconProviderProps = {
-      size: iconSize,
-      fill: iconFill,
-    };
+      switch (variant) {
+        case 'primary':
+          if (theme.scheme === 'custom') {
+            return isBrightColor(theme.colors.custom.interface.text)
+              ? theme.colors.custom.interface.text
+              : theme.default.colors.base.white;
+          }
+
+          return theme.bright
+            ? theme.mode === 'dark'
+              ? theme.colors.base.black
+              : theme.default.colors.base.black
+            : theme.default.colors.base.white;
+        default:
+          return theme.colors.base.white;
+      }
+    }, [iconFillProp, variant, disabled, theme]);
+
+    const skeletonColors = useMemo<[string]>(
+      () => [theme.colors.base.white],
+      [theme.colors.base.white],
+    );
 
     const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
+    const isNativeButton = component === 'button';
 
     const handleMouseEnter = useCallback<
       React.MouseEventHandler<HTMLButtonElement>
@@ -171,7 +167,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
         $disableHoverColor={disableHoverColor}
         $color={color}
         as={component}
-        {...(component === 'button' && {
+        {...(isNativeButton && {
           type,
           disabled,
         })}
@@ -183,10 +179,18 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
         onMouseLeave={handleMouseLeave}
       >
         {startIcon ? (
-          <IconProvider {...iconProps}>{startIcon}</IconProvider>
+          <IconProvider
+            size={iconSize}
+            fill={iconFill}
+          >
+            {startIcon}
+          </IconProvider>
         ) : null}
         {!skeleton && (
-          <IconProvider {...iconProps}>
+          <IconProvider
+            size={iconSize}
+            fill={iconFill}
+          >
             {variant === 'help' && <InfoIcon />}
             {variant !== 'help' && (
               <>
@@ -208,11 +212,18 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
           <Skeleton
             width={70}
             height={17.5}
-            colors={[theme.colors.base.white]}
-            opacity={[0.15, 0.45]}
+            colors={skeletonColors}
+            opacity={skeletonOpacity}
           />
         )}
-        {endIcon ? <IconProvider {...iconProps}>{endIcon}</IconProvider> : null}
+        {endIcon ? (
+          <IconProvider
+            size={iconSize}
+            fill={iconFill}
+          >
+            {endIcon}
+          </IconProvider>
+        ) : null}
       </ButtonStyled>
     );
   },

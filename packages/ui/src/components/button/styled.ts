@@ -1,37 +1,62 @@
 import { css, keyframes, styled } from 'styled-components';
 import React from 'react';
 import { ButtonCorner, ButtonSize, ButtonVariant } from './types';
-import { isBright } from '@/ui/utils/colors';
+import { isBrightColor } from './utils';
 
-const boxShadowAnimation = (initialColor: string) => keyframes`
-  0% {
-    box-shadow: 0px 0px 0px 1px ${initialColor} inset;
-  }
-  10% {
-    box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.4) inset;
-  }
-  80% {
-    box-shadow: 0px 0.9px 0px 0px rgba(255, 255, 255, 0.4) inset;
-  }
-  100% {
-    box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
-  }
-`;
+type Keyframes = ReturnType<typeof keyframes>;
 
-const reverseBoxShadowAnimation = (initialColor: string) => keyframes`
-  0% {
-    box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
+// Keyframes depend only on the theme color, so build them once per color
+// instead of on every render.
+const boxShadowAnimations = new Map<string, Keyframes>();
+const reverseBoxShadowAnimations = new Map<string, Keyframes>();
+
+const boxShadowAnimation = (initialColor: string): Keyframes => {
+  let animation = boxShadowAnimations.get(initialColor);
+  if (!animation) {
+    animation = keyframes`
+      0% {
+        box-shadow: 0px 0px 0px 1px ${initialColor} inset;
+      }
+      10% {
+        box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.4) inset;
+      }
+      80% {
+        box-shadow: 0px 0.9px 0px 0px rgba(255, 255, 255, 0.4) inset;
+      }
+      100% {
+        box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
+      }
+    `;
+    boxShadowAnimations.set(initialColor, animation);
   }
-  10% {
-    box-shadow: 0px 0.9px 0px 0px rgba(255, 255, 255, 0.4) inset;
+
+  return animation;
+};
+
+const reverseBoxShadowAnimation = (initialColor: string): Keyframes => {
+  let animation = reverseBoxShadowAnimations.get(initialColor);
+  if (!animation) {
+    animation = keyframes`
+      0% {
+        box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
+      }
+      10% {
+        box-shadow: 0px 0.9px 0px 0px rgba(255, 255, 255, 0.4) inset;
+      }
+      50% {
+        box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.4) inset;
+      }
+      100% {
+        box-shadow: 0px 0px 0px 1px ${initialColor} inset;
+      }
+    `;
+    reverseBoxShadowAnimations.set(initialColor, animation);
   }
-  50% {
-    box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.4) inset;
-  }
-  100% {
-    box-shadow: 0px 0px 0px 1px ${initialColor} inset;
-  }
-`;
+
+  return animation;
+};
+
+const buttonColorProperty = '--bothub-button-color';
 
 export interface ButtonStyledProps {
   ref: React.RefObject<HTMLButtonElement>;
@@ -47,7 +72,19 @@ export interface ButtonStyledProps {
   $color?: string;
 }
 
-export const ButtonStyled = styled.button<ButtonStyledProps>`
+// `$color` goes through a CSS custom property, so arbitrary colors share one
+// generated class instead of adding a rule per color.
+export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
+  ({ $color, style }) =>
+    $color
+      ? {
+          style: {
+            ...style,
+            [buttonColorProperty]: $color,
+          } as React.CSSProperties,
+        }
+      : {},
+)`
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -72,12 +109,14 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
   }
 
   ${({ theme, $disabled, $variant, $skeleton, $color }) => {
+    const color = $color ? `var(${buttonColorProperty})` : undefined;
+
     switch ($variant) {
       case 'primary': {
         let backgroundColor: string;
 
-        if ($color) {
-          backgroundColor = $color;
+        if (color) {
+          backgroundColor = color;
         } else if ($disabled || $skeleton) {
           backgroundColor = theme.colors.grayScale.gray3;
         } else if (theme.mode === 'light' && theme.scheme === 'standard') {
@@ -95,17 +134,17 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
           !$skeleton &&
           css`
             &:hover {
-              background: ${$color ?? theme.colors.accent.strong};
+              background: ${color ?? theme.colors.accent.strong};
             }
             &:active {
-              background: ${$color ?? theme.colors.accent.strongDown};
+              background: ${color ?? theme.colors.accent.strongDown};
             }
           `}
         `;
       }
       case 'primary-transparent':
         return css`
-          background: ${$color ??
+          background: ${color ??
           ($disabled || $skeleton
             ? theme.colors.grayScale.gray3
             : theme.colors.accent.primary)};
@@ -137,12 +176,12 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
           !$skeleton &&
           css`
             &:hover {
-              background: ${$color ?? theme.colors.accent.primary};
+              background: ${color ?? theme.colors.accent.primary};
               animation: ${boxShadowAnimation(theme.colors.accent.primary)} 0.3s
                 linear forwards;
             }
             &:active {
-              background: ${$color ?? theme.colors.accent.strongDown};
+              background: ${color ?? theme.colors.accent.strongDown};
               transform: translateY(1px);
               box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0) inset;
             }
@@ -150,7 +189,7 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         `;
       case 'secondary':
         return css`
-          background: ${$color ?? theme.colors.grayScale.gray4};
+          background: ${color ?? theme.colors.grayScale.gray4};
           box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset;
           animation: ${reverseBoxShadowAnimation(theme.colors.grayScale.gray2)}
             0.3s linear forwards;
@@ -159,18 +198,18 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
           !$skeleton &&
           css`
             &:hover {
-              background: ${$color ?? theme.colors.grayScale.gray2};
+              background: ${color ?? theme.colors.grayScale.gray2};
               animation: ${boxShadowAnimation(theme.colors.grayScale.gray2)}
                 0.3s linear forwards;
             }
             &:active {
-              background: ${$color ?? theme.colors.grayScale.gray3};
+              background: ${color ?? theme.colors.grayScale.gray3};
             }
           `}
         `;
       case 'gradient':
         return css`
-          background: ${$color ?? theme.colors.gradient.elite20};
+          background: ${color ?? theme.colors.gradient.elite20};
           box-shadow: 0px 0px 0px 1px ${theme.colors.gradient.elite20} inset;
           animation: ${reverseBoxShadowAnimation(theme.colors.gradient.elite20)}
             0.3s linear forwards;
@@ -179,19 +218,19 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
           !$skeleton &&
           css`
             &:hover {
-              background: ${$color ?? theme.colors.gradient.elite20};
+              background: ${color ?? theme.colors.gradient.elite20};
               animation: ${boxShadowAnimation(theme.colors.gradient.elite20)}
                 0.3s linear forwards;
             }
             &:active {
-              background: ${$color ?? theme.colors.gradient.elite20};
+              background: ${color ?? theme.colors.gradient.elite20};
             }
           `}
         `;
       case 'success':
         return css`
           background: ${$disabled || $skeleton
-            ? ($color ?? theme.colors.grayScale.gray2)
+            ? (color ?? theme.colors.grayScale.gray2)
             : theme.colors.green};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: 1;
@@ -374,14 +413,14 @@ export const ButtonText = styled.span<ButtonTextProps>`
       case 'primary-transparent':
         if (theme.scheme === 'custom') {
           if (theme.bright) {
-            return isBright(theme.colors.custom.interface.text)
+            return isBrightColor(theme.colors.custom.interface.text)
               ? theme.mode === 'dark'
                 ? theme.colors.base.black
                 : theme.default.colors.base.black
               : theme.colors.custom.interface.text;
           }
 
-          return isBright(theme.colors.custom.interface.text)
+          return isBrightColor(theme.colors.custom.interface.text)
             ? theme.colors.custom.interface.text
             : theme.default.colors.base.white;
         }
