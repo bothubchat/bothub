@@ -144,6 +144,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   onSend,
   onFocus,
   onBlur,
+  onKeyDown,
   emitError,
   actions,
   attachAriaLabel,
@@ -205,6 +206,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     handleBlur,
     handleClick,
     handleChange,
+    handleKeyDown,
   } = useInput({
     initialMessage,
     sendDisabled,
@@ -218,6 +220,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       setVoiceFiles?.([]);
     },
     onTextAreaChange,
+    onKeyDown,
     onFocus,
     onBlur,
   });
@@ -226,7 +229,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     (event) => {
       event.stopPropagation();
       onSend?.(message, files);
-      setMessage?.('');
+      setMessage('');
       setFiles?.([]);
       setVoiceFiles?.([]);
       setHeight('calc(var(--bothub-scale, 1) * 22px)');
@@ -408,6 +411,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               onFocus={handleFocus}
               onBlur={handleBlur}
               onChange={handleChange}
+              onKeyDown={handleKeyDown}
               onPaste={handleFilePaste}
             />
           )}

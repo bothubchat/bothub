@@ -342,3 +342,98 @@ describe('InputMessage files', () => {
     expect(onFilesChange).not.toHaveBeenCalled();
   });
 });
+
+describe('InputMessage keyboard', () => {
+  afterEach(cleanup);
+
+  const renderKeyboard = (
+    props: Partial<React.ComponentProps<typeof InputMessage>> = {},
+  ) => {
+    const onSend = vi.fn();
+    customRender(
+      <InputMessage
+        placeholder="Сообщение"
+        onSend={onSend}
+        {...props}
+      />,
+    );
+
+    return { onSend, textarea: screen.getByPlaceholderText('Сообщение') };
+  };
+
+  test('calls the consumer onKeyDown', () => {
+    const onKeyDown = vi.fn();
+    const { textarea } = renderKeyboard({ onKeyDown });
+
+    fireEvent.keyDown(textarea, { key: 'a' });
+    fireEvent.keyDown(textarea, { key: 'Enter' });
+
+    expect(onKeyDown).toHaveBeenCalledTimes(2);
+  });
+
+  test('stops propagation only of the handled Enter', () => {
+    const documentKeyDown = vi.fn();
+    document.addEventListener('keydown', documentKeyDown);
+    const { onSend, textarea } = renderKeyboard();
+
+    fireEvent.keyDown(textarea, { key: 'Escape' });
+    expect(documentKeyDown).toHaveBeenCalledTimes(1);
+
+    fireEvent.keyDown(textarea, { key: 'Enter' });
+    expect(onSend).toHaveBeenCalledTimes(1);
+    expect(documentKeyDown).toHaveBeenCalledTimes(1);
+
+    document.removeEventListener('keydown', documentKeyDown);
+  });
+
+  test('lets the consumer cancel sending with preventDefault', () => {
+    const { onSend, textarea } = renderKeyboard({
+      onKeyDown: (event) => event.preventDefault(),
+    });
+
+    fireEvent.keyDown(textarea, { key: 'Enter' });
+
+    expect(onSend).not.toHaveBeenCalled();
+  });
+
+  test('sends with Ctrl+Enter when messageSubmitKey is ctrlEnter', () => {
+    const { onSend, textarea } = renderKeyboard({
+      messageSubmitKey: 'ctrlEnter',
+    });
+
+    const enterNotPrevented = fireEvent.keyDown(textarea, { key: 'Enter' });
+    expect(enterNotPrevented).toBe(true);
+    expect(onSend).not.toHaveBeenCalled();
+
+    fireEvent.keyDown(textarea, { key: 'Enter', ctrlKey: true });
+    expect(onSend).toHaveBeenCalledTimes(1);
+  });
+
+  test('does not send while IME composition is confirmed', () => {
+    const { onSend, textarea } = renderKeyboard();
+
+    fireEvent.keyDown(textarea, { key: 'Enter', isComposing: true });
+
+    expect(onSend).not.toHaveBeenCalled();
+  });
+
+  test('switches between controlled and uncontrolled message', () => {
+    const element = (message?: string) => (
+      <InputMessage
+        placeholder="Сообщение"
+        message={message}
+        onChange={() => {}}
+      />
+    );
+    const { rerender } = customRender(element('controlled'));
+    const textarea = screen.getByPlaceholderText(
+      'Сообщение',
+    ) as HTMLTextAreaElement;
+    expect(textarea.value).toBe('controlled');
+
+    rerender(<TestProvider>{element(undefined)}</TestProvider>);
+    fireEvent.change(textarea, { target: { value: 'own' } });
+
+    expect(textarea.value).toBe('own');
+  });
+});

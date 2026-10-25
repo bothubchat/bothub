@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useControllableState, useEventCallback } from '@/ui/utils';
 import { isMobileDevice } from './utils';
 
 export type MessageSubmitKey = 'enter' | 'ctrlEnter';
@@ -12,6 +13,7 @@ interface UseInputProps {
   onChange?: (value: string) => unknown;
   onSendMessage?: () => unknown;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
   onFocus?: (e: React.FocusEvent<HTMLTextAreaElement, Element>) => unknown;
   onBlur?: (e: React.FocusEvent<HTMLTextAreaElement, Element>) => unknown;
 }
@@ -25,6 +27,7 @@ export const useInput = ({
   onChange,
   onSendMessage,
   onTextAreaChange,
+  onKeyDown,
   onFocus,
   onBlur,
 }: UseInputProps) => {
@@ -32,10 +35,11 @@ export const useInput = ({
 
   const [isFocus, setIsFocus] = useState((!disabled && autoFocus) ?? false);
   const [height, setHeight] = useState('calc(var(--bothub-scale, 1) * 22px)');
-  const [message, setMessage] =
-    typeof initialMessage === 'string'
-      ? [initialMessage, onChange]
-      : useState('');
+  const [message, setMessage] = useControllableState({
+    value: initialMessage,
+    defaultValue: '',
+    onChange,
+  });
 
   const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
     (event) => {
@@ -63,7 +67,7 @@ export const useInput = ({
     React.ChangeEventHandler<HTMLTextAreaElement>
   >(
     (event) => {
-      setMessage?.(event.target.value);
+      setMessage(event.target.value);
       onTextAreaChange?.(event);
     },
     [setMessage, onTextAreaChange],
@@ -84,32 +88,32 @@ export const useInput = ({
     }
   }, [disabled, autoFocus]);
 
-  useEffect(() => {
-    const textareaEl: HTMLElement | null = textareaRef.current;
+  const insertNewlineAtCursor = useCallback(() => {
+    const el = textareaRef.current;
+    if (!el) return;
 
-    if (textareaEl === null) {
-      return;
-    }
+    const allText = el.value;
+    const currentPos = el.selectionStart ?? 0;
+    const beforeText = allText.slice(0, currentPos);
+    const afterText = allText.slice(currentPos);
 
-    const insertNewlineAtCursor = () => {
-      const el = textareaRef.current;
-      if (!el) return;
+    setMessage(`${beforeText}\n${afterText}`);
+    setCursorPosition(el, currentPos + 1);
+  }, [setMessage]);
 
-      const allText = el.value;
-      const currentPos = el.selectionStart ?? 0;
-      const beforeText = allText.slice(0, currentPos);
-      const afterText = allText.slice(currentPos);
+  // Пропс onKeyDown вместо addEventListener: подписка не пересоздаётся на
+  // каждый ввод, а onKeyDown потребителя срабатывает
+  const handleKeyDown = useEventCallback(
+    (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      onKeyDown?.(event);
 
-      setMessage?.(`${beforeText}\n${afterText}`);
-      setCursorPosition(el, currentPos + 1);
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      event.stopPropagation();
-
-      if (sendDisabled) return;
-
-      if (event.key !== 'Enter') {
+      if (
+        event.defaultPrevented ||
+        sendDisabled ||
+        event.key !== 'Enter' ||
+        // Enter подтверждает ввод IME (китайский, японский), а не отправляет
+        event.nativeEvent.isComposing
+      ) {
         return;
       }
 
@@ -122,19 +126,17 @@ export const useInput = ({
         return;
       }
 
-      if (!isFocus) {
-        return;
-      }
-
       const ctrlOrMeta = event.ctrlKey || event.metaKey;
 
       if (messageSubmitKey === 'enter') {
+        // Останавливаем только обработанные клавиши, остальные всплывают
+        event.preventDefault();
+        event.stopPropagation();
+
         if (ctrlOrMeta) {
-          event.preventDefault();
           insertNewlineAtCursor();
           return;
         }
-        event.preventDefault();
         onSendMessage?.();
         setHeight('calc(var(--bothub-scale, 1) * 22px)');
         return;
@@ -143,16 +145,12 @@ export const useInput = ({
       // messageSubmitKey === 'ctrlEnter'
       if (ctrlOrMeta) {
         event.preventDefault();
+        event.stopPropagation();
         onSendMessage?.();
         setHeight('calc(var(--bothub-scale, 1) * 22px)');
       }
-    };
-
-    textareaEl.addEventListener('keydown', handleKeyDown);
-    return () => {
-      textareaEl.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isFocus, message, messageSubmitKey, onSendMessage, setMessage]);
+    },
+  );
 
   useEffect(() => {
     const textareaEl = textareaRef.current;
@@ -175,6 +173,7 @@ export const useInput = ({
     handleBlur,
     handleClick,
     handleChange,
+    handleKeyDown,
   };
 };
 
