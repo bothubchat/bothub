@@ -16,7 +16,8 @@ export interface MarkdownMathProps {
 
 interface RenderedMath {
   attributes: React.HTMLAttributes<HTMLSpanElement>;
-  html: string;
+  // Kept as one object: React sets the HTML again whenever it gets a new one.
+  innerHtml: { __html: string };
 }
 
 const CACHE_LIMIT = 500;
@@ -68,7 +69,7 @@ const parseKatexHtml = (html: string): RenderedMath => {
   const match = ROOT_ELEMENT_PATTERN.exec(html);
 
   if (!match) {
-    return { attributes: {}, html };
+    return { attributes: {}, innerHtml: { __html: html } };
   }
 
   const attributes: Record<string, unknown> = {};
@@ -85,7 +86,7 @@ const parseKatexHtml = (html: string): RenderedMath => {
     }
   }
 
-  return { attributes, html: match[2] };
+  return { attributes, innerHtml: { __html: match[2] } };
 };
 
 const escapeHtml = (value: string): string =>
@@ -129,7 +130,7 @@ const renderKatex = (
           style: { color: errorColor || '#cc0000' },
           title: String(error),
         },
-        html: escapeHtml(tex),
+        innerHtml: { __html: escapeHtml(tex) },
       };
     }
   }
@@ -165,14 +166,14 @@ const MarkdownMathComponent: React.FC<MarkdownMathProps> = ({
   'data-display': displayMode = false,
 }) => {
   const errorColor = useTheme().colors.orange;
-  const { attributes, html } = renderMath(tex, displayMode, errorColor);
+  const { attributes, innerHtml } = renderMath(tex, displayMode, errorColor);
 
   return (
     <span
       {...attributes}
       // KaTeX escapes the formula source, same markup rehype-katex produced.
       // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: html }}
+      dangerouslySetInnerHTML={innerHtml}
     />
   );
 };
