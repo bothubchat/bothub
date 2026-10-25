@@ -76,9 +76,16 @@ describe('MessageMarkdown', () => {
     expect(container.querySelector('p')).toBe(paragraph);
   });
 
-  test('renders a long message by blocks the same as one document', () => {
-    const answer = createLongAnswer(6000, true);
-    const { container } = renderMarkdown(answer);
+  // The first block may end on the blank line inside the list.
+  const listAfter = (element: string) =>
+    `${'а'.repeat(1480)}\n\n${element}\n2. Найдём корни.\n\n3. Проверим ответ.\n\nКонец.`;
+
+  test.each([
+    ['a long message', createLongAnswer(6000, true)],
+    ['a list right after a formula', listAfter('$$\nD = b^2 - 4ac\n$$')],
+    ['a list right after a table', listAfter('| a |\n|---|\n| 1 |')],
+  ])('renders %s by blocks the same as one document', (_, text) => {
+    const { container } = renderMarkdown(text);
     const { container: expected } = customRender(
       <MessageProvider
         variant="assistant"
@@ -86,14 +93,14 @@ describe('MessageMarkdown', () => {
         typing={false}
       >
         <div>
-          <SingleDocument text={answer} />
+          <SingleDocument text={text} />
         </div>
       </MessageProvider>,
     );
 
-    expect(container.querySelectorAll('h2')).toHaveLength(
-      expected.querySelectorAll('h2').length,
-    );
+    expect(
+      splitMarkdownBlocks(normalizeMessageMarkdown(text)).length,
+    ).toBeGreaterThan(1);
     expect(getMarkup(container.firstElementChild?.firstElementChild)).toBe(
       getMarkup(expected.firstElementChild),
     );

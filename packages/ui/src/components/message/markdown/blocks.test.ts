@@ -24,17 +24,18 @@ describe('splitMarkdownBlocks', () => {
   });
 
   test('does not change complete blocks while the text grows', () => {
-    const answer = createLongAnswer(10_000, true);
-    const blocks = splitMarkdownBlocks(answer);
+    const answer = createLongAnswer(3000, true);
+    let complete: string[] = [];
 
-    for (let length = 60; length < answer.length; length += 60) {
-      const complete = splitMarkdownBlocks(answer.slice(0, length)).slice(
-        0,
-        -1,
-      );
+    // Character by character: a chunk may end anywhere, also in `1. ` of a list.
+    for (let length = 1; length <= answer.length; length++) {
+      const blocks = splitMarkdownBlocks(answer.slice(0, length));
 
-      expect(complete).toEqual(blocks.slice(0, complete.length));
+      expect(blocks.slice(0, complete.length)).toEqual(complete);
+      complete = blocks.slice(0, -1);
     }
+
+    expect(complete.length).toBeGreaterThan(1);
   });
 
   test.each([
@@ -47,6 +48,19 @@ describe('splitMarkdownBlocks', () => {
       `${element}\n\n`,
       'После',
     ]);
+  });
+
+  // marked sees no list there: a paragraph goes on after `$$`, a table row
+  // after a table.
+  test.each([
+    ['a formula', `$$\n${FILLER}\n$$\n2. Найдём корни.`],
+    ['a table', `| a |\n|---|\n| ${FILLER} |\n2. Найдём корни.`],
+  ])('does not split a list that starts right after %s', (_, element) => {
+    ['3. Проверим ответ.', '   Подставим корни.'].forEach((continuation) => {
+      const list = `${element}\n\n${continuation}\n\n`;
+
+      expect(splitMarkdownBlocks(`${list}После`)).toEqual([list, 'После']);
+    });
   });
 
   test.each([

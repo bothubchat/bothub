@@ -13,6 +13,9 @@ export const MIN_MARKDOWN_BLOCK_LENGTH = 1500;
 // for it.
 const DEFINITION_PATTERN = /^ {0,3}\[(?:\\[\s\S]|[^[\]\\])+\]:/m;
 const BLANK_LINE_END_PATTERN = /\n[ \t]*\n$/;
+const INDENT_PATTERN = /^[ \t]/;
+// A list item that is still streamed: marked sees a paragraph in `1` or `- `.
+const LIST_MARKER_PATTERN = /^(?:[-*+]|\d{1,9}[.)]?)[ \t]*$/;
 const CITE_OPEN_PATTERN = /<cite>/gi;
 const CITE_CLOSE_PATTERN = /<\/cite>/gi;
 
@@ -55,12 +58,22 @@ const hasDefinition = (tokens: Token[]): boolean =>
     }
   });
 
+// After a blank line a list goes on with a new item or an indented line.
+const mayContinueList = (token: Token, isLast: boolean): boolean =>
+  token.type === 'list' ||
+  INDENT_PATTERN.test(token.raw) ||
+  (isLast && LIST_MARKER_PATTERN.test(token.raw));
+
 /**
  * Splits markdown into top-level blocks that render the same on their own. A
  * block ends only on a blank line between top-level elements (a list or a code
  * block is never split) and outside `$$` formulas and `<cite>` tags, which
- * remark parses across blank lines. Boundaries depend only on the text before
- * them, so blocks that are already complete do not change while the text grows.
+ * remark parses across blank lines. It does not end before a list or an
+ * indented line either: marked knows no `$$` formulas and ends tables later
+ * than remark, so `2. …` right after them is a list for remark only, and this
+ * list may go on after the blank line. Boundaries depend only on the text
+ * before them and the start of the next element, so blocks that are already
+ * complete do not change while the text grows.
  */
 export const splitMarkdownBlocks = (markdown: string): string[] => {
   if (markdown.length < MIN_MARKDOWN_BLOCK_LENGTH) {
@@ -78,7 +91,7 @@ export const splitMarkdownBlocks = (markdown: string): string[] => {
   let mathFences = 0;
   let openCites = 0;
 
-  tokens.forEach((token) => {
+  tokens.forEach((token, index) => {
     block += token.raw;
 
     if (token.type !== 'code') {
@@ -88,11 +101,14 @@ export const splitMarkdownBlocks = (markdown: string): string[] => {
         countMatches(token.raw, CITE_CLOSE_PATTERN);
     }
 
+    const next = tokens[index + 1];
+
     if (
       block.length >= MIN_MARKDOWN_BLOCK_LENGTH &&
       mathFences % 2 === 0 &&
       openCites <= 0 &&
-      BLANK_LINE_END_PATTERN.test(block)
+      BLANK_LINE_END_PATTERN.test(block) &&
+      !(next && mayContinueList(next, index + 2 === tokens.length))
     ) {
       blocks.push(block);
       block = '';
