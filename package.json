@@ -101,7 +101,6 @@
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
     "@testing-library/dom": "10.4.1",
-    "@uidotdev/usehooks": "^2.4.1",
     "cosmiconfig": "9.0.0",
     "eslint-plugin-prettier": "^5.5.3",
     "highlight.js": "^11.9.0",
