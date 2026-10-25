@@ -87,6 +87,7 @@ export const ColorPickerMenuArea = styled.div`
   height: 240px;
   cursor: pointer;
   background-blend-mode: multiply;
+  container-type: size;
 `;
 
 export const ColorPickerMenuHueSlider = styled.div`
@@ -95,6 +96,7 @@ export const ColorPickerMenuHueSlider = styled.div`
   width: 100%;
   border-radius: 10px;
   cursor: pointer;
+  container-type: size;
   background: linear-gradient(
     to right,
     #ff0000,
@@ -108,6 +110,9 @@ export const ColorPickerMenuHueSlider = styled.div`
   );
 `;
 
+// Positioned through --selector-x/--selector-y (percent of the area), so
+// moving it doesn't generate classes. Container units let it move with a
+// transform instead of left/top, which would cause layout on every move
 export const ColorPickerMenuSelector = styled.div.attrs({
   children: <SelectorIcon />,
 })`
@@ -115,5 +120,15 @@ export const ColorPickerMenuSelector = styled.div.attrs({
   justify-content: center;
   align-items: center;
   position: absolute;
+  left: calc(var(--selector-x, 0) * 1%);
+  top: calc(var(--selector-y, 0) * 1%);
   transform: translate(-50%, -50%);
+  @supports (width: 1cqw) {
+    left: 0;
+    top: 0;
+    transform: translate(
+      calc(var(--selector-x, 0) * 1cqw - 50%),
+      calc(var(--selector-y, 0) * 1cqh - 50%)
+    );
+  }
 `;

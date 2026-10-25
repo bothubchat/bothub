@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import {
   ColorPickerBottom,
@@ -29,14 +29,11 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
 
   const [open, setOpen] = useState<boolean>(false);
 
-  const handleChange = useCallback((color: string) => {
-    onChange?.(color);
-  }, []);
-
   return (
     <ColorPickerStyled ref={ref}>
       {label && <ColorPickerLabel>{label}</ColorPickerLabel>}
       <ColorPickerBottom
+        type="button"
         $active={open}
         onClick={(event) => {
           event.preventDefault();
@@ -50,7 +47,7 @@ export const ColorPicker: React.FC<ColorPickerProps> = ({
         <ColorPickerMenu
           color={color}
           parentRef={ref}
-          onChange={handleChange}
+          onChange={onChange}
           onClose={() => setOpen(false)}
         />
       )}
