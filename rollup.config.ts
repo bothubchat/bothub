@@ -5,7 +5,6 @@ import esbuild from 'rollup-plugin-esbuild';
 import postcss from 'rollup-plugin-postcss';
 import image from '@rollup/plugin-image';
 import alias from '@rollup/plugin-alias';
-import typescript from '@rollup/plugin-typescript';
 import { readFileSync } from 'fs';
 import del from 'rollup-plugin-delete';
 import terser from '@rollup/plugin-terser';
@@ -13,53 +12,45 @@ import nodeExternals from 'rollup-plugin-node-externals';
 import babel from '@rollup/plugin-babel';
 import { visualizer } from 'rollup-plugin-visualizer';
 import commonjs from '@rollup/plugin-commonjs';
-import eslint from '@rollup/plugin-eslint';
+import ts from 'typescript';
 
 export interface CreateConfigOptions {
   packageName: string;
 }
 
 /**
- * Declarations are emitted with the `@/<package>/...` path alias that only
- * exists in this repo's tsconfig. Rewrite every such specifier in the emitted
- * .d.ts files to a path relative to the declaration file, so consumers can
- * resolve the types.
+ * Compiles TypeScript file by file with the package tsconfig (ES2015 target,
+ * shared tslib helpers), without the type check: types are checked and
+ * declarations are emitted by separate tsc runs in scripts/build.ts.
  */
-export function dtsAliasToRelative(aliasPrefix: string): Plugin {
-  const escapedPrefix = aliasPrefix.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
-  const specifierPattern = new RegExp(`(['"])${escapedPrefix}([^'"]+)\\1`, 'g');
+export function typescriptTranspile(tsconfigPath: string): Plugin {
+  const { config } = ts.readConfigFile(tsconfigPath, ts.sys.readFile);
+  const { options } = ts.parseJsonConfigFileContent(
+    config,
+    ts.sys,
+    path.dirname(tsconfigPath),
+  );
+  const compilerOptions: ts.CompilerOptions = {
+    ...options,
+    declaration: false,
+    emitDeclarationOnly: false,
+    noEmit: false,
+    sourceMap: false,
+  };
 
   return {
-    name: 'dts-alias-to-relative',
-    generateBundle(_, bundle) {
-      Object.values(bundle).forEach((file) => {
-        if (file.type !== 'asset' || !file.fileName.endsWith('.d.ts')) {
-          return;
-        }
+    name: 'typescript-transpile',
+    transform(code, id) {
+      if (!/\.tsx?$/.test(id) || id.endsWith('.d.ts')) {
+        return null;
+      }
 
-        const source =
-          typeof file.source === 'string'
-            ? file.source
-            : new TextDecoder().decode(file.source);
-
-        if (!source.includes(aliasPrefix)) {
-          return;
-        }
-
-        const fileDir = path.posix.dirname(file.fileName);
-
-        file.source = source.replace(
-          specifierPattern,
-          (_match, quote: string, target: string) => {
-            const relativePath = path.posix.relative(fileDir, target) || '.';
-            const specifier = relativePath.startsWith('.')
-              ? relativePath
-              : `./${relativePath}`;
-
-            return `${quote}${specifier}${quote}`;
-          },
-        );
+      const { outputText } = ts.transpileModule(code, {
+        compilerOptions,
+        fileName: id,
       });
+
+      return { code: outputText, map: null };
     },
   };
 }
@@ -106,15 +97,22 @@ export function createConfig({
         commonjs({
           include: 'node_modules/**',
         }),
-        del({
-          targets: [join(distPath, './*')],
-          runOnce: true,
-        }),
+        // In watch mode scripts/build.ts clears dist once, before the
+        // declarations are copied into it.
+        ...(process.env.ROLLUP_WATCH
+          ? []
+          : [
+              del({
+                targets: [join(distPath, './*')],
+                runOnce: true,
+              }),
+            ]),
         aliasPlugin,
         nodeExternals(),
         nodeResolve({
           extensions: ['.css', '.ts', '.tsx', '.js', '.jsx'],
         }),
+        typescriptTranspile(join(packagePath, './tsconfig.json')),
         esbuild({
           tsconfig: join(rootPath, './tsconfig.json'),
           exclude: ['**/*.stories.ts'],
@@ -142,24 +140,6 @@ export function createConfig({
         }),
         postcss(),
         terser(),
-        typescript({
-          tsconfig: join(packagePath, './tsconfig.json'),
-          rootDir: srcPath,
-          declaration: true,
-          declarationDir: distPath,
-          // Keep stories, story helpers and tests out of published declarations
-          exclude: [
-            '**/*.stories.ts',
-            '**/*.stories.tsx',
-            '**/*.test.ts',
-            '**/*.test.tsx',
-            '**/stories/**',
-            '**/story-decorator/**',
-            '**/tests/**',
-          ],
-        }),
-        dtsAliasToRelative(`@/${packageName}/`),
-        eslint({}),
       ],
       external,
     },
