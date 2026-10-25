@@ -7,7 +7,7 @@ export interface TypographyStyledProps {
   $fullWidth: boolean;
 }
 
-export const getTypographyStyles = ($variant: TypographyVariant) => css`
+const createTypographyStyles = ($variant: TypographyVariant) => css`
   ${({ theme }) => {
     switch ($variant) {
       case 'h1':
@@ -428,6 +428,24 @@ export const getTypographyStyles = ($variant: TypographyVariant) => css`
     }
   }}
 `;
+
+type TypographyStyles = ReturnType<typeof createTypographyStyles>;
+
+// The rules depend only on the variant (the theme is read at render time),
+// so build each variant's css once instead of on every render.
+const typographyStyles = new Map<TypographyVariant, TypographyStyles>();
+
+export const getTypographyStyles = (
+  $variant: TypographyVariant,
+): TypographyStyles => {
+  let styles = typographyStyles.get($variant);
+  if (!styles) {
+    styles = createTypographyStyles($variant);
+    typographyStyles.set($variant, styles);
+  }
+
+  return styles;
+};
 
 export const TypographyStyled = styled.span<TypographyStyledProps>`
   margin: 0px;
