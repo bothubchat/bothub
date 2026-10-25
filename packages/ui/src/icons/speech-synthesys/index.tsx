@@ -1,7 +1,9 @@
+import { useId } from 'react';
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
 export const SpeechSynthesysIcon = icon(({ ...props }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
 
   const fillColor = theme.colors.base.white;
@@ -23,7 +25,7 @@ export const SpeechSynthesysIcon = icon(({ ...props }) => {
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            <g clipPath="url(#clip0_9041_376766)">
+            <g clipPath={`url(#${uid}clip0_9041_376766)`}>
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -32,7 +34,7 @@ export const SpeechSynthesysIcon = icon(({ ...props }) => {
               />
             </g>
             <defs>
-              <clipPath id="clip0_9041_376766">
+              <clipPath id={`${uid}clip0_9041_376766`}>
                 <rect
                   width="14.6667"
                   height="18.6667"

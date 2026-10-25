@@ -1,7 +1,9 @@
+import { useId } from 'react';
 import { useTheme } from 'styled-components';
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const SortAlphabetTopBottomIcon = icon(({ ...props }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
 
   return (
@@ -18,7 +20,7 @@ export const SortAlphabetTopBottomIcon = icon(({ ...props }) => {
           },
         ) => (
           <>
-            <g clipPath="url(#clip0_3174_108801)">
+            <g clipPath={`url(#${uid}clip0_3174_108801)`}>
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -47,7 +49,7 @@ export const SortAlphabetTopBottomIcon = icon(({ ...props }) => {
               />
             </g>
             <defs>
-              <clipPath id="clip0_3174_108801">
+              <clipPath id={`${uid}clip0_3174_108801`}>
                 <rect
                   width="18"
                   height="18"

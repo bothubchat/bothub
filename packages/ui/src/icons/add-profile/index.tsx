@@ -1,7 +1,9 @@
+import { useId } from 'react';
 import { Icon, icon, IconConsumer } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
 export const AddProfileIcon = icon(({ ...props }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
   const fillColor = theme.colors.base.white;
   return (
@@ -14,7 +16,7 @@ export const AddProfileIcon = icon(({ ...props }) => {
       <IconConsumer>
         {({ fill = fillColor } = { fill: fillColor }) => (
           <>
-            <g clipPath="url(#clip0_10690_314558)">
+            <g clipPath={`url(#${uid}clip0_10690_314558)`}>
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -29,7 +31,7 @@ export const AddProfileIcon = icon(({ ...props }) => {
               />
             </g>
             <defs>
-              <clipPath id="clip0_10690_314558">
+              <clipPath id={`${uid}clip0_10690_314558`}>
                 <rect
                   width="24"
                   height="24"

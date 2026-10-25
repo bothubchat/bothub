@@ -1,7 +1,9 @@
+import { useId } from 'react';
 import { useTheme } from 'styled-components';
 import { Icon, icon, IconConsumer } from '@/ui/components/icon';
 
 export const GearIcon = icon(({ ...props }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
   return (
     <Icon
@@ -18,7 +20,7 @@ export const GearIcon = icon(({ ...props }) => {
         ) => (
           <>
             <mask
-              id="path-1-inside-1_4004_82825"
+              id={`${uid}path-1-inside-1_4004_82825`}
               fill="white"
             >
               <path
@@ -34,7 +36,7 @@ export const GearIcon = icon(({ ...props }) => {
               fill={fill}
               stroke={fill}
               strokeWidth="64"
-              mask="url(#path-1-inside-1_4004_82825)"
+              mask={`url(#${uid}path-1-inside-1_4004_82825)`}
             />
           </>
         )}

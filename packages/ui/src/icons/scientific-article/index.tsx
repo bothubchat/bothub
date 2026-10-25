@@ -1,7 +1,9 @@
+import { useId } from 'react';
 import { Icon, icon, IconConsumer } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
 export const ScientificArticleIcon = icon(({ ...props }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
   const fillColor = theme.colors.base.white;
   return (
@@ -21,7 +23,7 @@ export const ScientificArticleIcon = icon(({ ...props }) => {
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            <g clipPath="url(#clip0_9660_356749)">
+            <g clipPath={`url(#${uid}clip0_9660_356749)`}>
               <path
                 d="M3.27429 5.3125H8.72572"
                 stroke={fill}
@@ -54,7 +56,7 @@ export const ScientificArticleIcon = icon(({ ...props }) => {
               />
             </g>
             <defs>
-              <clipPath id="clip0_9660_356749">
+              <clipPath id={`${uid}clip0_9660_356749`}>
                 <rect
                   width="12"
                   height="13"

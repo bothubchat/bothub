@@ -1,7 +1,9 @@
+import { useId } from 'react';
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
 export const QueueIcon = icon(({ ...props }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
 
   return (
@@ -18,7 +20,7 @@ export const QueueIcon = icon(({ ...props }) => {
           },
         ) => (
           <>
-            <g clipPath="url(#clip0_7796_186510)">
+            <g clipPath={`url(#${uid}clip0_7796_186510)`}>
               <path
                 d="M8.6856 9.14264V13.2569H4.57132V15.3141H8.6856V19.4284H10.7427V15.3141H14.857V13.2569H10.7427V9.14264H8.6856Z"
                 fill={fill}
@@ -33,7 +35,7 @@ export const QueueIcon = icon(({ ...props }) => {
               />
             </g>
             <defs>
-              <clipPath id="clip0_7796_186510">
+              <clipPath id={`${uid}clip0_7796_186510`}>
                 <rect
                   width="24"
                   height="24"

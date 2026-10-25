@@ -1,7 +1,9 @@
+import { useId } from 'react';
 import { Icon, icon, IconConsumer } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
 export const RunwayIcon = icon(({ ...props }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
   const fillColor = theme.colors.base.white;
   const strokeColor = theme.colors.base.black;
@@ -33,7 +35,7 @@ export const RunwayIcon = icon(({ ...props }) => {
                 rx="12"
                 fill={fill}
               />
-              <g clipPath="url(#clip0_12265_143287)">
+              <g clipPath={`url(#${uid}clip0_12265_143287)`}>
                 <path
                   fillRule="evenodd"
                   clipRule="evenodd"
@@ -42,7 +44,7 @@ export const RunwayIcon = icon(({ ...props }) => {
                 />
               </g>
               <defs>
-                <clipPath id="clip0_12265_143287">
+                <clipPath id={`${uid}clip0_12265_143287`}>
                   <rect
                     width="14"
                     height="14"

@@ -1,7 +1,9 @@
+import { useId } from 'react';
 import { Icon, icon, IconConsumer } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
 export const BlogPostIcon = icon(({ ...props }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
   const fillColor = theme.colors.base.white;
   return (
@@ -14,7 +16,7 @@ export const BlogPostIcon = icon(({ ...props }) => {
       <IconConsumer>
         {({ fill = fillColor } = { fill: fillColor }) => (
           <>
-            <g clipPath="url(#clip0_9660_356812)">
+            <g clipPath={`url(#${uid}clip0_9660_356812)`}>
               <path
                 d="M7.6875 14.75H1.125V16.0625H7.6875V14.75Z"
                 fill={fill}
@@ -33,7 +35,7 @@ export const BlogPostIcon = icon(({ ...props }) => {
               />
             </g>
             <defs>
-              <clipPath id="clip0_9660_356812">
+              <clipPath id={`${uid}clip0_9660_356812`}>
                 <rect
                   width="18"
                   height="18"

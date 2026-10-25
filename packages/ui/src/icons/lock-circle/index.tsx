@@ -1,7 +1,9 @@
+import { useId } from 'react';
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
 export const LockCircleIcon = icon(({ ...props }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
 
   return (
@@ -18,7 +20,7 @@ export const LockCircleIcon = icon(({ ...props }) => {
           },
         ) => (
           <>
-            <g clipPath="url(#clip0_86_1748)">
+            <g clipPath={`url(#${uid}clip0_86_1748)`}>
               <path
                 fillRule="evenodd"
                 clipRule="evenodd"
@@ -27,7 +29,7 @@ export const LockCircleIcon = icon(({ ...props }) => {
               />
             </g>
             <defs>
-              <clipPath id="clip0_86_1748">
+              <clipPath id={`${uid}clip0_86_1748`}>
                 <rect
                   width="24"
                   height="24"

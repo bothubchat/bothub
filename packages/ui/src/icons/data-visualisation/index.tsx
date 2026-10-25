@@ -1,7 +1,9 @@
+import { useId } from 'react';
 import { Icon, icon, IconConsumer } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
 export const DataVisualisationIcon = icon(({ ...props }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
   const fillColor = theme.colors.base.white;
   return (
@@ -21,7 +23,7 @@ export const DataVisualisationIcon = icon(({ ...props }) => {
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            <g clipPath="url(#clip0_8273_406248)">
+            <g clipPath={`url(#${uid}clip0_8273_406248)`}>
               <path
                 d="M2.62755 11.7692C2.99866 12.6468 3.5791 13.4201 4.31813 14.0216C5.05715 14.6231 5.93227 15.0343 6.86697 15.2194C7.80166 15.4046 8.76747 15.3579 9.67997 15.0835C10.5925 14.8092 11.4239 14.3155 12.1015 13.6455C12.7791 12.9756 13.2822 12.1499 13.567 11.2406"
                 stroke={fill}
@@ -38,7 +40,7 @@ export const DataVisualisationIcon = icon(({ ...props }) => {
               />
             </g>
             <defs>
-              <clipPath id="clip0_8273_406248">
+              <clipPath id={`${uid}clip0_8273_406248`}>
                 <rect
                   width="14"
                   height="14"

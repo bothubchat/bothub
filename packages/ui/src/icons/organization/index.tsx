@@ -1,7 +1,9 @@
+import { useId } from 'react';
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
 export const OrganizationIcon = icon(({ ...props }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
 
   return (
@@ -19,7 +21,7 @@ export const OrganizationIcon = icon(({ ...props }) => {
         ) => (
           <>
             <mask
-              id="path-1-inside-1_4985_86253"
+              id={`${uid}path-1-inside-1_4985_86253`}
               fill="white"
             >
               <path d="M15.6773 4.04165H12.7531V2.74659C12.7531 2.19157 12.5779 1.5 11.4995 1.5H6.49922C5.42038 1.5 5.28559 2.19157 5.28559 2.74659V4.04165H2.32266C1.44609 4.04165 0.75 4.78168 0.75 5.65386V6.5789L8.07188 10.0676C8.12344 9.56545 8.51016 9.16901 9 9.16901C9.48984 9.16901 9.90234 9.56545 9.92813 10.0676L17.25 6.5789V5.65386C17.25 4.78168 16.5539 4.04165 15.6773 4.04165ZM11.8875 4.04165H6.29653V2.74659C6.29653 2.4823 6.24141 2.27086 6.49922 2.27086H11.4234C11.6813 2.27086 11.8875 2.4823 11.8875 2.74659V4.04165Z" />

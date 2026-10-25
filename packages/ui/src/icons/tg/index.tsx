@@ -1,7 +1,9 @@
+import { useId } from 'react';
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
 export const TelegramFilledIcon = icon(({ ...props }) => {
+  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
 
   return (
@@ -18,7 +20,7 @@ export const TelegramFilledIcon = icon(({ ...props }) => {
           },
         ) => (
           <>
-            <g clipPath="url(#clip0_548_1140)">
+            <g clipPath={`url(#${uid}clip0_548_1140)`}>
               <rect
                 width="15"
                 height="10.8333"
@@ -31,7 +33,7 @@ export const TelegramFilledIcon = icon(({ ...props }) => {
               />
             </g>
             <defs>
-              <clipPath id="clip0_548_1140">
+              <clipPath id={`${uid}clip0_548_1140`}>
                 <rect
                   width="20"
                   height="20"
