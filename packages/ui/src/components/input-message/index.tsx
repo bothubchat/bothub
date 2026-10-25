@@ -1,22 +1,11 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   InputMessageButtons,
   InputMessageConcatenateWarning,
   InputMessageContent,
   InputMessageMain,
-  InputMessageSendButton,
-  InputMessageSendIcon,
   InputMessageStyled,
   InputMessageTextArea,
-  InputMessageUploadFileInput,
-  InputMessageVoiceButton,
-  InputMessageVoiceFileDelete,
-  InputMessageVoiceFiles,
-  InputMessageVoicePauseButton,
-  InputMessageVoicePlayButton,
-  InputMessageVoiceTrack,
-  InputMessageUploadFileLabel,
-  InputMessageUploadFile,
   InputMessageCloseEditButton,
   InputMessageEditWrapper,
   InputMessageContentWrapper,
@@ -27,9 +16,6 @@ import {
   InputMessageContentInfo,
   InputMessageActions,
 } from './styled';
-import { MessageVoice } from '../message';
-import { AttachIcon } from '@/ui/icons/attach';
-import { useTheme } from '@/ui/theme';
 import {
   EditingProps,
   IConfigureOption,
@@ -47,8 +33,13 @@ import {
 } from './use-input';
 import { InputMessageFiles } from './input-files';
 import { InputMessageVoiceRecordTimer } from './voice-record-timer';
+import { InputMessageVoiceFileList } from './voice-files';
+import {
+  InputMessageSendControls,
+  InputMessageUploadControl,
+} from './controls';
 import { IconProvider } from '../icon';
-import { CheckSmallIcon, CloseIcon, EditIcon } from '@/ui/icons';
+import { CloseIcon, EditIcon } from '@/ui/icons';
 
 export type InputMessageChangeEventHandler = (message: string) => unknown;
 
@@ -161,8 +152,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   deleteFileAriaLabel,
   ...props
 }) => {
-  const theme = useTheme();
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [dragActive, setDragActive] = useState(false);
 
   const {
@@ -234,22 +223,19 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     onBlur,
   });
 
+  // Стабильные обработчики: мемоизированные файлы не перерисовываются при вводе
+  const imageClick = useEventCallback(handleImageClick);
+  const handleStableImageClick = useCallback(
+    (file: IInputMessageFile) => imageClick(file) ?? file,
+    [imageClick],
+  );
+
   const handleSend = useCallback<React.MouseEventHandler<HTMLButtonElement>>(
     (event) => {
       event.stopPropagation();
       send();
     },
     [send],
-  );
-
-  const handleOpenFiles = useCallback<
-    React.MouseEventHandler<HTMLButtonElement>
-  >(
-    (e) => {
-      e.stopPropagation();
-      fileInputRef.current?.click();
-    },
-    [fileInputRef],
   );
 
   const videoFiles = files?.filter((f) => f.native.type.startsWith('video/'));
@@ -288,35 +274,14 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       <InputMessageContent>
         <InputMessageActions>
           {!hideUploadFile && (
-            <InputMessageUploadFile>
-              <InputMessageUploadFileLabel
-                $disabled={
-                  files.length >= uploadFileLimit ||
-                  disabled ||
-                  uploadFileDisabled
-                }
-                aria-label={attachAriaLabel}
-                onClick={handleOpenFiles}
-              >
-                <AttachIcon
-                  size={18}
-                  fill={theme.colors.base.white}
-                />
-              </InputMessageUploadFileLabel>
-              <InputMessageUploadFileInput
-                ref={fileInputRef}
-                key={files.length}
-                type="file"
-                accept={uploadFileAccept}
-                multiple
-                disabled={
-                  files.length >= uploadFileLimit ||
-                  disabled ||
-                  uploadFileDisabled
-                }
-                onChange={handleFileInputChange}
-              />
-            </InputMessageUploadFile>
+            <InputMessageUploadControl
+              filesCount={files.length}
+              uploadFileLimit={uploadFileLimit}
+              disabled={disabled || uploadFileDisabled}
+              uploadFileAccept={uploadFileAccept}
+              attachAriaLabel={attachAriaLabel}
+              onFileInputChange={handleFileInputChange}
+            />
           )}
           {actions}
         </InputMessageActions>
@@ -359,7 +324,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           )}
           <InputMessageFiles
             files={files}
-            handleImageClick={handleImageClick}
+            handleImageClick={handleImageClick && handleStableImageClick}
             handleDeleteFile={handleDeleteFile}
             deleteFileAriaLabel={deleteFileAriaLabel}
           />
@@ -383,26 +348,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               {concatenateVideo}
             </InputMessageConcatenateWarning>
           )}
-          {voiceFiles.length > 0 && (
-            <InputMessageVoiceFiles>
-              {voiceFiles.map((file) => (
-                <InputMessageVoiceTrack key={file.src}>
-                  <MessageVoice
-                    variant="input"
-                    height={18}
-                    src={file.src}
-                    duration={file.duration}
-                    waveData={file.waveData}
-                    disableTranscription
-                  />
-                  <InputMessageVoiceFileDelete
-                    aria-label={deleteVoiceAriaLabel}
-                    onClick={handleVoiceFileDelete.bind(null, file)}
-                  />
-                </InputMessageVoiceTrack>
-              ))}
-            </InputMessageVoiceFiles>
-          )}
+          <InputMessageVoiceFileList
+            voiceFiles={voiceFiles}
+            onDelete={handleVoiceFileDelete}
+            deleteVoiceAriaLabel={deleteVoiceAriaLabel}
+          />
           {(!textAreaDisabled ||
             (textAreaDisabled &&
               placeholder &&
@@ -425,56 +375,27 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           )}
         </InputMessageMain>
         <InputMessageButtons>
-          {isVoiceRecording &&
-            (isVoicePaused ? (
-              <InputMessageVoicePlayButton
-                aria-label={resumeVoiceAriaLabel}
-                onClick={handleVoiceResume}
-              />
-            ) : (
-              <InputMessageVoicePauseButton
-                aria-label={pauseVoiceAriaLabel}
-                onClick={handleVoicePause}
-              />
-            ))}
-          {voice && (
-            <InputMessageVoiceButton
-              $isRecording={isVoiceRecording}
-              disabled={disabled || sendDisabled}
-              aria-label={
-                isVoiceRecording ? stopVoiceAriaLabel : voiceAriaLabel
-              }
-              aria-pressed={isVoiceRecording}
-              onClick={
-                !isVoiceRecording
-                  ? handleVoiceRecordStart
-                  : handleVoiceRecordEnd
-              }
-              data-test="submit-message"
-            />
-          )}
-          {!hiddenSend && !isVoiceRecording && sendAddon}
-          {!hiddenSend && !isVoiceRecording && (
-            <InputMessageSendButton
-              disabled={disabled || sendDisabled || isVoiceRecording}
-              aria-label={
-                editingProps?.isEditing
-                  ? (saveAriaLabel ?? sendAriaLabel)
-                  : sendAriaLabel
-              }
-              onClick={handleSend}
-              {...(theme.bright && {
-                iconFill: theme.default.colors.base.black,
-              })}
-              data-test="submit-message"
-            >
-              {editingProps?.isEditing ? (
-                <CheckSmallIcon />
-              ) : (
-                <InputMessageSendIcon />
-              )}
-            </InputMessageSendButton>
-          )}
+          <InputMessageSendControls
+            voice={voice}
+            hiddenSend={hiddenSend}
+            disabled={disabled}
+            sendDisabled={sendDisabled}
+            isEditing={!!editingProps?.isEditing}
+            isVoiceRecording={isVoiceRecording}
+            isVoicePaused={isVoicePaused}
+            sendAddon={sendAddon}
+            sendAriaLabel={sendAriaLabel}
+            saveAriaLabel={saveAriaLabel}
+            voiceAriaLabel={voiceAriaLabel}
+            stopVoiceAriaLabel={stopVoiceAriaLabel}
+            pauseVoiceAriaLabel={pauseVoiceAriaLabel}
+            resumeVoiceAriaLabel={resumeVoiceAriaLabel}
+            onSend={handleSend}
+            onVoiceRecordStart={handleVoiceRecordStart}
+            onVoiceRecordEnd={handleVoiceRecordEnd}
+            onVoicePause={handleVoicePause}
+            onVoiceResume={handleVoiceResume}
+          />
         </InputMessageButtons>
       </InputMessageContent>
     </InputMessageStyled>

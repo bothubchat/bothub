@@ -51,17 +51,14 @@ export const useVoice = ({
   // (например, родитель вернул голосовые после ошибки отправки)
   const voiceFilesRef = useRef(voiceFiles);
   voiceFilesRef.current = voiceFiles;
-  const setVoiceFiles = useCallback(
-    (files: IInputMessageVoiceFile[]) => {
-      if (isControlled) {
-        onVoiceFilesChange?.(files);
-        return;
-      }
+  const setVoiceFiles = useEventCallback((files: IInputMessageVoiceFile[]) => {
+    if (isControlled) {
+      onVoiceFilesChange?.(files);
+      return;
+    }
 
-      setInnerVoiceFiles(files);
-    },
-    [isControlled, onVoiceFilesChange],
-  );
+    setInnerVoiceFiles(files);
+  });
   const [isVoiceRecording, setIsVoiceRecording] = useState(false);
   const [isVoicePaused, setIsVoicePaused] = useState(false);
   const [isVoiceStopping, setIsVoiceStopping] = useState(false);
@@ -239,10 +236,10 @@ export const useVoice = ({
 
   const handleVoiceFileDelete = useCallback(
     (file: IInputMessageVoiceFile) => {
-      setVoiceFiles(voiceFiles.filter((f) => f.src !== file.src));
+      setVoiceFiles(voiceFilesRef.current.filter((f) => f.src !== file.src));
       revokeOwnVoiceUrl(file.src);
     },
-    [voiceFiles, setVoiceFiles, revokeOwnVoiceUrl],
+    [setVoiceFiles, revokeOwnVoiceUrl],
   );
 
   useEffect(() => {
