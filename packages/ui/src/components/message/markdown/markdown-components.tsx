@@ -28,6 +28,7 @@ import {
 import { useMessage } from '@/ui/components/message/context';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
 import { normalizeMessageMarkdown } from './utils';
+import { MATH_TAG_NAME, MarkdownMath } from './math';
 
 /*
  * Components passed to react-markdown must keep a stable identity: a new
@@ -92,7 +93,13 @@ const MarkdownImage: Components['img'] = ({ src, alt }) => {
   );
 };
 
+// `Components` only knows intrinsic elements, the math element is custom.
+const mathComponents = {
+  [MATH_TAG_NAME]: MarkdownMath,
+} as Components;
+
 export const baseMarkdownComponents: Components = {
+  ...mathComponents,
   p: ({ children }) => <MessageParagraph wrap>{children}</MessageParagraph>,
   b: ({ children }) => <MessageBold>{children}</MessageBold>,
   strong: ({ children }) => (

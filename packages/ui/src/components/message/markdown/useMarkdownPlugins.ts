@@ -1,10 +1,8 @@
-import { useMemo } from 'react';
 import remarkGfm from 'remark-gfm';
 import type { PluggableList } from 'unified';
-import { useTheme } from '@/ui/theme';
 import {
   remarkMath,
-  rehypeKatex,
+  rehypeMath,
   remarkCite,
   remarkHtmlBreak,
 } from './markdown-plugins';
@@ -16,25 +14,11 @@ const remarkPlugins: PluggableList = [
   remarkHtmlBreak,
 ];
 
+// Formulas are rendered by `MarkdownMath` (mapped to `MATH_TAG_NAME` in the
+// markdown components), which takes the error color from the theme.
+const rehypePlugins: PluggableList = [rehypeMath];
+
 export const useMarkdownPlugins = (): {
   remarkPlugins: PluggableList;
   rehypePlugins: PluggableList;
-} => {
-  const errorColor = useTheme().colors.orange;
-
-  const rehypePlugins = useMemo<PluggableList>(
-    () => [
-      [
-        rehypeKatex,
-        {
-          output: 'html',
-          errorColor,
-          strict: false,
-        },
-      ],
-    ],
-    [errorColor],
-  );
-
-  return { remarkPlugins, rehypePlugins };
-};
+} => ({ remarkPlugins, rehypePlugins });
