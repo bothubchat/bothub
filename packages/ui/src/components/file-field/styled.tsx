@@ -89,6 +89,13 @@ export const FileFieldBlock = styled.label<FileFieldBlockProps>`
   min-height: 46px;
   padding: 8px 16px;
   gap: 10px;
+  ${({ theme, $error }) =>
+    !$error &&
+    css`
+      &:has(input:focus-visible) {
+        border-color: ${theme.colors.accent.primary};
+      }
+    `}
   ${({ $open }) =>
     !$open &&
     css`
@@ -108,7 +115,10 @@ export const FileFieldInput = styled.input.attrs({
   type: 'file',
   multiple: true,
 })`
-  display: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
 `;
 
 export const FileFieldPlaceholder = styled(Typography).attrs({
