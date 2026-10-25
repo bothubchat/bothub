@@ -69,8 +69,11 @@ export const MenuTabsItem = styled.div<{ $active: boolean }>`
 
 export const MenuTabsLine = styled.div`
   position: absolute;
+  left: 0px;
   width: 1px;
-  transition: all 350ms ease;
+  transition:
+    transform 350ms ease,
+    width 350ms ease;
   border-radius: 0px 0px 24px 24px;
   background: ${({ theme }) => theme.colors.premiumGradient};
   bottom: 0px;
