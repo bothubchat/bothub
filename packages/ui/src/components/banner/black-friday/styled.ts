@@ -5,7 +5,6 @@ import dashboardDesktop from './assets/dashboard/desktop.svg';
 import dashboardTablet from './assets/dashboard/tablet.svg';
 import dashboardMobile from './assets/dashboard/mobile.svg';
 import mainDesktop from './assets/main/desktop.svg';
-import mainTablet from './assets/main/tablet.svg';
 import mainMobile from './assets/main/mobile.svg';
 import wave from './assets/wave.svg';
 import { Typography } from '@/ui/components/typography';
@@ -232,7 +231,7 @@ export const BlackFridayBannerBackgroundMainDesktop = styled(
 export const BlackFridayBannerBackgroundMainTablet = styled(
   BlackFridayBannerBackground,
 ).attrs({
-  src: mainTablet,
+  src: dashboardDesktop, // main/tablet.svg was a byte-identical copy
 })`
   ${adaptive({
     variant: 'main',
