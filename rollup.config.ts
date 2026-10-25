@@ -19,6 +19,51 @@ export interface CreateConfigOptions {
   packageName: string;
 }
 
+/**
+ * Declarations are emitted with the `@/<package>/...` path alias that only
+ * exists in this repo's tsconfig. Rewrite every such specifier in the emitted
+ * .d.ts files to a path relative to the declaration file, so consumers can
+ * resolve the types.
+ */
+export function dtsAliasToRelative(aliasPrefix: string): Plugin {
+  const escapedPrefix = aliasPrefix.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
+  const specifierPattern = new RegExp(`(['"])${escapedPrefix}([^'"]+)\\1`, 'g');
+
+  return {
+    name: 'dts-alias-to-relative',
+    generateBundle(_, bundle) {
+      Object.values(bundle).forEach((file) => {
+        if (file.type !== 'asset' || !file.fileName.endsWith('.d.ts')) {
+          return;
+        }
+
+        const source =
+          typeof file.source === 'string'
+            ? file.source
+            : new TextDecoder().decode(file.source);
+
+        if (!source.includes(aliasPrefix)) {
+          return;
+        }
+
+        const fileDir = path.posix.dirname(file.fileName);
+
+        file.source = source.replace(
+          specifierPattern,
+          (_match, quote: string, target: string) => {
+            const relativePath = path.posix.relative(fileDir, target) || '.';
+            const specifier = relativePath.startsWith('.')
+              ? relativePath
+              : `./${relativePath}`;
+
+            return `${quote}${specifier}${quote}`;
+          },
+        );
+      });
+    },
+  };
+}
+
 export function createConfig({
   packageName,
 }: CreateConfigOptions): RollupOptions[] {
@@ -112,6 +157,7 @@ export function createConfig({
             './**/*.test.tsx',
           ],
         }),
+        dtsAliasToRelative(`@/${packageName}/`),
         eslint({}),
       ],
       external,
