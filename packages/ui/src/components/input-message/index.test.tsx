@@ -577,3 +577,67 @@ describe('InputMessage send', () => {
     expect(consoleError).not.toHaveBeenCalled();
   });
 });
+
+describe('InputMessage voice recording', () => {
+  class FakeMediaRecorder extends EventTarget {
+    static isTypeSupported = () => true;
+
+    state: RecordingState = 'inactive';
+
+    start() {
+      this.state = 'recording';
+    }
+
+    pause() {
+      this.state = 'paused';
+    }
+
+    resume() {
+      this.state = 'recording';
+    }
+
+    stop() {
+      this.state = 'inactive';
+    }
+  }
+
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ['Date', 'setInterval', 'clearInterval'] });
+    vi.stubGlobal('MediaRecorder', FakeMediaRecorder);
+    vi.stubGlobal('navigator', {
+      userAgent: 'jsdom',
+      mediaDevices: { getUserMedia: async () => ({ getTracks: () => [] }) },
+    });
+  });
+  afterEach(() => {
+    cleanup();
+    vi.useRealTimers();
+    vi.unstubAllGlobals();
+  });
+
+  test('shows the recording time and stops it on pause', async () => {
+    customRender(
+      <InputMessage
+        voice
+        voiceAriaLabel="Записать"
+        pauseVoiceAriaLabel="Пауза"
+      />,
+    );
+
+    await act(async () => {
+      fireEvent.click(screen.getByLabelText('Записать'));
+    });
+    expect(screen.getByText('00:00')).toBeTruthy();
+
+    act(() => {
+      vi.advanceTimersByTime(2500);
+    });
+    expect(screen.getByText('00:02')).toBeTruthy();
+
+    fireEvent.click(screen.getByLabelText('Пауза'));
+    act(() => {
+      vi.advanceTimersByTime(5000);
+    });
+    expect(screen.getByText('00:02')).toBeTruthy();
+  });
+});

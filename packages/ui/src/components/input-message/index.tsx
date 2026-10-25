@@ -14,9 +14,6 @@ import {
   InputMessageVoiceFiles,
   InputMessageVoicePauseButton,
   InputMessageVoicePlayButton,
-  InputMessageVoiceRecord,
-  InputMessageVoiceRecordDot,
-  InputMessageVoiceRecordTimeText,
   InputMessageVoiceTrack,
   InputMessageUploadFileLabel,
   InputMessageUploadFile,
@@ -40,11 +37,7 @@ import {
   IInputMessageVoiceFile,
   InputMessageErrorEvent,
 } from './types';
-import {
-  formatSeconds,
-  useControllableState,
-  useEventCallback,
-} from '@/ui/utils';
+import { useControllableState, useEventCallback } from '@/ui/utils';
 import { useVoice } from './use-voice';
 import { useFiles } from './use-files';
 import {
@@ -53,6 +46,7 @@ import {
   type MessageSubmitKey,
 } from './use-input';
 import { InputMessageFiles } from './input-files';
+import { InputMessageVoiceRecordTimer } from './voice-record-timer';
 import { IconProvider } from '../icon';
 import { CheckSmallIcon, CloseIcon, EditIcon } from '@/ui/icons';
 
@@ -191,7 +185,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     voiceFiles,
     isVoiceRecording,
     isVoicePaused,
-    voiceRecordingTime,
+    isVoiceStopping,
+    getVoiceRecordingTime,
     setVoiceFiles,
     handleVoiceRecordStart,
     handleVoiceRecordEnd,
@@ -356,13 +351,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               </InputMessageContentWrapper>
             </InputMessageEditWrapper>
           )}
-          {isVoiceRecording && voiceRecordingTime !== null && (
-            <InputMessageVoiceRecord>
-              <InputMessageVoiceRecordDot />
-              <InputMessageVoiceRecordTimeText>
-                {formatSeconds(voiceRecordingTime)}
-              </InputMessageVoiceRecordTimeText>
-            </InputMessageVoiceRecord>
+          {isVoiceRecording && (
+            <InputMessageVoiceRecordTimer
+              paused={isVoicePaused || isVoiceStopping}
+              getRecordingTime={getVoiceRecordingTime}
+            />
           )}
           <InputMessageFiles
             files={files}
