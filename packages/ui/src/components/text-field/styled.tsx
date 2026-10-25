@@ -43,8 +43,10 @@ export const TextFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
 
 export interface TextFieldBlockProps extends VariantProps {
   $error: boolean;
-  $focus: boolean;
-  $hover: boolean;
+  /** Forces the focus styles; real focus is styled with :focus-within */
+  $focus?: boolean;
+  /** Forces the hover styles; real hover is styled with :hover */
+  $hover?: boolean;
   $disabled: boolean;
   $skeleton: boolean;
 }
@@ -83,12 +85,16 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
       `;
     }
 
-    return (
-      ($hover || $focus) &&
+    return css`
+      ${($hover || $focus) &&
       css`
         border-color: ${theme.colors.accent.primary};
-      `
-    );
+      `}
+      &:hover,
+      &:focus-within {
+        border-color: ${theme.colors.accent.primary};
+      }
+    `;
   }}
   ${({ theme, $focus, $disabled, $skeleton, $variant }) => {
     if ($disabled || $skeleton) {
@@ -97,49 +103,54 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
       `;
     }
 
-    if ($focus) {
-      if (theme.scheme === 'custom') {
-        return css`
-        background: ${theme.colors.grayScale.gray2};
-        > svg path {
-          fill: ${theme.colors.accent.primary};
-      `;
-      }
+    const focusStyles =
+      theme.scheme === 'custom'
+        ? css`
+            background: ${theme.colors.grayScale.gray2};
+            > svg path {
+              fill: ${theme.colors.accent.primary};
+            }
+          `
+        : css`
+            background: ${theme.mode === 'light'
+              ? $variant === 'primary'
+                ? theme.default.colors.base.white
+                : theme.colors.grayScale.gray7
+              : $variant === 'primary'
+                ? theme.colors.grayScale.gray4
+                : theme.colors.grayScale.gray7};
+            > svg path {
+              fill: ${theme.mode === 'light'
+                ? theme.default.colors.accent.primary
+                : theme.colors.base.white};
+            }
+          `;
 
-      return css`
-        background: ${theme.mode === 'light'
-          ? $variant === 'primary'
-            ? theme.default.colors.base.white
-            : theme.colors.grayScale.gray7
-          : $variant === 'primary'
-            ? theme.colors.grayScale.gray4
-            : theme.colors.grayScale.gray7};
-        > svg path {
-          fill: ${theme.mode === 'light'
-            ? theme.default.colors.accent.primary
-            : theme.colors.base.white};
-        }
-      `;
-    }
-
-    if (theme.scheme === 'custom') {
-      return css`
-        background: ${theme.colors.grayScale.gray7};
-        > svg path {
-          fill: ${theme.colors.grayScale.gray1};
-      `;
-    }
+    const idleStyles =
+      theme.scheme === 'custom'
+        ? css`
+            background: ${theme.colors.grayScale.gray7};
+            > svg path {
+              fill: ${theme.colors.grayScale.gray1};
+            }
+          `
+        : css`
+            background: ${theme.mode === 'light'
+              ? $variant === 'primary'
+                ? theme.default.colors.base.white
+                : theme.colors.grayScale.gray7
+              : $variant === 'primary'
+                ? theme.colors.grayScale.gray4
+                : theme.colors.grayScale.gray7};
+            > svg path {
+              fill: ${theme.colors.grayScale.gray1};
+            }
+          `;
 
     return css`
-      background: ${theme.mode === 'light'
-        ? $variant === 'primary'
-          ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray7
-        : $variant === 'primary'
-          ? theme.colors.grayScale.gray4
-          : theme.colors.grayScale.gray7};
-      > svg path {
-        fill: ${theme.colors.grayScale.gray1};
+      ${$focus ? focusStyles : idleStyles}
+      &:focus-within {
+        ${focusStyles}
       }
     `;
   }}
@@ -156,7 +167,8 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
       ${TextFieldClearButton} {
         visibility: ${$focus ? 'visible' : 'hidden'};
       }
-      &:hover {
+      &:hover,
+      &:focus-within {
         ${TextFieldClearButton} {
           visibility: visible;
         }
@@ -236,7 +248,8 @@ export const TextFieldColorInput = styled.input.attrs({ type: 'color' })`
 `;
 
 export interface TextFieldColorPreviewProps {
-  $color: string;
+  /** Prefer `style={{ background }}`: every color creates a new CSS class */
+  $color?: string;
 }
 
 export const TextFieldColorPreview = styled.span<TextFieldColorPreviewProps>`
@@ -244,7 +257,11 @@ export const TextFieldColorPreview = styled.span<TextFieldColorPreviewProps>`
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  background: ${({ $color }) => $color};
+  ${({ $color }) =>
+    $color &&
+    css`
+      background: ${$color};
+    `}
   border-radius: 4px;
 `;
 

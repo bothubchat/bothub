@@ -105,38 +105,7 @@ export const TextField: React.FC<TextFieldProps> = ({
   const labelId = useId();
   const errorId = useId();
 
-  const [isFocus, setIsFocus] = useState(false);
-  const [isHover, setIsHover] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleFocus = useCallback(
-    (event: React.FocusEvent<HTMLInputElement>) => {
-      onFocus?.(event);
-      setIsFocus(true);
-    },
-    [onFocus],
-  );
-  const handleBlur = useCallback(
-    (event: React.FocusEvent<HTMLInputElement>) => {
-      onBlur?.(event);
-      setIsFocus(false);
-    },
-    [onBlur],
-  );
-  const handleMouseEnter = useCallback(
-    (event: React.MouseEvent<HTMLInputElement>) => {
-      onMouseEnter?.(event);
-      setIsHover(true);
-    },
-    [onMouseEnter],
-  );
-  const handleMouseLeave = useCallback(
-    (event: React.MouseEvent<HTMLInputElement>) => {
-      onMouseLeave?.(event);
-      setIsHover(false);
-    },
-    [onMouseLeave],
-  );
 
   const handleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     (event) => {
@@ -151,10 +120,17 @@ export const TextField: React.FC<TextFieldProps> = ({
 
     if (inputEl === null) return;
 
-    inputEl.value = '';
-    onValueChange?.('');
+    // Set the value through the native setter and dispatch an input event,
+    // so React calls onChange like after typing: controlled fields and
+    // form libraries see the cleared value
+    const setValue = Object.getOwnPropertyDescriptor(
+      HTMLInputElement.prototype,
+      'value',
+    )?.set;
+    setValue?.call(inputEl, '');
+    inputEl.dispatchEvent(new Event('input', { bubbles: true }));
     onClearButtonClick?.();
-  }, [onChange]);
+  }, [onClearButtonClick]);
 
   const handlePasswordToggle = useCallback(() => {
     setShowPassword((prev) => !prev);
@@ -198,8 +174,6 @@ export const TextField: React.FC<TextFieldProps> = ({
       {!skeleton && (
         <TextFieldBlock
           $error={!!error}
-          $hover={isHover}
-          $focus={isFocus}
           $disabled={disabled}
           $skeleton={false}
           $variant={variant}
@@ -220,7 +194,9 @@ export const TextField: React.FC<TextFieldProps> = ({
                   value={value ?? '#000'}
                   onChange={handleChange}
                 />
-                <TextFieldColorPreview $color={value ?? '#000'} />
+                <TextFieldColorPreview
+                  style={{ background: value ?? '#000' }}
+                />
               </TextFieldColor>
             )}
           <TextFieldInput
@@ -234,10 +210,10 @@ export const TextField: React.FC<TextFieldProps> = ({
             placeholder={placeholder}
             disabled={disabled}
             onChange={handleChange}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
             $variant={variant}
             autoFocus={autoFocus}
             autoComplete={autoComplete}
