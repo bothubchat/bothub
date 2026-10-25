@@ -1,4 +1,5 @@
 import { ColorSchemes, DefaultTheme, Theme } from './types';
+import { ThemeTokenSource, withThemeTokens } from './tokens';
 
 export const defaultTheme: DefaultTheme = {
   mode: 'dark',
@@ -111,13 +112,13 @@ export const defaultTheme: DefaultTheme = {
   },
 };
 
-export const standardDark: Theme = {
+export const standardDark: Theme = withThemeTokens({
   ...defaultTheme,
   mode: 'dark',
   default: defaultTheme,
-};
+});
 
-export const standardLight: Theme = {
+export const standardLight: Theme = withThemeTokens({
   ...defaultTheme,
   mode: 'light',
   default: defaultTheme,
@@ -159,9 +160,14 @@ export const standardLight: Theme = {
       },
     },
   },
-};
+});
 
-export const THEMES: Omit<ColorSchemes, 'custom'> = {
+type ThemeSchemes = Omit<ColorSchemes, 'custom'>;
+
+// Schemes spread the standard themes, so their tokens are recomputed below.
+const themesWithoutTokens: {
+  [scheme in keyof ThemeSchemes]: Record<'dark' | 'light', ThemeTokenSource>;
+} = {
   standard: {
     dark: standardDark,
     light: standardLight,
@@ -727,3 +733,10 @@ export const THEMES: Omit<ColorSchemes, 'custom'> = {
     },
   },
 };
+
+export const THEMES = Object.fromEntries(
+  Object.entries(themesWithoutTokens).map(([scheme, { dark, light }]) => [
+    scheme,
+    { dark: withThemeTokens(dark), light: withThemeTokens(light) },
+  ]),
+) as ThemeSchemes;

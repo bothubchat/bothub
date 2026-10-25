@@ -5,7 +5,8 @@ import {
   createGlobalStyle,
 } from 'styled-components';
 import { THEMES } from './themes';
-import { ColorSchemeNames, Theme, ThemeMode } from './types.js';
+import { ColorSchemeNames, ThemeMode } from './types.js';
+import { ThemeTokenSource, withThemeTokens } from './tokens';
 
 export const StorybookGlobalStyle = createGlobalStyle`
   body {
@@ -17,7 +18,8 @@ export interface ThemeProviderProps extends React.PropsWithChildren {
   scheme?: ColorSchemeNames;
   mode?: ThemeMode;
   sbMode?: boolean;
-  customTheme?: Theme | null;
+  /** Tokens of a custom theme are always computed from its own colors. */
+  customTheme?: ThemeTokenSource | null;
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = React.memo(
@@ -32,7 +34,9 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = React.memo(
       () =>
         scheme !== 'custom'
           ? THEMES[scheme][mode]
-          : (customTheme ?? THEMES.standard[mode]),
+          : customTheme
+            ? withThemeTokens(customTheme)
+            : THEMES.standard[mode],
       [scheme, mode, customTheme],
     );
 
@@ -48,3 +52,4 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = React.memo(
 export * from './types';
 export * from './hook';
 export * from './themes';
+export * from './tokens';

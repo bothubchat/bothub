@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { ThemeProvider } from 'styled-components';
 import { HappyRobotIcon } from '@/ui/icons/happy-robot';
 import { IconProvider } from '@/ui/components/icon';
-import { Theme, useTheme } from '@/ui/theme';
+import { Theme, useTheme, withThemeTokens } from '@/ui/theme';
 import {
   ThemeButtonActions,
   ThemeButtonDeleteAction,
@@ -40,19 +40,20 @@ export const ThemeButton: React.FC<ThemeButtonProps> = React.memo(
     onDelete,
   }) => {
     const standardTheme = useTheme();
+    // The preview has its own colors, so its tokens are computed from them.
+    const previewTheme = useMemo(
+      () => withThemeTokens({ ...standardTheme, ...theme }),
+      [standardTheme, theme],
+    );
 
     return (
-      <ThemeProvider theme={{ ...standardTheme, ...theme }}>
+      <ThemeProvider theme={previewTheme}>
         <ThemeButtonWrapperStyled>
           <ThemeButtonOutlineStyled $active={active}>
             <ThemeButtonStyled onClick={onClick}>
               <ThemeButtonIconStyled>
                 <IconProvider
-                  fill={
-                    theme.mode === 'dark'
-                      ? theme.colors.accent.primaryLight
-                      : theme.colors.accent.primary
-                  }
+                  fill={previewTheme.tokens.accentAdaptive}
                   size={28}
                 >
                   <HappyRobotIcon />
