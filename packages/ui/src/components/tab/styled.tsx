@@ -26,6 +26,10 @@ export const TabStyled: React.FC<
     border-color 0.3s ease-out,
     background-color 0.3s ease-out,
     transform 0.2s ease-out;
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.accent.primary};
+    outline-offset: 2px;
+  }
   ${adaptive(() => ({
     merge: true,
     desktop: css`
