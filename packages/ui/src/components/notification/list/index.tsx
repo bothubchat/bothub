@@ -19,7 +19,13 @@ export const Notifications: React.FC<NotificationsProps> = ({
         className={className}
         aria-label={ariaLabel}
       >
-        <NotificationList>{children}</NotificationList>
+        <NotificationList
+          role="status"
+          aria-live="polite"
+          aria-atomic="false"
+        >
+          {children}
+        </NotificationList>
       </NotificationsStyled>
     </Portal>
   </NotificationsProvider>

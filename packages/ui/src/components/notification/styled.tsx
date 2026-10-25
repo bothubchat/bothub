@@ -1,4 +1,4 @@
-import { styled } from 'styled-components';
+import { keyframes, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { CloseIcon } from '@/ui/icons/close';
 import { InfoBigIcon } from '@/ui/icons/info-big';
@@ -113,13 +113,28 @@ export const NotificationCloseButton = styled(Button).attrs({
   children: <CloseIcon />,
 })``;
 
-export const NotifyProgressBar = styled(animated.div)<{
+const progress = keyframes`
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+`;
+
+export const NotifyProgressBar = styled.div<{
   $variant: NotificationVariant;
 }>`
   top: 0;
   left: 0;
   position: absolute;
   height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation-name: ${progress};
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
   background: ${({ theme, $variant }) => {
     switch ($variant) {
       case 'info':
@@ -135,4 +150,7 @@ export const NotifyProgressBar = styled(animated.div)<{
         return theme.colors.accent.primary;
     }
   }};
+  ${NotificationStyled}:hover & {
+    animation-play-state: paused;
+  }
 `;
