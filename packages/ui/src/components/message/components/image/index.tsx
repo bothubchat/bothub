@@ -31,6 +31,8 @@ export const MessageImage: React.FC<MessageImageProps> = ({
   fetchImage = false,
   disableSkeleton = false,
   alt = '',
+  onLoad,
+  onError,
   ...props
 }) => {
   const theme = useTheme();
@@ -38,23 +40,62 @@ export const MessageImage: React.FC<MessageImageProps> = ({
 
   const [isLoading, setIsLoading] = useState(true);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [prevSrc, setPrevSrc] = useState(src);
+
+  // A new image shows the skeleton until it loads, never the previous one.
+  if (src !== prevSrc) {
+    setPrevSrc(src);
+    setIsLoading(true);
+    setImageUrl(null);
+  }
 
   useEffect(() => {
-    if (fetchImage) {
-      fetch(src)
-        .then((response) => response.blob())
-        .then((image) => setImageUrl(URL.createObjectURL(image)));
+    if (!fetchImage) {
+      return;
     }
+
+    // The response of a previous src or of an unmounted image is dropped,
+    // and its blob URL is revoked.
+    let cancelled = false;
+    let objectUrl: string | null = null;
+
+    fetch(src)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch image: ${response.status}`);
+        }
+        return response.blob();
+      })
+      .then((image) => {
+        if (cancelled) {
+          return;
+        }
+        objectUrl = URL.createObjectURL(image);
+        setImageUrl(objectUrl);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
   }, [src, fetchImage]);
 
-  useEffect(
-    () => () => {
-      if (imageUrl && imageUrl.startsWith('blob:')) {
-        URL.revokeObjectURL(imageUrl);
-      }
-    },
-    [imageUrl],
-  );
+  const handleLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    setIsLoading(false);
+    onLoad?.(event);
+  };
+
+  const handleError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    setIsLoading(false);
+    onError?.(event);
+  };
 
   return (
     <MessageImageProvider
@@ -92,7 +133,8 @@ export const MessageImage: React.FC<MessageImageProps> = ({
           {...(!fetchImage && { src })}
           width={width ?? 300}
           height={height ?? 300}
-          onLoad={setIsLoading.bind(null, false)}
+          onLoad={handleLoad}
+          onError={handleError}
         />
         {!progress && buttons}
       </MessageImageStyled>
