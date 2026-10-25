@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import {
   MessageDocumentContentBlock,
@@ -16,7 +16,7 @@ interface GeneratedDocumentBlockProps {
   isTg?: boolean;
 }
 
-export const GeneratedDocumentBlock = ({
+const GeneratedDocumentBlockComponent = ({
   code,
   copyLabel,
   remarkPlugins,
@@ -25,7 +25,10 @@ export const GeneratedDocumentBlock = ({
   isTg,
 }: GeneratedDocumentBlockProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
+  const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => () => clearTimeout(copiedTimeoutRef.current), []);
 
   const handleCopy = async () => {
     if (!contentRef.current) return;
@@ -50,7 +53,8 @@ export const GeneratedDocumentBlock = ({
       await navigator.clipboard.write([new ClipboardItem(clipboardItems)]);
 
       setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      clearTimeout(copiedTimeoutRef.current);
+      copiedTimeoutRef.current = setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       navigator.clipboard
         .writeText(contentRef.current.innerText)
@@ -61,7 +65,10 @@ export const GeneratedDocumentBlock = ({
   return (
     <MessageDocumentContentBlock>
       <MessageDocumentContentBlockTop>
-        <MessageDocumentCopyButton onClick={handleCopy}>
+        <MessageDocumentCopyButton
+          type="button"
+          onClick={handleCopy}
+        >
           {copied ? '✓' : copyLabel || 'Copy'}
         </MessageDocumentCopyButton>
       </MessageDocumentContentBlockTop>
@@ -82,3 +89,7 @@ export const GeneratedDocumentBlock = ({
     </MessageDocumentContentBlock>
   );
 };
+
+// The block renders its own markdown: it is parsed again only when its props
+// change, not on every chunk streamed after it.
+export const GeneratedDocumentBlock = memo(GeneratedDocumentBlockComponent);

@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, memo, useContext, useMemo } from 'react';
 import { type Components } from 'react-markdown';
 import {
   GeneratedDocumentBlock,
@@ -170,10 +170,38 @@ export const baseMarkdownComponents: Components = {
   img: MarkdownImage,
 };
 
+interface MarkdownDocumentProps {
+  code: string;
+  isTg: boolean;
+  copyLabel?: string;
+}
+
+// A document block has its own markdown: it is parsed again only when its
+// code changes, not on every chunk streamed after it.
+const MarkdownDocument = memo(
+  ({ code, isTg, copyLabel }: MarkdownDocumentProps) => {
+    const { typing } = useMessage();
+    const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
+    const normalizedCode = useMemo(
+      () => normalizeMessageMarkdown(code, { typing }),
+      [code, typing],
+    );
+
+    return (
+      <GeneratedDocumentBlock
+        code={normalizedCode}
+        copyLabel={copyLabel}
+        remarkPlugins={remarkPlugins}
+        rehypePlugins={rehypePlugins}
+        baseComponents={baseMarkdownComponents}
+        isTg={isTg}
+      />
+    );
+  },
+);
+
 const MarkdownCode: Components['code'] = ({ className, children }) => {
   const components = useContext(MessageMarkdownComponentsContext);
-  const { typing } = useMessage();
-  const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
   const { code, language, isInline } = getMarkdownCodeInfo(className, children);
 
   if (!code) return null;
@@ -183,13 +211,10 @@ const MarkdownCode: Components['code'] = ({ className, children }) => {
 
   if (isDoc || isTg) {
     return (
-      <GeneratedDocumentBlock
-        code={normalizeMessageMarkdown(code, { typing })}
-        copyLabel={components.document?.copyLabel}
-        remarkPlugins={remarkPlugins}
-        rehypePlugins={rehypePlugins}
-        baseComponents={baseMarkdownComponents}
+      <MarkdownDocument
+        code={code}
         isTg={isTg}
+        copyLabel={components.document?.copyLabel}
       />
     );
   }
