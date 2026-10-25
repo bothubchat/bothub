@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef } from 'react';
+import React, { ReactNode, useMemo, useRef } from 'react';
 import {
   MessageBlock,
   MessageBlockBottomPanel,
@@ -139,12 +139,17 @@ const getTgText = (string: string) => {
   return [clipboardItem];
 };
 
-export const Message: React.FC<MessageProps> = ({
+const isSupportedColor = (color: string) =>
+  typeof CSS === 'object' &&
+  typeof CSS.supports === 'function' &&
+  CSS.supports('background', color);
+
+const MessageBase: React.FC<MessageProps> = ({
   id,
   content,
   className,
   variant = 'user',
-  color = 'default',
+  color: colorProp = 'default',
   name,
   tags,
   avatar,
@@ -223,66 +228,59 @@ export const Message: React.FC<MessageProps> = ({
     }
   });
 
-  if (
-    !(
-      color &&
-      typeof CSS === 'object' &&
-      typeof CSS.supports === 'function' &&
-      CSS.supports('background', color ?? '#000')
-    )
-  ) {
-    color = 'default';
-  }
+  const handleCodeCopy = useEventCallback(onCodeCopy);
 
-  let hexColor: string;
-  switch (variant) {
-    case 'user':
-      switch (color) {
-        case 'default':
-          if (theme.scheme === 'custom') {
-            hexColor = theme.colors.custom.message.user.background;
-            break;
-          }
-          if (theme.scheme === 'standard') {
-            hexColor =
-              theme.mode === 'dark'
+  const color = useMemo(
+    () => (colorProp && isSupportedColor(colorProp) ? colorProp : 'default'),
+    [colorProp],
+  );
+
+  const hexColor = useMemo(() => {
+    switch (variant) {
+      case 'user':
+        switch (color) {
+          case 'default':
+            if (theme.scheme === 'custom') {
+              return theme.colors.custom.message.user.background;
+            }
+            if (theme.scheme === 'standard') {
+              return theme.mode === 'dark'
                 ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
                 : colorToRgba(theme.colors.accent.primaryLight, 0.2);
-            break;
-          }
-          hexColor = theme.colors.accent.primary;
-          break;
-        case 'green':
-          hexColor = theme.colors.gpt3;
-          break;
-        case 'purple':
-          hexColor = theme.colors.gpt4;
-          break;
-        default:
-          hexColor = color;
-          break;
-      }
-      break;
-    case 'assistant':
-      switch (color) {
-        case 'default':
-          hexColor =
-            theme.mode === 'dark'
+            }
+            return theme.colors.accent.primary;
+          case 'green':
+            return theme.colors.gpt3;
+          case 'purple':
+            return theme.colors.gpt4;
+          default:
+            return color;
+        }
+      case 'assistant':
+        switch (color) {
+          case 'default':
+            return theme.mode === 'dark'
               ? theme.colors.grayScale.gray2
               : theme.colors.grayScale.gray3;
-          break;
-        case 'green':
-          hexColor = theme.colors.gpt3;
-          break;
-        case 'purple':
-          hexColor = theme.colors.gpt4;
-          break;
-        default:
-          hexColor = color;
-          break;
-      }
-      break;
-  }
+          case 'green':
+            return theme.colors.gpt3;
+          case 'purple':
+            return theme.colors.gpt4;
+          default:
+            return color;
+        }
+    }
+  }, [variant, color, theme]);
+
+  const scrollShadows = useMemo(
+    () => ({
+      color: hexColor,
+      size: 60,
+      left: <ScrollbarShadow side="left" />,
+      right: <ScrollbarShadow side="right" />,
+    }),
+    [hexColor],
+  );
 
   return (
     <MessageProvider
@@ -290,7 +288,8 @@ export const Message: React.FC<MessageProps> = ({
       color={color}
       typing={typing}
       onCopy={handlePlainTextCopy}
-      onCodeCopy={onCodeCopy}
+      // Stays undefined without a handler, as before.
+      onCodeCopy={onCodeCopy && handleCodeCopy}
     >
       <MessageStyledWrapper
         $variant={variant}
@@ -328,14 +327,7 @@ export const Message: React.FC<MessageProps> = ({
                   $hasTimestamp={!!timestamp}
                   $timestampPosition={timestampPosition}
                 >
-                  <MessageBlockScrollbarWrapper
-                    scrollShadows={{
-                      color: hexColor,
-                      size: 60,
-                      left: <ScrollbarShadow side="left" />,
-                      right: <ScrollbarShadow side="right" />,
-                    }}
-                  >
+                  <MessageBlockScrollbarWrapper scrollShadows={scrollShadows}>
                     <MessageBlockContent
                       ref={messageBlockContentRef}
                       $variant={variant}
@@ -462,6 +454,10 @@ export const Message: React.FC<MessageProps> = ({
     </MessageProvider>
   );
 };
+
+// While a reply streams, only the message whose props changed rerenders.
+export const Message: React.FC<MessageProps> = React.memo(MessageBase);
+Message.displayName = 'Message';
 
 export * from './types';
 export * from './styled';

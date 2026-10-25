@@ -13,6 +13,18 @@ import { getTgMarkdown } from '@/ui/utils';
 import { MessageContextValue, MessageProvider, useMessage } from './context';
 import { Message, MessageCopyEventHandler } from '.';
 
+const providerRenders = vi.hoisted(() => ({ count: 0 }));
+
+// Every render of Message renders MessageProvider, so it counts Message renders.
+vi.mock('./context', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('./context')>();
+  const MessageProvider: typeof actual.MessageProvider = (props) => {
+    providerRenders.count += 1;
+    return actual.MessageProvider(props);
+  };
+  return { ...actual, MessageProvider };
+});
+
 class ClipboardItemMock {
   constructor(readonly items: Record<string, Blob>) {}
 }
@@ -117,6 +129,31 @@ describe('Message', () => {
   afterEach(() => {
     cleanup();
     vi.unstubAllGlobals();
+  });
+
+  test('does not rerender when the parent rerenders with the same props', () => {
+    let rerender: () => void = () => {};
+    const onCopy = () => {};
+
+    const Parent = () => {
+      const [, setCount] = useState(0);
+      rerender = () => setCount((count) => count + 1);
+      return (
+        <Message
+          variant="assistant"
+          content="Hello"
+          onCopy={onCopy}
+        >
+          Hello
+        </Message>
+      );
+    };
+
+    customRender(<Parent />);
+    const renders = providerRenders.count;
+    act(() => rerender());
+
+    expect(providerRenders.count).toBe(renders);
   });
 
   test('copies the current content for Telegram with the latest onCopy', async () => {
