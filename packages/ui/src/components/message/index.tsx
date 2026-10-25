@@ -1,5 +1,4 @@
 import React, { ReactNode, useRef } from 'react';
-import { marked } from 'marked';
 import {
   MessageBlock,
   MessageBlockBottomPanel,
@@ -106,6 +105,8 @@ export interface MessageProps {
 }
 
 const getRichText = async (text: string) => {
+  // marked is needed only here, so it is loaded on the first rich copy.
+  const { marked } = await import('marked');
   const htmlContent = prepareClipboardHtml(
     (await marked.parse(text)).replace(
       /<p>([\s\S]*?)<\/p>/g,
