@@ -17,7 +17,7 @@ import {
 } from './styled';
 import { Menu } from '../menu';
 import { Typography } from '../typography';
-import { isImageFileName } from './utils';
+import { getFileKeys, isImageFileName } from './utils';
 
 export interface InputMessageFilesProps {
   files: IInputMessageFile[];
@@ -87,11 +87,13 @@ export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
       return null;
     }
 
+    const keys = getFileKeys(files);
+
     return (
       <InputMessageFilesStyled>
         {files.slice(0, VISIBLE_FILES_COUNT).map((file, index) => (
           <InputMessageFileChip
-            key={file.name}
+            key={keys[index]}
             file={file}
             index={index}
             {...chipProps}
@@ -110,7 +112,7 @@ export const InputMessageFiles: React.FC<InputMessageFilesProps> = memo(
             <InputMessageFilesMenuBox>
               {files.slice(VISIBLE_FILES_COUNT).map((file, index) => (
                 <InputMessageFileChip
-                  key={file.name}
+                  key={keys[index + VISIBLE_FILES_COUNT]}
                   file={file}
                   index={index + VISIBLE_FILES_COUNT}
                   {...chipProps}

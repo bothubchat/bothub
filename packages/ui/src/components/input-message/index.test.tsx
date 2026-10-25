@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  screen,
+  waitFor,
+} from '@testing-library/react';
 import { createClipboardData, customRender, TestProvider } from '@/ui/tests';
-import { InputMessage } from '.';
+import { IInputMessageFile, InputMessage } from '.';
 
 const image = new File(['png'], 'image.png', { type: 'image/png' });
 
@@ -19,9 +25,6 @@ const renderInput = (
       {...props}
     />,
   );
-  // useFiles синхронизирует контролируемые files при монтировании
-  onFilesChange.mockClear();
-
   return {
     onFilesChange,
     textarea: screen.getByPlaceholderText('Сообщение'),
@@ -161,6 +164,181 @@ describe('InputMessage paste', () => {
     });
 
     expect(notPrevented).toBe(true);
+    expect(onFilesChange).not.toHaveBeenCalled();
+  });
+});
+
+const pdf = (name = 'doc.pdf', content = 'pdf') =>
+  new File([content], name, { type: 'application/pdf' });
+
+const drop = (target: HTMLElement, files: File[]) =>
+  fireEvent.drop(target, { dataTransfer: { files } });
+
+const chipNames = () =>
+  screen
+    .queryAllByLabelText('Удалить файл')
+    .map((button) => button.parentElement?.textContent);
+
+describe('InputMessage files', () => {
+  afterEach(() => {
+    cleanup();
+    vi.restoreAllMocks();
+  });
+
+  const ControlledFiles = (
+    props: Partial<React.ComponentProps<typeof InputMessage>>,
+  ) => {
+    const [files, setFiles] = useState<IInputMessageFile[]>([]);
+
+    return (
+      <InputMessage
+        placeholder="Сообщение"
+        deleteFileAriaLabel="Удалить файл"
+        files={files}
+        onFilesChange={setFiles}
+        {...props}
+      />
+    );
+  };
+
+  test.each([
+    [
+      'uncontrolled',
+      <InputMessage
+        placeholder="Сообщение"
+        deleteFileAriaLabel="Удалить файл"
+      />,
+    ],
+    ['controlled', <ControlledFiles />],
+  ])('keeps files of two quick drops (%s)', async (_, element) => {
+    customRender(element);
+    const textarea = screen.getByPlaceholderText('Сообщение');
+
+    drop(textarea, [pdf('one.pdf')]);
+    drop(textarea, [pdf('two.pdf')]);
+
+    await waitFor(() => expect(chipNames()).toEqual(['one.pdf', 'two.pdf']));
+  });
+
+  test('validates dropped files against uploadFileAccept', async () => {
+    const emitError = vi.fn();
+    const onFilesChange = vi.fn();
+    const script = new File(['x'], 'run.exe', {
+      type: 'application/x-msdownload',
+    });
+    customRender(
+      <InputMessage
+        placeholder="Сообщение"
+        uploadFileAccept="application/pdf"
+        emitError={emitError}
+        files={[]}
+        onFilesChange={onFilesChange}
+      />,
+    );
+
+    drop(screen.getByPlaceholderText('Сообщение'), [pdf(), script]);
+
+    await waitFor(() => expect(onFilesChange).toHaveBeenCalledTimes(1));
+    expect(onFilesChange.mock.calls[0][0]).toEqual([
+      expect.objectContaining({ name: 'doc.pdf' }),
+    ]);
+    expect(emitError).toHaveBeenCalledWith({
+      name: 'WRONG_FILES',
+      payload: [script],
+    });
+  });
+
+  test('accepts files by extension like the accept attribute', async () => {
+    const onFilesChange = vi.fn();
+    const { container } = customRender(
+      <InputMessage
+        uploadFileAccept=".pdf, image/*"
+        files={[]}
+        onFilesChange={onFilesChange}
+      />,
+    );
+    const input = container.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
+
+    fireEvent.change(input, { target: { files: [pdf('report.PDF')] } });
+
+    await waitFor(() => expect(onFilesChange).toHaveBeenCalledTimes(1));
+    expect(onFilesChange.mock.calls[0][0]).toEqual([
+      expect.objectContaining({ name: 'report.PDF' }),
+    ]);
+  });
+
+  test('keeps two pasted screenshots with the same name', async () => {
+    customRender(<ControlledFiles />);
+    const textarea = screen.getByPlaceholderText('Сообщение');
+    const screenshot = (content: string) =>
+      new File([content], 'image.png', { type: 'image/png' });
+
+    fireEvent.paste(textarea, {
+      clipboardData: createClipboardData({ files: [screenshot('first')] }),
+    });
+    await waitFor(() => expect(chipNames()).toHaveLength(1));
+    fireEvent.paste(textarea, {
+      clipboardData: createClipboardData({ files: [screenshot('second!')] }),
+    });
+
+    await waitFor(() => expect(chipNames()).toHaveLength(2));
+  });
+
+  test('does not add the same file twice', async () => {
+    customRender(<ControlledFiles />);
+    const textarea = screen.getByPlaceholderText('Сообщение');
+    const file = pdf();
+
+    drop(textarea, [file, file]);
+    await waitFor(() => expect(chipNames()).toHaveLength(1));
+    drop(textarea, [file]);
+
+    await act(async () => {});
+    expect(chipNames()).toEqual(['doc.pdf']);
+  });
+
+  test('attaches an image even when its preview cannot be read', async () => {
+    vi.spyOn(FileReader.prototype, 'readAsDataURL').mockImplementation(
+      function fail(this: FileReader) {
+        this.dispatchEvent(new ProgressEvent('error'));
+      },
+    );
+    const onFilesChange = vi.fn();
+    customRender(
+      <InputMessage
+        placeholder="Сообщение"
+        files={[]}
+        onFilesChange={onFilesChange}
+      />,
+    );
+
+    drop(screen.getByPlaceholderText('Сообщение'), [image]);
+
+    await waitFor(() =>
+      expect(onFilesChange).toHaveBeenCalledWith([
+        expect.objectContaining({ name: 'image.png', previewUrl: null }),
+      ]),
+    );
+  });
+
+  test('does not echo controlled files back to the parent', () => {
+    const onFilesChange = vi.fn();
+    const element = (files: IInputMessageFile[]) => (
+      <InputMessage
+        files={files}
+        onFilesChange={onFilesChange}
+      />
+    );
+    const { rerender } = customRender(element([]));
+
+    rerender(
+      <TestProvider>
+        {element([{ name: 'doc.pdf', previewUrl: null, native: pdf() }])}
+      </TestProvider>,
+    );
+
     expect(onFilesChange).not.toHaveBeenCalled();
   });
 });

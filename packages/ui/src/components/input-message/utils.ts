@@ -8,18 +8,15 @@ export const isImageFileName = (name: string): boolean =>
 
 export const getPreviewUrlForFile = async (file: File) => {
   if (isImageFileName(file.name)) {
-    return new Promise<string>((resolve, reject) => {
+    return new Promise<string | null>((resolve) => {
       const reader = new FileReader();
 
       reader.addEventListener('load', () => {
-        const previewUrl: string | null = reader.result?.toString() ?? null;
-
-        if (previewUrl === null) {
-          return reject(new Error('result not found'));
-        }
-
-        resolve(previewUrl);
+        resolve(reader.result?.toString() ?? null);
       });
+      // Без превью файл всё равно прикрепляется, а не зависает навсегда
+      reader.addEventListener('error', () => resolve(null));
+      reader.addEventListener('abort', () => resolve(null));
       reader.readAsDataURL(file);
     });
   }
@@ -27,40 +24,86 @@ export const getPreviewUrlForFile = async (file: File) => {
   return null;
 };
 
+/**
+ * Тот же файл, выбранный или вставленный повторно.
+ * Только по имени сравнивать нельзя: все скриншоты из буфера называются image.png
+ */
+export const isSameNativeFile = (a?: File, b?: File): boolean =>
+  !!a &&
+  !!b &&
+  (a === b ||
+    (a.name === b.name &&
+      a.size === b.size &&
+      a.type === b.type &&
+      a.lastModified === b.lastModified));
+
+const fileKeys = new WeakMap<File, string>();
+let fileKeyCounter = 0;
+
+/** Стабильные уникальные key для списка файлов: имена могут совпадать */
+export const getFileKeys = (files: IInputMessageFile[]): string[] => {
+  const usedKeys = new Set<string>();
+
+  return files.map((file, index) => {
+    let key = file.native instanceof Blob ? fileKeys.get(file.native) : null;
+
+    if (!key) {
+      key = `file-${++fileKeyCounter}`;
+
+      if (file.native instanceof Blob) {
+        fileKeys.set(file.native, key);
+      }
+    }
+    if (usedKeys.has(key)) {
+      key = `${key}-${index}`;
+    }
+    usedKeys.add(key);
+
+    return key;
+  });
+};
+
 export const formatUploadFiles = async (
   files: File[],
 ): Promise<IInputMessageFile[]> => {
-  const previewsUrls: (string | null)[] = await Promise.all(
-    files.map(getPreviewUrlForFile),
+  const uniqueFiles = files.filter(
+    (file, index) =>
+      files.findIndex((other) => isSameNativeFile(file, other)) === index,
   );
-  const newFiles: IInputMessageFile[] = files.map((nativeFile, index) => ({
+  const previewsUrls: (string | null)[] = await Promise.all(
+    uniqueFiles.map(getPreviewUrlForFile),
+  );
+
+  return uniqueFiles.map((nativeFile, index) => ({
     name: nativeFile.name,
     previewUrl: previewsUrls[index],
     native: nativeFile,
   }));
-
-  const fileMap = new Map([...newFiles].map((file) => [file.name, file]));
-
-  return [...fileMap.values()];
 };
 
 export function isFileTypeAccepted(
   fileType: string,
   acceptStr?: string,
+  fileName?: string,
 ): boolean {
   if (!acceptStr || acceptStr.trim() === '') return true;
 
   const acceptList = acceptStr
     .split(',')
-    .map((s) => s.trim())
+    .map((s) => s.trim().toLowerCase())
     .filter(Boolean);
+  const type = fileType.toLowerCase();
 
   return acceptList.some((acceptType) => {
+    // Как в атрибуте accept у <input type="file">: ".pdf" — расширение
+    if (acceptType.startsWith('.')) {
+      return !!fileName && fileName.toLowerCase().endsWith(acceptType);
+    }
     if (acceptType.endsWith('/*')) {
       const baseType = acceptType.slice(0, acceptType.length - 1);
-      return fileType.startsWith(baseType);
+      return type.startsWith(baseType);
     }
-    return acceptType === fileType;
+    return acceptType === type;
   });
 }
 
