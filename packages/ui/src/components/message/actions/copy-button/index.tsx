@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSpring } from '@react-spring/web';
 
 import { CopyIcon } from '@/ui/icons/copy';
@@ -20,7 +20,7 @@ export const CopyButton = ({
   const theme = useTheme();
 
   const [copied, setCopied] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
+  const timeoutIdRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const copySpring = useSpring({
     opacity: copied ? 0 : 1,
@@ -36,18 +36,22 @@ export const CopyButton = ({
   });
 
   const handleClick = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
+    if (timeoutIdRef.current) {
+      clearTimeout(timeoutIdRef.current);
     }
     setCopied(true);
     onCopy?.({});
-    setTimeoutId(setTimeout(() => setCopied(false), 1000));
+    timeoutIdRef.current = setTimeout(() => {
+      timeoutIdRef.current = null;
+      setCopied(false);
+    }, 1000);
   };
 
+  // A ref, unlike state, gives the unmount cleanup the latest timer.
   useEffect(
     () => () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
+      if (timeoutIdRef.current) {
+        clearTimeout(timeoutIdRef.current);
       }
     },
     [],
