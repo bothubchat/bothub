@@ -29,17 +29,20 @@ const CITE_CLOSE = '</cite>';
  * fence line of at least as many `$` and nothing after them.
  */
 const getOpenMathFence = (text: string, openFence: number): number =>
-  getLinesOutsideFencedCode(text).reduce((fence, line) => {
-    const match = MATH_FENCE_PATTERN.exec(line);
+  // Most of the text has no formulas: the lines are not even split then.
+  text.includes('$$')
+    ? getLinesOutsideFencedCode(text).reduce((fence, line) => {
+        const match = MATH_FENCE_PATTERN.exec(line);
 
-    if (!match) {
-      return fence;
-    }
-    if (!fence) {
-      return match[1].length;
-    }
-    return match[1].length >= fence && !match[2].trim() ? 0 : fence;
-  }, openFence);
+        if (!match) {
+          return fence;
+        }
+        if (!fence) {
+          return match[1].length;
+        }
+        return match[1].length >= fence && !match[2].trim() ? 0 : fence;
+      }, openFence)
+    : openFence;
 
 /**
  * Reference links and footnotes may be defined in another block. Code is
