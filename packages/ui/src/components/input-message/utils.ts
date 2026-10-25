@@ -1,11 +1,13 @@
-import { IInputMessageFile } from '@/ui/components';
+import { IInputMessageFile } from './types';
+
+const IMAGE_FILE_REGEXP = /\.(png|jpe?g)$/i;
+
+/** Имя PNG или JPEG: для них показываем превью */
+export const isImageFileName = (name: string): boolean =>
+  IMAGE_FILE_REGEXP.test(name);
 
 export const getPreviewUrlForFile = async (file: File) => {
-  if (
-    file.name.match(/.png$/i) ||
-    file.name.match(/.jpg$/i) ||
-    file.name.match(/.jpeg$/i)
-  ) {
+  if (isImageFileName(file.name)) {
     return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
 
@@ -40,19 +42,6 @@ export const formatUploadFiles = async (
   const fileMap = new Map([...newFiles].map((file) => [file.name, file]));
 
   return [...fileMap.values()];
-};
-
-export const formatSeconds = (seconds: number) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-
-  const formattedMinutes = String(minutes).padStart(2, '0');
-  const formattedSeconds = remainingSeconds
-    .toFixed(1)
-    .padStart(2, '0')
-    .replace('.', ',');
-
-  return `${formattedMinutes}:${formattedSeconds}`;
 };
 
 export function isFileTypeAccepted(

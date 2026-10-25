@@ -1,6 +1,10 @@
 import { describe, expect, test } from 'vitest';
 import { createClipboardData } from '@/ui/tests';
-import { getClipboardFiles, shouldPasteClipboardFiles } from './utils';
+import {
+  getClipboardFiles,
+  isImageFileName,
+  shouldPasteClipboardFiles,
+} from './utils';
 
 const image = new File(['png'], 'image.png', { type: 'image/png' });
 
@@ -67,5 +71,19 @@ describe('shouldPasteClipboardFiles', () => {
     });
 
     expect(shouldPasteClipboardFiles(clipboardData)).toBe(false);
+  });
+});
+
+describe('isImageFileName', () => {
+  test('matches png and jpeg extensions in any case', () => {
+    expect(isImageFileName('cat.png')).toBe(true);
+    expect(isImageFileName('cat.JPG')).toBe(true);
+    expect(isImageFileName('cat.jpeg')).toBe(true);
+  });
+
+  test('requires a dot before the extension', () => {
+    expect(isImageFileName('apng')).toBe(false);
+    expect(isImageFileName('notes-jpeg')).toBe(false);
+    expect(isImageFileName('cat.png.txt')).toBe(false);
   });
 });
