@@ -31,7 +31,11 @@ export const Slider = ({
         $arrowsSize={arrowsSize}
         data-test="slider-left-arrow"
       >
-        <S.SliderIconContainer onClick={onScrollLeft}>
+        <S.SliderIconContainer
+          type="button"
+          disabled={isLeftDisabled}
+          onClick={onScrollLeft}
+        >
           <ArrowDownIcon />
         </S.SliderIconContainer>
       </S.SliderArrow>
@@ -49,7 +53,11 @@ export const Slider = ({
         $isLeftArrow={false}
         data-test="slider-right-arrow"
       >
-        <S.SliderIconContainer onClick={onScrollRight}>
+        <S.SliderIconContainer
+          type="button"
+          disabled={isRightDisabled}
+          onClick={onScrollRight}
+        >
           <ArrowDownIcon />
         </S.SliderIconContainer>
       </S.SliderArrow>

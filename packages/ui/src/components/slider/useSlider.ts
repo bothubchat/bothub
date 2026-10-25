@@ -12,8 +12,12 @@ export const useSlider = ({
     inline: 'center',
   },
 }: UseSliderProps) => {
-  const [isLeftDisabled, setIsLeftDisabled] = useState(true);
-  const [isRightDisabled, setIsRightDisabled] = useState(true);
+  const [arrows, setArrows] = useState({
+    isLeftDisabled: true,
+    isRightDisabled: true,
+  });
+  const arrowsRef = useRef(arrows);
+  const { isLeftDisabled, isRightDisabled } = arrows;
 
   const scrollbarRef = useRef<ScrollbarRef>(null);
 
@@ -73,43 +77,48 @@ export const useSlider = ({
   };
 
   useEffect(() => {
-    const scrollbar = scrollbarRef.current;
+    const target = scrollbarRef.current?.element;
+    if (!target) return;
 
-    const onScroll = () => {
-      const target = scrollbarRef.current?.element;
-
-      if (!target) return;
-
+    const updateArrows = () => {
       const isContentOverflowing = target.scrollWidth > target.clientWidth;
+      const next = isContentOverflowing
+        ? {
+            isLeftDisabled: target.scrollLeft <= 0,
+            isRightDisabled:
+              target.scrollWidth - target.scrollLeft <= target.clientWidth + 1,
+          }
+        : { isLeftDisabled: true, isRightDisabled: true };
 
-      if (!isContentOverflowing) {
-        setIsLeftDisabled(true);
-        setIsRightDisabled(true);
+      // One state update, and none while scrolling between the edges
+      const prev = arrowsRef.current;
+      if (
+        prev.isLeftDisabled === next.isLeftDisabled &&
+        prev.isRightDisabled === next.isRightDisabled
+      ) {
         return;
       }
 
-      if (target.scrollWidth - target.scrollLeft <= target.clientWidth + 1) {
-        setIsRightDisabled(true);
-      } else {
-        setIsRightDisabled(false);
-      }
-
-      if (target.scrollLeft <= 0) {
-        setIsLeftDisabled(true);
-      } else {
-        setIsLeftDisabled(false);
-      }
+      arrowsRef.current = next;
+      setArrows(next);
     };
 
-    if (!scrollbar || !scrollbar.element) return;
+    target.addEventListener('scroll', updateArrows, { passive: true });
+    updateArrows();
 
-    scrollbar.element.addEventListener('scroll', onScroll);
-    onScroll();
+    // The arrows also depend on the sizes, which change without scrolling
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      resizeObserver = new ResizeObserver(updateArrows);
+      resizeObserver.observe(target);
+      Array.from(target.children).forEach((child) => {
+        resizeObserver?.observe(child);
+      });
+    }
 
     return () => {
-      if (!scrollbar || !scrollbar.element) return;
-
-      scrollbar.element.removeEventListener('scroll', onScroll);
+      target.removeEventListener('scroll', updateArrows);
+      resizeObserver?.disconnect();
     };
   }, []);
 
