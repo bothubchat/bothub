@@ -204,3 +204,110 @@ describe('normalizeMessageMarkdown while typing', () => {
     expect(normalizeMessageMarkdown(input)).toBe(input);
   });
 });
+
+describe('normalizeMessageMarkdown escapes', () => {
+  const typing = (content: string) =>
+    normalizeMessageMarkdown(content, { typing: true });
+
+  test('takes the parity of preceding backslashes into account', () => {
+    for (let backslashes = 0; backslashes <= 6; backslashes++) {
+      const prefix = `Цена ${'\\'.repeat(backslashes)}`;
+      const isEscaped = backslashes % 2 === 1;
+
+      expect(typing(`${prefix}$x и`)).toBe(
+        isEscaped ? `${prefix}$x и` : prefix,
+      );
+      expect(typing(`${prefix}$$\nx`)).toBe(
+        isEscaped ? prefix.slice(0, -1) : prefix,
+      );
+    }
+  });
+
+  test('pairs prices with the right closing dollar', () => {
+    expect(normalizeMessageMarkdown('Итого $5 и $x$ и $10')).toBe(
+      'Итого \\$5 и $x$ и \\$10',
+    );
+    expect(normalizeMessageMarkdown('$5$6$7 x$')).toBe('\\$5\\$6\\$7 x$');
+    expect(normalizeMessageMarkdown('от $5 до $10 за 1$ штуку')).toBe(
+      'от \\$5 до \\$10 за 1$ штуку',
+    );
+    expect(normalizeMessageMarkdown('$5 x$ и $6 y$')).toBe('\\$5 x$ и \\$6 y$');
+    expect(normalizeMessageMarkdown('Сумма: $5,\n$6 = x$')).toBe(
+      'Сумма: \\$5,\n$6 = x$',
+    );
+  });
+
+  // Whether a dollar is escaped only depends on the text after it, so the
+  // scan reused between prices must give the same answer as a fresh one.
+  test('escapes each price as if it started the text', () => {
+    const alphabet = [
+      '$',
+      '$',
+      '1',
+      '5',
+      'x',
+      'y',
+      ' ',
+      ' ',
+      '.',
+      ',',
+      '=',
+      '\n',
+    ];
+    // Seeded, so a failure is reproducible.
+    let seed = 42;
+    const random = () => {
+      seed = (seed * 16807) % 2147483647;
+      return seed / 2147483647;
+    };
+
+    const getEscapedDollars = (input: string, output: string): boolean[] => {
+      const escaped: boolean[] = [];
+      for (let i = 0, o = 0; i < input.length; i++, o++) {
+        if (input[i] === '$') {
+          escaped.push(output[o] === '\\');
+          o += output[o] === '\\' ? 1 : 0;
+        }
+      }
+      return escaped;
+    };
+
+    for (let sample = 0; sample < 3000; sample++) {
+      const length = 1 + Math.floor(random() * 60);
+      let input = '';
+      for (let i = 0; i < length; i++) {
+        input += alphabet[Math.floor(random() * alphabet.length)];
+      }
+      // `$$` starts display math, which is not about currency.
+      input = input.replace(/\$(?=\$)/g, '$ ');
+
+      const escaped = getEscapedDollars(input, normalizeMessageMarkdown(input));
+      const expected = Array.from(input.matchAll(/\$/g), ({ index }) =>
+        normalizeMessageMarkdown(input.slice(index)).startsWith('\\$'),
+      );
+
+      expect(escaped, input).toEqual(expected);
+    }
+  });
+});
+
+describe('normalizeMessageMarkdown performance', () => {
+  const measure = (content: string) => {
+    const start = performance.now();
+    normalizeMessageMarkdown(content);
+    normalizeMessageMarkdown(content, { typing: true });
+    return performance.now() - start;
+  };
+
+  // Used to take seconds: every price scanned the rest of the text.
+  test('handles long text with many prices', () => {
+    const content = 'Модель стоит $5 за вход и $10 за выход. '.repeat(2500);
+
+    expect(measure(content)).toBeLessThan(1000);
+  });
+
+  // Used to take seconds: every backslash counted the ones before it.
+  test('handles a long run of backslashes while typing', () => {
+    expect(measure('\\'.repeat(50000))).toBeLessThan(1000);
+  });
+});

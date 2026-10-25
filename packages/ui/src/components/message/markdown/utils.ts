@@ -36,6 +36,19 @@ function isEscaped(content: string, index: number): boolean {
   return backslashes % 2 === 1;
 }
 
+/** `isEscaped` for every offset of the content, computed in one pass. */
+function getEscapedOffsets(content: string): Uint8Array {
+  const escaped = new Uint8Array(content.length);
+  let backslashes = 0;
+
+  for (let index = 0; index < content.length; index += 1) {
+    escaped[index] = backslashes % 2;
+    backslashes = content[index] === '\\' ? backslashes + 1 : 0;
+  }
+
+  return escaped;
+}
+
 function looksLikeMathBody(body: string): boolean {
   if (MATH_BODY_PATTERN.test(body)) {
     return true;
@@ -334,6 +347,11 @@ function findInlineMathClose(content: string, from: number): number {
  */
 function normalizeInlineDollars(content: string): string {
   let result = '';
+  // Every candidate scans from a digit, which `findInlineMathClose` never
+  // skips: a scan started at an earlier candidate passes this position in the
+  // same state, so its result holds until the found `$` is passed. Without
+  // reusing it, text with many prices (`$5`) took O(prices × length).
+  let lastCloseIndex: number | null = null;
 
   for (let index = 0; index < content.length; index += 1) {
     const char = content[index];
@@ -341,7 +359,13 @@ function normalizeInlineDollars(content: string): string {
       char === '$' && !isEscaped(content, index) && isDigit(content[index + 1]);
 
     if (isCurrencyCandidate) {
-      const closeIndex = findInlineMathClose(content, index + 1);
+      if (
+        lastCloseIndex === null ||
+        (lastCloseIndex !== -1 && lastCloseIndex <= index)
+      ) {
+        lastCloseIndex = findInlineMathClose(content, index + 1);
+      }
+      const closeIndex = lastCloseIndex;
       const body =
         closeIndex === -1 ? '' : content.slice(index + 1, closeIndex);
 
@@ -390,6 +414,9 @@ function findUnfinishedMath(segments: Segment[]): UnfinishedMath | null {
       continue;
     }
 
+    // `isEscaped` for every offset is O(n²) on a long run of backslashes.
+    const escaped = getEscapedOffsets(value);
+
     for (let offset = 0; offset < value.length; offset += 1) {
       const char = value[offset];
       const position = { segmentIndex, offset };
@@ -399,7 +426,7 @@ function findUnfinishedMath(segments: Segment[]): UnfinishedMath | null {
         continue;
       }
 
-      if (isEscaped(value, offset)) {
+      if (escaped[offset]) {
         continue;
       }
 
