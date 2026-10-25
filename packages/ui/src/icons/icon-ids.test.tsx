@@ -107,5 +107,6 @@ describe('icon ids', () => {
     );
 
     expectSelfContainedIds(container, icons.length * 2);
-  });
+    // Imports and renders every icon module, which takes several seconds.
+  }, 30_000);
 });
