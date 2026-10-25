@@ -11,6 +11,7 @@ import {
 import { HeaderLangDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
+import { useOnClickOutside } from '@/ui/utils';
 
 export interface HeaderLangDropdownProps
   extends React.ComponentProps<typeof HeaderLangDropdownStyled> {
@@ -29,8 +30,8 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = useCallback(() => {
-    setIsOpen(!isOpen);
-  }, [isOpen]);
+    setIsOpen((isOpen) => !isOpen);
+  }, []);
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
@@ -51,32 +52,16 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
     };
 
     window.addEventListener('scroll', handleScrollEvent, true);
+    window.addEventListener('blur', handleClose);
 
     return () => {
       window.removeEventListener('scroll', handleScrollEvent, true);
+      window.removeEventListener('blur', handleClose);
     };
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
-  useEffect(() => {
-    const dropdownEl: HTMLDivElement | null = dropdownRef.current;
-
-    if (dropdownEl !== null) {
-      const clickListener = (event: Event) => {
-        if (!dropdownEl.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      const blurListener = () => setIsOpen(false);
-
-      document.addEventListener('click', clickListener);
-      window.addEventListener('blur', blurListener);
-
-      return () => {
-        document.removeEventListener('click', clickListener);
-        window.removeEventListener('blur', blurListener);
-      };
-    }
-  }, []);
+  // Listen to the document only while the dropdown is open.
+  useOnClickOutside(dropdownRef, handleClose, isOpen);
 
   const dropdownTransition = useTransition(isOpen, {
     from: {
@@ -113,14 +98,17 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
             />
           </HeaderLangDropdownToggler>
         </IconProvider>
-        {dropdownTransition((style, item) => (
-          <HeaderLangDropdownContent
-            $open={isOpen && !!item}
-            style={style}
-          >
-            {children}
-          </HeaderLangDropdownContent>
-        ))}
+        {dropdownTransition(
+          (style, item) =>
+            item && (
+              <HeaderLangDropdownContent
+                $open={isOpen}
+                style={style}
+              >
+                {children}
+              </HeaderLangDropdownContent>
+            ),
+        )}
       </HeaderLangDropdownStyled>
     </HeaderLangDropdownProvider>
   );

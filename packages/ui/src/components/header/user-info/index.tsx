@@ -12,6 +12,7 @@ import {
 } from './styled';
 import { HeaderUserInfoProvider } from './context';
 import { useHeaderMenu } from '../menu/context';
+import { useOnClickOutside } from '@/ui/utils';
 
 export interface HeaderUserInfoProps extends React.PropsWithChildren {
   avatar: React.ReactNode;
@@ -41,29 +42,21 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
     }
 
     setWidth(width);
-    setIsOpen(!isOpen);
-  }, [isOpen, headRef]);
+    setIsOpen((isOpen) => !isOpen);
+  }, []);
+
+  const handleClose = useCallback(() => setIsOpen(false), []);
+
+  // Listen to the document and the window only while the dropdown is open.
+  useOnClickOutside(userRef, handleClose, isOpen);
 
   useEffect(() => {
-    const userEl: HTMLDivElement | null = userRef.current;
+    if (!isOpen) return;
 
-    if (userEl !== null) {
-      const clickListener = (event: Event) => {
-        if (!userEl.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      const blurListener = () => setIsOpen(false);
+    window.addEventListener('blur', handleClose);
 
-      document.addEventListener('click', clickListener);
-      window.addEventListener('blur', blurListener);
-
-      return () => {
-        document.removeEventListener('click', clickListener);
-        window.removeEventListener('blur', blurListener);
-      };
-    }
-  }, []);
+    return () => window.removeEventListener('blur', handleClose);
+  }, [isOpen, handleClose]);
 
   const userInfoTransition = useTransition(
     isOpen,
