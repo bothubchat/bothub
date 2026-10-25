@@ -143,6 +143,10 @@ export const MessageVoiceText = styled(Typography).attrs({
   }
 `;
 
+// Played part of the wave: scaled from the left by --voice-progress (0..1),
+// so playback changes only a CSS variable instead of the width.
 export const StyledRect = styled.rect`
-  transition: width 0.25s ease-out;
+  transform: scaleX(var(--voice-progress, 0));
+  transform-origin: 0 0;
+  transition: transform 0.25s ease-out;
 `;

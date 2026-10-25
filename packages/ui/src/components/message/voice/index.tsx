@@ -1,4 +1,11 @@
-import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react';
 import {
   MessageVoiceAudio,
   MessageVoiceDurationText,
@@ -37,6 +44,44 @@ export interface MessageVoiceProps extends React.ComponentProps<'div'> {
   variant?: MessageVoiceVariant;
 }
 
+const WAVES_WIDTH = 145;
+
+const getProgress = (time: number, duration: number) => {
+  if (!Number.isFinite(time) || !Number.isFinite(duration) || duration <= 0) {
+    return 0;
+  }
+
+  return Math.min(Math.max(time / duration, 0), 1);
+};
+
+interface MessageVoiceWaveClipProps {
+  id: string;
+  waveData: number[];
+  height: number;
+}
+
+// Static wave shape: it does not re-render while the audio plays.
+const MessageVoiceWaveClip: React.FC<MessageVoiceWaveClipProps> = memo(
+  ({ id, waveData, height }) => (
+    <clipPath id={id}>
+      {waveData.map((wave, index) => {
+        const waveHeight = Math.max((wave / 100) * height, 2);
+
+        return (
+          <rect
+            key={index}
+            x={index * 5}
+            y={(height - waveHeight) / 2}
+            width="3"
+            height={waveHeight}
+            rx="1.5"
+          />
+        );
+      })}
+    </clipPath>
+  ),
+);
+
 export const MessageVoice: React.FC<MessageVoiceProps> = ({
   height = 36,
   src,
@@ -66,7 +111,23 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   const [internalLoading, setInternalLoading] = useState<boolean>(true);
   const [isPlayed, setIsPlayed] = useState(false);
   const [isTextShowed, setIsTextShowed] = useState(false);
-  const [currentTime, setCurrentTime] = useState<number | null>(null);
+  // Whole seconds: the label shows nothing finer, so timeupdate re-renders
+  // the player once per second. Progress goes straight to a CSS variable.
+  const [currentTime, setCurrentTimeState] = useState<number | null>(null);
+  const currentTimeRef = useRef(currentTime);
+
+  // Skips same-second updates: even a same-value setState right after a
+  // render costs one more render.
+  const setCurrentTime = useCallback((time: number | null) => {
+    if (currentTimeRef.current !== time) {
+      currentTimeRef.current = time;
+      setCurrentTimeState(time);
+    }
+  }, []);
+
+  const setProgress = useCallback((progress: number) => {
+    wavesRef.current?.style.setProperty('--voice-progress', String(progress));
+  }, []);
 
   // Buffering only affects the cursor: play() waits for data by itself, and
   // iOS Safari does not buffer media until playback is requested.
@@ -110,6 +171,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   useEffect(() => {
     setIsPlayed(false);
     setCurrentTime(null);
+    setProgress(0);
     setInternalLoading(true);
     playRequestedRef.current = false;
 
@@ -125,7 +187,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       resumeOnSrcChangeRef.current = false;
       play();
     }
-  }, [src, play]);
+  }, [src, play, setProgress, setCurrentTime]);
 
   const handleStart = useCallback(() => {
     const audioEl = audioRef.current;
@@ -183,8 +245,9 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       return;
     }
 
-    setCurrentTime(audioEl.currentTime);
-  }, []);
+    setProgress(getProgress(audioEl.currentTime, duration));
+    setCurrentTime(Math.floor(audioEl.currentTime));
+  }, [duration, setProgress, setCurrentTime]);
 
   const handleWavesClick = useCallback<React.MouseEventHandler>(
     (event) => {
@@ -215,8 +278,9 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
 
   const handleEnded = useCallback(() => {
     setCurrentTime(null);
+    setProgress(0);
     setIsPlayed(false);
-  }, []);
+  }, [setProgress, setCurrentTime]);
 
   const handleTextToggle = useCallback<React.MouseEventHandler>(
     (event) => {
@@ -274,15 +338,15 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
         </MessageVoiceToggleButton>
         <MessageVoiceWaves
           ref={wavesRef}
-          width="145"
+          width={WAVES_WIDTH}
           height={height}
-          viewBox={`0 0 145 ${height}`}
+          viewBox={`0 0 ${WAVES_WIDTH} ${height}`}
           fill="none"
           onClick={handleWavesClick}
         >
           <g clipPath={`url(#${voiceId}_clip)`}>
             <rect
-              width="145"
+              width={WAVES_WIDTH}
               height={height}
               {...{
                 fill:
@@ -301,40 +365,28 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
             />
             {currentTime !== null && (
               <StyledRect
+                width={WAVES_WIDTH}
                 height={height}
                 fill={
                   theme.mode === 'dark'
                     ? theme.default.colors.base.white
                     : theme.colors.accent.primaryLight
                 }
-                style={{
-                  width: 145 * (currentTime / duration),
-                }}
               />
             )}
           </g>
           <defs>
-            <clipPath id={`${voiceId}_clip`}>
-              {waveData.map((wave, index) => {
-                const waveHeight = Math.max((wave / 100) * 36, 2);
-
-                return (
-                  <rect
-                    key={index}
-                    x={index * 5}
-                    y={(height - waveHeight) / 2}
-                    width="3"
-                    height={waveHeight}
-                    rx="1.5"
-                  />
-                );
-              })}
-            </clipPath>
+            <MessageVoiceWaveClip
+              id={`${voiceId}_clip`}
+              waveData={waveData}
+              height={height}
+            />
           </defs>
         </MessageVoiceWaves>
         <MessageVoiceDurationText $variant={variant}>
           {currentTime !== null && formatSeconds(currentTime)}
-          {currentTime === null && formatSeconds(duration)}
+          {currentTime === null &&
+            formatSeconds(Number.isFinite(duration) ? duration : 0)}
         </MessageVoiceDurationText>
         {!disableTranscription && (
           <MessageVoiceToggleTextButton onClick={handleTextToggle}>
