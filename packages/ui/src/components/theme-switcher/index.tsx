@@ -37,17 +37,29 @@ export const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
   const [mode, setMode] = useState<ThemeSwitcherMode>(
     initialMode ?? defaultMode,
   );
-
-  const handleClick = useCallback((newMode: ThemeSwitcherMode) => {
-    setMode(newMode);
-
-    if (newMode === 'system') {
-      onSystemClick?.();
-      return;
+  // Follow `mode` when the parent changes it; a click still updates the
+  // switcher right away.
+  const [prevInitialMode, setPrevInitialMode] = useState(initialMode);
+  if (prevInitialMode !== initialMode) {
+    setPrevInitialMode(initialMode);
+    if (initialMode !== undefined) {
+      setMode(initialMode);
     }
+  }
 
-    onChange?.(newMode);
-  }, []);
+  const handleClick = useCallback(
+    (newMode: ThemeSwitcherMode) => {
+      setMode(newMode);
+
+      if (newMode === 'system') {
+        onSystemClick?.();
+        return;
+      }
+
+      onChange?.(newMode);
+    },
+    [onChange, onSystemClick],
+  );
 
   return (
     <ThemeSwitcherStyled>
