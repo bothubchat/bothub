@@ -155,4 +155,22 @@ describe('MessageVoice', () => {
 
     expect(play).toHaveBeenCalledTimes(1);
   });
+
+  test('pauses the voice that is playing when another one starts', async () => {
+    const { container } = customRender(
+      <>
+        {voice()}
+        {voice({ src: 'https://cdn.bothub.chat/other.webm' })}
+      </>,
+    );
+    const [, playingAudio] = container.querySelectorAll('audio');
+    Object.defineProperty(playingAudio, 'paused', {
+      configurable: true,
+      value: false,
+    });
+
+    await clickToggle();
+
+    expect(pause.mock.contexts).toEqual([playingAudio]);
+  });
 });

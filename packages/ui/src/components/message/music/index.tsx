@@ -21,9 +21,11 @@ import { formatSeconds } from '@/ui/utils';
 import { MusicNoteIcon } from '@/ui/icons/music-note';
 import { PlayButtonIcon } from '@/ui/icons/play-button';
 import { PauseButtonIcon } from '@/ui/icons/pause-button';
+import {
+  notifyExclusivePlayback,
+  registerExclusivePlayback,
+} from '@/ui/utils/audio/exclusivePlayback';
 import { useMessage } from '../context';
-
-const AUDIO_PLAY_EVENT = 'messageVoicePlay';
 
 export interface MessageMusicProps extends React.ComponentProps<'div'> {
   src: string;
@@ -59,31 +61,15 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
   const hasCover = Boolean(coverSrc) && !coverError;
   const showSkeleton = isLoading && duration <= 0;
 
+  // One shared window listener for all players: only one plays at a time.
   useEffect(() => {
-    const handleOtherAudioPlay = (event: CustomEvent) => {
-      const currentAudio = audioRef.current;
-      const playingAudio = event.detail.audio;
+    const audioEl = audioRef.current;
 
-      if (
-        currentAudio &&
-        playingAudio !== currentAudio &&
-        !currentAudio.paused
-      ) {
-        currentAudio.pause();
-      }
-    };
+    if (!audioEl) {
+      return;
+    }
 
-    window.addEventListener(
-      AUDIO_PLAY_EVENT,
-      handleOtherAudioPlay as EventListener,
-    );
-
-    return () => {
-      window.removeEventListener(
-        AUDIO_PLAY_EVENT,
-        handleOtherAudioPlay as EventListener,
-      );
-    };
+    return registerExclusivePlayback(audioEl);
   }, []);
 
   useEffect(() => {
@@ -115,10 +101,7 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
     }
 
     if (audioRef.current) {
-      const event = new CustomEvent(AUDIO_PLAY_EVENT, {
-        detail: { audio: audioRef.current },
-      });
-      window.dispatchEvent(event);
+      notifyExclusivePlayback(audioRef.current);
 
       await audioRef.current.play();
     }

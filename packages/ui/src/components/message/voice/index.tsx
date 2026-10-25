@@ -17,9 +17,11 @@ import {
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { isBright, formatSeconds } from '@/ui/utils';
+import {
+  notifyExclusivePlayback,
+  registerExclusivePlayback,
+} from '@/ui/utils/audio/exclusivePlayback';
 import { useMessage } from '../context';
-
-const AUDIO_PLAY_EVENT = 'messageVoicePlay';
 
 export type MessageVoiceVariant = 'input' | 'message';
 
@@ -70,31 +72,15 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   // iOS Safari does not buffer media until playback is requested.
   const isLoading = internalLoading || externalLoading;
 
+  // One shared window listener for all players: only one plays at a time.
   useEffect(() => {
-    const handleOtherAudioPlay = (event: CustomEvent) => {
-      const currentAudio = audioRef.current;
-      const playingAudio = event.detail.audio;
+    const audioEl = audioRef.current;
 
-      if (
-        currentAudio &&
-        playingAudio !== currentAudio &&
-        !currentAudio.paused
-      ) {
-        currentAudio.pause();
-      }
-    };
+    if (!audioEl) {
+      return;
+    }
 
-    window.addEventListener(
-      AUDIO_PLAY_EVENT,
-      handleOtherAudioPlay as EventListener,
-    );
-
-    return () => {
-      window.removeEventListener(
-        AUDIO_PLAY_EVENT,
-        handleOtherAudioPlay as EventListener,
-      );
-    };
+    return registerExclusivePlayback(audioEl);
   }, []);
 
   const play = useCallback(() => {
@@ -104,9 +90,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       return;
     }
 
-    window.dispatchEvent(
-      new CustomEvent(AUDIO_PLAY_EVENT, { detail: { audio: audioEl } }),
-    );
+    notifyExclusivePlayback(audioEl);
 
     audioEl.play().catch(() => {
       // Autoplay policy or an interrupted play; load errors are handled in onError.
