@@ -239,6 +239,12 @@ export const ImageFullScreenPreviewImages = styled.div`
   gap: 10px;
 `;
 
+/** Positions the hidden lazy image over the skeleton while it loads. */
+export const ImageFullScreenPreviewImageWrapper = styled.span`
+  display: inline-flex;
+  position: relative;
+`;
+
 export interface ImageFullScreenPreviewImageProps {
   $active: boolean;
 }

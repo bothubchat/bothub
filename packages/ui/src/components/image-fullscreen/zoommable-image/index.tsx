@@ -1,9 +1,10 @@
-import React, { useCallback, useState, useRef } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import {
   ZoommableImageContainer,
   ZoommableImageWrapper,
   ZoommableImageStyled,
 } from './styled';
+import { useEventCallback } from '@/ui/utils';
 
 export interface ZoommableImageProps {
   className?: string;
@@ -20,6 +21,19 @@ export const ZoommableImage = ({
 }: ZoommableImageProps) => {
   const [zoom, setZoom] = useState(1);
   const isZooming = zoom !== 1;
+  const zoomRef = useRef(zoom);
+
+  // An image unmounted while zoomed (the viewer was closed or the slide went
+  // out of range) still ends its zoom, so the viewer does not stay in zoom mode.
+  const handleZoomEnd = useEventCallback(onZoomEnd);
+  useEffect(
+    () => () => {
+      if (zoomRef.current !== 1) {
+        handleZoomEnd();
+      }
+    },
+    [handleZoomEnd],
+  );
 
   const [isDragging, setIsDragging] = useState(false);
   const positionRef = useRef({ x: 0, y: 0 });
@@ -68,6 +82,7 @@ export const ZoommableImage = ({
       onZoomEnd?.();
     }
     setZoom(newZoom);
+    zoomRef.current = newZoom;
     positionRef.current = { x: 0, y: 0 };
     updateTransform(newZoom);
   }, [isZooming, onZoomStart, onZoomEnd, updateTransform]);
@@ -126,6 +141,8 @@ export const ZoommableImage = ({
         onPointerLeave={onPointerUp}
         style={{
           cursor: isDragging ? 'grabbing' : 'grab',
+          // A separate layer only while it is transformed.
+          willChange: isZooming || isDragging ? 'transform' : undefined,
         }}
       >
         <ZoommableImageStyled
