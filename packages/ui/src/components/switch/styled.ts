@@ -16,10 +16,15 @@ export const Checkbox = styled.input.attrs((props) => ({
   type: 'checkbox',
   ...props,
 }))`
-  display: none;
+  position: absolute;
   height: 0;
   width: 0;
-  visibility: hidden;
+  margin: 0;
+  opacity: 0;
+  &:focus-visible + label {
+    outline: 2px solid ${(props) => props.theme.colors.accent.primary};
+    outline-offset: 2px;
+  }
   &:checked + label {
     background-color: ${(props) => props.theme.colors.accent.primary};
     &:after {

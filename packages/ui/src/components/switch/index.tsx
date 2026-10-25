@@ -1,4 +1,5 @@
-import React, { useId, useMemo } from 'react';
+import React, { useId } from 'react';
+import { useControllableState } from '@/ui/utils';
 import * as S from './styled';
 
 type BaseSwitchProps = {
@@ -17,13 +18,22 @@ export const Switch = ({
   id,
   name,
   onChange,
-  value,
+  value: initialValue,
   label,
   className,
+  checked,
+  defaultChecked,
   ...inputProps
 }: SwitchProps) => {
   const localId = useId();
-  const elId = useMemo(() => id || localId, [id, localId]);
+  const elId = id || localId;
+  // The input is always controlled, so it doesn't switch from uncontrolled
+  // to controlled when the parent starts passing a value
+  const [value, setValue] = useControllableState<boolean>({
+    value: initialValue ?? checked,
+    defaultValue: defaultChecked ?? false,
+    onChange,
+  });
 
   return (
     <S.Wrapper className={className}>
@@ -31,7 +41,7 @@ export const Switch = ({
         id={elId}
         name={name}
         checked={value}
-        onChange={(event) => onChange?.(event.target.checked)}
+        onChange={(event) => setValue(event.target.checked)}
         {...inputProps}
       />
       <S.HiddenLabel htmlFor={elId} />
