@@ -32,7 +32,7 @@ export const SelectFieldCheckboxGroupOptionHead = styled.div<{
     return css`
       cursor: pointer;
       &:hover {
-        background: ${theme.colors.accent.primary}33;
+        background: ${theme.tokens.accentPrimaryAlpha20};
       }
     `;
   }}

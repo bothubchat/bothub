@@ -69,7 +69,7 @@ export const SelectFieldCollapseOptionHead = styled.div<SelectFieldCollapseOptio
     return css`
       cursor: pointer;
       &:hover {
-        background: ${theme.colors.accent.primary}33;
+        background: ${theme.tokens.accentPrimaryAlpha20};
       }
     `;
   }}

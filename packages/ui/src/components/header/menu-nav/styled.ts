@@ -2,7 +2,6 @@ import { css, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon, ArrowNarrowDownIcon } from '@/ui/icons';
-import { colorToRgba } from '@/ui/utils';
 
 export const HeaderMenuNavStyled = styled.div`
   padding-left: 20px;
@@ -172,7 +171,7 @@ export const HeaderMenuNavLink = styled.a<{
   ${({ theme }) => css`
     &:hover {
       outline: 1px solid ${theme.colors.grayScale.gray3};
-      background: ${colorToRgba(theme.colors.accent.primary, 0.2)};
+      background: ${theme.tokens.accentPrimaryAlpha20};
       ${`& ${HeaderMenuNavItemBgIcon} {
           background: ${theme.colors.accent.primary};
         }`}

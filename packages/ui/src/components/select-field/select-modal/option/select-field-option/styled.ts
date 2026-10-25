@@ -2,7 +2,6 @@ import { css, styled } from 'styled-components';
 import { SelectFieldSize } from '../../types';
 import { SelectFieldOptionSide } from '../list/styled';
 import { Typography, TypographyProps } from '@/ui/components/typography';
-import { colorToRgba } from '@/ui/utils';
 
 export interface SelectFieldOptionTextProps {
   $selected: boolean;
@@ -158,7 +157,7 @@ export const SelectFieldOptionStyled = styled.div<SelectFieldOptionStyledProps>`
           padding-bottom: 12px;
           text-align: center;
           &:hover {
-            background: ${colorToRgba(theme.colors.accent.primary, 0.2)};
+            background: ${theme.tokens.accentPrimaryAlpha20};
           }
         `;
       default:

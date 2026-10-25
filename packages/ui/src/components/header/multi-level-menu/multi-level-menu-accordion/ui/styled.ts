@@ -2,7 +2,6 @@ import { styled } from 'styled-components';
 import { animated, AnimatedProps } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons';
-import { colorToRgba } from '@/ui/utils';
 import { MultiLevelMenuSecondLevelArrowRight45 } from '../../styled';
 
 export const MultiLevelMenuFirstLevelWrapper: React.FC<
@@ -124,8 +123,7 @@ export const MultiLevelMenuSecondLevelLi = styled.li<{
     `}
   &:hover {
     ${MultiLevelMenuSecondLevelLiHover} {
-      background: ${({ theme }) =>
-        colorToRgba(theme.colors.accent.primary, 0.2)};
+      background: ${({ theme }) => theme.tokens.accentPrimaryAlpha20};
     }
     ${MultiLevelMenuSecondLevelArrowRight45} {
       background: ${({ theme }) => theme.colors.accent.primary};

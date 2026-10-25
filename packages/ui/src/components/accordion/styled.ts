@@ -1,7 +1,6 @@
 import { css, keyframes, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
-import { colorToRgba } from '@/ui/utils';
 
 type IsOpenProps = {
   $isOpen: boolean;
@@ -80,7 +79,7 @@ export const AccordionBody = styled.div<
   display: grid;
   background-color: ${({ theme, $isDefaultVariant }) =>
     !$isDefaultVariant
-      ? colorToRgba(theme.colors.grayScale.gray4, 0.75)
+      ? theme.tokens.gray4Alpha75
       : theme.colors.grayScale.gray3};
 
   border: ${({ theme, $isDefaultVariant }) =>

@@ -2,7 +2,6 @@ import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Progress } from '@/ui/components/progress';
 import { UploadedFileStatus } from './types';
-import { colorToRgba } from '@/ui/utils';
 import { Button } from '../button';
 import { CloseIcon, LoaderCircularGradientIcon } from '@/ui/icons';
 
@@ -21,7 +20,7 @@ export const UploadedFileStyled = styled.div<
       ? css`
           padding: 12px 16px;
           gap: 10px;
-          background-color: ${colorToRgba(theme.colors.grayScale.gray4, 0.75)};
+          background-color: ${theme.tokens.gray4Alpha75};
           ${theme.mode === 'light' &&
           css`
             border: 1px solid ${theme.colors.grayScale.gray2};

@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 import { Container } from '../container';
 import { Typography } from '../typography';
-import { colorToRgba } from '@/ui/utils';
 
 export const FooterStyled = styled.footer`
   min-width: ${({ theme }) => theme.mobile.minWidth};
@@ -10,7 +9,7 @@ export const FooterStyled = styled.footer`
   background:
     radial-gradient(
       51.67% 103.33% at 50% -3.33%,
-      ${({ theme }) => colorToRgba(theme.colors.accent.primary, 0.35)} 0%,
+      ${({ theme }) => theme.tokens.accentPrimaryAlpha35} 0%,
       rgba(8, 16, 39, 0) 53.98%
     ),
     ${({ theme }) => theme.colors.grayScale.gray4};

@@ -2,7 +2,6 @@ import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Badge } from '@/ui/components/badge';
 import { TariffType } from './types';
-import { colorToRgba } from '@/ui/utils';
 import { Button } from '@/ui/components/button';
 import { ArrowNarrowRightIcon, StarUnfilledIcon } from '@/ui/icons';
 
@@ -91,7 +90,7 @@ export const TariffCardStyled = styled.div<{
     ${({ theme, $variant, $active }) =>
       $variant !== 'ENTERPRISE' &&
       !$active &&
-      `background: ${colorToRgba(theme.colors.accent.primary, 0.2)}`};
+      `background: ${theme.tokens.accentPrimaryAlpha20}`};
   }
   ${({ theme, $active }) =>
     $active &&

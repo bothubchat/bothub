@@ -98,6 +98,13 @@ export const themeTokenDefinitions = {
       ? theme.colors.accent.primaryLight
       : theme.colors.accent.primary,
 
+  // Translucent theme colors, computed once instead of in every style
+  gray4Alpha75: (theme) => colorToRgba(theme.colors.grayScale.gray4, 0.75),
+  accentPrimaryAlpha20: (theme) =>
+    colorToRgba(theme.colors.accent.primary, 0.2),
+  accentPrimaryAlpha35: (theme) =>
+    colorToRgba(theme.colors.accent.primary, 0.35),
+
   // Borders
   borderSecondary: {
     light: (theme) => theme.colors.grayScale.gray3,

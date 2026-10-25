@@ -1,6 +1,5 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { colorToRgba } from '@/ui/utils/colors';
 
 export const DateBadgeStyled = styled.div`
   display: flex;
@@ -8,8 +7,7 @@ export const DateBadgeStyled = styled.div`
   padding: 4px 34px;
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background-color: ${({ theme }) =>
-    colorToRgba(theme.colors.grayScale.gray4, 0.75)};
+  background-color: ${({ theme }) => theme.tokens.gray4Alpha75};
   pointer-events: none; // allow to select text in message under this badge
 `;
 

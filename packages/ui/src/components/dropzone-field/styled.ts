@@ -1,6 +1,5 @@
 import { styled } from 'styled-components';
 import { Typography } from '../typography';
-import { colorToRgba } from '@/ui/utils';
 
 export const DropzoneFieldStyled = styled.div<{
   $fullWidth: boolean;
@@ -11,8 +10,7 @@ export const DropzoneFieldStyled = styled.div<{
   justify-content: stretch;
   gap: 20px;
 
-  background-color: ${({ theme }) =>
-    colorToRgba(theme.colors.grayScale.gray4, 0.75)};
+  background-color: ${({ theme }) => theme.tokens.gray4Alpha75};
   padding: 20px;
   border-radius: 20px;
   background-image: ${({ theme }) => {
