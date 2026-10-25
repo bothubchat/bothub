@@ -80,11 +80,8 @@ export function createConfig({
       ...packageConfig.devDependencies,
       ...packageConfig.dependencies,
     }),
-    'unified',
-    'remark-parse',
-    'remark-gfm',
+    // type-only import (@types/mdast), never bundled
     'mdast',
-    'mdast-util-to-markdown',
   ];
   const aliasPlugin: Plugin = alias({
     entries: [{ find: `@/${packageName}`, replacement: srcPath }],
