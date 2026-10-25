@@ -43,7 +43,11 @@ import {
 import { formatSeconds } from '@/ui/utils';
 import { useVoice } from './use-voice';
 import { useFiles } from './use-files';
-import { useInput, type MessageSubmitKey } from './use-input';
+import {
+  TEXTAREA_MIN_HEIGHT,
+  useInput,
+  type MessageSubmitKey,
+} from './use-input';
 import { InputMessageFiles } from './input-files';
 import { IconProvider } from '../icon';
 import { CheckSmallIcon, CloseIcon, EditIcon } from '@/ui/icons';
@@ -198,9 +202,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const {
     textareaRef,
     isFocus,
-    height,
     message,
-    setHeight,
     setMessage,
     handleFocus,
     handleBlur,
@@ -232,7 +234,6 @@ export const InputMessage: React.FC<InputMessageProps> = ({
       setMessage('');
       setFiles?.([]);
       setVoiceFiles?.([]);
-      setHeight('calc(var(--bothub-scale, 1) * 22px)');
     },
     [message, files, onSend, setMessage, setFiles, setVoiceFiles],
   );
@@ -407,7 +408,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               value={message}
               placeholder={placeholder}
               disabled={disabled || textAreaDisabled}
-              style={{ ...props.style, height }}
+              style={{ ...props.style, height: TEXTAREA_MIN_HEIGHT }}
               onFocus={handleFocus}
               onBlur={handleBlur}
               onChange={handleChange}

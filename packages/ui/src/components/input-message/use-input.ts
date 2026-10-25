@@ -1,8 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useControllableState, useEventCallback } from '@/ui/utils';
+import {
+  useControllableState,
+  useEventCallback,
+  useIsomorphicLayoutEffect,
+} from '@/ui/utils';
 import { isMobileDevice } from './utils';
 
 export type MessageSubmitKey = 'enter' | 'ctrlEnter';
+
+export const TEXTAREA_MIN_HEIGHT = 'calc(var(--bothub-scale, 1) * 22px)';
 
 interface UseInputProps {
   initialMessage?: string;
@@ -34,7 +40,6 @@ export const useInput = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [isFocus, setIsFocus] = useState((!disabled && autoFocus) ?? false);
-  const [height, setHeight] = useState('calc(var(--bothub-scale, 1) * 22px)');
   const [message, setMessage] = useControllableState({
     value: initialMessage,
     defaultValue: '',
@@ -79,7 +84,10 @@ export const useInput = ({
 
     const shouldFocus = !disabled && !!autoFocus;
 
-    setIsFocus(shouldFocus);
+    // Тот же setState на маунте даёт лишний рендер при первом вводе
+    if (isFocus !== shouldFocus) {
+      setIsFocus(shouldFocus);
+    }
 
     if (shouldFocus) {
       textareaEl.focus();
@@ -138,7 +146,6 @@ export const useInput = ({
           return;
         }
         onSendMessage?.();
-        setHeight('calc(var(--bothub-scale, 1) * 22px)');
         return;
       }
 
@@ -147,27 +154,38 @@ export const useInput = ({
         event.preventDefault();
         event.stopPropagation();
         onSendMessage?.();
-        setHeight('calc(var(--bothub-scale, 1) * 22px)');
       }
     },
   );
 
-  useEffect(() => {
+  const autosizedRef = useRef<{
+    textarea: HTMLTextAreaElement | null;
+    message: string;
+  }>({ textarea: null, message: '' });
+
+  // Высота по содержимому до отрисовки и без второго коммита: пишем в DOM,
+  // читаем scrollHeight один раз. Пересчёт при новом тексте или новом
+  // элементе (textarea могла смонтироваться заново)
+  useIsomorphicLayoutEffect(() => {
     const textareaEl = textareaRef.current;
-    if (textareaEl === null) return;
+    const autosized = autosizedRef.current;
 
-    textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 22px)';
+    if (
+      textareaEl === null ||
+      (autosized.textarea === textareaEl && autosized.message === message)
+    ) {
+      return;
+    }
+    autosizedRef.current = { textarea: textareaEl, message };
+
+    textareaEl.style.height = TEXTAREA_MIN_HEIGHT;
     textareaEl.style.height = `${textareaEl.scrollHeight}px`;
-
-    setHeight(`${textareaEl.scrollHeight}px`);
-  }, [message, autoFocus]);
+  });
 
   return {
     textareaRef,
     isFocus,
-    height,
     message,
-    setHeight,
     setMessage,
     handleFocus,
     handleBlur,

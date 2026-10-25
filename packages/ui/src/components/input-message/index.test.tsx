@@ -437,3 +437,62 @@ describe('InputMessage keyboard', () => {
     expect(textarea.value).toBe('own');
   });
 });
+
+describe('InputMessage textarea height', () => {
+  const LINE_HEIGHT = 23;
+
+  beforeEach(() => {
+    // jsdom не считает layout: строка на каждые 40 символов
+    vi.spyOn(
+      HTMLTextAreaElement.prototype,
+      'scrollHeight',
+      'get',
+    ).mockImplementation(function scrollHeight(this: HTMLTextAreaElement) {
+      return LINE_HEIGHT * Math.max(1, Math.ceil(this.value.length / 40));
+    });
+  });
+  afterEach(() => {
+    cleanup();
+    vi.restoreAllMocks();
+  });
+
+  test('grows with the text in a single commit per keystroke', () => {
+    let commits = 0;
+    customRender(
+      <React.Profiler
+        id="input"
+        onRender={(_, phase) => {
+          if (phase !== 'mount') commits++;
+        }}
+      >
+        <InputMessage placeholder="Сообщение" />
+      </React.Profiler>,
+    );
+    const textarea = screen.getByPlaceholderText('Сообщение');
+    expect(textarea.style.height).toBe(`${LINE_HEIGHT}px`);
+
+    commits = 0;
+    fireEvent.change(textarea, { target: { value: 'a'.repeat(50) } });
+
+    expect(textarea.style.height).toBe(`${LINE_HEIGHT * 2}px`);
+    expect(commits).toBe(1);
+  });
+
+  test('sizes a textarea that mounts again', () => {
+    const element = (textAreaDisabled: boolean) => (
+      <InputMessage
+        placeholder="Сообщение"
+        message={'a'.repeat(90)}
+        textAreaDisabled={textAreaDisabled}
+      />
+    );
+    const { rerender, container } = customRender(element(false));
+
+    rerender(<TestProvider>{element(true)}</TestProvider>);
+    rerender(<TestProvider>{element(false)}</TestProvider>);
+
+    expect(container.querySelector('textarea')?.style.height).toBe(
+      `${LINE_HEIGHT * 3}px`,
+    );
+  });
+});
