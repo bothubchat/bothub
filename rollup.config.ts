@@ -123,7 +123,8 @@ export function createConfig({
           exclude: ['**/*.stories.ts'],
           sourceMap: false,
         }),
-        visualizer(),
+        // Bundle treemap (stats.html) only on demand: ANALYZE=1 yarn build
+        ...(process.env.ANALYZE ? [visualizer()] : []),
         babel({
           babelHelpers: 'bundled',
           exclude: 'node_modules/**',
