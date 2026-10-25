@@ -33,7 +33,7 @@ export const HeaderNavLink: React.FC<HeaderNavLinkProps> = ({
       props.onClick?.(event);
       setIsMenuOpen(false);
     },
-    [props.onClick],
+    [props.onClick, setIsMenuOpen],
   );
 
   return (

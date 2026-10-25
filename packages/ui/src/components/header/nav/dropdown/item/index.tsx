@@ -35,7 +35,7 @@ export const HeaderNavDropdownItem: React.FC<HeaderNavDropdownItemProps> = ({
       props.onClick?.(event);
       setIsOpen(false);
     },
-    [props.onClick],
+    [props.onClick, setIsOpen],
   );
 
   return (
