@@ -1,5 +1,6 @@
 import React, { forwardRef, useCallback, useId, useState } from 'react';
 import { Typography } from '@/ui/components/typography';
+import { useControllableState } from '@/ui/utils';
 import * as S from './styled';
 
 export type DropzoneFieldChangeEventHandler = (files: File[]) => void;
@@ -18,96 +19,108 @@ export type DropzoneFieldProps = {
   id?: string;
 } & Omit<React.ComponentProps<'div'>, 'placeholder' | 'onChange'>;
 
+const isFileAccepted = (file: File, accept?: string): boolean => {
+  if (!accept) return true;
+
+  const acceptTypes = accept.split(',').map((type) => type.trim());
+
+  return acceptTypes.some((type) => {
+    if (type.startsWith('.')) {
+      return file.name.toLowerCase().endsWith(type.toLowerCase());
+    }
+    if (type.endsWith('/*')) {
+      return file.type.startsWith(type.replace('/*', ''));
+    }
+    return file.type === type;
+  });
+};
+
 export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
   (
     {
       leftLabel,
       rightLabels,
       placeholder,
+      error,
       files: initialFiles,
       onChange,
       fullWidth = false,
       disabled = false,
       multiple = true,
       accept,
+      id: initialId,
       ...props
     },
     ref,
   ) => {
-    const id = useId();
+    const generatedId = useId();
+    const id = initialId ?? generatedId;
+    const errorId = `${id}-error`;
     const [isDragActive, setIsDragActive] = useState(false);
 
-    const setInitialFilesChange = useCallback<DropzoneFieldChangeEventHandler>(
-      (files) => {
-        onChange?.(files);
-      },
-      [onChange],
-    );
+    const [, setFiles] = useControllableState<File[]>({
+      value: Array.isArray(initialFiles) ? initialFiles : undefined,
+      defaultValue: [],
+      onChange,
+    });
 
-    const [files, setFiles] = Array.isArray(initialFiles)
-      ? [initialFiles, setInitialFilesChange]
-      : useState<File[]>([]);
+    const addFiles = useCallback(
+      (newFiles: File[]) => {
+        if (multiple) {
+          setFiles((files) => [
+            ...new Map(
+              [...newFiles, ...files].map((file) => [file.name, file]),
+            ).values(),
+          ]);
+        } else {
+          setFiles(newFiles.slice(0, 1));
+        }
+      },
+      [setFiles, multiple],
+    );
 
     const handleInputChange = useCallback<
       React.ChangeEventHandler<HTMLInputElement>
     >(
       (event) => {
-        const droppedFiles = [...(event.currentTarget.files ?? [])];
-
-        if (multiple) {
-          setFiles([
-            ...new Map(
-              [...droppedFiles, ...files].map((file) => [file.name, file]),
-            ).values(),
-          ]);
-        } else {
-          setFiles([...droppedFiles].slice(0, 1));
-        }
+        addFiles([...(event.currentTarget.files ?? [])]);
+        // Reset the input, so the same file can be chosen again
+        event.currentTarget.value = '';
       },
-      [files, setFiles, multiple],
+      [addFiles],
     );
-
-    const isFileAccepted = (file: File, accept?: string): boolean => {
-      if (!accept) return true;
-
-      const acceptTypes = accept.split(',').map((type) => type.trim());
-
-      return acceptTypes.some((type) => {
-        if (type.startsWith('.')) {
-          return file.name.toLowerCase().endsWith(type.toLowerCase());
-        }
-        if (type.endsWith('/*')) {
-          return file.type.startsWith(type.replace('/*', ''));
-        }
-        return file.type === type;
-      });
-    };
 
     const handleDrop = useCallback(
       (e: React.DragEvent) => {
         e.preventDefault();
-        const droppedFiles = [...(e.dataTransfer.files ?? [])].filter((file) =>
-          isFileAccepted(file, accept),
-        );
-
-        if (multiple) {
-          setFiles([
-            ...new Map(
-              [...droppedFiles, ...files].map((file) => [file.name, file]),
-            ).values(),
-          ]);
-        } else {
-          setFiles([...droppedFiles].slice(0, 1));
-        }
         setIsDragActive(false);
+
+        if (disabled) {
+          return;
+        }
+
+        addFiles(
+          [...(e.dataTransfer.files ?? [])].filter((file) =>
+            isFileAccepted(file, accept),
+          ),
+        );
       },
-      [files, setFiles, multiple, accept],
+      [addFiles, accept, disabled],
     );
 
-    const handleDragOver = useCallback((e: React.DragEvent) => {
-      e.preventDefault();
-      setIsDragActive(true);
-    }, []);
+    const handleDragOver = useCallback(
+      (e: React.DragEvent) => {
+        e.preventDefault();
+
+        if (disabled) {
+          e.dataTransfer.dropEffect = 'none';
+          return;
+        }
+
+        setIsDragActive(true);
+      },
+      [disabled],
+    );
 
     const handleDragLeave = useCallback((e: React.DragEvent) => {
       e.preventDefault();
@@ -153,11 +166,19 @@ export const DropzoneField = forwardRef<HTMLInputElement, DropzoneFieldProps>(
           accept={accept}
           onChange={handleInputChange}
           disabled={disabled}
+          aria-invalid={!!error || undefined}
+          aria-describedby={error ? errorId : undefined}
           ref={ref}
         />
 
         {!!placeholder && (
           <S.DropzoneFieldPlaceholder>{placeholder}</S.DropzoneFieldPlaceholder>
+        )}
+
+        {!!error && (
+          <S.DropzoneFieldErrorText id={errorId}>
+            {error}
+          </S.DropzoneFieldErrorText>
         )}
       </S.DropzoneFieldStyled>
     );

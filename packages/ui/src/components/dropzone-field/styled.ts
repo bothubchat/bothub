@@ -80,3 +80,9 @@ export const DropzoneFieldPlaceholder = styled.div`
   position: relative;
   padding: 20px;
 `;
+
+export const DropzoneFieldErrorText = styled(Typography).attrs({
+  variant: 'input-md',
+})`
+  color: ${({ theme }) => theme.colors.critic};
+`;
