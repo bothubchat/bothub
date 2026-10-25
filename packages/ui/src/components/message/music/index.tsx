@@ -50,6 +50,10 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
 
   const audioRef = useRef<HTMLAudioElement>(null);
   const isSeekingRef = useRef(false);
+  // The user asked to play: a load error should refresh the src.
+  const playRequestedRef = useRef(false);
+  // Playback should resume once the refreshed src arrives.
+  const resumeOnSrcChangeRef = useRef(false);
 
   const [internalLoading, setInternalLoading] = useState(true);
   const [isPlayed, setIsPlayed] = useState(false);
@@ -72,40 +76,91 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
     return registerExclusivePlayback(audioEl);
   }, []);
 
+  const play = useCallback(() => {
+    const audioEl = audioRef.current;
+
+    if (!audioEl) {
+      return;
+    }
+
+    notifyExclusivePlayback(audioEl);
+
+    audioEl.play().catch(() => {
+      // Autoplay policy or an interrupted play; load errors are handled in onError.
+      setIsPlayed(!audioEl.paused);
+    });
+  }, []);
+
+  const refresh = useCallback(() => {
+    if (!refreshSrc) {
+      return;
+    }
+
+    resumeOnSrcChangeRef.current = true;
+    refreshSrc();
+  }, [refreshSrc]);
+
   useEffect(() => {
     setIsPlayed(false);
     setCurrentTime(0);
     setDuration(0);
     setInternalLoading(true);
     setCoverError(false);
+    playRequestedRef.current = false;
 
-    if (audioRef.current) {
-      audioRef.current.load();
+    const audioEl = audioRef.current;
+
+    if (!audioEl) {
+      return;
     }
-  }, [src]);
+
+    audioEl.load();
+
+    if (resumeOnSrcChangeRef.current) {
+      resumeOnSrcChangeRef.current = false;
+      play();
+    }
+  }, [src, play]);
 
   useEffect(() => {
     setCoverError(false);
   }, [coverSrc]);
 
-  const handleStart = useCallback(async () => {
-    if (isLoading) return;
+  const handleStart = useCallback(() => {
+    const audioEl = audioRef.current;
 
-    if (checkAlive) {
-      const isAlive = await checkAlive();
+    if (!audioEl || isLoading) return;
 
-      if (!isAlive) {
-        refreshSrc?.();
-        return;
-      }
+    if (audioEl.error) {
+      refresh();
+      return;
     }
 
-    if (audioRef.current) {
-      notifyExclusivePlayback(audioRef.current);
+    playRequestedRef.current = true;
+    // play() must be called synchronously in the click handler, otherwise
+    // Safari loses the user gesture and blocks playback.
+    play();
 
-      await audioRef.current.play();
+    checkAlive?.()
+      .then((isAlive) => {
+        if (!isAlive) {
+          audioRef.current?.pause();
+          refresh();
+        }
+      })
+      .catch(() => {});
+  }, [checkAlive, isLoading, play, refresh]);
+
+  // Without it a broken src kept the skeleton forever.
+  const handleError = useCallback(() => {
+    setInternalLoading(false);
+    setIsPlayed(false);
+
+    if (playRequestedRef.current) {
+      playRequestedRef.current = false;
+      refresh();
     }
-  }, [checkAlive, refreshSrc, isLoading]);
+  }, [refresh]);
 
   const handlePause = useCallback(() => {
     if (audioRef.current) {
@@ -200,6 +255,7 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
         onPause={() => setIsPlayed(false)}
         onLoadedMetadata={handleLoadedMetadata}
         onCanPlayThrough={() => setInternalLoading(false)}
+        onError={handleError}
         onTimeUpdate={handleTimeUpdate}
         onEnded={handleEnded}
       />
