@@ -20,12 +20,12 @@ export const MessageTableCell: React.FC<MessageTableCellProps> = ({
   ...props
 }) => {
   const { color } = useMessage();
+  const Cell = head ? MessageTableHeadCell : MessageTableCellStyled;
 
   return (
-    <MessageTableCellStyled
+    <Cell
       className={className}
       style={style}
-      as={head ? MessageTableHeadCell : MessageTableCellStyled}
       {...props}
     >
       <MessageTableCellText
@@ -34,7 +34,7 @@ export const MessageTableCell: React.FC<MessageTableCellProps> = ({
       >
         {children}
       </MessageTableCellText>
-    </MessageTableCellStyled>
+    </Cell>
   );
 };
 
