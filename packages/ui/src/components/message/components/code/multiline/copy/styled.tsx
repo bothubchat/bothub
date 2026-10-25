@@ -1,6 +1,7 @@
 import { styled, css } from 'styled-components';
 import { MessageVariant } from '@/ui/components/message';
 import { Button } from '@/ui/components/button';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageMultilineCodeCopyButtonStyledProps {
   $focus: boolean;
@@ -20,15 +21,15 @@ export const MessageMultilineCodeCopyButtonStyled = styled(Button).attrs({
     fill: ${({ theme, $messageVariant, $messageColor }) => {
       switch ($messageVariant) {
         case 'user':
-          return theme.colors.accent.primary;
+          return themeVar(theme, 'colors.accent.primary');
         case 'assistant':
           switch ($messageColor) {
             case 'default':
-              return theme.default.colors.base.white;
+              return themeVar(theme, 'default.colors.base.white');
             case 'green':
-              return theme.tokens.messageAccentGreen;
+              return themeVar(theme, 'tokens.messageAccentGreen');
             case 'purple':
-              return theme.tokens.messageAccentPurple;
+              return themeVar(theme, 'tokens.messageAccentPurple');
             default:
               return $messageColor;
           }
@@ -40,15 +41,15 @@ export const MessageMultilineCodeCopyButtonStyled = styled(Button).attrs({
       fill: ${({ theme, $messageVariant, $messageColor }) => {
         switch ($messageVariant) {
           case 'user':
-            return theme.colors.accent.primary;
+            return themeVar(theme, 'colors.accent.primary');
           case 'assistant':
             switch ($messageColor) {
               case 'default':
-                return theme.default.colors.base.white;
+                return themeVar(theme, 'default.colors.base.white');
               case 'green':
-                return theme.tokens.messageAccentGreen;
+                return themeVar(theme, 'tokens.messageAccentGreen');
               case 'purple':
-                return theme.tokens.messageAccentPurple;
+                return themeVar(theme, 'tokens.messageAccentPurple');
               default:
                 return $messageColor;
             }

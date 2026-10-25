@@ -1,5 +1,6 @@
 import { styled, css, keyframes } from 'styled-components';
 import { SkeletonVariant } from './types';
+import { themeVar } from '@/ui/theme';
 
 // Sizes, colors and opacity come from custom properties set inline by
 // `Skeleton`, so these keyframes and the class below don't change per value.
@@ -37,7 +38,7 @@ export const SkeletonStyled = styled.span<SkeletonStyledProps>`
   vertical-align: middle;
   width: var(${skeletonProperties.width}, var(--skeleton-width, 40px));
   height: var(${skeletonProperties.height}, var(--skeleton-height, 40px));
-  background: ${({ theme }) => theme.colors.grayScale.gray1};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   cursor: progress;
   ${({ $variant }) => {
     switch ($variant) {
@@ -55,8 +56,10 @@ export const SkeletonStyled = styled.span<SkeletonStyledProps>`
         `;
     }
   }}
-  ${skeletonProperties.colorFrom}: ${({ theme }) => theme.tokens.skeletonFrom};
-  ${skeletonProperties.colorTo}: ${({ theme }) => theme.tokens.skeletonTo};
+  ${skeletonProperties.colorFrom}: ${({ theme }) =>
+    themeVar(theme, 'tokens.skeletonFrom')};
+  ${skeletonProperties.colorTo}: ${({ theme }) =>
+    themeVar(theme, 'tokens.skeletonTo')};
   animation: ${pulse} 2s infinite forwards;
   overflow: hidden;
 `;

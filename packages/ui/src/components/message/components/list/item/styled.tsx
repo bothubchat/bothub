@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageListVariant } from '../types';
 import { messageSelectionStyles } from '../../selection';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageListItemStyledProps {
   $variant: MessageListVariant;
@@ -16,10 +17,10 @@ export const MessageListItemStyled = styled(Typography).attrs({
   position: relative;
   color: ${({ theme, $messageColor }) => {
     if ($messageColor !== 'default') {
-      return theme.colors.base.white;
+      return themeVar(theme, 'colors.base.white');
     }
 
-    return theme.colors.base.white;
+    return themeVar(theme, 'colors.base.white');
   }};
   &:not(:first-child) {
     margin-top: 10px;

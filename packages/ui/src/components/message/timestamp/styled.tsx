@@ -7,6 +7,7 @@ import {
   MessageVariant,
 } from '../types';
 import { isBright } from '@/ui/utils';
+import { themeVar } from '@/ui/theme';
 
 export interface TimestampProps {
   $timestampPosition?: MessageTimestampPosition;
@@ -42,16 +43,16 @@ export const TimestampText = styled(Typography).attrs({
 })<TimestampTextProp>`
   color: ${({ theme, $color, $variant }) => {
     if ($variant === 'assistant') {
-      return theme.tokens.timestampAssistantText;
+      return themeVar(theme, 'tokens.timestampAssistantText');
     }
     if (theme.scheme === 'standard' && theme.mode === 'light') {
-      return theme.default.colors.base.black;
+      return themeVar(theme, 'default.colors.base.black');
     }
 
     if (theme.bright || isBright($color)) {
-      return theme.tokens.inkDark;
+      return themeVar(theme, 'tokens.inkDark');
     }
-    return theme.tokens.inkLight;
+    return themeVar(theme, 'tokens.inkLight');
   }} !important;
   ${adaptive({
     desktop: css`

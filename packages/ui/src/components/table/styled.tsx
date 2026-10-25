@@ -1,6 +1,7 @@
 import { styled, css } from 'styled-components';
 import { TableCellStyled, TableCellText } from './cell/styled';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
+import { themeVar } from '@/ui/theme';
 
 export const TableStyled = styled.div`
   display: flex;
@@ -44,9 +45,10 @@ export const TableContent = styled.table<{ $fullWidth?: boolean }>`
 export const TableHead = styled.thead`
   ${() => css`
     ${TableCellStyled} {
-      background: ${({ theme }) => theme.colors.grayScale.gray4};
+      background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
       ${TableCellText} {
-        color: ${({ theme }) => theme.default.colors.grayScale.gray6};
+        color: ${({ theme }) =>
+          themeVar(theme, 'default.colors.grayScale.gray6')};
       }
     }
     ${TableRow}:last-child > ${TableCellStyled} {

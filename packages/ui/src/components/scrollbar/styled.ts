@@ -1,6 +1,7 @@
 import { styled, css } from 'styled-components';
 import { ScrollbarOverflow, ScrollbarVariant } from './types';
 import { adaptive } from '@/ui/adaptive';
+import { themeVar } from '@/ui/theme';
 
 export interface ScrollbarStyledProps {
   $overflow: ScrollbarOverflow;
@@ -52,21 +53,21 @@ export const ScrollbarContent = styled.div<ScrollbarContentProps>`
       &::-webkit-scrollbar {
         width: ${`${$size}px`};
         height: ${`${$size}px`};
-        background: ${theme.colors.grayScale.gray4};
+        background: ${themeVar(theme, 'colors.grayScale.gray4')};
         ${$variant === 'secondary' &&
         css`
           border-radius: ${`${$size / 2}px`};
         `}
       }
       &::-webkit-scrollbar-thumb {
-        background: ${theme.tokens.accentAdaptive};
+        background: ${themeVar(theme, 'tokens.accentAdaptive')};
         ${$variant === 'secondary' &&
         css`
           border-radius: ${`${$size / 2}px`};
         `}
       }
       &::-webkit-scrollbar-track {
-        background: ${({ theme }) => theme.tokens.scrollbarTrack};
+        background: ${({ theme }) => themeVar(theme, 'tokens.scrollbarTrack')};
         ${$variant === 'secondary' &&
         css`
           border-radius: ${`${$size / 2}px`};

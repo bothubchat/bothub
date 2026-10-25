@@ -1,5 +1,6 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
+import { themeVar } from '@/ui/theme';
 
 export interface RadioStyledProps {
   $disabled: boolean;
@@ -39,7 +40,8 @@ export const RadioCircle = styled.span<RadioCircleProps>`
   ${({ $skeleton }) =>
     !$skeleton &&
     css`
-      border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+      border: 1px solid
+        ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
     `}
 `;
 
@@ -49,7 +51,7 @@ export const RadioCircleDot = styled.span`
   height: 8px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: ${({ theme }) => theme.colors.grayScale.gray2};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   visibility: hidden;
 `;
 
@@ -64,20 +66,20 @@ export const RadioInput = styled.input`
   margin: 0;
   opacity: 0;
   &:focus-visible:not(:disabled) + ${RadioCircle} {
-    border-color: ${({ theme }) => theme.colors.accent.primary};
+    border-color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
   }
   &:not(:disabled) + ${RadioCircle}:hover {
-    border-color: ${({ theme }) => theme.colors.accent.primary};
+    border-color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
   }
   &:checked:not(:disabled) + ${RadioCircle} {
-    border-color: ${({ theme }) => theme.colors.accent.primary};
+    border-color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
     ${RadioCircleDot} {
       visibility: visible;
-      background: ${({ theme }) => theme.colors.accent.primary};
+      background: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
     }
   }
   &:disabled + ${RadioCircle} {
-    border-color: ${({ theme }) => theme.colors.grayScale.gray1};
-    background: ${({ theme }) => theme.colors.grayScale.gray6};
+    border-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
+    background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray6')};
   }
 `;

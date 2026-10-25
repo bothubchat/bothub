@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageColor, MessageVariant } from '../types';
+import { themeVar } from '@/ui/theme';
 
 export const MessageFileStyled = styled.a`
   display: flex;
@@ -27,10 +28,10 @@ export const MessageFileName = styled(Typography).attrs({
 })<MessageFileNameProps>`
   color: ${({ theme, $variant }) => {
     if ($variant === 'assistant') {
-      return theme.colors.base.white;
+      return themeVar(theme, 'colors.base.white');
     }
 
-    return theme.tokens.userMessageText;
+    return themeVar(theme, 'tokens.userMessageText');
   }};
 `;
 

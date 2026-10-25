@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
+import { themeVar } from '@/ui/theme';
 
 export interface TabStyledProps {
   $active: boolean;
@@ -13,9 +14,11 @@ export const TabStyled: React.FC<
   outline: none;
   border: 1px solid
     ${({ theme, $active }) =>
-      $active ? theme.colors.accent.primary : theme.colors.grayScale.gray3};
+      $active
+        ? themeVar(theme, 'colors.accent.primary')
+        : themeVar(theme, 'colors.grayScale.gray3')};
   background: ${({ theme, $active }) =>
-    $active ? theme.colors.accent.primary : 'rgba(0, 0, 0, 0)'};
+    $active ? themeVar(theme, 'colors.accent.primary') : 'rgba(0, 0, 0, 0)'};
   border-radius: 8px;
   padding: 0px;
   cursor: ${({ $active }) => ($active ? 'default' : 'pointer')};
@@ -27,7 +30,8 @@ export const TabStyled: React.FC<
     background-color 0.3s ease-out,
     transform 0.2s ease-out;
   &:focus-visible {
-    outline: 2px solid ${({ theme }) => theme.colors.accent.primary};
+    outline: 2px solid
+      ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
     outline-offset: 2px;
   }
   ${adaptive(() => ({
@@ -44,8 +48,10 @@ export const TabStyled: React.FC<
     !$active &&
     css`
       &:hover {
-        border-color: ${({ theme }) => theme.colors.grayScale.gray3};
-        background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+        border-color: ${({ theme }) =>
+          themeVar(theme, 'colors.grayScale.gray3')};
+        background-color: ${({ theme }) =>
+          themeVar(theme, 'colors.grayScale.gray3')};
       }
       &:active {
         transform: translateY(1px);
@@ -62,9 +68,9 @@ export const TabText = styled(Typography).attrs({
 })<TabTextProps>`
   color: ${({ theme, $active }) => {
     if ($active) {
-      return theme.default.colors.base.white;
+      return themeVar(theme, 'default.colors.base.white');
     }
 
-    return theme.colors.base.white;
+    return themeVar(theme, 'colors.base.white');
   }};
 `;

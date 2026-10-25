@@ -1,5 +1,6 @@
 import { styled, css } from 'styled-components';
 import { HeaderVariant } from '../../types';
+import { themeVar } from '@/ui/theme';
 
 export interface HeaderNavLinkStyledProps {
   $variant: HeaderVariant;
@@ -14,9 +15,9 @@ export const HeaderNavLinkStyled = styled.a<HeaderNavLinkStyledProps>`
         font-weight: 600;
         font-size: 16px;
         line-height: 22px;
-        color: ${theme.colors.base.white};
+        color: ${themeVar(theme, 'colors.base.white')};
         &:hover {
-          color: ${theme.colors.accent.primaryLight};
+          color: ${themeVar(theme, 'colors.accent.primaryLight')};
         }
       `;
     }
@@ -27,14 +28,14 @@ export const HeaderNavLinkStyled = styled.a<HeaderNavLinkStyledProps>`
       font-size: 16px;
       line-height: 22px;
       cursor: pointer;
-      color: ${theme.colors.base.white};
+      color: ${themeVar(theme, 'colors.base.white')};
       ${() => {
         switch ($variant) {
           case 'main':
             return css`
               font-weight: 600;
               &:hover {
-                color: ${theme.colors.accent.primaryLight};
+                color: ${themeVar(theme, 'colors.accent.primaryLight')};
               }
             `;
           case 'dashboard':
@@ -63,5 +64,5 @@ export const HeaderNavLinkIcon = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
 `;

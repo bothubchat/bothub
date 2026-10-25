@@ -1,6 +1,7 @@
 import { css, keyframes, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
+import { themeVar } from '@/ui/theme';
 
 type IsOpenProps = {
   $isOpen: boolean;
@@ -27,7 +28,8 @@ export const AccordionHead = styled.div<
   padding: 18px;
   cursor: pointer;
   border: ${({ theme, $isDefaultVariant }) =>
-    $isDefaultVariant && `1px solid ${theme.colors.grayScale.gray2}`};
+    $isDefaultVariant &&
+    `1px solid ${themeVar(theme, 'colors.grayScale.gray2')}`};
   border-radius: 20px;
   transition:
     border-bottom 0.3s,
@@ -51,7 +53,8 @@ export const AccordionHead = styled.div<
     position: absolute;
     top: 0;
     left: 0;
-    background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+    background-color: ${({ theme }) =>
+      themeVar(theme, 'colors.grayScale.gray4')};
     opacity: ${({ $isDefaultVariant }) =>
       !$isDefaultVariant ? '0.75' : '0.5'};
   }
@@ -79,11 +82,12 @@ export const AccordionBody = styled.div<
   display: grid;
   background-color: ${({ theme, $isDefaultVariant }) =>
     !$isDefaultVariant
-      ? theme.tokens.gray4Alpha75
-      : theme.colors.grayScale.gray3};
+      ? themeVar(theme, 'tokens.gray4Alpha75')
+      : themeVar(theme, 'colors.grayScale.gray3')};
 
   border: ${({ theme, $isDefaultVariant }) =>
-    $isDefaultVariant && `1px solid ${theme.colors.grayScale.gray2}`};
+    $isDefaultVariant &&
+    `1px solid ${themeVar(theme, 'colors.grayScale.gray2')}`};
 
   border-top: 0;
   border-radius: 0 0 20px 20px;

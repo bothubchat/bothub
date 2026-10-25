@@ -1,5 +1,6 @@
 import { styled, css } from 'styled-components';
 import { SelectFieldSize } from '../types';
+import { themeVar } from '@/ui/theme';
 
 export const SelectFieldGroupStyled = styled.div`
   flex: 1;
@@ -30,7 +31,7 @@ export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
       }
 
       &::-webkit-scrollbar-thumb {
-        background: ${({ theme }) => theme.colors.accent.primary};
+        background: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
         border-radius: 2px;
       }
 

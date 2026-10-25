@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '@/ui/components/message';
+import { themeVar } from '@/ui/theme';
 
 export const MessageMultilineCodeStyled = styled.div`
   display: flex;
@@ -22,13 +23,13 @@ export const MessageMultilineCodeHead = styled.div<MessageMultilineCodeHeadProps
   background: ${({ theme, $messageVariant, $messageColor }) => {
     switch ($messageVariant) {
       case 'user':
-        return theme.default.colors.base.white;
+        return themeVar(theme, 'default.colors.base.white');
       case 'assistant':
         if ($messageColor !== 'default') {
-          return theme.tokens.codeAccent;
+          return themeVar(theme, 'tokens.codeAccent');
         }
 
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
     }
   }};
   padding: 14px;
@@ -45,15 +46,15 @@ export const MessageMultilineCodeLanguage = styled(Typography).attrs({
   color: ${({ theme, $messageVariant, $messageColor }) => {
     switch ($messageVariant) {
       case 'user':
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
       case 'assistant':
         switch ($messageColor) {
           case 'default':
-            return theme.default.colors.base.white;
+            return themeVar(theme, 'default.colors.base.white');
           case 'green':
-            return theme.tokens.messageAccentGreen;
+            return themeVar(theme, 'tokens.messageAccentGreen');
           case 'purple':
-            return theme.tokens.messageAccentPurple;
+            return themeVar(theme, 'tokens.messageAccentPurple');
           default:
             return $messageColor;
         }
@@ -63,21 +64,21 @@ export const MessageMultilineCodeLanguage = styled(Typography).attrs({
     background: ${({ theme, $messageColor }) => {
       switch ($messageColor) {
         case 'default':
-          return theme.default.colors.base.white;
+          return themeVar(theme, 'default.colors.base.white');
         case 'green':
-          return theme.colors.gpt3;
+          return themeVar(theme, 'colors.gpt3');
         case 'purple':
-          return theme.colors.gpt4;
+          return themeVar(theme, 'colors.gpt4');
         default:
           return $messageColor;
       }
     }};
     color: ${({ theme, $messageColor }) => {
       if ($messageColor === 'default') {
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
       }
 
-      return theme.default.colors.base.white;
+      return themeVar(theme, 'default.colors.base.white');
     }};
   }
 `;

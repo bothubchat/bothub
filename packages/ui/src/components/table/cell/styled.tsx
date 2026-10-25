@@ -2,14 +2,15 @@ import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { TableCellSize } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
+import { themeVar } from '@/ui/theme';
 
 export interface TableCellStyledProps {
   $size: TableCellSize;
 }
 
 export const TableCellStyled = styled.td<TableCellStyledProps>`
-  background: ${({ theme }) => theme.colors.base.black};
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  background: ${({ theme }) => themeVar(theme, 'colors.base.black')};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   text-align: center;
   box-sizing: border-box;
   ${({ $size }) => {

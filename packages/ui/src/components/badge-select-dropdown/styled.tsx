@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { Typography } from '../typography';
 import { Variant } from './types';
+import { themeVar } from '@/ui/theme';
 
 export const BadgeSelectDropdownTrigger = styled.button<{
   $active: boolean;
@@ -20,9 +21,9 @@ export const BadgeSelectDropdownTrigger = styled.button<{
   max-width: 100%;
   background: ${({ theme, $active, $colorButtonOpened }) =>
     $active
-      ? $colorButtonOpened || theme.tokens.surfaceActive
-      : theme.tokens.surfaceSecondary};
-  color: ${({ theme }) => theme.colors.base.white};
+      ? $colorButtonOpened || themeVar(theme, 'tokens.surfaceActive')
+      : themeVar(theme, 'tokens.surfaceSecondary')};
+  color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
 `;
 
 export const BadgeSelectDropdownSpanStyled = styled(Typography).attrs({

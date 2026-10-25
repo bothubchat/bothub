@@ -2,12 +2,14 @@ import { styled } from 'styled-components';
 import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
+import { themeVar } from '@/ui/theme';
 
 export const Wrapper = styled.div`
   padding: 16px;
   border-radius: 8px;
   width: 284px;
-  background-color: ${(props) => props.theme.colors.grayScale.gray3};
+  background-color: ${(props) =>
+    themeVar(props.theme, 'colors.grayScale.gray3')};
   z-index: ${({ theme }) => theme.zIndex.select};
 `;
 
@@ -70,22 +72,23 @@ export const DateGridInteractiveItem = styled(DateGridItem).attrs({
   cursor: pointer;
   transition: 0.2s ease-out;
   &:hover {
-    background-color: ${(props) => props.theme.colors.grayScale.gray2};
+    background-color: ${(props) =>
+      themeVar(props.theme, 'colors.grayScale.gray2')};
   }
   ${(props) =>
     props.$active &&
     `
     border-radius: 8px;
-    background-color: ${props.theme.colors.accent.primary};
+    background-color: ${themeVar(props.theme, 'colors.accent.primary')};
     &:hover {
-      background-color: ${props.theme.colors.accent.primaryLight};
+      background-color: ${themeVar(props.theme, 'colors.accent.primaryLight')};
     }
   `}
   ${(props) =>
     props.$outRange &&
     `
     ${DayOfMonth} {
-      color: ${props.$active ? props.theme.colors.grayScale.gray2 : props.theme.colors.grayScale.gray1};
+      color: ${props.$active ? themeVar(props.theme, 'colors.grayScale.gray2') : themeVar(props.theme, 'colors.grayScale.gray1')};
     }
   `}
   ${(props) =>
@@ -104,12 +107,12 @@ export const DateGridInteractiveItem = styled(DateGridItem).attrs({
     props.$isBetweenSelected &&
     `
     border-radius: 0;
-    background-color: ${props.theme.colors.grayScale.gray2};
+    background-color: ${themeVar(props.theme, 'colors.grayScale.gray2')};
   `}
 `;
 
 export const DayOfWeek = styled(Typography)`
-  color: ${(props) => props.theme.colors.grayScale.gray1};
+  color: ${(props) => themeVar(props.theme, 'colors.grayScale.gray1')};
   text-overflow: ellipsis;
   overflow: hidden;
 `;

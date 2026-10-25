@@ -3,12 +3,13 @@ import { Typography } from '@/ui/components/typography';
 import { Progress } from '@/ui/components/progress';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
+import { themeVar } from '@/ui/theme';
 
 export const ReferralCardStyled = styled.div`
   display: flex;
   width: 100%;
-  background: ${({ theme }) => theme.tokens.surfaceElevated};
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => themeVar(theme, 'tokens.surfaceElevated')};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   border-radius: 14px;
   overflow: hidden;
   ${adaptive({
@@ -60,7 +61,8 @@ export const ReferralCardAI = styled.div`
   align-items: center;
   height: 100%;
   box-sizing: border-box;
-  border-right: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  border-right: 1px solid
+    ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   ${adaptive({
     variant: 'dashboard',
     desktop: css`
@@ -136,7 +138,7 @@ export const ReferralCardPriceRange = styled.div`
 export const ReferralCardPriceRangeText = styled(Typography).attrs({
   variant: 'body-m-regular',
 })`
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -164,7 +166,7 @@ export const ReferralCardTable = styled.div`
     variant: 'dashboard',
     merge: true,
     tablet: css`
-      border-top: 1px solid ${theme.colors.grayScale.gray3};
+      border-top: 1px solid ${themeVar(theme, 'colors.grayScale.gray3')};
     `,
   }))}
 `;
@@ -194,7 +196,7 @@ export const ReferralCardTableCell = styled(Typography).attrs({
 
 export const ReferralCardTableHeadCell = styled(ReferralCardTableCell)`
   width: 330px;
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   --skeleton-width: 200px;
 `;
 
@@ -204,7 +206,8 @@ export const ReferralCardBottom = styled.div`
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-  border-top: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  border-top: 1px solid
+    ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   ${adaptive({
     variant: 'dashboard',
     desktop: css`
@@ -232,5 +235,5 @@ export const ReferralCardWithdrawButton = styled(Button)`
 export const ReferralCardDateCreated = styled(Typography).attrs({
   variant: 'body-m-medium',
 })`
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
 `;

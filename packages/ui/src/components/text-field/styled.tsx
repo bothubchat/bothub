@@ -4,6 +4,7 @@ import { Skeleton } from '@/ui/components/skeleton';
 import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
 import { Variant } from './types';
+import { themeVar } from '@/ui/theme';
 
 export interface VariantProps {
   $variant: Variant;
@@ -70,71 +71,73 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
   ${({ $variant }) =>
     $variant === 'primary' &&
     css`
-      border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+      border: 1px solid
+        ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
     `};
 
   ${({ theme, $error, $hover, $focus, $disabled, $skeleton }) => {
     if ($disabled || $skeleton) {
       return css`
-        border-color: ${({ theme }) => theme.colors.grayScale.gray2};
+        border-color: ${({ theme }) =>
+          themeVar(theme, 'colors.grayScale.gray2')};
       `;
     }
     if ($error) {
       return css`
-        border-color: ${theme.colors.critic};
+        border-color: ${themeVar(theme, 'colors.critic')};
       `;
     }
 
     return css`
       ${($hover || $focus) &&
       css`
-        border-color: ${theme.colors.accent.primary};
+        border-color: ${themeVar(theme, 'colors.accent.primary')};
       `}
       /* :where keeps the specificity of a single class, as with the
          previous state classes, so overrides from wrappers still apply */
       &:where(:hover, :focus-within) {
-        border-color: ${theme.colors.accent.primary};
+        border-color: ${themeVar(theme, 'colors.accent.primary')};
       }
     `;
   }}
   ${({ theme, $focus, $disabled, $skeleton, $variant }) => {
     if ($disabled || $skeleton) {
       return css`
-        background: ${theme.colors.grayScale.gray3};
+        background: ${themeVar(theme, 'colors.grayScale.gray3')};
       `;
     }
 
     const focusStyles =
       theme.scheme === 'custom'
         ? css`
-            background: ${theme.colors.grayScale.gray2};
+            background: ${themeVar(theme, 'colors.grayScale.gray2')};
             > svg path {
-              fill: ${theme.colors.accent.primary};
+              fill: ${themeVar(theme, 'colors.accent.primary')};
             }
           `
         : css`
             background: ${$variant === 'primary'
-              ? theme.tokens.surfaceElevated
-              : theme.colors.grayScale.gray7};
+              ? themeVar(theme, 'tokens.surfaceElevated')
+              : themeVar(theme, 'colors.grayScale.gray7')};
             > svg path {
-              fill: ${theme.tokens.accentContrast};
+              fill: ${themeVar(theme, 'tokens.accentContrast')};
             }
           `;
 
     const idleStyles =
       theme.scheme === 'custom'
         ? css`
-            background: ${theme.colors.grayScale.gray7};
+            background: ${themeVar(theme, 'colors.grayScale.gray7')};
             > svg path {
-              fill: ${theme.colors.grayScale.gray1};
+              fill: ${themeVar(theme, 'colors.grayScale.gray1')};
             }
           `
         : css`
             background: ${$variant === 'primary'
-              ? theme.tokens.surfaceElevated
-              : theme.colors.grayScale.gray7};
+              ? themeVar(theme, 'tokens.surfaceElevated')
+              : themeVar(theme, 'colors.grayScale.gray7')};
             > svg path {
-              fill: ${theme.colors.grayScale.gray1};
+              fill: ${themeVar(theme, 'colors.grayScale.gray1')};
             }
           `;
 
@@ -175,33 +178,37 @@ export const TextFieldInput = styled.input<VariantProps>`
   border: none;
   outline: none;
   padding: ${({ $variant }) => ($variant === 'primary' ? 14 : 8)}px 0px;
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
   cursor: inherit;
   &:hover ~ ${TextFieldBlock} {
-    border-color: ${({ theme }) => theme.colors.accent.primary};
+    border-color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
   }
   &::placeholder {
-    color: ${({ theme }) => theme.colors.grayScale.gray1};
+    color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   }
   &:focus::placeholder {
-    color: ${({ theme }) => theme.tokens.borderFocus};
+    color: ${({ theme }) => themeVar(theme, 'tokens.borderFocus')};
   }
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
   &:-webkit-autofill:active {
-    caret-color: ${({ theme }) => theme.colors.base.white};
+    caret-color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
     -webkit-background-clip: text;
-    -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
-    box-shadow: 0 0 0 100px ${({ theme }) => theme.tokens.surfaceElevated} inset !important;
+    -webkit-text-fill-color: ${({ theme }) =>
+      themeVar(theme, 'colors.base.white')};
+    box-shadow: 0 0 0 100px
+      ${({ theme }) => themeVar(theme, 'tokens.surfaceElevated')} inset !important;
   }
   &:-webkit-autofill:focus {
-    caret-color: ${({ theme }) => theme.colors.base.white};
+    caret-color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
     -webkit-background-clip: text;
-    -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
-    box-shadow: 0 0 0 100px ${({ theme }) => theme.tokens.surfaceElevated} inset !important;
+    -webkit-text-fill-color: ${({ theme }) =>
+      themeVar(theme, 'colors.base.white')};
+    box-shadow: 0 0 0 100px
+      ${({ theme }) => themeVar(theme, 'tokens.surfaceElevated')} inset !important;
   }
   &::-webkit-search-decoration,
   &::-webkit-search-cancel-button,
@@ -270,7 +277,7 @@ export const TextFieldErrorText = styled(Typography).attrs({
 })`
   display: inline-flex;
   margin-top: 8px;
-  color: ${({ theme }) => theme.colors.critic};
+  color: ${({ theme }) => themeVar(theme, 'colors.critic')};
 `;
 
 export const TextFieldSkeleton = styled(Skeleton)`

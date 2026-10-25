@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import bgLines from './assets/bg-lines.svg';
 import { Container } from '@/ui/components/container';
+import { themeVar } from '@/ui/theme';
 
 export interface SectionStyledProps {
   $bg: boolean;
@@ -9,7 +10,7 @@ export interface SectionStyledProps {
 }
 
 export const SectionStyled = styled.section<SectionStyledProps>`
-  background: ${({ theme }) => theme.colors.base.black};
+  background: ${({ theme }) => themeVar(theme, 'colors.base.black')};
   ${({ $bgLines }) =>
     $bgLines &&
     css`

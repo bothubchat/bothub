@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { themeVar } from '@/ui/theme';
 
 export const StyledLine = styled.div`
   width: 100%;
@@ -6,9 +7,9 @@ export const StyledLine = styled.div`
   border-radius: 2px;
   background-color: ${({ theme }) => {
     if (theme.bright) {
-      return theme.tokens.inkDark;
+      return themeVar(theme, 'tokens.inkDark');
     }
-    return theme.tokens.inkLight;
+    return themeVar(theme, 'tokens.inkLight');
   }};
   position: absolute;
   left: 0;

@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '@/ui/components/message';
 import { messageSelectionStyles } from '../selection';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageParagraphStyledProps {
   $variant: MessageVariant;
@@ -16,27 +17,27 @@ export const MessageParagraphStyled = styled(
   color: ${({ theme, $variant, $color }) => {
     if ($variant === 'user') {
       if (theme.scheme === 'custom') {
-        return theme.colors.custom.message.user.text;
+        return themeVar(theme, 'colors.custom.message.user.text');
       }
 
       if (theme.scheme === 'standard') {
-        return theme.colors.base.white;
+        return themeVar(theme, 'colors.base.white');
       }
 
       return theme.bright
-        ? theme.tokens.inkDark
-        : theme.default.colors.base.white;
+        ? themeVar(theme, 'tokens.inkDark')
+        : themeVar(theme, 'default.colors.base.white');
     }
 
     if (theme.scheme === 'custom') {
-      return theme.colors.custom.message.assistant.text;
+      return themeVar(theme, 'colors.custom.message.assistant.text');
     }
 
     if ($color === 'default') {
-      return theme.colors.base.white;
+      return themeVar(theme, 'colors.base.white');
     }
 
-    return theme.colors.base.white;
+    return themeVar(theme, 'colors.base.white');
   }};
   ${({ $disableMargin }) =>
     !$disableMargin &&
@@ -55,8 +56,10 @@ export const MessageParagraphStyled = styled(
       switch ($variant) {
         case 'user':
           return css`
-            background: ${({ theme }) => theme.tokens.selectionUserBackground};
-            color: ${({ theme }) => theme.tokens.messageAccentDefault};
+            background: ${({ theme }) =>
+              themeVar(theme, 'tokens.selectionUserBackground')};
+            color: ${({ theme }) =>
+              themeVar(theme, 'tokens.messageAccentDefault')};
           `;
         case 'assistant':
           return messageSelectionStyles($color);

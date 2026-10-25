@@ -4,6 +4,7 @@ import { AttachIcon } from '@/ui/icons/attach';
 import { Badge } from '@/ui/components/badge';
 import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
+import { themeVar } from '@/ui/theme';
 
 export interface FileFieldStyledProps {
   $error: boolean;
@@ -23,7 +24,7 @@ export const FileFieldStyled = styled.div<FileFieldStyledProps>`
     css`
       &:hover {
         ${FileFieldBlock} {
-          border-color: ${theme.colors.accent.primary};
+          border-color: ${themeVar(theme, 'colors.accent.primary')};
         }
       }
     `}
@@ -61,20 +62,20 @@ export const FileFieldBlock = styled.label<FileFieldBlockProps>`
   border: 1px solid
     ${({ theme, $error, $disabled }) => {
       if ($disabled) {
-        return theme.colors.grayScale.gray1;
+        return themeVar(theme, 'colors.grayScale.gray1');
       }
       if ($error) {
-        return theme.colors.critic;
+        return themeVar(theme, 'colors.critic');
       }
 
-      return theme.colors.grayScale.gray2;
+      return themeVar(theme, 'colors.grayScale.gray2');
     }};
   background: ${({ theme, $disabled }) => {
     if ($disabled) {
-      return theme.colors.grayScale.gray3;
+      return themeVar(theme, 'colors.grayScale.gray3');
     }
 
-    return theme.tokens.surfaceElevated;
+    return themeVar(theme, 'tokens.surfaceElevated');
   }};
   border-radius: 8px;
   cursor: ${({ $disabled }) => {
@@ -91,7 +92,7 @@ export const FileFieldBlock = styled.label<FileFieldBlockProps>`
     !$error &&
     css`
       &:has(input:focus-visible) {
-        border-color: ${theme.colors.accent.primary};
+        border-color: ${themeVar(theme, 'colors.accent.primary')};
       }
     `}
   ${({ $open }) =>
@@ -122,7 +123,7 @@ export const FileFieldInput = styled.input.attrs({
 export const FileFieldPlaceholder = styled(Typography).attrs({
   variant: 'input-sm',
 })`
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
 `;
 
 export const FileFieldFiles = styled.div`
@@ -142,5 +143,5 @@ export const FileFieldFileDeleteButton = styled(Button).attrs({
 export const FileFieldErrorText = styled(Typography).attrs({
   variant: 'input-md',
 })`
-  color: ${({ theme }) => theme.colors.critic};
+  color: ${({ theme }) => themeVar(theme, 'colors.critic')};
 `;

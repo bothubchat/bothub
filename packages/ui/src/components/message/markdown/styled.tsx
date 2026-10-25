@@ -22,6 +22,7 @@ import {
   MessageMultilineCodeContentContainer,
   MessageMultilineCodeLastLine,
 } from '../components/code/multiline/content/styled';
+import { themeVar } from '@/ui/theme';
 
 export const MessageMarkdownStyled = styled.div`
   display: flex;
@@ -40,7 +41,7 @@ export const MessageMarkdownLine = React.memo(
   styled.div<MessageMarkdownStyledProps>`
     display: block;
     width: 100%;
-    color: ${({ theme }) => theme.tokens.markdownText};
+    color: ${({ theme }) => themeVar(theme, 'tokens.markdownText')};
 
     font-weight: 400;
     font-size: 16px;
@@ -106,8 +107,8 @@ export const MessageMarkdownLine = React.memo(
             border-radius: calc(var(--bothub-typing-cursor-size, 21px) / 7);
             flex-shrink: 0;
             background: ${$color !== 'default'
-              ? theme.default.colors.base.white
-              : theme.colors.base.white};
+              ? themeVar(theme, 'default.colors.base.white')
+              : themeVar(theme, 'colors.base.white')};
             vertical-align: text-top;
             animation: ${messageTextCursorOpacity} 0.9s infinite;
             content: '';

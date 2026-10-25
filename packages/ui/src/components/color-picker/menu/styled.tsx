@@ -6,6 +6,7 @@ import { CloseIcon } from '@/ui/icons/close';
 import { SelectorIcon } from '@/ui/icons/selector';
 import { TextField } from '@/ui/components/text-field';
 import { isBright } from '@/ui/utils';
+import { themeVar } from '@/ui/theme';
 
 const ColorPickerMenuAnimation = keyframes`
   from {
@@ -21,8 +22,8 @@ export const ColorPickerMenuStyled = styled.div`
   flex-direction: column;
   gap: 6px;
   width: 256px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   padding: 8px;
   border-radius: 10px;
   animation: ${ColorPickerMenuAnimation} 0.1s ease-out;
@@ -45,8 +46,8 @@ export const ColorPickerMenuHeaderHexCodeInput = styled(TextField).attrs({
   height: 28px;
   padding-block: 4px;
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
   label {
     background: none;
 
@@ -57,7 +58,7 @@ export const ColorPickerMenuHeaderHexCodeInput = styled(TextField).attrs({
       ${({ theme }) =>
         isBright(theme.colors.grayScale.gray4) &&
         css`
-          color: ${theme.default.colors.base.black};
+          color: ${themeVar(theme, 'default.colors.base.black')};
         `}
     }
   }
@@ -73,7 +74,7 @@ export const ColorPickerMenuPreview = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
 `;
 
 export const ColorPickerMenuCloseButton = styled(Button).attrs({

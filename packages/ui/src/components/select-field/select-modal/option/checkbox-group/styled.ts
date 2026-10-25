@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons';
+import { themeVar } from '@/ui/theme';
 
 export const SelectFieldCheckboxGroupOptionStyled = styled.div`
   display: flex;
@@ -21,7 +22,7 @@ export const SelectFieldCheckboxGroupOptionHead = styled.div<{
       return css`
         cursor: not-allowed;
         &:hover {
-          background: ${theme.tokens.hoverOverlay};
+          background: ${themeVar(theme, 'tokens.hoverOverlay')};
         }
         & > ${SelectFieldCheckboxGroupOptionHeadLeftSide}:first-child {
           opacity: 0.5;
@@ -32,7 +33,7 @@ export const SelectFieldCheckboxGroupOptionHead = styled.div<{
     return css`
       cursor: pointer;
       &:hover {
-        background: ${theme.tokens.accentPrimaryAlpha20};
+        background: ${themeVar(theme, 'tokens.accentPrimaryAlpha20')};
       }
     `;
   }}
@@ -63,7 +64,7 @@ export const SelectFieldCheckboxGroupOptionHeadText = styled(Typography).attrs({
 export const SelectFieldCheckboxGroupOptionHeadCounter = styled(
   Typography,
 ).attrs({ variant: 'body-xs-medium' })`
-  color: ${({ theme }) => theme.colors.grayScale.gray6};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray6')};
 `;
 
 export const SelectFieldCheckboxGroupOptionArrow = styled(ArrowDownIcon).attrs({
@@ -84,5 +85,5 @@ export const ShowMoreButton = styled(Typography).attrs({
 })`
   cursor: pointer;
   text-align: center;
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
 `;

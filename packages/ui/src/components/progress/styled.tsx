@@ -1,4 +1,5 @@
 import { styled, css } from 'styled-components';
+import { themeVar } from '@/ui/theme';
 
 export interface ProgressStyledProps {
   $fullWidth: boolean;
@@ -26,14 +27,14 @@ export const ProgressLine = styled.div<ProgressLineProps>`
   ${({ $skeleton }) =>
     !$skeleton &&
     css`
-      background: ${({ theme }) => theme.colors.grayScale.gray3};
+      background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
     `}
 `;
 
 export const ProgressLineFilled = styled.div`
   display: inline-flex;
   width: 50%;
-  background: ${({ theme }) => theme.colors.accent.primary};
+  background: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
   border-radius: 10px;
   transition: width 0.3s ease-out;
 `;

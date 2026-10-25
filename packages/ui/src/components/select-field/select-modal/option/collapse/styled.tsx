@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { SelectFieldSize } from '@/ui/components/select-field';
+import { themeVar } from '@/ui/theme';
 
 export interface SelectFieldCollapseOptionStyledProps {
   $size: SelectFieldSize;
@@ -58,7 +59,7 @@ export const SelectFieldCollapseOptionHead = styled.div<SelectFieldCollapseOptio
       return css`
         cursor: not-allowed;
         &:hover {
-          background: ${theme.tokens.hoverOverlay};
+          background: ${themeVar(theme, 'tokens.hoverOverlay')};
         }
         & > ${SelectFieldCollapseOptionHeadSide}:first-child {
           opacity: 0.5;
@@ -69,7 +70,7 @@ export const SelectFieldCollapseOptionHead = styled.div<SelectFieldCollapseOptio
     return css`
       cursor: pointer;
       &:hover {
-        background: ${theme.tokens.accentPrimaryAlpha20};
+        background: ${themeVar(theme, 'tokens.accentPrimaryAlpha20')};
       }
     `;
   }}

@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { MessageColor } from '../../types';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageHrStyledProps {
   $messageColor: MessageColor;
@@ -12,10 +13,10 @@ export const MessageHrStyled = styled.hr<MessageHrStyledProps>`
   border-top: 1px solid
     ${({ theme, $messageColor }) => {
       if ($messageColor !== 'default') {
-        return theme.default.colors.base.white;
+        return themeVar(theme, 'default.colors.base.white');
       }
 
-      return theme.tokens.divider;
+      return themeVar(theme, 'tokens.divider');
     }};
   opacity: 0.5;
 `;

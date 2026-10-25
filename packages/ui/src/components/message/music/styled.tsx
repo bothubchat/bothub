@@ -6,6 +6,7 @@ import { Typography } from '@/ui/components/typography';
 import { Skeleton } from '@/ui/components/skeleton';
 import { adaptive } from '@/ui/adaptive';
 import { MessageVariant } from '../types';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageMusicStyledProps {
   $hasCover: boolean;
@@ -17,7 +18,7 @@ export const MessageMusicStyled = styled.div<MessageMusicStyledProps>`
   gap: 12px;
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   padding: 12px;
   border-radius: 12px;
   max-width: ${({ $hasCover }) => ($hasCover ? '480px' : '720px')};
@@ -46,7 +47,7 @@ export const MessageMusicCover = styled.div`
   height: 96px;
   border-radius: 10px;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -76,7 +77,7 @@ export const MessageMusicIconBadge = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
 
   ${adaptive({
     mobile: css`
@@ -99,10 +100,10 @@ export const MessageMusicContent = styled.div`
 const textColor = css<{ $variant: MessageVariant }>`
   color: ${({ theme, $variant }) => {
     if ($variant === 'assistant') {
-      return theme.colors.base.white;
+      return themeVar(theme, 'colors.base.white');
     }
 
-    return theme.tokens.userMusicText;
+    return themeVar(theme, 'tokens.userMusicText');
   }};
 `;
 
@@ -222,7 +223,8 @@ export const MessageMusicSlider: React.FC<
     width: 100%;
     height: 12px !important;
     border-radius: 6px;
-    background: ${({ theme }) => theme.colors.grayScale.gray3} !important;
+    background: ${({ theme }) =>
+      themeVar(theme, 'colors.grayScale.gray3')} !important;
   }
 
   .rc-slider-track {
@@ -234,9 +236,9 @@ export const MessageMusicSlider: React.FC<
     opacity: 0.7;
     background: ${({ theme, $disabled }) => {
       if (!$disabled) {
-        return theme.colors.gradient.elite;
+        return themeVar(theme, 'colors.gradient.elite');
       }
-      return theme.colors.grayScale.gray1;
+      return themeVar(theme, 'colors.grayScale.gray1');
     }} !important;
     ${({ $disabled }) =>
       $disabled &&
@@ -262,9 +264,9 @@ export const MessageMusicSlider: React.FC<
     margin-top: -7px !important;
     background: ${({ theme, $disabled }) => {
       if (!$disabled) {
-        return theme.default.colors.base.white;
+        return themeVar(theme, 'default.colors.base.white');
       }
-      return theme.colors.grayScale.gray1;
+      return themeVar(theme, 'colors.grayScale.gray1');
     }} !important;
     box-shadow: none;
     outline: none;

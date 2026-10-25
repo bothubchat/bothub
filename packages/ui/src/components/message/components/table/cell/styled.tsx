@@ -1,16 +1,17 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
+import { themeVar } from '@/ui/theme';
 
 export const MessageTableCellStyled = styled.td`
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background: ${({ theme }) => theme.colors.base.black};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+  background: ${({ theme }) => themeVar(theme, 'colors.base.black')};
   padding: 10px;
 `;
 
 export const MessageTableHeadCell = styled(MessageTableCellStyled).attrs({
   as: 'th',
 })`
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
 `;
 
 export interface MessageTableCellTextProps {
@@ -24,37 +25,41 @@ export const MessageTableCellText = styled(Typography).attrs({
   ${({ theme, $head }) =>
     $head &&
     css`
-      color: ${theme.default.colors.grayScale.gray6};
+      color: ${themeVar(theme, 'default.colors.grayScale.gray6')};
     `}
   &::selection {
     ${({ $messageColor }) => {
       switch ($messageColor) {
         case 'default':
           return css`
-            background: ${({ theme }) => theme.tokens.accentContrast};
-            color: ${({ theme }) => theme.tokens.messageAccentDefault};
+            background: ${({ theme }) =>
+              themeVar(theme, 'tokens.accentContrast')};
+            color: ${({ theme }) =>
+              themeVar(theme, 'tokens.messageAccentDefault')};
           `;
         case 'green':
           return css`
             background: ${({ theme }) =>
-              theme.tokens.messageAccentGreenInverse};
-            color: ${({ theme }) => theme.tokens.messageAccentGreen};
+              themeVar(theme, 'tokens.messageAccentGreenInverse')};
+            color: ${({ theme }) =>
+              themeVar(theme, 'tokens.messageAccentGreen')};
           `;
         case 'purple':
           return css`
             background: ${({ theme }) =>
-              theme.tokens.messageAccentPurpleInverse};
-            color: ${({ theme }) => theme.tokens.messageAccentPurple};
+              themeVar(theme, 'tokens.messageAccentPurpleInverse')};
+            color: ${({ theme }) =>
+              themeVar(theme, 'tokens.messageAccentPurple')};
           `;
         default:
           return css`
             background: ${({ theme }) =>
               theme.mode === 'light'
                 ? $messageColor
-                : theme.default.colors.base.white};
+                : themeVar(theme, 'default.colors.base.white')};
             color: ${({ theme }) =>
               theme.mode === 'light'
-                ? theme.default.colors.base.white
+                ? themeVar(theme, 'default.colors.base.white')
                 : $messageColor};
           `;
       }

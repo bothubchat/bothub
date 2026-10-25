@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import React from 'react';
 import Slider, { SliderProps } from 'rc-slider';
+import { themeVar } from '@/ui/theme';
 
 export const RangeSettingsRoot = styled.div`
   display: flex;
@@ -44,7 +45,7 @@ export const RangeSettingsSlider: React.FC<
     width: 100%;
     height: 16px;
     border-radius: 8px;
-    background: ${({ theme }) => theme.colors.grayScale.gray3};
+    background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   }
 
   .rc-slider-track {
@@ -56,9 +57,9 @@ export const RangeSettingsSlider: React.FC<
     opacity: 0.7;
     background: ${({ theme, $disabled }) => {
       if (!$disabled) {
-        return theme.colors.gradient.elite;
+        return themeVar(theme, 'colors.gradient.elite');
       }
-      return theme.colors.grayScale.gray1;
+      return themeVar(theme, 'colors.grayScale.gray1');
     }};
     ${({ $disabled }) =>
       $disabled &&
@@ -83,9 +84,9 @@ export const RangeSettingsSlider: React.FC<
     margin-top: -16px;
     background: ${({ theme, $disabled }) => {
       if (!$disabled) {
-        return theme.default.colors.base.white;
+        return themeVar(theme, 'default.colors.base.white');
       }
-      return theme.colors.grayScale.gray1;
+      return themeVar(theme, 'colors.grayScale.gray1');
     }};
     outline: none;
     ${({ $disabled }) =>
@@ -101,7 +102,8 @@ export const RangeSettingsSlider: React.FC<
     ${({ theme }) =>
       theme.mode === 'light' &&
       css`
-        box-shadow: 0px 0px 0px 1px ${theme.default.colors.grayScale.gray6};
+        box-shadow: 0px 0px 0px 1px
+          ${themeVar(theme, 'default.colors.grayScale.gray6')};
       `}
     &::before {
       position: absolute;
@@ -114,8 +116,8 @@ export const RangeSettingsSlider: React.FC<
       font-weight: 600;
       background-image: ${({ theme, $disabled }) =>
         $disabled
-          ? theme.default.colors.gradient.enterprise
-          : theme.default.colors.gradient.enterprise};
+          ? themeVar(theme, 'default.colors.gradient.enterprise')
+          : themeVar(theme, 'default.colors.gradient.enterprise')};
       color: transparent;
       background-clip: text;
       -webkit-background-clip: text;

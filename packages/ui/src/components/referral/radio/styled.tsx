@@ -1,6 +1,7 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Radio } from '@/ui/components/radio';
+import { themeVar } from '@/ui/theme';
 
 export interface ReferralRadioStyledProps {
   $checked: boolean;
@@ -12,8 +13,8 @@ export const ReferralRadioStyled = styled.div<ReferralRadioStyledProps>`
   box-sizing: border-box;
   width: 100%;
   max-width: 463px;
-  background: ${({ theme }) => theme.tokens.radioBackground};
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  background: ${({ theme }) => themeVar(theme, 'tokens.radioBackground')};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   border-radius: 10px;
   overflow: hidden;
   min-width: 324px;
@@ -23,13 +24,15 @@ export const ReferralRadioStyled = styled.div<ReferralRadioStyledProps>`
     }
     if ($checked) {
       return css`
-        border-color: ${({ theme }) => theme.colors.accent.primary};
+        border-color: ${({ theme }) =>
+          themeVar(theme, 'colors.accent.primary')};
       `;
     }
 
     return css`
       &:hover {
-        border-color: ${({ theme }) => theme.colors.accent.primary};
+        border-color: ${({ theme }) =>
+          themeVar(theme, 'colors.accent.primary')};
       }
     `;
   }}
@@ -98,13 +101,13 @@ export const ReferralRadioTableHeadCell = styled(Typography).attrs({
   variant: 'body-m-regular',
 })`
   display: inline-flex;
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   --skeleton-width: 240px;
 `;
 
 export const ReferralRadioTableSelectedCell = styled(ReferralRadioTableCell)`
   display: inline-flex;
-  color: ${({ theme }) => theme.colors.accent.primary};
+  color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
 `;
 
 export const ReferralRadioGroup = styled.div`

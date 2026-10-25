@@ -1,5 +1,6 @@
 import { css, styled } from 'styled-components';
 import { TypographyAlign, TypographyVariant } from './types';
+import { themeVar } from '@/ui/theme';
 
 export interface TypographyStyledProps {
   $variant: TypographyVariant;
@@ -451,8 +452,8 @@ export const TypographyStyled = styled.span<TypographyStyledProps>`
   margin: 0px;
   color: ${({ theme }) =>
     theme.scheme === 'custom'
-      ? theme.colors.custom.interface.text
-      : theme.colors.base.white};
+      ? themeVar(theme, 'colors.custom.interface.text')
+      : themeVar(theme, 'colors.base.white')};
   font-weight: normal;
   text-decoration: none;
   text-align: ${({ $align }) => $align};

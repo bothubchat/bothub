@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { SelectFieldSize } from '../../types';
 import { SelectFieldOptionSide } from '../list/styled';
 import { Typography, TypographyProps } from '@/ui/components/typography';
+import { themeVar } from '@/ui/theme';
 
 export interface SelectFieldOptionTextProps {
   $selected: boolean;
@@ -21,7 +22,9 @@ export const SelectFieldOptionText = styled(Typography).attrs<
   return { variant };
 })`
   color: ${({ theme, $selected }) =>
-    $selected ? theme.default.colors.base.white : theme.colors.base.white};
+    $selected
+      ? themeVar(theme, 'default.colors.base.white')
+      : themeVar(theme, 'colors.base.white')};
 
   ${({ $bold }) =>
     $bold &&
@@ -38,7 +41,9 @@ export const SelectFieldColorOptionText = styled(Typography).attrs({
   variant: 'input-sm',
 })<SelectFieldColorOptionTextProps>`
   color: ${({ theme, $selected }) =>
-    $selected ? theme.default.colors.base.white : theme.colors.base.white};
+    $selected
+      ? themeVar(theme, 'default.colors.base.white')
+      : themeVar(theme, 'colors.base.white')};
 `;
 
 export interface SelectFieldOptionColorProps {
@@ -91,17 +96,20 @@ export const SelectFieldOptionStyled = styled.div<SelectFieldOptionStyledProps>`
   }}px;
 
   &:active {
-    background-color: ${({ theme }) => theme.colors.accent.primary} !important;
+    background-color: ${({ theme }) =>
+      themeVar(theme, 'colors.accent.primary')} !important;
     ${SelectFieldOptionText}, ${SelectFieldColorOptionText} {
-      color: ${({ theme }) => theme.default.colors.base.white};
+      color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
     }
     svg[d='fill'] path,
     svg[d='all'] path {
-      fill: ${({ theme }) => theme.default.colors.base.white} !important;
+      fill: ${({ theme }) =>
+        themeVar(theme, 'default.colors.base.white')} !important;
     }
     svg[d='stroke'] path,
     svg[d='all'] path {
-      stroke: ${({ theme }) => theme.default.colors.base.white} !important;
+      stroke: ${({ theme }) =>
+        themeVar(theme, 'default.colors.base.white')} !important;
     }
     transition: all 0.2s ease-out;
   }
@@ -121,7 +129,7 @@ export const SelectFieldOptionStyled = styled.div<SelectFieldOptionStyledProps>`
       return css`
         cursor: not-allowed;
         &:hover {
-          background: ${theme.tokens.hoverOverlay};
+          background: ${themeVar(theme, 'tokens.hoverOverlay')};
         }
         > ${SelectFieldOptionSide}:first-child {
           opacity: 0.5;
@@ -138,7 +146,7 @@ export const SelectFieldOptionStyled = styled.div<SelectFieldOptionStyledProps>`
           padding-top: 12px;
           padding-bottom: 12px;
           &:hover::before {
-            background: ${theme.colors.premiumGradient};
+            background: ${themeVar(theme, 'colors.premiumGradient')};
             content: '';
             opacity: 0.2;
             border: inherit;
@@ -157,19 +165,20 @@ export const SelectFieldOptionStyled = styled.div<SelectFieldOptionStyledProps>`
           padding-bottom: 12px;
           text-align: center;
           &:hover {
-            background: ${theme.tokens.accentPrimaryAlpha20};
+            background: ${themeVar(theme, 'tokens.accentPrimaryAlpha20')};
           }
         `;
       default:
         return $selected
           ? css`
-              background: ${$selectedColor || theme.colors.accent.primary};
+              background: ${$selectedColor ||
+              themeVar(theme, 'colors.accent.primary')};
               cursor: default;
             `
           : css`
               cursor: pointer;
               &:hover {
-                background: ${theme.tokens.hoverOverlay};
+                background: ${themeVar(theme, 'tokens.hoverOverlay')};
               }
             `;
     }

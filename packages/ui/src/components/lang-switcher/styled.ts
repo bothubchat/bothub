@@ -4,6 +4,7 @@ import { Typography } from '@/ui/components/typography';
 import { SelectField } from '@/ui/components/select-field';
 import { Button } from '../button';
 import { ArrowDownIcon } from '@/ui/icons';
+import { themeVar } from '@/ui/theme';
 
 export const LangSwitcherStyled = styled.div`
   display: flex;
@@ -27,8 +28,8 @@ export const LangSwitcherList = styled(animated.div)`
   width: fit-content;
   padding: 16px 20px;
   border-radius: 16px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
 `;
 
 export const LangSwitcherItem = styled(Typography).attrs({
@@ -48,7 +49,7 @@ export const LangSwitcherLabel = styled(Typography).attrs({
 export const LangSwitcherInput = styled(SelectField)`
   min-width: 160px;
   & > *:first-child {
-    background: ${({ theme }) => theme.colors.grayScale.gray7};
+    background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray7')};
   }
 `;
 

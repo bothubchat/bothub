@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Skeleton } from '@/ui/components/skeleton';
 import { AvatarVariant } from './types';
+import { themeVar } from '@/ui/theme';
 
 export interface AvatarStyledProps {
   $size: number;
@@ -45,7 +46,7 @@ export const AvatarBg = styled.div<AvatarBgProps>`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.tokens.iconMuted};
+  background-color: ${({ theme }) => themeVar(theme, 'tokens.iconMuted')};
   ${({ $size }) => css`
     width: ${$size}px;
     height: ${$size}px;

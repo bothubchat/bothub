@@ -1,6 +1,7 @@
 import { styled, css } from 'styled-components';
 import { Scrollbar } from '../scrollbar';
 import { ArrowsSize } from './types';
+import { themeVar } from '@/ui/theme';
 
 export const SliderContainer = styled.div`
   width: 100%;
@@ -43,12 +44,14 @@ export const SliderArrow = styled.div<{
         return css`
           width: 122px;
 
-          background: ${({ theme }) => theme.tokens.sliderFadeSmall};
+          background: ${({ theme }) =>
+            themeVar(theme, 'tokens.sliderFadeSmall')};
         `;
       case 'md':
         return css`
           width: 80px;
-          background: ${({ theme }) => theme.tokens.sliderFadeMedium};
+          background: ${({ theme }) =>
+            themeVar(theme, 'tokens.sliderFadeMedium')};
         `;
     }
   }};
@@ -85,7 +88,7 @@ export const SliderArrow = styled.div<{
       theme.mode === 'light' &&
       css`
         path {
-          stroke: ${({ theme }) => theme.colors.grayScale.gray1};
+          stroke: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
         }
       `};
   }

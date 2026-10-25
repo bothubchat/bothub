@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { Skeleton } from '@/ui/components/skeleton';
+import { themeVar } from '@/ui/theme';
 
 export const MessageVideoControls = styled.div<{
   $isVisible?: boolean;
@@ -147,14 +148,14 @@ export const MessageVideoTimeLine = styled.div`
     bottom: 0;
     transform: scaleX(var(--video-progress, 0));
     transform-origin: left;
-    background: ${({ theme }) => theme.colors.accent.primary};
+    background: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
   }
 `;
 
 export const MessageVideoTimeText = styled(Typography).attrs({
   variant: 'body-s-medium',
 })`
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
 `;
 
 // Volume comes from the --video-volume CSS variable (a percentage).
@@ -183,7 +184,7 @@ export const MessageVideoVolumeLine = styled.div`
     width: var(--video-volume, 100%);
     right: 0;
     bottom: 0;
-    background: ${({ theme }) => theme.default.colors.base.white};
+    background: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
   }
   &:before {
     content: '';

@@ -7,6 +7,7 @@ import { StarIcon } from '@/ui/icons/star';
 import { Badge } from '@/ui/components/badge';
 import { adaptive } from '@/ui/adaptive';
 import { LoaderCircularGradientIcon } from '@/ui/icons/loader-circular-gradient';
+import { themeVar } from '@/ui/theme';
 
 export interface PresetCardStyledProps {
   $skeleton: boolean;
@@ -20,7 +21,7 @@ export const PresetCardStyled = styled.div<PresetCardStyledProps>`
   max-width: 427px;
   border-radius: 14px;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   box-sizing: border-box;
   cursor: ${({ $skeleton, $loading }) => {
     if ($skeleton || $loading) {
@@ -69,10 +70,10 @@ export const PresetCardLine = styled.div<PresetCardLineProps>`
   height: 37px;
   background: ${({ theme, $skeleton, $color }) => {
     if ($skeleton) {
-      return theme.colors.grayScale.gray1;
+      return themeVar(theme, 'colors.grayScale.gray1');
     }
 
-    return $color ?? theme.colors.accent.primary;
+    return $color ?? themeVar(theme, 'colors.accent.primary');
   }};
 `;
 
@@ -149,7 +150,8 @@ export const PresetCardCategories = styled.div`
   gap: 10px;
   flex-wrap: wrap;
   margin-top: 12px;
-  border-top: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border-top: 1px solid
+    ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   padding-top: 12px;
 `;
 

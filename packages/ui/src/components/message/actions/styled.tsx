@@ -2,6 +2,7 @@ import { animated } from '@react-spring/web';
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '../types';
+import { themeVar } from '@/ui/theme';
 
 export const MessageActionsStyled = styled.div<{ $variant?: MessageVariant }>`
   display: flex;
@@ -66,8 +67,8 @@ export const MessageActionsMenuModal = styled(animated.div)<{
   max-height: min(320px, calc(100vh - 32px));
   overflow-y: auto;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   z-index: 10;
 `;
 
@@ -78,18 +79,19 @@ export const MessageActionsMenuModalOption = styled.button`
   gap: 10px;
   padding: 10px;
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
   &:hover {
-    background-color: ${({ theme }) => theme.colors.grayScale.gray2};
+    background-color: ${({ theme }) =>
+      themeVar(theme, 'colors.grayScale.gray2')};
     &:hover {
       svg {
         path,
         circle {
           fill: ${({ theme }) => {
             if (theme.scheme === 'custom') {
-              return theme.colors.custom.icon;
+              return themeVar(theme, 'colors.custom.icon');
             }
-            return theme.tokens.actionActiveBackground;
+            return themeVar(theme, 'tokens.actionActiveBackground');
           }};
         }
       }
@@ -125,9 +127,9 @@ export const MessageActionsButton = styled.button`
       circle {
         fill: ${({ theme }) => {
           if (theme.scheme === 'custom') {
-            return theme.colors.custom.icon;
+            return themeVar(theme, 'colors.custom.icon');
           }
-          return theme.colors.accent.primaryLight;
+          return themeVar(theme, 'colors.accent.primaryLight');
         }};
         opacity: 0.75;
         transition: all 100ms ease-out;

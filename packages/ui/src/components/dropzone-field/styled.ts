@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { Typography } from '../typography';
+import { themeVar } from '@/ui/theme';
 
 export const DropzoneFieldStyled = styled.div<{
   $fullWidth: boolean;
@@ -10,7 +11,7 @@ export const DropzoneFieldStyled = styled.div<{
   justify-content: stretch;
   gap: 20px;
 
-  background-color: ${({ theme }) => theme.tokens.gray4Alpha75};
+  background-color: ${({ theme }) => themeVar(theme, 'tokens.gray4Alpha75')};
   padding: 20px;
   border-radius: 20px;
   background-image: ${({ theme }) => {
@@ -34,7 +35,8 @@ export const DropzoneFieldStyled = styled.div<{
 
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     padding: 18px;
-    border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+    border: 1px solid
+      ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
     background-image: none;
   }
 
@@ -60,7 +62,7 @@ export const DropzoneFieldRightLabelsContainer = styled.div`
 export const DropzoneFieldRightLabel = styled(Typography).attrs({
   variant: 'body-xs-medium',
 })`
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
 `;
 
 export const DropzoneFieldInput = styled.input`
@@ -82,5 +84,5 @@ export const DropzoneFieldPlaceholder = styled.div`
 export const DropzoneFieldErrorText = styled(Typography).attrs({
   variant: 'input-md',
 })`
-  color: ${({ theme }) => theme.colors.critic};
+  color: ${({ theme }) => themeVar(theme, 'colors.critic')};
 `;

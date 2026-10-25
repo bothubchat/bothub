@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '../typography';
 import { Variant } from './types';
+import { themeVar } from '@/ui/theme';
 
 type VariantProps = { $variant: Variant };
 
@@ -67,22 +68,26 @@ export const ScrollableTabsTab = styled.a<ScrollableTabsTabProps>`
       if ($variant === 'primary') {
         return css`
           border-radius: 16px;
-          border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
-          background-color: ${({ theme }) => theme.colors.base.black};
+          border: 1px solid
+            ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
+          background-color: ${({ theme }) =>
+            themeVar(theme, 'colors.base.black')};
         `;
       }
 
       if ($variant === 'secondary') {
         return css`
           border-radius: 8px;
-          background-color: ${({ theme }) => theme.colors.grayScale.gray7};
+          background-color: ${({ theme }) =>
+            themeVar(theme, 'colors.grayScale.gray7')};
         `;
       }
     }};
   }
 
   &:hover:before {
-    background-color: ${({ theme }) => theme.tokens.accentPrimaryAlpha20};
+    background-color: ${({ theme }) =>
+      themeVar(theme, 'tokens.accentPrimaryAlpha20')};
   }
 
   & > * {

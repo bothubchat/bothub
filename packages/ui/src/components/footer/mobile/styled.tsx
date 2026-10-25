@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { AddChatIcon } from '@/ui/icons/add-chat';
 import { adaptive } from '@/ui/adaptive';
+import { themeVar } from '@/ui/theme';
 
 export const FooterMobileStyled = styled.div<{ $isPreset?: boolean }>`
   width: 100%;
@@ -8,8 +9,9 @@ export const FooterMobileStyled = styled.div<{ $isPreset?: boolean }>`
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
-  border-top: 2px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
+  border-top: 2px solid
+    ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   z-index: ${({ theme }) => theme.zIndex.modal};
   ${({ $isPreset }) =>
     $isPreset &&
@@ -67,11 +69,11 @@ export const FooterMobileNewChatButton = styled(FooterMobileButton).attrs({
   children: <AddChatIcon />,
 })`
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.accent.primary};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
   svg path {
     stroke: ${({ theme }) =>
       theme.bright
-        ? theme.default.colors.base.black
-        : theme.default.colors.base.white};
+        ? themeVar(theme, 'default.colors.base.black')
+        : themeVar(theme, 'default.colors.base.white')};
   }
 `;

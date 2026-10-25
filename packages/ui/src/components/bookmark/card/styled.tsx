@@ -4,6 +4,7 @@ import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
 import { EditIcon } from '@/ui/icons/edit';
 import { adaptive } from '@/ui/adaptive';
+import { themeVar } from '@/ui/theme';
 
 export interface BookmarkCardStyledProps {
   $skeleton: boolean;
@@ -15,11 +16,12 @@ export const BookmarkCardStyled = styled.div<BookmarkCardStyledProps>`
   width: 100%;
   border-radius: 14px;
   overflow: hidden;
-  background: ${({ theme }) => theme.tokens.surfaceTertiary};
+  background: ${({ theme }) => themeVar(theme, 'tokens.surfaceTertiary')};
   ${({ theme }) =>
     theme.mode === 'light' &&
     css`
-      box-shadow: inset 0px 0px 0px 1px ${theme.colors.grayScale.gray3};
+      box-shadow: inset 0px 0px 0px 1px
+        ${themeVar(theme, 'colors.grayScale.gray3')};
     `}
   cursor: ${({ $skeleton }) => ($skeleton ? 'progress' : 'pointer')};
   ${() => css`
@@ -69,10 +71,10 @@ export const BookmrakCardLine = styled.div<BookmrakCardLineProps>`
   height: 37px;
   background: ${({ theme, $skeleton, $color }) => {
     if ($skeleton) {
-      return theme.colors.grayScale.gray1;
+      return themeVar(theme, 'colors.grayScale.gray1');
     }
 
-    return $color ?? theme.colors.accent.primary;
+    return $color ?? themeVar(theme, 'colors.accent.primary');
   }};
 `;
 

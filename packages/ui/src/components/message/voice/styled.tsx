@@ -6,6 +6,7 @@ import { Typography } from '@/ui/components/typography';
 import { TextReadIcon } from '@/ui/icons/text-read';
 import { TextHideIcon } from '@/ui/icons/text-hide';
 import { isBright } from '@/ui/utils';
+import { themeVar } from '@/ui/theme';
 
 export const MessageVoiceStyled = styled.div`
   display: inline-flex;
@@ -63,19 +64,19 @@ export const MessageVoiceDurationText = styled(Typography).attrs<{
         return '#A4C1FA';
       }
 
-      return theme.colors.accent.primary;
+      return themeVar(theme, 'colors.accent.primary');
     }
 
     /* In standard theme, theme.bright is false, but message background is light */
     if (theme.scheme === 'standard') {
-      return theme.tokens.textDefault;
+      return themeVar(theme, 'tokens.textDefault');
     }
 
     return theme.bright ||
       (theme.scheme === 'custom' &&
         isBright(theme.colors.custom.message.user.background))
-      ? theme.default.colors.base.black
-      : theme.default.colors.base.white;
+      ? themeVar(theme, 'default.colors.base.black')
+      : themeVar(theme, 'default.colors.base.white');
   }};
   user-select: none;
 `;
@@ -98,28 +99,33 @@ export const MessageVoiceText = styled(Typography).attrs({
   variant: 'body-m-regular',
 })<MessageVoiceTextProps>`
   width: 100%;
-  color: ${({ theme }) => theme.tokens.userMessageText};
+  color: ${({ theme }) => themeVar(theme, 'tokens.userMessageText')};
   &::selection {
     ${({ $messageColor }) => {
       switch ($messageColor) {
         case 'default':
           return css`
-            background: ${({ theme }) => theme.tokens.accentContrast};
-            color: ${({ theme }) => theme.tokens.messageAccentDefault};
+            background: ${({ theme }) =>
+              themeVar(theme, 'tokens.accentContrast')};
+            color: ${({ theme }) =>
+              themeVar(theme, 'tokens.messageAccentDefault')};
           `;
         case 'green':
           return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${({ theme }) => theme.colors.gpt3};
+            background: ${({ theme }) =>
+              themeVar(theme, 'default.colors.base.white')};
+            color: ${({ theme }) => themeVar(theme, 'colors.gpt3')};
           `;
         case 'purple':
           return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${({ theme }) => theme.colors.gpt4};
+            background: ${({ theme }) =>
+              themeVar(theme, 'default.colors.base.white')};
+            color: ${({ theme }) => themeVar(theme, 'colors.gpt4')};
           `;
         default:
           return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
+            background: ${({ theme }) =>
+              themeVar(theme, 'default.colors.base.white')};
             color: ${$messageColor};
           `;
       }

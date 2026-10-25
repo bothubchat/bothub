@@ -4,6 +4,7 @@ import { Badge } from '@/ui/components/badge';
 import { TariffType } from './types';
 import { Button } from '@/ui/components/button';
 import { ArrowNarrowRightIcon, StarUnfilledIcon } from '@/ui/icons';
+import { themeVar } from '@/ui/theme';
 
 export const TariffCardIsPopular = styled.div<{
   $active?: boolean;
@@ -16,7 +17,7 @@ export const TariffCardIsPopular = styled.div<{
   ${({ $active }) =>
     $active &&
     css`
-      background: ${({ theme }) => theme.colors.gradient.premium};
+      background: ${({ theme }) => themeVar(theme, 'colors.gradient.premium')};
       padding: 2px 3px;
       border-radius: 21px;
       @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
@@ -46,14 +47,14 @@ export const TariffCardIsPopularText = styled(Typography).attrs({
   variant: 'body-s-medium',
   component: 'p',
 })`
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
   text-align: center;
 `;
 
 export const TariffCardBackground = styled.div`
   width: 100%;
   height: 100%;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
   border-radius: 20px;
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     border-radius: 18px;
@@ -71,7 +72,7 @@ export const TariffCardStyled = styled.div<{
   position: relative;
   z-index: 2;
   border-radius: 20px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray7};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray7')};
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -90,12 +91,12 @@ export const TariffCardStyled = styled.div<{
     ${({ theme, $variant, $active }) =>
       $variant !== 'ENTERPRISE' &&
       !$active &&
-      `background: ${theme.tokens.accentPrimaryAlpha20}`};
+      `background: ${themeVar(theme, 'tokens.accentPrimaryAlpha20')}`};
   }
   ${({ theme, $active }) =>
     $active &&
     css`
-      background: ${theme.colors.gradient.elite20};
+      background: ${themeVar(theme, 'colors.gradient.elite20')};
       pointer-events: none;
     `}
 `;
@@ -143,33 +144,33 @@ export const TariffCardLabel = styled(Typography).attrs({
   background-image: ${({ theme, $color }) => {
     switch ($color) {
       case 'BASIC':
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
       case 'PREMIUM':
-        return theme.colors.gradient.premium;
+        return themeVar(theme, 'colors.gradient.premium');
       case 'DELUXE':
-        return theme.colors.gradient.deluxe;
+        return themeVar(theme, 'colors.gradient.deluxe');
       case 'ELITE':
-        return theme.colors.gradient.elite;
+        return themeVar(theme, 'colors.gradient.elite');
       case 'ENTERPRISE':
-        return theme.colors.gradient.enterprise;
+        return themeVar(theme, 'colors.gradient.enterprise');
       default:
-        return theme.colors.base.white;
+        return themeVar(theme, 'colors.base.white');
     }
   }};
   background-color: ${({ theme, $color }) => {
     switch ($color) {
       case 'BASIC':
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
       case 'PREMIUM':
-        return theme.colors.gradient.premium;
+        return themeVar(theme, 'colors.gradient.premium');
       case 'DELUXE':
-        return theme.colors.gradient.deluxe;
+        return themeVar(theme, 'colors.gradient.deluxe');
       case 'ELITE':
-        return theme.colors.gradient.elite;
+        return themeVar(theme, 'colors.gradient.elite');
       case 'ENTERPRISE':
-        return theme.colors.gradient.enterprise;
+        return themeVar(theme, 'colors.gradient.enterprise');
       default:
-        return theme.colors.base.white;
+        return themeVar(theme, 'colors.base.white');
     }
   }};
 `;
@@ -226,7 +227,7 @@ export const TariffCardEnterpriseButton = styled(Button).attrs({
 })`
   opacity: 1;
   pointer-events: all;
-  background: ${({ theme }) => theme.colors.gradient.enterprise};
+  background: ${({ theme }) => themeVar(theme, 'colors.gradient.enterprise')};
   margin-left: auto;
 `;
 
@@ -242,7 +243,7 @@ export const TariffCardDiscount = styled(Typography).attrs({
   right: 0px;
   top: 0px;
   padding: 2px 16px;
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
   border-radius: 0px 14px 0px 14px;
-  background: ${({ theme }) => theme.colors.gradient.elite};
+  background: ${({ theme }) => themeVar(theme, 'colors.gradient.elite')};
 `;

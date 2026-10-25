@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { messageSelectionStyles } from '../selection';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageBoldStyledProps {
   $messageColor: string;
@@ -9,9 +10,9 @@ export interface MessageBoldStyledProps {
 export const MessageBoldStyled = styled(Typography)<MessageBoldStyledProps>`
   color: ${({ theme, $messageColor }) => {
     if ($messageColor !== 'default') {
-      return theme.colors.base.white;
+      return themeVar(theme, 'colors.base.white');
     }
-    return theme.colors.base.white;
+    return themeVar(theme, 'colors.base.white');
   }};
   font-weight: 700;
   &::selection {

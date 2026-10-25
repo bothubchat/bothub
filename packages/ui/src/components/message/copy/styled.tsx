@@ -1,5 +1,6 @@
 import { styled, css } from 'styled-components';
 import { MessageAction } from '../styled';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageCopyActionStyledProps {
   $focus: boolean;
@@ -14,12 +15,12 @@ export const MessageCopyActionStyled = styled(
       cursor: default;
       svg path {
         fill: ${theme.mode === 'dark'
-          ? theme.default.colors.accent.primary
-          : theme.colors.base.white} !important;
+          ? themeVar(theme, 'default.colors.accent.primary')
+          : themeVar(theme, 'colors.base.white')} !important;
       }
       &:hover {
         svg path {
-          fill: ${theme.colors.accent.primaryLight} !important;
+          fill: ${themeVar(theme, 'colors.accent.primaryLight')} !important;
         }
       }
     `}

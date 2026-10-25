@@ -3,6 +3,7 @@ import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { CloseIcon } from '@/ui/icons/close';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
+import { themeVar } from '@/ui/theme';
 
 export const ModalWindowStyled = styled(animated.div)`
   display: flex;
@@ -12,8 +13,8 @@ export const ModalWindowStyled = styled(animated.div)`
   width: 100%;
   max-width: 494px;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   border-radius: 17px;
   position: relative;
   z-index: ${({ theme }) => theme.zIndex.modal};
@@ -77,11 +78,11 @@ export const ModalWindowCloseButton = styled.button`
   cursor: pointer;
 
   path {
-    fill: ${({ theme }) => theme.colors.grayScale.gray1};
+    fill: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   }
 
   &:hover path {
-    fill: ${({ theme }) => theme.tokens.accentContrast};
+    fill: ${({ theme }) => themeVar(theme, 'tokens.accentContrast')};
   }
 
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {

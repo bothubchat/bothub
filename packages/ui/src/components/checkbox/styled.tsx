@@ -3,6 +3,7 @@ import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { Typography } from '@/ui/components/typography';
 import { Skeleton } from '@/ui/components/skeleton';
 import { isBright } from '@/ui/utils';
+import { themeVar } from '@/ui/theme';
 
 export type CheckedColor = { $checkedColor?: string };
 
@@ -51,8 +52,8 @@ export const CheckboxBlock = styled.span<CheckedColor>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray1};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   border-radius: 2px;
   overflow: hidden;
   cursor: pointer;
@@ -60,7 +61,7 @@ export const CheckboxBlock = styled.span<CheckedColor>`
   box-sizing: border-box;
   &:hover {
     border-color: ${({ theme, $checkedColor }) =>
-      $checkedColor || theme.colors.accent.primary};
+      $checkedColor || themeVar(theme, 'colors.accent.primary')};
   }
 
   svg {
@@ -131,16 +132,16 @@ export const CheckboxInput = styled.input<
     }}
   }
   &:disabled + ${CheckboxBlock} {
-    border-color: ${({ theme }) => theme.colors.grayScale.gray1};
-    background: ${({ theme }) => theme.colors.grayScale.gray1};
+    border-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
+    background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
     cursor: not-allowed;
     svg {
       path {
-        fill: ${({ theme }) => theme.colors.grayScale.gray6};
+        fill: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray6')};
       }
     }
   }
   &:focus-visible + ${CheckboxBlock} {
-    border-color: ${({ theme }) => theme.colors.base.white};
+    border-color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;

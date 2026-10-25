@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { Typography, TypographyProps } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { DescriptionCardVariant, TDescriptionCard } from './types';
+import { themeVar } from '@/ui/theme';
 
 export interface DescriptionCardBorderWrapperProps {
   $variant: DescriptionCardVariant;
@@ -18,7 +19,7 @@ export const DescriptionCardBorderWrapper = styled.div<DescriptionCardBorderWrap
         return css`
           background: radial-gradient(
             50% 100% at 150px -10%,
-            ${theme.colors.accent.primary},
+            ${themeVar(theme, 'colors.accent.primary')},
             rgba(0, 0, 0, 0)
           );
         `;
@@ -104,7 +105,7 @@ export const DescriptionCardBackground = styled.div<{
     switch ($variant) {
       case 'tertiary':
         return css`
-          background-color: ${theme.colors.grayScale.gray4};
+          background-color: ${themeVar(theme, 'colors.grayScale.gray4')};
         `;
       default:
     }
@@ -120,7 +121,7 @@ export const DescriptionCardTitle = styled(Typography).attrs({
   component: 'h3',
 })`
   z-index: 1;
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
 `;
 
 export const DescriptionCardTertiaryTitle = styled(Typography).attrs({
@@ -140,7 +141,7 @@ export const DescriptionCardText = styled(Typography).attrs({
   component: 'p',
 })`
   z-index: 2;
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
   margin-top: 16px;
 `;
 

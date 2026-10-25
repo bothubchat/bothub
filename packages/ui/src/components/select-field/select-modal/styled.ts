@@ -3,6 +3,7 @@ import { animated } from '@react-spring/web';
 import { SelectFieldPlacement, SelectFieldSize } from '../types';
 import { ScrollableTabs } from '@/ui/components/scrollable-tabs';
 import { TextField } from '@/ui/components/text-field';
+import { themeVar } from '@/ui/theme';
 
 export interface SelectModalStyledProps {
   $contentWidth?: number;
@@ -69,14 +70,14 @@ export const SelectModalPositionWrapper = styled.div<SelectModalPositionWrapperP
     `};
   box-sizing: border-box;
   padding: 6px 0 6px 8px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   border-radius: 10px;
   background: ${({ theme, $blur }) => {
     if ($blur) {
-      return theme.tokens.surfaceGlass;
+      return themeVar(theme, 'tokens.surfaceGlass');
     }
 
-    return theme.tokens.surfaceElevated;
+    return themeVar(theme, 'tokens.surfaceElevated');
   }};
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);

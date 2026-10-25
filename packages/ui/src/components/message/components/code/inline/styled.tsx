@@ -2,6 +2,7 @@ import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '@/ui/components/message';
 import { messageSelectionStyles } from '../../selection';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageInlineCodeStyledProps {
   $messageVariant: MessageVariant;
@@ -18,19 +19,19 @@ export const MessageInlineCodeStyled = styled(Typography).attrs({
     switch ($messageVariant) {
       case 'user':
         return css`
-          background: ${theme.colors.accent.primaryLight};
-          color: ${theme.default.colors.base.white};
+          background: ${themeVar(theme, 'colors.accent.primaryLight')};
+          color: ${themeVar(theme, 'default.colors.base.white')};
         `;
       case 'assistant':
         if ($messageColor !== 'default') {
           return css`
-            color: ${theme.colors.base.white};
-            background: ${theme.colors.grayScale.gray3};
+            color: ${themeVar(theme, 'colors.base.white')};
+            background: ${themeVar(theme, 'colors.grayScale.gray3')};
           `;
         }
 
         return css`
-          background: ${theme.tokens.surfaceTertiary};
+          background: ${themeVar(theme, 'tokens.surfaceTertiary')};
         `;
     }
   }}

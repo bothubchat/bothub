@@ -4,6 +4,7 @@ import { animated, AnimatedProps } from '@react-spring/web';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { LanguageIcon } from '@/ui/icons/language';
 import { Typography } from '../../typography';
+import { themeVar } from '@/ui/theme';
 
 export const HeaderLangDropdownStyled = styled.div``;
 
@@ -42,26 +43,26 @@ export const HeaderLangDropdownToggler = styled.button<{ $open: boolean }>`
     transform 0.15s ease-out;
   &:hover {
     > ${HeaderLangDropdownTogglerIcon} > path {
-      fill: ${({ theme }) => theme.colors.accent.primary};
+      fill: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
     }
     > ${HeaderLangDropdownTogglerText} {
-      color: ${({ theme }) => theme.colors.accent.primary};
+      color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
     }
     > ${HeaderLangDropdownTogglerArrow} > path {
-      stroke: ${({ theme }) => theme.colors.accent.primary};
+      stroke: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
     }
   }
   ${({ $open }) =>
     $open &&
     css`
       > ${HeaderLangDropdownTogglerIcon} > path {
-        fill: ${({ theme }) => theme.colors.accent.primary};
+        fill: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
       }
       > ${HeaderLangDropdownTogglerText} {
-        color: ${({ theme }) => theme.colors.accent.primary};
+        color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
       }
       > ${HeaderLangDropdownTogglerArrow} > path {
-        stroke: ${({ theme }) => theme.colors.accent.primary};
+        stroke: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
       }
     `}
 `;
@@ -77,11 +78,11 @@ export const HeaderLangDropdownContent: React.FC<
 export const HeaderLangDropdownList = styled.ul`
   display: flex;
   flex-direction: column;
-  border: 1px solid ${({ theme }) => theme.tokens.borderSecondary};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'tokens.borderSecondary')};
   border-radius: 8px;
   overflow: hidden;
   list-style: none;
-  background: ${({ theme }) => theme.tokens.surfaceSecondary};
+  background: ${({ theme }) => themeVar(theme, 'tokens.surfaceSecondary')};
   width: 80px;
   padding: 10px 16px;
   box-sizing: border-box;

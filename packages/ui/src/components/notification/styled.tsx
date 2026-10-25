@@ -5,6 +5,7 @@ import { InfoBigIcon } from '@/ui/icons/info-big';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { NotificationVariant } from './types';
+import { themeVar } from '@/ui/theme';
 
 export interface NotificationStyledProps {
   $variant: NotificationVariant;
@@ -12,19 +13,19 @@ export interface NotificationStyledProps {
 
 export const NotificationStyled = styled(animated.div)<NotificationStyledProps>`
   display: flex;
-  background: ${({ theme }) => theme.tokens.surfaceNotification};
+  background: ${({ theme }) => themeVar(theme, 'tokens.surfaceNotification')};
   border: 1px solid
     ${({ theme, $variant }) => {
       switch ($variant) {
         case 'info':
         case 'loading':
-          return theme.colors.accent.primary;
+          return themeVar(theme, 'colors.accent.primary');
         case 'warn':
-          return theme.colors.orange;
+          return themeVar(theme, 'colors.orange');
         case 'error':
-          return theme.colors.critic;
+          return themeVar(theme, 'colors.critic');
         case 'success':
-          return theme.colors.green;
+          return themeVar(theme, 'colors.green');
       }
     }};
   border-radius: 14px;
@@ -99,7 +100,7 @@ export const NotificationText = styled(Typography).attrs({
   overflow: hidden;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
-  color: ${({ theme }) => theme.tokens.textSecondary};
+  color: ${({ theme }) => themeVar(theme, 'tokens.textSecondary')};
 `;
 
 export const NotificationCloseButton = styled(Button).attrs({
@@ -133,15 +134,15 @@ export const NotifyProgressBar = styled.div<{
     switch ($variant) {
       case 'info':
       case 'loading':
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
       case 'warn':
-        return theme.colors.orange;
+        return themeVar(theme, 'colors.orange');
       case 'error':
-        return theme.colors.critic;
+        return themeVar(theme, 'colors.critic');
       case 'success':
-        return theme.colors.green;
+        return themeVar(theme, 'colors.green');
       default:
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
     }
   }};
   ${NotificationStyled}:hover & {

@@ -1,4 +1,5 @@
 import { css } from 'styled-components';
+import { themeVar } from '@/ui/theme';
 
 /**
  * Colors of selected text in an assistant message of the given color.
@@ -13,22 +14,27 @@ export const messageSelectionStyles = (
   switch (messageColor) {
     case 'default':
       return css`
-        background: ${({ theme }) => theme.tokens.accentContrast}${priority};
-        color: ${({ theme }) => theme.tokens.messageAccentDefault}${priority};
+        background: ${({ theme }) =>
+            themeVar(theme, 'tokens.accentContrast')}${priority};
+        color: ${({ theme }) =>
+            themeVar(theme, 'tokens.messageAccentDefault')}${priority};
       `;
     case 'green':
       return css`
-        background: ${({ theme }) => theme.default.colors.base.white}${priority};
-        color: ${({ theme }) => theme.colors.gpt3}${priority};
+        background: ${({ theme }) =>
+            themeVar(theme, 'default.colors.base.white')}${priority};
+        color: ${({ theme }) => themeVar(theme, 'colors.gpt3')}${priority};
       `;
     case 'purple':
       return css`
-        background: ${({ theme }) => theme.default.colors.base.white}${priority};
-        color: ${({ theme }) => theme.colors.gpt4}${priority};
+        background: ${({ theme }) =>
+            themeVar(theme, 'default.colors.base.white')}${priority};
+        color: ${({ theme }) => themeVar(theme, 'colors.gpt4')}${priority};
       `;
     default:
       return css`
-        background: ${({ theme }) => theme.default.colors.base.white}${priority};
+        background: ${({ theme }) =>
+            themeVar(theme, 'default.colors.base.white')}${priority};
         color: ${messageColor}${priority};
       `;
   }

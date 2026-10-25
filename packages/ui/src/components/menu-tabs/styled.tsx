@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Scrollbar, ScrollbarShadow } from '../scrollbar';
 import { Typography } from '../typography';
+import { themeVar } from '@/ui/theme';
 
 export const MenuTabsStyled = styled.div`
   background: inherit;
@@ -33,7 +34,7 @@ export const MenuTabsContent = styled.div`
 export const MenuTabsText = styled(Typography).attrs({
   variant: 'body-l-medium',
 })`
-  color: ${({ theme }) => theme.colors.grayScale.gray6};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray6')};
 `;
 
 export const MenuTabsItem = styled.div<{ $active: boolean }>`
@@ -42,13 +43,13 @@ export const MenuTabsItem = styled.div<{ $active: boolean }>`
   width: fit-content;
   cursor: pointer;
   position: relative;
-  color: ${({ theme }) => theme.colors.grayScale.gray6};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray6')};
   ${({ $active, theme }) =>
     !$active
       ? css`
           &:hover ${MenuTabsText} {
             transition: all 350ms ease;
-            color: ${theme.colors.base.white};
+            color: ${themeVar(theme, 'colors.base.white')};
           }
           &:hover:before {
             content: '';
@@ -57,7 +58,7 @@ export const MenuTabsItem = styled.div<{ $active: boolean }>`
             height: 4px;
             left: 0px;
             width: 100%;
-            background: ${theme.colors.grayScale.gray6};
+            background: ${themeVar(theme, 'colors.grayScale.gray6')};
             border-radius: 0px 0px 24px 24px;
             bottom: 0px;
           }
@@ -75,7 +76,7 @@ export const MenuTabsLine = styled.div`
     transform 350ms ease,
     width 350ms ease;
   border-radius: 0px 0px 24px 24px;
-  background: ${({ theme }) => theme.colors.premiumGradient};
+  background: ${({ theme }) => themeVar(theme, 'colors.premiumGradient')};
   bottom: 0px;
   height: 4px;
 `;
