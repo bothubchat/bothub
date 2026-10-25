@@ -38,17 +38,20 @@ export const ScrollButton: React.FC<IScrollButton> = ({ scrollbarRef }) => {
     element.addEventListener('scroll', checkScrollPosition);
 
     // A streaming reply grows the content without any scroll event.
-    const resizeObserver = new ResizeObserver(checkScrollPosition);
-    resizeObserver.observe(element);
+    const resizeObserver =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(checkScrollPosition);
+    resizeObserver?.observe(element);
     Array.from(element.children).forEach((child) => {
-      resizeObserver.observe(child);
+      resizeObserver?.observe(child);
     });
 
     checkScrollPosition();
 
     return () => {
       element.removeEventListener('scroll', checkScrollPosition);
-      resizeObserver.disconnect();
+      resizeObserver?.disconnect();
     };
   }, [scrollbarRef]);
 
