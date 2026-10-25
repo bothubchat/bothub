@@ -38,6 +38,7 @@ export const ActionButton = ({
       {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
         <S.MessageActionsButton
           ref={ref}
+          type="button"
           aria-label={tooltipLabel ?? undefined}
           onClick={() => {
             onClick?.({ id, message });

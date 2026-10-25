@@ -108,4 +108,25 @@ describe('MessageActions', () => {
 
     expect(button.getAttribute('aria-expanded')).toBe('true');
   });
+
+  test('does not submit a surrounding form', () => {
+    const onSubmit = vi.fn((event: React.FormEvent) => event.preventDefault());
+    customRender(
+      <form onSubmit={onSubmit}>
+        <MessageActions
+          variant="assistant"
+          menuAriaLabel="Menu"
+          copyTooltipLabel="Copy"
+          disableFork={false}
+          forkTooltipLabel="Fork"
+        />
+      </form>,
+    );
+
+    fireEvent.click(screen.getByLabelText('Menu'));
+    fireEvent.click(screen.getByLabelText('Copy'));
+    fireEvent.click(screen.getByLabelText('Fork'));
+
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
 });
