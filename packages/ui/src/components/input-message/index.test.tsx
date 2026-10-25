@@ -496,3 +496,84 @@ describe('InputMessage textarea height', () => {
     );
   });
 });
+
+describe('InputMessage send', () => {
+  beforeEach(() => {
+    vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => {});
+  });
+  afterEach(() => {
+    cleanup();
+    vi.restoreAllMocks();
+  });
+
+  const renderSend = (
+    props: Partial<React.ComponentProps<typeof InputMessage>> = {},
+  ) => {
+    const onSend = vi.fn();
+    customRender(
+      <InputMessage
+        placeholder="Сообщение"
+        sendAriaLabel="Отправить"
+        onSend={onSend}
+        {...props}
+      />,
+    );
+
+    return {
+      onSend,
+      textarea: screen.getByPlaceholderText('Сообщение') as HTMLTextAreaElement,
+    };
+  };
+
+  test.each([
+    [
+      'Enter',
+      (textarea: HTMLElement) => fireEvent.keyDown(textarea, { key: 'Enter' }),
+    ],
+    ['send button', () => fireEvent.click(screen.getByLabelText('Отправить'))],
+  ])('%s sends and clears an uncontrolled message', (_, submit) => {
+    const { onSend, textarea } = renderSend();
+
+    fireEvent.change(textarea, { target: { value: 'Привет' } });
+    submit(textarea);
+
+    expect(onSend).toHaveBeenCalledWith('Привет', []);
+    expect(textarea.value).toBe('');
+  });
+
+  test('Enter asks the parent to clear message, files and voice files', () => {
+    const onChange = vi.fn();
+    const onFilesChange = vi.fn();
+    const onVoiceFilesChange = vi.fn();
+    const files = [{ name: 'doc.pdf', previewUrl: null, native: pdf() }];
+    const { onSend, textarea } = renderSend({
+      message: 'Привет',
+      onChange,
+      files,
+      onFilesChange,
+      voiceFiles: [voiceFile('blob:one')],
+      onVoiceFilesChange,
+    });
+
+    fireEvent.keyDown(textarea, { key: 'Enter' });
+
+    expect(onSend).toHaveBeenCalledWith('Привет', files);
+    expect(onChange).toHaveBeenCalledWith('');
+    expect(onFilesChange).toHaveBeenCalledWith([]);
+    expect(onVoiceFilesChange).toHaveBeenCalledWith([]);
+  });
+
+  test('does not pass InputMessage-only props to the textarea', () => {
+    const consoleError = vi.spyOn(console, 'error');
+    const { textarea } = renderSend({
+      uploadFileText: 'Загрузить',
+      configureOptions: [],
+      name: 'message',
+    });
+
+    expect(textarea.getAttribute('name')).toBe('message');
+    expect(textarea.hasAttribute('uploadfiletext')).toBe(false);
+    expect(textarea.hasAttribute('configureoptions')).toBe(false);
+    expect(consoleError).not.toHaveBeenCalled();
+  });
+});

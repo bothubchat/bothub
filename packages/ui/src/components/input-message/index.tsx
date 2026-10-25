@@ -40,7 +40,11 @@ import {
   IInputMessageVoiceFile,
   InputMessageErrorEvent,
 } from './types';
-import { formatSeconds } from '@/ui/utils';
+import {
+  formatSeconds,
+  useControllableState,
+  useEventCallback,
+} from '@/ui/utils';
 import { useVoice } from './use-voice';
 import { useFiles } from './use-files';
 import {
@@ -199,28 +203,36 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     onVoiceFilesChange,
   });
 
+  const [message, setMessage] = useControllableState({
+    value: initialMessage,
+    defaultValue: '',
+    onChange,
+  });
+
+  // Один путь для Enter и кнопки: оба очищают поле, файлы и голосовые
+  const send = useEventCallback(() => {
+    onSend?.(message, files);
+    setMessage('');
+    setFiles([]);
+    setVoiceFiles([]);
+  });
+
   const {
     textareaRef,
     isFocus,
-    message,
-    setMessage,
     handleFocus,
     handleBlur,
     handleClick,
     handleChange,
     handleKeyDown,
   } = useInput({
-    initialMessage,
+    message,
+    setMessage,
     sendDisabled,
     disabled,
     autoFocus,
     messageSubmitKey,
-    onChange,
-    onSendMessage: () => {
-      onSend?.(message, files);
-      setFiles?.([]);
-      setVoiceFiles?.([]);
-    },
+    onSendMessage: send,
     onTextAreaChange,
     onKeyDown,
     onFocus,
@@ -230,12 +242,9 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   const handleSend = useCallback<React.MouseEventHandler<HTMLButtonElement>>(
     (event) => {
       event.stopPropagation();
-      onSend?.(message, files);
-      setMessage('');
-      setFiles?.([]);
-      setVoiceFiles?.([]);
+      send();
     },
-    [message, files, onSend, setMessage, setFiles, setVoiceFiles],
+    [send],
   );
 
   const handleOpenFiles = useCallback<
@@ -249,6 +258,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   );
 
   const videoFiles = files?.filter((f) => f.native.type.startsWith('video/'));
+
+  const textAreaProps = { ...props };
+  // Пропсы InputMessage, которых нет у <textarea>: не отдаём их в DOM
+  delete textAreaProps.uploadFileText;
+  delete textAreaProps.configureOptions;
 
   return (
     <InputMessageStyled
@@ -403,7 +417,7 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             (textAreaDisabled && message)) && (
             <InputMessageTextArea
               $disabled={disabled}
-              {...props}
+              {...textAreaProps}
               ref={textareaRef}
               value={message}
               placeholder={placeholder}

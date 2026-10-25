@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  useControllableState,
-  useEventCallback,
-  useIsomorphicLayoutEffect,
-} from '@/ui/utils';
+import { useEventCallback, useIsomorphicLayoutEffect } from '@/ui/utils';
 import { isMobileDevice } from './utils';
 
 export type MessageSubmitKey = 'enter' | 'ctrlEnter';
@@ -11,12 +7,12 @@ export type MessageSubmitKey = 'enter' | 'ctrlEnter';
 export const TEXTAREA_MIN_HEIGHT = 'calc(var(--bothub-scale, 1) * 22px)';
 
 interface UseInputProps {
-  initialMessage?: string;
+  message: string;
+  setMessage: (message: string) => unknown;
   disabled?: boolean;
   sendDisabled?: boolean;
   autoFocus?: boolean;
   messageSubmitKey?: MessageSubmitKey;
-  onChange?: (value: string) => unknown;
   onSendMessage?: () => unknown;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
   onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
@@ -25,12 +21,12 @@ interface UseInputProps {
 }
 
 export const useInput = ({
-  initialMessage,
+  message,
+  setMessage,
   disabled,
   sendDisabled,
   autoFocus,
   messageSubmitKey = 'enter',
-  onChange,
   onSendMessage,
   onTextAreaChange,
   onKeyDown,
@@ -40,11 +36,6 @@ export const useInput = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [isFocus, setIsFocus] = useState((!disabled && autoFocus) ?? false);
-  const [message, setMessage] = useControllableState({
-    value: initialMessage,
-    defaultValue: '',
-    onChange,
-  });
 
   const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
     (event) => {
@@ -185,8 +176,6 @@ export const useInput = ({
   return {
     textareaRef,
     isFocus,
-    message,
-    setMessage,
     handleFocus,
     handleBlur,
     handleClick,
