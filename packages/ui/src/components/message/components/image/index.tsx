@@ -114,9 +114,7 @@ export const MessageImage: React.FC<MessageImageProps> = ({
             colors={[
               variant === 'user'
                 ? theme.colors.base.white
-                : theme.mode === 'light'
-                  ? theme.default.colors.base.black
-                  : theme.colors.grayScale.gray6,
+                : theme.tokens.textSecondary,
             ]}
           />
         )}

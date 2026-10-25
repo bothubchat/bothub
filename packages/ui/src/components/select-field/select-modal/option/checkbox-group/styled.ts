@@ -21,9 +21,7 @@ export const SelectFieldCheckboxGroupOptionHead = styled.div<{
       return css`
         cursor: not-allowed;
         &:hover {
-          background: ${theme.mode === 'light'
-            ? 'rgba(0, 0, 0, 0.05)'
-            : 'rgba(255, 255, 255, 0.05)'};
+          background: ${theme.tokens.hoverOverlay};
         }
         & > ${SelectFieldCheckboxGroupOptionHeadLeftSide}:first-child {
           opacity: 0.5;

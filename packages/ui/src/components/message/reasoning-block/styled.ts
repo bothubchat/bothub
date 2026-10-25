@@ -1,6 +1,5 @@
 import { css, styled } from 'styled-components';
 import { TypographyStyled } from '@/ui/components/typography/styled';
-import { defaultTheme } from '@/ui/theme';
 import { ArrowUpIcon } from '@/ui/icons/arrow-up';
 
 export const ReasoningBlockStyled = styled.div<{
@@ -49,8 +48,7 @@ export const ReasoningBlockContentWrapper = styled.div<{
   }
 
   & ${TypographyStyled} {
-    color: ${({ theme }) =>
-      theme.mode === 'dark' ? '#CDD5DA' : defaultTheme.colors.grayScale.gray1};
+    color: ${({ theme }) => theme.tokens.reasoningText};
   }
 
   & li {

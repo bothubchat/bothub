@@ -13,14 +13,8 @@ export const messageSelectionStyles = (
   switch (messageColor) {
     case 'default':
       return css`
-        background: ${({ theme }) =>
-            theme.mode === 'light'
-              ? theme.default.colors.accent.primary
-              : theme.colors.base.white}${priority};
-        color: ${({ theme }) =>
-            theme.mode === 'light'
-              ? theme.default.colors.base.white
-              : theme.colors.accent.primary}${priority};
+        background: ${({ theme }) => theme.tokens.accentContrast}${priority};
+        color: ${({ theme }) => theme.tokens.messageAccentDefault}${priority};
       `;
     case 'green':
       return css`

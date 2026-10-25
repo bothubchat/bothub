@@ -26,13 +26,9 @@ export const MessageMultilineCodeCopyButtonStyled = styled(Button).attrs({
             case 'default':
               return theme.default.colors.base.white;
             case 'green':
-              return theme.mode === 'dark'
-                ? theme.colors.gpt3
-                : theme.default.colors.base.white;
+              return theme.tokens.messageAccentGreen;
             case 'purple':
-              return theme.mode === 'dark'
-                ? theme.colors.gpt4
-                : theme.default.colors.base.white;
+              return theme.tokens.messageAccentPurple;
             default:
               return $messageColor;
           }
@@ -50,13 +46,9 @@ export const MessageMultilineCodeCopyButtonStyled = styled(Button).attrs({
               case 'default':
                 return theme.default.colors.base.white;
               case 'green':
-                return theme.mode === 'dark'
-                  ? theme.colors.gpt3
-                  : theme.default.colors.base.white;
+                return theme.tokens.messageAccentGreen;
               case 'purple':
-                return theme.mode === 'dark'
-                  ? theme.colors.gpt4
-                  : theme.default.colors.base.white;
+                return theme.tokens.messageAccentPurple;
               default:
                 return $messageColor;
             }

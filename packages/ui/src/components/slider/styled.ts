@@ -43,18 +43,12 @@ export const SliderArrow = styled.div<{
         return css`
           width: 122px;
 
-          background: ${({ theme }) =>
-            theme.mode === 'light'
-              ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
-              : 'linear-gradient(-90deg, #12182500 0%, #121825 100%)'};
+          background: ${({ theme }) => theme.tokens.sliderFadeSmall};
         `;
       case 'md':
         return css`
           width: 80px;
-          background: ${({ theme }) =>
-            theme.mode === 'light'
-              ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
-              : 'linear-gradient(-90deg, #0e0c1500 0%, #0e0c15 100%)'};
+          background: ${({ theme }) => theme.tokens.sliderFadeMedium};
         `;
     }
   }};

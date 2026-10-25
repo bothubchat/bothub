@@ -19,10 +19,7 @@ export const HeaderUserInfoHead: React.FC<
   padding: 8px 14px;
   border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
   border-radius: 6px;
-  background: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray4};
+  background: ${({ theme }) => theme.tokens.surfaceElevated};
   transition: background 0.3s ease-out;
   ${({ $inMenu }) =>
     $inMenu &&

@@ -122,9 +122,7 @@ export const SelectFieldOptionStyled = styled.div<SelectFieldOptionStyledProps>`
       return css`
         cursor: not-allowed;
         &:hover {
-          background: ${theme.mode === 'light'
-            ? 'rgba(0, 0, 0, 0.05)'
-            : 'rgba(255, 255, 255, 0.05)'};
+          background: ${theme.tokens.hoverOverlay};
         }
         > ${SelectFieldOptionSide}:first-child {
           opacity: 0.5;
@@ -172,9 +170,7 @@ export const SelectFieldOptionStyled = styled.div<SelectFieldOptionStyledProps>`
           : css`
               cursor: pointer;
               &:hover {
-                background: ${theme.mode === 'light'
-                  ? 'rgba(0, 0, 0, 0.05)'
-                  : 'rgba(255, 255, 255, 0.05)'};
+                background: ${theme.tokens.hoverOverlay};
               }
             `;
     }

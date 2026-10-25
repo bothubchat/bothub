@@ -259,9 +259,7 @@ const MessageBase: React.FC<MessageProps> = ({
       case 'assistant':
         switch (color) {
           case 'default':
-            return theme.mode === 'dark'
-              ? theme.colors.grayScale.gray2
-              : theme.colors.grayScale.gray3;
+            return theme.tokens.borderSecondary;
           case 'green':
             return theme.colors.gpt3;
           case 'purple':
@@ -359,9 +357,7 @@ const MessageBase: React.FC<MessageProps> = ({
                               colors={[
                                 variant === 'user'
                                   ? theme.colors.base.white
-                                  : theme.mode === 'light'
-                                    ? theme.default.colors.base.black
-                                    : theme.colors.grayScale.gray6,
+                                  : theme.tokens.textSecondary,
                               ]}
                             />
                           </MessageParagraph>

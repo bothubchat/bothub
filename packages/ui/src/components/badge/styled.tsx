@@ -30,9 +30,7 @@ export const BadgeStyled = styled.div<BadgeStyledProps>`
     }
     switch ($variant) {
       case 'info':
-        return theme.mode === 'dark'
-          ? theme.colors.grayScale.gray3
-          : theme.colors.grayScale.gray5;
+        return theme.tokens.badgeBackground;
       case 'blue':
         return theme.colors.accent.primary;
       case 'critic':

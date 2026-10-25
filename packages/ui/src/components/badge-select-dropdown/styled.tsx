@@ -1,6 +1,5 @@
 import { styled } from 'styled-components';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
-import { colorToRgba } from '@/ui/utils/colors';
 import { Typography } from '../typography';
 import { Variant } from './types';
 
@@ -21,13 +20,8 @@ export const BadgeSelectDropdownTrigger = styled.button<{
   max-width: 100%;
   background: ${({ theme, $active, $colorButtonOpened }) =>
     $active
-      ? $colorButtonOpened ||
-        (theme.mode === 'light'
-          ? theme.colors.grayScale.gray2
-          : colorToRgba(theme.colors.accent.primaryLight, 0.5))
-      : theme.mode === 'light'
-        ? theme.colors.grayScale.gray4
-        : theme.colors.grayScale.gray3};
+      ? $colorButtonOpened || theme.tokens.surfaceActive
+      : theme.tokens.surfaceSecondary};
   color: ${({ theme }) => theme.colors.base.white};
 `;
 

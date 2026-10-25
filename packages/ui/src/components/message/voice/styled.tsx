@@ -68,9 +68,7 @@ export const MessageVoiceDurationText = styled(Typography).attrs<{
 
     /* In standard theme, theme.bright is false, but message background is light */
     if (theme.scheme === 'standard') {
-      return theme.mode === 'dark'
-        ? theme.default.colors.base.white
-        : theme.default.colors.base.black;
+      return theme.tokens.textDefault;
     }
 
     return theme.bright ||
@@ -100,28 +98,14 @@ export const MessageVoiceText = styled(Typography).attrs({
   variant: 'body-m-regular',
 })<MessageVoiceTextProps>`
   width: 100%;
-  color: ${({ theme }) => {
-    if (
-      theme.bright ||
-      (theme.scheme === 'standard' && theme.mode === 'light')
-    ) {
-      return theme.default.colors.base.black;
-    }
-    return theme.default.colors.base.white;
-  }};
+  color: ${({ theme }) => theme.tokens.userMessageText};
   &::selection {
     ${({ $messageColor }) => {
       switch ($messageColor) {
         case 'default':
           return css`
-            background: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.accent.primary
-                : theme.colors.base.white};
-            color: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.base.white
-                : theme.colors.accent.primary};
+            background: ${({ theme }) => theme.tokens.accentContrast};
+            color: ${({ theme }) => theme.tokens.messageAccentDefault};
           `;
         case 'green':
           return css`

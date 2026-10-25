@@ -89,9 +89,7 @@ export const MessageActionsMenuModalOption = styled.button`
             if (theme.scheme === 'custom') {
               return theme.colors.custom.icon;
             }
-            return theme.mode === 'dark'
-              ? theme.colors.accent.primaryLight
-              : theme.default.colors.base.white;
+            return theme.tokens.actionActiveBackground;
           }};
         }
       }

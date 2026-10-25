@@ -52,10 +52,7 @@ export const MessageListItemStyled = styled(Typography).attrs({
         if ($messageColor !== 'default') {
           numberColor = theme.colors.base.white;
         } else {
-          numberColor =
-            theme.mode === 'dark'
-              ? theme.default.colors.grayScale.gray6
-              : theme.default.colors.base.black;
+          numberColor = theme.tokens.listMarker;
         }
 
         return css`

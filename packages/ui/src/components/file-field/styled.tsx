@@ -74,9 +74,7 @@ export const FileFieldBlock = styled.label<FileFieldBlockProps>`
       return theme.colors.grayScale.gray3;
     }
 
-    return theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray4;
+    return theme.tokens.surfaceElevated;
   }};
   border-radius: 8px;
   cursor: ${({ $disabled }) => {

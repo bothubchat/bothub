@@ -138,13 +138,9 @@ export const MessageName = styled(Typography).attrs({
   color: ${({ theme, $color }) => {
     switch ($color) {
       case 'green':
-        return theme.mode === 'dark'
-          ? theme.default.colors.base.white
-          : theme.colors.gpt3;
+        return theme.tokens.messageAccentGreenInverse;
       case 'purple':
-        return theme.mode === 'dark'
-          ? theme.default.colors.base.white
-          : theme.colors.gpt4;
+        return theme.tokens.messageAccentPurpleInverse;
       default:
         return theme.colors.base.white;
     }
@@ -325,13 +321,7 @@ export const MessageTransaction = styled(Typography).attrs({
   variant: 'body-m-regular',
 })`
   text-transform: uppercase;
-  color: ${({ theme }) => {
-    if (theme.mode === 'light') {
-      return theme.colors.grayScale.gray1;
-    }
-
-    return theme.default.colors.base.white;
-  }};
+  color: ${({ theme }) => theme.tokens.transactionText};
 `;
 
 export const MessageAction = styled(Button).attrs({

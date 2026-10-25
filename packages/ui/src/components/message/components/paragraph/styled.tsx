@@ -24,9 +24,7 @@ export const MessageParagraphStyled = styled(
       }
 
       return theme.bright
-        ? theme.mode === 'dark'
-          ? theme.colors.base.black
-          : theme.colors.base.white
+        ? theme.tokens.inkDark
         : theme.default.colors.base.white;
     }
 
@@ -57,14 +55,8 @@ export const MessageParagraphStyled = styled(
       switch ($variant) {
         case 'user':
           return css`
-            background: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.colors.accent.primaryLight
-                : theme.colors.base.white};
-            color: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.base.white
-                : theme.colors.accent.primary};
+            background: ${({ theme }) => theme.tokens.selectionUserBackground};
+            color: ${({ theme }) => theme.tokens.messageAccentDefault};
           `;
         case 'assistant':
           return messageSelectionStyles($color);

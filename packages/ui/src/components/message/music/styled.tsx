@@ -5,7 +5,6 @@ import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { Skeleton } from '@/ui/components/skeleton';
 import { adaptive } from '@/ui/adaptive';
-import { isBright } from '@/ui/utils';
 import { MessageVariant } from '../types';
 
 export interface MessageMusicStyledProps {
@@ -103,12 +102,7 @@ const textColor = css<{ $variant: MessageVariant }>`
       return theme.colors.base.white;
     }
 
-    return theme.bright ||
-      (theme.scheme === 'standard' && theme.mode === 'light') ||
-      (theme.scheme === 'custom' &&
-        isBright(theme.colors.custom.message.user.background))
-      ? theme.default.colors.base.black
-      : theme.default.colors.base.white;
+    return theme.tokens.userMusicText;
   }};
 `;
 

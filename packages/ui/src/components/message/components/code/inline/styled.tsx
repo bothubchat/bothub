@@ -30,9 +30,7 @@ export const MessageInlineCodeStyled = styled(Typography).attrs({
         }
 
         return css`
-          background: ${theme.mode === 'light'
-            ? theme.default.colors.base.white
-            : theme.colors.grayScale.gray3};
+          background: ${theme.tokens.surfaceTertiary};
         `;
     }
   }}

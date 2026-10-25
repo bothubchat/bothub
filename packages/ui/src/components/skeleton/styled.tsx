@@ -55,14 +55,8 @@ export const SkeletonStyled = styled.span<SkeletonStyledProps>`
         `;
     }
   }}
-  ${skeletonProperties.colorFrom}: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.colors.grayScale.gray2
-      : theme.colors.grayScale.gray5};
-  ${skeletonProperties.colorTo}: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.colors.grayScale.gray5
-      : theme.colors.grayScale.gray1};
+  ${skeletonProperties.colorFrom}: ${({ theme }) => theme.tokens.skeletonFrom};
+  ${skeletonProperties.colorTo}: ${({ theme }) => theme.tokens.skeletonTo};
   animation: ${pulse} 2s infinite forwards;
   overflow: hidden;
 `;

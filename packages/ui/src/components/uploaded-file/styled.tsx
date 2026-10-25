@@ -65,8 +65,7 @@ export const UploadedFileInfo = styled.div`
 export const UploadedFileSize = styled(Typography).attrs({
   variant: 'body-xs-medium',
 })`
-  color: ${({ theme }) =>
-    theme.mode === 'dark' ? theme.colors.grayScale.gray6 : '#9CA3AF'};
+  color: ${({ theme }) => theme.tokens.textTertiary};
   text-transform: uppercase;
 `;
 

@@ -12,10 +12,7 @@ export interface NotificationStyledProps {
 
 export const NotificationStyled = styled(animated.div)<NotificationStyledProps>`
   display: flex;
-  background: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray2};
+  background: ${({ theme }) => theme.tokens.surfaceNotification};
   border: 1px solid
     ${({ theme, $variant }) => {
       switch ($variant) {
@@ -102,10 +99,7 @@ export const NotificationText = styled(Typography).attrs({
   overflow: hidden;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
-  color: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.default.colors.base.black
-      : theme.colors.grayScale.gray6};
+  color: ${({ theme }) => theme.tokens.textSecondary};
 `;
 
 export const NotificationCloseButton = styled(Button).attrs({

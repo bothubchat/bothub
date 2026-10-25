@@ -15,9 +15,7 @@ export const MessageHrStyled = styled.hr<MessageHrStyledProps>`
         return theme.default.colors.base.white;
       }
 
-      return theme.mode === 'dark'
-        ? theme.colors.grayScale.gray3
-        : theme.colors.grayScale.gray2;
+      return theme.tokens.divider;
     }};
   opacity: 0.5;
 `;

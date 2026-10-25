@@ -77,9 +77,7 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
       return theme.colors.grayScale.gray7;
     }
 
-    return theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray4;
+    return theme.tokens.surfaceElevated;
   }};
   ${({ $glow, theme }) =>
     $glow &&
@@ -131,10 +129,7 @@ export const TextAreaFieldTextArea = styled.textarea`
     color: ${({ theme }) => theme.colors.grayScale.gray1};
   }
   &:focus::placeholder {
-    color: ${({ theme }) =>
-      theme.mode === 'light'
-        ? theme.colors.grayScale.gray1
-        : theme.colors.grayScale.gray6};
+    color: ${({ theme }) => theme.tokens.borderFocus};
   }
   &::-webkit-scrollbar {
     display: none;

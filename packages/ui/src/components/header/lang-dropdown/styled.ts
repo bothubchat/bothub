@@ -77,18 +77,11 @@ export const HeaderLangDropdownContent: React.FC<
 export const HeaderLangDropdownList = styled.ul`
   display: flex;
   flex-direction: column;
-  border: 1px solid
-    ${({ theme }) =>
-      theme.mode === 'light'
-        ? theme.colors.grayScale.gray3
-        : theme.colors.grayScale.gray2};
+  border: 1px solid ${({ theme }) => theme.tokens.borderSecondary};
   border-radius: 8px;
   overflow: hidden;
   list-style: none;
-  background: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.colors.grayScale.gray4
-      : theme.colors.grayScale.gray3};
+  background: ${({ theme }) => theme.tokens.surfaceSecondary};
   width: 80px;
   padding: 10px 16px;
   box-sizing: border-box;

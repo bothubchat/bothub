@@ -73,14 +73,10 @@ export const SelectModalPositionWrapper = styled.div<SelectModalPositionWrapperP
   border-radius: 10px;
   background: ${({ theme, $blur }) => {
     if ($blur) {
-      return theme.mode === 'light'
-        ? 'rgba(255, 255, 255, 0.65)'
-        : 'rgba(18, 24, 37, 0.75)';
+      return theme.tokens.surfaceGlass;
     }
 
-    return theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray4;
+    return theme.tokens.surfaceElevated;
   }};
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);

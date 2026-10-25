@@ -42,24 +42,16 @@ export const TimestampText = styled(Typography).attrs({
 })<TimestampTextProp>`
   color: ${({ theme, $color, $variant }) => {
     if ($variant === 'assistant') {
-      return isBright(theme.colors.grayScale.gray4)
-        ? theme.mode === 'dark'
-          ? theme.colors.base.black
-          : theme.default.colors.base.black
-        : theme.default.colors.base.white;
+      return theme.tokens.timestampAssistantText;
     }
     if (theme.scheme === 'standard' && theme.mode === 'light') {
       return theme.default.colors.base.black;
     }
 
     if (theme.bright || isBright($color)) {
-      return theme.mode === 'dark'
-        ? theme.colors.base.black
-        : theme.colors.base.white;
+      return theme.tokens.inkDark;
     }
-    return theme.mode === 'dark'
-      ? theme.colors.base.white
-      : theme.colors.base.black;
+    return theme.tokens.inkLight;
   }} !important;
   ${adaptive({
     desktop: css`

@@ -74,10 +74,7 @@ export const Shadow = styled.div<ShadowProps>`
     `}
 
   ${({ $onTop = false, theme }) => {
-    const color =
-      theme.mode === 'dark'
-        ? theme.colors.grayScale.gray4
-        : theme.colors.base.black;
+    const color = theme.tokens.surfaceGroupHeader;
 
     return $onTop
       ? css`

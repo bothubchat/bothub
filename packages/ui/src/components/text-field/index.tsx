@@ -142,10 +142,7 @@ export const TextField: React.FC<TextFieldProps> = ({
       fill: theme.colors.grayScale.gray1,
     }),
     ...(!disabled && {
-      fill:
-        theme.mode === 'light'
-          ? theme.default.colors.accent.primary
-          : theme.colors.base.white,
+      fill: theme.tokens.accentContrast,
     }),
   };
   const getInputType = () => {

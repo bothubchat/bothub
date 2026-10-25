@@ -30,10 +30,7 @@ export const MessageFileName = styled(Typography).attrs({
       return theme.colors.base.white;
     }
 
-    return theme.bright ||
-      (theme.scheme === 'standard' && theme.mode === 'light')
-      ? theme.default.colors.base.black
-      : theme.default.colors.base.white;
+    return theme.tokens.userMessageText;
   }};
 `;
 

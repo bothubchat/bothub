@@ -31,36 +31,20 @@ export const MessageTableCellText = styled(Typography).attrs({
       switch ($messageColor) {
         case 'default':
           return css`
-            background: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.accent.primary
-                : theme.colors.base.white};
-            color: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.base.white
-                : theme.colors.accent.primary};
+            background: ${({ theme }) => theme.tokens.accentContrast};
+            color: ${({ theme }) => theme.tokens.messageAccentDefault};
           `;
         case 'green':
           return css`
             background: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.colors.gpt3
-                : theme.default.colors.base.white};
-            color: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.base.white
-                : theme.colors.gpt3};
+              theme.tokens.messageAccentGreenInverse};
+            color: ${({ theme }) => theme.tokens.messageAccentGreen};
           `;
         case 'purple':
           return css`
             background: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.colors.gpt4
-                : theme.default.colors.base.white};
-            color: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.base.white
-                : theme.colors.gpt4};
+              theme.tokens.messageAccentPurpleInverse};
+            color: ${({ theme }) => theme.tokens.messageAccentPurple};
           `;
         default:
           return css`

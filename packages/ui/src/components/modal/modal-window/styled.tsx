@@ -81,10 +81,7 @@ export const ModalWindowCloseButton = styled.button`
   }
 
   &:hover path {
-    fill: ${({ theme }) =>
-      theme.mode === 'light'
-        ? theme.default.colors.accent.primary
-        : theme.colors.base.white};
+    fill: ${({ theme }) => theme.tokens.accentContrast};
   }
 
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {

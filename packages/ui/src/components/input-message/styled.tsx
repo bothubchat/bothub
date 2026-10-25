@@ -39,9 +39,7 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
       return theme.colors.grayScale.gray3;
     }
 
-    return theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray4;
+    return theme.tokens.surfaceElevated;
   }};
   width: 100%;
   padding: 14px 20px;
@@ -389,8 +387,7 @@ export const InputMessageContentTextMessage = styled(Typography).attrs({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: ${({ theme }) =>
-    theme.mode === 'dark' ? theme.colors.base.white : theme.colors.base.black};
+  color: ${({ theme }) => theme.tokens.inkLight};
 `;
 
 export const InputMessageContentTextFiles = styled(

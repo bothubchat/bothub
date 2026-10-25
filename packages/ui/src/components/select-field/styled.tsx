@@ -98,14 +98,10 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
       return theme.colors.grayScale.gray3;
     }
     if ($blur) {
-      return theme.mode === 'light'
-        ? 'rgba(255, 255, 255, 0.65)'
-        : 'rgba(18, 24, 37, 0.75)';
+      return theme.tokens.surfaceGlass;
     }
 
-    return theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray4;
+    return theme.tokens.surfaceElevated;
   }};
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -207,10 +203,7 @@ export const SelectFieldInputNative = styled.input`
     color: ${({ theme }) => theme.colors.grayScale.gray1};
   }
   &:focus::placeholder {
-    color: ${({ theme }) =>
-      theme.mode === 'light'
-        ? theme.colors.grayScale.gray1
-        : theme.colors.grayScale.gray6};
+    color: ${({ theme }) => theme.tokens.borderFocus};
   }
   &:-webkit-autofill,
   &:-webkit-autofill:hover,

@@ -6,13 +6,9 @@ export const StyledLine = styled.div`
   border-radius: 2px;
   background-color: ${({ theme }) => {
     if (theme.bright) {
-      return theme.mode === 'dark'
-        ? theme.colors.base.black
-        : theme.colors.base.white;
+      return theme.tokens.inkDark;
     }
-    return theme.mode === 'dark'
-      ? theme.colors.base.white
-      : theme.colors.base.black;
+    return theme.tokens.inkLight;
   }};
   position: absolute;
   left: 0;

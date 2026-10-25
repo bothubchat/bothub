@@ -118,10 +118,8 @@ export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
           backgroundColor = color;
         } else if ($disabled || $skeleton) {
           backgroundColor = theme.colors.grayScale.gray3;
-        } else if (theme.mode === 'light' && theme.scheme === 'standard') {
-          backgroundColor = theme.colors.accent.primaryLight;
         } else {
-          backgroundColor = theme.colors.accent.primary;
+          backgroundColor = theme.tokens.buttonPrimaryBackground;
         }
 
         return css`
@@ -342,9 +340,7 @@ export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
         }
         &:hover {
           svg path {
-            fill: ${theme.mode === 'light'
-              ? theme.default.colors.accent.primary
-              : theme.colors.base.white} !important;
+            fill: ${theme.tokens.accentContrast} !important;
           }
         }
       `;
@@ -413,9 +409,7 @@ export const ButtonText = styled.span<ButtonTextProps>`
         if (theme.scheme === 'custom') {
           if (theme.bright) {
             return isBrightColor(theme.colors.custom.interface.text)
-              ? theme.mode === 'dark'
-                ? theme.colors.base.black
-                : theme.default.colors.base.black
+              ? theme.tokens.textOnBright
               : theme.colors.custom.interface.text;
           }
 
@@ -425,15 +419,11 @@ export const ButtonText = styled.span<ButtonTextProps>`
         }
 
         if (theme.bright) {
-          return theme.mode === 'dark'
-            ? theme.colors.base.black
-            : theme.colors.base.white;
+          return theme.tokens.inkDark;
         }
         return theme.default.colors.base.white;
       case 'primary-outline':
-        return theme.mode === 'light'
-          ? theme.default.colors.base.black
-          : theme.colors.base.white;
+        return theme.tokens.textStrong;
       default:
         return theme.colors.base.white;
     }

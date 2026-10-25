@@ -99,9 +99,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
           if (theme.scheme === 'custom') {
             if (isBrightColor(theme.colors.accent.primary)) {
               return isBrightColor(theme.colors.custom.interface.text)
-                ? theme.mode === 'dark'
-                  ? theme.colors.base.black
-                  : theme.default.colors.base.black
+                ? theme.tokens.textOnBright
                 : theme.colors.custom.interface.text;
             }
 
@@ -111,9 +109,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
           }
 
           return theme.bright
-            ? theme.mode === 'dark'
-              ? theme.colors.base.black
-              : theme.default.colors.base.black
+            ? theme.tokens.textOnBright
             : theme.default.colors.base.white;
         default:
           return theme.colors.base.white;

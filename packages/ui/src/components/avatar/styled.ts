@@ -45,10 +45,7 @@ export const AvatarBg = styled.div<AvatarBgProps>`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.colors.grayScale.gray1
-      : theme.colors.grayScale.gray3};
+  background-color: ${({ theme }) => theme.tokens.iconMuted};
   ${({ $size }) => css`
     width: ${$size}px;
     height: ${$size}px;

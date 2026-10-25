@@ -113,17 +113,11 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
             }
           `
         : css`
-            background: ${theme.mode === 'light'
-              ? $variant === 'primary'
-                ? theme.default.colors.base.white
-                : theme.colors.grayScale.gray7
-              : $variant === 'primary'
-                ? theme.colors.grayScale.gray4
-                : theme.colors.grayScale.gray7};
+            background: ${$variant === 'primary'
+              ? theme.tokens.surfaceElevated
+              : theme.colors.grayScale.gray7};
             > svg path {
-              fill: ${theme.mode === 'light'
-                ? theme.default.colors.accent.primary
-                : theme.colors.base.white};
+              fill: ${theme.tokens.accentContrast};
             }
           `;
 
@@ -136,13 +130,9 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
             }
           `
         : css`
-            background: ${theme.mode === 'light'
-              ? $variant === 'primary'
-                ? theme.default.colors.base.white
-                : theme.colors.grayScale.gray7
-              : $variant === 'primary'
-                ? theme.colors.grayScale.gray4
-                : theme.colors.grayScale.gray7};
+            background: ${$variant === 'primary'
+              ? theme.tokens.surfaceElevated
+              : theme.colors.grayScale.gray7};
             > svg path {
               fill: ${theme.colors.grayScale.gray1};
             }
@@ -197,10 +187,7 @@ export const TextFieldInput = styled.input<VariantProps>`
     color: ${({ theme }) => theme.colors.grayScale.gray1};
   }
   &:focus::placeholder {
-    color: ${({ theme }) =>
-      theme.mode === 'light'
-        ? theme.colors.grayScale.gray1
-        : theme.colors.grayScale.gray6};
+    color: ${({ theme }) => theme.tokens.borderFocus};
   }
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
@@ -208,23 +195,13 @@ export const TextFieldInput = styled.input<VariantProps>`
     caret-color: ${({ theme }) => theme.colors.base.white};
     -webkit-background-clip: text;
     -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
-    box-shadow: 0 0 0 100px
-      ${({ theme }) =>
-        theme.mode === 'light'
-          ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray4}
-      inset !important;
+    box-shadow: 0 0 0 100px ${({ theme }) => theme.tokens.surfaceElevated} inset !important;
   }
   &:-webkit-autofill:focus {
     caret-color: ${({ theme }) => theme.colors.base.white};
     -webkit-background-clip: text;
     -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
-    box-shadow: 0 0 0 100px
-      ${({ theme }) =>
-        theme.mode === 'light'
-          ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray4}
-      inset !important;
+    box-shadow: 0 0 0 100px ${({ theme }) => theme.tokens.surfaceElevated} inset !important;
   }
   &::-webkit-search-decoration,
   &::-webkit-search-cancel-button,

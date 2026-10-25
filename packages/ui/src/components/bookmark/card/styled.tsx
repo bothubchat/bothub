@@ -15,10 +15,7 @@ export const BookmarkCardStyled = styled.div<BookmarkCardStyledProps>`
   width: 100%;
   border-radius: 14px;
   overflow: hidden;
-  background: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray3};
+  background: ${({ theme }) => theme.tokens.surfaceTertiary};
   ${({ theme }) =>
     theme.mode === 'light' &&
     css`

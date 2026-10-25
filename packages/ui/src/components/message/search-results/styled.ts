@@ -28,9 +28,7 @@ export const SearchResultsItemStyled = styled.li`
 
   &:hover {
     background-color: ${({ theme }) =>
-      theme.mode === 'light'
-        ? 'rgba(71, 133, 255, 0.2)'
-        : 'rgba(28, 100, 242, 0.2)'};
+      theme.tokens.searchResultHoverBackground};
 
     & > div[data-source-content] ${TypographyStyled} {
       color: ${({ theme }) => theme.colors.base.white};
