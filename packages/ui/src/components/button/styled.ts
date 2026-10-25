@@ -59,7 +59,6 @@ const reverseBoxShadowAnimation = (initialColor: string): Keyframes => {
 const buttonColorProperty = '--bothub-button-color';
 
 export interface ButtonStyledProps {
-  ref: React.RefObject<HTMLButtonElement>;
   $icon: boolean;
   $variant: ButtonVariant;
   $size: ButtonSize;

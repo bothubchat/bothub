@@ -1,10 +1,4 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-} from 'react';
+import React, { forwardRef, useCallback, useMemo } from 'react';
 import { ButtonStyled, ButtonText } from './styled';
 import { useTheme } from '@/ui/theme';
 import { IconProvider, isIconComponent } from '@/ui/components/icon';
@@ -69,8 +63,6 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
   ) => {
     const theme = useTheme();
 
-    const elementRef = useRef<HTMLButtonElement | null>(null);
-
     const childrenArray: React.ReactNode[] = React.Children.toArray(children);
     const isIconButton: boolean = React.isValidElement(childrenArray[0])
       ? isIconComponent(childrenArray[0].type)
@@ -105,6 +97,14 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
       switch (variant) {
         case 'primary':
           if (theme.scheme === 'custom') {
+            if (isBrightColor(theme.colors.accent.primary)) {
+              return isBrightColor(theme.colors.custom.interface.text)
+                ? theme.mode === 'dark'
+                  ? theme.colors.base.black
+                  : theme.default.colors.base.black
+                : theme.colors.custom.interface.text;
+            }
+
             return isBrightColor(theme.colors.custom.interface.text)
               ? theme.colors.custom.interface.text
               : theme.default.colors.base.white;
@@ -146,10 +146,13 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
       },
       [props.onMouseLeave, handleTooltipMouseLeave],
     );
-
-    useImperativeHandle(ref, () => elementRef.current as HTMLButtonElement, [
-      elementRef.current,
-    ]);
+    // `disabled` does nothing on a/span/label, so block clicks (and link
+    // navigation or label activation) by hand.
+    const handleDisabledClick = useCallback<
+      React.MouseEventHandler<HTMLButtonElement>
+    >((event) => {
+      event.preventDefault();
+    }, []);
 
     return (
       <ButtonStyled
@@ -171,10 +174,15 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
           type,
           disabled,
         })}
+        {...(!isNativeButton &&
+          disabled && {
+            'aria-disabled': true,
+            onClick: handleDisabledClick,
+          })}
         {...(to && { to })}
         {...(component === 'a' && { href: props.href })}
         {...(component === 'label' && { htmlFor: props.htmlFor })}
-        ref={elementRef}
+        ref={ref}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
