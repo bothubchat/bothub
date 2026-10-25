@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 export interface TooltipContextValue {
   handleTooltipMouseEnter: React.MouseEventHandler<Element>;
@@ -14,9 +14,29 @@ export const TooltipContext = React.createContext<TooltipContextValue>({
 
 export const TooltipProvider: React.FC<
   TooltipContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <TooltipContext.Provider value={value}>{children}</TooltipContext.Provider>
-);
+> = ({
+  children,
+  handleTooltipMouseEnter,
+  handleTooltipMouseLeave,
+  handleTooltipPointerMove,
+}) => {
+  const value = useMemo<TooltipContextValue>(
+    () => ({
+      handleTooltipMouseEnter,
+      handleTooltipMouseLeave,
+      handleTooltipPointerMove,
+    }),
+    [
+      handleTooltipMouseEnter,
+      handleTooltipMouseLeave,
+      handleTooltipPointerMove,
+    ],
+  );
+
+  return (
+    <TooltipContext.Provider value={value}>{children}</TooltipContext.Provider>
+  );
+};
 
 export const TooltipConsumer = TooltipContext.Consumer;
 
