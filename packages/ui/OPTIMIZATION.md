@@ -18,6 +18,8 @@
 | Видео 10 минут: новые CSS-классы | +2400 (821 КБ CSS) | 0 |
 | ImageFullScreen на 50 картинок: полноразмерные `<img>` / рендеры на свайп | 50 / 4 | 3 / 0 |
 | `.d.ts` с неразрешимым алиасом `@/ui` в пакете | 472 файла | 0 |
+| Размер пакета (dist) / из них `.d.ts` | 24,8 / 22,3 МБ | 4,8 / 2,4 МБ |
+| `yarn build` | ~4 мин 20 с | ~60 с |
 
 ---
 
@@ -88,27 +90,25 @@
 - [x] Удалены недостижимые файлы и дубль ассета Black Friday
 - [x] Матчеры jest-dom доступны в тестах пакета
 - [x] README: актуальные peer-зависимости
+- [x] styled-components 6.0.7 → 6.1.19 (peer `^6.1.11`): из зависимостей ушёл Babel со всеми уязвимостями, `.d.ts` 22,3 → 2,4 МБ; CSS всех 586 рендеров stories совпадает с 6.0.7
+- [x] TypeScript 5.9 → 6.0.3 (диапазон `^6.0.3`, чтобы не уехать на TS 7 без JS API); `moduleResolution: Bundler`, без устаревшего `baseUrl`; проверка типов 59 → 36 с, память 2,75 → 1,5 ГБ
+- [x] Storybook 10.6.3
+
+### Ускорение сборки
+- [x] `scripts/build.ts`: rollup (JS), `tsc --noCheck` (`.d.ts`) и `tsc --noEmit` (проверка типов) идут параллельно; ошибка типов по-прежнему валит сборку
+- [x] Конфиг rollup компилируется через esbuild вместо `@rollup/plugin-typescript`
+- [x] TypeScript транспилируется пофайлово с теми же настройками: dist совпадает со старой сборкой байт в байт (1681 файл)
+- [x] `./dist` убран из `include` tsconfig пакета, eslint убран из сборки, добавлен `yarn typecheck`
+- [x] `yarn dev`: watch для JS и `.d.ts`, декларации обновляются примерно за 2 с после правки
 
 ---
 
-## В работе
-- [ ] Обновление styled-components 6.0.7 → 6.1.19 (peer `^6.1.11`)
-  - Ожидаемо: `.d.ts` 22 МБ → ~5 МБ, генерация типов в 2 раза быстрее, из зависимостей уходит Babel со всеми его уязвимостями
-  - Проверка: CSS всех 586 рендеров stories сравнивается до и после обновления
-
 ## Осталось сделать
 
-### Сборка
-- [ ] Компилировать `rollup.config.ts` через esbuild вместо `@rollup/plugin-typescript` (−50 с)
-- [ ] Генерировать `.d.ts` отдельным `tsc --emitDeclarationOnly --noCheck` параллельно с rollup (сборка ~4 мин 20 с → ~35–70 с)
-- [ ] Вынести проверку типов в `yarn typecheck`, убрать eslint из сборки
-- [ ] Убрать `./dist` из `include` в `packages/ui/tsconfig.json`
-- [ ] Быстрый `yarn dev`: watch только для JS, `tsc -w --incremental` для типов
-
 ### Зависимости и инструменты
-- [ ] Закрепить TypeScript на `^5.9.2` (сейчас `>=5.8.2`, при чистой установке поставится TS 7)
+- [ ] TypeScript 7 (нативный компилятор, проверка типов ~10 с вместо 36): ждать, пока typescript-eslint и другие инструменты перейдут на его API, или подключить отдельно только для `typecheck`
 - [ ] Подключить `eslint-plugin-react-hooks` (`rules-of-hooks`, `exhaustive-deps`) — плагин установлен, но не включён
-- [ ] Обновить зависимости в пределах текущих диапазонов (katex, mdast-util-to-hast и postcss — уязвимости; react 19.3, vite/vitest/storybook — патчи)
+- [ ] Обновить зависимости в пределах текущих диапазонов (katex, mdast-util-to-hast и postcss — уязвимости; react 19.3, vite/vitest — патчи)
 - [ ] Удалить неиспользуемые `eslint-config-love`, `eslint-config-standard-with-typescript`, `eslint-plugin-n`, `eslint-plugin-promise`
 - [ ] Перенести инструменты из `dependencies` корневого `package.json` в `devDependencies`
 - [ ] Починить нестабильные тесты на таймерах: `useDelayedVisible`, `tooltip`
