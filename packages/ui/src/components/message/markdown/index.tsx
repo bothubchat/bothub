@@ -14,15 +14,17 @@ import {
 import { getOpenCodeFenceStart, normalizeMessageMarkdown } from './utils';
 import { splitMarkdownBlocks } from './blocks';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
+import { useStableComponents } from './useStableComponents';
 
 export interface MessageMarkdownProps {
   children: string;
   /**
-   * Keep the object stable while a message streams (`useMemo`): every code
-   * block and image of the message re-renders when it changes.
+   * Compared by value: a new object with the same values does not re-render
+   * the code blocks and images of the message. Functions in it
+   * (`image.buttons`) have to keep their identity for that.
    */
   components?: MessageComponentsProps;
-  /** Keep the object stable too: a new one parses the whole message again. */
+  /** Keep the object stable: a new one parses the whole message again. */
   componentsOverride?: Components;
   disableTyping?: boolean;
   forceMarkdown?: boolean;
@@ -48,6 +50,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
     const { typing, variant, color } = useMessage();
     const isDisabled = forceMarkdown ? false : variant === 'user';
     const id = useId();
+    const stableComponents = useStableComponents(components);
 
     // `typing` comes from the message context, not `disableTyping`: that prop
     // only hides the cursor while the content may still be streaming.
@@ -146,7 +149,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
     }
 
     return (
-      <MessageMarkdownComponentsProvider value={components}>
+      <MessageMarkdownComponentsProvider value={stableComponents}>
         {markdownNode}
       </MessageMarkdownComponentsProvider>
     );

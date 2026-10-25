@@ -137,6 +137,37 @@ describe('MessageMarkdown', () => {
     );
   });
 
+  test('does not render complete blocks again for equal components', () => {
+    const buttons = vi.fn(() => null);
+    const text = `![Схема](https://bothub.chat/a.png)\n\n${'а'.repeat(1500)}\n\nЕщё`;
+    let setText: (text: string) => void = () => {};
+
+    const Streaming = () => {
+      const [value, set] = useState(text);
+      setText = set;
+      return (
+        <MessageProvider
+          variant="assistant"
+          color="default"
+          typing
+        >
+          {/* A new object on every render, as callers usually pass it. */}
+          <MessageMarkdown components={{ image: { buttons } }}>
+            {value}
+          </MessageMarkdown>
+        </MessageProvider>
+      );
+    };
+
+    customRender(<Streaming />);
+    buttons.mockClear();
+
+    act(() => setText(`${text} один абзац`));
+
+    expect(splitMarkdownBlocks(text)).toHaveLength(2);
+    expect(buttons).not.toHaveBeenCalled();
+  });
+
   test('renders <br> inside table cells as line breaks', () => {
     const { container } = renderMarkdown('| a |\n|---|\n| 1<br>2 |');
 
