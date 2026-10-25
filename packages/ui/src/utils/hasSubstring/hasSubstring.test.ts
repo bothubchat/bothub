@@ -24,4 +24,17 @@ describe('hasSubstring', () => {
     expect(hasSubstring(array[2], '-styled')).toBeFalsy();
     expect(hasSubstring(array[3], 'next')).toBeFalsy();
   });
+
+  test('regexp special characters are matched literally', () => {
+    expect(hasSubstring('GPT-4 (mini)', '(MINI)')).toBeTruthy();
+    expect(hasSubstring('a+b', '+')).toBeTruthy();
+    expect(hasSubstring('price $5', '$5')).toBeTruthy();
+    expect(hasSubstring('abc', '.*')).toBeFalsy();
+    expect(hasSubstring('abc', '[')).toBeFalsy();
+  });
+
+  test('empty substring matches everything', () => {
+    expect(hasSubstring('abc', '')).toBeTruthy();
+    expect(hasSubstring(['abc'], '')).toBeTruthy();
+  });
 });
