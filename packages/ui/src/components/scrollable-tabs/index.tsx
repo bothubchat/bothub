@@ -39,6 +39,9 @@ export const ScrollableTabs = ({
       $fullWidth={fullWidth}
       onClick={() => onTabChange(id)}
       href={component === 'a' ? href : undefined}
+      {...(component === 'button'
+        ? { type: 'button', 'aria-pressed': id === selected }
+        : { 'aria-current': id === selected ? 'page' : undefined })}
       data-test={label}
     >
       {icon}
