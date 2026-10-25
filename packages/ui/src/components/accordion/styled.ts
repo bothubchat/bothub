@@ -1,4 +1,4 @@
-import { css, styled } from 'styled-components';
+import { css, keyframes, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { colorToRgba } from '@/ui/utils';
@@ -77,6 +77,7 @@ export const AccordionBody = styled.div<
     $isDefaultVariant: boolean;
   }
 >`
+  display: grid;
   background-color: ${({ theme, $isDefaultVariant }) =>
     !$isDefaultVariant
       ? colorToRgba(theme.colors.grayScale.gray4, 0.75)
@@ -88,7 +89,7 @@ export const AccordionBody = styled.div<
   border-top: 0;
   border-radius: 0 0 20px 20px;
   transition:
-    max-height 0.3s,
+    grid-template-rows 0.3s,
     padding 0.3s,
     opacity 0.3s;
   ${({ $isOpen, $isDefaultVariant }) =>
@@ -96,13 +97,33 @@ export const AccordionBody = styled.div<
       ? css`
           padding: 18px;
           ${!$isDefaultVariant ? 'padding-top: 0px;' : ''}
-          max-height: auto;
+          grid-template-rows: 1fr;
         `
       : css`
           padding: 0 18px;
-          max-height: 0px;
+          grid-template-rows: 0fr;
           opacity: 0;
           pointer-events: none;
+        `};
+`;
+
+// Keeps the content clipped while the body expands
+const AccordionBodyClip = keyframes`
+  from,
+  to {
+    overflow: hidden;
+  }
+`;
+
+export const AccordionBodyContent = styled.div<IsOpenProps>`
+  min-height: 0;
+  ${({ $isOpen }) =>
+    $isOpen
+      ? css`
+          animation: ${AccordionBodyClip} 0.3s;
+        `
+      : css`
+          overflow: hidden;
         `};
 `;
 
