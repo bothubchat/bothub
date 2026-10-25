@@ -67,8 +67,11 @@ function looksLikeCurrencySpan(body: string): boolean {
 
 interface FencedCodeSplit {
   segments: Segment[];
-  /** The content ends inside a code block that is not closed yet. */
-  isFenceOpen: boolean;
+  /**
+   * Start of the line that opens a code block that is not closed yet at the
+   * end of the content, `null` if the content does not end inside code.
+   */
+  openFenceStart: number | null;
 }
 
 /**
@@ -79,7 +82,8 @@ function splitFencedCode(content: string): FencedCodeSplit {
   const segments: Segment[] = [];
   const lines = content.split('\n');
   let current: Segment = { kind: 'text', value: '' };
-  let fence: { char: string; length: number } | null = null;
+  let fence: { char: string; length: number; start: number } | null = null;
+  let lineStart = 0;
 
   const append = (kind: SegmentKind, value: string) => {
     if (current.kind !== kind) {
@@ -91,8 +95,10 @@ function splitFencedCode(content: string): FencedCodeSplit {
     current.value += value;
   };
 
-  lines.forEach((line, index) => {
+  for (const [index, line] of lines.entries()) {
     const value = index < lines.length - 1 ? `${line}\n` : line;
+    const start = lineStart;
+    lineStart += value.length;
 
     if (fence) {
       append('code', value);
@@ -104,29 +110,33 @@ function splitFencedCode(content: string): FencedCodeSplit {
       ) {
         fence = null;
       }
-      return;
+      continue;
     }
 
     const open = FENCE_OPEN_PATTERN.exec(line);
     // A backtick fence info string cannot contain backticks (```a``` is inline code).
     if (open && !(open[2][0] === '`' && open[3].includes('`'))) {
-      fence = { char: open[2][0], length: open[2].length };
+      fence = { char: open[2][0], length: open[2].length, start };
       append('code', value);
-      return;
+      continue;
     }
 
     append('text', value);
-  });
+  }
 
   if (current.value) {
     segments.push(current);
   }
 
-  return { segments, isFenceOpen: fence !== null };
+  return { segments, openFenceStart: fence?.start ?? null };
 }
 
-export function endsInOpenCodeFence(content: string): boolean {
-  return splitFencedCode(content).isFenceOpen;
+/**
+ * Start of the line that opens the code block a streamed message ends in,
+ * `null` if all its code blocks are closed.
+ */
+export function getOpenCodeFenceStart(content: string): number | null {
+  return splitFencedCode(content).openFenceStart;
 }
 
 /** Lines of the content outside fenced code blocks, also nested ones. */

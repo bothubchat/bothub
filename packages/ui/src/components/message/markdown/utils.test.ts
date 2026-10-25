@@ -1,7 +1,7 @@
 import { expect, test, describe } from 'vitest';
 import {
-  endsInOpenCodeFence,
   getLinesOutsideFencedCode,
+  getOpenCodeFenceStart,
   normalizeMessageMarkdown,
 } from './utils';
 
@@ -209,14 +209,19 @@ describe('normalizeMessageMarkdown while typing', () => {
   });
 });
 
-describe('endsInOpenCodeFence', () => {
+describe('getOpenCodeFenceStart', () => {
   test.each([
-    ['code that is still typed', 'Пример:\n\n```ts\nconst a = 1;'],
-    ['a fence that has just opened', 'Пример:\n```'],
-    ['code in a list item', '1. Установите:\n   ```bash\n   npm i'],
-    ['a closing fence shorter than the opening', '````\ncode\n```'],
-  ])('detects %s', (_, content) => {
-    expect(endsInOpenCodeFence(content)).toBe(true);
+    ['code that is still typed', 'Пример:\n\n```ts\nconst a = 1;', 9],
+    ['a fence that has just opened', 'Пример:\n```', 8],
+    ['code in a list item', '1. Установите:\n   ```bash\n   npm i', 15],
+    ['a closing fence shorter than the opening', '````\ncode\n```', 0],
+    [
+      'code after closed code',
+      '```ts\nconst a = 1;\n```\n\n```ts\nconst b',
+      24,
+    ],
+  ])('finds the line that opens %s', (_, content, start) => {
+    expect(getOpenCodeFenceStart(content)).toBe(start);
   });
 
   test.each([
@@ -225,7 +230,7 @@ describe('endsInOpenCodeFence', () => {
     ['closed tilde code', '~~~\ncode\n~~~'],
     ['inline code with three backticks', 'Код ```a``` в строке'],
   ])('ignores %s', (_, content) => {
-    expect(endsInOpenCodeFence(content)).toBe(false);
+    expect(getOpenCodeFenceStart(content)).toBeNull();
   });
 });
 

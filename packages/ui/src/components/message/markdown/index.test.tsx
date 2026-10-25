@@ -220,4 +220,49 @@ describe('MessageMarkdown', () => {
 
     expect(container.querySelector('.hljs-keyword')?.textContent).toBe('const');
   });
+
+  const nextCodeTyped =
+    'Шаг 1:\n\n```ts\nconst a = 1;\n```\n\nШаг 2:\n\n```ts\nconst b';
+
+  test('highlights closed code while the next code is typed', async () => {
+    let setText: (text: string) => void = () => {};
+
+    const Streaming = () => {
+      const [text, set] = useState('Шаг 1:\n\n```ts\nconst a = 1;');
+      setText = set;
+      return (
+        <MessageProvider
+          variant="assistant"
+          color="default"
+          typing
+        >
+          <MessageMarkdown>{text}</MessageMarkdown>
+        </MessageProvider>
+      );
+    };
+
+    const { container } = customRender(<Streaming />);
+    await waitFor(() => {
+      expect(container.querySelector('code.hljs')).not.toBeNull();
+    });
+
+    // One update closes the first code and opens the next one.
+    act(() => setText(nextCodeTyped));
+
+    const [closed, typed] = container.querySelectorAll('code.hljs');
+    expect(closed.querySelector('.hljs-keyword')?.textContent).toBe('const');
+    expect(typed.querySelector('.hljs-keyword')).toBeNull();
+  });
+
+  test('highlights closed code of a message opened while it is typed', async () => {
+    const { container } = renderMarkdown(nextCodeTyped, true);
+
+    await waitFor(() => {
+      expect(container.querySelectorAll('code.hljs')).toHaveLength(2);
+    });
+
+    const [closed, typed] = container.querySelectorAll('code.hljs');
+    expect(closed.querySelector('.hljs-keyword')?.textContent).toBe('const');
+    expect(typed.querySelector('.hljs-keyword')).toBeNull();
+  });
 });
