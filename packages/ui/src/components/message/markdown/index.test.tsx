@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { describe, test, expect, afterEach } from 'vitest';
-import { act, cleanup } from '@testing-library/react';
+import { describe, test, expect, afterEach, vi } from 'vitest';
+import { act, cleanup, waitFor } from '@testing-library/react';
+import type { Components } from 'react-markdown';
 import { customRender } from '@/ui/tests';
 import { MessageProvider } from '../context';
 import { MessageMarkdown } from '.';
@@ -98,5 +99,55 @@ describe('MessageMarkdown', () => {
     const { container } = renderMarkdown(unfinishedFormula);
 
     expect(container.querySelector('.katex-error')).not.toBeNull();
+  });
+
+  // Small blocks are joined into parts of at least 1000 characters.
+  const longParagraph = 'Длинный абзац текста. '.repeat(50);
+
+  test('does not render finished blocks again while typing', () => {
+    const renderHeading = vi.fn(({ children }) => <h1>{children}</h1>);
+    const componentsOverride: Components = { h1: renderHeading };
+    const finished = `# Заголовок\n\n${longParagraph}`;
+    let setText: (text: string) => void = () => {};
+
+    const Streaming = () => {
+      const [text, set] = useState(`${finished}\n\nВторой абзац`);
+      setText = set;
+      return (
+        <MessageProvider
+          variant="assistant"
+          color="default"
+          typing
+        >
+          <MessageMarkdown componentsOverride={componentsOverride}>
+            {text}
+          </MessageMarkdown>
+        </MessageProvider>
+      );
+    };
+
+    const { container } = customRender(<Streaming />);
+    act(() => setText(`${finished}\n\nВторой абзац растёт`));
+    act(() => setText(`${finished}\n\nВторой абзац растёт\n\nТретий`));
+
+    expect(renderHeading).toHaveBeenCalledTimes(1);
+    expect(container.querySelectorAll('p')).toHaveLength(3);
+  });
+
+  test('highlights code of a finished block while typing', async () => {
+    const code = `\`\`\`\n${'<div class="a">\n  <span>text</span>\n</div>\n'.repeat(30)}\`\`\``;
+    const getCode = (container: HTMLElement) =>
+      container.querySelector('[data-codeblock] code');
+
+    const last = renderMarkdown(code, true).container;
+    await waitFor(() => expect(getCode(last)?.className).toContain('hljs'));
+    // The block may still change: its language is not guessed yet.
+    expect(getCode(last)?.className).not.toContain('language-');
+    cleanup();
+
+    const finished = renderMarkdown(`${code}\n\nТекст`, true).container;
+    await waitFor(() =>
+      expect(getCode(finished)?.className).toContain('language-xml'),
+    );
   });
 });

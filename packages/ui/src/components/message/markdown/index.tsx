@@ -1,5 +1,5 @@
 import React, { forwardRef, useId, useMemo } from 'react';
-import ReactMarkdown, { type Components, type Options } from 'react-markdown';
+import { type Components, type Options } from 'react-markdown';
 import { useMessage } from '@/ui/components/message/context';
 import {
   MessageComponentsProps,
@@ -12,6 +12,8 @@ import {
 } from './markdown-components';
 import { normalizeMessageMarkdown } from './utils';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
+import { groupMarkdownBlocks, splitMarkdownBlocks } from './blocks';
+import { MarkdownBlocks } from './markdown-blocks';
 
 export interface MessageMarkdownProps {
   children: string;
@@ -22,6 +24,10 @@ export interface MessageMarkdownProps {
 }
 
 const EMPTY_COMPONENTS: MessageComponentsProps = {};
+
+// Small blocks are joined into parts of at least this length: while typing the
+// last part is parsed on every chunk, and every part needs its own processor.
+const MIN_BLOCK_LENGTH = 1000;
 
 export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
   (
@@ -46,6 +52,17 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
           ? normalizeMessageMarkdown(children, { typing })
           : children,
       [children, isDisabled, typing],
+    );
+
+    const blocks = useMemo(
+      () =>
+        typeof formattedChildren === 'string' && !isDisabled
+          ? groupMarkdownBlocks(
+              splitMarkdownBlocks(formattedChildren),
+              MIN_BLOCK_LENGTH,
+            )
+          : [],
+      [formattedChildren, isDisabled],
     );
 
     const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
@@ -73,14 +90,13 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
             $typing={disableTyping ? false : typing}
             $color={color}
           >
-            <ReactMarkdown
+            <MarkdownBlocks
+              blocks={blocks}
               remarkPlugins={remarkPlugins}
               rehypePlugins={rehypePlugins}
               remarkRehypeOptions={remarkRehypeOptions}
               components={markdownComponents}
-            >
-              {formattedChildren}
-            </ReactMarkdown>
+            />
           </MessageMarkdownLine>
         </MessageMarkdownStyled>
       ),
@@ -88,7 +104,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
         typing,
         disableTyping,
         color,
-        formattedChildren,
+        blocks,
         remarkPlugins,
         rehypePlugins,
         remarkRehypeOptions,

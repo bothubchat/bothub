@@ -1,6 +1,7 @@
 import React, {
   ReactNode,
   memo,
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -9,6 +10,7 @@ import React, {
 import hljs from 'highlight.js/lib/common';
 import { useMessage } from '@/ui/components/message/context';
 import { useIsomorphicLayoutEffect } from '@/ui/utils/useIsomorphicLayoutEffect';
+import { MessageCodeCompleteContext } from './context';
 
 hljs.configure({
   ignoreUnescapedHTML: true,
@@ -149,7 +151,8 @@ const highlightCached = (
 export const Highlight: React.FC<HighlightProps> = memo(
   ({ children, className = '' }) => {
     const code = String(children ?? '');
-    const { typing } = useMessage();
+    const isComplete = useContext(MessageCodeCompleteContext);
+    const typing = useMessage().typing && !isComplete;
     const language = useMemo(() => getBlockLanguage(className), [className]);
     const isDisabled = !!language && NO_HIGHLIGHT_PATTERN.test(language);
     // Guessing the language of a block that is still typed is expensive and
