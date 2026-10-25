@@ -3,6 +3,8 @@ import { createLongAnswer } from '@/ui/tests/long-answer';
 import { MIN_MARKDOWN_BLOCK_LENGTH, splitMarkdownBlocks } from './blocks';
 
 const FILLER = 'а'.repeat(MIN_MARKDOWN_BLOCK_LENGTH);
+const FORMULA = `$$\n${FILLER}\n\nвторая часть\n$$`;
+const CITE = `<cite>\n\n${FILLER}\n\nвторая часть\n\n</cite>`;
 
 describe('splitMarkdownBlocks', () => {
   test('keeps a short text in one block', () => {
@@ -41,13 +43,24 @@ describe('splitMarkdownBlocks', () => {
   test.each([
     ['a list', `- ${FILLER}\n\n- второй пункт`],
     ['a code block', `\`\`\`\n${FILLER}\n\nвторая часть\n\`\`\``],
-    ['a formula', `$$\n${FILLER}\n\nвторая часть\n$$`],
-    ['a cite', `<cite>\n${FILLER}\n\nвторая часть\n</cite>`],
+    ['a formula', FORMULA],
+    ['a formula with a longer fence', `$$$$\n${FILLER}\n\n$$\n$$$$`],
+    ['a cite', CITE],
   ])('does not split %s with blank lines inside', (_, element) => {
     expect(splitMarkdownBlocks(`${element}\n\nПосле`)).toEqual([
       `${element}\n\n`,
       'После',
     ]);
+  });
+
+  test.each([
+    ['`$$` in inline code', 'В bash `$$` — это PID.', FORMULA],
+    ['`$$` in code of a list', '- Пример:\n\n  ```bash\n  $$\n  ```', FORMULA],
+    ['`</cite>` in inline code', 'Тег `</cite>` закрывает цитату.', CITE],
+  ])('does not split a formula or a cite after %s', (_, code, element) => {
+    const text = `${code}\n\n${element}\n\n`;
+
+    expect(splitMarkdownBlocks(`${text}После`)).toEqual([text, 'После']);
   });
 
   // marked sees no list there: a paragraph goes on after `$$`, a table row

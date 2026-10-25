@@ -1,5 +1,5 @@
 import { Lexer, type MarkedToken, type Token } from 'marked';
-import { isEscaped } from './utils';
+import { getLinesOutsideFencedCode } from './utils';
 
 /*
  * Every block is parsed by its own react-markdown, so a streamed message only
@@ -16,25 +16,30 @@ const BLANK_LINE_END_PATTERN = /\n[ \t]*\n$/;
 const INDENT_PATTERN = /^[ \t]/;
 // A list item that is still streamed: marked sees a paragraph in `1` or `- `.
 const LIST_MARKER_PATTERN = /^(?:[-*+]|\d{1,9}[.)]?)[ \t]*$/;
-const CITE_OPEN_PATTERN = /<cite>/gi;
-const CITE_CLOSE_PATTERN = /<\/cite>/gi;
+// A fence line of a `$$` formula block, also in a list item or a quote. Inline
+// math cannot span a blank line, and a `$` after the fence makes it inline.
+const MATH_FENCE_PATTERN =
+  /^(?:[ \t]*>)*[ \t]*(?:(?:[-*+]|\d{1,9}[.)])[ \t]+)*(\${2,})([^$]*)$/;
+const CITE_OPEN = '<cite>';
+const CITE_CLOSE = '</cite>';
 
-const countMatches = (value: string, pattern: RegExp): number =>
-  value.match(pattern)?.length ?? 0;
+/**
+ * Size of the fence of a `$$` formula block that is still open after the
+ * text, 0 if there is none. As in remark-math, a formula is closed only by a
+ * fence line of at least as many `$` and nothing after them.
+ */
+const getOpenMathFence = (text: string, openFence: number): number =>
+  getLinesOutsideFencedCode(text).reduce((fence, line) => {
+    const match = MATH_FENCE_PATTERN.exec(line);
 
-const countMathFences = (value: string): number => {
-  let count = 0;
-  for (
-    let index = value.indexOf('$$');
-    index !== -1;
-    index = value.indexOf('$$', index + 2)
-  ) {
-    if (!isEscaped(value, index)) {
-      count += 1;
+    if (!match) {
+      return fence;
     }
-  }
-  return count;
-};
+    if (!fence) {
+      return match[1].length;
+    }
+    return match[1].length >= fence && !match[2].trim() ? 0 : fence;
+  }, openFence);
 
 /**
  * Reference links and footnotes may be defined in another block. Code is
@@ -67,8 +72,9 @@ const mayContinueList = (token: Token, isLast: boolean): boolean =>
 /**
  * Splits markdown into top-level blocks that render the same on their own. A
  * block ends only on a blank line between top-level elements (a list or a code
- * block is never split) and outside `$$` formulas and `<cite>` tags, which
- * remark parses across blank lines. It does not end before a list or an
+ * block is never split) and outside `$$` formulas and cites, which remark
+ * parses across blank lines: remarkCite wraps everything between `<cite>` and
+ * `</cite>` HTML blocks of the top level. It does not end before a list or an
  * indented line either: marked knows no `$$` formulas and ends tables later
  * than remark, so `2. …` right after them is a list for remark only, and this
  * list may go on after the blank line. Boundaries depend only on the text
@@ -88,32 +94,37 @@ export const splitMarkdownBlocks = (markdown: string): string[] => {
 
   const blocks: string[] = [];
   let block = '';
-  let mathFences = 0;
-  let openCites = 0;
+  let mathFence = 0;
+  let isCiteOpen = false;
 
   tokens.forEach((token, index) => {
     block += token.raw;
 
     if (token.type !== 'code') {
-      mathFences += countMathFences(token.raw);
-      openCites +=
-        countMatches(token.raw, CITE_OPEN_PATTERN) -
-        countMatches(token.raw, CITE_CLOSE_PATTERN);
+      mathFence = getOpenMathFence(token.raw, mathFence);
+    }
+
+    if (token.type === 'html') {
+      const tag = token.raw.trim().toLowerCase();
+
+      if (tag === CITE_OPEN) {
+        isCiteOpen = true;
+      } else if (tag === CITE_CLOSE) {
+        isCiteOpen = false;
+      }
     }
 
     const next = tokens[index + 1];
 
     if (
       block.length >= MIN_MARKDOWN_BLOCK_LENGTH &&
-      mathFences % 2 === 0 &&
-      openCites <= 0 &&
+      !mathFence &&
+      !isCiteOpen &&
       BLANK_LINE_END_PATTERN.test(block) &&
       !(next && mayContinueList(next, index + 2 === tokens.length))
     ) {
       blocks.push(block);
       block = '';
-      mathFences = 0;
-      openCites = 0;
     }
   });
 

@@ -1,5 +1,9 @@
 import { expect, test, describe } from 'vitest';
-import { endsInOpenCodeFence, normalizeMessageMarkdown } from './utils';
+import {
+  endsInOpenCodeFence,
+  getLinesOutsideFencedCode,
+  normalizeMessageMarkdown,
+} from './utils';
 
 describe('normalizeMessageMarkdown', () => {
   test('escapes currency dollars so they are not treated as math', () => {
@@ -222,5 +226,37 @@ describe('endsInOpenCodeFence', () => {
     ['inline code with three backticks', 'Код ```a``` в строке'],
   ])('ignores %s', (_, content) => {
     expect(endsInOpenCodeFence(content)).toBe(false);
+  });
+});
+
+describe('getLinesOutsideFencedCode', () => {
+  test('skips fenced code, also in lists and quotes', () => {
+    const content = [
+      'Текст',
+      '```',
+      '$$',
+      '```',
+      '',
+      '- Пункт',
+      '  ~~~',
+      '  $$',
+      '  ~~~',
+      '> ```',
+      '> $$',
+    ].join('\n');
+
+    expect(getLinesOutsideFencedCode(content)).toEqual([
+      'Текст',
+      '',
+      '- Пункт',
+    ]);
+  });
+
+  test('keeps inline code', () => {
+    expect(getLinesOutsideFencedCode('a `$$`\n\nb')).toEqual([
+      'a `$$`',
+      '',
+      'b',
+    ]);
   });
 });

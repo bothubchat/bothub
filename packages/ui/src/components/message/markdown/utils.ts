@@ -28,7 +28,7 @@ function isDigit(char: string | undefined): boolean {
   return char !== undefined && char >= '0' && char <= '9';
 }
 
-export function isEscaped(content: string, index: number): boolean {
+function isEscaped(content: string, index: number): boolean {
   let backslashes = 0;
   for (let i = index - 1; i >= 0 && content[i] === '\\'; i -= 1) {
     backslashes += 1;
@@ -127,6 +127,13 @@ function splitFencedCode(content: string): FencedCodeSplit {
 
 export function endsInOpenCodeFence(content: string): boolean {
   return splitFencedCode(content).isFenceOpen;
+}
+
+/** Lines of the content outside fenced code blocks, also nested ones. */
+export function getLinesOutsideFencedCode(content: string): string[] {
+  return splitFencedCode(content).segments.flatMap((segment) =>
+    segment.kind === 'text' ? segment.value.replace(/\n$/, '').split('\n') : [],
+  );
 }
 
 function splitInlineCode(content: string): Segment[] {
