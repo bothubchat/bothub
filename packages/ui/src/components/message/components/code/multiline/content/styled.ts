@@ -2,6 +2,7 @@ import { styled, css } from 'styled-components';
 import { ScrollbarStyle } from '@/ui/components/scrollbar';
 import { adaptive } from '@/ui/adaptive';
 import { MessageMultilineCodeContentProps } from './types';
+import { messageSelectionStyles } from '../../../selection';
 
 export const MessageMultilineCodeContentContainer = styled.div`
   background-color: #002635;
@@ -18,39 +19,7 @@ export const contentStyles = css<MessageMultilineCodeContentProps>`
   }
   &::selection,
   *::selection {
-    ${({ $messageColor }) => {
-      switch ($messageColor) {
-        case 'default':
-          return css`
-            background: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.accent.primary
-                : theme.colors.base.white} !important;
-            color: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.base.white
-                : theme.colors.accent.primary} !important;
-          `;
-        case 'green':
-          return css`
-            background: ${({ theme }) =>
-              theme.default.colors.base.white} !important;
-            color: ${({ theme }) => theme.colors.gpt3} !important;
-          `;
-        case 'purple':
-          return css`
-            background: ${({ theme }) =>
-              theme.default.colors.base.white} !important;
-            color: ${({ theme }) => theme.colors.gpt4} !important;
-          `;
-        default:
-          return css`
-            background: ${({ theme }) =>
-              theme.default.colors.base.white} !important;
-            color: ${$messageColor} !important;
-          `;
-      }
-    }}
+    ${({ $messageColor }) => messageSelectionStyles($messageColor, true)}
   }
   ${adaptive({
     variant: 'dashboard',
