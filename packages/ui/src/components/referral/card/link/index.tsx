@@ -26,14 +26,9 @@ export const ReferralCardLink: React.FC<ReferralCardLinkProps> = ({
 }) => {
   const theme = useTheme();
 
-  const [isFocus, setIsFocus] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
-  const handleFocus = useCallback(() => {
-    setIsFocus(true);
-  }, []);
   const handleBlur = useCallback(() => {
-    setIsFocus(false);
     setIsCopied(false);
   }, []);
 
@@ -54,12 +49,11 @@ export const ReferralCardLink: React.FC<ReferralCardLinkProps> = ({
       <ReferralCardLinkStyled
         className={className}
         tabIndex={tabIndex}
-        onFocus={handleFocus}
         onBlur={handleBlur}
         onClick={handleClick}
       >
         <ReferralCardLinkText>{children}</ReferralCardLinkText>
-        <ReferralCardLinkCopyIcon as={isFocus ? CheckSmallIcon : CopyIcon} />
+        <ReferralCardLinkCopyIcon as={isCopied ? CheckSmallIcon : CopyIcon} />
       </ReferralCardLinkStyled>
     </IconProvider>
   );

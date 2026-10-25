@@ -62,7 +62,7 @@ export const PromptCard: React.FC<PromptCardProps> = ({
             isFocus ? theme.colors.accent.primaryLight : theme.colors.base.white
           }
         >
-          <PromptCardCopyIcon as={isFocus ? CheckSmallIcon : CopyIcon} />
+          <PromptCardCopyIcon as={isCopied ? CheckSmallIcon : CopyIcon} />
         </IconProvider>
         <PromptCardText>{children}</PromptCardText>
       </PromptCardContent>
