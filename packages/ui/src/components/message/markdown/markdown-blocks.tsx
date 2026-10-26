@@ -1,10 +1,12 @@
 import React, { Fragment, memo } from 'react';
 import ReactMarkdown, { type Options } from 'react-markdown';
-import { MessageCodeCompleteContext } from '@/ui/components/message/components/code/multiline/content/context';
+import { MessageMarkdownOpenCodeProvider } from './markdown-components';
 
 export interface MarkdownBlocksProps extends Omit<Options, 'children'> {
-  /** Parts of the text from `splitMarkdownBlocks`. */
+  /** Parts of the text from `getMarkdownBlocks`. */
   blocks: string[];
+  /** Start of the code that is still typed in the last block. */
+  openCodeStart?: number | null;
 }
 
 // A block is parsed again only when its text changes: while a message is
@@ -13,6 +15,7 @@ const MarkdownBlock = memo(ReactMarkdown);
 
 export const MarkdownBlocks: React.FC<MarkdownBlocksProps> = ({
   blocks,
+  openCodeStart = null,
   ...options
 }) => (
   <>
@@ -21,9 +24,11 @@ export const MarkdownBlocks: React.FC<MarkdownBlocksProps> = ({
         {/* The newline react-markdown puts between top-level blocks. */}
         {index > 0 && '\n'}
         {/* Only the last block can still change while a message is typed. */}
-        <MessageCodeCompleteContext.Provider value={index < blocks.length - 1}>
+        <MessageMarkdownOpenCodeProvider
+          value={index === blocks.length - 1 ? openCodeStart : null}
+        >
           <MarkdownBlock {...options}>{block}</MarkdownBlock>
-        </MessageCodeCompleteContext.Provider>
+        </MessageMarkdownOpenCodeProvider>
       </Fragment>
     ))}
   </>

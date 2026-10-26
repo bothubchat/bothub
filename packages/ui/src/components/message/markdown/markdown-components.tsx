@@ -25,6 +25,7 @@ import {
   MessageTableRow,
   MessageTitle,
 } from '@/ui/components/message/components';
+import { MessageCodeTypingContext } from '@/ui/components/message/components/code/multiline/content/typing';
 import { useMessage } from '@/ui/components/message/context';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
 import { normalizeMessageMarkdown } from './utils';
@@ -42,6 +43,16 @@ const MessageMarkdownComponentsContext = createContext<MessageComponentsProps>(
 
 export const MessageMarkdownComponentsProvider =
   MessageMarkdownComponentsContext.Provider;
+
+/**
+ * Start of the line that opens the code block a streamed markdown block ends
+ * in, `null` if there is no such code. Only that code changes on every chunk:
+ * it is shown as plain text and highlighted once it is complete.
+ */
+const MessageMarkdownOpenCodeContext = createContext<number | null>(null);
+
+export const MessageMarkdownOpenCodeProvider =
+  MessageMarkdownOpenCodeContext.Provider;
 
 export interface MarkdownCodeInfo {
   code: string;
@@ -200,8 +211,9 @@ const MarkdownDocument = memo(
   },
 );
 
-const MarkdownCode: Components['code'] = ({ className, children }) => {
+const MarkdownCode: Components['code'] = ({ node, className, children }) => {
   const components = useContext(MessageMarkdownComponentsContext);
+  const openCodeStart = useContext(MessageMarkdownOpenCodeContext);
   const { code, language, isInline } = getMarkdownCodeInfo(className, children);
 
   if (!code) return null;
@@ -223,13 +235,20 @@ const MarkdownCode: Components['code'] = ({ className, children }) => {
     return <MessageInlineCode>{code}</MessageInlineCode>;
   }
 
+  // Code that starts before the open fence is complete.
+  const start = node?.position?.start.offset;
+  const isTyped =
+    openCodeStart !== null && (start === undefined || start >= openCodeStart);
+
   return (
-    <MessageMultilineCode
-      {...components.code}
-      className={className}
-    >
-      {code}
-    </MessageMultilineCode>
+    <MessageCodeTypingContext.Provider value={isTyped}>
+      <MessageMultilineCode
+        {...components.code}
+        className={className}
+      >
+        {code}
+      </MessageMultilineCode>
+    </MessageCodeTypingContext.Provider>
   );
 };
 

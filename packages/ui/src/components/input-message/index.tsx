@@ -2,6 +2,7 @@ import React, { useState, useCallback } from 'react';
 import {
   InputMessageButtons,
   InputMessageConcatenateWarning,
+  InputMessageStatus,
   InputMessageContent,
   InputMessageMain,
   InputMessageStyled,
@@ -31,6 +32,7 @@ import {
   useInput,
   type MessageSubmitKey,
 } from './use-input';
+import { isTouchDevice } from './utils';
 import { InputMessageFiles } from './input-files';
 import { InputMessageVoiceRecordTimer } from './voice-record-timer';
 import { InputMessageVoiceFileList } from './voice-files';
@@ -79,6 +81,14 @@ export interface InputMessageProps
   sendWarning?: React.ReactNode;
   sendAddon?: React.ReactNode;
   sendDisabled?: boolean;
+  /**
+   * Почему отправка недоступна. Показывается после попытки отправить
+   * с клавиатуры при sendDisabled или sendLoading и скрывается, когда отправка
+   * снова доступна. Постоянная подсказка — sendWarning
+   */
+  sendDisabledReason?: React.ReactNode;
+  /** Сообщение отправляется: лоадер в кнопке, поле остаётся доступным для ввода */
+  sendLoading?: boolean;
   textAreaDisabled?: boolean;
   messageSubmitKey?: MessageSubmitKey;
   concatenateText?: React.ReactNode;
@@ -119,6 +129,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   sendAddon,
   disabled = false,
   sendDisabled = false,
+  sendDisabledReason,
+  sendLoading = false,
   textAreaDisabled = false,
   messageSubmitKey = 'enter',
   concatenateText,
@@ -201,9 +213,13 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     setVoiceFiles([]);
   });
 
+  // Пока сообщение отправляется, следующее отправить нельзя, а набирать можно
+  const isSendDisabled = sendDisabled || sendLoading;
+
   const {
     textareaRef,
     isFocus,
+    sendBlockedCount,
     handleFocus,
     handleBlur,
     handleClick,
@@ -212,8 +228,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   } = useInput({
     message,
     setMessage,
-    sendDisabled,
-    disabled,
+    sendDisabled: isSendDisabled,
+    disabled: disabled || textAreaDisabled,
     autoFocus,
     messageSubmitKey,
     onSendMessage: send,
@@ -234,8 +250,10 @@ export const InputMessage: React.FC<InputMessageProps> = ({
     (event) => {
       event.stopPropagation();
       send();
+      // Курсор обратно в поле, чтобы печатать дальше; на тач-экране клавиатуру не открываем
+      if (!isTouchDevice()) textareaRef.current?.focus();
     },
-    [send],
+    [send, textareaRef],
   );
 
   const videoFiles = files?.filter((f) => f.native.type.startsWith('video/'));
@@ -338,6 +356,15 @@ export const InputMessage: React.FC<InputMessageProps> = ({
               {sendWarning}
             </InputMessageConcatenateWarning>
           )}
+          {/* Live region смонтирован заранее: экранный диктор объявляет то, что в нём появилось */}
+          <InputMessageStatus role="status">
+            {sendBlockedCount > 0 && sendDisabledReason && (
+              // Новый узел на каждую попытку, чтобы причину объявили снова
+              <InputMessageConcatenateWarning key={sendBlockedCount}>
+                {sendDisabledReason}
+              </InputMessageConcatenateWarning>
+            )}
+          </InputMessageStatus>
           {voiceFiles.length > 1 && (
             <InputMessageConcatenateWarning>
               {concatenateText}
@@ -379,7 +406,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             voice={voice}
             hiddenSend={hiddenSend}
             disabled={disabled}
-            sendDisabled={sendDisabled}
+            sendDisabled={isSendDisabled}
+            sendLoading={sendLoading}
             isEditing={!!editingProps?.isEditing}
             isVoiceRecording={isVoiceRecording}
             isVoicePaused={isVoicePaused}

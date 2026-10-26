@@ -10,24 +10,27 @@ import {
   MessageMarkdownComponentsProvider,
   messageMarkdownComponents,
 } from './markdown-components';
-import { normalizeMessageMarkdown } from './utils';
+import { getOpenCodeFenceStart, normalizeMessageMarkdown } from './utils';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
-import { groupMarkdownBlocks, splitMarkdownBlocks } from './blocks';
+import { useStableComponents } from './useStableComponents';
+import { getMarkdownBlocks } from './blocks';
 import { MarkdownBlocks } from './markdown-blocks';
 
 export interface MessageMarkdownProps {
   children: string;
+  /**
+   * Compared by value: a new object with the same values does not re-render
+   * the code blocks and images of the message. Functions in it
+   * (`image.buttons`) have to keep their identity for that.
+   */
   components?: MessageComponentsProps;
+  /** Keep the object stable: a new one parses the whole message again. */
   componentsOverride?: Components;
   disableTyping?: boolean;
   forceMarkdown?: boolean;
 }
 
 const EMPTY_COMPONENTS: MessageComponentsProps = {};
-
-// Small blocks are joined into parts of at least this length: while typing the
-// last part is parsed on every chunk, and every part needs its own processor.
-const MIN_BLOCK_LENGTH = 1000;
 
 export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
   (
@@ -43,6 +46,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
     const { typing, variant, color } = useMessage();
     const isDisabled = forceMarkdown ? false : variant === 'user';
     const id = useId();
+    const stableComponents = useStableComponents(components);
 
     // `typing` comes from the message context, not `disableTyping`: that prop
     // only hides the cursor while the content may still be streaming.
@@ -57,12 +61,17 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
     const blocks = useMemo(
       () =>
         typeof formattedChildren === 'string' && !isDisabled
-          ? groupMarkdownBlocks(
-              splitMarkdownBlocks(formattedChildren),
-              MIN_BLOCK_LENGTH,
-            )
+          ? getMarkdownBlocks(formattedChildren)
           : [],
       [formattedChildren, isDisabled],
+    );
+    const lastBlock = blocks[blocks.length - 1] ?? '';
+
+    // Only the code that is still typed changes on every chunk: it is not
+    // highlighted as complete until its fence is closed.
+    const openCodeStart = useMemo(
+      () => (typing ? getOpenCodeFenceStart(lastBlock) : null),
+      [typing, lastBlock],
     );
 
     const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
@@ -92,6 +101,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
           >
             <MarkdownBlocks
               blocks={blocks}
+              openCodeStart={openCodeStart}
               remarkPlugins={remarkPlugins}
               rehypePlugins={rehypePlugins}
               remarkRehypeOptions={remarkRehypeOptions}
@@ -105,6 +115,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
         disableTyping,
         color,
         blocks,
+        openCodeStart,
         remarkPlugins,
         rehypePlugins,
         remarkRehypeOptions,
@@ -129,7 +140,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
     }
 
     return (
-      <MessageMarkdownComponentsProvider value={components}>
+      <MessageMarkdownComponentsProvider value={stableComponents}>
         {markdownNode}
       </MessageMarkdownComponentsProvider>
     );

@@ -1,5 +1,5 @@
 import { expect, test, describe } from 'vitest';
-import { normalizeMessageMarkdown } from './utils';
+import { getOpenCodeFenceStart, normalizeMessageMarkdown } from './utils';
 
 describe('normalizeMessageMarkdown', () => {
   test('escapes currency dollars so they are not treated as math', () => {
@@ -309,5 +309,30 @@ describe('normalizeMessageMarkdown performance', () => {
   // Used to take seconds: every backslash counted the ones before it.
   test('handles a long run of backslashes while typing', () => {
     expect(measure('\\'.repeat(50000))).toBeLessThan(1000);
+  });
+});
+
+describe('getOpenCodeFenceStart', () => {
+  test.each([
+    ['code that is still typed', 'Пример:\n\n```ts\nconst a = 1;', 9],
+    ['a fence that has just opened', 'Пример:\n```', 8],
+    ['code in a list item', '1. Установите:\n   ```bash\n   npm i', 15],
+    ['a closing fence shorter than the opening', '````\ncode\n```', 0],
+    [
+      'code after closed code',
+      '```ts\nconst a = 1;\n```\n\n```ts\nconst b',
+      24,
+    ],
+  ])('finds the line that opens %s', (_, content, start) => {
+    expect(getOpenCodeFenceStart(content)).toBe(start);
+  });
+
+  test.each([
+    ['text', 'Просто текст'],
+    ['closed code', '```ts\nconst a = 1;\n```\n\nДальше'],
+    ['closed tilde code', '~~~\ncode\n~~~'],
+    ['inline code with three backticks', 'Код ```a``` в строке'],
+  ])('ignores %s', (_, content) => {
+    expect(getOpenCodeFenceStart(content)).toBeNull();
   });
 });

@@ -5,10 +5,11 @@ import {
   act,
   cleanup,
   fireEvent,
+  render,
   screen,
   waitFor,
 } from '@testing-library/react';
-import { customRender } from '@/ui/tests';
+import { customRender, TestProvider } from '@/ui/tests';
 import { getTgMarkdown } from '@/ui/utils';
 import { MessageContextValue, MessageProvider, useMessage } from './context';
 import { Message, MessageCopyEventHandler } from '.';
@@ -198,5 +199,73 @@ describe('Message', () => {
     fireEvent.click(screen.getByText('Copy for Telegram'));
 
     expect(onCopy).not.toHaveBeenCalled();
+  });
+});
+
+describe('Message while an answer streams', () => {
+  const contextValues: MessageContextValue[] = [];
+
+  const ContextProbe = memo(() => {
+    contextValues.push(useMessage());
+    return null;
+  });
+
+  // The client passes a new `onCopy` with every streamed chunk.
+  const renderAnswer = (content: string, onCopy = () => {}) => (
+    <Message
+      variant="assistant"
+      typing
+      content={content}
+      onCopy={onCopy}
+    >
+      <ContextProbe />
+      {content}
+    </Message>
+  );
+
+  beforeEach(() => {
+    contextValues.length = 0;
+    vi.stubGlobal('ResizeObserver', ResizeObserverMock);
+    vi.stubGlobal('ClipboardItem', ClipboardItemMock);
+    // jsdom does not implement innerText.
+    Object.defineProperty(HTMLElement.prototype, 'innerText', {
+      configurable: true,
+      get(this: HTMLElement) {
+        return this.textContent;
+      },
+    });
+  });
+
+  afterEach(() => {
+    cleanup();
+    vi.unstubAllGlobals();
+    delete (HTMLElement.prototype as Partial<HTMLElement>).innerText;
+  });
+
+  test('keeps the context value', () => {
+    const { rerender } = render(renderAnswer('Пер'), {
+      wrapper: TestProvider,
+    });
+
+    rerender(renderAnswer('Первый чанк'));
+    rerender(renderAnswer('Первый чанк и второй'));
+
+    expect(contextValues).toHaveLength(1);
+  });
+
+  test('copies plain text with the latest onCopy', () => {
+    const firstOnCopy = vi.fn();
+    const latestOnCopy = vi.fn();
+    const { rerender } = render(renderAnswer('Пер', firstOnCopy), {
+      wrapper: TestProvider,
+    });
+
+    rerender(renderAnswer('Первый чанк', latestOnCopy));
+    act(() => {
+      contextValues[0].onCopy?.();
+    });
+
+    expect(firstOnCopy).not.toHaveBeenCalled();
+    expect(latestOnCopy).toHaveBeenCalledTimes(1);
   });
 });

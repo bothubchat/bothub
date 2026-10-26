@@ -60,6 +60,7 @@ import {
 import { Typography } from '@/ui/components/typography';
 import { MessageSearchResults } from '../search-results';
 import { MessageVideo } from '../video';
+import { createLongAnswer } from '@/ui/tests/long-answer';
 
 export type MessageMeta = Meta<typeof Message>;
 
@@ -182,6 +183,55 @@ export const Table: MessageStory = {
     children:
       '| Original Name | Full Name | Functions |\n|--------------|-----------|-----------|\n| HTML | HyperText Markup Language | Defines the structure of a webpage |\n| CSS | Cascading Style Sheets | Defines the appearance of a webpage |\n| JavaScript | JavaScript |',
   },
+};
+
+const WIDE_TABLE = [
+  '| Модель | Контекст | Ввод за 1M | Вывод за 1M | Картинки | Поиск | Релиз |',
+  '|--------|----------|------------|-------------|----------|-------|-------|',
+  '| GPT-4o | 128000 | 2500000 | 10000000 | да | да | 2024-11-20 |',
+  '| Claude 3.5 Sonnet | 200000 | 3000000 | 15000000 | да | да | 2024-10-22 |',
+  '| Gemini 1.5 Pro | 2000000 | 1250000 | 5000000 | да | нет | 2024-09-24 |',
+].join('\n');
+
+// Узкая колонка, как на телефоне: таблица не помещается в пузырь,
+// и у краёв появляются тени прокрутки
+const narrowColumn: MessageStory['decorators'] = [
+  (Story) => (
+    <div style={{ maxWidth: 420 }}>
+      <Story />
+    </div>
+  ),
+];
+
+export const WideTable: MessageStory = {
+  args: {
+    ...Assistant.args,
+    children: WIDE_TABLE,
+  },
+  decorators: narrowColumn,
+};
+
+export const TypingWideTable: MessageStory = {
+  args: {
+    ...Assistant.args,
+    typing: true,
+    children: React.createElement(() => {
+      const [length, setLength] = useState(0);
+
+      useEffect(() => {
+        const interval = window.setInterval(() => {
+          setLength((length) => (length + 4) % (WIDE_TABLE.length + 40));
+        }, 80);
+
+        return () => {
+          window.clearInterval(interval);
+        };
+      }, []);
+
+      return <MessageMarkdown>{WIDE_TABLE.slice(0, length)}</MessageMarkdown>;
+    }),
+  },
+  decorators: narrowColumn,
 };
 
 export const MarkdownEdgeCases: MessageStory = {
@@ -625,6 +675,43 @@ export const TypingFormula: MessageStory = {
         <MessageMarkdown>{STREAMED_FORMULA.slice(0, length)}</MessageMarkdown>
       );
     }),
+  },
+};
+
+const LONG_ANSWER = createLongAnswer(20_000, true);
+
+/**
+ * Ответ на 20 КБ приходит, как в клиенте: по ~60 символов до 10 раз в секунду,
+ * и сообщение перерисовывается целиком. Готовые блоки не парсятся заново,
+ * а код подсвечивается, когда его блок закрыт.
+ */
+export const TypingLongAnswer: MessageStory = {
+  args: {
+    ...Assistant.args,
+    typing: true,
+  },
+  render: (args) => {
+    const [length, setLength] = useState(0);
+    const content = LONG_ANSWER.slice(0, length);
+
+    useEffect(() => {
+      const interval = window.setInterval(() => {
+        setLength((length) => (length + 60) % (LONG_ANSWER.length + 600));
+      }, 100);
+
+      return () => {
+        window.clearInterval(interval);
+      };
+    }, []);
+
+    return (
+      <Message
+        {...args}
+        content={content}
+      >
+        <MessageMarkdown>{content}</MessageMarkdown>
+      </Message>
+    );
   },
 };
 

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useEffect, useState } from 'react';
 import { InputMessage } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Button } from '../button';
@@ -44,8 +45,39 @@ export const UploadFileDisabled: InputMessageStory = {
 };
 
 export const Disabled: InputMessageStory = {
-  ...Basic.args,
-  args: { disabled: true },
+  args: { ...Basic.args, disabled: true },
+};
+
+/**
+ * После отправки поле заблокировано 1,5 с, как в чате до ответа сервера.
+ * Отправьте сообщение Enter'ом или кнопкой и печатайте дальше без клика по полю
+ */
+export const FocusAfterSending: InputMessageStory = {
+  args: { ...Basic.args, autoFocus: false },
+  render: (args) => {
+    const [message, setMessage] = useState('');
+    const [disabled, setDisabled] = useState(false);
+
+    useEffect(() => {
+      if (!disabled) return;
+
+      const timeout = window.setTimeout(() => setDisabled(false), 1500);
+      return () => window.clearTimeout(timeout);
+    }, [disabled]);
+
+    return (
+      <InputMessage
+        {...args}
+        message={message}
+        disabled={disabled}
+        onChange={setMessage}
+        onSend={() => {
+          setMessage('');
+          setDisabled(true);
+        }}
+      />
+    );
+  },
 };
 
 /** Отправка по Enter, новая строка: Ctrl+Enter / Cmd+Enter, Shift+Enter — перенос */
@@ -78,12 +110,31 @@ export const SendAddon: InputMessageStory = {
   },
 };
 
+/** sendWarning показывается всегда, sendDisabledReason — только после попытки отправить */
 export const SendWarning: InputMessageStory = {
   args: {
     ...Basic.args,
     sendAddon: '≈ 1 200 CAPS',
     sendDisabled: true,
     sendWarning: 'Не хватает CAPS: уменьшите длительность или пополните баланс',
+  },
+};
+
+/** Нажмите Enter: сообщение не отправится, перенос строки не добавится, появится причина */
+export const SendDisabledReason: InputMessageStory = {
+  args: {
+    ...Basic.args,
+    sendDisabled: true,
+    sendDisabledReason: 'Сохраняем настройки чата…',
+  },
+};
+
+/** Предыдущее сообщение отправляется: в кнопке лоадер, а следующее можно набирать */
+export const SendLoading: InputMessageStory = {
+  args: {
+    ...Basic.args,
+    sendLoading: true,
+    sendDisabledReason: 'Отправляем предыдущее сообщение…',
   },
 };
 

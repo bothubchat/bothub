@@ -1,7 +1,14 @@
 import { createRef } from 'react';
 import { describe, test, expect, afterEach, beforeEach, vi } from 'vitest';
 import { cleanup, screen } from '@testing-library/react';
-import { customRender } from '@/ui/tests';
+import { customRender, trackGlobalListeners } from '@/ui/tests';
+import { Message } from '@/ui/components/message';
+import {
+  SidebarChat,
+  SidebarDropdownItem,
+  SidebarListActions,
+  SidebarProvider,
+} from '@/ui/components/sidebar';
 import { Messages, MessagesRef } from '.';
 
 class ResizeObserverMock {
@@ -12,6 +19,54 @@ class ResizeObserverMock {
   disconnect() {}
 }
 
+// Сайдбар на 20 чатов с меню и лента из 20 сообщений с подсказками действий
+const TypicalChat = () => (
+  <>
+    <SidebarProvider
+      isOpen
+      isEdit={false}
+      scrollbarElement={null}
+      setIsEdit={() => {}}
+      setIsOpen={() => {}}
+    >
+      {Array.from({ length: 20 }, (_, index) => (
+        <SidebarChat
+          key={index}
+          id={`chat-${index}`}
+          name={`Chat ${index}`}
+          actions={
+            <SidebarListActions>
+              <SidebarDropdownItem>Rename</SidebarDropdownItem>
+              <SidebarDropdownItem>Delete</SidebarDropdownItem>
+            </SidebarListActions>
+          }
+        />
+      ))}
+    </SidebarProvider>
+    <Messages>
+      {Array.from({ length: 20 }, (_, index) => (
+        <Message
+          key={index}
+          id={`message-${index}`}
+          variant={index % 2 === 0 ? 'user' : 'assistant'}
+          content={`Message ${index}`}
+          copyTooltipLabel="Copy"
+          updateTooltipLabel="Regenerate"
+          copyPlainText="Copy as text"
+          editText="Edit"
+          deleteText="Delete"
+          onCopy={() => {}}
+          onEdit={() => {}}
+          onDelete={() => {}}
+          onUpdate={() => {}}
+        >
+          {`Message ${index}`}
+        </Message>
+      ))}
+    </Messages>
+  </>
+);
+
 describe('Messages', () => {
   beforeEach(() => {
     vi.stubGlobal('ResizeObserver', ResizeObserverMock);
@@ -19,6 +74,7 @@ describe('Messages', () => {
 
   afterEach(() => {
     cleanup();
+    vi.restoreAllMocks();
     vi.unstubAllGlobals();
   });
 
@@ -48,5 +104,21 @@ describe('Messages', () => {
     ref.current!.setScroll();
 
     expect(element.scrollTop).toBe(500);
+  });
+
+  test('a typical chat keeps global listeners only for the feed', () => {
+    const countListeners = trackGlobalListeners([
+      'blur',
+      'click',
+      'mouseleave',
+      'resize',
+      'scroll',
+    ]);
+
+    customRender(<TypicalChat />);
+
+    // resize слушают только глобальные стили провайдера: Scrollbar ленты
+    // следит за размером через ResizeObserver
+    expect(countListeners()).toEqual({ 'window resize': 1 });
   });
 });

@@ -55,6 +55,10 @@ const HTML_BLOCKS: { open: RegExp; close: RegExp }[] = [
   { open: /^<![A-Za-z]/, close: />/ },
 ];
 
+function isDefinitionLine(line: string): boolean {
+  return DEFINITION_PATTERNS.some((pattern) => pattern.test(line));
+}
+
 function isBlankLine(line: string): boolean {
   return BLANK_LINE_PATTERN.test(line);
 }
@@ -143,7 +147,8 @@ export function splitMarkdownBlocks(markdown: string): string[] {
   let isInHtmlLine = false;
   let previousBlank = false;
 
-  for (let index = 0; index < lines.length; index++) {
+  let index = 0;
+  for (; index < lines.length; index++) {
     const line = lines[index].replace(/\r$/, '');
     const isBlank = isBlankLine(line);
     const indent = getIndent(line);
@@ -172,7 +177,7 @@ export function splitMarkdownBlocks(markdown: string): string[] {
       continue;
     }
 
-    if (DEFINITION_PATTERNS.some((pattern) => pattern.test(line))) {
+    if (isDefinitionLine(line)) {
       return [markdown];
     }
 
@@ -241,10 +246,24 @@ export function splitMarkdownBlocks(markdown: string): string[] {
     previousBlank = false;
   }
 
+  // The rest is kept in one block when its structure is unknown, but a
+  // definition there still applies to the blocks before it.
+  if (lines.slice(index).some(isDefinitionLine)) {
+    return [markdown];
+  }
+
   blocks.push(lines.slice(blockStart).join('\n'));
 
   return blocks;
 }
+
+/*
+ * Every part is parsed by its own react-markdown, so a streamed message only
+ * re-parses its last part. A separate parse has a fixed cost of ~0.2–0.3 ms
+ * (unified processor and micromark setup): smaller parts would make the first
+ * render of a long message slower than one parse of the whole text.
+ */
+export const MIN_MARKDOWN_BLOCK_LENGTH = 1500;
 
 /**
  * Joins consecutive blocks until each part has at least `minLength`
@@ -271,4 +290,12 @@ export function groupMarkdownBlocks(
   }
 
   return groups;
+}
+
+/** Parts of the text that `MessageMarkdown` parses separately. */
+export function getMarkdownBlocks(markdown: string): string[] {
+  return groupMarkdownBlocks(
+    splitMarkdownBlocks(markdown),
+    MIN_MARKDOWN_BLOCK_LENGTH,
+  );
 }

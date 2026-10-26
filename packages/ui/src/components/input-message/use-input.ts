@@ -1,10 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useEventCallback, useIsomorphicLayoutEffect } from '@/ui/utils';
-import { isMobileDevice } from './utils';
+import { isMobileDevice, isTouchDevice } from './utils';
 
 export type MessageSubmitKey = 'enter' | 'ctrlEnter';
 
 export const TEXTAREA_MIN_HEIGHT = 'calc(var(--bothub-scale, 1) * 22px)';
+
+/** Фокус «ничей» или уже в поле: возвращаем его, не отбирая у другого поля */
+const canRestoreFocus = (el: HTMLElement) => {
+  const active = document.activeElement;
+  return active === null || active === document.body || active === el;
+};
 
 interface UseInputProps {
   message: string;
@@ -36,6 +42,8 @@ export const useInput = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [isFocus, setIsFocus] = useState((!disabled && autoFocus) ?? false);
+  // Сколько раз пытались отправить с клавиатуры, пока отправка недоступна
+  const [sendBlockedCount, setSendBlockedCount] = useState(0);
 
   const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
     (event) => {
@@ -69,23 +77,41 @@ export const useInput = ({
     [setMessage, onTextAreaChange],
   );
 
+  // Был ли фокус в поле, когда его заблокировали: после разблокировки вернём его
+  const restoreFocusRef = useRef(false);
+
   useEffect(() => {
     const textareaEl = textareaRef.current;
-    if (!textareaEl || disabled) return;
+    if (!textareaEl) return;
 
-    const shouldFocus = !disabled && !!autoFocus;
-
-    // Тот же setState на маунте даёт лишний рендер при первом вводе
-    if (isFocus !== shouldFocus) {
-      setIsFocus(shouldFocus);
+    if (disabled) {
+      // isFocus — состояние до блокировки: Chrome уже перевёл фокус на body,
+      // Firefox и Safari оставили его на поле
+      if (isFocus) restoreFocusRef.current = true;
+      return;
     }
 
-    if (shouldFocus) {
+    const hadFocus = restoreFocusRef.current;
+    restoreFocusRef.current = false;
+
+    if (autoFocus) {
       textareaEl.focus();
-    } else if (document.activeElement === textareaEl) {
-      textareaEl.blur();
+    } else if (isTouchDevice()) {
+      // На телефоне и планшете закрываем клавиатуру, как раньше
+      if (document.activeElement === textareaEl) textareaEl.blur();
+    } else if (hadFocus && canRestoreFocus(textareaEl)) {
+      textareaEl.focus();
     }
+
+    // Браузер может снять фокус с заблокированного поля без blur.
+    // Тот же setState на маунте даёт лишний рендер при первом вводе
+    const hasFocus = document.activeElement === textareaEl;
+    if (hasFocus !== isFocus) setIsFocus(hasFocus);
   }, [disabled, autoFocus]);
+
+  useEffect(() => {
+    if (!sendDisabled && sendBlockedCount !== 0) setSendBlockedCount(0);
+  }, [sendDisabled]);
 
   const insertNewlineAtCursor = useCallback(() => {
     const el = textareaRef.current;
@@ -106,46 +132,46 @@ export const useInput = ({
     (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
       onKeyDown?.(event);
 
+      // Enter, которым подтверждают ввод через IME, не отправляет сообщение.
+      // Safari к этому моменту уже закончил композицию и отдаёт keyCode 229
       if (
         event.defaultPrevented ||
-        sendDisabled ||
         event.key !== 'Enter' ||
-        // Enter подтверждает ввод IME (китайский, японский), а не отправляет
-        event.nativeEvent.isComposing
+        event.nativeEvent.isComposing ||
+        event.keyCode === 229
       ) {
         return;
       }
 
-      const isMobile = isMobileDevice();
-      if (isMobile) {
-        return;
-      }
-
-      if (event.shiftKey) {
+      if (isMobileDevice() || event.shiftKey) {
         return;
       }
 
       const ctrlOrMeta = event.ctrlKey || event.metaKey;
+      const isSubmit = messageSubmitKey === 'enter' ? !ctrlOrMeta : ctrlOrMeta;
 
-      if (messageSubmitKey === 'enter') {
-        // Останавливаем только обработанные клавиши, остальные всплывают
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (ctrlOrMeta) {
+      if (!isSubmit) {
+        // Ctrl+Enter / Cmd+Enter в режиме 'enter' — перенос строки,
+        // Enter в режиме 'ctrlEnter' переносит строку сам
+        if (messageSubmitKey === 'enter') {
+          event.preventDefault();
+          event.stopPropagation();
           insertNewlineAtCursor();
-          return;
         }
-        onSendMessage?.();
         return;
       }
 
-      // messageSubmitKey === 'ctrlEnter'
-      if (ctrlOrMeta) {
-        event.preventDefault();
-        event.stopPropagation();
-        onSendMessage?.();
+      // Останавливаем только обработанные клавиши, остальные всплывают
+      event.preventDefault();
+      event.stopPropagation();
+
+      // Отправка недоступна: не переносим строку, а показываем причину
+      if (sendDisabled) {
+        setSendBlockedCount((count) => count + 1);
+        return;
       }
+
+      onSendMessage?.();
     },
   );
 
@@ -176,6 +202,7 @@ export const useInput = ({
   return {
     textareaRef,
     isFocus,
+    sendBlockedCount,
     handleFocus,
     handleBlur,
     handleClick,

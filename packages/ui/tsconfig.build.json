@@ -13,6 +13,8 @@
     "./src/**/*.stories.tsx",
     "./src/**/*.test.ts",
     "./src/**/*.test.tsx",
+    "./src/**/*.bench.ts",
+    "./src/**/*.bench.tsx",
     "./src/**/stories/**",
     "./src/story-decorator/**",
     "./src/tests/**"

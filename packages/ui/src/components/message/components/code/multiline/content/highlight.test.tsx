@@ -3,9 +3,9 @@ import { describe, test, expect, afterEach, vi } from 'vitest';
 import { act, cleanup, render } from '@testing-library/react';
 import hljs from 'highlight.js/lib/common';
 import { TestProvider } from '@/ui/tests';
-import { MessageProvider } from '@/ui/components/message/context';
 import { MessageMultilineCode } from '../index';
 import { Highlight, TYPING_HIGHLIGHT_INTERVAL } from './highlight';
+import { MessageCodeTypingContext } from './typing';
 
 const tsCode =
   'const value: number = compute(1);\nfunction f(x: number) {\n  return x * 2;\n}';
@@ -36,13 +36,9 @@ const Streaming = ({
   const [state, set] = useState({ code: initialCode, typing: true });
   setState = set;
   return (
-    <MessageProvider
-      variant="assistant"
-      color="default"
-      typing={state.typing}
-    >
+    <MessageCodeTypingContext.Provider value={state.typing}>
       <Highlight className={className}>{state.code}</Highlight>
-    </MessageProvider>
+    </MessageCodeTypingContext.Provider>
   );
 };
 
@@ -182,5 +178,36 @@ describe('Highlight', () => {
     expect(element.className).not.toBe(className);
     expect(element.className).toContain('hljs language-typescript');
     expect(spy).not.toHaveBeenCalled();
+  });
+
+  test('shows unlabeled code that is still typed as plain text', () => {
+    const { container, rerender } = render(
+      <MessageCodeTypingContext.Provider value>
+        <Highlight>const a</Highlight>
+      </MessageCodeTypingContext.Provider>,
+    );
+    const code = getCode(container);
+
+    rerender(
+      <MessageCodeTypingContext.Provider value>
+        <Highlight>const a = 1;</Highlight>
+      </MessageCodeTypingContext.Provider>,
+    );
+
+    expect(code.textContent).toBe('const a = 1;');
+    expect(code.children).toHaveLength(0);
+    expect(code.classList).toContain('hljs');
+  });
+
+  test('highlights code whose start had no recognizable language', () => {
+    const log = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const { container, rerender } = render(<Highlight>{'{'}</Highlight>);
+
+    rerender(
+      <Highlight>{'{\n  "name": "bothub",\n  "private": true\n}\n'}</Highlight>,
+    );
+
+    expect(getCode(container).className).toContain('language-json');
+    expect(log).not.toHaveBeenCalled();
   });
 });

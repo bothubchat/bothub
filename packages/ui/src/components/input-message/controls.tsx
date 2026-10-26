@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useRef } from 'react';
 import { AttachIcon } from '@/ui/icons/attach';
 import { CheckSmallIcon } from '@/ui/icons';
+import { LoaderCircularIcon } from '@/ui/icons/loader-circular';
 import { useTheme } from '@/ui/theme';
 import {
   InputMessageSendButton,
@@ -75,6 +76,8 @@ export interface InputMessageSendControlsProps {
   hiddenSend: boolean;
   disabled: boolean;
   sendDisabled: boolean;
+  /** Сообщение отправляется: лоадер в кнопке отправки */
+  sendLoading?: boolean;
   isEditing: boolean;
   isVoiceRecording: boolean;
   isVoicePaused: boolean;
@@ -100,6 +103,7 @@ export const InputMessageSendControls: React.FC<InputMessageSendControlsProps> =
       hiddenSend,
       disabled,
       sendDisabled,
+      sendLoading = false,
       isEditing,
       isVoiceRecording,
       isVoicePaused,
@@ -150,6 +154,7 @@ export const InputMessageSendControls: React.FC<InputMessageSendControlsProps> =
           {!hiddenSend && !isVoiceRecording && (
             <InputMessageSendButton
               disabled={disabled || sendDisabled || isVoiceRecording}
+              aria-busy={sendLoading || undefined}
               aria-label={
                 isEditing ? (saveAriaLabel ?? sendAriaLabel) : sendAriaLabel
               }
@@ -157,9 +162,17 @@ export const InputMessageSendControls: React.FC<InputMessageSendControlsProps> =
               {...(theme.bright && {
                 iconFill: theme.default.colors.base.black,
               })}
+              // Лоадер цветом иконок поля: серый заблокированной кнопки почти не виден
+              {...(sendLoading && { iconFill: theme.colors.base.white })}
               data-test="submit-message"
             >
-              {isEditing ? <CheckSmallIcon /> : <InputMessageSendIcon />}
+              {sendLoading ? (
+                <LoaderCircularIcon />
+              ) : isEditing ? (
+                <CheckSmallIcon />
+              ) : (
+                <InputMessageSendIcon />
+              )}
             </InputMessageSendButton>
           )}
         </>
