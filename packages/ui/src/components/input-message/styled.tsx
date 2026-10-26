@@ -9,7 +9,6 @@ import { PauseIcon } from '@/ui/icons/pause';
 import { PlayIcon } from '@/ui/icons/play';
 import { ExclamationIcon } from '@/ui/icons/exclamation';
 import { Typography } from '@/ui/components/typography';
-import { isBright } from '@/ui/utils';
 import { themeVar } from '@/ui/theme';
 
 export interface InputMessageStyledProps {
@@ -178,7 +177,7 @@ export const InputMessageConcatenateWarning = styled(Typography).attrs(
     variant: 'body-m-regular',
     children: (
       <>
-        <ExclamationIcon fill={theme.colors.accent.primaryLight} />
+        <ExclamationIcon fill={themeVar(theme, 'colors.accent.primaryLight')} />
         {children}
       </>
     ),
@@ -287,10 +286,8 @@ export const InputMessageVoiceButton = styled(
   variant: 'text',
   startIcon: <VoiceIcon />,
   iconFill: disabled
-    ? theme.colors.grayScale.gray1
-    : isBright(theme.colors.grayScale.gray4)
-      ? theme.default.colors.base.black
-      : theme.default.colors.base.white,
+    ? themeVar(theme, 'colors.grayScale.gray1')
+    : themeVar(theme, 'tokens.surfaceIcon'),
   disableHoverColor: true,
 }))`
   margin-inline: 10px;

@@ -107,7 +107,7 @@ export const FileFieldBlock = styled.label<FileFieldBlockProps>`
 
 export const FileFieldIcon = styled(AttachIcon).attrs(({ theme }) => ({
   size: 16,
-  fill: theme.colors.base.white,
+  fill: themeVar(theme, 'colors.base.white'),
 }))``;
 
 export const FileFieldInput = styled.input.attrs({

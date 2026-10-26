@@ -266,6 +266,15 @@ export const derivedThemeTokenDefinitions = {
     theme.bright
       ? theme.default.colors.base.black
       : theme.default.colors.base.white,
+  // Icons on the accent and on the elevated surface
+  accentIcon: (theme) =>
+    isBright(theme.colors.accent.primary)
+      ? theme.default.colors.base.black
+      : theme.default.colors.base.white,
+  surfaceIcon: (theme) =>
+    isBright(theme.colors.grayScale.gray4)
+      ? theme.default.colors.base.black
+      : theme.default.colors.base.white,
   inkContrast: (theme, tokens) =>
     theme.bright ? tokens.inkDark : tokens.inkLight,
 
