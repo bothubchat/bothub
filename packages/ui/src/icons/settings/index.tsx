@@ -1,4 +1,4 @@
-import { useTheme } from 'styled-components';
+import { useTheme } from '@/ui/theme';
 import { Icon, IconConsumer, icon } from '@/ui/components/icon';
 
 export const SettingsIcon = icon(({ ...props }) => {

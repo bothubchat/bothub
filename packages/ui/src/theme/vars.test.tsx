@@ -1,8 +1,14 @@
 import { describe, expect, test } from 'vitest';
 import { renderToString } from 'react-dom/server';
-import { ServerStyleSheet, styled } from 'styled-components';
+import {
+  ServerStyleSheet,
+  ThemeProvider as StyledThemeProvider,
+  styled,
+  useTheme as useStyleTheme,
+} from 'styled-components';
+import { render } from '@testing-library/react';
 import { ThemeProvider } from './index';
-import { standardDark } from './themes';
+import { standardDark, standardLight } from './themes';
 import {
   createThemeCssVariables,
   isThemeWithCssVariables,
@@ -134,6 +140,54 @@ describe('theme CSS variables', () => {
 
     expect(css).not.toContain(':root{');
     expect(css).toContain(`color:${standardDark.colors.grayScale.gray4};`);
+  });
+});
+
+describe('stable theme', () => {
+  test('styles keep one theme object while useTheme gets the current one', () => {
+    const styleThemes: unknown[] = [];
+    const modes: string[] = [];
+    const Probe = () => {
+      styleThemes.push(useStyleTheme());
+      modes.push(useTheme().mode);
+      return null;
+    };
+    const element = (mode: 'dark' | 'light') => (
+      <ThemeProvider
+        mode={mode}
+        cssVariables
+        stableTheme
+      >
+        <Probe />
+      </ThemeProvider>
+    );
+
+    const { rerender } = render(element('dark'));
+    rerender(element('light'));
+
+    expect(modes).toEqual(['dark', 'light']);
+    expect(styleThemes[0]).toBe(styleThemes[1]);
+  });
+
+  test('a styled-components ThemeProvider inside gives its own theme', () => {
+    let mode: string | null = null;
+    const Probe = () => {
+      mode = useTheme().mode;
+      return null;
+    };
+
+    render(
+      <ThemeProvider
+        cssVariables
+        stableTheme
+      >
+        <StyledThemeProvider theme={standardLight}>
+          <Probe />
+        </StyledThemeProvider>
+      </ThemeProvider>,
+    );
+
+    expect(mode).toBe('light');
   });
 });
 

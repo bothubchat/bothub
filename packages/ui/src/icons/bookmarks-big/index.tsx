@@ -1,4 +1,4 @@
-import { useTheme } from 'styled-components';
+import { useTheme } from '@/ui/theme';
 import { Icon, icon, IconConsumer } from '@/ui/components/icon';
 
 export const BookmarksBigIcon = icon(({ ...props }) => {

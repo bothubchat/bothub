@@ -4,14 +4,19 @@ import {
   ThemeProvider as StyledThemeProvider,
   createGlobalStyle,
 } from 'styled-components';
-import { THEMES } from './themes';
-import { ColorSchemeNames, ThemeMode } from './types.js';
+import { THEMES, standardDark } from './themes';
+import { ColorSchemeNames, Theme, ThemeMode } from './types.js';
 import { ThemeTokenSource, withThemeTokens } from './tokens';
-import { createThemeCssVariables, withThemeCssVariablesFlag } from './vars';
+import {
+  createThemeCssVariables,
+  themeVar,
+  withThemeCssVariablesFlag,
+} from './vars';
+import { ThemeValueContext } from './hook';
 
 export const StorybookGlobalStyle = createGlobalStyle`
   body {
-    background: ${({ theme }) => theme.colors.base.black};
+    background: ${({ theme }) => themeVar(theme, 'colors.base.black')};
   }
 `;
 
@@ -26,6 +31,13 @@ const ThemeCssVariablesStyle = createGlobalStyle<{ $declarations: string }>`
 // keep literal colors.
 const NestedThemeContext = React.createContext(false);
 
+// With CSS variables styles get this theme whatever the current one is: they
+// read colors only through `var(--bothub-…)`, so switching the theme changes
+// the variables on :root without re-rendering every styled component. It is
+// always the same theme, so a style that reads a literal color is wrong in
+// every other theme right away instead of only after a switch.
+const cssVariablesStyleTheme: Theme = withThemeCssVariablesFlag(standardDark);
+
 export interface ThemeProviderProps extends React.PropsWithChildren {
   scheme?: ColorSchemeNames;
   mode?: ThemeMode;
@@ -38,6 +50,13 @@ export interface ThemeProviderProps extends React.PropsWithChildren {
    * new CSS for every component. Applies to the outermost ThemeProvider.
    */
   cssVariables?: boolean;
+  /**
+   * With `cssVariables`, styles get one theme object whatever the current
+   * theme is, so switching the theme re-renders only components that read it
+   * in JS (`useTheme`). Library styles read colors through CSS variables;
+   * the sidebar still reads them directly until it is rebuilt.
+   */
+  stableTheme?: boolean;
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = React.memo(
@@ -47,6 +66,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = React.memo(
     sbMode = false,
     customTheme = null,
     cssVariables = false,
+    stableTheme = false,
     children,
   }) => {
     const isNested = useContext(NestedThemeContext);
@@ -67,6 +87,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = React.memo(
       [theme, withCssVariables],
     );
 
+    const styleTheme =
+      withCssVariables && stableTheme ? cssVariablesStyleTheme : providedTheme;
+    const themeValue = useMemo(
+      () => ({ theme: providedTheme, styleTheme }),
+      [providedTheme, styleTheme],
+    );
+
     const variableDeclarations = useMemo(
       () =>
         withCssVariables
@@ -79,13 +106,15 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = React.memo(
 
     return (
       <NestedThemeContext.Provider value>
-        <StyledThemeProvider theme={providedTheme}>
-          {withCssVariables && (
-            <ThemeCssVariablesStyle $declarations={variableDeclarations} />
-          )}
-          {children}
-          {sbMode && <StorybookGlobalStyle />}
-        </StyledThemeProvider>
+        <ThemeValueContext.Provider value={themeValue}>
+          <StyledThemeProvider theme={styleTheme}>
+            {withCssVariables && (
+              <ThemeCssVariablesStyle $declarations={variableDeclarations} />
+            )}
+            {children}
+            {sbMode && <StorybookGlobalStyle />}
+          </StyledThemeProvider>
+        </ThemeValueContext.Provider>
       </NestedThemeContext.Provider>
     );
   },
