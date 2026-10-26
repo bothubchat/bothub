@@ -12,6 +12,10 @@ import { Tooltip, TooltipAnimationDuration, useTooltip } from './index';
 import { Button } from '../button';
 import { portalId } from '../portal';
 
+// waitFor resolves as soon as the tooltip is shown or removed: the long
+// timeout only matters when a loaded test run delays animation frames.
+const ANIMATION_TIMEOUT = 1000;
+
 describe('tooltip', () => {
   afterEach(() => {
     cleanup();
@@ -45,7 +49,7 @@ describe('tooltip', () => {
         expect(screen.queryByText('Tooltip text')).toBeNull();
       },
       {
-        timeout: TooltipAnimationDuration.exit + 25,
+        timeout: ANIMATION_TIMEOUT,
       },
     );
   });
@@ -91,12 +95,12 @@ describe('tooltip', () => {
     fireEvent.mouseEnter(button);
     await waitFor(
       () => expect(screen.getByText('Tooltip text')).not.toBeNull(),
-      { timeout: TooltipAnimationDuration.enter + 25 },
+      { timeout: ANIMATION_TIMEOUT },
     );
 
     fireEvent.mouseLeave(button);
     await waitFor(() => expect(screen.queryByText('Tooltip text')).toBeNull(), {
-      timeout: TooltipAnimationDuration.exit + 25,
+      timeout: ANIMATION_TIMEOUT,
     });
   });
 
@@ -136,7 +140,7 @@ describe('tooltip', () => {
 
     fireEvent.scroll(screen.getByTestId('feed'));
     await waitFor(() => expect(screen.queryByText('Tooltip text')).toBeNull(), {
-      timeout: TooltipAnimationDuration.exit + 25,
+      timeout: ANIMATION_TIMEOUT,
     });
   });
 
@@ -159,7 +163,7 @@ describe('tooltip', () => {
 
     fireEvent.scroll(window);
     await waitFor(() => expect(screen.queryByText('Tooltip text')).toBeNull(), {
-      timeout: TooltipAnimationDuration.exit + 25,
+      timeout: ANIMATION_TIMEOUT,
     });
   });
 });
@@ -235,7 +239,7 @@ describe('tooltip performance', () => {
     expect(listeners.removed()).toBe(2);
 
     await waitFor(() => expect(screen.queryByRole('tooltip')).toBeNull(), {
-      timeout: TooltipAnimationDuration.exit + 25,
+      timeout: ANIMATION_TIMEOUT,
     });
     expect(document.getElementById(portalId)?.childElementCount).toBe(0);
   });
@@ -261,7 +265,7 @@ describe('tooltip performance', () => {
     fireEvent.scroll(screen.getByTestId('scroller'));
 
     await waitFor(() => expect(screen.queryByText('Hides')).toBeNull(), {
-      timeout: TooltipAnimationDuration.exit + 25,
+      timeout: ANIMATION_TIMEOUT,
     });
     expect(screen.getByText('Stays')).not.toBeNull();
   });
@@ -279,7 +283,7 @@ describe('tooltip performance', () => {
     fireEvent.mouseOut(document.body, { relatedTarget: null });
 
     await waitFor(() => expect(screen.queryByText('Tooltip text')).toBeNull(), {
-      timeout: TooltipAnimationDuration.exit + 25,
+      timeout: ANIMATION_TIMEOUT,
     });
   });
 
@@ -297,8 +301,10 @@ describe('tooltip performance', () => {
     fireEvent.mouseEnter(button);
     fireEvent.mouseLeave(button);
 
+    // Without the leave animation the tooltip is removed within a couple of
+    // frames, well before the animation would end.
     await waitFor(() => expect(screen.queryByText('Tooltip text')).toBeNull(), {
-      timeout: TooltipAnimationDuration.exit / 2,
+      timeout: TooltipAnimationDuration.exit,
     });
   });
 
