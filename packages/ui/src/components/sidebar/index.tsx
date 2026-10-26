@@ -127,6 +127,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
         id={id}
         aria-label={ariaLabel}
         aria-hidden={isHide || undefined}
+        // The rows take their collapsed look from it, see ./collapsed
+        data-sidebar-collapsed={isOpen ? undefined : ''}
       >
         <SidebarTop $isOpen={isOpen}>
           <SidebarHead $isOpen={isOpen}>
