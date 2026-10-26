@@ -14,14 +14,7 @@ export const DropzoneFieldStyled = styled.div<{
   background-color: ${({ theme }) => themeVar(theme, 'tokens.gray4Alpha75')};
   padding: 20px;
   border-radius: 20px;
-  background-image: ${({ theme }) => {
-    const dark =
-      "data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' vector-effect='non-scaling-stroke' stroke='%23222B44FF' stroke-width='4' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e";
-    const light =
-      "data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' vector-effect='non-scaling-stroke' stroke='%23CDD5DA' stroke-width='4' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e";
-
-    return `url("${theme.mode === 'light' ? light : dark}")`;
-  }};
+  background-image: ${({ theme }) => themeVar(theme, 'tokens.dropzoneBorder')};
 
   transition: background 0.3s ease-out;
 

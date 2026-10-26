@@ -4,6 +4,7 @@ import { ThemeProvider } from './index';
 import { THEMES, standardDark, standardLight } from './themes';
 import {
   createThemeTokens,
+  derivedThemeTokenDefinitions,
   themeTokenDefinitions,
   withThemeTokens,
 } from './tokens';
@@ -22,7 +23,10 @@ describe('theme tokens', () => {
   });
 
   test('every theme has every token', () => {
-    const names = Object.keys(themeTokenDefinitions);
+    const names = [
+      ...Object.keys(themeTokenDefinitions),
+      ...Object.keys(derivedThemeTokenDefinitions),
+    ];
 
     Object.values(THEMES).forEach(({ dark, light }) => {
       [dark, light].forEach((theme) => {

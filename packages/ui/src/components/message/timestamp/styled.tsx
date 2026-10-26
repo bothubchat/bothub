@@ -45,14 +45,9 @@ export const TimestampText = styled(Typography).attrs({
     if ($variant === 'assistant') {
       return themeVar(theme, 'tokens.timestampAssistantText');
     }
-    if (theme.scheme === 'standard' && theme.mode === 'light') {
-      return themeVar(theme, 'default.colors.base.black');
-    }
-
-    if (theme.bright || isBright($color)) {
-      return themeVar(theme, 'tokens.inkDark');
-    }
-    return themeVar(theme, 'tokens.inkLight');
+    return isBright($color)
+      ? themeVar(theme, 'tokens.timestampUserTextOnBright')
+      : themeVar(theme, 'tokens.timestampUserText');
   }} !important;
   ${adaptive({
     desktop: css`

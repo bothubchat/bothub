@@ -17,12 +17,7 @@ export const BookmarkCardStyled = styled.div<BookmarkCardStyledProps>`
   border-radius: 14px;
   overflow: hidden;
   background: ${({ theme }) => themeVar(theme, 'tokens.surfaceTertiary')};
-  ${({ theme }) =>
-    theme.mode === 'light' &&
-    css`
-      box-shadow: inset 0px 0px 0px 1px
-        ${themeVar(theme, 'colors.grayScale.gray3')};
-    `}
+  box-shadow: ${({ theme }) => themeVar(theme, 'tokens.cardShadow')};
   cursor: ${({ $skeleton }) => ($skeleton ? 'progress' : 'pointer')};
   ${() => css`
     ${BookmarkCardActions} {

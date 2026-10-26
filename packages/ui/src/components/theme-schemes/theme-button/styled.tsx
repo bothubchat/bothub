@@ -34,9 +34,7 @@ export const ThemeButtonStyled = styled.button`
   padding: 8px;
   border-radius: 18px;
   background-color: ${({ theme }) =>
-    theme.scheme === 'custom'
-      ? themeVar(theme, 'colors.custom.background')
-      : themeVar(theme, 'colors.base.black')};
+    themeVar(theme, 'tokens.themeButtonBackground')};
   &:hover {
     cursor: pointer;
   }

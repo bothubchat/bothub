@@ -99,12 +99,7 @@ export const RangeSettingsSlider: React.FC<
       css`
         cursor: pointer;
       `}
-    ${({ theme }) =>
-      theme.mode === 'light' &&
-      css`
-        box-shadow: 0px 0px 0px 1px
-          ${themeVar(theme, 'default.colors.grayScale.gray6')};
-      `}
+    box-shadow: ${({ theme }) => themeVar(theme, 'tokens.thumbShadow')};
     &::before {
       position: absolute;
       top: 50%;

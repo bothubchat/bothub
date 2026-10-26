@@ -14,6 +14,15 @@ type ThemeTokenDefinition =
   | { light: ThemeTokenValue; dark: ThemeTokenValue }
   | ThemeTokenValue;
 
+function resolveToken(
+  definition: ThemeTokenDefinition,
+  theme: ThemeTokenSource,
+): string {
+  return typeof definition === 'function'
+    ? definition(theme)
+    : definition[theme.mode](theme);
+}
+
 /**
  * Semantic colors that differ between the light and the dark mode. Components
  * read `theme.tokens.<name>` instead of branching on `theme.mode`.
@@ -231,17 +240,146 @@ export const themeTokenDefinitions = {
   },
 } satisfies Record<string, ThemeTokenDefinition>;
 
-export type ThemeTokenName = keyof typeof themeTokenDefinitions;
+type BaseThemeTokenName = keyof typeof themeTokenDefinitions;
+
+type DerivedThemeTokenDefinition = (
+  theme: ThemeTokenSource,
+  tokens: Record<BaseThemeTokenName, string>,
+) => string;
+
+const isCustom = (theme: ThemeTokenSource) => theme.scheme === 'custom';
+const isStandardLight = (theme: ThemeTokenSource) =>
+  theme.scheme === 'standard' && theme.mode === 'light';
+
+/**
+ * Colors of particular components that also depend on the scheme or on
+ * whether the accent is bright. They are tokens too, so styles read them
+ * through CSS variables instead of branching on the theme.
+ */
+export const derivedThemeTokenDefinitions = {
+  // Text
+  interfaceText: (theme) =>
+    isCustom(theme)
+      ? theme.colors.custom.interface.text
+      : theme.colors.base.white,
+  accentForeground: (theme) =>
+    theme.bright
+      ? theme.default.colors.base.black
+      : theme.default.colors.base.white,
+  inkContrast: (theme, tokens) =>
+    theme.bright ? tokens.inkDark : tokens.inkLight,
+
+  // Buttons and fields
+  buttonPrimaryText: (theme, tokens) => {
+    const { text } = theme.colors.custom.interface;
+    if (isCustom(theme)) {
+      if (theme.bright) {
+        return isBright(text) ? tokens.textOnBright : text;
+      }
+      return isBright(text) ? text : theme.default.colors.base.white;
+    }
+    return theme.bright ? tokens.inkDark : theme.default.colors.base.white;
+  },
+  fieldBackground: (theme, tokens) =>
+    isCustom(theme) ? theme.colors.grayScale.gray7 : tokens.surfaceElevated,
+  fieldFocusBackground: (theme, tokens) =>
+    isCustom(theme) ? theme.colors.grayScale.gray2 : tokens.surfaceElevated,
+  fieldFocusBackgroundSecondary: (theme) =>
+    isCustom(theme)
+      ? theme.colors.grayScale.gray2
+      : theme.colors.grayScale.gray7,
+  fieldFocusIcon: (theme, tokens) =>
+    isCustom(theme) ? theme.colors.accent.primary : tokens.accentContrast,
+  themeButtonBackground: (theme) =>
+    isCustom(theme) ? theme.colors.custom.background : theme.colors.base.black,
+  surfaceGroupHeaderTransparent: (theme, tokens) =>
+    `${tokens.surfaceGroupHeader}00`,
+  dropzoneBorder: (theme) =>
+    theme.mode === 'light'
+      ? `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' vector-effect='non-scaling-stroke' stroke='%23CDD5DA' stroke-width='4' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`
+      : `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' vector-effect='non-scaling-stroke' stroke='%23222B44FF' stroke-width='4' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e")`,
+  // A light outline that only the light mode has
+  thumbShadow: (theme) =>
+    theme.mode === 'light'
+      ? `0px 0px 0px 1px ${theme.default.colors.grayScale.gray6}`
+      : 'none',
+  cardShadow: (theme) =>
+    theme.mode === 'light'
+      ? `inset 0px 0px 0px 1px ${theme.colors.grayScale.gray3}`
+      : 'none',
+  uploadedFileBorder: (theme) =>
+    theme.mode === 'light'
+      ? `1px solid ${theme.colors.grayScale.gray2}`
+      : 'none',
+
+  // Messages
+  messageActionIcon: (theme) =>
+    isCustom(theme)
+      ? theme.colors.custom.icon
+      : theme.colors.accent.primaryLight,
+  messageActionActiveIcon: (theme, tokens) =>
+    isCustom(theme) ? theme.colors.custom.icon : tokens.actionActiveBackground,
+  messageCopiedIcon: (theme) =>
+    theme.mode === 'dark'
+      ? theme.default.colors.accent.primary
+      : theme.colors.base.white,
+  paragraphUserText: (theme, tokens) => {
+    if (isCustom(theme)) {
+      return theme.colors.custom.message.user.text;
+    }
+    if (theme.scheme === 'standard') {
+      return theme.colors.base.white;
+    }
+    return theme.bright ? tokens.inkDark : theme.default.colors.base.white;
+  },
+  paragraphAssistantText: (theme) =>
+    isCustom(theme)
+      ? theme.colors.custom.message.assistant.text
+      : theme.colors.base.white,
+  timestampUserText: (theme, tokens) => {
+    if (isStandardLight(theme)) {
+      return theme.default.colors.base.black;
+    }
+    return theme.bright ? tokens.inkDark : tokens.inkLight;
+  },
+  timestampUserTextOnBright: (theme, tokens) =>
+    isStandardLight(theme) ? theme.default.colors.base.black : tokens.inkDark,
+  voiceInputText: (theme) =>
+    theme.scheme === 'standard' ? '#A4C1FA' : theme.colors.accent.primary,
+  // The standard user bubble is light although the theme is not bright
+  voiceMessageText: (theme, tokens) => {
+    if (theme.scheme === 'standard') {
+      return tokens.textDefault;
+    }
+    return theme.bright ||
+      (isCustom(theme) && isBright(theme.colors.custom.message.user.background))
+      ? theme.default.colors.base.black
+      : theme.default.colors.base.white;
+  },
+} satisfies Record<string, DerivedThemeTokenDefinition>;
+
+export type ThemeTokenName =
+  | BaseThemeTokenName
+  | keyof typeof derivedThemeTokenDefinitions;
 
 export function createThemeTokens(theme: ThemeTokenSource): ThemeTokens {
-  const tokens = {} as ThemeTokens;
+  const baseTokens = {} as Record<BaseThemeTokenName, string>;
 
-  (Object.keys(themeTokenDefinitions) as ThemeTokenName[]).forEach((name) => {
-    const definition: ThemeTokenDefinition = themeTokenDefinitions[name];
-    tokens[name] =
-      typeof definition === 'function'
-        ? definition(theme)
-        : definition[theme.mode](theme);
+  (Object.keys(themeTokenDefinitions) as BaseThemeTokenName[]).forEach(
+    (name) => {
+      baseTokens[name] = resolveToken(themeTokenDefinitions[name], theme);
+    },
+  );
+
+  const tokens = { ...baseTokens } as ThemeTokens;
+  (
+    Object.keys(
+      derivedThemeTokenDefinitions,
+    ) as (keyof typeof derivedThemeTokenDefinitions)[]
+  ).forEach((name) => {
+    const definition: DerivedThemeTokenDefinition =
+      derivedThemeTokenDefinitions[name];
+    tokens[name] = definition(theme, baseTokens);
   });
 
   return tokens;

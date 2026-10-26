@@ -46,10 +46,7 @@ export const MessageStyledWrapper = styled.div<MessageStyledWrapperProps>`
   ${({ theme, $forkSelected }) =>
     $forkSelected &&
     css`
-      outline: 1.5px dashed
-        ${theme.scheme === 'custom'
-          ? themeVar(theme, 'colors.custom.icon')
-          : themeVar(theme, 'colors.accent.primaryLight')};
+      outline: 1.5px dashed ${themeVar(theme, 'tokens.messageActionIcon')};
       outline-offset: 3px;
       border-radius: 10px;
     `}

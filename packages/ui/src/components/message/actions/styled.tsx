@@ -87,12 +87,8 @@ export const MessageActionsMenuModalOption = styled.button`
       svg {
         path,
         circle {
-          fill: ${({ theme }) => {
-            if (theme.scheme === 'custom') {
-              return themeVar(theme, 'colors.custom.icon');
-            }
-            return themeVar(theme, 'tokens.actionActiveBackground');
-          }};
+          fill: ${({ theme }) =>
+            themeVar(theme, 'tokens.messageActionActiveIcon')};
         }
       }
     }
@@ -125,12 +121,7 @@ export const MessageActionsButton = styled.button`
     svg {
       path,
       circle {
-        fill: ${({ theme }) => {
-          if (theme.scheme === 'custom') {
-            return themeVar(theme, 'colors.custom.icon');
-          }
-          return themeVar(theme, 'colors.accent.primaryLight');
-        }};
+        fill: ${({ theme }) => themeVar(theme, 'tokens.messageActionIcon')};
         opacity: 0.75;
         transition: all 100ms ease-out;
       }

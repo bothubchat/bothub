@@ -14,30 +14,12 @@ export interface MessageParagraphStyledProps {
 export const MessageParagraphStyled = styled(
   Typography,
 )<MessageParagraphStyledProps>`
-  color: ${({ theme, $variant, $color }) => {
+  color: ${({ theme, $variant }) => {
     if ($variant === 'user') {
-      if (theme.scheme === 'custom') {
-        return themeVar(theme, 'colors.custom.message.user.text');
-      }
-
-      if (theme.scheme === 'standard') {
-        return themeVar(theme, 'colors.base.white');
-      }
-
-      return theme.bright
-        ? themeVar(theme, 'tokens.inkDark')
-        : themeVar(theme, 'default.colors.base.white');
+      return themeVar(theme, 'tokens.paragraphUserText');
     }
 
-    if (theme.scheme === 'custom') {
-      return themeVar(theme, 'colors.custom.message.assistant.text');
-    }
-
-    if ($color === 'default') {
-      return themeVar(theme, 'colors.base.white');
-    }
-
-    return themeVar(theme, 'colors.base.white');
+    return themeVar(theme, 'tokens.paragraphAssistantText');
   }};
   ${({ $disableMargin }) =>
     !$disableMargin &&

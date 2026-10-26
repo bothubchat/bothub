@@ -4,7 +4,7 @@ import { Progress } from '@/ui/components/progress';
 import { UploadedFileStatus } from './types';
 import { Button } from '../button';
 import { CloseIcon, LoaderCircularGradientIcon } from '@/ui/icons';
-import { themeVar } from '@/ui/theme';
+import { ThemeMode, themeVar } from '@/ui/theme';
 
 type IsPrimary = { $isPrimary: boolean };
 
@@ -22,10 +22,7 @@ export const UploadedFileStyled = styled.div<
           padding: 12px 16px;
           gap: 10px;
           background-color: ${themeVar(theme, 'tokens.gray4Alpha75')};
-          ${theme.mode === 'light' &&
-          css`
-            border: 1px solid ${themeVar(theme, 'colors.grayScale.gray2')};
-          `}
+          border: ${themeVar(theme, 'tokens.uploadedFileBorder')};
         `
       : css`
           width: 430px;
@@ -146,9 +143,12 @@ export const UploadedFileProgressBar = styled(Progress).attrs({
   }
 `;
 
-export const UploadedFileLoaderIcon = styled(LoaderCircularGradientIcon)`
-  ${({ theme }) =>
-    theme.mode === 'light' &&
+export const UploadedFileLoaderIcon = styled(LoaderCircularGradientIcon)<{
+  /** Mode of the current theme: styles may get a theme of CSS variables. */
+  $mode: ThemeMode;
+}>`
+  ${({ theme, $mode }) =>
+    $mode === 'light' &&
     css`
       path {
         fill: ${themeVar(theme, 'colors.base.white')};

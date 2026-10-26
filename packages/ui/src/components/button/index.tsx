@@ -165,6 +165,7 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
         $skeleton={skeleton}
         $disabled={disabled}
         $disableHoverColor={disableHoverColor}
+        $mode={theme.mode}
         $color={color}
         as={component}
         {...(isNativeButton && {

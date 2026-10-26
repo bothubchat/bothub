@@ -71,9 +71,6 @@ export const FooterMobileNewChatButton = styled(FooterMobileButton).attrs({
   border-radius: 8px;
   background-color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
   svg path {
-    stroke: ${({ theme }) =>
-      theme.bright
-        ? themeVar(theme, 'default.colors.base.black')
-        : themeVar(theme, 'default.colors.base.white')};
+    stroke: ${({ theme }) => themeVar(theme, 'tokens.accentForeground')};
   }
 `;

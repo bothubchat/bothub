@@ -22,13 +22,13 @@ export const BookmarkCloseButton = styled(Button).attrs({
 
 const pulse = (theme: DefaultTheme) => keyframes`
   0% {
-    box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray5};
+    box-shadow: 0px 0px 0px 1px ${themeVar(theme, 'colors.grayScale.gray5')};
   }
   85% {
-    box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray1};
+    box-shadow: 0px 0px 0px 1px ${themeVar(theme, 'colors.grayScale.gray1')};
   }
   100% {
-    box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray5};
+    box-shadow: 0px 0px 0px 1px ${themeVar(theme, 'colors.grayScale.gray5')};
   }
 `;
 

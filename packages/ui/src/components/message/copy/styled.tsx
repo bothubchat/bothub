@@ -14,9 +14,7 @@ export const MessageCopyActionStyled = styled(
     css`
       cursor: default;
       svg path {
-        fill: ${theme.mode === 'dark'
-          ? themeVar(theme, 'default.colors.accent.primary')
-          : themeVar(theme, 'colors.base.white')} !important;
+        fill: ${themeVar(theme, 'tokens.messageCopiedIcon')} !important;
       }
       &:hover {
         svg path {

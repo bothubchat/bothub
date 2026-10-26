@@ -75,16 +75,17 @@ export const Shadow = styled.div<ShadowProps>`
     `}
 
   ${({ $onTop = false, theme }) => {
-    const color = theme.tokens.surfaceGroupHeader;
+    const color = themeVar(theme, 'tokens.surfaceGroupHeader');
+    const transparent = themeVar(theme, 'tokens.surfaceGroupHeaderTransparent');
 
     return $onTop
       ? css`
           inset: -1px 8px auto 0;
-          background: linear-gradient(0deg, ${color}00 0%, ${color} 100%);
+          background: linear-gradient(0deg, ${transparent} 0%, ${color} 100%);
         `
       : css`
           inset: auto 8px -1px 0;
-          background: linear-gradient(180deg, ${color}00 0%, ${color} 100%);
+          background: linear-gradient(180deg, ${transparent} 0%, ${color} 100%);
         `;
   }}
 `;

@@ -112,7 +112,7 @@ export const CheckboxInput = styled.input<
 
   &:checked + span {
     ${({ theme, $checkedColor }) => {
-      const color = $checkedColor || theme.colors.accent.primary;
+      const color = $checkedColor || themeVar(theme, 'colors.accent.primary');
       return css`
         border-color: ${color};
         background: ${color};
@@ -124,7 +124,7 @@ export const CheckboxInput = styled.input<
   }
   &:checked:not(:disabled) + ${CheckboxBlock}:hover {
     ${({ theme, $checkedColor }) => {
-      const color = $checkedColor || theme.colors.accent.strong;
+      const color = $checkedColor || themeVar(theme, 'colors.accent.strong');
       return css`
         border-color: ${color};
         background: ${color};

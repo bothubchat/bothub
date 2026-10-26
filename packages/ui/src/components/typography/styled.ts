@@ -450,10 +450,7 @@ export const getTypographyStyles = (
 
 export const TypographyStyled = styled.span<TypographyStyledProps>`
   margin: 0px;
-  color: ${({ theme }) =>
-    theme.scheme === 'custom'
-      ? themeVar(theme, 'colors.custom.interface.text')
-      : themeVar(theme, 'colors.base.white')};
+  color: ${({ theme }) => themeVar(theme, 'tokens.interfaceText')};
   font-weight: normal;
   text-decoration: none;
   text-align: ${({ $align }) => $align};

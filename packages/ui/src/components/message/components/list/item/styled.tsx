@@ -30,9 +30,9 @@ export const MessageListItemStyled = styled(Typography).attrs({
       case 'dot': {
         let dotColor: string;
         if ($messageColor !== 'default') {
-          dotColor = theme.default.colors.base.white;
+          dotColor = themeVar(theme, 'default.colors.base.white');
         } else {
-          dotColor = theme.colors.accent.primary;
+          dotColor = themeVar(theme, 'colors.accent.primary');
         }
 
         return css`
@@ -51,9 +51,9 @@ export const MessageListItemStyled = styled(Typography).attrs({
       case 'number': {
         let numberColor: string;
         if ($messageColor !== 'default') {
-          numberColor = theme.colors.base.white;
+          numberColor = themeVar(theme, 'colors.base.white');
         } else {
-          numberColor = theme.tokens.listMarker;
+          numberColor = themeVar(theme, 'tokens.listMarker');
         }
 
         return css`

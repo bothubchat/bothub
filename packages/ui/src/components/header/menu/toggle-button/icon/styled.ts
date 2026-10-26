@@ -5,12 +5,7 @@ export const StyledLine = styled.div`
   width: 100%;
   height: 2px;
   border-radius: 2px;
-  background-color: ${({ theme }) => {
-    if (theme.bright) {
-      return themeVar(theme, 'tokens.inkDark');
-    }
-    return themeVar(theme, 'tokens.inkLight');
-  }};
+  background-color: ${({ theme }) => themeVar(theme, 'tokens.inkContrast')};
   position: absolute;
   left: 0;
   transition:

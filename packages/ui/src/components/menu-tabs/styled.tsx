@@ -16,7 +16,7 @@ export const MenuTabsWrapper = styled(Scrollbar).attrs(({ theme }) => ({
   isHorizontalScrollbar: true,
 
   scrollShadows: {
-    color: theme.colors.base.black,
+    color: themeVar(theme, 'colors.base.black'),
     left: <ScrollbarShadow side="left" />,
     right: <ScrollbarShadow side="right" />,
   },

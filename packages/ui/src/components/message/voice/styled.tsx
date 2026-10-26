@@ -5,7 +5,6 @@ import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { TextReadIcon } from '@/ui/icons/text-read';
 import { TextHideIcon } from '@/ui/icons/text-hide';
-import { isBright } from '@/ui/utils';
 import { themeVar } from '@/ui/theme';
 
 export const MessageVoiceStyled = styled.div`
@@ -60,23 +59,10 @@ export const MessageVoiceDurationText = styled(Typography).attrs<{
 })`
   color: ${({ theme, $variant }) => {
     if ($variant === 'input') {
-      if (theme.scheme === 'standard') {
-        return '#A4C1FA';
-      }
-
-      return themeVar(theme, 'colors.accent.primary');
+      return themeVar(theme, 'tokens.voiceInputText');
     }
 
-    /* In standard theme, theme.bright is false, but message background is light */
-    if (theme.scheme === 'standard') {
-      return themeVar(theme, 'tokens.textDefault');
-    }
-
-    return theme.bright ||
-      (theme.scheme === 'custom' &&
-        isBright(theme.colors.custom.message.user.background))
-      ? themeVar(theme, 'default.colors.base.black')
-      : themeVar(theme, 'default.colors.base.white');
+    return themeVar(theme, 'tokens.voiceMessageText');
   }};
   user-select: none;
 `;

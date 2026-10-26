@@ -105,7 +105,7 @@ export const ModalWindowBodyScrollbarWrapper = styled(Scrollbar).attrs(
   ({ theme }) => ({
     variant: 'secondary',
     scrollShadows: {
-      color: theme.colors.grayScale.gray3,
+      color: themeVar(theme, 'colors.grayScale.gray3'),
       top: <ScrollbarShadow side="top" />,
       bottom: <ScrollbarShadow side="bottom" />,
     },

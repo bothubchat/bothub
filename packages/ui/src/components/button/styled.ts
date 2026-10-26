@@ -1,8 +1,7 @@
 import { css, keyframes, styled } from 'styled-components';
 import React from 'react';
 import { ButtonCorner, ButtonSize, ButtonVariant } from './types';
-import { isBrightColor } from './utils';
-import { themeVar } from '@/ui/theme';
+import { ThemeMode, themeVar } from '@/ui/theme';
 
 type Keyframes = ReturnType<typeof keyframes>;
 
@@ -70,6 +69,8 @@ export interface ButtonStyledProps {
   $disabled: boolean;
   $disableHoverColor: boolean;
   $color?: string;
+  /** Mode of the current theme: styles may get a theme of CSS variables. */
+  $mode: ThemeMode;
 }
 
 // `$color` goes through a CSS custom property, so arbitrary colors share one
@@ -118,9 +119,9 @@ export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
         if (color) {
           backgroundColor = color;
         } else if ($disabled || $skeleton) {
-          backgroundColor = theme.colors.grayScale.gray3;
+          backgroundColor = themeVar(theme, 'colors.grayScale.gray3');
         } else {
-          backgroundColor = theme.tokens.buttonPrimaryBackground;
+          backgroundColor = themeVar(theme, 'tokens.buttonPrimaryBackground');
         }
 
         return css`
@@ -168,7 +169,9 @@ export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
           box-shadow: ${$disabled || $skeleton
             ? 'box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.0) inset;'
             : `0px 0px 0px 1px ${themeVar(theme, 'colors.accent.primary')} inset`};
-          animation: ${reverseBoxShadowAnimation(theme.colors.accent.primary)}
+          animation: ${reverseBoxShadowAnimation(
+              themeVar(theme, 'colors.accent.primary'),
+            )}
             0.3s linear forwards;
 
           ${!$disabled &&
@@ -176,8 +179,10 @@ export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
           css`
             &:hover {
               background: ${color ?? themeVar(theme, 'colors.accent.primary')};
-              animation: ${boxShadowAnimation(theme.colors.accent.primary)} 0.3s
-                linear forwards;
+              animation: ${boxShadowAnimation(
+                  themeVar(theme, 'colors.accent.primary'),
+                )}
+                0.3s linear forwards;
             }
             &:active {
               background: ${color ??
@@ -192,7 +197,9 @@ export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
           background: ${color ?? themeVar(theme, 'colors.grayScale.gray4')};
           box-shadow: 0px 0px 0px 1px
             ${themeVar(theme, 'colors.grayScale.gray2')} inset;
-          animation: ${reverseBoxShadowAnimation(theme.colors.grayScale.gray2)}
+          animation: ${reverseBoxShadowAnimation(
+              themeVar(theme, 'colors.grayScale.gray2'),
+            )}
             0.3s linear forwards;
 
           ${!$disabled &&
@@ -200,7 +207,9 @@ export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
           css`
             &:hover {
               background: ${color ?? themeVar(theme, 'colors.grayScale.gray2')};
-              animation: ${boxShadowAnimation(theme.colors.grayScale.gray2)}
+              animation: ${boxShadowAnimation(
+                  themeVar(theme, 'colors.grayScale.gray2'),
+                )}
                 0.3s linear forwards;
             }
             &:active {
@@ -213,7 +222,9 @@ export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
           background: ${color ?? themeVar(theme, 'colors.gradient.elite20')};
           box-shadow: 0px 0px 0px 1px
             ${themeVar(theme, 'colors.gradient.elite20')} inset;
-          animation: ${reverseBoxShadowAnimation(theme.colors.gradient.elite20)}
+          animation: ${reverseBoxShadowAnimation(
+              themeVar(theme, 'colors.gradient.elite20'),
+            )}
             0.3s linear forwards;
 
           ${!$disabled &&
@@ -222,7 +233,9 @@ export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
             &:hover {
               background: ${color ??
               themeVar(theme, 'colors.gradient.elite20')};
-              animation: ${boxShadowAnimation(theme.colors.gradient.elite20)}
+              animation: ${boxShadowAnimation(
+                  themeVar(theme, 'colors.gradient.elite20'),
+                )}
                 0.3s linear forwards;
             }
             &:active {
@@ -374,9 +387,9 @@ export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
         }
       }
     `}
-  ${({ theme, $variant }) =>
+  ${({ theme, $variant, $mode }) =>
     $variant === 'primary-outline' &&
-    theme.mode === 'light' &&
+    $mode === 'light' &&
     css`
       &:hover,
       &:active {
@@ -414,22 +427,7 @@ export const ButtonText = styled.span<ButtonTextProps>`
     switch ($variant) {
       case 'primary':
       case 'primary-transparent':
-        if (theme.scheme === 'custom') {
-          if (theme.bright) {
-            return isBrightColor(theme.colors.custom.interface.text)
-              ? themeVar(theme, 'tokens.textOnBright')
-              : themeVar(theme, 'colors.custom.interface.text');
-          }
-
-          return isBrightColor(theme.colors.custom.interface.text)
-            ? themeVar(theme, 'colors.custom.interface.text')
-            : themeVar(theme, 'default.colors.base.white');
-        }
-
-        if (theme.bright) {
-          return themeVar(theme, 'tokens.inkDark');
-        }
-        return themeVar(theme, 'default.colors.base.white');
+        return themeVar(theme, 'tokens.buttonPrimaryText');
       case 'primary-outline':
         return themeVar(theme, 'tokens.textStrong');
       default:

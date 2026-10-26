@@ -150,12 +150,7 @@ export const RangeFieldRangeThumb = styled.span<RangeFieldRangeThumbProps>`
       height: 20px;
     `,
   })}
-  ${({ theme }) =>
-    theme.mode === 'light' &&
-    css`
-      box-shadow: 0px 0px 0px 1px
-        ${themeVar(theme, 'default.colors.grayScale.gray6')};
-    `}
+  box-shadow: ${({ theme }) => themeVar(theme, 'tokens.thumbShadow')};
 `;
 
 export const RangeFieldErrorText = styled(Typography).attrs({

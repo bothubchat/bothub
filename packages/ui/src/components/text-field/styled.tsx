@@ -107,39 +107,23 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
       `;
     }
 
-    const focusStyles =
-      theme.scheme === 'custom'
-        ? css`
-            background: ${themeVar(theme, 'colors.grayScale.gray2')};
-            > svg path {
-              fill: ${themeVar(theme, 'colors.accent.primary')};
-            }
-          `
-        : css`
-            background: ${$variant === 'primary'
-              ? themeVar(theme, 'tokens.surfaceElevated')
-              : themeVar(theme, 'colors.grayScale.gray7')};
-            > svg path {
-              fill: ${themeVar(theme, 'tokens.accentContrast')};
-            }
-          `;
+    const focusStyles = css`
+      background: ${$variant === 'primary'
+        ? themeVar(theme, 'tokens.fieldFocusBackground')
+        : themeVar(theme, 'tokens.fieldFocusBackgroundSecondary')};
+      > svg path {
+        fill: ${themeVar(theme, 'tokens.fieldFocusIcon')};
+      }
+    `;
 
-    const idleStyles =
-      theme.scheme === 'custom'
-        ? css`
-            background: ${themeVar(theme, 'colors.grayScale.gray7')};
-            > svg path {
-              fill: ${themeVar(theme, 'colors.grayScale.gray1')};
-            }
-          `
-        : css`
-            background: ${$variant === 'primary'
-              ? themeVar(theme, 'tokens.surfaceElevated')
-              : themeVar(theme, 'colors.grayScale.gray7')};
-            > svg path {
-              fill: ${themeVar(theme, 'colors.grayScale.gray1')};
-            }
-          `;
+    const idleStyles = css`
+      background: ${$variant === 'primary'
+        ? themeVar(theme, 'tokens.fieldBackground')
+        : themeVar(theme, 'colors.grayScale.gray7')};
+      > svg path {
+        fill: ${themeVar(theme, 'colors.grayScale.gray1')};
+      }
+    `;
 
     return css`
       ${$focus ? focusStyles : idleStyles}

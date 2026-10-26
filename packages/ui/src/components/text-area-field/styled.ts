@@ -74,11 +74,7 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
       return themeVar(theme, 'colors.grayScale.gray3');
     }
 
-    if (theme.scheme === 'custom') {
-      return themeVar(theme, 'colors.grayScale.gray7');
-    }
-
-    return themeVar(theme, 'tokens.surfaceElevated');
+    return themeVar(theme, 'tokens.fieldBackground');
   }};
   ${({ $glow, theme }) =>
     $glow &&

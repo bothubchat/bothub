@@ -1,7 +1,7 @@
 import { styled, css } from 'styled-components';
 import { Scrollbar } from '../scrollbar';
 import { ArrowsSize } from './types';
-import { themeVar } from '@/ui/theme';
+import { ThemeMode, themeVar } from '@/ui/theme';
 
 export const SliderContainer = styled.div`
   width: 100%;
@@ -20,6 +20,8 @@ export const SliderArrow = styled.div<{
   $hidden: boolean;
   $arrowsSize: ArrowsSize;
   $isLeftArrow?: boolean;
+  /** Mode of the current theme: styles may get a theme of CSS variables. */
+  $mode: ThemeMode;
 }>`
   height: 100%;
   position: absolute;
@@ -84,8 +86,8 @@ export const SliderArrow = styled.div<{
       }
     }};
 
-    ${({ theme }) =>
-      theme.mode === 'light' &&
+    ${({ $mode }) =>
+      $mode === 'light' &&
       css`
         path {
           stroke: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};

@@ -3,6 +3,7 @@ import * as S from './styled';
 import { ArrowDownIcon } from '@/ui/icons';
 import { UseSliderProps, useSlider } from './useSlider';
 import { ArrowsSize } from './types';
+import { useTheme } from '@/ui/theme';
 
 type SliderProps = {
   arrowsSize?: ArrowsSize;
@@ -23,12 +24,14 @@ export const Slider = ({
     onScrollRight,
     scrollbarRef,
   } = useSlider({ options });
+  const { mode } = useTheme();
 
   return (
     <S.SliderContainer>
       <S.SliderArrow
         $hidden={isLeftDisabled}
         $arrowsSize={arrowsSize}
+        $mode={mode}
         data-test="slider-left-arrow"
       >
         <S.SliderIconContainer
@@ -50,6 +53,7 @@ export const Slider = ({
       <S.SliderArrow
         $hidden={isRightDisabled}
         $arrowsSize={arrowsSize}
+        $mode={mode}
         $isLeftArrow={false}
         data-test="slider-right-arrow"
       >
