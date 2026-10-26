@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { styled } from 'styled-components';
 import { StoryDecorator } from '@/ui/story-decorator';
+import { Typography } from '@/ui/components/typography';
 import {
   Sidebar,
   SidebarListActions,
@@ -223,6 +225,39 @@ const Chats = ({
   </>
 );
 
+const ManyChats: React.FC<{ count: number }> = ({ count }) => (
+  <SidebarListChats>
+    {Array.from({ length: count }, (_, index) => (
+      <SidebarChat
+        key={index}
+        id={`many-chat-${index}`}
+        actions={<ChatsActions />}
+        name={`Чат ${index + 1}`}
+        icon={<Gpt35Icon />}
+        active={index === 2}
+      />
+    ))}
+  </SidebarListChats>
+);
+
+const DashboardLayout = styled.div`
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  height: calc(100vh - 32px);
+`;
+
+const DashboardMain = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+  padding: 24px;
+  overflow: auto;
+  border-radius: 18px;
+  background: ${({ theme }) => theme.colors.grayScale.gray4};
+`;
+
 const User = () => (
   <SidebarUser
     avatar={
@@ -285,6 +320,39 @@ export const Basic: SidebarStory = {
       />
     ),
   },
+};
+
+export const Collapsed: SidebarStory = {
+  args: {
+    ...Basic.args,
+    defaultOpen: false,
+  },
+};
+
+/**
+ * Next to the content, like in the dashboard. The content moves in one step
+ * (at the start when the sidebar opens, at the end when it collapses) and
+ * only the edge of the panel is animated, with transforms: the rows are
+ * neither remounted nor laid out on every frame.
+ */
+export const WithContent: SidebarStory = {
+  args: {
+    ...Basic.args,
+    children: <ManyChats count={200} />,
+  },
+  render: (args) => (
+    <DashboardLayout>
+      <Sidebar {...args} />
+      <DashboardMain>
+        {Array.from({ length: 12 }, (_, index) => (
+          <Typography key={index}>
+            Сообщение {index + 1}. Контент рядом с сайдбаром сдвигается один
+            раз, а край панели едет сам по себе.
+          </Typography>
+        ))}
+      </DashboardMain>
+    </DashboardLayout>
+  ),
 };
 
 export default {
