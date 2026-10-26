@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { MessageMultilineCodeCopyButtonStyled } from './styled';
 import { useMessage } from '@/ui/components/message/context';
 import { MessageVariant } from '@/ui/components/message/types';
@@ -16,7 +16,8 @@ export const MessageMultilineCodeCopyButton: React.FC<
 > = ({ code, messageVariant, messageColor }) => {
   const { onCodeCopy } = useMessage();
 
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
+  // A ref, not state: the unmount cleanup has to see the latest timer.
+  const timeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const [isCopied, setIsCopied] = useState(false);
 
   const handleClick = useCallback(() => {
@@ -24,25 +25,16 @@ export const MessageMultilineCodeCopyButton: React.FC<
       return;
     }
 
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
+    clearTimeout(timeoutRef.current);
     setIsCopied(true);
     if (typeof code === 'string') {
       onCodeCopy?.(code);
     }
 
-    setTimeoutId(setTimeout(() => setIsCopied(false), 1000));
+    timeoutRef.current = setTimeout(() => setIsCopied(false), 1000);
   }, [isCopied, code, onCodeCopy]);
 
-  useEffect(
-    () => () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    },
-    [],
-  );
+  useEffect(() => () => clearTimeout(timeoutRef.current), []);
 
   return (
     <MessageMultilineCodeCopyButtonStyled

@@ -24,7 +24,7 @@ export const useDelayedVisible = (
       const timeout = setTimeout(() => setDelayedVisible(false), hideDelay);
       return () => clearTimeout(timeout);
     }
-  }, [visible, delayedVisible, showDelay]);
+  }, [visible, delayedVisible, showDelay, hideDelay]);
 
   return { delayedVisible, mounted: visible || delayedVisible };
 };
