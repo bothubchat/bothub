@@ -10,8 +10,8 @@ import {
   RangeFieldStyled,
 } from './styled';
 import { RangeFieldValue } from './types';
-import { Skeleton } from '@/ui/components/skeleton';
 import { useControllableState } from '@/ui/utils';
+import { FieldLabel } from '@/ui/components/field-label';
 
 export interface RangeFieldProps {
   className?: string;
@@ -61,20 +61,15 @@ export const RangeField: React.FC<RangeFieldProps> = ({
       $disabled={disabled}
       onPointerLeave={onPointerLeave}
     >
-      {label && skeleton && (
-        <RangeFieldLabel>
-          <Skeleton width={100} />
-        </RangeFieldLabel>
-      )}
-      {typeof label === 'string' && !skeleton && (
-        <RangeFieldLabel
-          onPointerEnter={handleTooltipMouseEnter}
-          onPointerLeave={handleTooltipMouseLeave}
-        >
-          {label}
-        </RangeFieldLabel>
-      )}
-      {typeof label !== 'string' && !skeleton && label}
+      <FieldLabel
+        as={RangeFieldLabel}
+        label={label}
+        skeleton={skeleton}
+        labelProps={{
+          onPointerEnter: handleTooltipMouseEnter,
+          onPointerLeave: handleTooltipMouseLeave,
+        }}
+      />
       {preview && (
         <RangeFieldFormattedValue>{preview(value)}</RangeFieldFormattedValue>
       )}

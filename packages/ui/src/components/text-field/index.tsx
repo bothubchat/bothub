@@ -16,8 +16,8 @@ import { IconProvider, IconProviderProps } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { SearchCircleIcon } from '@/ui/icons/search-circle';
 import { TextFieldType, Variant } from './types';
-import { Skeleton } from '@/ui/components/skeleton';
 import { EyeIcon } from '@/ui/icons/eye';
+import { FieldLabel } from '@/ui/components/field-label';
 
 export type TextFieldValueChangeEventHandler = (value: string) => unknown;
 
@@ -157,15 +157,12 @@ export const TextField: React.FC<TextFieldProps> = ({
       $fullWidth={fullWidth}
       $disabled={disabled}
     >
-      {label && skeleton && (
-        <TextFieldLabel>
-          <Skeleton width={100} />
-        </TextFieldLabel>
-      )}
-      {typeof label === 'string' && !skeleton && (
-        <TextFieldLabel id={labelId}>{label}</TextFieldLabel>
-      )}
-      {typeof label !== 'string' && !skeleton && label}
+      <FieldLabel
+        as={TextFieldLabel}
+        label={label}
+        skeleton={skeleton}
+        labelProps={{ id: labelId }}
+      />
       {!skeleton && (
         <TextFieldBlock
           $error={!!error}

@@ -7,7 +7,7 @@ import {
   TextAreaFieldStyled,
   TextAreaFieldTextArea,
 } from './styled';
-import { Skeleton } from '@/ui/components/skeleton';
+import { FieldLabel } from '@/ui/components/field-label';
 
 export interface TextAreaFieldBlockProps {
   focus: boolean;
@@ -80,15 +80,12 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
       $disabled={disabled}
       className={className}
     >
-      {label && skeleton && (
-        <TextAreaFieldLabel>
-          <Skeleton width={100} />
-        </TextAreaFieldLabel>
-      )}
-      {typeof label === 'string' && !skeleton && (
-        <TextAreaFieldLabel id={labelId}>{label}</TextAreaFieldLabel>
-      )}
-      {typeof label !== 'string' && !skeleton && label}
+      <FieldLabel
+        as={TextAreaFieldLabel}
+        label={label}
+        skeleton={skeleton}
+        labelProps={{ id: labelId }}
+      />
       {!skeleton &&
         (renderTextAreaBlock ? (
           renderTextAreaBlock({
