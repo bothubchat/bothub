@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   HeaderNavDropdownArrow,
@@ -9,7 +9,7 @@ import {
 import { HeaderNavDropdownProvider } from './context';
 import { useHeaderMenu } from '../../menu/context';
 import { useHeader } from '../../context';
-import { useOnClickOutside } from '@/ui/utils';
+import { useDropdownDismiss } from '@/ui/utils';
 
 export interface HeaderNavDropdownProps extends React.PropsWithChildren {
   label: string;
@@ -34,15 +34,7 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({
   // Outside it, the document and the window are listened to only while open.
   const shouldCloseOnOutside = isOpen && !isInMenu;
 
-  useOnClickOutside(dropdownRef, handleClose, shouldCloseOnOutside);
-
-  useEffect(() => {
-    if (!shouldCloseOnOutside) return;
-
-    window.addEventListener('blur', handleClose);
-
-    return () => window.removeEventListener('blur', handleClose);
-  }, [shouldCloseOnOutside, handleClose]);
+  useDropdownDismiss(dropdownRef, handleClose, shouldCloseOnOutside);
 
   const dropdownTransition = useTransition(isOpen, {
     from: {

@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { MultiLevelMenuStyled, MultiLevelMenuWrapper } from './styled';
 import { MultiLevelMenuAccordion } from './multi-level-menu-accordion';
 import { TMenuItem } from './types';
-import { useOnClickOutside } from '@/ui/utils';
+import { useDropdownDismiss } from '@/ui/utils';
 
 interface IMultilevelMenu {
   config?: TMenuItem[];
@@ -18,15 +18,7 @@ export const MultilevelMenu: React.FC<IMultilevelMenu> = ({ config }) => {
   // Listen to the document and the window only while an accordion is open.
   const isAnyAccordionOpen = openAccordion !== null;
 
-  useOnClickOutside(ref, handleCloseAccordion, isAnyAccordionOpen);
-
-  useEffect(() => {
-    if (!isAnyAccordionOpen) return;
-
-    window.addEventListener('blur', handleCloseAccordion);
-
-    return () => window.removeEventListener('blur', handleCloseAccordion);
-  }, [isAnyAccordionOpen, handleCloseAccordion]);
+  useDropdownDismiss(ref, handleCloseAccordion, isAnyAccordionOpen);
 
   const handleAccordionToggle = (index: number) => {
     setOpenAccordion((openAccordion) =>

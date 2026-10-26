@@ -1,5 +1,5 @@
 import { useTransition } from '@react-spring/web';
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, useCallback, useMemo, useRef, useState } from 'react';
 import {
   LangSwitcherButton,
   LangSwitcherIcon,
@@ -13,6 +13,7 @@ import {
   SelectFieldDataItem,
   SelectFieldDataItemComplex,
 } from '../select-field';
+import { useDropdownDismiss } from '@/ui/utils';
 
 export type LangSwitcherProps = {
   region: {
@@ -86,38 +87,10 @@ const LangSwitcherComponent: React.FC<LangSwitcherProps> = ({
   // The document and the window are listened to only while the dropdown is
   // open. A click (not mousedown) is used: options of the inner selects are
   // rendered in a portal, and their click must land before this closes.
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const clickListener = (event: Event) => {
-      const dropdownEl = dropdownRef.current;
-
-      if (dropdownEl && !dropdownEl.contains(event.target as Node)) {
-        handleClose();
-      }
-    };
-
-    const handleScrollEvent = (event: Event) => {
-      const dropdownEl = dropdownRef.current;
-      const scrollTarget = event.target as Element;
-
-      if (dropdownEl && dropdownEl.contains(scrollTarget)) {
-        return;
-      }
-
-      handleClose();
-    };
-
-    document.addEventListener('click', clickListener);
-    window.addEventListener('blur', handleClose);
-    window.addEventListener('scroll', handleScrollEvent, true);
-
-    return () => {
-      document.removeEventListener('click', clickListener);
-      window.removeEventListener('blur', handleClose);
-      window.removeEventListener('scroll', handleScrollEvent, true);
-    };
-  }, [isOpen, handleClose]);
+  useDropdownDismiss(dropdownRef, handleClose, isOpen, {
+    outsideEvent: 'click',
+    closeOnScroll: true,
+  });
 
   const dropdownTransition = useTransition(isOpen, {
     from: {

@@ -1,5 +1,6 @@
 export * from './useCarousel';
 export * from './useOnClickOutside';
+export * from './useDropdownDismiss';
 export * from './useControllableState';
 export * from './useEventCallback';
 export * from './useIsomorphicLayoutEffect';

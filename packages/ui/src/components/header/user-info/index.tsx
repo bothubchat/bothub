@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   HeaderUserInfoArrow,
@@ -12,7 +12,7 @@ import {
 } from './styled';
 import { HeaderUserInfoProvider } from './context';
 import { useHeaderMenu } from '../menu/context';
-import { useOnClickOutside } from '@/ui/utils';
+import { useDropdownDismiss } from '@/ui/utils';
 
 export interface HeaderUserInfoProps extends React.PropsWithChildren {
   avatar: React.ReactNode;
@@ -48,15 +48,7 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
   const handleClose = useCallback(() => setIsOpen(false), []);
 
   // Listen to the document and the window only while the dropdown is open.
-  useOnClickOutside(userRef, handleClose, isOpen);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    window.addEventListener('blur', handleClose);
-
-    return () => window.removeEventListener('blur', handleClose);
-  }, [isOpen, handleClose]);
+  useDropdownDismiss(userRef, handleClose, isOpen);
 
   const userInfoTransition = useTransition(
     isOpen,
