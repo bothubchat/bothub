@@ -29,6 +29,22 @@ describe('Backdrop', () => {
     expect(document.body.style.overflow).toBe('');
   });
 
+  test('keeps the page locked while any backdrop is open, whichever closes first', () => {
+    const { rerender } = customRender(<Backdrop open={false} />);
+
+    rerender(renderBackdrops(true, false));
+    rerender(renderBackdrops(true, true));
+    rerender(renderBackdrops(false, true));
+    expect(document.body.style.overflow).toBe('hidden');
+
+    rerender(renderBackdrops(true, true));
+    rerender(renderBackdrops(true, false));
+    expect(document.body.style.overflow).toBe('hidden');
+
+    rerender(renderBackdrops(false, false));
+    expect(document.body.style.overflow).toBe('');
+  });
+
   test('restores the previous overflow on unmount', () => {
     document.body.style.overflow = 'scroll';
     const { unmount } = customRender(<Backdrop open />);
