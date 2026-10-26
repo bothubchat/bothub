@@ -124,23 +124,24 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
     const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
     const isNativeButton = component === 'button';
 
+    const { onMouseEnter, onMouseLeave } = props;
     const handleMouseEnter = useCallback<
       React.MouseEventHandler<HTMLButtonElement>
     >(
       (event) => {
-        props.onMouseEnter?.(event);
+        onMouseEnter?.(event);
         handleTooltipMouseEnter(event);
       },
-      [props.onMouseEnter, handleTooltipMouseEnter],
+      [onMouseEnter, handleTooltipMouseEnter],
     );
     const handleMouseLeave = useCallback<
       React.MouseEventHandler<HTMLButtonElement>
     >(
       (event) => {
-        props.onMouseLeave?.(event);
+        onMouseLeave?.(event);
         handleTooltipMouseLeave(event);
       },
-      [props.onMouseLeave, handleTooltipMouseLeave],
+      [onMouseLeave, handleTooltipMouseLeave],
     );
     // `disabled` does nothing on a/span/label, so block clicks (and link
     // navigation or label activation) by hand.

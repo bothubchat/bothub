@@ -107,10 +107,13 @@ export const useInput = ({
     // Тот же setState на маунте даёт лишний рендер при первом вводе
     const hasFocus = document.activeElement === textareaEl;
     if (hasFocus !== isFocus) setIsFocus(hasFocus);
+    // isFocus читаем на момент смены disabled, а не следим за ним
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disabled, autoFocus]);
 
   useEffect(() => {
     if (!sendDisabled && sendBlockedCount !== 0) setSendBlockedCount(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sendDisabled]);
 
   const insertNewlineAtCursor = useCallback(() => {

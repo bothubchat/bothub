@@ -27,6 +27,7 @@ export const Bookmark: React.FC<BookmarkProps> = ({
   const isActive = (props.skeleton ? false : props.active) ?? false;
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
+  const { onClick, onClose } = props;
   // A click on the close button must not activate the bookmark as well.
   // It is filtered here instead of stopping propagation, so listeners on
   // the document still get the click.
@@ -36,17 +37,17 @@ export const Bookmark: React.FC<BookmarkProps> = ({
         return;
       }
 
-      props.onClick?.(event);
+      onClick?.(event);
     },
-    [props.onClick],
+    [onClick],
   );
   const handleWheelClick = useCallback(
     (event: React.MouseEvent<HTMLSpanElement>) => {
       if (event.button === 1) {
-        props.onClose?.(event);
+        onClose?.(event);
       }
     },
-    [props.onClose],
+    [onClose],
   );
   return (
     <BookmarkStyled

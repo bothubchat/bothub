@@ -165,7 +165,7 @@ export const useSelectField = <
     scrollParent.addEventListener('scroll', handleClose);
 
     return () => scrollParent.removeEventListener('scroll', handleClose);
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -202,7 +202,7 @@ export const useSelectField = <
       window.removeEventListener('resize', listener);
       window.removeEventListener('orientationchange', listener);
     };
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
   const handleInputClickImpl = (
     native: boolean,

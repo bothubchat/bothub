@@ -145,13 +145,11 @@ export const TextField: React.FC<TextFieldProps> = ({
       fill: theme.tokens.accentContrast,
     }),
   };
-  const getInputType = () => {
+  const inputType = useMemo(() => {
     if (type === 'password') return showPassword ? 'text' : 'password';
     if (type === 'color') return 'text';
     return type;
-  };
-
-  const inputType = useMemo(() => getInputType(), [type, showPassword]);
+  }, [type, showPassword]);
 
   return (
     <TextFieldStyled

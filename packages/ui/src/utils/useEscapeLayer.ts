@@ -33,7 +33,9 @@ const handleKeyUp = (event: KeyboardEvent) => {
 export const useEscapeLayer = (enabled: boolean, onEscape: () => void) => {
   const handleEscape = useEventCallback(onEscape);
   // Taken while rendering: overlays opened in the same commit are ordered
-  // parent first, while their effects run children first
+  // parent first, while their effects run children first. A new order is
+  // taken every time the layer is enabled again.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const order = useMemo(() => ++lastOrder, [enabled]);
 
   useEffect(() => {

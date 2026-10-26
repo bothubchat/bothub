@@ -23,13 +23,14 @@ export const HeaderUserInfoItem: React.FC<HeaderUserInfoItemProps> = ({
   const { setIsMenuOpen } = useHeader();
   const { setIsOpen } = useHeaderUserInfo();
 
+  const { onClick } = props;
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
-      props.onClick?.(event);
+      onClick?.(event);
       setIsOpen(false);
       setIsMenuOpen(false);
     },
-    [props.onClick, setIsOpen, setIsMenuOpen],
+    [onClick, setIsOpen, setIsMenuOpen],
   );
 
   return (

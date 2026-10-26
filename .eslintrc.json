@@ -29,7 +29,8 @@
     "prettier",
     "testing-library",
     "storybook",
-    "@vitest"
+    "@vitest",
+    "react-hooks"
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
@@ -85,6 +86,22 @@
     "testing-library/no-await-sync-queries": "error",
     "testing-library/no-debugging-utils": "warn",
     "testing-library/no-dom-import": "off",
-    "no-continue": "off"
-  }
+    "no-continue": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.stories.tsx"],
+      "rules": {
+        "react-hooks/rules-of-hooks": "off"
+      }
+    },
+    {
+      "files": ["packages/ui/src/components/sidebar/**"],
+      "rules": {
+        "react-hooks/rules-of-hooks": "warn"
+      }
+    }
+  ]
 }

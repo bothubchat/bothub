@@ -260,10 +260,12 @@ export const useVoice = ({
     };
   }, [stopVoiceRecording, revokeOwnVoiceUrl]);
 
+  // Только при новых файлах: новый колбэк родителя — не повод звать его снова
   useEffect(() => {
     if (!isControlled) {
       onVoiceFilesChange?.(innerVoiceFiles);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [innerVoiceFiles]);
 
   return {

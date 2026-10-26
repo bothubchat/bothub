@@ -44,6 +44,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
 
   // The pointer position goes to CSS variables instead of state, so moving
   // the mouse does not rerender the card.
+  const { onMouseMove, onMouseLeave } = props;
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       const card = event.currentTarget;
@@ -52,18 +53,18 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
       card.style.setProperty(HOVER_X, `${event.clientX - left}px`);
       card.style.setProperty(HOVER_Y, `${event.clientY - top}px`);
 
-      props.onMouseMove?.(event);
+      onMouseMove?.(event);
     },
-    [props.onMouseMove],
+    [onMouseMove],
   );
   const handleMouseLeave = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       event.currentTarget.style.removeProperty(HOVER_X);
       event.currentTarget.style.removeProperty(HOVER_Y);
 
-      props.onMouseLeave?.(event);
+      onMouseLeave?.(event);
     },
-    [props.onMouseLeave],
+    [onMouseLeave],
   );
 
   return (

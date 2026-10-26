@@ -30,12 +30,13 @@ export const HeaderNavDropdownItem: React.FC<HeaderNavDropdownItemProps> = ({
 }) => {
   const { setIsOpen } = useHeaderNavDropdown();
 
+  const { onClick } = props;
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
-      props.onClick?.(event);
+      onClick?.(event);
       setIsOpen(false);
     },
-    [props.onClick, setIsOpen],
+    [onClick, setIsOpen],
   );
 
   return (

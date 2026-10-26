@@ -194,6 +194,7 @@ export const DatepickerCalendar = ({
   const valueKey = getValueKey(value);
   useEffect(() => {
     setCalendarDate(getDefaultCalendarDate(value));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [valueKey]);
 
   const handleClose = useEventCallback(closeFn);

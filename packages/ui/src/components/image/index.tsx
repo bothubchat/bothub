@@ -112,12 +112,13 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
       }
     }, [srcKey]);
 
+    const { onLoad } = props;
     const handleLoad = useCallback<React.ReactEventHandler<HTMLImageElement>>(
       (event) => {
         setIsLoading(false);
-        props.onLoad?.(event);
+        onLoad?.(event);
       },
-      [props.onLoad],
+      [onLoad],
     );
 
     const pictureImgSrc =
