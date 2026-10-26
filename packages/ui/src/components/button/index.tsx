@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useMemo } from 'react';
+import React, { forwardRef, memo, useCallback, useMemo } from 'react';
 import { ButtonStyled, ButtonText } from './styled';
 import { useTheme } from '@/ui/theme';
 import { IconProvider, isIconComponent } from '@/ui/components/icon';
@@ -38,7 +38,9 @@ export type ButtonProps = Omit<
 
 const skeletonOpacity: [number, number] = [0.15, 0.45];
 
-export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
+// Memoized: a button whose props did not change is not rendered again with
+// its parent, styled-components evaluating its styles is most of its cost.
+const ButtonBase = forwardRef<HTMLButtonElement | null, ButtonProps>(
   (
     {
       children,
@@ -184,56 +186,43 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {startIcon ? (
-          <IconProvider
-            size={iconSize}
-            fill={iconFill}
-          >
-            {startIcon}
-          </IconProvider>
-        ) : null}
-        {!skeleton && (
-          <IconProvider
-            size={iconSize}
-            fill={iconFill}
-          >
-            {variant === 'help' && <InfoIcon />}
-            {variant !== 'help' && (
-              <>
-                {typeof children === 'string' && (
-                  <ButtonText
-                    $variant={variant}
-                    $size={size}
-                    $disabled={disabled}
-                  >
-                    {children}
-                  </ButtonText>
-                )}
-                {typeof children !== 'string' && children}
-              </>
-            )}
-          </IconProvider>
-        )}
-        {skeleton && (
-          <Skeleton
-            width={70}
-            height={17.5}
-            colors={skeletonColors}
-            opacity={skeletonOpacity}
-          />
-        )}
-        {endIcon ? (
-          <IconProvider
-            size={iconSize}
-            fill={iconFill}
-          >
-            {endIcon}
-          </IconProvider>
-        ) : null}
+        {/* One provider for the icons and the content: the skeleton
+            does not read it */}
+        <IconProvider
+          size={iconSize}
+          fill={iconFill}
+        >
+          {startIcon || null}
+          {!skeleton && variant === 'help' && <InfoIcon />}
+          {!skeleton &&
+            variant !== 'help' &&
+            (typeof children === 'string' ? (
+              <ButtonText
+                $variant={variant}
+                $size={size}
+                $disabled={disabled}
+              >
+                {children}
+              </ButtonText>
+            ) : (
+              children
+            ))}
+          {skeleton && (
+            <Skeleton
+              width={70}
+              height={17.5}
+              colors={skeletonColors}
+              opacity={skeletonOpacity}
+            />
+          )}
+          {endIcon || null}
+        </IconProvider>
       </ButtonStyled>
     );
   },
 );
+
+export const Button = memo(ButtonBase);
 
 export * from './types';
 export * from './styled';

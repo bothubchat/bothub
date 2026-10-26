@@ -2,6 +2,7 @@ import { css, keyframes, styled } from 'styled-components';
 import React from 'react';
 import { ButtonCorner, ButtonSize, ButtonVariant } from './types';
 import { ThemeMode, themeVar } from '@/ui/theme';
+import { cachedStyles } from '@/ui/utils/styles/cachedStyles';
 
 type Keyframes = ReturnType<typeof keyframes>;
 
@@ -75,17 +76,7 @@ export interface ButtonStyledProps {
 
 // `$color` goes through a CSS custom property, so arbitrary colors share one
 // generated class instead of adding a rule per color.
-export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
-  ({ $color, style }) =>
-    $color
-      ? {
-          style: {
-            ...style,
-            [buttonColorProperty]: $color,
-          } as React.CSSProperties,
-        }
-      : {},
-)`
+const buttonRules = css<ButtonStyledProps>`
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -408,13 +399,45 @@ export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
               transform 0.3s ease-out;
 `;
 
+// Buttons are many and re-render with their parents: their styles are built
+// once per theme and combination of props, then only looked up.
+const getButtonStyles = cachedStyles<ButtonStyledProps>(buttonRules, (props) =>
+  [
+    props.$variant,
+    props.$size,
+    props.$corner,
+    props.$icon,
+    props.$fullWidth,
+    props.$skeleton,
+    props.$disabled,
+    props.$disableHoverColor,
+    props.$mode,
+    props.$color ? 'color' : '',
+    props.$iconFill ?? '',
+  ].join('|'),
+);
+
+export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
+  ({ $color, style }) =>
+    $color
+      ? {
+          style: {
+            ...style,
+            [buttonColorProperty]: $color,
+          } as React.CSSProperties,
+        }
+      : {},
+)`
+  ${getButtonStyles}
+`;
+
 export interface ButtonTextProps {
   $variant: ButtonVariant;
   $size: ButtonSize;
   $disabled: boolean;
 }
 
-export const ButtonText = styled.span<ButtonTextProps>`
+const buttonTextRules = css<ButtonTextProps>`
   display: inline-flex;
   width: auto;
   font-weight: 500;
@@ -446,4 +469,10 @@ export const ButtonText = styled.span<ButtonTextProps>`
         `;
     }
   }}
+`;
+
+export const ButtonText = styled.span<ButtonTextProps>`
+  ${cachedStyles<ButtonTextProps>(buttonTextRules, (props) =>
+    [props.$variant, props.$size, props.$disabled].join('|'),
+  )}
 `;
