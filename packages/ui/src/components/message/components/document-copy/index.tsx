@@ -1,4 +1,4 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import {
   MessageDocumentContentBlock,
@@ -6,6 +6,7 @@ import {
   MessageDocumentCopyButton,
 } from './styled';
 import { processSelection } from '@/ui/utils';
+import { useCopiedState } from '@/ui/utils/useCopiedState';
 
 interface GeneratedDocumentBlockProps {
   code: string;
@@ -25,10 +26,7 @@ const GeneratedDocumentBlockComponent = ({
   isTg,
 }: GeneratedDocumentBlockProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
-  const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const [copied, setCopied] = useState(false);
-
-  useEffect(() => () => clearTimeout(copiedTimeoutRef.current), []);
+  const { copied, markCopied } = useCopiedState(2000);
 
   const handleCopy = async () => {
     if (!contentRef.current) return;
@@ -52,9 +50,7 @@ const GeneratedDocumentBlockComponent = ({
 
       await navigator.clipboard.write([new ClipboardItem(clipboardItems)]);
 
-      setCopied(true);
-      clearTimeout(copiedTimeoutRef.current);
-      copiedTimeoutRef.current = setTimeout(() => setCopied(false), 2000);
+      markCopied();
     } catch (err) {
       navigator.clipboard
         .writeText(contentRef.current.innerText)

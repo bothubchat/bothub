@@ -5,6 +5,7 @@ export * from './useEventCallback';
 export * from './useIsomorphicLayoutEffect';
 export * from './useEscapeLayer';
 export * from './useDelayedVisible';
+export * from './useCopiedState';
 export * from './useMeasure';
 export * from './getTgMarkdown';
 export * from './getSupportedAudioMimeType';

@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
+import { useCopiedState } from '@/ui/utils/useCopiedState';
 import {
   ReferralCardLinkCopyIcon,
   ReferralCardLinkStyled,
@@ -26,11 +27,9 @@ export const ReferralCardLink: React.FC<ReferralCardLinkProps> = ({
 }) => {
   const theme = useTheme();
 
-  const [isCopied, setIsCopied] = useState(false);
+  const { copied: isCopied, markCopied, resetCopied } = useCopiedState();
 
-  const handleBlur = useCallback(() => {
-    setIsCopied(false);
-  }, []);
+  const handleBlur = resetCopied;
 
   const handleClick = useCallback(() => {
     if (isCopied) {
@@ -38,8 +37,8 @@ export const ReferralCardLink: React.FC<ReferralCardLinkProps> = ({
     }
 
     onCopy?.(children);
-    setIsCopied(true);
-  }, [isCopied, children, onCopy]);
+    markCopied();
+  }, [isCopied, children, onCopy, markCopied]);
 
   return (
     <IconProvider
