@@ -16,6 +16,7 @@ import { PauseButtonIcon } from '@/ui/icons/pause-button';
 import { PlayButtonIcon } from '@/ui/icons/play-button';
 import { MessageVideoVolume } from './volume';
 import { DownloadImgIcon } from '@/ui/icons';
+import { useMediaPlayback } from '../use-media-playback';
 
 export type MessageVideoProps = {
   src: string;
@@ -88,26 +89,17 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
   refreshSrc,
   downloadVideo,
 }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const timeLineRef = useRef<HTMLDivElement | null>(null);
   // Progress (0..1) goes straight to a CSS variable on the timeline:
   // timeupdate and scrubbing don't re-render the player.
   const progressRef = useRef(0);
   const currentTimeTextRef = useRef('00:00');
   const isScrubbingRef = useRef(false);
-  // The user asked to play: a load error should refresh the src.
-  const playRequestedRef = useRef(false);
-  // Playback should resume once the refreshed src arrives.
-  const resumeOnSrcChangeRef = useRef(false);
-  const [videoPlayed, setVideoPlayed] = useState(false);
   const [videoCurrentTime, setVideoCurrentTime] = useState('00:00');
   const [videoDuration, setVideoDuration] = useState('00:00');
   const [videoFullScreen, setVideoFullScreen] = useState(false);
-  const [internalLoading, setInternalLoading] = useState(true);
   const videoContainer = useRef<HTMLDivElement>(null);
   const iconSize = videoFullScreen ? 28 : 24;
-
-  const isLoading = internalLoading || externalLoading;
 
   const setProgress = useCallback((progress: number) => {
     progressRef.current = progress;
@@ -131,75 +123,42 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
     }
   }, []);
 
-  const markReady = useCallback((video: HTMLVideoElement) => {
-    if (Number.isFinite(video.duration) && video.duration > 0) {
-      setVideoDuration(formatTime(video.duration));
-    }
-    setInternalLoading(false);
-  }, []);
+  const {
+    mediaRef: videoRef,
+    isPlayed: videoPlayed,
+    setIsPlayed: setVideoPlayed,
+    isLoading,
+    setInternalLoading,
+    handleStart,
+    handlePause,
+    handleError,
+  } = useMediaPlayback<HTMLVideoElement>({
+    src,
+    externalLoading,
+    checkAlive,
+    refreshSrc,
+    onReset: () => {
+      setCurrentTimeText('00:00');
+      setVideoDuration('00:00');
+      setProgress(0);
+    },
+    // Safari sometimes already has the metadata when the src changes
+    onLoad: (video) => {
+      if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+        markReady(video);
+      }
+    },
+  });
 
-  const play = useCallback(() => {
-    const video = videoRef.current;
-
-    if (!video) {
-      return;
-    }
-
-    video.play().catch(() => {
-      // Autoplay policy or an interrupted play; load errors are handled in onError.
-      setVideoPlayed(!video.paused);
-    });
-  }, []);
-
-  const refresh = useCallback(() => {
-    if (!refreshSrc) {
-      return;
-    }
-
-    resumeOnSrcChangeRef.current = true;
-    refreshSrc();
-  }, [refreshSrc]);
-
-  const handleStart = useCallback(() => {
-    const video = videoRef.current;
-
-    if (!video || isLoading) return;
-
-    if (video.error) {
-      refresh();
-      return;
-    }
-
-    playRequestedRef.current = true;
-    // play() must be called synchronously in the click handler, otherwise
-    // Safari loses the user gesture and blocks playback.
-    play();
-
-    checkAlive?.()
-      .then((isAlive) => {
-        if (!isAlive) {
-          videoRef.current?.pause();
-          refresh();
-        }
-      })
-      .catch(() => {});
-  }, [checkAlive, isLoading, play, refresh]);
-
-  const handlePause = useCallback(() => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-    }
-  }, []);
-
-  const handleError = useCallback(() => {
-    setInternalLoading(false);
-    setVideoPlayed(false);
-
-    if (playRequestedRef.current) {
-      playRequestedRef.current = false;
-      refresh();
-    }
-  }, [refresh]);
+  const markReady = useCallback(
+    (video: HTMLMediaElement) => {
+      if (Number.isFinite(video.duration) && video.duration > 0) {
+        setVideoDuration(formatTime(video.duration));
+      }
+      setInternalLoading(false);
+    },
+    [setInternalLoading],
+  );
 
   const handleTimeUpdate = useCallback(
     (e: React.SyntheticEvent<HTMLVideoElement>) => {
@@ -243,7 +202,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
       setProgress(progress);
       video.currentTime = progress * duration;
     },
-    [setProgress],
+    [setProgress, videoRef],
   );
 
   const handleTimeUpdateClick = useCallback(
@@ -285,37 +244,16 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
     }
   }, []);
 
-  const handleChangeVolume = useCallback((volume: number) => {
-    if (videoRef.current) {
-      const newVolume = Math.floor(volume) / 100;
-      videoRef.current.volume = newVolume;
-      videoRef.current.muted = newVolume === 0;
-    }
-  }, []);
-
-  useEffect(() => {
-    setVideoPlayed(false);
-    setCurrentTimeText('00:00');
-    setVideoDuration('00:00');
-    setProgress(0);
-    setInternalLoading(true);
-    playRequestedRef.current = false;
-
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.load();
-
-    // Safari иногда уже имеет metadata к моменту смены src.
-    if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
-      markReady(video);
-    }
-
-    if (resumeOnSrcChangeRef.current) {
-      resumeOnSrcChangeRef.current = false;
-      play();
-    }
-  }, [src, markReady, play, setCurrentTimeText, setProgress]);
+  const handleChangeVolume = useCallback(
+    (volume: number) => {
+      if (videoRef.current) {
+        const newVolume = Math.floor(volume) / 100;
+        videoRef.current.volume = newVolume;
+        videoRef.current.muted = newVolume === 0;
+      }
+    },
+    [videoRef],
+  );
 
   useEffect(() => {
     const handleDocumentFullscreenChange = () => {

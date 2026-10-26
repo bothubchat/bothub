@@ -21,11 +21,8 @@ import { formatSeconds } from '@/ui/utils';
 import { MusicNoteIcon } from '@/ui/icons/music-note';
 import { PlayButtonIcon } from '@/ui/icons/play-button';
 import { PauseButtonIcon } from '@/ui/icons/pause-button';
-import {
-  notifyExclusivePlayback,
-  registerExclusivePlayback,
-} from '@/ui/utils/audio/exclusivePlayback';
 import { useMessage } from '../context';
+import { useMediaPlayback } from '../use-media-playback';
 
 export interface MessageMusicProps extends React.ComponentProps<'div'> {
   src: string;
@@ -48,125 +45,40 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
   const theme = useTheme();
   const { variant } = useMessage();
 
-  const audioRef = useRef<HTMLAudioElement>(null);
   const isSeekingRef = useRef(false);
-  // The user asked to play: a load error should refresh the src.
-  const playRequestedRef = useRef(false);
-  // Playback should resume once the refreshed src arrives.
-  const resumeOnSrcChangeRef = useRef(false);
 
-  const [internalLoading, setInternalLoading] = useState(true);
-  const [isPlayed, setIsPlayed] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [coverError, setCoverError] = useState(false);
 
-  const isLoading = internalLoading || externalLoading;
+  const {
+    mediaRef: audioRef,
+    isPlayed,
+    setIsPlayed,
+    isLoading,
+    setInternalLoading,
+    handleStart,
+    handlePause,
+    handleError,
+  } = useMediaPlayback<HTMLAudioElement>({
+    src,
+    externalLoading,
+    exclusive: true,
+    checkAlive,
+    refreshSrc,
+    onReset: () => {
+      setCurrentTime(0);
+      setDuration(0);
+      setCoverError(false);
+    },
+  });
+
   const hasCover = Boolean(coverSrc) && !coverError;
   const showSkeleton = isLoading && duration <= 0;
-
-  // One shared window listener for all players: only one plays at a time.
-  useEffect(() => {
-    const audioEl = audioRef.current;
-
-    if (!audioEl) {
-      return;
-    }
-
-    return registerExclusivePlayback(audioEl);
-  }, []);
-
-  const play = useCallback(() => {
-    const audioEl = audioRef.current;
-
-    if (!audioEl) {
-      return;
-    }
-
-    notifyExclusivePlayback(audioEl);
-
-    audioEl.play().catch(() => {
-      // Autoplay policy or an interrupted play; load errors are handled in onError.
-      setIsPlayed(!audioEl.paused);
-    });
-  }, []);
-
-  const refresh = useCallback(() => {
-    if (!refreshSrc) {
-      return;
-    }
-
-    resumeOnSrcChangeRef.current = true;
-    refreshSrc();
-  }, [refreshSrc]);
-
-  useEffect(() => {
-    setIsPlayed(false);
-    setCurrentTime(0);
-    setDuration(0);
-    setInternalLoading(true);
-    setCoverError(false);
-    playRequestedRef.current = false;
-
-    const audioEl = audioRef.current;
-
-    if (!audioEl) {
-      return;
-    }
-
-    audioEl.load();
-
-    if (resumeOnSrcChangeRef.current) {
-      resumeOnSrcChangeRef.current = false;
-      play();
-    }
-  }, [src, play]);
 
   useEffect(() => {
     setCoverError(false);
   }, [coverSrc]);
-
-  const handleStart = useCallback(() => {
-    const audioEl = audioRef.current;
-
-    if (!audioEl || isLoading) return;
-
-    if (audioEl.error) {
-      refresh();
-      return;
-    }
-
-    playRequestedRef.current = true;
-    // play() must be called synchronously in the click handler, otherwise
-    // Safari loses the user gesture and blocks playback.
-    play();
-
-    checkAlive?.()
-      .then((isAlive) => {
-        if (!isAlive) {
-          audioRef.current?.pause();
-          refresh();
-        }
-      })
-      .catch(() => {});
-  }, [checkAlive, isLoading, play, refresh]);
-
-  // Without it a broken src kept the skeleton forever.
-  const handleError = useCallback(() => {
-    setInternalLoading(false);
-    setIsPlayed(false);
-
-    if (playRequestedRef.current) {
-      playRequestedRef.current = false;
-      refresh();
-    }
-  }, [refresh]);
-
-  const handlePause = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-  }, []);
 
   const handleToggle = useCallback(() => {
     if (!audioRef.current || isLoading) return;
@@ -176,7 +88,7 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
     } else {
       handlePause();
     }
-  }, [isPlayed, isLoading, handleStart, handlePause]);
+  }, [isPlayed, isLoading, handleStart, handlePause, audioRef]);
 
   const seekTo = useCallback(
     (time: number) => {
@@ -190,18 +102,21 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
       audioEl.currentTime = nextTime;
       setCurrentTime(nextTime);
     },
-    [duration, isLoading],
+    [duration, isLoading, audioRef],
   );
 
-  const handleSliderChange = useCallback((value: number | number[]) => {
-    const next = typeof value === 'number' ? value : value[0];
-    isSeekingRef.current = true;
-    setCurrentTime(next);
+  const handleSliderChange = useCallback(
+    (value: number | number[]) => {
+      const next = typeof value === 'number' ? value : value[0];
+      isSeekingRef.current = true;
+      setCurrentTime(next);
 
-    if (audioRef.current) {
-      audioRef.current.currentTime = next;
-    }
-  }, []);
+      if (audioRef.current) {
+        audioRef.current.currentTime = next;
+      }
+    },
+    [audioRef],
+  );
 
   const handleSliderChangeComplete = useCallback(
     (value: number | number[]) => {
@@ -215,18 +130,18 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
   const handleTimeUpdate = useCallback(() => {
     if (isSeekingRef.current || !audioRef.current) return;
     setCurrentTime(audioRef.current.currentTime);
-  }, []);
+  }, [audioRef]);
 
   const handleLoadedMetadata = useCallback(() => {
     if (!audioRef.current) return;
     setDuration(audioRef.current.duration || 0);
     setInternalLoading(false);
-  }, []);
+  }, [audioRef, setInternalLoading]);
 
   const handleEnded = useCallback(() => {
     setCurrentTime(0);
     setIsPlayed(false);
-  }, []);
+  }, [setIsPlayed]);
 
   const iconFill =
     variant === 'assistant'

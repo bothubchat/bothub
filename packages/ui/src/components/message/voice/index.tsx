@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from 'react';
+import React, { memo, useCallback, useId, useRef, useState } from 'react';
 import {
   MessageVoiceAudio,
   MessageVoiceDurationText,
@@ -24,11 +17,8 @@ import {
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { isBright, formatSeconds } from '@/ui/utils';
-import {
-  notifyExclusivePlayback,
-  registerExclusivePlayback,
-} from '@/ui/utils/audio/exclusivePlayback';
 import { useMessage } from '../context';
+import { useMediaPlayback } from '../use-media-playback';
 
 export type MessageVoiceVariant = 'input' | 'message';
 
@@ -100,16 +90,8 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   const voiceId = useId();
   const { color } = useMessage();
 
-  const audioRef = useRef<HTMLAudioElement>(null);
   const wavesRef = useRef<SVGSVGElement>(null);
 
-  // The user asked to play: a load error should refresh the src.
-  const playRequestedRef = useRef(false);
-  // Playback should resume once the refreshed src arrives.
-  const resumeOnSrcChangeRef = useRef(false);
-
-  const [internalLoading, setInternalLoading] = useState<boolean>(true);
-  const [isPlayed, setIsPlayed] = useState(false);
   const [isTextShowed, setIsTextShowed] = useState(false);
   // Whole seconds: the label shows nothing finer, so timeupdate re-renders
   // the player once per second. Progress goes straight to a CSS variable.
@@ -129,106 +111,27 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
     wavesRef.current?.style.setProperty('--voice-progress', String(progress));
   }, []);
 
-  // Buffering only affects the cursor: play() waits for data by itself, and
-  // iOS Safari does not buffer media until playback is requested.
-  const isLoading = internalLoading || externalLoading;
-
-  // One shared window listener for all players: only one plays at a time.
-  useEffect(() => {
-    const audioEl = audioRef.current;
-
-    if (!audioEl) {
-      return;
-    }
-
-    return registerExclusivePlayback(audioEl);
-  }, []);
-
-  const play = useCallback(() => {
-    const audioEl = audioRef.current;
-
-    if (!audioEl) {
-      return;
-    }
-
-    notifyExclusivePlayback(audioEl);
-
-    audioEl.play().catch(() => {
-      // Autoplay policy or an interrupted play; load errors are handled in onError.
-      setIsPlayed(!audioEl.paused);
-    });
-  }, []);
-
-  const refresh = useCallback(() => {
-    if (!refreshSrc) {
-      return;
-    }
-
-    resumeOnSrcChangeRef.current = true;
-    refreshSrc();
-  }, [refreshSrc]);
-
-  useEffect(() => {
-    setIsPlayed(false);
-    setCurrentTime(null);
-    setProgress(0);
-    setInternalLoading(true);
-    playRequestedRef.current = false;
-
-    const audioEl = audioRef.current;
-
-    if (!audioEl) {
-      return;
-    }
-
-    audioEl.load();
-
-    if (resumeOnSrcChangeRef.current) {
-      resumeOnSrcChangeRef.current = false;
-      play();
-    }
-  }, [src, play, setProgress, setCurrentTime]);
-
-  const handleStart = useCallback(() => {
-    const audioEl = audioRef.current;
-
-    if (!audioEl || externalLoading) return;
-
-    if (audioEl.error) {
-      refresh();
-      return;
-    }
-
-    playRequestedRef.current = true;
-    // play() must be called synchronously in the click handler, otherwise
-    // Safari loses the user gesture and blocks playback.
-    play();
-
-    checkAlive?.()
-      .then((isAlive) => {
-        if (!isAlive) {
-          audioRef.current?.pause();
-          refresh();
-        }
-      })
-      .catch(() => {});
-  }, [checkAlive, externalLoading, play, refresh]);
-
-  const handleError = useCallback(() => {
-    setInternalLoading(false);
-    setIsPlayed(false);
-
-    if (playRequestedRef.current) {
-      playRequestedRef.current = false;
-      refresh();
-    }
-  }, [refresh]);
-
-  const handlePause = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-  }, []);
+  const {
+    mediaRef: audioRef,
+    isPlayed,
+    setIsPlayed,
+    isLoading,
+    setInternalLoading,
+    handleStart,
+    handlePause,
+    handleError,
+  } = useMediaPlayback<HTMLAudioElement>({
+    src,
+    externalLoading,
+    waitForData: false,
+    exclusive: true,
+    checkAlive,
+    refreshSrc,
+    onReset: () => {
+      setCurrentTime(null);
+      setProgress(0);
+    },
+  });
 
   const handleToggle = useCallback(() => {
     if (!isPlayed) {
@@ -247,7 +150,7 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
 
     setProgress(getProgress(audioEl.currentTime, duration));
     setCurrentTime(Math.floor(audioEl.currentTime));
-  }, [duration, setProgress, setCurrentTime]);
+  }, [audioRef, duration, setProgress, setCurrentTime]);
 
   const handleWavesClick = useCallback<React.MouseEventHandler>(
     (event) => {
@@ -273,14 +176,14 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
         handleStart();
       }
     },
-    [duration, isPlayed, externalLoading, handleStart],
+    [audioRef, duration, isPlayed, externalLoading, handleStart],
   );
 
   const handleEnded = useCallback(() => {
     setCurrentTime(null);
     setProgress(0);
     setIsPlayed(false);
-  }, [setProgress, setCurrentTime]);
+  }, [setIsPlayed, setProgress, setCurrentTime]);
 
   const handleTextToggle = useCallback<React.MouseEventHandler>(
     (event) => {
