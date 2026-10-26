@@ -1,6 +1,6 @@
 import { Icon, icon } from '@/ui/components/icon';
 
-export const DallEIcon = icon(({ ...props }) => (
+export const DallEIcon = icon((props) => (
   <Icon
     size={24}
     viewBox="0 0 24 24"

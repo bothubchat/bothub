@@ -1,6 +1,6 @@
 import { Icon, icon } from '@/ui/components/icon';
 
-export const ClaudeBlackIcon = icon(({ ...props }) => (
+export const ClaudeBlackIcon = icon((props) => (
   <Icon
     size={18}
     viewBox="0 0 18 18"

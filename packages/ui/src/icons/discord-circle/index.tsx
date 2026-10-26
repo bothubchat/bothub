@@ -1,7 +1,7 @@
 import { useId } from 'react';
 import { icon, Icon } from '@/ui/components/icon';
 
-export const DiscordCircleIcon = icon(({ ...props }) => {
+export const DiscordCircleIcon = icon((props) => {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   return (
     <Icon

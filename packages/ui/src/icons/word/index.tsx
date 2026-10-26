@@ -1,7 +1,7 @@
 import { useId } from 'react';
 import { Icon, icon } from '@/ui/components/icon';
 
-export const WordIcon = icon(({ ...props }) => {
+export const WordIcon = icon((props) => {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   return (
     <Icon

@@ -2,7 +2,7 @@ import { useId } from 'react';
 import { Icon, icon } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
-export const InfoBigIcon = icon(({ ...props }) => {
+export const InfoBigIcon = icon((props) => {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
 

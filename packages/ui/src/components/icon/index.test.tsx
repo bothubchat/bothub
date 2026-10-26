@@ -3,6 +3,8 @@ import { describe, test, expect, afterEach, vi } from 'vitest';
 import { act, cleanup, fireEvent, screen } from '@testing-library/react';
 import { customRender } from '@/ui/tests';
 import { CopyIcon } from '@/ui/icons/copy';
+import { CheckSmallIcon } from '@/ui/icons/check-small';
+import { DeleteChatIcon } from '@/ui/icons/delete-chat';
 import { TooltipProvider } from '@/ui/components/tooltip';
 import { IconProvider, useIconOrNull } from '.';
 
@@ -113,5 +115,61 @@ describe('icon', () => {
     act(() => rerender());
 
     expect(values.size).toBe(1);
+  });
+
+  describe('color', () => {
+    const getColor = (container: HTMLElement) =>
+      container.querySelector('svg')?.style.color;
+
+    test('the parts are drawn with the color of the svg', () => {
+      const { container } = customRender(<CheckSmallIcon />);
+
+      expect(container.querySelector('path')?.getAttribute('fill')).toBe(
+        'currentColor',
+      );
+      expect(getColor(container)).toBe('white');
+    });
+
+    test('fill wins over a provider, a provider over the default', () => {
+      const { container } = customRender(
+        <IconProvider fill="blue">
+          <CheckSmallIcon />
+          <CheckSmallIcon fill="red" />
+        </IconProvider>,
+      );
+      const [provided, own] = container.querySelectorAll('svg');
+
+      expect(provided.style.color).toBe('blue');
+      expect(own.style.color).toBe('red');
+    });
+
+    test('outlined icons follow the provider stroke', () => {
+      const { container } = customRender(
+        <IconProvider
+          fill="blue"
+          stroke="green"
+        >
+          <DeleteChatIcon />
+        </IconProvider>,
+      );
+
+      expect(getColor(container)).toBe('green');
+    });
+
+    test('a color may be a CSS variable', () => {
+      const { container } = customRender(
+        <CheckSmallIcon fill="var(--bothub-colors-base-white)" />,
+      );
+
+      expect(getColor(container)).toBe('var(--bothub-colors-base-white)');
+    });
+
+    test('fill none keeps the parts colored', () => {
+      const { container } = customRender(<CheckSmallIcon fill="none" />);
+      const svg = container.querySelector('svg');
+
+      expect(svg?.getAttribute('fill')).toBe('none');
+      expect(getColor(container)).toBe('white');
+    });
   });
 });

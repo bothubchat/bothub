@@ -2,7 +2,7 @@ import { useId } from 'react';
 import { Icon, icon } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme/hook';
 
-export const DeepSeekIcon = icon(({ ...props }) => {
+export const DeepSeekIcon = icon((props) => {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   const theme = useTheme();
 

@@ -1,7 +1,7 @@
 import { useId } from 'react';
 import { Icon, icon } from '@/ui/components/icon';
 
-export const MjPurpleIcon = icon(({ ...props }) => {
+export const MjPurpleIcon = icon((props) => {
   const uid = useId().replace(/[^a-zA-Z0-9_-]/g, '');
   return (
     <Icon

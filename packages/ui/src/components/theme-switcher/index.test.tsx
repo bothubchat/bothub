@@ -6,8 +6,9 @@ import { ThemeSwitcher, ThemeSwitcherProps } from './index';
 const getItem = (mode: string) =>
   document.querySelector(`[data-test="theme-${mode}"]`)!;
 
+// Icon parts are drawn with currentColor, the color is set on the svg
 const getIconFill = (mode: string) =>
-  getItem(mode).querySelector('path')!.getAttribute('fill');
+  getItem(mode).querySelector('svg')!.style.color;
 
 describe('ThemeSwitcher', () => {
   afterEach(() => {
