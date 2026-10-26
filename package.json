@@ -78,7 +78,7 @@
     "highlight.js": "^11.9.0",
     "husky": "^9.1.7",
     "jsdom": "^26.0.0",
-    "katex": "^0.16.10",
+    "katex": "^0.19.1",
     "lerna": "^8.2.3",
     "lint-staged": "^15.4.3",
     "normalize.css": "^8.0.1",
@@ -115,5 +115,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint"
+  },
+  "resolutions": {
+    "katex": "^0.19.1"
   }
 }

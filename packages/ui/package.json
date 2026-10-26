@@ -55,7 +55,7 @@
     "@react-spring/web": "^10",
     "date-fns": "^3.6.0",
     "highlight.js": "^11.11.0",
-    "katex": "^0.16.10",
+    "katex": "^0.19.1",
     "marked": "^16.2.1",
     "mdast-util-to-markdown": "^2.1.0",
     "rc-slider": "^11.1.8",
