@@ -130,7 +130,10 @@ export function createConfig({
               'babel-plugin-styled-components',
               {
                 ssr: true,
-                displayName: true,
+                // Component names in class names only help debugging: in a
+                // published build they add ~11 KB gzip of JS to the app and
+                // ~3 KB to every prerendered HTML. `yarn dev` keeps them.
+                displayName: process.env.NODE_ENV !== 'production',
               },
             ],
           ],
