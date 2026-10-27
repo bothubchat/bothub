@@ -21,6 +21,10 @@ const resolveRules = (chunks: readonly unknown[], props: object): unknown[] =>
  * Styles of a component rendered many times with a few combinations of
  * props: they are evaluated once per theme and `getKey` result, renders
  * only look them up. `getKey` must cover every prop the rules read.
+ *
+ * In production styled-components hashes only what interpolations return,
+ * and here that is the whole CSS: it pays off for components with many
+ * interpolations (Button), not for those with a few (Typography got slower).
  */
 export const cachedStyles = <Props extends object>(
   rules: RuleSet<Props>,
