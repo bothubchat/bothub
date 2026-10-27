@@ -86,11 +86,18 @@ function rewritePathAlias(
   );
 }
 
+// Both are run by path: each installs a `tsc` binary. TypeScript 6 writes the
+// declarations (TypeScript 7 orders unions and expands some types in them
+// differently), TypeScript 7 checks the types three times faster.
+const tsc6 = path.join('node_modules', 'typescript', 'bin', 'tsc');
+const tsc7 = path.join('node_modules', 'typescript7', 'bin', 'tsc');
+
 async function emitDeclarations(packageName: string): Promise<void> {
   const { packagePath } = getPackagePaths(packageName);
 
   // Types are checked by the separate typecheck task, so the emit skips it.
-  await run('tsc', [
+  await run('node', [
+    tsc6,
     '-p',
     path.join(packagePath, 'tsconfig.build.json'),
     '--noCheck',
@@ -159,7 +166,7 @@ async function build(): Promise<void> {
   await Promise.all([
     run('rollup', rollupArgs),
     ...packageNames.map(emitDeclarations),
-    run('tsc', ['--noEmit', '-p', './tsconfig.json']),
+    run('node', [tsc7, '--noEmit', '-p', './tsconfig.json']),
   ]);
 
   // Rollup clears dist when it starts, so the declarations go in afterwards.

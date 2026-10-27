@@ -17,7 +17,7 @@
     "release": "yarn build && yarn run publish",
     "sb": "storybook dev -p 6006",
     "build:sb": "storybook build",
-    "typecheck": "tsc --noEmit -p ./tsconfig.json",
+    "typecheck": "node ./node_modules/typescript7/bin/tsc --noEmit -p ./tsconfig.json",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "yarn lint --fix",
     "commitlint": "commitlint --edit",
@@ -108,6 +108,7 @@
     "terser": "5.43.1",
     "tsx": "^4.19.2",
     "typescript": "^6.0.3",
+    "typescript7": "npm:typescript@^7.0.2",
     "vite": "^7.0.0",
     "vitest": "^4.1.12",
     "yaml": "2.8.4"
