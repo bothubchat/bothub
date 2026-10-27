@@ -5,7 +5,8 @@
     "emitDeclarationOnly": true,
     "noEmit": false,
     "rootDir": "./src",
-    "outDir": "./.types"
+    "outDir": "./.types",
+    "types": ["vite/client", "node"]
   },
   "include": ["./src"],
   "exclude": [

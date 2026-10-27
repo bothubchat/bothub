@@ -3,7 +3,12 @@
     "target": "ES2015",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["vite/client", "node"],
+    "types": [
+      "vite/client",
+      "node",
+      // matchers like toHaveTextContent in the package tests
+      "@testing-library/jest-dom/vitest"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
