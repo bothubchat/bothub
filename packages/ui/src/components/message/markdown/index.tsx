@@ -102,6 +102,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
             <MarkdownBlocks
               blocks={blocks}
               openCodeStart={openCodeStart}
+              typing={typing}
               remarkPlugins={remarkPlugins}
               rehypePlugins={rehypePlugins}
               remarkRehypeOptions={remarkRehypeOptions}
