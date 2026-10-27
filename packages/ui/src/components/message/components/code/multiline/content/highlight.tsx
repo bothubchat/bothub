@@ -6,12 +6,19 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import hljs from 'highlight.js/lib/common';
+import hljs from 'highlight.js/lib/core';
 import { useIsomorphicLayoutEffect } from '@/ui/utils/useIsomorphicLayoutEffect';
 import { useMessageCodeTyping } from './typing';
+import { HIGHLIGHT_LANGUAGES } from './languages';
 
 hljs.configure({
   ignoreUnescapedHTML: true,
+});
+
+// Регистрация рядом с подсветкой: модуль, который только регистрирует языки,
+// сборщик приложения вправе выбросить (sideEffects в package.json)
+Object.entries(HIGHLIGHT_LANGUAGES).forEach(([name, language]) => {
+  hljs.registerLanguage(name, language);
 });
 
 export interface HighlightProps {

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { describe, test, expect, afterEach, vi } from 'vitest';
 import { act, cleanup, render } from '@testing-library/react';
-import hljs from 'highlight.js/lib/common';
+import hljs from 'highlight.js/lib/core';
 import { TestProvider } from '@/ui/tests';
 import { MessageMultilineCode } from '../index';
 import { Highlight, TYPING_HIGHLIGHT_INTERVAL } from './highlight';
+import { HIGHLIGHT_LANGUAGES } from './languages';
 import { MessageCodeTypingContext } from './typing';
 
 const tsCode =
@@ -210,4 +211,69 @@ describe('Highlight', () => {
     expect(getCode(container).className).toContain('language-json');
     expect(log).not.toHaveBeenCalled();
   });
+});
+
+describe('Highlight languages', () => {
+  afterEach(() => {
+    cleanup();
+    vi.restoreAllMocks();
+  });
+
+  test('loads only the languages of the list', () => {
+    expect(hljs.listLanguages().sort()).toEqual(
+      Object.keys(HIGHLIGHT_LANGUAGES).sort(),
+    );
+  });
+
+  test.each([
+    ['js', 'javascript'],
+    ['jsx', 'javascript'],
+    ['ts', 'typescript'],
+    ['tsx', 'typescript'],
+    ['py', 'python'],
+    ['sh', 'bash'],
+    ['zsh', 'bash'],
+    ['console', 'shell'],
+    ['html', 'xml'],
+    ['svg', 'xml'],
+    ['h', 'c'],
+    ['hpp', 'cpp'],
+    ['cs', 'csharp'],
+    ['golang', 'go'],
+    ['rs', 'rust'],
+    ['rb', 'ruby'],
+    ['kt', 'kotlin'],
+    ['yml', 'yaml'],
+    ['md', 'markdown'],
+    ['docker', 'dockerfile'],
+    ['patch', 'diff'],
+    ['text', 'plaintext'],
+  ])('highlights %s as %s', (alias, language) => {
+    const { container } = render(
+      <Highlight className={`language-${alias}`}>x = 1</Highlight>,
+    );
+
+    expect(getCode(container).className).toBe(
+      `language-${alias} hljs language-${language}`,
+    );
+  });
+
+  test.each(['lua', 'perl', 'not-a-language'])(
+    'shows %s code as plain text',
+    (language) => {
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const code = 'local a = "<b>" -- comment';
+      const { container } = render(
+        <Highlight className={`language-${language}`}>{code}</Highlight>,
+      );
+      const element = getCode(container);
+
+      expect(element.textContent).toBe(code);
+      expect(element.children).toHaveLength(0);
+      expect(element.className).toBe(`language-${language}`);
+      expect(warn).not.toHaveBeenCalled();
+      expect(error).not.toHaveBeenCalled();
+    },
+  );
 });
