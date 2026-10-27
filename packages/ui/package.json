@@ -41,8 +41,7 @@
   },
   "sideEffects": [
     "**/*.css",
-    "**/markdown-plugins.ts",
-    "**/markdown-plugins.js"
+    "**/*.css.js"
   ],
   "peerDependencies": {
     "react": "^19",

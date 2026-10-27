@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import ReactMarkdown, { type Components } from 'react-markdown';
-import { describe, test, expect, afterEach, vi } from 'vitest';
+import { describe, test, expect, afterEach, beforeAll, vi } from 'vitest';
 import { act, cleanup, waitFor } from '@testing-library/react';
 import { createLongAnswer, customRender } from '@/ui/tests';
 import { MessageProvider } from '../context';
 import { MessageMarkdown } from '.';
 import { getMarkdownBlocks } from './blocks';
 import { messageMarkdownComponents } from './markdown-components';
-import { useMarkdownPlugins } from './useMarkdownPlugins';
+import { getMarkdownPlugins } from './useMarkdownPlugins';
+import { loadMath } from './math-loader';
 import { normalizeMessageMarkdown } from './utils';
 
 vi.mock('react-markdown', async (importOriginal) => {
@@ -19,7 +20,7 @@ const markdownRenders = vi.mocked(ReactMarkdown);
 
 // The whole text parsed at once, as before rendering by blocks.
 const SingleDocument = ({ text }: { text: string }) => {
-  const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
+  const { remarkPlugins, rehypePlugins } = getMarkdownPlugins(true);
   return (
     <ReactMarkdown
       remarkPlugins={remarkPlugins}
@@ -47,6 +48,11 @@ const renderMarkdown = (text: string, typing = false) =>
   );
 
 describe('MessageMarkdown', () => {
+  // Formulas render from the first render once their chunk is loaded.
+  beforeAll(async () => {
+    await loadMath();
+  });
+
   afterEach(() => {
     cleanup();
   });

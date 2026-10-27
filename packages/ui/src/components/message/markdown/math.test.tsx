@@ -9,7 +9,7 @@ import katex from 'katex';
 import type { PluggableList } from 'unified';
 import { customRender } from '@/ui/tests';
 import { useTheme } from '@/ui/theme';
-import { rehypeMath } from './markdown-plugins';
+import { rehypeMath } from './math-plugins';
 import { MATH_TAG_NAME, MarkdownMath, renderMath } from './math';
 
 const remarkPlugins: PluggableList = [

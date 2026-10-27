@@ -29,7 +29,8 @@ import { MessageCodeTypingContext } from '@/ui/components/message/components/cod
 import { useMessage } from '@/ui/components/message/context';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
 import { normalizeMessageMarkdown } from './utils';
-import { MATH_TAG_NAME, MarkdownMath } from './math';
+import { MATH_TAG_NAME, getLoadedMath } from './math-loader';
+import type { MarkdownMathProps } from './math';
 
 /*
  * Components passed to react-markdown must keep a stable identity: a new
@@ -104,9 +105,15 @@ const MarkdownImage: Components['img'] = ({ src, alt }) => {
   );
 };
 
+// Math elements come only from the plugins of the loaded formula chunk.
+const MarkdownMathElement = (props: MarkdownMathProps) => {
+  const math = getLoadedMath();
+  return math ? <math.MarkdownMath {...props} /> : props['data-tex'];
+};
+
 // `Components` only knows intrinsic elements, the math element is custom.
 const mathComponents = {
-  [MATH_TAG_NAME]: MarkdownMath,
+  [MATH_TAG_NAME]: MarkdownMathElement,
 } as Components;
 
 export const baseMarkdownComponents: Components = {
@@ -192,11 +199,11 @@ interface MarkdownDocumentProps {
 const MarkdownDocument = memo(
   ({ code, isTg, copyLabel }: MarkdownDocumentProps) => {
     const { typing } = useMessage();
-    const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
     const normalizedCode = useMemo(
       () => normalizeMessageMarkdown(code, { typing }),
       [code, typing],
     );
+    const { remarkPlugins, rehypePlugins } = useMarkdownPlugins(normalizedCode);
 
     return (
       <GeneratedDocumentBlock

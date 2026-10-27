@@ -1,5 +1,5 @@
 import React from 'react';
-import { describe, test, expect, afterEach } from 'vitest';
+import { describe, test, expect, afterEach, beforeAll } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
@@ -13,16 +13,14 @@ import {
   MessageMarkdownComponentsProvider,
   messageMarkdownComponents,
 } from './markdown-components';
-import { useMarkdownPlugins } from './useMarkdownPlugins';
+import { getMarkdownPlugins } from './useMarkdownPlugins';
+import { loadMath } from './math-loader';
 import { normalizeMessageMarkdown } from './utils';
-
-// Plugins without a component around them.
-const getMarkdownPlugins = useMarkdownPlugins;
 
 const remarkRehypeOptions = { clobberPrefix: 'test-' };
 
 const Markdown = ({ blocks }: { blocks: string[] }) => {
-  const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
+  const { remarkPlugins, rehypePlugins } = getMarkdownPlugins(true);
   return (
     <MarkdownBlocks
       blocks={blocks}
@@ -163,6 +161,11 @@ const createRandomDocuments = (count: number, seed: number): string[] => {
 };
 
 describe('splitMarkdownBlocks', () => {
+  // Blocks with formulas render the same as the whole text.
+  beforeAll(async () => {
+    await loadMath();
+  });
+
   afterEach(() => {
     cleanup();
   });
@@ -234,7 +237,7 @@ describe('splitMarkdownBlocks', () => {
 
   // The same check on the syntax tree is much faster than rendering.
   test('builds the same tree for many random documents', () => {
-    const { remarkPlugins, rehypePlugins } = getMarkdownPlugins();
+    const { remarkPlugins, rehypePlugins } = getMarkdownPlugins(true);
     const processor = unified()
       .use(remarkParse)
       .use(remarkPlugins)

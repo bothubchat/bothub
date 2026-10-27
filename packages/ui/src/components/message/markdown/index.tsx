@@ -74,7 +74,10 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
       [typing, lastBlock],
     );
 
-    const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
+    // A text rendered as is never loads the formula chunk.
+    const { remarkPlugins, rehypePlugins } = useMarkdownPlugins(
+      isDisabled ? '' : formattedChildren,
+    );
 
     const markdownComponents = useMemo<Components>(
       () =>

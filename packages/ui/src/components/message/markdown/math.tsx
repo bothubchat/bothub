@@ -2,12 +2,8 @@ import React, { memo } from 'react';
 import katex, { type KatexOptions } from 'katex';
 import { useTheme } from '@/ui/theme';
 
-/**
- * Element emitted by `rehypeMath` in place of every formula. It is rendered by
- * `MarkdownMath`, so KaTeX runs once per formula instead of once per formula
- * on every streamed chunk.
- */
-export const MATH_TAG_NAME = 'katex-math';
+// Part of the formula chunk: only `math-plugins` imports this module.
+export { MATH_TAG_NAME } from './math-loader';
 
 export interface MarkdownMathProps {
   'data-tex'?: string;
