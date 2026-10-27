@@ -2,7 +2,6 @@ import path, { join } from 'path';
 import { defineConfig, ExternalOption, Plugin, RollupOptions } from 'rollup';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import esbuild from 'rollup-plugin-esbuild';
-import postcss from 'rollup-plugin-postcss';
 import image from '@rollup/plugin-image';
 import alias from '@rollup/plugin-alias';
 import { readFileSync } from 'fs';
@@ -23,7 +22,31 @@ export interface CreateConfigOptions {
  * shared tslib helpers), without the type check: types are checked and
  * declarations are emitted by separate tsc runs in scripts/build.ts.
  */
-export function typescriptTranspile(tsconfigPath: string): Plugin {
+export /**
+ * Imported CSS (KaTeX, the highlight.js theme) becomes a module that adds it
+ * to the page with style-inject, as rollup-plugin-postcss did without any
+ * postcss plugins.
+ */
+const cssInject = (): Plugin => ({
+  name: 'css-inject',
+  transform(code, id) {
+    if (!id.endsWith('.css')) {
+      return null;
+    }
+
+    return {
+      code: [
+        "import styleInject from 'style-inject';",
+        `var css = ${JSON.stringify(code)};`,
+        'styleInject(css);',
+        'export default css;',
+      ].join('\n'),
+      map: { mappings: '' },
+    };
+  },
+});
+
+function typescriptTranspile(tsconfigPath: string): Plugin {
   const { config } = ts.readConfigFile(tsconfigPath, ts.sys.readFile);
   const { options } = ts.parseJsonConfigFileContent(
     config,
@@ -141,7 +164,7 @@ export function createConfig({
         image({
           include: ['**/*.png', '**/*.svg', '**/*.webp'],
         }),
-        postcss(),
+        cssInject(),
         terser(),
       ],
       external,
