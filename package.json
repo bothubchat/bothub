@@ -117,6 +117,7 @@
   },
   "resolutions": {
     "katex": "^0.19.1",
-    "vite": "^7.3.7"
+    "vite": "^7.3.7",
+    "postcss-url/minimatch": "^3.1.4"
   }
 }
