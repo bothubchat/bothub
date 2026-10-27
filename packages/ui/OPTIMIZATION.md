@@ -135,8 +135,10 @@
 ## Осталось сделать
 
 ### Зависимости и инструменты
-- [ ] TypeScript 7 (нативный компилятор, проверка типов ~10 с вместо 36): ждать, пока typescript-eslint и другие инструменты перейдут на его API, или подключить отдельно только для `typecheck`
-- [ ] Уязвимости вне текущих диапазонов (нужны мажорные обновления): vitest 4, `@rollup/plugin-terser` (serialize-javascript), simple-git 4, lerna (tar, axios, nx); postcss внутри styled-components зафиксирован ими самими. Всё это инструменты разработки, в пакет не попадает (katex обновлён в `claude/architecture`)
+- [x] TypeScript 7 проверяет типы (`yarn typecheck` и сборка): 12 с вместо 38, те же ошибки. Декларации пишет TypeScript 6 — у 7 в них другой порядок объединений и раскрытые типы; опубликованные `.d.ts` байт в байт прежние. eslint и rollup работают с API TypeScript 6. Оба пакета ставят бинарник `tsc`, поэтому скрипты вызывают их по пути; `npx tsc` теперь TypeScript 7. Сборка — 40 с вместо 50–70
+- [x] Удалена неиспользуемая lerna, vitest 4 (`projects` вместо `workspace`, vite 7 закреплён в `resolutions`: Storybook держит `@vitest/expect` 3, и yarn 1 не мог связать vite 8), simple-git 4, `@rollup/plugin-terser` 1 (сборка байт в байт та же), `yaml` 2.8.4, патч `minimatch` для postcss-url. `yarn audit`: 264 → 19, критических нет
+- [x] `packages/ui/tsconfig.json` видит типы матчеров jest-dom (`toHaveTextContent` в тестах сайдбара): раньше их видела только корневая проверка
+- [ ] Оставшиеся 19 предупреждений аудита — инструменты разработки: typescript-eslint 6 (`minimatch`; v8 требует замены `eslint-config-airbnb-typescript`, он не поддерживает v8 и заброшен), `rollup-plugin-postcss` (svgo, yaml; пакет не развивается), postcss, который закрепили сами styled-components
 - [ ] Предупреждения `exhaustive-deps` в сайдбаре — исправить при переделке
 
 ### Архитектура (отдельные PR)
