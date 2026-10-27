@@ -7,7 +7,6 @@ import {
   fireEvent,
   render,
   screen,
-  waitFor,
 } from '@testing-library/react';
 import { customRender, TestProvider } from '@/ui/tests';
 import { getTgMarkdown } from '@/ui/utils';
@@ -27,7 +26,7 @@ vi.mock('./context', async (importOriginal) => {
 });
 
 class ClipboardItemMock {
-  constructor(readonly items: Record<string, Blob>) {}
+  constructor(readonly items: Record<string, Blob | Promise<Blob>>) {}
 }
 
 class ResizeObserverMock {
@@ -39,12 +38,14 @@ class ResizeObserverMock {
 }
 
 // jsdom's Blob has no text()
-const readCopied = (data: unknown, type = 'text/plain') =>
-  new Promise<string>((resolve) => {
+const readCopied = async (data: unknown, type = 'text/plain') => {
+  const blob = await (data as ClipboardItemMock[])[0].items[type];
+  return new Promise<string>((resolve) => {
     const reader = new FileReader();
     reader.onload = () => resolve(reader.result as string);
-    reader.readAsText((data as ClipboardItemMock[])[0].items[type]);
+    reader.readAsText(blob);
   });
+};
 
 describe('MessageProvider', () => {
   afterEach(() => {
@@ -181,12 +182,29 @@ describe('Message', () => {
     act(() => setProps({ content: 'second **bold**', onCopy: lastOnCopy }));
     fireEvent.click(screen.getByLabelText('Copy'));
 
-    await waitFor(() => expect(lastOnCopy).toHaveBeenCalledTimes(1));
+    // Within the click: Safari does not allow writing after a network wait.
+    expect(lastOnCopy).toHaveBeenCalledTimes(1);
     const [data] = lastOnCopy.mock.calls[0];
     expect(firstOnCopy).not.toHaveBeenCalled();
     expect(await readCopied(data)).toBe('second **bold**');
     expect(await readCopied(data, 'text/html')).toContain(
       '<strong>bold</strong>',
+    );
+  });
+
+  test('builds the rich text HTML synchronously once marked is loaded', async () => {
+    const onCopy = vi.fn();
+    renderMessage('**first**', onCopy);
+
+    fireEvent.click(screen.getByLabelText('Copy'));
+    // Waits for marked if it was not loaded yet.
+    await readCopied(onCopy.mock.calls[0][0], 'text/html');
+
+    fireEvent.click(screen.getByLabelText('Copy'));
+    const [item] = onCopy.mock.calls[1][0] as ClipboardItemMock[];
+    expect(item.items['text/html']).toBeInstanceOf(Blob);
+    expect(await readCopied([item], 'text/html')).toContain(
+      '<strong>first</strong>',
     );
   });
 

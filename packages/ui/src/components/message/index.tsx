@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo, useRef } from 'react';
+import React, { ReactNode, useEffect, useMemo, useRef } from 'react';
 import {
   MessageBlock,
   MessageBlockBottomPanel,
@@ -27,13 +27,7 @@ import {
 import { Loader } from '@/ui/components/loader';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
-import {
-  CLIPBOARD_NORMAL_STYLE,
-  colorToRgba,
-  getTgMarkdown,
-  prepareClipboardHtml,
-  useEventCallback,
-} from '@/ui/utils';
+import { colorToRgba, getTgMarkdown, useEventCallback } from '@/ui/utils';
 import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
@@ -41,6 +35,7 @@ import { MessageBlockScroller } from './block-scroller';
 import { MessageTimestamp } from './timestamp';
 import { MessageActions } from './actions';
 import { MessageVersions } from './versions';
+import { getRichText, preloadRichText } from './rich-text';
 
 export interface MessageProps {
   id?: string;
@@ -102,23 +97,6 @@ export interface MessageProps {
   onPrevVersion?: MessageVersionEventHandler;
   onDownload?: () => void;
 }
-
-const getRichText = async (text: string) => {
-  // marked is needed only here, so it is loaded on the first rich copy.
-  const { marked } = await import('marked');
-  const htmlContent = prepareClipboardHtml(
-    (await marked.parse(text)).replace(
-      /<p>([\s\S]*?)<\/p>/g,
-      `<pre style="${CLIPBOARD_NORMAL_STYLE}font-family:inherit;white-space:pre-wrap;">$1</pre>`,
-    ),
-  );
-
-  const clipboardItem = new ClipboardItem({
-    'text/plain': new Blob([text], { type: 'text/plain' }),
-    'text/html': new Blob([htmlContent], { type: 'text/html' }),
-  });
-  return [clipboardItem];
-};
 
 const getPlainText = (html: HTMLElement) => {
   const clipboardItem = new ClipboardItem({
@@ -221,13 +199,21 @@ const MessageBase: React.FC<MessageProps> = ({
     }
   });
 
-  const handleRichTextCopy = useEventCallback(async () => {
+  // No await before onCopy: the clipboard is written within the click.
+  const handleRichTextCopy = useEventCallback(() => {
     if (content) {
-      return onCopy?.(await getRichText(content));
+      return onCopy?.(getRichText(content));
     }
   });
 
   const handleCodeCopy = useEventCallback(onCodeCopy);
+
+  const canCopy = !disableCopy && !hideActions && !skeleton && !!onCopy;
+  useEffect(() => {
+    if (canCopy) {
+      preloadRichText();
+    }
+  }, [canCopy]);
 
   const color = useMemo(
     () => (colorProp && isSupportedColor(colorProp) ? colorProp : 'default'),
