@@ -9,6 +9,7 @@ import {
   type Mock,
 } from 'vitest';
 import { act, renderHook, waitFor } from '@testing-library/react';
+import { collectGarbage } from '@/ui/tests';
 import { IInputMessageVoiceFile } from './types';
 import { useVoice } from './use-voice';
 
@@ -299,5 +300,25 @@ describe('useVoice', () => {
     unmount();
 
     expect(revokeObjectURL).not.toHaveBeenCalled();
+  });
+
+  test('leaves a deleted parent voice file to the parent until nothing holds it', async () => {
+    const onVoiceFilesChange = vi.fn();
+    const { result, rerender } = renderHook(
+      ({ voiceFiles }) =>
+        useVoice({ initialVoiceFiles: voiceFiles, onVoiceFilesChange }),
+      { initialProps: { voiceFiles: [] as IInputMessageVoiceFile[] } },
+    );
+    await record(result);
+    await waitFor(() => expect(onVoiceFilesChange).toHaveBeenCalled());
+    const [recorded] = onVoiceFilesChange.mock.lastCall?.[0] ?? [];
+    rerender({ voiceFiles: [recorded] });
+
+    // Родитель мог оставить запись себе, например, для повтора отправки
+    act(() => result.current.handleVoiceFileDelete(recorded));
+    expect(revokeObjectURL).not.toHaveBeenCalled();
+
+    collectGarbage(recorded.blob);
+    expect(revokeObjectURL).toHaveBeenCalledWith('blob:recorded');
   });
 });

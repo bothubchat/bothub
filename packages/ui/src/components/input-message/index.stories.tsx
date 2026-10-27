@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useState } from 'react';
-import { InputMessage } from '.';
+import { IInputMessageFile, InputMessage } from '.';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Button } from '../button';
 import { QueueIcon } from '@/ui/icons';
+import photoUrl from '../image-fullscreen/stories/assets/image-4.png';
 
 export type InputMessageMeta = Meta<typeof InputMessage>;
 
@@ -37,6 +38,55 @@ export const VoiceFiles: InputMessageStory = {
       recordedVoice(4, [0.2, 0.5, 0.8, 0.4, 0.6, 0.3, 0.7, 0.2]),
       recordedVoice(9, [0.4, 0.3, 0.6, 0.9, 0.5, 0.2, 0.4, 0.6]),
     ],
+  },
+};
+
+/**
+ * В чипе картинки — уменьшенная копия (54×54), а не полный кадр: его держит
+ * только полноэкранный просмотр по previewUrl. Браузер без createImageBitmap
+ * показывает в чипе само превью
+ */
+export const Files: InputMessageStory = {
+  args: { ...Basic.args, deleteFileAriaLabel: 'Удалить файл' },
+  render: (args) => {
+    const [files, setFiles] = useState<IInputMessageFile[]>([]);
+
+    useEffect(() => {
+      let isActual = true;
+
+      fetch(photoUrl)
+        .then((response) => response.blob())
+        .then((blob) => {
+          if (!isActual) return;
+
+          setFiles([
+            {
+              name: 'photo.png',
+              previewUrl: photoUrl,
+              native: new File([blob], 'photo.png', { type: 'image/png' }),
+            },
+            {
+              name: 'report.pdf',
+              previewUrl: null,
+              native: new File(['pdf'], 'report.pdf', {
+                type: 'application/pdf',
+              }),
+            },
+          ]);
+        });
+
+      return () => {
+        isActual = false;
+      };
+    }, []);
+
+    return (
+      <InputMessage
+        {...args}
+        files={files}
+        onFilesChange={setFiles}
+      />
+    );
   },
 };
 

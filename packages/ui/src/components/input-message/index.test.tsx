@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  onTestFinished,
+  test,
+  vi,
+} from 'vitest';
 import {
   act,
   cleanup,
@@ -7,7 +15,12 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
-import { createClipboardData, customRender, TestProvider } from '@/ui/tests';
+import {
+  collectGarbage,
+  createClipboardData,
+  customRender,
+  TestProvider,
+} from '@/ui/tests';
 import { IInputMessageFile, InputMessage } from '.';
 
 const image = new File(['png'], 'image.png', { type: 'image/png' });
@@ -587,12 +600,14 @@ describe('InputMessage files', () => {
     expect(chipNames()).toEqual(['doc.pdf']);
   });
 
-  test('attaches an image even when its preview cannot be read', async () => {
-    vi.spyOn(FileReader.prototype, 'readAsDataURL').mockImplementation(
-      function fail(this: FileReader) {
-        this.dispatchEvent(new ProgressEvent('error'));
-      },
-    );
+  test('attaches an image even when its preview cannot be created', async () => {
+    const { createObjectURL } = URL;
+    URL.createObjectURL = () => {
+      throw new Error('SecurityError');
+    };
+    onTestFinished(() => {
+      URL.createObjectURL = createObjectURL;
+    });
     const onFilesChange = vi.fn();
     customRender(
       <InputMessage
@@ -602,7 +617,10 @@ describe('InputMessage files', () => {
       />,
     );
 
-    drop(screen.getByPlaceholderText('Сообщение'), [image]);
+    // Свежий файл: у общего image превью уже могло появиться в других тестах
+    drop(screen.getByPlaceholderText('Сообщение'), [
+      new File(['png'], 'image.png', { type: 'image/png' }),
+    ]);
 
     await waitFor(() =>
       expect(onFilesChange).toHaveBeenCalledWith([
@@ -628,6 +646,230 @@ describe('InputMessage files', () => {
     );
 
     expect(onFilesChange).not.toHaveBeenCalled();
+  });
+});
+
+describe('InputMessage image previews', () => {
+  const { createObjectURL, revokeObjectURL } = URL;
+  let createdUrls: string[] = [];
+
+  beforeEach(() => {
+    createdUrls = [];
+    // Предсказуемые objectURL, чтобы проверить, какой освобождён
+    URL.createObjectURL = vi.fn(() => {
+      const url = `blob:preview-${createdUrls.length + 1}`;
+      createdUrls.push(url);
+      return url;
+    });
+    URL.revokeObjectURL = vi.fn();
+  });
+  afterEach(() => {
+    cleanup();
+    URL.createObjectURL = createObjectURL;
+    URL.revokeObjectURL = revokeObjectURL;
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
+
+  const photo = (name = 'photo.png') =>
+    new File(['png'], name, { type: 'image/png' });
+
+  const FilesOwner = () => {
+    const [files, setFiles] = useState<IInputMessageFile[]>([]);
+
+    return (
+      <InputMessage
+        placeholder="Сообщение"
+        deleteFileAriaLabel="Удалить файл"
+        files={files}
+        onFilesChange={setFiles}
+      />
+    );
+  };
+
+  const dropPhoto = async (file: File) => {
+    drop(screen.getByPlaceholderText('Сообщение'), [file]);
+    await waitFor(() => expect(chipNames()).toEqual([file.name]));
+  };
+
+  test('gives an image an object URL instead of a data URL', async () => {
+    const file = photo();
+    const { onFilesChange } = renderInput();
+
+    drop(screen.getByPlaceholderText('Сообщение'), [file]);
+
+    await waitFor(() =>
+      expect(onFilesChange).toHaveBeenCalledWith([
+        { name: 'photo.png', previewUrl: 'blob:preview-1', native: file },
+      ]),
+    );
+  });
+
+  test('revokes the preview of a file deleted from its own files', async () => {
+    customRender(
+      <InputMessage
+        placeholder="Сообщение"
+        deleteFileAriaLabel="Удалить файл"
+      />,
+    );
+    await dropPhoto(photo());
+
+    fireEvent.click(screen.getByLabelText('Удалить файл'));
+
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:preview-1');
+  });
+
+  test('revokes previews of its own unsent files on unmount', async () => {
+    const { unmount } = customRender(
+      <InputMessage
+        placeholder="Сообщение"
+        deleteFileAriaLabel="Удалить файл"
+      />,
+    );
+    await dropPhoto(photo());
+
+    unmount();
+
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:preview-1');
+  });
+
+  test('keeps previews of sent files: they now belong to onSend', async () => {
+    const onSend = vi.fn();
+    const { unmount } = customRender(
+      <InputMessage
+        placeholder="Сообщение"
+        deleteFileAriaLabel="Удалить файл"
+        onSend={onSend}
+      />,
+    );
+    await dropPhoto(photo());
+
+    fireEvent.keyDown(screen.getByPlaceholderText('Сообщение'), {
+      key: 'Enter',
+    });
+    unmount();
+
+    expect(onSend).toHaveBeenCalledWith('', [
+      expect.objectContaining({ previewUrl: 'blob:preview-1' }),
+    ]);
+    expect(URL.revokeObjectURL).not.toHaveBeenCalled();
+  });
+
+  test('leaves previews of parent files until nothing holds the file', async () => {
+    const file = photo();
+    const { unmount } = customRender(<FilesOwner />);
+    await dropPhoto(file);
+
+    // Родитель мог сохранить файл в черновик или для повтора отправки
+    fireEvent.click(screen.getByLabelText('Удалить файл'));
+    unmount();
+    expect(URL.revokeObjectURL).not.toHaveBeenCalled();
+
+    collectGarbage(file);
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:preview-1');
+  });
+
+  test('opens a renamed copy of a file with a live preview', async () => {
+    const original = photo('image.png');
+    const handleImageClick = vi.fn((file: IInputMessageFile) => file);
+    // Как клиент Bothub разводит одинаковые имена: новый native, прежний previewUrl
+    const rename = (file: IInputMessageFile): IInputMessageFile => ({
+      ...file,
+      name: 'image (1).png',
+      native: new File([file.native], 'image (1).png', { type: 'image/png' }),
+    });
+    const Renaming = () => {
+      const [files, setFiles] = useState<IInputMessageFile[]>([]);
+
+      return (
+        <InputMessage
+          placeholder="Сообщение"
+          deleteFileAriaLabel="Удалить файл"
+          files={files}
+          onFilesChange={(next) => setFiles(next.map(rename))}
+          handleImageClick={handleImageClick}
+        />
+      );
+    };
+    customRender(<Renaming />);
+    drop(screen.getByPlaceholderText('Сообщение'), [original]);
+    await waitFor(() => expect(chipNames()).toEqual(['image (1).png']));
+
+    // Исходный File больше никто не держит
+    collectGarbage(original);
+    fireEvent.click(screen.getByText('image (1).png'));
+
+    expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:preview-1');
+    expect(handleImageClick).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: 'image (1).png',
+        previewUrl: 'blob:preview-2',
+      }),
+    );
+  });
+
+  describe('chip image', () => {
+    const THUMBNAIL = 'data:image/webp;base64,thumbnail';
+
+    const getChipImage = () =>
+      document.querySelector<HTMLImageElement>('img[width="18"]');
+
+    test('is a downscaled copy, not the full preview', async () => {
+      vi.stubGlobal(
+        'createImageBitmap',
+        vi.fn(async () => ({ close: () => {} })),
+      );
+      vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(
+        () => ({ drawImage: () => {} }) as unknown as CanvasRenderingContext2D,
+      );
+      vi.spyOn(HTMLCanvasElement.prototype, 'toDataURL').mockReturnValue(
+        THUMBNAIL,
+      );
+      customRender(
+        <InputMessage
+          files={[
+            { name: 'photo.png', previewUrl: 'blob:full', native: photo() },
+          ]}
+        />,
+      );
+
+      await waitFor(() =>
+        expect(getChipImage()?.getAttribute('src')).toBe(THUMBNAIL),
+      );
+    });
+
+    test('is the preview where the browser cannot downscale', () => {
+      customRender(
+        <InputMessage
+          files={[
+            { name: 'photo.png', previewUrl: 'blob:full', native: photo() },
+          ]}
+        />,
+      );
+
+      expect(getChipImage()?.getAttribute('src')).toBe('blob:full');
+    });
+
+    test('is the preview of an image already on the server', () => {
+      const decode = vi.fn();
+      vi.stubGlobal('createImageBitmap', decode);
+      const previewUrl = 'https://storage.bothub.chat/preview.png';
+      customRender(
+        <InputMessage
+          files={[
+            {
+              name: 'image.png',
+              previewUrl,
+              // Сообщение правят: файл уже на сервере, данных у native нет
+              native: new File([], 'image.png', { type: 'image/png' }),
+            },
+          ]}
+        />,
+      );
+
+      expect(getChipImage()?.getAttribute('src')).toBe(previewUrl);
+      expect(decode).not.toHaveBeenCalled();
+    });
   });
 });
 

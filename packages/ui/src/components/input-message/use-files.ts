@@ -1,6 +1,7 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useControllableState, useEventCallback } from '@/ui/utils';
 import { IInputMessageFile, InputMessageErrorEvent } from './types';
+import { revokeObjectUrl } from './object-urls';
 import {
   formatUploadFiles,
   getClipboardFiles,
@@ -32,10 +33,18 @@ export const useFiles = ({
     defaultValue: [],
     onChange: onFilesChange,
   });
+  // Файлами родителя он и владеет: держит их в черновиках и возвращает
+  // в поле после ошибки отправки. Превью их освобождается само, когда
+  // файл никто не держит (object-urls.ts)
+  const isControlled = initialFiles !== undefined;
+  const isControlledRef = useRef(isControlled);
+  isControlledRef.current = isControlled;
+  const filesRef = useRef(files);
+  filesRef.current = files;
   const handleError = useEventCallback(emitError);
 
-  // Один путь для выбора, перетаскивания и вставки: проверка accept,
-  // без дублей и без потери файлов, добавленных пока читались превью
+  // Один путь для выбора, перетаскивания и вставки: проверка accept
+  // и без дублей
   const handleSideUploadFiles = useCallback(
     async (uploadFiles: File[]) => {
       if (uploadFileDisabled || !uploadFiles.length) return;
@@ -56,7 +65,7 @@ export const useFiles = ({
       }
       if (acceptedFiles.length === 0) return;
 
-      const newFiles = await formatUploadFiles(acceptedFiles);
+      const newFiles = formatUploadFiles(acceptedFiles);
 
       setFiles((prevFiles) =>
         [
@@ -114,9 +123,28 @@ export const useFiles = ({
 
   const handleDeleteFile = useCallback(
     (index: number) => {
+      const deletedFile = filesRef.current[index];
+
       setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+
+      if (deletedFile && !isControlledRef.current) {
+        revokeObjectUrl(deletedFile.native);
+      }
     },
     [setFiles],
+  );
+
+  // Неотправленные файлы без родителя больше никому не нужны.
+  // Отправленные ушли в onSend: их превью освобождается, когда их отпустят
+  useEffect(
+    () => () => {
+      if (!isControlledRef.current) {
+        for (const file of filesRef.current) {
+          revokeObjectUrl(file.native);
+        }
+      }
+    },
+    [],
   );
 
   return {

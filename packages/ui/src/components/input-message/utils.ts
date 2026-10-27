@@ -1,4 +1,5 @@
 import { IInputMessageFile } from './types';
+import { getObjectUrl, isRevokedObjectUrl } from './object-urls';
 
 const IMAGE_FILE_REGEXP = /\.(png|jpe?g)$/i;
 
@@ -6,22 +7,45 @@ const IMAGE_FILE_REGEXP = /\.(png|jpe?g)$/i;
 export const isImageFileName = (name: string): boolean =>
   IMAGE_FILE_REGEXP.test(name);
 
-export const getPreviewUrlForFile = async (file: File) => {
-  if (isImageFileName(file.name)) {
-    return new Promise<string | null>((resolve) => {
-      const reader = new FileReader();
-
-      reader.addEventListener('load', () => {
-        resolve(reader.result?.toString() ?? null);
-      });
-      // Без превью файл всё равно прикрепляется, а не зависает навсегда
-      reader.addEventListener('error', () => resolve(null));
-      reader.addEventListener('abort', () => resolve(null));
-      reader.readAsDataURL(file);
-    });
+/**
+ * objectURL, а не data URL: строка на треть больше файла копировалась
+ * в черновик каждого чата и в запись сессии. Когда URL освобождается —
+ * в object-urls.ts
+ */
+export const getPreviewUrlForFile = (file: File): string | null => {
+  if (!isImageFileName(file.name)) {
+    return null;
   }
 
-  return null;
+  try {
+    return getObjectUrl(file);
+  } catch {
+    // Без превью файл всё равно прикрепляется
+    return null;
+  }
+};
+
+/**
+ * Файл с действующим превью. Родитель может переименовать файл, создав новый
+ * native с прежним previewUrl (так клиент Bothub разводит одинаковые имена):
+ * исходный File тогда собирается вместе со своим URL, и превью берём у нового
+ */
+export const withLivePreviewUrl = (
+  file: IInputMessageFile,
+): IInputMessageFile => {
+  if (
+    !file.previewUrl ||
+    !isRevokedObjectUrl(file.previewUrl) ||
+    !(file.native instanceof Blob)
+  ) {
+    return file;
+  }
+
+  try {
+    return { ...file, previewUrl: getObjectUrl(file.native) };
+  } catch {
+    return file;
+  }
 };
 
 /**
@@ -63,20 +87,15 @@ export const getFileKeys = (files: IInputMessageFile[]): string[] => {
   });
 };
 
-export const formatUploadFiles = async (
-  files: File[],
-): Promise<IInputMessageFile[]> => {
+export const formatUploadFiles = (files: File[]): IInputMessageFile[] => {
   const uniqueFiles = files.filter(
     (file, index) =>
       files.findIndex((other) => isSameNativeFile(file, other)) === index,
   );
-  const previewsUrls: (string | null)[] = await Promise.all(
-    uniqueFiles.map(getPreviewUrlForFile),
-  );
 
-  return uniqueFiles.map((nativeFile, index) => ({
+  return uniqueFiles.map((nativeFile) => ({
     name: nativeFile.name,
-    previewUrl: previewsUrls[index],
+    previewUrl: getPreviewUrlForFile(nativeFile),
     native: nativeFile,
   }));
 };

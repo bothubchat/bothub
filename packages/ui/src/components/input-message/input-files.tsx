@@ -17,7 +17,8 @@ import {
 } from './styled';
 import { Menu } from '../menu';
 import { Typography } from '../typography';
-import { getFileKeys, isImageFileName } from './utils';
+import { getFileKeys, isImageFileName, withLivePreviewUrl } from './utils';
+import { useFileThumbnail } from './thumbnail';
 
 export interface InputMessageFilesProps {
   files: IInputMessageFile[];
@@ -28,9 +29,33 @@ export interface InputMessageFilesProps {
 
 const VISIBLE_FILES_COUNT = 3;
 
+/**
+ * Уменьшенная копия картинки, а не превью в полный кадр. Без неё (браузер
+ * не умеет, файл с сервера без данных) — превью, как раньше
+ */
+const InputMessageFileImage: React.FC<{ file: IInputMessageFile }> = ({
+  file,
+}) => {
+  const thumbnail = useFileThumbnail(
+    file.native instanceof Blob ? file.native : undefined,
+  );
+  const src =
+    thumbnail === null
+      ? (withLivePreviewUrl(file).previewUrl ?? undefined)
+      : thumbnail;
+
+  // Пока миниатюра готовится, на её месте скелетон того же размера
+  return (
+    <ChipImage
+      src={src}
+      loading="skeleton"
+    />
+  );
+};
+
 const getFileIcon = (file: IInputMessageFile): React.ReactNode => {
   if (file.previewUrl && isImageFileName(file.name)) {
-    return <ChipImage src={file.previewUrl} />;
+    return <InputMessageFileImage file={file} />;
   }
   if (/\.txt$/i.test(file.name)) {
     return <TxtIcon />;
@@ -69,7 +94,7 @@ const InputMessageFileChip: React.FC<InputMessageFileChipProps> = ({
       isImage={isImage}
       {...(isImage &&
         handleImageClick && {
-          onClick: () => handleImageClick(file),
+          onClick: () => handleImageClick(withLivePreviewUrl(file)),
         })}
       {...(handleDeleteFile && {
         onDelete: () => handleDeleteFile(index),

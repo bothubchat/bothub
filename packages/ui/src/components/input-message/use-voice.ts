@@ -5,6 +5,7 @@ import {
   useEventCallback,
 } from '@/ui/utils';
 import { IInputMessageVoiceFile } from './types';
+import { getObjectUrl, revokeObjectUrl } from './object-urls';
 
 interface UseVoiceProps {
   initialVoiceFiles?: IInputMessageVoiceFile[];
@@ -32,8 +33,6 @@ export const useVoice = ({
   // чтобы двойной клик не создал второй рекордер
   const voiceStatusRef = useRef<VoiceStatus>('idle');
   const isMountedRef = useRef(false);
-  // objectURL, созданные здесь: освобождаем их, когда голосовое удаляют
-  const ownVoiceUrlsRef = useRef(new Set<string>());
   // Время записи без пауз: таймер и запасная длительность
   const recordedMsRef = useRef(0);
   const resumedAtRef = useRef<number | null>(null);
@@ -77,12 +76,6 @@ export const useVoice = ({
     return (recordedMsRef.current + runningMs) / 1000;
   }, []);
 
-  const revokeOwnVoiceUrl = useCallback((src: string) => {
-    if (ownVoiceUrlsRef.current.delete(src)) {
-      URL.revokeObjectURL(src);
-    }
-  }, []);
-
   const finishVoiceRecording = useEventCallback(async (chunks: Blob[]) => {
     const blob = new Blob(chunks, {
       type: getSupportedAudioMimeType(),
@@ -104,8 +97,9 @@ export const useVoice = ({
       return;
     }
 
-    const src = URL.createObjectURL(blob);
-    ownVoiceUrlsRef.current.add(src);
+    // Отправленное голосовое родитель держит в очереди и возвращает в поле
+    // после ошибки: URL освобождается, когда запись никто не держит
+    const src = getObjectUrl(blob);
 
     setVoiceFiles([
       ...voiceFilesRef.current,
@@ -237,9 +231,14 @@ export const useVoice = ({
   const handleVoiceFileDelete = useCallback(
     (file: IInputMessageVoiceFile) => {
       setVoiceFiles(voiceFilesRef.current.filter((f) => f.src !== file.src));
-      revokeOwnVoiceUrl(file.src);
+
+      // Голосовыми родителя владеет он: удалённое из поля могло остаться
+      // у него, например, для повтора отправки
+      if (!isControlledRef.current) {
+        revokeObjectUrl(file.blob);
+      }
     },
-    [setVoiceFiles, revokeOwnVoiceUrl],
+    [setVoiceFiles],
   );
 
   useEffect(() => {
@@ -254,11 +253,11 @@ export const useVoice = ({
       // Голосовыми родителя (и отправленными) владеет он сам
       if (!isControlledRef.current) {
         for (const file of voiceFilesRef.current) {
-          revokeOwnVoiceUrl(file.src);
+          revokeObjectUrl(file.blob);
         }
       }
     };
-  }, [stopVoiceRecording, revokeOwnVoiceUrl]);
+  }, [stopVoiceRecording]);
 
   // Только при новых файлах: новый колбэк родителя — не повод звать его снова
   useEffect(() => {
