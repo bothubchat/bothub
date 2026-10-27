@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { describe, test, expect, afterEach, beforeEach, vi } from 'vitest';
+import {
+  describe,
+  test,
+  expect,
+  afterEach,
+  beforeEach,
+  vi,
+  type Mock,
+} from 'vitest';
 import { act, cleanup, fireEvent } from '@testing-library/react';
 import { customRender } from '@/ui/tests';
 import { MessageImage, MessageImageProps } from '.';
@@ -27,8 +35,8 @@ const isSkeletonShown = (container: HTMLElement) =>
 
 describe('MessageImage', () => {
   let setSrc: (src: string) => void;
-  let createObjectURL: ReturnType<typeof vi.fn>;
-  let revokeObjectURL: ReturnType<typeof vi.fn>;
+  let createObjectURL: Mock<typeof URL.createObjectURL>;
+  let revokeObjectURL: Mock<typeof URL.revokeObjectURL>;
 
   const renderImage = (props: MessageImageProps) => {
     const Parent = () => {
@@ -48,7 +56,7 @@ describe('MessageImage', () => {
   beforeEach(() => {
     let count = 0;
     createObjectURL = vi.fn(() => `blob:${++count}`);
-    revokeObjectURL = vi.fn();
+    revokeObjectURL = vi.fn<typeof URL.revokeObjectURL>();
     URL.createObjectURL = createObjectURL;
     URL.revokeObjectURL = revokeObjectURL;
   });

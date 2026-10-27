@@ -58,14 +58,13 @@ describe('scrollbar', () => {
   beforeEach(() => {
     observers.resize = 0;
     observers.mutation = 0;
-    vi.stubGlobal(
-      'ResizeObserver',
-      vi.fn(() => {
-        observers.resize++;
+    // A function, not an arrow: vitest 4 mocks of arrows cannot be constructed
+    function ResizeObserverMock() {
+      observers.resize++;
 
-        return { observe() {}, unobserve() {}, disconnect() {} };
-      }),
-    );
+      return { observe() {}, unobserve() {}, disconnect() {} };
+    }
+    vi.stubGlobal('ResizeObserver', vi.fn(ResizeObserverMock));
     const OriginalMutationObserver = MutationObserver;
     vi.stubGlobal(
       'MutationObserver',

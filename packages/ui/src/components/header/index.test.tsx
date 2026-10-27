@@ -28,7 +28,8 @@ const countListeners = (
   spy: ReturnType<typeof vi.spyOn>,
   types: string[],
 ): number =>
-  spy.mock.calls.filter(([type]) => types.includes(type as string)).length;
+  spy.mock.calls.filter(([type]: unknown[]) => types.includes(type as string))
+    .length;
 
 const langNode = (
   <HeaderLangDropdown lang="ru">

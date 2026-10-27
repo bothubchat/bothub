@@ -18,7 +18,7 @@ const props: LangSwitcherProps = {
 };
 
 const countClickListeners = (spy: ReturnType<typeof vi.spyOn>) =>
-  spy.mock.calls.filter(([type]) => type === 'click').length;
+  spy.mock.calls.filter(([type]: unknown[]) => type === 'click').length;
 
 describe('LangSwitcher', () => {
   beforeAll(() => {

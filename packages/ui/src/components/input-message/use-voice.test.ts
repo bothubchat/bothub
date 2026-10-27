@@ -1,5 +1,13 @@
 import React from 'react';
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import {
+  afterEach,
+  beforeEach,
+  describe,
+  expect,
+  test,
+  vi,
+  type Mock,
+} from 'vitest';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { IInputMessageVoiceFile } from './types';
 import { useVoice } from './use-voice';
@@ -65,8 +73,8 @@ const deferred = <T>() => {
 describe('useVoice', () => {
   let track: { stop: ReturnType<typeof vi.fn> };
   let getUserMedia: ReturnType<typeof vi.fn>;
-  let createObjectURL: ReturnType<typeof vi.fn>;
-  let revokeObjectURL: ReturnType<typeof vi.fn>;
+  let createObjectURL: Mock<typeof URL.createObjectURL>;
+  let revokeObjectURL: Mock<typeof URL.revokeObjectURL>;
 
   beforeEach(() => {
     FakeMediaRecorder.instances = [];
@@ -75,7 +83,7 @@ describe('useVoice', () => {
     vi.stubGlobal('MediaRecorder', FakeMediaRecorder);
     vi.stubGlobal('navigator', { mediaDevices: { getUserMedia } });
     createObjectURL = vi.fn(() => 'blob:recorded');
-    revokeObjectURL = vi.fn();
+    revokeObjectURL = vi.fn<typeof URL.revokeObjectURL>();
     URL.createObjectURL = createObjectURL;
     URL.revokeObjectURL = revokeObjectURL;
   });
