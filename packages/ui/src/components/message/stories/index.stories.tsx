@@ -250,6 +250,70 @@ export const MarkdownEdgeCases: MessageStory = {
   },
 };
 
+const MARKDOWN_NODES = [
+  '# Заголовок H1',
+  '## Заголовок H2 с **жирным**',
+  '### H3',
+  '#### H4',
+  '##### H5',
+  '###### H6',
+  '',
+  'Абзац: **жирный**, __strong__, *курсив*, _em_, ~~зачёркнутый~~, `код`, [ссылка](https://bothub.chat) и <cite>цитата</cite>.',
+  'Вторая строка того же абзаца.',
+  '',
+  '> Цитата с *курсивом*',
+  '>',
+  '> - пункт в цитате',
+  '',
+  '---',
+  '',
+  '- пункт',
+  '  - вложенный пункт',
+  '  1. вложенный номер',
+  '',
+  '3. список с третьего номера',
+  '4. четвёртый',
+  '',
+  '- [x] задача',
+  '',
+  '| Слева | Центр | Справа |',
+  '|:--|:-:|--:|',
+  '| a **b** | *c* | `d` |',
+  '',
+  '```doc',
+  '# Документ',
+  '',
+  'Абзац документа.',
+  '',
+  '- пункт документа',
+  '```',
+].join('\n');
+
+/**
+ * Every markdown node in default, green and purple messages. Paragraphs,
+ * emphasis, quotes, lists, tables, titles and links are plain tags with
+ * `bh-md-*` classes styled by the markdown container; code, images, cite
+ * and document blocks are components.
+ */
+export const MarkdownNodes: MessageStory = {
+  render: (args) => (
+    <>
+      {['default', 'green', 'purple'].map((color) => (
+        <Message
+          key={color}
+          {...args}
+          color={color}
+        >
+          {MARKDOWN_NODES}
+        </Message>
+      ))}
+    </>
+  ),
+  args: {
+    ...Assistant.args,
+  },
+};
+
 export const List: MessageStory = {
   args: {
     ...Assistant.args,

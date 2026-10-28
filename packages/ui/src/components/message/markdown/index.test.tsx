@@ -181,6 +181,41 @@ describe('MessageMarkdown', () => {
     expect(container.textContent).not.toContain('<br>');
   });
 
+  test('renders simple nodes as plain tags with classes', () => {
+    const { container } = renderMarkdown(
+      [
+        '## Title',
+        '',
+        'Text **b** *i* ~~s~~ [a](https://bothub.chat)',
+        '',
+        '> quote',
+        '',
+        '3. three',
+        '- [x] task',
+        '',
+        '| h |',
+        '|---|',
+        '| c |',
+      ].join('\n'),
+    );
+    const classOf = (selector: string) =>
+      container.querySelector(selector)?.getAttribute('class');
+
+    expect(classOf('h2')).toBe('bh-md-title');
+    expect(classOf('p')).toBe('bh-md-p');
+    expect(classOf('strong')).toBe('bh-md-b');
+    expect(classOf('em')).toBe('bh-md-i');
+    expect(classOf('del')).toBe('bh-md-del');
+    expect(classOf('a')).toBe('bh-md-a');
+    expect(classOf('blockquote')).toBe('bh-md-quote');
+    expect(classOf('th')).toBe('bh-md-cell');
+    expect(classOf('td > span')).toBe('bh-md-cell-text');
+    expect(classOf('li.task-list-item')).toBe('bh-md-li task-list-item');
+    const list = container.querySelector('ol');
+    expect(list?.getAttribute('start')).toBe('3');
+    expect(list?.style.counterSet).toBe('item 2');
+  });
+
   test('keeps table column alignment', () => {
     const { container } = renderMarkdown('| a |\n|:-:|\n| 1 |');
 

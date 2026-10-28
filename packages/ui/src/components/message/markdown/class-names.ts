@@ -1,9 +1,10 @@
 /**
  * Classes of the markdown elements rendered as plain tags. Their styles are
  * rules of the markdown container (`MessageMarkdownStyled`) instead of a
- * styled component and a context subscription per element. A class has the
- * same specificity the styled component class had, so the rules of
- * enclosing components (document blocks) apply as before.
+ * styled component and a context subscription per element. The rules are
+ * `.container .bh-md-*`: classes only, no tag, so the tag-and-class rules of
+ * enclosing components (document blocks) still win over them, and the
+ * first/last child margins of MessageMarkdownLine win by coming later.
  */
 export const markdownClassNames = {
   paragraph: 'bh-md-p',
