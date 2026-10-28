@@ -1,7 +1,6 @@
 {
   "name": "@bothub-chat/ui",
-  "version": "2.80.34-claude-architecture-519ddcbf-21ec-4f56-b5fb-48e85fce5b9c",
-  "description": "Bothub UI Components",
+  "version": "2.80.35",
   "keywords": [
     "bot",
     "chat",
