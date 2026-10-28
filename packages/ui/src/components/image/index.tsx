@@ -41,6 +41,13 @@ export interface ImageProps
    * positioned container.
    */
   lazy?: boolean;
+  /**
+   * `decoding` of the `<img>`. A `lazy` image decodes off the main thread
+   * (`async`) unless set; other images keep the browser default, so an
+   * image above the fold or one whose `src` changes is not shown a frame
+   * later.
+   */
+  decoding?: React.ComponentProps<'img'>['decoding'];
   fetchPriority?: LinkHTMLAttributes<HTMLLinkElement>['fetchPriority'];
 }
 
@@ -70,6 +77,7 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
       preload = false,
       loading = 'default',
       lazy = false,
+      decoding = lazy ? 'async' : undefined,
       fetchPriority,
       ...props
     },
@@ -143,6 +151,7 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
             $hidden={isHidden}
             $lazy={lazy}
             loading={lazy ? 'lazy' : undefined}
+            decoding={decoding}
             {...props}
             src={src}
             width={width}
@@ -181,6 +190,7 @@ export const Image = forwardRef<HTMLImageElement, ImageProps>(
                 $hidden={isHidden}
                 $lazy={false}
                 loading={lazy && loading !== 'skeleton' ? 'lazy' : undefined}
+                decoding={decoding}
                 src={getAdaptiveSrc(pictureImgSrc)}
                 width={getAdaptiveSize(pictureImgSrc, 'width')}
                 height={getAdaptiveSize(pictureImgSrc, 'height')}

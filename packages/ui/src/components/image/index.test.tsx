@@ -132,4 +132,49 @@ describe('Image', () => {
     expect(img.getAttribute('loading')).toBe('lazy');
     expect(getComputedStyle(img).display).not.toBe('none');
   });
+
+  test('decodes a lazy image asynchronously unless decoding is set', () => {
+    const { rerender } = customRender(
+      <Image
+        src="https://example.com/a.png"
+        lazy
+      />,
+    );
+    expect(getImg().getAttribute('decoding')).toBe('async');
+
+    rerender(
+      <TestProvider>
+        <Image
+          src="https://example.com/a.png"
+          lazy
+          decoding="sync"
+        />
+      </TestProvider>,
+    );
+    expect(getImg().getAttribute('decoding')).toBe('sync');
+
+    rerender(
+      <TestProvider>
+        <Image src="https://example.com/a.png" />
+      </TestProvider>,
+    );
+    expect(getImg().hasAttribute('decoding')).toBe(false);
+    expect(getImg().hasAttribute('loading')).toBe(false);
+  });
+
+  test('puts loading and decoding on the <img> of a picture', () => {
+    const { container } = customRender(
+      <Image
+        src={{ mobile: 'https://example.com/m.png' }}
+        lazy
+      />,
+    );
+
+    const img = getImg();
+    expect(img.getAttribute('loading')).toBe('lazy');
+    expect(img.getAttribute('decoding')).toBe('async');
+    expect(container.querySelector('picture')?.hasAttribute('decoding')).toBe(
+      false,
+    );
+  });
 });
