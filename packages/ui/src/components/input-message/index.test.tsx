@@ -4,6 +4,7 @@ import {
   beforeEach,
   describe,
   expect,
+  type MockInstance,
   onTestFinished,
   test,
   vi,
@@ -970,20 +971,61 @@ describe('InputMessage keyboard', () => {
 
 describe('InputMessage textarea height', () => {
   const LINE_HEIGHT = 23;
+  let readScrollHeight: MockInstance<() => number>;
 
   beforeEach(() => {
     // jsdom не считает layout: строка на каждые 40 символов
-    vi.spyOn(
-      HTMLTextAreaElement.prototype,
-      'scrollHeight',
-      'get',
-    ).mockImplementation(function scrollHeight(this: HTMLTextAreaElement) {
-      return LINE_HEIGHT * Math.max(1, Math.ceil(this.value.length / 40));
-    });
+    readScrollHeight = vi
+      .spyOn(HTMLTextAreaElement.prototype, 'scrollHeight', 'get')
+      .mockImplementation(function scrollHeight(this: HTMLTextAreaElement) {
+        return LINE_HEIGHT * Math.max(1, Math.ceil(this.value.length / 40));
+      });
   });
   afterEach(() => {
     cleanup();
     vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+  });
+
+  const spyOnHeights = (textarea: HTMLElement) => {
+    const setHeight = vi.spyOn(CSSStyleDeclaration.prototype, 'height', 'set');
+    return () =>
+      setHeight.mock.calls
+        .filter((_, index) => setHeight.mock.contexts[index] === textarea.style)
+        .map(([height]) => height);
+  };
+
+  test('measures added text once and writes the height only when it grows', () => {
+    customRender(<InputMessage placeholder="Сообщение" />);
+    const textarea = screen.getByPlaceholderText('Сообщение');
+    const getHeights = spyOnHeights(textarea);
+    readScrollHeight.mockClear();
+
+    fireEvent.change(textarea, { target: { value: 'a'.repeat(30) } });
+    fireEvent.change(textarea, { target: { value: 'a'.repeat(50) } });
+
+    expect(readScrollHeight).toHaveBeenCalledTimes(2);
+    expect(getHeights()).toEqual([`${LINE_HEIGHT * 2}px`]);
+
+    // Удаление может уменьшить высоту: её сбрасывают и меряют заново
+    fireEvent.change(textarea, { target: { value: 'a'.repeat(10) } });
+
+    expect(textarea.style.height).toBe(`${LINE_HEIGHT}px`);
+  });
+
+  test('leaves the height to CSS where field-sizing is supported', () => {
+    vi.stubGlobal('CSS', {
+      supports: (property: string, value: string) =>
+        property === 'field-sizing' && value === 'content',
+    });
+    customRender(<InputMessage placeholder="Сообщение" />);
+    const textarea = screen.getByPlaceholderText('Сообщение');
+    const getHeights = spyOnHeights(textarea);
+
+    fireEvent.change(textarea, { target: { value: 'a'.repeat(90) } });
+
+    expect(readScrollHeight).not.toHaveBeenCalled();
+    expect(getHeights()).toEqual([]);
   });
 
   test('grows with the text in a single commit per keystroke', () => {

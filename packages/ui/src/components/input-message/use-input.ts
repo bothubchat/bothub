@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useEventCallback, useIsomorphicLayoutEffect } from '@/ui/utils';
 import { isMobileDevice, isTouchDevice } from './utils';
+import {
+  autosizeTextarea,
+  supportsFieldSizing,
+  type AutosizeState,
+} from './autosize';
 
 export type MessageSubmitKey = 'enter' | 'ctrlEnter';
 
@@ -178,13 +183,15 @@ export const useInput = ({
     },
   );
 
-  const autosizedRef = useRef<{
-    textarea: HTMLTextAreaElement | null;
-    message: string;
-  }>({ textarea: null, message: '' });
+  // Высота поля и текст, для которых она посчитана
+  const autosizedRef = useRef<AutosizeState>({
+    textarea: null,
+    message: '',
+    height: 0,
+  });
 
-  // Высота по содержимому до отрисовки и без второго коммита: пишем в DOM,
-  // читаем scrollHeight один раз. Пересчёт при новом тексте или новом
+  // Где есть field-sizing: content, высоту по тексту считает CSS (styled.tsx).
+  // Иначе — до отрисовки и без второго коммита, при новом тексте или новом
   // элементе (textarea могла смонтироваться заново)
   useIsomorphicLayoutEffect(() => {
     const textareaEl = textareaRef.current;
@@ -192,14 +199,18 @@ export const useInput = ({
 
     if (
       textareaEl === null ||
+      supportsFieldSizing() ||
       (autosized.textarea === textareaEl && autosized.message === message)
     ) {
       return;
     }
-    autosizedRef.current = { textarea: textareaEl, message };
 
-    textareaEl.style.height = TEXTAREA_MIN_HEIGHT;
-    textareaEl.style.height = `${textareaEl.scrollHeight}px`;
+    autosizedRef.current = autosizeTextarea(
+      textareaEl,
+      message,
+      autosized,
+      TEXTAREA_MIN_HEIGHT,
+    );
   });
 
   return {

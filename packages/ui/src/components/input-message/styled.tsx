@@ -218,6 +218,12 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   width: 100%;
   min-height: 22px;
   max-height: 270px;
+  /* The browser sizes the field to its text: use-input does not measure it,
+     and the inline height it sets for other browsers does not apply. */
+  @supports (field-sizing: content) {
+    field-sizing: content;
+    height: auto !important;
+  }
   background: none;
   outline: none;
   resize: none;
