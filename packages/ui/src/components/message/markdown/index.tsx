@@ -97,7 +97,11 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
 
     const markdownNode = useMemo(
       () => (
-        <MessageMarkdownStyled ref={ref}>
+        <MessageMarkdownStyled
+          ref={ref}
+          $variant={variant}
+          $color={color}
+        >
           <MessageMarkdownLine
             $typing={disableTyping ? false : typing}
             $color={color}
@@ -117,6 +121,7 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
       [
         typing,
         disableTyping,
+        variant,
         color,
         blocks,
         openCodeStart,

@@ -2,28 +2,12 @@ import React, { createContext, memo, useContext, useMemo } from 'react';
 import { type Components } from 'react-markdown';
 import {
   GeneratedDocumentBlock,
-  MessageBlockquote,
-  MessageBold,
   MessageCite,
   MessageComponentsProps,
-  MessageHr,
   MessageImage,
   MessageImageProps,
   MessageInlineCode,
-  MessageItalic,
-  MessageLink,
-  MessageList,
-  MessageListItem,
   MessageMultilineCode,
-  MessageParagraph,
-  MessagePre,
-  MessageStrike,
-  MessageTable,
-  MessageTableBody,
-  MessageTableCell,
-  MessageTableHead,
-  MessageTableRow,
-  MessageTitle,
 } from '@/ui/components/message/components';
 import { MessageCodeTypingContext } from '@/ui/components/message/components/code/multiline/content/typing';
 import { useMessage } from '@/ui/components/message/context';
@@ -31,6 +15,7 @@ import { useMarkdownPlugins } from './useMarkdownPlugins';
 import { normalizeMessageMarkdown } from './utils';
 import { MATH_TAG_NAME, getLoadedMath } from './math-loader';
 import type { MarkdownMathProps } from './math';
+import { markdownClassNames } from './class-names';
 
 /*
  * Components passed to react-markdown must keep a stable identity: a new
@@ -116,74 +101,93 @@ const mathComponents = {
   [MATH_TAG_NAME]: MarkdownMathElement,
 } as Components;
 
+const md = markdownClassNames;
+
+const getListItemClassName = (className?: string) =>
+  className ? `${md.listItem} ${className}` : md.listItem;
+
+// GFM puts the start of an ordered list in `start`, the counter follows it.
+const getListStyle = (start?: number): React.CSSProperties | undefined =>
+  start ? { counterSet: `item ${start - 1}` } : undefined;
+
+/*
+ * Plain tags with the classes styled by the markdown container: no styled
+ * component, Typography or context subscription per element. The markup is
+ * the same as the Message* components rendered, without their generated
+ * classes.
+ */
 export const baseMarkdownComponents: Components = {
   ...mathComponents,
-  p: ({ children }) => <MessageParagraph wrap>{children}</MessageParagraph>,
-  b: ({ children }) => <MessageBold>{children}</MessageBold>,
-  strong: ({ children }) => (
-    <MessageBold component="strong">{children}</MessageBold>
-  ),
-  i: ({ children }) => <MessageItalic>{children}</MessageItalic>,
-  em: ({ children }) => (
-    <MessageItalic component="em">{children}</MessageItalic>
-  ),
-  del: ({ children }) => <MessageStrike>{children}</MessageStrike>,
+  p: ({ children }) => <p className={md.paragraph}>{children}</p>,
+  b: ({ children }) => <b className={md.bold}>{children}</b>,
+  strong: ({ children }) => <strong className={md.bold}>{children}</strong>,
+  i: ({ children }) => <i className={md.italic}>{children}</i>,
+  em: ({ children }) => <em className={md.italic}>{children}</em>,
+  del: ({ children }) => <del className={md.strike}>{children}</del>,
   blockquote: ({ children }) => (
-    <MessageBlockquote>{children}</MessageBlockquote>
+    <blockquote className={md.blockquote}>{children}</blockquote>
   ),
   cite: ({ children }) => <MessageCite>{children}</MessageCite>,
-  hr: () => <MessageHr />,
-  pre: ({ children }) => <MessagePre>{children}</MessagePre>,
-  table: ({ children }) => <MessageTable>{children}</MessageTable>,
-  thead: ({ children }) => <MessageTableHead>{children}</MessageTableHead>,
-  tbody: ({ children }) => <MessageTableBody>{children}</MessageTableBody>,
-  tr: ({ children }) => <MessageTableRow>{children}</MessageTableRow>,
-  td: ({ style, children }) => (
-    <MessageTableCell style={style}>{children}</MessageTableCell>
+  hr: () => <hr className={md.hr} />,
+  pre: ({ children }) => <pre className={md.pre}>{children}</pre>,
+  table: ({ children }) => (
+    <div className={md.table}>
+      <table className={md.tableContent}>{children}</table>
+    </div>
   ),
-  th: ({ style, children }) => (
-    <MessageTableCell
-      head
+  td: ({ style, children }) => (
+    <td
+      className={md.tableCell}
       style={style}
     >
-      {children}
-    </MessageTableCell>
+      <span className={md.tableCellText}>{children}</span>
+    </td>
   ),
-  ul: ({ children }) => <MessageList>{children}</MessageList>,
+  th: ({ style, children }) => (
+    <th
+      className={md.tableCell}
+      style={style}
+    >
+      <span className={md.tableCellText}>{children}</span>
+    </th>
+  ),
+  ul: ({ children }) => <ul className={md.list}>{children}</ul>,
   ol: ({ start, children }) => (
-    <MessageList
-      variant="number"
+    <ol
+      className={md.list}
       start={start}
+      style={getListStyle(start)}
     >
       {children}
-    </MessageList>
+    </ol>
   ),
   li: ({ id, className, children }) => (
-    <MessageListItem
+    <li
       id={id}
-      className={className}
+      className={getListItemClassName(className)}
     >
       {children}
-    </MessageListItem>
+    </li>
   ),
-  h1: ({ children }) => <MessageTitle variant="h1">{children}</MessageTitle>,
+  h1: ({ children }) => <h1 className={md.title}>{children}</h1>,
   // GFM footnotes add a visually hidden English "Footnotes" heading.
   h2: ({ className, children }) =>
     className?.includes('sr-only') ? null : (
-      <MessageTitle variant="h2">{children}</MessageTitle>
+      <h2 className={md.title}>{children}</h2>
     ),
-  h3: ({ children }) => <MessageTitle variant="h3">{children}</MessageTitle>,
-  h4: ({ children }) => <MessageTitle variant="h4">{children}</MessageTitle>,
-  h5: ({ children }) => <MessageTitle variant="h5">{children}</MessageTitle>,
-  h6: ({ children }) => <MessageTitle variant="h6">{children}</MessageTitle>,
+  h3: ({ children }) => <h3 className={md.title}>{children}</h3>,
+  h4: ({ children }) => <h4 className={md.title}>{children}</h4>,
+  h5: ({ children }) => <h5 className={md.title}>{children}</h5>,
+  h6: ({ children }) => <h6 className={md.title}>{children}</h6>,
   a: ({ id, href, children }) => (
-    <MessageLink
+    <a
       id={id}
       href={href}
+      className={md.link}
       {...markdownLinkTargetProps(href)}
     >
       {children}
-    </MessageLink>
+    </a>
   ),
   img: MarkdownImage,
 };
