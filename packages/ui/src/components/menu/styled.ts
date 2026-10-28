@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Scrollbar } from '../scrollbar';
 import { MenuPosition } from './types';
+import { themeVar } from '@/ui/theme';
 
 const transformOriginByPosition: Record<MenuPosition, string> = {
   left: 'top left',
@@ -27,9 +28,9 @@ export const MenuContent = styled.div<{
   z-index: ${({ theme }) => theme.zIndex.select};
   width: max-content;
   max-width: calc(100vw - 16px);
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   border-radius: 12px;
-  background: ${({ theme }) => theme.colors.grayScale.gray7};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray7')};
   box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.25);
   overflow: hidden;
   visibility: ${({ $visible }) => ($visible ? 'visible' : 'hidden')};

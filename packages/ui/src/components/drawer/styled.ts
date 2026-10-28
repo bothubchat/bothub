@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { Typography } from '../typography';
+import { themeVar } from '@/ui/theme';
 
 export const Overlay = styled.div`
   position: fixed;
@@ -11,6 +12,9 @@ export const Overlay = styled.div`
   transition: opacity 0.2s linear;
   z-index: ${({ theme }) => theme.zIndex.modal - 1};
   opacity: 0;
+  &:not(._opened) {
+    pointer-events: none;
+  }
   &._opened {
     opacity: 1;
   }
@@ -19,7 +23,8 @@ export const Overlay = styled.div`
 export const Component = styled.div`
   padding: 56px 20px 20px 20px;
   z-index: ${({ theme }) => theme.zIndex.modal - 1};
-  background-color: ${(props) => props.theme.colors.grayScale.gray4};
+  background-color: ${(props) =>
+    themeVar(props.theme, 'colors.grayScale.gray4')};
   height: 100%;
   position: fixed;
   top: 0;
@@ -54,7 +59,7 @@ export const CloseButton = styled.button`
   cursor: pointer;
   &:hover {
     path {
-      fill: ${({ theme }) => theme.colors.base.white};
+      fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
     }
   }
 `;

@@ -1,15 +1,18 @@
 import { styled } from 'styled-components';
 import { colorToRgba } from '@/ui/utils';
+import { inCollapsedSidebar } from '../collapsed';
 
 export const SidebarListChatsStyled = styled.div<{
-  $isSidebarOpen?: boolean;
   $isOver?: boolean;
 }>`
   display: flex;
   width: 100%;
   min-height: 100px;
   flex-direction: column;
-  gap: ${({ $isSidebarOpen }) => ($isSidebarOpen ? '4px' : '8px')};
+  gap: 4px;
+  ${inCollapsedSidebar} & {
+    gap: 8px;
+  }
   ${({ $isOver, theme }) =>
     $isOver &&
     `

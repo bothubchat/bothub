@@ -4,6 +4,7 @@ import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
 import { Image } from '@/ui/components/image';
 import { ChipVariant } from './types';
+import { themeVar } from '@/ui/theme';
 
 export interface ChipStyledProps {
   $variant: ChipVariant;
@@ -19,18 +20,21 @@ export const ChipStyled = styled.div<ChipStyledProps>`
           height: 26px;
           gap: 6px;
           border-radius: 6px;
-          background: ${({ theme }) => theme.colors.grayScale.gray2};
+          background: ${({ theme }) =>
+            themeVar(theme, 'colors.grayScale.gray2')};
           padding: 0px 12px;
         `;
       case 'input':
         return css`
           height: 38px;
           gap: 8px;
-          border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+          border: 1px solid
+            ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
           border-radius: 6px;
           padding: 0px 8px;
           &:hover {
-            border-color: ${({ theme }) => theme.colors.accent.primary};
+            border-color: ${({ theme }) =>
+              themeVar(theme, 'colors.accent.primary')};
           }
         `;
     }

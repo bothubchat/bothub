@@ -1,7 +1,7 @@
 import { Icon, icon } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme/hook';
 
-export const Gpt4Icon = icon(({ ...props }) => {
+export const Gpt4Icon = icon((props) => {
   const theme = useTheme();
 
   return (

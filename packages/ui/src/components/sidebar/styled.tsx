@@ -1,7 +1,13 @@
 import { styled } from 'styled-components';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 import { Divider } from '@/ui/components/divider';
+import { getSidebarWidth } from './resize-animation';
 
+/**
+ * The sidebar box. On desktop its width changes at once; the moving edge is
+ * animated with transforms (see `animateSidebarResize`), so the page is laid
+ * out once per toggle instead of on every frame.
+ */
 export const SidebarStyled = styled.div<{
   $isOpen: boolean;
   $isHide: boolean;
@@ -11,25 +17,32 @@ export const SidebarStyled = styled.div<{
   max-height: 100vh;
   flex-direction: column;
   height: 100%;
-  width: ${({ $isOpen, $isHide }) =>
-    $isHide ? '0px' : $isOpen ? '360px' : '74px'};
-  ${({ $isOpen }) => !$isOpen && 'justify-content: flex-start;'}
-  padding: 20px 0;
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  width: ${({ $isOpen, $isHide }) => getSidebarWidth($isOpen, $isHide)}px;
   border-radius: 18px;
-  transition: all 0.3s ease-in-out;
   overflow: hidden;
   @media (max-width: ${({ theme }) => theme.dashboard.tablet.maxWidth}) {
     width: 460px;
     transform: translateX(
       ${({ $isOpenOnTablet }) => ($isOpenOnTablet ? '0' : 'calc(-100% - 16px)')}
     );
-    transition: all 0.3s ease-in-out;
+    transition: transform 0.3s ease-in-out;
   }
   @media (max-width: ${({ theme }) => theme.dashboard.mobile.maxWidth}) {
     width: 100%;
     border-radius: 0;
   }
+`;
+
+/** The visible panel inside the sidebar box */
+export const SidebarPanel = styled.div`
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  padding: 20px 0;
+  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  border-radius: inherit;
 `;
 
 export const SidebarTop = styled.div<{

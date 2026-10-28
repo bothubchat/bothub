@@ -55,7 +55,6 @@ export * from './switch';
 export * from './datepicker';
 export * from './stepper';
 export * from './menu-dropdown';
-export * from './logo-halloween';
 export * from './banner';
 export * from './logo-new-year';
 export * from './dropzone-field';

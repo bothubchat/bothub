@@ -169,7 +169,7 @@ export const UploadedFile = forwardRef<HTMLDivElement, UploadedFileProps>(
             max={100}
           />
           {isSecondary && props.loading ? (
-            <S.UploadedFileLoaderIcon />
+            <S.UploadedFileLoaderIcon $mode={theme.mode} />
           ) : (
             <S.UploadedFileProgressValue
               $status={status}

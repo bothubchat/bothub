@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React from 'react';
+import { action } from 'storybook/actions';
 import { StoryDecorator } from '@/ui/story-decorator';
 import {
   Message,
@@ -21,33 +22,15 @@ const MessageAssistant = () => (
     variant="assistant"
     avatar={<MessageAvatar variant="bot" />}
     transaction={<MessageTransaction>-223 CAPS</MessageTransaction>}
-    onCopy={() => {
-      console.log('onCopy');
-    }}
-    onCodeCopy={() => {
-      console.log('onCodeCopy');
-    }}
-    onEdit={() => {
-      console.log('onEdit');
-    }}
-    onDelete={() => {
-      console.log('onDelete');
-    }}
-    onUpdate={() => {
-      console.log('onUpdate');
-    }}
-    onReport={() => {
-      console.log('onReport');
-    }}
-    onNextVersion={() => {
-      console.log('onNextVersion');
-    }}
-    onPrevVersion={() => {
-      console.log('onPrevVersion');
-    }}
-    onDownload={() => {
-      console.log('onDownload');
-    }}
+    onCopy={action('onCopy')}
+    onCodeCopy={action('onCodeCopy')}
+    onEdit={action('onEdit')}
+    onDelete={action('onDelete')}
+    onUpdate={action('onUpdate')}
+    onReport={action('onReport')}
+    onNextVersion={action('onNextVersion')}
+    onPrevVersion={action('onPrevVersion')}
+    onDownload={action('onDownload')}
     editText="Редактировать"
     copyPlainText="Копировать без форматирования"
     copyTgText="Копировать в TG"

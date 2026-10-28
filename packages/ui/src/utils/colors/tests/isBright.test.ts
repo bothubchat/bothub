@@ -17,4 +17,8 @@ describe('Determines brightness', () => {
   test('Dark green - #165F19', () => {
     expect(isBright('#165F19')).toBeFalsy();
   });
+  test('Unparsable color does not throw', () => {
+    expect(isBright('rgb(255, 255, 255)')).toBe(false);
+    expect(isBright('')).toBe(false);
+  });
 });

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useId, useState } from 'react';
 import {
   TextAreaFieldBlock,
   TextAreaFieldErrorText,
@@ -7,7 +7,7 @@ import {
   TextAreaFieldStyled,
   TextAreaFieldTextArea,
 } from './styled';
-import { Skeleton } from '@/ui/components/skeleton';
+import { FieldLabel } from '@/ui/components/field-label';
 
 export interface TextAreaFieldBlockProps {
   focus: boolean;
@@ -46,6 +46,18 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
   ...props
 }) => {
   const [isFocus, setIsFocus] = useState(false);
+  const labelId = useId();
+  const errorId = useId();
+  const hasLabel = typeof label === 'string' && !!label;
+  const hasErrorText = typeof error === 'string' && !!error;
+
+  const ariaProps = {
+    'aria-labelledby':
+      props['aria-labelledby'] ?? (hasLabel ? labelId : undefined),
+    'aria-invalid': props['aria-invalid'] ?? Boolean(error),
+    'aria-describedby':
+      props['aria-describedby'] ?? (hasErrorText ? errorId : undefined),
+  };
 
   const handleFocus = useCallback(
     (event: React.FocusEvent<HTMLTextAreaElement>) => {
@@ -68,15 +80,12 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
       $disabled={disabled}
       className={className}
     >
-      {label && skeleton && (
-        <TextAreaFieldLabel>
-          <Skeleton width={100} />
-        </TextAreaFieldLabel>
-      )}
-      {typeof label === 'string' && !skeleton && (
-        <TextAreaFieldLabel>{label}</TextAreaFieldLabel>
-      )}
-      {typeof label !== 'string' && !skeleton && label}
+      <FieldLabel
+        as={TextAreaFieldLabel}
+        label={label}
+        skeleton={skeleton}
+        labelProps={{ id: labelId }}
+      />
       {!skeleton &&
         (renderTextAreaBlock ? (
           renderTextAreaBlock({
@@ -86,6 +95,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
             skeleton: false,
             textarea: {
               ...props,
+              ...ariaProps,
               disabled,
               onFocus: handleFocus,
               onBlur: handleBlur,
@@ -101,6 +111,7 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
           >
             <TextAreaFieldTextArea
               {...props}
+              {...ariaProps}
               disabled={disabled}
               onFocus={handleFocus}
               onBlur={handleBlur}
@@ -117,7 +128,11 @@ export const TextAreaField: React.FC<TextAreaFieldProps> = ({
           <TextAreaFieldSkeleton />
         </TextAreaFieldBlock>
       )}
-      {error && <TextAreaFieldErrorText>{error}</TextAreaFieldErrorText>}
+      {error && (
+        <TextAreaFieldErrorText id={hasErrorText ? errorId : undefined}>
+          {error}
+        </TextAreaFieldErrorText>
+      )}
     </TextAreaFieldStyled>
   );
 };

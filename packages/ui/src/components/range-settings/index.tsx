@@ -1,5 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import { RangeSettingsSlider } from './styled';
+import {
+  RangeSettingsRoot,
+  RangeSettingsSlider,
+  RangeSettingsTrack,
+} from './styled';
 import type { RangeSettingsProps, RangeSettingsValue } from './types';
 
 function defaultSingle(min: number, max: number, step: number | null): number {
@@ -26,6 +30,7 @@ function normalizeValue(
 
 export const RangeSettings: React.FC<RangeSettingsProps> = ({
   className,
+  toggle,
   min = 0,
   max = 100,
   step = 1,
@@ -61,9 +66,9 @@ export const RangeSettings: React.FC<RangeSettingsProps> = ({
     [onChangeComplete, value],
   );
 
-  return (
+  const slider = (
     <RangeSettingsSlider
-      className={className}
+      className={toggle ? undefined : className}
       min={min}
       max={max}
       step={step}
@@ -74,6 +79,17 @@ export const RangeSettings: React.FC<RangeSettingsProps> = ({
       onChange={handleChange}
       onChangeComplete={handleChangeComplete}
     />
+  );
+
+  if (!toggle) {
+    return slider;
+  }
+
+  return (
+    <RangeSettingsRoot className={className}>
+      <RangeSettingsTrack>{slider}</RangeSettingsTrack>
+      {toggle}
+    </RangeSettingsRoot>
   );
 };
 

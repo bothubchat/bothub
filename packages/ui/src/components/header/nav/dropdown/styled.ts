@@ -2,6 +2,7 @@ import { styled, css } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { HeaderNavLinkStyled } from '../link/styled';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
+import { themeVar } from '@/ui/theme';
 
 export const HeaderNavDropdownStyled = styled.div<{ $inMenu: boolean }>`
   display: flex;
@@ -29,16 +30,19 @@ export const HeaderNavDropdownHead = styled(HeaderNavLinkStyled)<{
   ${({ $active }) =>
     $active
       ? css`
-          color: ${({ theme }) => theme.colors.accent.primaryLight};
+          color: ${({ theme }) =>
+            themeVar(theme, 'colors.accent.primaryLight')};
           > ${HeaderNavDropdownArrow} path {
-            stroke: ${({ theme }) => theme.colors.accent.primaryLight};
+            stroke: ${({ theme }) =>
+              themeVar(theme, 'colors.accent.primaryLight')};
           }
         `
       : css`
           &:hover {
-            color: ${({ theme }) => theme.colors.accent.primary};
+            color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
             > ${HeaderNavDropdownArrow} path {
-              stroke: ${({ theme }) => theme.colors.accent.primary};
+              stroke: ${({ theme }) =>
+                themeVar(theme, 'colors.accent.primary')};
             }
           }
         `}
@@ -57,7 +61,7 @@ export const HeaderNavDropdownBody = styled(animated.div)<{ $inMenu: boolean }>`
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        background: ${theme.colors.grayScale.gray3};
+        background: ${themeVar(theme, 'colors.grayScale.gray3')};
         padding: 10px;
         border-radius: 6px;
         margin-top: 14px;
@@ -69,8 +73,8 @@ export const HeaderNavDropdownBody = styled(animated.div)<{ $inMenu: boolean }>`
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      background: ${theme.colors.grayScale.gray3};
-      border: 1px solid ${theme.colors.grayScale.gray2};
+      background: ${themeVar(theme, 'colors.grayScale.gray3')};
+      border: 1px solid ${themeVar(theme, 'colors.grayScale.gray2')};
       border-radius: 17px;
       padding: 20px;
       position: absolute;

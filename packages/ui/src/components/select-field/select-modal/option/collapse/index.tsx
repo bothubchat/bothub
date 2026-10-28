@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   SelectFieldDataItem,
   SelectFieldSize,
@@ -42,9 +42,15 @@ export const SelectFieldCollapseOption = ({
 }: SelectFieldCollapseOptionProps) => {
   const theme = useTheme();
 
-  const [isOpen, setIsOpen] = useState(
-    typeof item === 'string' ? false : (item.open ?? false),
-  );
+  const itemOpen = typeof item === 'string' ? undefined : item.open;
+
+  const [isOpen, setIsOpen] = useState(itemOpen ?? false);
+  // Follow `item.open` when it changes, without an extra effect commit.
+  const [prevItemOpen, setPrevItemOpen] = useState(itemOpen);
+  if (prevItemOpen !== itemOpen) {
+    setPrevItemOpen(itemOpen);
+    setIsOpen(Boolean(itemOpen));
+  }
 
   const onCollapseClick = () => {
     setIsOpen((isOpen) => !isOpen);
@@ -60,12 +66,6 @@ export const SelectFieldCollapseOption = ({
   } else {
     isDisabled = !!item.disabled;
   }
-
-  useLayoutEffect(() => {
-    if (typeof item !== 'string') {
-      setIsOpen(Boolean(item.open));
-    }
-  }, [item]);
 
   const label = typeof item === 'string' ? item : (item.label ?? item.value);
 

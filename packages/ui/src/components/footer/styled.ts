@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 import { Container } from '../container';
 import { Typography } from '../typography';
-import { colorToRgba } from '@/ui/utils';
+import { themeVar } from '@/ui/theme';
 
 export const FooterStyled = styled.footer`
   min-width: ${({ theme }) => theme.mobile.minWidth};
@@ -10,13 +10,14 @@ export const FooterStyled = styled.footer`
   background:
     radial-gradient(
       51.67% 103.33% at 50% -3.33%,
-      ${({ theme }) => colorToRgba(theme.colors.accent.primary, 0.35)} 0%,
+      ${({ theme }) => themeVar(theme, 'tokens.accentPrimaryAlpha35')} 0%,
       rgba(8, 16, 39, 0) 53.98%
     ),
-    ${({ theme }) => theme.colors.grayScale.gray4};
+    ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
   background-repeat: no-repeat;
   background-size: 100% 400px;
-  border-top: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  border-top: 1px solid
+    ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     background-size: 100% 200px;
   }
@@ -56,7 +57,7 @@ export const FooterColumn = styled.div`
 `;
 
 export const FooterColumnLabel = styled(Typography)`
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   font-weight: 600;
   font-size: 16px;
   line-height: 22px;
@@ -84,19 +85,19 @@ export const FooterNavLink = styled.a`
   font-weight: 400;
   font-size: 16px;
   line-height: 22px;
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   text-decoration: none;
   cursor: default;
   &[href] {
     cursor: pointer;
   }
   svg path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
   &:hover {
-    color: ${({ theme }) => theme.colors.accent.primaryLight};
+    color: ${({ theme }) => themeVar(theme, 'colors.accent.primaryLight')};
     svg path {
-      fill: ${({ theme }) => theme.colors.accent.primaryLight};
+      fill: ${({ theme }) => themeVar(theme, 'colors.accent.primaryLight')};
     }
   }
 `;

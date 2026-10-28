@@ -1,5 +1,10 @@
-import React, { useCallback } from 'react';
-import { SelectFieldDataItem } from '@/ui/components/select-field/types';
+import React, { memo, useCallback, useMemo } from 'react';
+import {
+  SelectFieldDataItem,
+  SelectFieldDataItemComplex,
+  SelectFieldSize,
+  ValueType,
+} from '@/ui/components/select-field/types';
 import {
   SelectFieldCheckBox,
   SelectFieldCheckBoxLeftSide,
@@ -21,6 +26,7 @@ import {
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
+import { useEventCallback } from '@/ui/utils';
 import { SelectFieldCollapseOption } from '../collapse';
 import { SearchDataIcon } from '@/ui/icons/search-data';
 import { Radio } from '@/ui/components/radio';
@@ -32,9 +38,332 @@ import { SelectFieldOption } from '../select-field-option';
 import { StarsIcon } from '@/ui/icons';
 import { Checkbox } from '@/ui/components/checkbox';
 import { SelectFieldCheckboxGroupOption } from '../checkbox-group';
-import { SelectFieldOptionsProps } from '../types';
+import {
+  SelectFieldGroupCheckboxClickEventHandler,
+  SelectFieldOptionClickEventHandler,
+  SelectFieldOptionsProps,
+} from '../types';
+import {
+  getSelectFieldItemKey,
+  getSelectFieldSelectedKeys,
+} from '../../../helpers';
 
-export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
+const MAX_LABEL_LENGTH = 64;
+
+const getLongLabel = (item: SelectFieldDataItemComplex): string | null =>
+  typeof item.label === 'string' && item.label.length > MAX_LABEL_LENGTH
+    ? item.label
+    : null;
+
+const hasOptionTooltip = (item: SelectFieldDataItemComplex): boolean =>
+  !!item.tooltip || getLongLabel(item) !== null;
+
+const getOptionTooltipProps = (item: SelectFieldDataItemComplex) => {
+  const longLabel = getLongLabel(item);
+
+  return {
+    ...item.tooltip,
+    ...(longLabel !== null && {
+      placement: 'top-left' as const,
+      label: longLabel,
+      disabled: false,
+    }),
+  };
+};
+
+/*
+ * Every option is a memoized component that gets the same click handler: the
+ * clicked item is found by `data-index`. So rerendering the list (new value,
+ * search, parent render) only rerenders the options whose props changed.
+ */
+
+interface SelectFieldStringOptionProps {
+  item: string;
+  index: number;
+  selected: boolean;
+  size: SelectFieldSize;
+  selectedColor?: string;
+  onClick: React.MouseEventHandler<HTMLElement>;
+}
+
+const SelectFieldStringOption = memo(
+  ({
+    item,
+    index,
+    selected,
+    size,
+    selectedColor,
+    onClick,
+  }: SelectFieldStringOptionProps) => (
+    <SelectFieldOptionStyled
+      $selected={selected}
+      $disabled={false}
+      $size={size}
+      $selectedColor={selectedColor}
+      data-test={item}
+      data-index={index}
+      onClick={onClick}
+    >
+      <SelectFieldOptionSide>
+        <SelectFieldOptionText
+          $selected={selected}
+          $size={size}
+        >
+          {item}
+        </SelectFieldOptionText>
+      </SelectFieldOptionSide>
+    </SelectFieldOptionStyled>
+  ),
+);
+
+interface SelectFieldItemOptionProps {
+  item: SelectFieldDataItemComplex;
+  index: number;
+  size: SelectFieldSize;
+  onClick: React.MouseEventHandler<HTMLElement>;
+}
+
+const SelectFieldRadioOption = memo(
+  ({ item, index, size, onClick }: SelectFieldItemOptionProps) => {
+    if (hasOptionTooltip(item)) {
+      return (
+        <Tooltip {...getOptionTooltipProps(item)}>
+          <TooltipConsumer>
+            {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+              <SelectFieldRadio
+                $selected={item.selected}
+                $disabled={item.disabled}
+                onPointerDown={handleTooltipMouseEnter}
+                onPointerLeave={handleTooltipMouseLeave}
+                onMouseEnter={handleTooltipMouseEnter}
+                onMouseLeave={handleTooltipMouseLeave}
+                onClick={onClick}
+                data-test={item.label}
+                data-index={index}
+              >
+                <SelectFieldRadioTitleAndRadio>
+                  {item.icon && (
+                    <IconProvider size={size === 'large' ? 24 : 16}>
+                      {item.icon}
+                    </IconProvider>
+                  )}
+                  {item.label && (
+                    <SelectFieldRadioLabelWrapper>
+                      <SelectFieldRadioLabel $size={size}>
+                        {item.label}
+                      </SelectFieldRadioLabel>
+                      {item.best_model && <StarsIcon size={18} />}
+                    </SelectFieldRadioLabelWrapper>
+                  )}
+                  <Radio
+                    type="radio"
+                    checked={!!item.selected}
+                    name={item.radioName}
+                    disabled={item.disabled}
+                    icon={item.disabled ? item.end : undefined}
+                  />
+                </SelectFieldRadioTitleAndRadio>
+
+                {item.description && (
+                  <SelectFieldRadioDescription>
+                    {item.description}
+                  </SelectFieldRadioDescription>
+                )}
+              </SelectFieldRadio>
+            )}
+          </TooltipConsumer>
+        </Tooltip>
+      );
+    }
+
+    return (
+      <SelectFieldRadio
+        data-test={item.label}
+        data-index={index}
+        $selected={item.selected}
+        $disabled={item.disabled}
+        onClick={onClick}
+      >
+        <SelectFieldRadioTitleAndRadio>
+          {typeof item.label === 'string' && item.label.length && (
+            <SelectFieldRadioLabel $size={size}>
+              {item.label}
+            </SelectFieldRadioLabel>
+          )}
+          {typeof item.label !== 'string' && item.label}
+          <Radio
+            type="radio"
+            checked={item.selected ?? false}
+            name={item.radioName}
+            disabled={item.disabled}
+            icon={item.disabled ? item.end : undefined}
+          />
+        </SelectFieldRadioTitleAndRadio>
+
+        {item.description && (
+          <SelectFieldRadioDescription>
+            {item.description}
+          </SelectFieldRadioDescription>
+        )}
+      </SelectFieldRadio>
+    );
+  },
+);
+
+const SelectFieldCheckboxOption = memo(
+  ({ item, index, onClick }: Omit<SelectFieldItemOptionProps, 'size'>) => {
+    const theme = useTheme();
+    const includeLabel = Boolean(item.label);
+
+    return (
+      <SelectFieldCheckBox
+        data-index={index}
+        onClick={onClick}
+      >
+        <SelectFieldCheckBoxWrapper>
+          <SelectFieldCheckBoxLeftSide>
+            {item.icon && (
+              <IconProvider
+                size={16}
+                fill={theme.colors.base.white}
+              >
+                {item.icon}
+              </IconProvider>
+            )}
+            <SelectFieldCheckBoxName>
+              {includeLabel ? item.label : item.email}
+            </SelectFieldCheckBoxName>
+          </SelectFieldCheckBoxLeftSide>
+
+          <Checkbox
+            displayFlex
+            checked={item.selected}
+            size={16}
+          />
+        </SelectFieldCheckBoxWrapper>
+        {includeLabel && item.email && (
+          <SelectFieldCheckBoxMail>{item.email}</SelectFieldCheckBoxMail>
+        )}
+      </SelectFieldCheckBox>
+    );
+  },
+);
+
+interface SelectFieldDefaultOptionProps extends SelectFieldItemOptionProps {
+  selected: boolean;
+  selectedColor?: string;
+}
+
+const SelectFieldDefaultOption = memo(
+  ({
+    item,
+    index,
+    selected,
+    size,
+    selectedColor,
+    onClick,
+  }: SelectFieldDefaultOptionProps) => {
+    const disabled = !!item.disabled;
+
+    if (hasOptionTooltip(item)) {
+      return (
+        <Tooltip {...getOptionTooltipProps(item)}>
+          <TooltipConsumer>
+            {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+              <SelectFieldOption
+                item={item}
+                selected={selected}
+                disabled={disabled}
+                size={size}
+                selectedColor={selectedColor}
+                onClick={onClick}
+                onMouseEnter={handleTooltipMouseEnter}
+                onMouseLeave={handleTooltipMouseLeave}
+                data-test={item.label}
+                data-index={index}
+              />
+            )}
+          </TooltipConsumer>
+        </Tooltip>
+      );
+    }
+
+    return (
+      <SelectFieldOption
+        data-test={item.label}
+        data-index={index}
+        item={item}
+        selected={selected}
+        disabled={disabled}
+        size={size}
+        selectedColor={selectedColor}
+        onClick={onClick}
+      />
+    );
+  },
+);
+
+interface SelectFieldCollapseItemProps {
+  item: SelectFieldDataItemComplex;
+  value: ValueType;
+  size: SelectFieldSize;
+  disableSelect: boolean;
+  selectedColor?: string;
+  onGroupCheckboxClick?: SelectFieldGroupCheckboxClickEventHandler;
+  onOptionClick?: SelectFieldOptionClickEventHandler;
+}
+
+const SelectFieldCollapseItem = memo(
+  ({
+    item,
+    value,
+    size,
+    disableSelect,
+    selectedColor,
+    onGroupCheckboxClick,
+    onOptionClick,
+  }: SelectFieldCollapseItemProps) => {
+    const props = {
+      size,
+      item,
+      onClick: item.onClick,
+      icon: item.disabled ? item.end : undefined,
+      children: (
+        <SelectFieldOptions
+          value={value}
+          data={item.data ?? []}
+          size={size}
+          disableSelect={disableSelect}
+          selectedColor={selectedColor}
+          onGroupCheckboxClick={onGroupCheckboxClick}
+          onOptionClick={onOptionClick}
+        />
+      ),
+    };
+
+    if (hasOptionTooltip(item)) {
+      return (
+        <Tooltip {...getOptionTooltipProps(item)}>
+          <TooltipConsumer>
+            {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
+              <SelectFieldCollapseOption
+                {...props}
+                onPointerDown={handleTooltipMouseEnter}
+                onPointerLeave={handleTooltipMouseLeave}
+                onMouseEnter={handleTooltipMouseEnter}
+                onMouseLeave={handleTooltipMouseLeave}
+              />
+            )}
+          </TooltipConsumer>
+        </Tooltip>
+      );
+    }
+
+    return <SelectFieldCollapseOption {...props} />;
+  },
+);
+
+const SelectFieldOptionsComponent = ({
   value,
   data,
   size,
@@ -43,13 +372,31 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
   onGroupCheckboxClick,
   onOptionClick,
   ...props
-}) => {
+}: SelectFieldOptionsProps) => {
   const theme = useTheme();
-  const handleOptionClick = useCallback(
-    (item: SelectFieldDataItem) => {
-      onOptionClick?.(item);
+
+  const selectedKeys = useMemo(
+    () => getSelectFieldSelectedKeys(value),
+    [value],
+  );
+
+  const handleItemClick = useEventCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      const item: SelectFieldDataItem | undefined =
+        data[Number(event.currentTarget.dataset.index)];
+
+      if (item !== undefined) {
+        onOptionClick?.(item);
+      }
     },
-    [onOptionClick],
+  );
+
+  const handleControlItemClick = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => {
+      event.preventDefault();
+      handleItemClick(event);
+    },
+    [handleItemClick],
   );
 
   return (
@@ -59,34 +406,16 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
     >
       {data.map((item, index) => {
         if (typeof item === 'string') {
-          let selected: boolean;
-
-          if (!value || Array.isArray(value)) {
-            selected = false;
-          } else {
-            selected =
-              typeof value === 'string' ? item === value : item === value.value;
-          }
-
           return (
-            <SelectFieldOptionStyled
-              $selected={selected}
-              $disabled={false}
-              $size={size}
-              $selectedColor={selectedColor}
+            <SelectFieldStringOption
               key={index}
-              data-test={item}
-              onClick={handleOptionClick.bind(null, item)}
-            >
-              <SelectFieldOptionSide>
-                <SelectFieldOptionText
-                  $selected={selected}
-                  $size={size}
-                >
-                  {item}
-                </SelectFieldOptionText>
-              </SelectFieldOptionSide>
-            </SelectFieldOptionStyled>
+              item={item}
+              index={index}
+              selected={selectedKeys.has(item)}
+              size={size}
+              selectedColor={selectedColor}
+              onClick={handleItemClick}
+            />
           );
         }
 
@@ -126,282 +455,77 @@ export const SelectFieldOptions: React.FC<SelectFieldOptionsProps> = ({
         }
 
         if (item.type === 'radio') {
-          const onClick = (e: React.MouseEvent) => {
-            e.preventDefault();
-
-            handleOptionClick(item);
-          };
-
-          const key = item.id ?? item.value ?? `radio-${index}`;
-          const props = {
-            $selected: item.selected,
-            $disabled: item.disabled,
-            onClick,
-            children: (
-              <>
-                <SelectFieldRadioTitleAndRadio>
-                  {typeof item.label === 'string' && item.label.length && (
-                    <SelectFieldRadioLabel $size={size}>
-                      {item.label}
-                    </SelectFieldRadioLabel>
-                  )}
-                  {typeof item.label !== 'string' && item.label}
-                  <Radio
-                    type="radio"
-                    checked={item.selected ?? false}
-                    name={item.radioName}
-                    disabled={item.disabled}
-                    icon={item.disabled ? item.end : undefined}
-                  />
-                </SelectFieldRadioTitleAndRadio>
-
-                {item.description && (
-                  <SelectFieldRadioDescription>
-                    {item.description}
-                  </SelectFieldRadioDescription>
-                )}
-              </>
-            ),
-          };
-
-          return item.tooltip ||
-            (item.label &&
-              typeof item.label === 'string' &&
-              item.label.length &&
-              item.label.length > 64) ? (
-            <Tooltip
-              key={key}
-              {...item.tooltip}
-              {...(item.label &&
-                typeof item.label === 'string' &&
-                item.label.length > 64 && {
-                  placement: 'top-left',
-                  label: item.label,
-                  disabled: false,
-                })}
-            >
-              <TooltipConsumer>
-                {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                  <SelectFieldRadio
-                    {...props}
-                    onPointerDown={handleTooltipMouseEnter}
-                    onPointerLeave={handleTooltipMouseLeave}
-                    onMouseEnter={handleTooltipMouseEnter}
-                    onMouseLeave={handleTooltipMouseLeave}
-                    onClick={onClick}
-                    data-test={item.label}
-                  >
-                    <SelectFieldRadioTitleAndRadio>
-                      {item.icon && (
-                        <IconProvider size={size === 'large' ? 24 : 16}>
-                          {item.icon}
-                        </IconProvider>
-                      )}
-                      {item.label && (
-                        <SelectFieldRadioLabelWrapper>
-                          <SelectFieldRadioLabel $size={size}>
-                            {item.label}
-                          </SelectFieldRadioLabel>
-                          {item.best_model && <StarsIcon size={18} />}
-                        </SelectFieldRadioLabelWrapper>
-                      )}
-                      <Radio
-                        type="radio"
-                        checked={!!item.selected}
-                        name={item.radioName}
-                        disabled={item.disabled}
-                        icon={item.disabled ? item.end : undefined}
-                      />
-                    </SelectFieldRadioTitleAndRadio>
-
-                    {item.description && (
-                      <SelectFieldRadioDescription>
-                        {item.description}
-                      </SelectFieldRadioDescription>
-                    )}
-                  </SelectFieldRadio>
-                )}
-              </TooltipConsumer>
-            </Tooltip>
-          ) : (
-            <SelectFieldRadio
-              key={key}
-              data-test={item.label}
-              {...props}
+          return (
+            <SelectFieldRadioOption
+              key={item.id ?? item.value ?? `radio-${index}`}
+              item={item}
+              index={index}
+              size={size}
+              onClick={handleControlItemClick}
             />
           );
         }
 
         if (item.type === 'checkbox') {
-          const onClick = (e: React.MouseEvent) => {
-            e.preventDefault();
-            handleOptionClick(item);
-          };
-          const key = item.id ?? item.value ?? `checkbox-${index}`;
-          const includeLabel = Boolean(item.label);
           return (
-            <SelectFieldCheckBox
-              onClick={onClick}
-              key={key}
-            >
-              <SelectFieldCheckBoxWrapper>
-                <SelectFieldCheckBoxLeftSide>
-                  {item.icon && (
-                    <IconProvider
-                      size={16}
-                      fill={theme.colors.base.white}
-                    >
-                      {item.icon}
-                    </IconProvider>
-                  )}
-                  <SelectFieldCheckBoxName>
-                    {includeLabel ? item.label : item.email}
-                  </SelectFieldCheckBoxName>
-                </SelectFieldCheckBoxLeftSide>
-
-                <Checkbox
-                  displayFlex
-                  checked={item.selected}
-                  size={16}
-                />
-              </SelectFieldCheckBoxWrapper>
-              {includeLabel && item.email && (
-                <SelectFieldCheckBoxMail>{item.email}</SelectFieldCheckBoxMail>
-              )}
-            </SelectFieldCheckBox>
+            <SelectFieldCheckboxOption
+              key={item.id ?? item.value ?? `checkbox-${index}`}
+              item={item}
+              index={index}
+              onClick={handleControlItemClick}
+            />
           );
         }
-        if (item.type === 'collapse' && item.data) {
-          const props = {
-            size,
-            item,
-            onClick: item.onClick,
-            icon: item.disabled ? item.end : undefined,
-            children: (
-              <SelectFieldOptions
-                value={value}
-                data={item.data ?? []}
-                size={size}
-                disableSelect={disableSelect}
-                onOptionClick={onOptionClick}
-                selectedColor={selectedColor}
-              />
-            ),
-          };
-          const key = item.id ?? item.value ?? `collapse-${index}`;
 
-          return item.tooltip ||
-            (item.label &&
-              typeof item.label === 'string' &&
-              item.label.length &&
-              item.label.length > 64) ? (
-            <Tooltip
-              key={key}
-              {...item.tooltip}
-              {...(item.label &&
-                typeof item.label === 'string' &&
-                item.label.length &&
-                item.label.length > 64 && {
-                  placement: 'top-left',
-                  label: item.label,
-                  disabled: false,
-                })}
-            >
-              <TooltipConsumer>
-                {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                  <SelectFieldCollapseOption
-                    {...props}
-                    onPointerDown={handleTooltipMouseEnter}
-                    onPointerLeave={handleTooltipMouseLeave}
-                    onMouseEnter={handleTooltipMouseEnter}
-                    onMouseLeave={handleTooltipMouseLeave}
-                  />
-                )}
-              </TooltipConsumer>
-            </Tooltip>
-          ) : (
-            <SelectFieldCollapseOption
-              key={key}
-              {...props}
+        if (item.type === 'collapse' && item.data) {
+          return (
+            <SelectFieldCollapseItem
+              key={item.id ?? item.value ?? `collapse-${index}`}
+              item={item}
+              value={value}
+              size={size}
+              disableSelect={disableSelect}
+              selectedColor={selectedColor}
+              onGroupCheckboxClick={onGroupCheckboxClick}
+              onOptionClick={onOptionClick}
             />
           );
         }
 
         if (item.type === 'checkbox-group' && item.data) {
-          const key = item.id ?? item.value ?? `checkbox-group-${index}`;
           return (
             <SelectFieldCheckboxGroupOption
+              key={item.id ?? item.value ?? `checkbox-group-${index}`}
               SelectFieldOptions={SelectFieldOptions}
-              data={item.data ?? []}
+              data={item.data}
               size={size}
               value={value}
               icon={item.disabled ? item.end : undefined}
+              disableSelect={disableSelect}
+              selectedColor={selectedColor}
               onGroupCheckboxClick={onGroupCheckboxClick}
               onOptionClick={onOptionClick}
-              key={key}
               item={item}
             />
           );
         }
 
-        const disabled: boolean = !!item.disabled;
-        let selected: boolean;
-
-        if (!value || Array.isArray(value)) {
-          selected = false;
-        } else {
-          selected =
-            (typeof value === 'string'
-              ? item.value === value
-              : item.value === value.value) && !disableSelect;
-        }
-
-        const key = item.id ?? item.value ?? index;
-        const props = {
-          item,
-          selected,
-          disabled,
-          size,
-          selectedColor,
-          onClick: handleOptionClick.bind(null, item),
-        };
-
-        return item.tooltip ||
-          (item.label &&
-            typeof item.label === 'string' &&
-            item.label.length &&
-            item.label.length > 64) ? (
-          <Tooltip
-            key={key}
-            {...item.tooltip}
-            {...(item.label &&
-              typeof item.label === 'string' &&
-              item.label.length &&
-              item.label.length > 64 && {
-                placement: 'top-left',
-                label: item.label,
-                disabled: false,
-              })}
-          >
-            <TooltipConsumer>
-              {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                <SelectFieldOption
-                  {...props}
-                  onMouseEnter={handleTooltipMouseEnter}
-                  onMouseLeave={handleTooltipMouseLeave}
-                  data-test={item.label}
-                />
-              )}
-            </TooltipConsumer>
-          </Tooltip>
-        ) : (
-          <SelectFieldOption
-            key={key}
-            data-test={item.label}
-            {...props}
+        return (
+          <SelectFieldDefaultOption
+            key={item.id ?? item.value ?? index}
+            item={item}
+            index={index}
+            selected={
+              selectedKeys.has(getSelectFieldItemKey(item)) && !disableSelect
+            }
+            size={size}
+            selectedColor={selectedColor}
+            onClick={handleItemClick}
           />
         );
       })}
     </SelectFieldOptionsStyled>
   );
 };
+
+export const SelectFieldOptions = memo(SelectFieldOptionsComponent);

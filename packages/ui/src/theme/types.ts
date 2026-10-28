@@ -1,3 +1,5 @@
+import type { ThemeTokenName } from './tokens';
+
 export interface Theme {
   mode: ThemeMode;
   bright: boolean;
@@ -9,7 +11,11 @@ export interface Theme {
   header: ThemeHeader;
   dashboard: ThemeDashboard;
   default: DefaultTheme;
+  /** Mode-dependent semantic colors, see `themeTokenDefinitions`. */
+  tokens: ThemeTokens;
 }
+
+export type ThemeTokens = Record<ThemeTokenName, string>;
 
 export interface ColorScheme {
   light: Theme;
@@ -39,7 +45,7 @@ export type ColorSchemes = {
   [key in ColorSchemeNames]: ColorScheme;
 };
 
-export type DefaultTheme = Omit<Theme, 'default'>;
+export type DefaultTheme = Omit<Theme, 'default' | 'tokens'>;
 
 export type ThemeMode = 'dark' | 'light';
 

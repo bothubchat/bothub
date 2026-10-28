@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { HeaderVariant } from './types';
 
 export interface HeaderContextValue {
@@ -15,8 +15,15 @@ export const HeaderContext = React.createContext<HeaderContextValue>({
 
 export const HeaderProvider: React.FC<
   HeaderContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <HeaderContext.Provider value={value}>{children}</HeaderContext.Provider>
-);
+> = ({ children, variant, isMenuOpen, setIsMenuOpen }) => {
+  const value = useMemo(
+    () => ({ variant, isMenuOpen, setIsMenuOpen }),
+    [variant, isMenuOpen, setIsMenuOpen],
+  );
+
+  return (
+    <HeaderContext.Provider value={value}>{children}</HeaderContext.Provider>
+  );
+};
 
 export const useHeader = () => useContext(HeaderContext);

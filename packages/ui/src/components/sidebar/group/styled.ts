@@ -1,9 +1,10 @@
-import { styled } from 'styled-components';
+import { css, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons';
 import { colorToRgba } from '@/ui/utils';
 import { Skeleton } from '@/ui/components/skeleton';
+import { inCollapsedSidebar } from '../collapsed';
 
 export const SidebarGroupStyled = styled.div<{
   $isOver?: boolean;
@@ -75,13 +76,28 @@ export const SidebarGroupName = styled(Typography).attrs({
   text-overflow: ellipsis;
 `;
 
+/**
+ * Without `$isSidebarOpen` follows the sidebar by itself, so the list doesn't
+ * have to re-render when the sidebar collapses.
+ */
 export const SidebarGroupsList = styled.div<{
   $isSidebarOpen?: boolean;
 }>`
   display: flex;
   flex-direction: column;
-  ${({ $isSidebarOpen }) => $isSidebarOpen && 'padding-right: 8px;'}
   gap: 8px;
+  ${({ $isSidebarOpen }) => {
+    if ($isSidebarOpen === undefined) {
+      return css`
+        padding-right: 8px;
+        ${inCollapsedSidebar} & {
+          padding-right: 0;
+        }
+      `;
+    }
+
+    return $isSidebarOpen && 'padding-right: 8px;';
+  }}
 `;
 
 export const SidebarArrowDownIcon = styled(ArrowDownIcon)<{

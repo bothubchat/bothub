@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { findNearestScrollableParent } from '@/ui/utils';
+import { findNearestScrollableParent, useEscapeLayer } from '@/ui/utils';
 import { Button, ButtonProps } from '../button';
 import { Portal } from '../portal';
 import * as S from './styled';
@@ -40,6 +40,9 @@ export type MenuProps = BaseMenuProps &
 
 const defaultCoords: MenuCoords = { top: 0, left: 0 };
 
+const isSameCoords = (a: MenuCoords, b: MenuCoords) =>
+  a.top === b.top && a.left === b.left && a.minWidth === b.minWidth;
+
 export const Menu: React.FC<MenuProps> = ({
   children,
   trigger,
@@ -67,8 +70,18 @@ export const Menu: React.FC<MenuProps> = ({
   const [contentVisible, setContentVisible] = useState(false);
 
   const triggerRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
   const measureRef = useRef<HTMLDivElement>(null);
+  // The portal mounts the content a render later, so effects that need it
+  // wait for this state instead of reading the ref too early
+  const [contentElement, setContentElement] = useState<HTMLDivElement | null>(
+    null,
+  );
+
+  const setContentRef = useCallback((node: HTMLDivElement | null) => {
+    contentRef.current = node;
+    setContentElement(node);
+  }, []);
 
   const triggerId = useId();
   const contentId = useId();
@@ -121,15 +134,16 @@ export const Menu: React.FC<MenuProps> = ({
         left: 0,
       };
 
-      setCoords({
+      const nextCoords: MenuCoords = {
         top: menuCoords.top - offsetRect.top,
         left: menuCoords.left - offsetRect.left,
         ...(menuCoords.minWidth !== undefined && {
           minWidth: menuCoords.minWidth,
         }),
-      });
+      };
+      setCoords((prev) => (isSameCoords(prev, nextCoords) ? prev : nextCoords));
     } else {
-      setCoords(menuCoords);
+      setCoords((prev) => (isSameCoords(prev, menuCoords) ? prev : menuCoords));
     }
 
     return true;
@@ -174,37 +188,58 @@ export const Menu: React.FC<MenuProps> = ({
     return () => {
       cancelAnimationFrame(frameId);
     };
-  }, [isOpen, updatePosition]);
+  }, [isOpen, contentElement, updatePosition]);
 
   useEffect(() => {
-    if (!isOpen || !contentRef.current) {
+    if (!isOpen || !contentElement) {
       return;
     }
+
+    let frameId = 0;
+    const schedulePositionUpdate = () => {
+      if (frameId) {
+        return;
+      }
+
+      frameId = requestAnimationFrame(() => {
+        frameId = 0;
+        updatePosition();
+      });
+    };
 
     const resizeObserver = new ResizeObserver(() => {
       updatePosition();
     });
 
-    const observeTarget = measureRef.current ?? contentRef.current;
+    const observeTarget = measureRef.current ?? contentElement;
     resizeObserver.observe(observeTarget);
 
-    if (contentRef.current && contentRef.current !== observeTarget) {
-      resizeObserver.observe(contentRef.current);
+    if (contentElement !== observeTarget) {
+      resizeObserver.observe(contentElement);
     }
 
-    const handleResize = () => {
-      updatePosition();
+    const handleScroll = (event: Event) => {
+      // Scrolling the menu itself doesn't move it
+      if (
+        event.target instanceof Node &&
+        contentElement.contains(event.target)
+      ) {
+        return;
+      }
+
+      schedulePositionUpdate();
     };
 
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('scroll', handleResize, true);
+    window.addEventListener('resize', schedulePositionUpdate);
+    window.addEventListener('scroll', handleScroll, true);
 
     return () => {
+      cancelAnimationFrame(frameId);
       resizeObserver.disconnect();
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('scroll', handleResize, true);
+      window.removeEventListener('resize', schedulePositionUpdate);
+      window.removeEventListener('scroll', handleScroll, true);
     };
-  }, [isOpen, updatePosition]);
+  }, [isOpen, contentElement, updatePosition]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -232,24 +267,9 @@ export const Menu: React.FC<MenuProps> = ({
     };
   }, [isOpen, setOpen]);
 
-  useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        event.stopPropagation();
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('keyup', handleEscape, true);
-
-    return () => {
-      document.removeEventListener('keyup', handleEscape, true);
-    };
-  }, [isOpen, setOpen]);
+  useEscapeLayer(isOpen, () => {
+    setOpen(false);
+  });
 
   useEffect(() => {
     if (!isOpen || !closeOnScroll || !triggerRef.current) {
@@ -324,7 +344,7 @@ export const Menu: React.FC<MenuProps> = ({
 
   const menuContent = isOpen ? (
     <S.MenuContent
-      ref={contentRef}
+      ref={setContentRef}
       id={contentId}
       role="menu"
       $position={position}

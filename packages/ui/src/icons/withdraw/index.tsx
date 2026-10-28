@@ -1,7 +1,7 @@
 import { Icon, icon } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
-export const WithdrawIcon = icon(({ ...props }) => {
+export const WithdrawIcon = icon((props) => {
   const theme = useTheme();
 
   return (

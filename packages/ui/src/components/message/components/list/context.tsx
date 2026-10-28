@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { MessageListVariant } from './types';
 
 export interface MessageListContextValue {
@@ -11,11 +11,15 @@ export const MessageListContext = React.createContext<MessageListContextValue>({
 
 export const MessageListProvider: React.FC<
   MessageListContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <MessageListContext.Provider value={value}>
-    {children}
-  </MessageListContext.Provider>
-);
+> = ({ children, variant }) => {
+  const value = useMemo(() => ({ variant }), [variant]);
+
+  return (
+    <MessageListContext.Provider value={value}>
+      {children}
+    </MessageListContext.Provider>
+  );
+};
 
 export const useMessageList = () => useContext(MessageListContext);
 

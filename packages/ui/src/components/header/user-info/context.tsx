@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 export interface HeaderUserInfoContextValue {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -9,11 +9,15 @@ export const HeaderUserInfoContext =
 
 export const HeaderUserInfoProvider: React.FC<
   HeaderUserInfoContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <HeaderUserInfoContext.Provider value={value}>
-    {children}
-  </HeaderUserInfoContext.Provider>
-);
+> = ({ children, setIsOpen }) => {
+  const value = useMemo(() => ({ setIsOpen }), [setIsOpen]);
+
+  return (
+    <HeaderUserInfoContext.Provider value={value}>
+      {children}
+    </HeaderUserInfoContext.Provider>
+  );
+};
 
 export function useHeaderUserInfo(): HeaderUserInfoContextValue {
   const value = useContext(HeaderUserInfoContext);

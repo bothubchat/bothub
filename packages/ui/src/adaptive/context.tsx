@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 export interface AdaptiveContextValue {
   isDesktop: boolean;
@@ -14,8 +14,17 @@ export const AdaptiveContext = React.createContext<AdaptiveContextValue>({
 
 export const AdaptiveProvider: React.FC<
   AdaptiveContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <AdaptiveContext.Provider value={value}>{children}</AdaptiveContext.Provider>
-);
+> = ({ children, isDesktop, isTablet, isMobile }) => {
+  const value = useMemo(
+    () => ({ isDesktop, isTablet, isMobile }),
+    [isDesktop, isTablet, isMobile],
+  );
+
+  return (
+    <AdaptiveContext.Provider value={value}>
+      {children}
+    </AdaptiveContext.Provider>
+  );
+};
 
 export const useAdaptive = () => useContext(AdaptiveContext);

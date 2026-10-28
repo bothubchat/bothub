@@ -155,4 +155,93 @@ describe('MessageVoice', () => {
 
     expect(play).toHaveBeenCalledTimes(1);
   });
+
+  test('pauses the voice that is playing when another one starts', async () => {
+    const { container } = customRender(
+      <>
+        {voice()}
+        {voice({ src: 'https://cdn.bothub.chat/other.webm' })}
+      </>,
+    );
+    const [, playingAudio] = container.querySelectorAll('audio');
+    Object.defineProperty(playingAudio, 'paused', {
+      configurable: true,
+      value: false,
+    });
+
+    await clickToggle();
+
+    expect(pause.mock.contexts).toEqual([playingAudio]);
+  });
+});
+
+describe('MessageVoice progress', () => {
+  beforeEach(() => {
+    vi.spyOn(HTMLMediaElement.prototype, 'load').mockImplementation(() => {});
+  });
+  afterEach(() => {
+    cleanup();
+    vi.restoreAllMocks();
+  });
+
+  const timeUpdate = (audio: HTMLAudioElement, currentTime: number) => {
+    Object.defineProperty(audio, 'currentTime', {
+      configurable: true,
+      value: currentTime,
+    });
+    fireEvent.timeUpdate(audio);
+  };
+
+  const waves = (container: HTMLElement) =>
+    container.querySelector<SVGSVGElement>('svg[viewBox^="0 0 145 "]');
+
+  const progress = (container: HTMLElement) =>
+    waves(container)?.style.getPropertyValue('--voice-progress');
+
+  test('moves progress without re-rendering on every timeupdate', () => {
+    let commits = 0;
+    const { container } = customRender(
+      <React.Profiler
+        id="voice"
+        onRender={(_, phase) => {
+          if (phase !== 'mount') commits++;
+        }}
+      >
+        {voice()}
+      </React.Profiler>,
+    );
+    const audio = getAudio(container);
+
+    timeUpdate(audio, 0.25);
+    commits = 0;
+    timeUpdate(audio, 0.5);
+    timeUpdate(audio, 0.75);
+
+    expect(commits).toBe(0);
+    expect(progress(container)).toBe(String(0.75 / 6));
+    expect(screen.getByText('00:00')).toBeTruthy();
+
+    timeUpdate(audio, 1.25);
+
+    expect(commits).toBe(1);
+    expect(screen.getByText('00:01')).toBeTruthy();
+  });
+
+  test('keeps progress at zero when the duration is unknown', () => {
+    const { container } = customRender(voice({ duration: 0 }));
+
+    timeUpdate(getAudio(container), 2);
+
+    expect(progress(container)).toBe('0');
+  });
+
+  test('scales wave bars to the height', () => {
+    const { container } = customRender(voice({ height: 18 }));
+
+    const heights = [
+      ...(waves(container)?.querySelectorAll('clipPath rect') ?? []),
+    ].map((rect) => Number(rect.getAttribute('height')));
+
+    expect(heights).toEqual([2, 9, 16.2]);
+  });
 });

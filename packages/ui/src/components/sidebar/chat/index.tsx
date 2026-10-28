@@ -1,16 +1,17 @@
-import { useEffect, useRef, useState } from 'react';
 import { useDraggable } from '@dnd-kit/core';
-import { useSidebar } from '../context';
+import { useSidebarEdit } from '../context';
+import { isInCollapsedSidebar } from '../collapsed';
 import {
   SidebarChatStyled,
   SidebarChatName,
   SidebarChatIconStyled,
-  SidebarChatButton,
   SidebarChatDraggbleButton,
   SidebarChatDragHandle,
   SidebarChatBox,
   SidebarChatPromtLine,
   SidebarChatLoadingText,
+  SidebarChatOpenOnly,
+  SidebarChatCollapsedOnly,
 } from './styled';
 import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
 import { IconProvider } from '@/ui/components/icon';
@@ -37,6 +38,18 @@ export interface SidebarChatDefaultProps
   progressAriaLabel?: string;
 }
 
+type ProgressStyle = React.CSSProperties & {
+  '--sidebar-chat-progress': string;
+};
+
+const isTruncated = (element: Element) =>
+  element.scrollWidth > element.clientWidth;
+
+/**
+ * A chat in the sidebar. It doesn't read whether the sidebar is collapsed:
+ * the collapsed look comes from CSS, so collapsing neither remounts nor
+ * re-renders the rows.
+ */
 export const SidebarChat: React.FC<SidebarChatDefaultProps> = ({
   id,
   name,
@@ -49,12 +62,11 @@ export const SidebarChat: React.FC<SidebarChatDefaultProps> = ({
   skeleton,
   dragAriaLabel,
   progressAriaLabel,
+  onMouseEnter,
+  onMouseLeave,
   ...props
 }) => {
-  const { isOpen: sidebarOpen } = useSidebar();
-  const { isEdit } = useSidebar();
-  const [showTooltip, setShowTooltip] = useState(false);
-  const ref = useRef<HTMLParagraphElement>(null);
+  const { isEdit } = useSidebarEdit();
   const { attributes, listeners, setNodeRef } = useDraggable({
     disabled: !isEdit || skeleton,
     id: skeleton ? 'skeleton' : id,
@@ -62,129 +74,126 @@ export const SidebarChat: React.FC<SidebarChatDefaultProps> = ({
       type: 'chat',
     },
   });
-  useEffect(() => {
-    const observer = new ResizeObserver(() => {
-      if (ref.current && ref.current.scrollWidth > ref.current.clientWidth) {
-        setShowTooltip(true);
-      } else {
-        setShowTooltip(false);
-      }
-    });
-
-    if (ref.current && ref.current.scrollWidth > ref.current.clientWidth) {
-      observer.observe(ref.current);
-    }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
-  }, []);
 
   if (skeleton) {
     return <SidebarChatSkeleton />;
   }
 
-  if (!sidebarOpen) {
-    return (
-      <Tooltip
-        label={name}
-        placement="center-right"
-        align="center"
-      >
-        <TooltipConsumer>
-          {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-            <SidebarChatButton
-              {...props}
-              aria-label={props['aria-label'] ?? name}
-              aria-current={active ? 'page' : undefined}
-              onMouseEnter={handleTooltipMouseEnter}
-              onMouseLeave={handleTooltipMouseLeave}
-            >
-              <IconProvider size={18}>
-                {icon || <SidebarChatIconStyled />}
-              </IconProvider>
-            </SidebarChatButton>
-          )}
-        </TooltipConsumer>
-      </Tooltip>
-    );
-  }
+  const chatIcon = icon || <SidebarChatIconStyled />;
+  const hasProgress =
+    !!promtQueue &&
+    typeof progress?.max === 'number' &&
+    typeof progress?.value === 'number';
+  const progressMax = hasProgress ? (progress?.max ?? 0) : 0;
+  const progressValue = hasProgress ? (progress?.value ?? 0) : 0;
+  const percent =
+    progressMax > 0 ? Math.round((progressValue / progressMax) * 100) : 0;
+  const isProgressDone = progressMax > 0 && progressValue === progressMax;
 
   return (
-    <SidebarChatBox
-      {...props}
-      $active={active}
-      aria-current={active ? 'page' : undefined}
+    <Tooltip
+      label={name}
+      placement="center-right"
+      align="center"
     >
-      <SidebarChatStyled ref={setNodeRef}>
-        {isEdit ? (
-          <SidebarChatDragHandle
-            {...attributes}
-            {...listeners}
-            aria-label={dragAriaLabel}
+      <TooltipConsumer>
+        {(rowTooltip) => (
+          <SidebarChatBox
+            {...props}
+            $active={active}
+            aria-current={active ? 'page' : undefined}
+            onMouseEnter={(event) => {
+              onMouseEnter?.(event);
+              // The icon of a collapsed row needs the name next to it
+              if (isInCollapsedSidebar(event.currentTarget)) {
+                rowTooltip.handleTooltipMouseEnter(event);
+              }
+            }}
+            onMouseLeave={(event) => {
+              onMouseLeave?.(event);
+              rowTooltip.handleTooltipMouseLeave(event);
+            }}
           >
-            <IconProvider size={18}>
-              <SidebarChatDraggbleButton>
-                <DragDotIcon />
-              </SidebarChatDraggbleButton>
-            </IconProvider>
-            <SidebarChatName ref={ref}>{name}</SidebarChatName>
-          </SidebarChatDragHandle>
-        ) : (
-          <>
-            <IconProvider size={18}>
-              {promtQueue &&
-                typeof progress === 'object' &&
-                typeof progress?.max === 'number' &&
-                typeof progress?.value === 'number' &&
-                progress.max > 0 &&
-                progress.value !== progress.max && (
-                  <SidebarChatLoadingText>
-                    {Math.round((progress.value / progress.max) * 100)}%
-                  </SidebarChatLoadingText>
-                )}
-              {promtQueue &&
-                typeof progress === 'object' &&
-                typeof progress?.max === 'number' &&
-                typeof progress?.value === 'number' &&
-                progress.max > 0 &&
-                progress.value === progress.max && <CheckCircleIcon />}
-              {!promtQueue && (icon || <SidebarChatIconStyled />)}
-            </IconProvider>
-            <Tooltip
-              label={name}
-              placement="top"
-              align="center"
-              disabled={!showTooltip}
-            >
-              <TooltipConsumer>
-                {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-                  <SidebarChatName
-                    ref={ref}
-                    onPointerEnter={handleTooltipMouseEnter}
-                    onPointerLeave={handleTooltipMouseLeave}
+            <SidebarChatStyled ref={setNodeRef}>
+              {isEdit ? (
+                <SidebarChatDragHandle
+                  {...attributes}
+                  {...listeners}
+                  aria-label={dragAriaLabel}
+                >
+                  <IconProvider size={18}>
+                    <SidebarChatDraggbleButton>
+                      <DragDotIcon />
+                    </SidebarChatDraggbleButton>
+                    <SidebarChatCollapsedOnly>
+                      {chatIcon}
+                    </SidebarChatCollapsedOnly>
+                  </IconProvider>
+                  <SidebarChatName>{name}</SidebarChatName>
+                </SidebarChatDragHandle>
+              ) : (
+                <>
+                  <IconProvider size={18}>
+                    {promtQueue ? (
+                      <>
+                        <SidebarChatOpenOnly>
+                          {progressMax > 0 && !isProgressDone && (
+                            <SidebarChatLoadingText>
+                              {percent}%
+                            </SidebarChatLoadingText>
+                          )}
+                          {isProgressDone && <CheckCircleIcon />}
+                        </SidebarChatOpenOnly>
+                        <SidebarChatCollapsedOnly>
+                          {chatIcon}
+                        </SidebarChatCollapsedOnly>
+                      </>
+                    ) : (
+                      chatIcon
+                    )}
+                  </IconProvider>
+                  <Tooltip
+                    label={name}
+                    placement="top"
+                    align="center"
                   >
-                    {name}
-                  </SidebarChatName>
-                )}
-              </TooltipConsumer>
-            </Tooltip>
-            {actions}
-          </>
+                    <TooltipConsumer>
+                      {(nameTooltip) => (
+                        <SidebarChatName
+                          onPointerEnter={(event) => {
+                            // Only a cut off name needs a tooltip
+                            if (
+                              isTruncated(event.currentTarget) &&
+                              !isInCollapsedSidebar(event.currentTarget)
+                            ) {
+                              nameTooltip.handleTooltipMouseEnter(event);
+                            }
+                          }}
+                          onPointerLeave={nameTooltip.handleTooltipMouseLeave}
+                        >
+                          {name}
+                        </SidebarChatName>
+                      )}
+                    </TooltipConsumer>
+                  </Tooltip>
+                  <SidebarChatOpenOnly>{actions}</SidebarChatOpenOnly>
+                </>
+              )}
+              {isEdit && <SidebarChatOpenOnly>{checkbox}</SidebarChatOpenOnly>}
+            </SidebarChatStyled>
+            {hasProgress && (
+              <SidebarChatPromtLine
+                style={
+                  {
+                    '--sidebar-chat-progress': `${percent}%`,
+                  } as ProgressStyle
+                }
+                aria-label={progressAriaLabel}
+              />
+            )}
+          </SidebarChatBox>
         )}
-        {isEdit && checkbox}
-      </SidebarChatStyled>
-      {promtQueue &&
-        typeof progress === 'object' &&
-        typeof progress?.max === 'number' &&
-        typeof progress?.value === 'number' && (
-          <SidebarChatPromtLine
-            percent={Math.round((progress.value / progress.max) * 100)}
-            aria-label={progressAriaLabel}
-          />
-        )}
-    </SidebarChatBox>
+      </TooltipConsumer>
+    </Tooltip>
   );
 };

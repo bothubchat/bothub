@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { BookmarkCloseButton, BookmarkName, BookmarkStyled } from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
 
@@ -25,20 +25,36 @@ export const Bookmark: React.FC<BookmarkProps> = ({
   ...props
 }) => {
   const isActive = (props.skeleton ? false : props.active) ?? false;
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  const { onClick, onClose } = props;
+  // A click on the close button must not activate the bookmark as well.
+  // It is filtered here instead of stopping propagation, so listeners on
+  // the document still get the click.
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLSpanElement>) => {
+      if (closeButtonRef.current?.contains(event.target as Node)) {
+        return;
+      }
+
+      onClick?.(event);
+    },
+    [onClick],
+  );
   const handleWheelClick = useCallback(
     (event: React.MouseEvent<HTMLSpanElement>) => {
       if (event.button === 1) {
-        props.onClose?.(event);
+        onClose?.(event);
       }
     },
-    [props.onClose],
+    [onClose],
   );
   return (
     <BookmarkStyled
       $active={isActive}
       $skeleton={props.skeleton}
       className={className}
-      onClick={props.onClick}
+      onClick={handleClick}
       onAuxClick={handleWheelClick}
     >
       <BookmarkName>
@@ -47,6 +63,7 @@ export const Bookmark: React.FC<BookmarkProps> = ({
       </BookmarkName>
       {!props.skeleton && !props.disableClose && (
         <BookmarkCloseButton
+          ref={closeButtonRef}
           aria-label={closeAriaLabel}
           onClick={props.onClose}
         />

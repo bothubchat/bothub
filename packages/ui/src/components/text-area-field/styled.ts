@@ -1,6 +1,7 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Skeleton } from '@/ui/components/skeleton';
+import { themeVar } from '@/ui/theme';
 
 export interface TextAreaFieldStyledProps {
   $fullWidth: boolean;
@@ -57,35 +58,29 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
   border: 1px solid
     ${({ theme, $error, $focus, $disabled, $skeleton }) => {
       if ($disabled || $skeleton) {
-        return theme.colors.grayScale.gray2;
+        return themeVar(theme, 'colors.grayScale.gray2');
       }
       if ($error) {
-        return theme.colors.critic;
+        return themeVar(theme, 'colors.critic');
       }
       if ($focus) {
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
       }
-      return theme.colors.grayScale.gray2;
+      return themeVar(theme, 'colors.grayScale.gray2');
     }};
   border-radius: 10px;
   background: ${({ theme, $disabled, $skeleton }) => {
     if ($disabled || $skeleton) {
-      return theme.colors.grayScale.gray3;
+      return themeVar(theme, 'colors.grayScale.gray3');
     }
 
-    if (theme.scheme === 'custom') {
-      return theme.colors.grayScale.gray7;
-    }
-
-    return theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray4;
+    return themeVar(theme, 'tokens.fieldBackground');
   }};
   ${({ $glow, theme }) =>
     $glow &&
     css`
-      background: ${theme.colors.grayScale.gray2};
-      border-color: ${theme.colors.accent.primary};
+      background: ${themeVar(theme, 'colors.grayScale.gray2')};
+      border-color: ${themeVar(theme, 'colors.accent.primary')};
     `}
   cursor: ${({ $disabled, $skeleton }) => {
     if ($skeleton) {
@@ -100,7 +95,7 @@ export const TextAreaFieldBlock = styled.div<TextAreaFieldBlockProps>`
     !$skeleton &&
     css`
       &:hover {
-        border-color: ${theme.colors.accent.primary};
+        border-color: ${themeVar(theme, 'colors.accent.primary')};
       }
     `}
 `;
@@ -122,19 +117,16 @@ export const TextAreaFieldTextArea = styled.textarea`
   background: none;
   border: none;
   padding: 14px 16px;
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   font-weight: 400;
   font-size: 14px;
   line-height: 18px;
   cursor: inherit;
   &::placeholder {
-    color: ${({ theme }) => theme.colors.grayScale.gray1};
+    color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   }
   &:focus::placeholder {
-    color: ${({ theme }) =>
-      theme.mode === 'light'
-        ? theme.colors.grayScale.gray1
-        : theme.colors.grayScale.gray6};
+    color: ${({ theme }) => themeVar(theme, 'tokens.borderFocus')};
   }
   &::-webkit-scrollbar {
     display: none;
@@ -146,5 +138,5 @@ export const TextAreaFieldErrorText = styled(Typography).attrs({
 })`
   display: inline-flex;
   margin-top: 8px;
-  color: ${({ theme }) => theme.colors.critic};
+  color: ${({ theme }) => themeVar(theme, 'colors.critic')};
 `;

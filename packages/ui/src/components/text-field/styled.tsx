@@ -4,6 +4,7 @@ import { Skeleton } from '@/ui/components/skeleton';
 import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
 import { Variant } from './types';
+import { themeVar } from '@/ui/theme';
 
 export interface VariantProps {
   $variant: Variant;
@@ -43,8 +44,10 @@ export const TextFieldLabel = styled(Typography).attrs({ variant: 'input-sm' })`
 
 export interface TextFieldBlockProps extends VariantProps {
   $error: boolean;
-  $focus: boolean;
-  $hover: boolean;
+  /** Forces the focus styles; real focus is styled with :focus-within */
+  $focus?: boolean;
+  /** Forces the hover styles; real hover is styled with :hover */
+  $hover?: boolean;
   $disabled: boolean;
   $skeleton: boolean;
 }
@@ -68,78 +71,64 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
   ${({ $variant }) =>
     $variant === 'primary' &&
     css`
-      border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+      border: 1px solid
+        ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
     `};
 
   ${({ theme, $error, $hover, $focus, $disabled, $skeleton }) => {
     if ($disabled || $skeleton) {
       return css`
-        border-color: ${({ theme }) => theme.colors.grayScale.gray2};
+        border-color: ${({ theme }) =>
+          themeVar(theme, 'colors.grayScale.gray2')};
       `;
     }
     if ($error) {
       return css`
-        border-color: ${theme.colors.critic};
-      `;
-    }
-
-    return (
-      ($hover || $focus) &&
-      css`
-        border-color: ${theme.colors.accent.primary};
-      `
-    );
-  }}
-  ${({ theme, $focus, $disabled, $skeleton, $variant }) => {
-    if ($disabled || $skeleton) {
-      return css`
-        background: ${theme.colors.grayScale.gray3};
-      `;
-    }
-
-    if ($focus) {
-      if (theme.scheme === 'custom') {
-        return css`
-        background: ${theme.colors.grayScale.gray2};
-        > svg path {
-          fill: ${theme.colors.accent.primary};
-      `;
-      }
-
-      return css`
-        background: ${theme.mode === 'light'
-          ? $variant === 'primary'
-            ? theme.default.colors.base.white
-            : theme.colors.grayScale.gray7
-          : $variant === 'primary'
-            ? theme.colors.grayScale.gray4
-            : theme.colors.grayScale.gray7};
-        > svg path {
-          fill: ${theme.mode === 'light'
-            ? theme.default.colors.accent.primary
-            : theme.colors.base.white};
-        }
-      `;
-    }
-
-    if (theme.scheme === 'custom') {
-      return css`
-        background: ${theme.colors.grayScale.gray7};
-        > svg path {
-          fill: ${theme.colors.grayScale.gray1};
+        border-color: ${themeVar(theme, 'colors.critic')};
       `;
     }
 
     return css`
-      background: ${theme.mode === 'light'
-        ? $variant === 'primary'
-          ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray7
-        : $variant === 'primary'
-          ? theme.colors.grayScale.gray4
-          : theme.colors.grayScale.gray7};
+      ${($hover || $focus) &&
+      css`
+        border-color: ${themeVar(theme, 'colors.accent.primary')};
+      `}
+      /* :where keeps the specificity of a single class, as with the
+         previous state classes, so overrides from wrappers still apply */
+      &:where(:hover, :focus-within) {
+        border-color: ${themeVar(theme, 'colors.accent.primary')};
+      }
+    `;
+  }}
+  ${({ theme, $focus, $disabled, $skeleton, $variant }) => {
+    if ($disabled || $skeleton) {
+      return css`
+        background: ${themeVar(theme, 'colors.grayScale.gray3')};
+      `;
+    }
+
+    const focusStyles = css`
+      background: ${$variant === 'primary'
+        ? themeVar(theme, 'tokens.fieldFocusBackground')
+        : themeVar(theme, 'tokens.fieldFocusBackgroundSecondary')};
       > svg path {
-        fill: ${theme.colors.grayScale.gray1};
+        fill: ${themeVar(theme, 'tokens.fieldFocusIcon')};
+      }
+    `;
+
+    const idleStyles = css`
+      background: ${$variant === 'primary'
+        ? themeVar(theme, 'tokens.fieldBackground')
+        : themeVar(theme, 'colors.grayScale.gray7')};
+      > svg path {
+        fill: ${themeVar(theme, 'colors.grayScale.gray1')};
+      }
+    `;
+
+    return css`
+      ${$focus ? focusStyles : idleStyles}
+      &:where(:focus-within) {
+        ${focusStyles}
       }
     `;
   }}
@@ -156,7 +145,8 @@ export const TextFieldBlock = styled.label<TextFieldBlockProps>`
       ${TextFieldClearButton} {
         visibility: ${$focus ? 'visible' : 'hidden'};
       }
-      &:hover {
+      &:hover,
+      &:focus-within {
         ${TextFieldClearButton} {
           visibility: visible;
         }
@@ -172,46 +162,37 @@ export const TextFieldInput = styled.input<VariantProps>`
   border: none;
   outline: none;
   padding: ${({ $variant }) => ($variant === 'primary' ? 14 : 8)}px 0px;
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
   cursor: inherit;
   &:hover ~ ${TextFieldBlock} {
-    border-color: ${({ theme }) => theme.colors.accent.primary};
+    border-color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
   }
   &::placeholder {
-    color: ${({ theme }) => theme.colors.grayScale.gray1};
+    color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   }
   &:focus::placeholder {
-    color: ${({ theme }) =>
-      theme.mode === 'light'
-        ? theme.colors.grayScale.gray1
-        : theme.colors.grayScale.gray6};
+    color: ${({ theme }) => themeVar(theme, 'tokens.borderFocus')};
   }
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
   &:-webkit-autofill:active {
-    caret-color: ${({ theme }) => theme.colors.base.white};
+    caret-color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
     -webkit-background-clip: text;
-    -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
+    -webkit-text-fill-color: ${({ theme }) =>
+      themeVar(theme, 'colors.base.white')};
     box-shadow: 0 0 0 100px
-      ${({ theme }) =>
-        theme.mode === 'light'
-          ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray4}
-      inset !important;
+      ${({ theme }) => themeVar(theme, 'tokens.surfaceElevated')} inset !important;
   }
   &:-webkit-autofill:focus {
-    caret-color: ${({ theme }) => theme.colors.base.white};
+    caret-color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
     -webkit-background-clip: text;
-    -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
+    -webkit-text-fill-color: ${({ theme }) =>
+      themeVar(theme, 'colors.base.white')};
     box-shadow: 0 0 0 100px
-      ${({ theme }) =>
-        theme.mode === 'light'
-          ? theme.default.colors.base.white
-          : theme.colors.grayScale.gray4}
-      inset !important;
+      ${({ theme }) => themeVar(theme, 'tokens.surfaceElevated')} inset !important;
   }
   &::-webkit-search-decoration,
   &::-webkit-search-cancel-button,
@@ -236,7 +217,8 @@ export const TextFieldColorInput = styled.input.attrs({ type: 'color' })`
 `;
 
 export interface TextFieldColorPreviewProps {
-  $color: string;
+  /** Prefer `style={{ background }}`: every color creates a new CSS class */
+  $color?: string;
 }
 
 export const TextFieldColorPreview = styled.span<TextFieldColorPreviewProps>`
@@ -244,7 +226,11 @@ export const TextFieldColorPreview = styled.span<TextFieldColorPreviewProps>`
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  background: ${({ $color }) => $color};
+  ${({ $color }) =>
+    $color &&
+    css`
+      background: ${$color};
+    `}
   border-radius: 4px;
 `;
 
@@ -275,7 +261,7 @@ export const TextFieldErrorText = styled(Typography).attrs({
 })`
   display: inline-flex;
   margin-top: 8px;
-  color: ${({ theme }) => theme.colors.critic};
+  color: ${({ theme }) => themeVar(theme, 'colors.critic')};
 `;
 
 export const TextFieldSkeleton = styled(Skeleton)`

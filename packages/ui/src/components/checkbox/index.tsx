@@ -47,12 +47,13 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 }) => {
   const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
 
+  const { onChange } = props;
   const handleChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     (event) => {
-      props.onChange?.(event);
+      onChange?.(event);
       onValueChange?.(event.target.checked);
     },
-    [props.onChange, onValueChange],
+    [onChange, onValueChange],
   );
   return (
     <CheckboxStyled

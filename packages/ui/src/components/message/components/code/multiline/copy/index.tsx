@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback } from 'react';
 import { MessageMultilineCodeCopyButtonStyled } from './styled';
 import { useMessage } from '@/ui/components/message/context';
 import { MessageVariant } from '@/ui/components/message/types';
 import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { CopyIcon } from '@/ui/icons/copy';
+import { useCopiedState } from '@/ui/utils/useCopiedState';
 
 export interface MessageMultilineCodeCopyButtonProps {
   code: string;
@@ -16,33 +17,18 @@ export const MessageMultilineCodeCopyButton: React.FC<
 > = ({ code, messageVariant, messageColor }) => {
   const { onCodeCopy } = useMessage();
 
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
-  const [isCopied, setIsCopied] = useState(false);
+  const { copied: isCopied, markCopied } = useCopiedState(1000);
 
   const handleClick = useCallback(() => {
     if (isCopied) {
       return;
     }
 
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    setIsCopied(true);
+    markCopied();
     if (typeof code === 'string') {
       onCodeCopy?.(code);
     }
-
-    setTimeoutId(setTimeout(() => setIsCopied(false), 1000));
-  }, [isCopied, code, onCodeCopy]);
-
-  useEffect(
-    () => () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    },
-    [],
-  );
+  }, [isCopied, code, onCodeCopy, markCopied]);
 
   return (
     <MessageMultilineCodeCopyButtonStyled

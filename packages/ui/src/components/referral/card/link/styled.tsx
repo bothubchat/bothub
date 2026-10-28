@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { CopyIcon } from '@/ui/icons/copy';
+import { themeVar } from '@/ui/theme';
 
 export const ReferralCardLinkStyled = styled.div`
   display: inline-flex;
@@ -15,7 +16,7 @@ export const ReferralCardLinkStyled = styled.div`
 export const ReferralCardLinkText = styled(Typography).attrs({
   variant: 'body-m-medium',
 })`
-  color: ${({ theme }) => theme.colors.accent.primary};
+  color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
   max-width: 288px;
   white-space: nowrap;
   overflow: hidden;

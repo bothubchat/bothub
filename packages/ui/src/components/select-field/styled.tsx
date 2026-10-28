@@ -7,6 +7,7 @@ import { LoaderCircularGradientIcon } from '@/ui/icons/loader-circular-gradient'
 import { SearchCircleIcon } from '@/ui/icons/search-circle';
 import { Button } from '@/ui/components/button';
 import { CloseIcon, SearchSimpleIcon } from '@/ui/icons';
+import { themeVar } from '@/ui/theme';
 
 export interface SelectFieldStyledProps {
   $fullWidth: boolean;
@@ -68,16 +69,16 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
   border: 1px solid
     ${({ theme, $disabled, $error, $open, $skeleton }) => {
       if ($disabled || $skeleton) {
-        return theme.colors.grayScale.gray5;
+        return themeVar(theme, 'colors.grayScale.gray5');
       }
       if ($error) {
-        return theme.colors.critic;
+        return themeVar(theme, 'colors.critic');
       }
       if ($open) {
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
       }
 
-      return theme.colors.grayScale.gray2;
+      return themeVar(theme, 'colors.grayScale.gray2');
     }};
   border-radius: 10px;
   ${({ $multiple }) => {
@@ -95,17 +96,13 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
   box-sizing: border-box;
   background: ${({ theme, $disabled, $skeleton, $blur }) => {
     if ($disabled || $skeleton) {
-      return theme.colors.grayScale.gray3;
+      return themeVar(theme, 'colors.grayScale.gray3');
     }
     if ($blur) {
-      return theme.mode === 'light'
-        ? 'rgba(255, 255, 255, 0.65)'
-        : 'rgba(18, 24, 37, 0.75)';
+      return themeVar(theme, 'tokens.surfaceGlass');
     }
 
-    return theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray4;
+    return themeVar(theme, 'tokens.surfaceElevated');
   }};
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
@@ -125,7 +122,7 @@ export const SelectFieldInput = styled.div<SelectFieldInputProps>`
     !$skeleton &&
     css`
       &:hover {
-        border-color: ${theme.colors.accent.primary};
+        border-color: ${themeVar(theme, 'colors.accent.primary')};
       }
     `}
   ${({ $disabled, $open }) => {
@@ -171,10 +168,10 @@ export const SelectFieldSearchIcon = styled(SearchCircleIcon).attrs({
   path {
     fill: ${({ theme, $focus }) => {
       if ($focus) {
-        return theme.colors.base.white;
+        return themeVar(theme, 'colors.base.white');
       }
 
-      return theme.colors.grayScale.gray1;
+      return themeVar(theme, 'colors.grayScale.gray1');
     }};
   }
 `;
@@ -184,10 +181,10 @@ export const SelectFieldSearchSimpleIcon = styled(SearchSimpleIcon).attrs({
   path {
     fill: ${({ theme, $focus }) => {
       if ($focus) {
-        return theme.colors.base.white;
+        return themeVar(theme, 'colors.base.white');
       }
 
-      return theme.colors.grayScale.gray1;
+      return themeVar(theme, 'colors.grayScale.gray1');
     }};
   }
 `;
@@ -198,31 +195,32 @@ export const SelectFieldInputNative = styled.input`
   background: none;
   border: none;
   outline: none;
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
   padding: 0px;
   &::placeholder {
-    color: ${({ theme }) => theme.colors.grayScale.gray1};
+    color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   }
   &:focus::placeholder {
-    color: ${({ theme }) =>
-      theme.mode === 'light'
-        ? theme.colors.grayScale.gray1
-        : theme.colors.grayScale.gray6};
+    color: ${({ theme }) => themeVar(theme, 'tokens.borderFocus')};
   }
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
   &:-webkit-autofill:active {
     -webkit-background-clip: text;
-    -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
-    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray4} inset !important;
+    -webkit-text-fill-color: ${({ theme }) =>
+      themeVar(theme, 'colors.base.white')};
+    box-shadow: 0 0 0 100px
+      ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')} inset !important;
   }
   &:-webkit-autofill:focus {
     -webkit-background-clip: text;
-    -webkit-text-fill-color: ${({ theme }) => theme.colors.base.white};
-    box-shadow: 0 0 0 100px ${({ theme }) => theme.colors.grayScale.gray4} inset !important;
+    -webkit-text-fill-color: ${({ theme }) =>
+      themeVar(theme, 'colors.base.white')};
+    box-shadow: 0 0 0 100px
+      ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')} inset !important;
   }
   &::-webkit-search-decoration,
   &::-webkit-search-cancel-button,
@@ -280,7 +278,7 @@ export const SelectFieldValueColor = styled.span<SelectFieldValueColorProps>`
 export const SelectFieldColorValueText = styled(Typography).attrs({
   variant: 'input-sm',
 })`
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -310,10 +308,10 @@ export const SelectFieldPlaceholder = styled(Typography).attrs({
 })<SelectFieldPlaceholderProps>`
   color: ${({ $open, theme }) => {
     if ($open) {
-      return theme.colors.grayScale.gray6;
+      return themeVar(theme, 'colors.grayScale.gray6');
     }
 
-    return theme.colors.grayScale.gray1;
+    return themeVar(theme, 'colors.grayScale.gray1');
   }};
 `;
 
@@ -331,7 +329,7 @@ export const SelectFieldErrorText = styled(Typography).attrs({
 })`
   display: inline-flex;
   margin-top: 8px;
-  color: ${({ theme }) => theme.colors.critic};
+  color: ${({ theme }) => themeVar(theme, 'colors.critic')};
 `;
 
 export const SelectFieldSkeleton = styled(Skeleton)`

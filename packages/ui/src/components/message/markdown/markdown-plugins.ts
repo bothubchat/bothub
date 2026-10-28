@@ -1,8 +1,5 @@
-import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex';
 import type { Plugin, Processor } from 'unified';
 import type { Parent, PhrasingContent, Root, RootContent } from 'mdast';
-import 'katex/dist/katex.min.css';
 
 const CITE_OPEN = '<cite>';
 const CITE_CLOSE = '</cite>';
@@ -112,4 +109,4 @@ const remarkHtmlBreak: Plugin<[], Root> = () => (tree) => {
   transform(tree);
 };
 
-export { remarkMath, rehypeKatex, remarkCite, remarkHtmlBreak };
+export { remarkCite, remarkHtmlBreak };

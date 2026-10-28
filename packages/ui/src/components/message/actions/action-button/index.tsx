@@ -12,6 +12,8 @@ interface ActionButtonProps {
   onClick?: MessageActionEventHandler;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  onPointerEnter?: React.PointerEventHandler<HTMLButtonElement>;
+  onPointerLeave?: React.PointerEventHandler<HTMLButtonElement>;
   'aria-expanded'?: boolean;
   'aria-haspopup'?: boolean | 'true' | 'false' | 'menu' | 'dialog' | 'listbox';
 }
@@ -36,6 +38,7 @@ export const ActionButton = ({
       {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
         <S.MessageActionsButton
           ref={ref}
+          type="button"
           aria-label={tooltipLabel ?? undefined}
           onClick={() => {
             onClick?.({ id, message });

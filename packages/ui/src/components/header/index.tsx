@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import {
   HeaderContainer,
   HeaderContent,
@@ -12,6 +12,7 @@ import {
 import { HeaderMenu, HeaderMenuToggleButton } from './menu';
 import { HeaderVariant } from './types';
 import { HeaderProvider } from './context';
+import { useControllableState } from '@/ui/utils';
 
 export type HeaderOpenEventHandler = (open: boolean) => unknown;
 export type HeaderTabletToggleEventHandler = () => unknown;
@@ -53,22 +54,11 @@ export const Header: React.FC<HeaderProps> = ({
   menuToggleAriaLabel,
   ...props
 }) => {
-  const initialIsMenuOpen = open;
-  const setInitialIsMenuOpen = useCallback<
-    React.Dispatch<React.SetStateAction<boolean>>
-  >(
-    (open) => {
-      if (typeof open === 'boolean') {
-        onOpen?.(open);
-      }
-    },
-    [onOpen],
-  );
-
-  const [isMenuOpen, setIsMenuOpen] =
-    typeof initialIsMenuOpen === 'boolean'
-      ? [initialIsMenuOpen, setInitialIsMenuOpen]
-      : useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useControllableState({
+    value: open,
+    defaultValue: false,
+    onChange: onOpen,
+  });
 
   const menuNode: React.ReactNode = (
     <HeaderMenu isPreset={isPreset}>

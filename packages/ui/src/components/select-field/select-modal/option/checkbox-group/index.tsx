@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { memo, useState } from 'react';
 import {
   SelectFieldDataItem,
   SelectFieldGroupCheckboxClickEventHandler,
@@ -34,10 +34,12 @@ export type SelectFieldCheckboxGroupOptionProps = {
   onGroupCheckboxClick?: SelectFieldGroupCheckboxClickEventHandler;
   onOptionClick: SelectFieldOptionClickEventHandler | undefined;
   icon?: React.ReactNode;
-  SelectFieldOptions: React.FC<SelectFieldOptionsProps>;
+  disableSelect?: boolean;
+  selectedColor?: string;
+  SelectFieldOptions: React.ComponentType<SelectFieldOptionsProps>;
 };
 
-export const SelectFieldCheckboxGroupOption = ({
+const SelectFieldCheckboxGroupOptionComponent = ({
   item,
   value,
   size,
@@ -45,14 +47,22 @@ export const SelectFieldCheckboxGroupOption = ({
   onOptionClick,
   onGroupCheckboxClick,
   icon,
+  disableSelect,
+  selectedColor,
   SelectFieldOptions,
 }: SelectFieldCheckboxGroupOptionProps) => {
   const theme = useTheme();
 
+  const itemOpen = typeof item !== 'string' ? item.open : undefined;
+
   const [showAll, setShowAll] = useState(false);
-  const [isOpen, setIsOpen] = useState(
-    typeof item === 'string' ? false : (item.open ?? false),
-  );
+  const [isOpen, setIsOpen] = useState(itemOpen ?? false);
+  // Follow `item.open` when it changes, without an extra effect commit.
+  const [prevItemOpen, setPrevItemOpen] = useState(itemOpen);
+  if (prevItemOpen !== itemOpen) {
+    setPrevItemOpen(itemOpen);
+    setIsOpen(Boolean(itemOpen));
+  }
 
   const handleShowAll = () => {
     setShowAll((prev) => !prev);
@@ -73,14 +83,6 @@ export const SelectFieldCheckboxGroupOption = ({
   } else {
     isDisabled = !!item.disabled;
   }
-
-  const itemOpen = typeof item !== 'string' ? item.open : undefined;
-
-  useLayoutEffect(() => {
-    if (typeof item !== 'string') {
-      setIsOpen(Boolean(item.open));
-    }
-  }, [itemOpen]);
 
   const label = typeof item === 'string' ? item : (item.label ?? item.value);
 
@@ -169,6 +171,9 @@ export const SelectFieldCheckboxGroupOption = ({
             value={value}
             data={visibleData}
             size={size}
+            disableSelect={disableSelect}
+            selectedColor={selectedColor}
+            onGroupCheckboxClick={onGroupCheckboxClick}
             onOptionClick={onOptionClick}
           />
           {shouldShow && (
@@ -181,3 +186,7 @@ export const SelectFieldCheckboxGroupOption = ({
     </SelectFieldCheckboxGroupOptionStyled>
   );
 };
+
+export const SelectFieldCheckboxGroupOption = memo(
+  SelectFieldCheckboxGroupOptionComponent,
+);

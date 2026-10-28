@@ -1,5 +1,6 @@
 import { styled, css } from 'styled-components';
 import { MessageActionsButton } from '../styled';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageForkButtonStyledProps {
   $selected?: boolean;
@@ -12,9 +13,7 @@ export const MessageForkButtonStyled = styled(
     $selected &&
     css`
       svg path {
-        stroke: ${theme.scheme === 'custom'
-          ? theme.colors.custom.icon
-          : theme.colors.accent.primaryLight};
+        stroke: ${themeVar(theme, 'tokens.messageActionIcon')};
       }
     `}
 `;

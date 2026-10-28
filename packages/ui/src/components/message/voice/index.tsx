@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
+import React, { memo, useCallback, useId, useRef, useState } from 'react';
 import {
   MessageVoiceAudio,
   MessageVoiceDurationText,
@@ -18,8 +18,7 @@ import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { isBright, formatSeconds } from '@/ui/utils';
 import { useMessage } from '../context';
-
-const AUDIO_PLAY_EVENT = 'messageVoicePlay';
+import { useMediaPlayback } from '../use-media-playback';
 
 export type MessageVoiceVariant = 'input' | 'message';
 
@@ -34,6 +33,44 @@ export interface MessageVoiceProps extends React.ComponentProps<'div'> {
   disableTranscription?: boolean;
   variant?: MessageVoiceVariant;
 }
+
+const WAVES_WIDTH = 145;
+
+const getProgress = (time: number, duration: number) => {
+  if (!Number.isFinite(time) || !Number.isFinite(duration) || duration <= 0) {
+    return 0;
+  }
+
+  return Math.min(Math.max(time / duration, 0), 1);
+};
+
+interface MessageVoiceWaveClipProps {
+  id: string;
+  waveData: number[];
+  height: number;
+}
+
+// Static wave shape: it does not re-render while the audio plays.
+const MessageVoiceWaveClip: React.FC<MessageVoiceWaveClipProps> = memo(
+  ({ id, waveData, height }) => (
+    <clipPath id={id}>
+      {waveData.map((wave, index) => {
+        const waveHeight = Math.max((wave / 100) * height, 2);
+
+        return (
+          <rect
+            key={index}
+            x={index * 5}
+            y={(height - waveHeight) / 2}
+            width="3"
+            height={waveHeight}
+            rx="1.5"
+          />
+        );
+      })}
+    </clipPath>
+  ),
+);
 
 export const MessageVoice: React.FC<MessageVoiceProps> = ({
   height = 36,
@@ -53,136 +90,48 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
   const voiceId = useId();
   const { color } = useMessage();
 
-  const audioRef = useRef<HTMLAudioElement>(null);
   const wavesRef = useRef<SVGSVGElement>(null);
 
-  // The user asked to play: a load error should refresh the src.
-  const playRequestedRef = useRef(false);
-  // Playback should resume once the refreshed src arrives.
-  const resumeOnSrcChangeRef = useRef(false);
-
-  const [internalLoading, setInternalLoading] = useState<boolean>(true);
-  const [isPlayed, setIsPlayed] = useState(false);
   const [isTextShowed, setIsTextShowed] = useState(false);
-  const [currentTime, setCurrentTime] = useState<number | null>(null);
+  // Whole seconds: the label shows nothing finer, so timeupdate re-renders
+  // the player once per second. Progress goes straight to a CSS variable.
+  const [currentTime, setCurrentTimeState] = useState<number | null>(null);
+  const currentTimeRef = useRef(currentTime);
 
-  // Buffering only affects the cursor: play() waits for data by itself, and
-  // iOS Safari does not buffer media until playback is requested.
-  const isLoading = internalLoading || externalLoading;
-
-  useEffect(() => {
-    const handleOtherAudioPlay = (event: CustomEvent) => {
-      const currentAudio = audioRef.current;
-      const playingAudio = event.detail.audio;
-
-      if (
-        currentAudio &&
-        playingAudio !== currentAudio &&
-        !currentAudio.paused
-      ) {
-        currentAudio.pause();
-      }
-    };
-
-    window.addEventListener(
-      AUDIO_PLAY_EVENT,
-      handleOtherAudioPlay as EventListener,
-    );
-
-    return () => {
-      window.removeEventListener(
-        AUDIO_PLAY_EVENT,
-        handleOtherAudioPlay as EventListener,
-      );
-    };
-  }, []);
-
-  const play = useCallback(() => {
-    const audioEl = audioRef.current;
-
-    if (!audioEl) {
-      return;
-    }
-
-    window.dispatchEvent(
-      new CustomEvent(AUDIO_PLAY_EVENT, { detail: { audio: audioEl } }),
-    );
-
-    audioEl.play().catch(() => {
-      // Autoplay policy or an interrupted play; load errors are handled in onError.
-      setIsPlayed(!audioEl.paused);
-    });
-  }, []);
-
-  const refresh = useCallback(() => {
-    if (!refreshSrc) {
-      return;
-    }
-
-    resumeOnSrcChangeRef.current = true;
-    refreshSrc();
-  }, [refreshSrc]);
-
-  useEffect(() => {
-    setIsPlayed(false);
-    setCurrentTime(null);
-    setInternalLoading(true);
-    playRequestedRef.current = false;
-
-    const audioEl = audioRef.current;
-
-    if (!audioEl) {
-      return;
-    }
-
-    audioEl.load();
-
-    if (resumeOnSrcChangeRef.current) {
-      resumeOnSrcChangeRef.current = false;
-      play();
-    }
-  }, [src, play]);
-
-  const handleStart = useCallback(() => {
-    const audioEl = audioRef.current;
-
-    if (!audioEl || externalLoading) return;
-
-    if (audioEl.error) {
-      refresh();
-      return;
-    }
-
-    playRequestedRef.current = true;
-    // play() must be called synchronously in the click handler, otherwise
-    // Safari loses the user gesture and blocks playback.
-    play();
-
-    checkAlive?.()
-      .then((isAlive) => {
-        if (!isAlive) {
-          audioRef.current?.pause();
-          refresh();
-        }
-      })
-      .catch(() => {});
-  }, [checkAlive, externalLoading, play, refresh]);
-
-  const handleError = useCallback(() => {
-    setInternalLoading(false);
-    setIsPlayed(false);
-
-    if (playRequestedRef.current) {
-      playRequestedRef.current = false;
-      refresh();
-    }
-  }, [refresh]);
-
-  const handlePause = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
+  // Skips same-second updates: even a same-value setState right after a
+  // render costs one more render.
+  const setCurrentTime = useCallback((time: number | null) => {
+    if (currentTimeRef.current !== time) {
+      currentTimeRef.current = time;
+      setCurrentTimeState(time);
     }
   }, []);
+
+  const setProgress = useCallback((progress: number) => {
+    wavesRef.current?.style.setProperty('--voice-progress', String(progress));
+  }, []);
+
+  const {
+    mediaRef: audioRef,
+    isPlayed,
+    setIsPlayed,
+    isLoading,
+    setInternalLoading,
+    handleStart,
+    handlePause,
+    handleError,
+  } = useMediaPlayback<HTMLAudioElement>({
+    src,
+    externalLoading,
+    waitForData: false,
+    exclusive: true,
+    checkAlive,
+    refreshSrc,
+    onReset: () => {
+      setCurrentTime(null);
+      setProgress(0);
+    },
+  });
 
   const handleToggle = useCallback(() => {
     if (!isPlayed) {
@@ -199,8 +148,9 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
       return;
     }
 
-    setCurrentTime(audioEl.currentTime);
-  }, []);
+    setProgress(getProgress(audioEl.currentTime, duration));
+    setCurrentTime(Math.floor(audioEl.currentTime));
+  }, [audioRef, duration, setProgress, setCurrentTime]);
 
   const handleWavesClick = useCallback<React.MouseEventHandler>(
     (event) => {
@@ -226,13 +176,14 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
         handleStart();
       }
     },
-    [duration, isPlayed, externalLoading, handleStart],
+    [audioRef, duration, isPlayed, externalLoading, handleStart],
   );
 
   const handleEnded = useCallback(() => {
     setCurrentTime(null);
+    setProgress(0);
     setIsPlayed(false);
-  }, []);
+  }, [setIsPlayed, setProgress, setCurrentTime]);
 
   const handleTextToggle = useCallback<React.MouseEventHandler>(
     (event) => {
@@ -290,15 +241,15 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
         </MessageVoiceToggleButton>
         <MessageVoiceWaves
           ref={wavesRef}
-          width="145"
+          width={WAVES_WIDTH}
           height={height}
-          viewBox={`0 0 145 ${height}`}
+          viewBox={`0 0 ${WAVES_WIDTH} ${height}`}
           fill="none"
           onClick={handleWavesClick}
         >
           <g clipPath={`url(#${voiceId}_clip)`}>
             <rect
-              width="145"
+              width={WAVES_WIDTH}
               height={height}
               {...{
                 fill:
@@ -317,40 +268,28 @@ export const MessageVoice: React.FC<MessageVoiceProps> = ({
             />
             {currentTime !== null && (
               <StyledRect
+                width={WAVES_WIDTH}
                 height={height}
                 fill={
                   theme.mode === 'dark'
                     ? theme.default.colors.base.white
                     : theme.colors.accent.primaryLight
                 }
-                style={{
-                  width: 145 * (currentTime / duration),
-                }}
               />
             )}
           </g>
           <defs>
-            <clipPath id={`${voiceId}_clip`}>
-              {waveData.map((wave, index) => {
-                const waveHeight = Math.max((wave / 100) * 36, 2);
-
-                return (
-                  <rect
-                    key={index}
-                    x={index * 5}
-                    y={(height - waveHeight) / 2}
-                    width="3"
-                    height={waveHeight}
-                    rx="1.5"
-                  />
-                );
-              })}
-            </clipPath>
+            <MessageVoiceWaveClip
+              id={`${voiceId}_clip`}
+              waveData={waveData}
+              height={height}
+            />
           </defs>
         </MessageVoiceWaves>
         <MessageVoiceDurationText $variant={variant}>
           {currentTime !== null && formatSeconds(currentTime)}
-          {currentTime === null && formatSeconds(duration)}
+          {currentTime === null &&
+            formatSeconds(Number.isFinite(duration) ? duration : 0)}
         </MessageVoiceDurationText>
         {!disableTranscription && (
           <MessageVoiceToggleTextButton onClick={handleTextToggle}>

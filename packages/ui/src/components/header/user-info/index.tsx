@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   HeaderUserInfoArrow,
@@ -12,6 +12,7 @@ import {
 } from './styled';
 import { HeaderUserInfoProvider } from './context';
 import { useHeaderMenu } from '../menu/context';
+import { useDropdownDismiss } from '@/ui/utils';
 
 export interface HeaderUserInfoProps extends React.PropsWithChildren {
   avatar: React.ReactNode;
@@ -41,29 +42,13 @@ export const HeaderUserInfo: React.FC<HeaderUserInfoProps> = ({
     }
 
     setWidth(width);
-    setIsOpen(!isOpen);
-  }, [isOpen, headRef]);
-
-  useEffect(() => {
-    const userEl: HTMLDivElement | null = userRef.current;
-
-    if (userEl !== null) {
-      const clickListener = (event: Event) => {
-        if (!userEl.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      const blurListener = () => setIsOpen(false);
-
-      document.addEventListener('click', clickListener);
-      window.addEventListener('blur', blurListener);
-
-      return () => {
-        document.removeEventListener('click', clickListener);
-        window.removeEventListener('blur', blurListener);
-      };
-    }
+    setIsOpen((isOpen) => !isOpen);
   }, []);
+
+  const handleClose = useCallback(() => setIsOpen(false), []);
+
+  // Listen to the document and the window only while the dropdown is open.
+  useDropdownDismiss(userRef, handleClose, isOpen);
 
   const userInfoTransition = useTransition(
     isOpen,

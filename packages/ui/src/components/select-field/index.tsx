@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 
 import * as S from './styled';
 import { Skeleton } from '@/ui/components/skeleton';
+import { useControllableState } from '@/ui/utils';
 
 import { SelectModalGeneralProps, SelectModal } from './select-modal';
 import { SelectFieldInputValue } from './nodes';
@@ -87,19 +88,33 @@ export const SelectField = ({
     ...selectModalProps
   } = useSelectField(useSelectFieldProps);
 
-  const setInitialInputValue = useCallback(
-    (value: string) => {
-      onInputChange?.(value);
-    },
-    [onInputChange],
-  );
-
-  const [inputValue, setInputValue] =
-    typeof initialInputValue === 'undefined'
-      ? useState('')
-      : [initialInputValue, setInitialInputValue];
+  const [inputValue, setInputValue] = useControllableState({
+    value: initialInputValue,
+    defaultValue: '',
+    onChange: onInputChange,
+  });
 
   const [isInputNativeFocus, setIsInputNativeFocus] = useState(false);
+
+  const handleSelectClick = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => handleInputClick(false, event),
+    [handleInputClick],
+  );
+
+  const handleNativeInputClick = useCallback(
+    (event: React.MouseEvent<HTMLElement>) => handleInputClick(true, event),
+    [handleInputClick],
+  );
+
+  const handleNativeInputFocus = useCallback(
+    () => setIsInputNativeFocus(true),
+    [],
+  );
+
+  const handleNativeInputBlur = useCallback(
+    () => setIsInputNativeFocus(false),
+    [],
+  );
 
   const isSearch = useMemo(
     () => enableInput && inputType === 'search',
@@ -158,7 +173,7 @@ export const SelectField = ({
 
       handleClose();
     },
-    [value],
+    [value, setValue, handleClose],
   );
 
   const handleInputChange = useCallback<
@@ -170,15 +185,21 @@ export const SelectField = ({
     [setInputValue],
   );
 
-  const handleClear = useCallback(() => {
-    setValue(null);
-    setInputValue('');
-  }, [setValue, setInputValue]);
+  const handleClear = useCallback(
+    (event: React.MouseEvent) => {
+      // The button is inside the trigger: without this the click would also
+      // open the modal right after clearing the value.
+      event.stopPropagation();
+      setValue(null);
+      setInputValue('');
+    },
+    [setValue, setInputValue],
+  );
 
   return (
     <SelectFieldProvider
       selectRef={triggerRef}
-      handleSelectClick={handleInputClick.bind(null, false)}
+      handleSelectClick={handleSelectClick}
     >
       <S.SelectFieldStyled
         $fullWidth={fullWidth}
@@ -212,7 +233,7 @@ export const SelectField = ({
                 $loading={loading}
                 $multiple={isMultipleWithValues}
                 ref={triggerRef}
-                onClick={handleInputClick.bind(null, false)}
+                onClick={handleSelectClick}
                 data-test={dataTest}
               >
                 <S.SelectFieldInputLeftSide>
@@ -234,10 +255,10 @@ export const SelectField = ({
                           value={inputValue}
                           placeholder={placeholder}
                           disabled={disabled}
-                          onClick={handleInputClick.bind(null, true)}
+                          onClick={handleNativeInputClick}
                           onChange={handleInputChange}
-                          onFocus={setIsInputNativeFocus.bind(null, true)}
-                          onBlur={setIsInputNativeFocus.bind(null, false)}
+                          onFocus={handleNativeInputFocus}
+                          onBlur={handleNativeInputBlur}
                         />
                       ) : (
                         <S.SelectFieldPlaceholder $open={isOpen}>

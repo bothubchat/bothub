@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
+import { useCopiedState } from '@/ui/utils/useCopiedState';
 import {
   ReferralCardLinkCopyIcon,
   ReferralCardLinkStyled,
@@ -26,16 +27,9 @@ export const ReferralCardLink: React.FC<ReferralCardLinkProps> = ({
 }) => {
   const theme = useTheme();
 
-  const [isFocus, setIsFocus] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
+  const { copied: isCopied, markCopied, resetCopied } = useCopiedState();
 
-  const handleFocus = useCallback(() => {
-    setIsFocus(true);
-  }, []);
-  const handleBlur = useCallback(() => {
-    setIsFocus(false);
-    setIsCopied(false);
-  }, []);
+  const handleBlur = resetCopied;
 
   const handleClick = useCallback(() => {
     if (isCopied) {
@@ -43,8 +37,8 @@ export const ReferralCardLink: React.FC<ReferralCardLinkProps> = ({
     }
 
     onCopy?.(children);
-    setIsCopied(true);
-  }, [isCopied, children, onCopy]);
+    markCopied();
+  }, [isCopied, children, onCopy, markCopied]);
 
   return (
     <IconProvider
@@ -54,12 +48,11 @@ export const ReferralCardLink: React.FC<ReferralCardLinkProps> = ({
       <ReferralCardLinkStyled
         className={className}
         tabIndex={tabIndex}
-        onFocus={handleFocus}
         onBlur={handleBlur}
         onClick={handleClick}
       >
         <ReferralCardLinkText>{children}</ReferralCardLinkText>
-        <ReferralCardLinkCopyIcon as={isFocus ? CheckSmallIcon : CopyIcon} />
+        <ReferralCardLinkCopyIcon as={isCopied ? CheckSmallIcon : CopyIcon} />
       </ReferralCardLinkStyled>
     </IconProvider>
   );

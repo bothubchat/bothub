@@ -1,10 +1,11 @@
-import { styled } from 'styled-components';
+import { keyframes, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { CloseIcon } from '@/ui/icons/close';
 import { InfoBigIcon } from '@/ui/icons/info-big';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { NotificationVariant } from './types';
+import { themeVar } from '@/ui/theme';
 
 export interface NotificationStyledProps {
   $variant: NotificationVariant;
@@ -12,22 +13,19 @@ export interface NotificationStyledProps {
 
 export const NotificationStyled = styled(animated.div)<NotificationStyledProps>`
   display: flex;
-  background: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray2};
+  background: ${({ theme }) => themeVar(theme, 'tokens.surfaceNotification')};
   border: 1px solid
     ${({ theme, $variant }) => {
       switch ($variant) {
         case 'info':
         case 'loading':
-          return theme.colors.accent.primary;
+          return themeVar(theme, 'colors.accent.primary');
         case 'warn':
-          return theme.colors.orange;
+          return themeVar(theme, 'colors.orange');
         case 'error':
-          return theme.colors.critic;
+          return themeVar(theme, 'colors.critic');
         case 'success':
-          return theme.colors.green;
+          return themeVar(theme, 'colors.green');
       }
     }};
   border-radius: 14px;
@@ -102,10 +100,7 @@ export const NotificationText = styled(Typography).attrs({
   overflow: hidden;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
-  color: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.default.colors.base.black
-      : theme.colors.grayScale.gray6};
+  color: ${({ theme }) => themeVar(theme, 'tokens.textSecondary')};
 `;
 
 export const NotificationCloseButton = styled(Button).attrs({
@@ -113,26 +108,44 @@ export const NotificationCloseButton = styled(Button).attrs({
   children: <CloseIcon />,
 })``;
 
-export const NotifyProgressBar = styled(animated.div)<{
+const progress = keyframes`
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+`;
+
+export const NotifyProgressBar = styled.div<{
   $variant: NotificationVariant;
 }>`
   top: 0;
   left: 0;
   position: absolute;
   height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation-name: ${progress};
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
   background: ${({ theme, $variant }) => {
     switch ($variant) {
       case 'info':
       case 'loading':
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
       case 'warn':
-        return theme.colors.orange;
+        return themeVar(theme, 'colors.orange');
       case 'error':
-        return theme.colors.critic;
+        return themeVar(theme, 'colors.critic');
       case 'success':
-        return theme.colors.green;
+        return themeVar(theme, 'colors.green');
       default:
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
     }
   }};
+  ${NotificationStyled}:hover & {
+    animation-play-state: paused;
+  }
 `;

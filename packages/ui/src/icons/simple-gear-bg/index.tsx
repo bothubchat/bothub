@@ -1,7 +1,7 @@
 import { Icon, icon } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 
-export const SimpleGearBgIcon = icon(({ ...props }) => {
+export const SimpleGearBgIcon = icon((props) => {
   const theme = useTheme();
 
   return (

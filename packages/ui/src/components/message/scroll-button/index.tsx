@@ -21,27 +21,39 @@ export const ScrollButton: React.FC<IScrollButton> = ({ scrollbarRef }) => {
   };
 
   useEffect(() => {
+    const element = scrollbarRef.current?.element;
+    if (!element) {
+      return;
+    }
+
     const checkScrollPosition = () => {
-      if (scrollbarRef.current?.element) {
-        const { scrollHeight, clientHeight, scrollTop } =
-          scrollbarRef.current.element;
-        const atBottom =
-          Math.round(scrollTop + clientHeight) >= scrollHeight - 10;
-        const scrollable = scrollHeight > clientHeight;
-        setIsAtBottom(atBottom);
-        setIsScrollable(scrollable);
-      }
+      const { scrollHeight, clientHeight, scrollTop } = element;
+      const atBottom =
+        Math.round(scrollTop + clientHeight) >= scrollHeight - 10;
+      const scrollable = scrollHeight > clientHeight;
+      setIsAtBottom(atBottom);
+      setIsScrollable(scrollable);
     };
 
-    const element = scrollbarRef.current?.element;
-    element?.addEventListener('scroll', checkScrollPosition);
+    element.addEventListener('scroll', checkScrollPosition);
+
+    // A streaming reply grows the content without any scroll event.
+    const resizeObserver =
+      typeof ResizeObserver === 'undefined'
+        ? null
+        : new ResizeObserver(checkScrollPosition);
+    resizeObserver?.observe(element);
+    Array.from(element.children).forEach((child) => {
+      resizeObserver?.observe(child);
+    });
 
     checkScrollPosition();
 
     return () => {
-      element?.removeEventListener('scroll', checkScrollPosition);
+      element.removeEventListener('scroll', checkScrollPosition);
+      resizeObserver?.disconnect();
     };
-  }, [scrollbarRef.current]);
+  }, [scrollbarRef]);
 
   if (isAtBottom || !isScrollable) return null;
   return (

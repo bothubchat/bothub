@@ -1,7 +1,7 @@
 import { css, styled } from 'styled-components';
 import { TypographyStyled } from '@/ui/components/typography/styled';
-import { defaultTheme } from '@/ui/theme';
 import { ArrowUpIcon } from '@/ui/icons/arrow-up';
+import { themeVar } from '@/ui/theme';
 
 export const ReasoningBlockStyled = styled.div<{
   $fullWidth: boolean;
@@ -44,13 +44,13 @@ export const ReasoningBlockContentWrapper = styled.div<{
   }
 
   & > div > div:nth-child(2) {
-    border-left: 1px solid ${({ theme }) => theme.colors.grayScale.gray1};
+    border-left: 1px solid
+      ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
     padding-left: 10px;
   }
 
   & ${TypographyStyled} {
-    color: ${({ theme }) =>
-      theme.mode === 'dark' ? '#CDD5DA' : defaultTheme.colors.grayScale.gray1};
+    color: ${({ theme }) => themeVar(theme, 'tokens.reasoningText')};
   }
 
   & li {
@@ -65,8 +65,8 @@ export const ReasoningBlockButton = styled.button`
   gap: 8px;
   padding: 9px 15px;
   border-radius: 10px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
-  background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   cursor: pointer;
   outline: none;
   transition:
@@ -74,22 +74,25 @@ export const ReasoningBlockButton = styled.button`
     border-color 0.3s ease-in-out;
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.grayScale.gray5};
+    background-color: ${({ theme }) =>
+      themeVar(theme, 'colors.grayScale.gray5')};
   }
 
   &:active {
-    background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+    background-color: ${({ theme }) =>
+      themeVar(theme, 'colors.grayScale.gray4')};
   }
 
   &:disabled,
   &:disabled:hover,
   &:disabled:active {
     cursor: default;
-    background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+    background-color: ${({ theme }) =>
+      themeVar(theme, 'colors.grayScale.gray3')};
   }
 
   &:focus-visible {
-    border: 1px solid ${({ theme }) => theme.colors.accent.primary};
+    border: 1px solid ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
   }
 `;
 
@@ -100,6 +103,6 @@ export const ReasoningBlockButtonArrow = styled(ArrowUpIcon)<{
   transform: ${({ $isOpen }) => ($isOpen ? 'rotate(0deg)' : 'rotate(180deg)')};
 
   & path {
-    stroke: ${({ theme }) => theme.colors.base.white};
+    stroke: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;

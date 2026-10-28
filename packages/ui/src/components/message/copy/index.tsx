@@ -3,6 +3,7 @@ import { MessageAction } from '../styled';
 import { useMessage } from '../context';
 import { CheckSmallIcon } from '@/ui/icons/check-small';
 import { CopyIcon } from '@/ui/icons/copy';
+import { useCopiedState } from '@/ui/utils/useCopiedState';
 import { MessageCopyActionStyled } from './styled';
 
 export type MessageCopyActionProps = React.ComponentProps<typeof MessageAction>;
@@ -13,7 +14,7 @@ export const MessageCopyAction: React.FC<MessageCopyActionProps> = ({
   const { onCopy } = useMessage();
 
   const [isFocus, setIsFocus] = useState(false);
-  const [isCopied, setIsCopied] = useState(false);
+  const { copied: isCopied, markCopied, resetCopied } = useCopiedState();
 
   const handleClick = useCallback(() => {
     if (isCopied) {
@@ -23,13 +24,13 @@ export const MessageCopyAction: React.FC<MessageCopyActionProps> = ({
     onCopy?.();
 
     setIsFocus(true);
-    setIsCopied(true);
-  }, [isCopied, onCopy]);
+    markCopied();
+  }, [isCopied, onCopy, markCopied]);
 
   const handleBlur = useCallback(() => {
     setIsFocus(false);
-    setIsCopied(false);
-  }, []);
+    resetCopied();
+  }, [resetCopied]);
 
   return (
     <MessageCopyActionStyled

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { VolumeIcon } from '@/ui/icons/volume';
 import {
   MessageVideoControlsButton,
@@ -15,7 +15,7 @@ export const MessageVideoVolume: React.FC<MessageVideoVolumeProps> = ({
   iconSize = 16,
   handleChangeVolume,
 }) => {
-  const [volumeLineMouseMove, setVolumeLineMouseMove] = useState(false);
+  const isDraggingRef = useRef(false);
   const [volume, setVolume] = useState(100);
 
   const handleVolumeUpdateClick = useCallback(
@@ -34,19 +34,19 @@ export const MessageVideoVolume: React.FC<MessageVideoVolumeProps> = ({
   );
 
   const handleStartMouseMove = useCallback(() => {
-    setVolumeLineMouseMove(true);
+    isDraggingRef.current = true;
   }, []);
 
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      if (!volumeLineMouseMove) return;
+      if (!isDraggingRef.current) return;
       handleVolumeUpdateClick(event);
     },
-    [volumeLineMouseMove],
+    [handleVolumeUpdateClick],
   );
 
   const handleStartMouseLeave = useCallback(() => {
-    setVolumeLineMouseMove(false);
+    isDraggingRef.current = false;
   }, []);
 
   return (
@@ -62,7 +62,7 @@ export const MessageVideoVolume: React.FC<MessageVideoVolumeProps> = ({
         onMouseMove={handleMouseMove}
         onMouseUp={handleStartMouseLeave}
         onMouseDown={handleStartMouseMove}
-        $volume={volume}
+        style={{ '--video-volume': `${volume}%` } as React.CSSProperties}
       />
     </MessageVideoVolumeContainer>
   );

@@ -2,8 +2,11 @@ import React, {
   StyleHTMLAttributes,
   useCallback,
   useEffect,
+  useRef,
   useState,
 } from 'react';
+import { useTheme } from '@/ui/theme';
+import { useIsomorphicLayoutEffect } from '@/ui/utils/useIsomorphicLayoutEffect';
 import {
   SidebarBodyScrollbarWrapper,
   SidebarBottom,
@@ -18,9 +21,11 @@ import {
   SidebarBoxContainer,
   SidebarSearchBox,
   SidebarToggleBox,
+  SidebarPanel,
 } from './styled';
 import { SidebarProvider } from './context';
 import { ScrollbarRef } from '../scrollbar';
+import { animateSidebarResize, getSidebarWidth } from './resize-animation';
 
 export type SidebarOpenEventHandler = (open: boolean) => unknown;
 
@@ -88,6 +93,39 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const ref = React.useRef<ScrollbarRef>(null);
   const scrollbarElement = ref.current?.element ?? null;
   const [isScrolling, setIsScrolling] = useState<boolean>(false);
+  const theme = useTheme();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const width = getSidebarWidth(isOpen, isHide);
+  const widthRef = useRef(width);
+  const resizeAnimationsRef = useRef<Animation[]>([]);
+
+  // Before paint: the first frame with the new width already has the edge
+  // where it was
+  useIsomorphicLayoutEffect(() => {
+    const from = widthRef.current;
+    widthRef.current = width;
+    resizeAnimationsRef.current.forEach((animation) => animation.cancel());
+    resizeAnimationsRef.current = [];
+    if (from === width || !rootRef.current || !panelRef.current) {
+      return;
+    }
+
+    resizeAnimationsRef.current = animateSidebarResize({
+      root: rootRef.current,
+      panel: panelRef.current,
+      from,
+      to: width,
+      tabletMaxWidth: theme.dashboard.tablet.maxWidth,
+    });
+  }, [width, theme.dashboard.tablet.maxWidth]);
+
+  useEffect(
+    () => () => {
+      resizeAnimationsRef.current.forEach((animation) => animation.cancel());
+    },
+    [],
+  );
 
   useEffect(() => {
     if (!ref.current?.element) return;
@@ -127,45 +165,50 @@ export const Sidebar: React.FC<SidebarProps> = ({
         id={id}
         aria-label={ariaLabel}
         aria-hidden={isHide || undefined}
+        // The rows take their collapsed look from it, see ./collapsed
+        data-sidebar-collapsed={isOpen ? undefined : ''}
+        ref={rootRef}
       >
-        <SidebarTop $isOpen={isOpen}>
-          <SidebarHead $isOpen={isOpen}>
-            {isOpen && logo}
-            {isOpen && lang}
-            {!isOpen && toggle}
-            {menu}
-          </SidebarHead>
-          {!isOpen && <SidebarDivider $isOpen={isOpen} />}
-          <SidebarToolbar $isOpen={isOpen}>
-            <SidebarButtons>
-              {buttons}
-              {buttonsModal}
-            </SidebarButtons>
-            {isOpen && <SidebarToggleBox>{toggle}</SidebarToggleBox>}
-          </SidebarToolbar>
-          {isOpen && <SidebarSearchBox>{search}</SidebarSearchBox>}
-          <SidebarDivider $isOpen={isOpen} />
-        </SidebarTop>
-        <SidebarContent>
-          <SidebarWrapper
-            $isScrollable={isScrolling}
-            $isOpen={isOpen}
-          >
-            <SidebarBodyScrollbarWrapper
-              ref={ref}
+        <SidebarPanel ref={panelRef}>
+          <SidebarTop $isOpen={isOpen}>
+            <SidebarHead $isOpen={isOpen}>
+              {isOpen && logo}
+              {isOpen && lang}
+              {!isOpen && toggle}
+              {menu}
+            </SidebarHead>
+            {!isOpen && <SidebarDivider $isOpen={isOpen} />}
+            <SidebarToolbar $isOpen={isOpen}>
+              <SidebarButtons>
+                {buttons}
+                {buttonsModal}
+              </SidebarButtons>
+              {isOpen && <SidebarToggleBox>{toggle}</SidebarToggleBox>}
+            </SidebarToolbar>
+            {isOpen && <SidebarSearchBox>{search}</SidebarSearchBox>}
+            <SidebarDivider $isOpen={isOpen} />
+          </SidebarTop>
+          <SidebarContent>
+            <SidebarWrapper
+              $isScrollable={isScrolling}
               $isOpen={isOpen}
             >
-              {children}
-            </SidebarBodyScrollbarWrapper>
-          </SidebarWrapper>
-        </SidebarContent>
-        {isOpen && (
-          <SidebarBoxContainer>
-            {!isEdit && banner}
-            {isEdit && deleteButton}
-          </SidebarBoxContainer>
-        )}
-        <SidebarBottom>{user}</SidebarBottom>
+              <SidebarBodyScrollbarWrapper
+                ref={ref}
+                $isOpen={isOpen}
+              >
+                {children}
+              </SidebarBodyScrollbarWrapper>
+            </SidebarWrapper>
+          </SidebarContent>
+          {isOpen && (
+            <SidebarBoxContainer>
+              {!isEdit && banner}
+              {isEdit && deleteButton}
+            </SidebarBoxContainer>
+          )}
+          <SidebarBottom>{user}</SidebarBottom>
+        </SidebarPanel>
       </SidebarStyled>
     </SidebarProvider>
   );

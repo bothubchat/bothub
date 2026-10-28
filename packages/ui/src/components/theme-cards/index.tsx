@@ -21,11 +21,23 @@ export const ThemeCards: React.FC<ThemeCardsProps> = ({
 }) => {
   const [variantChecked, setVariantChecked] =
     useState<ThemeCardVariantType | null>(initialChecked ?? null);
+  // Follow `initialChecked` when the parent changes it; a click still
+  // updates the selection right away.
+  const [prevInitialChecked, setPrevInitialChecked] = useState(initialChecked);
+  if (prevInitialChecked !== initialChecked) {
+    setPrevInitialChecked(initialChecked);
+    if (initialChecked !== undefined) {
+      setVariantChecked(initialChecked);
+    }
+  }
 
-  const handleClick = useCallback((variant: ThemeCardVariantType) => {
-    setVariantChecked(variant);
-    onChange?.(variant);
-  }, []);
+  const handleClick = useCallback(
+    (variant: ThemeCardVariantType) => {
+      setVariantChecked(variant);
+      onChange?.(variant);
+    },
+    [onChange],
+  );
 
   return (
     <ThemeCardsStyled>

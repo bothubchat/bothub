@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
+import { useControllableState, useEventCallback } from '@/ui/utils';
 import { IInputMessageFile, InputMessageErrorEvent } from './types';
+import { revokeObjectUrl } from './object-urls';
 import {
   formatUploadFiles,
   getClipboardFiles,
-  getPreviewUrlForFile,
   isFileTypeAccepted,
+  isSameNativeFile,
   shouldPasteClipboardFiles,
 } from './utils';
 
@@ -26,39 +28,64 @@ export const useFiles = ({
   emitError,
   onFilesChange,
 }: UseFilesProps) => {
-  const [files, setFiles] = Array.isArray(initialFiles)
-    ? [initialFiles, onFilesChange]
-    : useState<IInputMessageFile[]>([]);
+  const [files, setFiles] = useControllableState<IInputMessageFile[]>({
+    value: initialFiles,
+    defaultValue: [],
+    onChange: onFilesChange,
+  });
+  // Файлами родителя он и владеет: держит их в черновиках и возвращает
+  // в поле после ошибки отправки. Превью их освобождается само, когда
+  // файл никто не держит (object-urls.ts)
+  const isControlled = initialFiles !== undefined;
+  const isControlledRef = useRef(isControlled);
+  isControlledRef.current = isControlled;
+  const filesRef = useRef(files);
+  filesRef.current = files;
+  const handleError = useEventCallback(emitError);
 
+  // Один путь для выбора, перетаскивания и вставки: проверка accept
+  // и без дублей
   const handleSideUploadFiles = useCallback(
     async (uploadFiles: File[]) => {
-      if (!uploadFiles.length) return;
-      const newFiles: IInputMessageFile[] = [];
-      const rejectedFiles: File[] = [];
-      const previewsUrls: (string | null)[] = await Promise.all(
-        uploadFiles?.map(getPreviewUrlForFile),
-      );
-      for (const [idx, file] of uploadFiles.entries()) {
-        const isValidFile = isFileTypeAccepted(file.type, uploadFileAccept);
+      if (uploadFileDisabled || !uploadFiles.length) return;
 
-        if (isValidFile) {
-          newFiles.push({
-            previewUrl: previewsUrls[idx],
-            name: file.name,
-            native: file,
-          });
+      const acceptedFiles: File[] = [];
+      const rejectedFiles: File[] = [];
+
+      for (const file of uploadFiles) {
+        if (isFileTypeAccepted(file.type, uploadFileAccept, file.name)) {
+          acceptedFiles.push(file);
         } else {
           rejectedFiles.push(file);
         }
       }
+
       if (rejectedFiles.length > 0) {
-        emitError?.({ name: 'WRONG_FILES', payload: rejectedFiles });
+        handleError({ name: 'WRONG_FILES', payload: rejectedFiles });
       }
-      if (newFiles?.length > 0) {
-        setFiles?.([...files, ...newFiles].slice(0, uploadFileLimit));
-      }
+      if (acceptedFiles.length === 0) return;
+
+      const newFiles = formatUploadFiles(acceptedFiles);
+
+      setFiles((prevFiles) =>
+        [
+          ...prevFiles.filter(
+            (prevFile) =>
+              !newFiles.some((newFile) =>
+                isSameNativeFile(prevFile.native, newFile.native),
+              ),
+          ),
+          ...newFiles,
+        ].slice(0, uploadFileLimit),
+      );
     },
-    [uploadFileAccept, emitError, uploadFileLimit, files],
+    [
+      uploadFileAccept,
+      uploadFileDisabled,
+      uploadFileLimit,
+      handleError,
+      setFiles,
+    ],
   );
 
   const handleFilePaste = useCallback<React.ClipboardEventHandler>(
@@ -85,32 +112,40 @@ export const useFiles = ({
     React.ChangeEventHandler<HTMLInputElement>
   >(
     async (event) => {
-      if (!setFiles || !event.target.files) {
+      if (!event.target.files) {
         return;
       }
 
-      const newFormatted = await formatUploadFiles([...event.target.files]);
-
-      const existingNames = new Set(newFormatted.map((f) => f.name));
-      const keptExisting = files.filter((f) => !existingNames.has(f.name));
-
-      setFiles([...keptExisting, ...newFormatted].slice(0, uploadFileLimit));
+      await handleSideUploadFiles([...event.target.files]);
     },
-    [files, setFiles, uploadFileLimit],
+    [handleSideUploadFiles],
   );
 
   const handleDeleteFile = useCallback(
     (index: number) => {
-      setFiles?.(files.filter((_, i) => i !== index));
+      const deletedFile = filesRef.current[index];
+
+      setFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+
+      if (deletedFile && !isControlledRef.current) {
+        revokeObjectUrl(deletedFile.native);
+      }
     },
-    [setFiles, files],
+    [setFiles],
   );
 
-  useEffect(() => {
-    if (setFiles && initialFiles) {
-      setFiles(initialFiles);
-    }
-  }, [initialFiles]);
+  // Неотправленные файлы без родителя больше никому не нужны.
+  // Отправленные ушли в onSend: их превью освобождается, когда их отпустят
+  useEffect(
+    () => () => {
+      if (!isControlledRef.current) {
+        for (const file of filesRef.current) {
+          revokeObjectUrl(file.native);
+        }
+      }
+    },
+    [],
+  );
 
   return {
     files,

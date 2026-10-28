@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { getTypographyStyles } from '@/ui/components/typography/styled';
+import { themeVar } from '@/ui/theme';
 
 const defaultSize = 56;
 
@@ -16,12 +17,19 @@ export const Checkbox = styled.input.attrs((props) => ({
   type: 'checkbox',
   ...props,
 }))`
-  display: none;
+  position: absolute;
   height: 0;
   width: 0;
-  visibility: hidden;
+  margin: 0;
+  opacity: 0;
+  &:focus-visible + label {
+    outline: 2px solid
+      ${(props) => themeVar(props.theme, 'colors.accent.primary')};
+    outline-offset: 2px;
+  }
   &:checked + label {
-    background-color: ${(props) => props.theme.colors.accent.primary};
+    background-color: ${(props) =>
+      themeVar(props.theme, 'colors.accent.primary')};
     &:after {
       left: calc(100% - 4px);
       transform: translateX(-100%);
@@ -34,7 +42,7 @@ export const HiddenLabel = styled.label`
   text-indent: -9999px;
   width: var(--switch-width, ${defaultSize});
   aspect-ratio: 56 / 26;
-  background: ${({ theme }) => theme.colors.grayScale.gray2};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   display: block;
   border-radius: 100px;
   position: relative;
@@ -55,6 +63,6 @@ export const HiddenLabel = styled.label`
 
 export const TextLabel = styled.label`
   ${getTypographyStyles('body-m-medium')}
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   cursor: pointer;
 `;

@@ -4,6 +4,7 @@ import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { TooltipAlign, TooltipPlacement, TooltipVariant } from './types';
 import { Image } from '@/ui/components/image';
+import { themeVar } from '@/ui/theme';
 
 export interface TooltipStyledProps {
   $placement: TooltipPlacement;
@@ -115,9 +116,9 @@ export const TooltipBlock = styled.span<TooltipBlockProps>`
   background: ${({ theme, $variant }) => {
     switch ($variant) {
       case 'primary':
-        return theme.colors.grayScale.gray2;
+        return themeVar(theme, 'colors.grayScale.gray2');
       case 'secondary':
-        return theme.colors.grayScale.gray3;
+        return themeVar(theme, 'colors.grayScale.gray3');
     }
   }};
   overflow: hidden;
@@ -150,7 +151,7 @@ export const TooltipCode = styled(Typography).attrs({
 })`
   display: inline-flex;
   border-radius: 4px;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
 `;
 
 export const TooltipColumn = styled.div`

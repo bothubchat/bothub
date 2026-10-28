@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   HeaderNavDropdownArrow,
@@ -9,6 +9,7 @@ import {
 import { HeaderNavDropdownProvider } from './context';
 import { useHeaderMenu } from '../../menu/context';
 import { useHeader } from '../../context';
+import { useDropdownDismiss } from '@/ui/utils';
 
 export interface HeaderNavDropdownProps extends React.PropsWithChildren {
   label: string;
@@ -24,33 +25,16 @@ export const HeaderNavDropdown: React.FC<HeaderNavDropdownProps> = ({
 
   const [isOpen, setIsOpen] = useState(false);
   const toggleDropdown = useCallback(() => {
-    setIsOpen(!isOpen);
-  }, [isOpen]);
-
-  useEffect(() => {
-    const dropdownEl: HTMLDivElement | null = dropdownRef.current;
-
-    if (dropdownEl !== null) {
-      const clickListener = (event: Event) => {
-        if (!dropdownEl.contains(event.target as Node) && !isInMenu) {
-          setIsOpen(false);
-        }
-      };
-      const blurListener = () => {
-        if (!isInMenu) {
-          setIsOpen(false);
-        }
-      };
-
-      document.addEventListener('click', clickListener);
-      window.addEventListener('blur', blurListener);
-
-      return () => {
-        document.removeEventListener('click', clickListener);
-        window.removeEventListener('blur', blurListener);
-      };
-    }
+    setIsOpen((isOpen) => !isOpen);
   }, []);
+
+  const handleClose = useCallback(() => setIsOpen(false), []);
+
+  // Inside the mobile menu the dropdown works as an accordion and stays open.
+  // Outside it, the document and the window are listened to only while open.
+  const shouldCloseOnOutside = isOpen && !isInMenu;
+
+  useDropdownDismiss(dropdownRef, handleClose, shouldCloseOnOutside);
 
   const dropdownTransition = useTransition(isOpen, {
     from: {

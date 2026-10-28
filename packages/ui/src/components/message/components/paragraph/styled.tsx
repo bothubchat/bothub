@@ -1,6 +1,8 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '@/ui/components/message';
+import { messageSelectionStyles } from '../selection';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageParagraphStyledProps {
   $variant: MessageVariant;
@@ -12,32 +14,12 @@ export interface MessageParagraphStyledProps {
 export const MessageParagraphStyled = styled(
   Typography,
 )<MessageParagraphStyledProps>`
-  color: ${({ theme, $variant, $color }) => {
+  color: ${({ theme, $variant }) => {
     if ($variant === 'user') {
-      if (theme.scheme === 'custom') {
-        return theme.colors.custom.message.user.text;
-      }
-
-      if (theme.scheme === 'standard') {
-        return theme.colors.base.white;
-      }
-
-      return theme.bright
-        ? theme.mode === 'dark'
-          ? theme.colors.base.black
-          : theme.colors.base.white
-        : theme.default.colors.base.white;
+      return themeVar(theme, 'tokens.paragraphUserText');
     }
 
-    if (theme.scheme === 'custom') {
-      return theme.colors.custom.message.assistant.text;
-    }
-
-    if ($color === 'default') {
-      return theme.colors.base.white;
-    }
-
-    return theme.colors.base.white;
+    return themeVar(theme, 'tokens.paragraphAssistantText');
   }};
   ${({ $disableMargin }) =>
     !$disableMargin &&
@@ -57,43 +39,12 @@ export const MessageParagraphStyled = styled(
         case 'user':
           return css`
             background: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.colors.accent.primaryLight
-                : theme.colors.base.white};
+              themeVar(theme, 'tokens.selectionUserBackground')};
             color: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.base.white
-                : theme.colors.accent.primary};
+              themeVar(theme, 'tokens.messageAccentDefault')};
           `;
         case 'assistant':
-          switch ($color) {
-            case 'default':
-              return css`
-                background: ${({ theme }) =>
-                  theme.mode === 'light'
-                    ? theme.default.colors.accent.primary
-                    : theme.colors.base.white};
-                color: ${({ theme }) =>
-                  theme.mode === 'light'
-                    ? theme.default.colors.base.white
-                    : theme.colors.accent.primary};
-              `;
-            case 'green':
-              return css`
-                background: ${({ theme }) => theme.default.colors.base.white};
-                color: ${({ theme }) => theme.colors.gpt3};
-              `;
-            case 'purple':
-              return css`
-                background: ${({ theme }) => theme.default.colors.base.white};
-                color: ${({ theme }) => theme.colors.gpt4};
-              `;
-            default:
-              return css`
-                background: ${({ theme }) => theme.default.colors.base.white};
-                color: ${$color};
-              `;
-          }
+          return messageSelectionStyles($color);
       }
     }}
   }

@@ -23,8 +23,8 @@ export const HeaderMenuToggleButton: React.FC<HeaderMenuToggleButtonProps> = ({
       onTabletOpen();
       return;
     }
-    setIsMenuOpen(!isMenuOpen);
-  }, [isMenuOpen, onTabletOpen]);
+    setIsMenuOpen((isMenuOpen) => !isMenuOpen);
+  }, [onTabletOpen, setIsMenuOpen]);
 
   return (
     <HeaderMenuToggleButtonStyled

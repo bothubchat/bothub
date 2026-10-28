@@ -1,5 +1,5 @@
 import { useTransition } from '@react-spring/web';
-import {
+import React, {
   forwardRef,
   useCallback,
   useEffect,
@@ -9,6 +9,7 @@ import {
   type ReactNode,
   type Ref,
 } from 'react';
+import { useEventCallback, useEscapeLayer } from '@/ui/utils';
 import * as S from './styled';
 
 export type ModalCloseEventHandler = () => unknown;
@@ -22,9 +23,24 @@ export type ModalWindowlProps = {
   hideCloseButton?: boolean;
   onClose?: ModalCloseEventHandler;
   onHeightChange?: (height: number) => void;
+  /** Called after the close animation has finished */
+  onExited?: () => void;
   'aria-label'?: string;
   closeAriaLabel?: string;
 } & PropsWithChildren;
+
+const focusableSelector = [
+  'a[href]',
+  'button:not([disabled])',
+  'input:not([disabled]):not([type="hidden"])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+  '[contenteditable="true"]',
+].join(',');
+
+const getFocusableElements = (container: HTMLElement) =>
+  Array.from(container.querySelectorAll<HTMLElement>(focusableSelector));
 
 function assignRef<T>(ref: Ref<T> | undefined, value: T | null): void {
   if (typeof ref === 'function') {
@@ -46,6 +62,7 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
       hideCloseButton = false,
       onClose,
       onHeightChange,
+      onExited,
       'aria-label': ariaLabel,
       closeAriaLabel,
     },
@@ -79,30 +96,76 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
       [onHeightChange, ref],
     );
 
+    useEscapeLayer(open, () => {
+      onClose?.();
+    });
+
+    // Move focus into the dialog and give it back to the opener on close
     useEffect(() => {
       if (!open) {
         return;
       }
 
-      const handleEscape = (event: KeyboardEvent) => {
-        if (event.key === 'Escape') {
-          event.stopPropagation();
-          onClose?.();
-        }
-      };
+      const previouslyFocused =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      const node = modalWindowRef.current;
 
-      document.addEventListener('keyup', handleEscape, true);
+      if (node && !node.contains(document.activeElement)) {
+        node.focus({ preventScroll: true });
+      }
 
       return () => {
-        document.removeEventListener('keyup', handleEscape, true);
+        if (previouslyFocused?.isConnected) {
+          previouslyFocused.focus({ preventScroll: true });
+        }
       };
-    }, [open, onClose]);
+    }, [open]);
+
+    // Keep Tab inside the dialog
+    const handleKeyDown = useCallback(
+      (event: React.KeyboardEvent<HTMLDivElement>) => {
+        if (event.key !== 'Tab') {
+          return;
+        }
+
+        const focusable = getFocusableElements(event.currentTarget);
+        if (focusable.length === 0) {
+          event.preventDefault();
+          return;
+        }
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const active = document.activeElement;
+
+        if (
+          event.shiftKey &&
+          (active === first || active === event.currentTarget)
+        ) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && active === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      },
+      [],
+    );
+
+    const handleExited = useEventCallback(onExited);
 
     const modalTransition = useTransition(open, {
       from: { opacity: 0, transform: 'scale(0.9)' },
       enter: { opacity: 1, transform: 'scale(1)' },
       leave: { opacity: 0, transform: 'scale(0.9)' },
       config: { duration: 200 },
+      onDestroyed: (item) => {
+        if (item) {
+          handleExited();
+        }
+      },
     });
 
     const content = <S.ModalWindowContent>{children}</S.ModalWindowContent>;
@@ -118,6 +181,8 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
             aria-modal="true"
             aria-labelledby={typeof title === 'string' ? titleId : undefined}
             aria-label={typeof title === 'string' ? undefined : ariaLabel}
+            tabIndex={-1}
+            onKeyDown={handleKeyDown}
           >
             {images}
             <S.ModalWindowBody>
@@ -128,6 +193,7 @@ export const ModalWindow = forwardRef<HTMLDivElement, ModalWindowlProps>(
               )}
               {!hideCloseButton && (
                 <S.ModalWindowCloseButton
+                  type="button"
                   onClick={onClose}
                   aria-label={closeAriaLabel}
                   data-test="close modal"

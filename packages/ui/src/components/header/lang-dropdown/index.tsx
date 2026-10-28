@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   HeaderLangDropdownContent,
@@ -11,6 +11,7 @@ import {
 import { HeaderLangDropdownProvider } from './context';
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
+import { useDropdownDismiss } from '@/ui/utils';
 
 export interface HeaderLangDropdownProps
   extends React.ComponentProps<typeof HeaderLangDropdownStyled> {
@@ -29,54 +30,17 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = useCallback(() => {
-    setIsOpen(!isOpen);
-  }, [isOpen]);
+    setIsOpen((isOpen) => !isOpen);
+  }, []);
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
   }, []);
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleScrollEvent = (event: Event) => {
-      const dropdownEl = dropdownRef.current;
-      const scrollTarget = event.target as Element;
-
-      if (dropdownEl && dropdownEl.contains(scrollTarget)) {
-        return;
-      }
-
-      handleClose();
-    };
-
-    window.addEventListener('scroll', handleScrollEvent, true);
-
-    return () => {
-      window.removeEventListener('scroll', handleScrollEvent, true);
-    };
-  }, [isOpen]);
-
-  useEffect(() => {
-    const dropdownEl: HTMLDivElement | null = dropdownRef.current;
-
-    if (dropdownEl !== null) {
-      const clickListener = (event: Event) => {
-        if (!dropdownEl.contains(event.target as Node)) {
-          setIsOpen(false);
-        }
-      };
-      const blurListener = () => setIsOpen(false);
-
-      document.addEventListener('click', clickListener);
-      window.addEventListener('blur', blurListener);
-
-      return () => {
-        document.removeEventListener('click', clickListener);
-        window.removeEventListener('blur', blurListener);
-      };
-    }
-  }, []);
+  // Listen to the document and the window only while the dropdown is open.
+  useDropdownDismiss(dropdownRef, handleClose, isOpen, {
+    closeOnScroll: true,
+  });
 
   const dropdownTransition = useTransition(isOpen, {
     from: {
@@ -113,14 +77,17 @@ export const HeaderLangDropdown: React.FC<HeaderLangDropdownProps> = ({
             />
           </HeaderLangDropdownToggler>
         </IconProvider>
-        {dropdownTransition((style, item) => (
-          <HeaderLangDropdownContent
-            $open={isOpen && !!item}
-            style={style}
-          >
-            {children}
-          </HeaderLangDropdownContent>
-        ))}
+        {dropdownTransition(
+          (style, item) =>
+            item && (
+              <HeaderLangDropdownContent
+                $open={isOpen}
+                style={style}
+              >
+                {children}
+              </HeaderLangDropdownContent>
+            ),
+        )}
       </HeaderLangDropdownStyled>
     </HeaderLangDropdownProvider>
   );

@@ -2,10 +2,8 @@ import path, { join } from 'path';
 import { defineConfig, ExternalOption, Plugin, RollupOptions } from 'rollup';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import esbuild from 'rollup-plugin-esbuild';
-import postcss from 'rollup-plugin-postcss';
 import image from '@rollup/plugin-image';
 import alias from '@rollup/plugin-alias';
-import typescript from '@rollup/plugin-typescript';
 import { readFileSync } from 'fs';
 import del from 'rollup-plugin-delete';
 import terser from '@rollup/plugin-terser';
@@ -13,10 +11,71 @@ import nodeExternals from 'rollup-plugin-node-externals';
 import babel from '@rollup/plugin-babel';
 import { visualizer } from 'rollup-plugin-visualizer';
 import commonjs from '@rollup/plugin-commonjs';
-import eslint from '@rollup/plugin-eslint';
+import ts from 'typescript';
 
 export interface CreateConfigOptions {
   packageName: string;
+}
+
+/**
+ * Compiles TypeScript file by file with the package tsconfig (ES2015 target,
+ * shared tslib helpers), without the type check: types are checked and
+ * declarations are emitted by separate tsc runs in scripts/build.ts.
+ */
+export /**
+ * Imported CSS (KaTeX, the highlight.js theme) becomes a module that adds it
+ * to the page with style-inject, as rollup-plugin-postcss did without any
+ * postcss plugins.
+ */
+const cssInject = (): Plugin => ({
+  name: 'css-inject',
+  transform(code, id) {
+    if (!id.endsWith('.css')) {
+      return null;
+    }
+
+    return {
+      code: [
+        "import styleInject from 'style-inject';",
+        `var css = ${JSON.stringify(code)};`,
+        'styleInject(css);',
+        'export default css;',
+      ].join('\n'),
+      map: { mappings: '' },
+    };
+  },
+});
+
+function typescriptTranspile(tsconfigPath: string): Plugin {
+  const { config } = ts.readConfigFile(tsconfigPath, ts.sys.readFile);
+  const { options } = ts.parseJsonConfigFileContent(
+    config,
+    ts.sys,
+    path.dirname(tsconfigPath),
+  );
+  const compilerOptions: ts.CompilerOptions = {
+    ...options,
+    declaration: false,
+    emitDeclarationOnly: false,
+    noEmit: false,
+    sourceMap: false,
+  };
+
+  return {
+    name: 'typescript-transpile',
+    transform(code, id) {
+      if (!/\.tsx?$/.test(id) || id.endsWith('.d.ts')) {
+        return null;
+      }
+
+      const { outputText } = ts.transpileModule(code, {
+        compilerOptions,
+        fileName: id,
+      });
+
+      return { code: outputText, map: null };
+    },
+  };
 }
 
 export function createConfig({
@@ -35,11 +94,8 @@ export function createConfig({
       ...packageConfig.devDependencies,
       ...packageConfig.dependencies,
     }),
-    'unified',
-    'remark-parse',
-    'remark-gfm',
+    // type-only import (@types/mdast), never bundled
     'mdast',
-    'mdast-util-to-markdown',
   ];
   const aliasPlugin: Plugin = alias({
     entries: [{ find: `@/${packageName}`, replacement: srcPath }],
@@ -64,21 +120,29 @@ export function createConfig({
         commonjs({
           include: 'node_modules/**',
         }),
-        del({
-          targets: [join(distPath, './*')],
-          runOnce: true,
-        }),
+        // In watch mode scripts/build.ts clears dist once, before the
+        // declarations are copied into it.
+        ...(process.env.ROLLUP_WATCH
+          ? []
+          : [
+              del({
+                targets: [join(distPath, './*')],
+                runOnce: true,
+              }),
+            ]),
         aliasPlugin,
         nodeExternals(),
         nodeResolve({
           extensions: ['.css', '.ts', '.tsx', '.js', '.jsx'],
         }),
+        typescriptTranspile(join(packagePath, './tsconfig.json')),
         esbuild({
           tsconfig: join(rootPath, './tsconfig.json'),
           exclude: ['**/*.stories.ts'],
           sourceMap: false,
         }),
-        visualizer(),
+        // Bundle treemap (stats.html) only on demand: ANALYZE=1 yarn build
+        ...(process.env.ANALYZE ? [visualizer()] : []),
         babel({
           babelHelpers: 'bundled',
           exclude: 'node_modules/**',
@@ -89,7 +153,10 @@ export function createConfig({
               'babel-plugin-styled-components',
               {
                 ssr: true,
-                displayName: true,
+                // Component names in class names only help debugging: in a
+                // published build they add ~11 KB gzip of JS to the app and
+                // ~3 KB to every prerendered HTML. `yarn dev` keeps them.
+                displayName: process.env.NODE_ENV !== 'production',
               },
             ],
           ],
@@ -97,22 +164,8 @@ export function createConfig({
         image({
           include: ['**/*.png', '**/*.svg', '**/*.webp'],
         }),
-        postcss(),
+        cssInject(),
         terser(),
-        typescript({
-          tsconfig: join(packagePath, './tsconfig.json'),
-          rootDir: srcPath,
-          declaration: true,
-          declarationDir: distPath,
-          exclude: [
-            './**/*.stories.ts',
-            './**/*.stories.tsx',
-            './packages/*/tests',
-            './**/*.test.ts',
-            './**/*.test.tsx',
-          ],
-        }),
-        eslint({}),
       ],
       external,
     },

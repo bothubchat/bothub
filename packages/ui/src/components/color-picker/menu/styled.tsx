@@ -6,6 +6,7 @@ import { CloseIcon } from '@/ui/icons/close';
 import { SelectorIcon } from '@/ui/icons/selector';
 import { TextField } from '@/ui/components/text-field';
 import { isBright } from '@/ui/utils';
+import { themeVar } from '@/ui/theme';
 
 const ColorPickerMenuAnimation = keyframes`
   from {
@@ -21,8 +22,8 @@ export const ColorPickerMenuStyled = styled.div`
   flex-direction: column;
   gap: 6px;
   width: 256px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   padding: 8px;
   border-radius: 10px;
   animation: ${ColorPickerMenuAnimation} 0.1s ease-out;
@@ -45,8 +46,8 @@ export const ColorPickerMenuHeaderHexCodeInput = styled(TextField).attrs({
   height: 28px;
   padding-block: 4px;
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
   label {
     background: none;
 
@@ -57,7 +58,7 @@ export const ColorPickerMenuHeaderHexCodeInput = styled(TextField).attrs({
       ${({ theme }) =>
         isBright(theme.colors.grayScale.gray4) &&
         css`
-          color: ${theme.default.colors.base.black};
+          color: ${themeVar(theme, 'default.colors.base.black')};
         `}
     }
   }
@@ -73,7 +74,7 @@ export const ColorPickerMenuPreview = styled.div`
   width: 20px;
   height: 20px;
   border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
 `;
 
 export const ColorPickerMenuCloseButton = styled(Button).attrs({
@@ -87,6 +88,7 @@ export const ColorPickerMenuArea = styled.div`
   height: 240px;
   cursor: pointer;
   background-blend-mode: multiply;
+  container-type: size;
 `;
 
 export const ColorPickerMenuHueSlider = styled.div`
@@ -95,6 +97,7 @@ export const ColorPickerMenuHueSlider = styled.div`
   width: 100%;
   border-radius: 10px;
   cursor: pointer;
+  container-type: size;
   background: linear-gradient(
     to right,
     #ff0000,
@@ -108,6 +111,9 @@ export const ColorPickerMenuHueSlider = styled.div`
   );
 `;
 
+// Positioned through --selector-x/--selector-y (percent of the area), so
+// moving it doesn't generate classes. Container units let it move with a
+// transform instead of left/top, which would cause layout on every move
 export const ColorPickerMenuSelector = styled.div.attrs({
   children: <SelectorIcon />,
 })`
@@ -115,5 +121,15 @@ export const ColorPickerMenuSelector = styled.div.attrs({
   justify-content: center;
   align-items: center;
   position: absolute;
+  left: calc(var(--selector-x, 0) * 1%);
+  top: calc(var(--selector-y, 0) * 1%);
   transform: translate(-50%, -50%);
+  @supports (width: 1cqw) {
+    left: 0;
+    top: 0;
+    transform: translate(
+      calc(var(--selector-x, 0) * 1cqw - 50%),
+      calc(var(--selector-y, 0) * 1cqh - 50%)
+    );
+  }
 `;

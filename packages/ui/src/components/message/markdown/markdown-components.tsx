@@ -1,33 +1,21 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, memo, useContext, useMemo } from 'react';
 import { type Components } from 'react-markdown';
 import {
   GeneratedDocumentBlock,
-  MessageBlockquote,
-  MessageBold,
   MessageCite,
   MessageComponentsProps,
-  MessageHr,
   MessageImage,
   MessageImageProps,
   MessageInlineCode,
-  MessageItalic,
-  MessageLink,
-  MessageList,
-  MessageListItem,
   MessageMultilineCode,
-  MessageParagraph,
-  MessagePre,
-  MessageStrike,
-  MessageTable,
-  MessageTableBody,
-  MessageTableCell,
-  MessageTableHead,
-  MessageTableRow,
-  MessageTitle,
 } from '@/ui/components/message/components';
+import { MessageCodeTypingContext } from '@/ui/components/message/components/code/multiline/content/typing';
 import { useMessage } from '@/ui/components/message/context';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
 import { normalizeMessageMarkdown } from './utils';
+import { MATH_TAG_NAME, getLoadedMath } from './math-loader';
+import type { MarkdownMathProps } from './math';
+import { markdownClassNames } from './class-names';
 
 /*
  * Components passed to react-markdown must keep a stable identity: a new
@@ -41,6 +29,16 @@ const MessageMarkdownComponentsContext = createContext<MessageComponentsProps>(
 
 export const MessageMarkdownComponentsProvider =
   MessageMarkdownComponentsContext.Provider;
+
+/**
+ * Start of the line that opens the code block a streamed markdown block ends
+ * in, `null` if there is no such code. Only that code changes on every chunk:
+ * it is shown as plain text and highlighted once it is complete.
+ */
+const MessageMarkdownOpenCodeContext = createContext<number | null>(null);
+
+export const MessageMarkdownOpenCodeProvider =
+  MessageMarkdownOpenCodeContext.Provider;
 
 export interface MarkdownCodeInfo {
   code: string;
@@ -92,81 +90,141 @@ const MarkdownImage: Components['img'] = ({ src, alt }) => {
   );
 };
 
+// Math elements come only from the plugins of the loaded formula chunk.
+const MarkdownMathElement = (props: MarkdownMathProps) => {
+  const math = getLoadedMath();
+  return math ? <math.MarkdownMath {...props} /> : props['data-tex'];
+};
+
+// `Components` only knows intrinsic elements, the math element is custom.
+const mathComponents = {
+  [MATH_TAG_NAME]: MarkdownMathElement,
+} as Components;
+
+const md = markdownClassNames;
+
+const getListItemClassName = (className?: string) =>
+  className ? `${md.listItem} ${className}` : md.listItem;
+
+// GFM puts the start of an ordered list in `start`, the counter follows it.
+const getListStyle = (start?: number): React.CSSProperties | undefined =>
+  start ? { counterSet: `item ${start - 1}` } : undefined;
+
+/*
+ * Plain tags with the classes styled by the markdown container: no styled
+ * component, Typography or context subscription per element. The markup is
+ * the same as the Message* components rendered, without their generated
+ * classes.
+ */
 export const baseMarkdownComponents: Components = {
-  p: ({ children }) => <MessageParagraph wrap>{children}</MessageParagraph>,
-  b: ({ children }) => <MessageBold>{children}</MessageBold>,
-  strong: ({ children }) => (
-    <MessageBold component="strong">{children}</MessageBold>
-  ),
-  i: ({ children }) => <MessageItalic>{children}</MessageItalic>,
-  em: ({ children }) => (
-    <MessageItalic component="em">{children}</MessageItalic>
-  ),
-  del: ({ children }) => <MessageStrike>{children}</MessageStrike>,
+  ...mathComponents,
+  p: ({ children }) => <p className={md.paragraph}>{children}</p>,
+  b: ({ children }) => <b className={md.bold}>{children}</b>,
+  strong: ({ children }) => <strong className={md.bold}>{children}</strong>,
+  i: ({ children }) => <i className={md.italic}>{children}</i>,
+  em: ({ children }) => <em className={md.italic}>{children}</em>,
+  del: ({ children }) => <del className={md.strike}>{children}</del>,
   blockquote: ({ children }) => (
-    <MessageBlockquote>{children}</MessageBlockquote>
+    <blockquote className={md.blockquote}>{children}</blockquote>
   ),
   cite: ({ children }) => <MessageCite>{children}</MessageCite>,
-  hr: () => <MessageHr />,
-  pre: ({ children }) => <MessagePre>{children}</MessagePre>,
-  table: ({ children }) => <MessageTable>{children}</MessageTable>,
-  thead: ({ children }) => <MessageTableHead>{children}</MessageTableHead>,
-  tbody: ({ children }) => <MessageTableBody>{children}</MessageTableBody>,
-  tr: ({ children }) => <MessageTableRow>{children}</MessageTableRow>,
-  td: ({ style, children }) => (
-    <MessageTableCell style={style}>{children}</MessageTableCell>
+  hr: () => <hr className={md.hr} />,
+  pre: ({ children }) => <pre className={md.pre}>{children}</pre>,
+  table: ({ children }) => (
+    <div className={md.table}>
+      <table className={md.tableContent}>{children}</table>
+    </div>
   ),
-  th: ({ style, children }) => (
-    <MessageTableCell
-      head
+  td: ({ style, children }) => (
+    <td
+      className={md.tableCell}
       style={style}
     >
-      {children}
-    </MessageTableCell>
+      <span className={md.tableCellText}>{children}</span>
+    </td>
   ),
-  ul: ({ children }) => <MessageList>{children}</MessageList>,
+  th: ({ style, children }) => (
+    <th
+      className={md.tableCell}
+      style={style}
+    >
+      <span className={md.tableCellText}>{children}</span>
+    </th>
+  ),
+  ul: ({ children }) => <ul className={md.list}>{children}</ul>,
   ol: ({ start, children }) => (
-    <MessageList
-      variant="number"
+    <ol
+      className={md.list}
       start={start}
+      style={getListStyle(start)}
     >
       {children}
-    </MessageList>
+    </ol>
   ),
   li: ({ id, className, children }) => (
-    <MessageListItem
+    <li
       id={id}
-      className={className}
+      className={getListItemClassName(className)}
     >
       {children}
-    </MessageListItem>
+    </li>
   ),
-  h1: ({ children }) => <MessageTitle variant="h1">{children}</MessageTitle>,
+  h1: ({ children }) => <h1 className={md.title}>{children}</h1>,
   // GFM footnotes add a visually hidden English "Footnotes" heading.
   h2: ({ className, children }) =>
     className?.includes('sr-only') ? null : (
-      <MessageTitle variant="h2">{children}</MessageTitle>
+      <h2 className={md.title}>{children}</h2>
     ),
-  h3: ({ children }) => <MessageTitle variant="h3">{children}</MessageTitle>,
-  h4: ({ children }) => <MessageTitle variant="h4">{children}</MessageTitle>,
-  h5: ({ children }) => <MessageTitle variant="h5">{children}</MessageTitle>,
-  h6: ({ children }) => <MessageTitle variant="h6">{children}</MessageTitle>,
+  h3: ({ children }) => <h3 className={md.title}>{children}</h3>,
+  h4: ({ children }) => <h4 className={md.title}>{children}</h4>,
+  h5: ({ children }) => <h5 className={md.title}>{children}</h5>,
+  h6: ({ children }) => <h6 className={md.title}>{children}</h6>,
   a: ({ id, href, children }) => (
-    <MessageLink
+    <a
       id={id}
       href={href}
+      className={md.link}
       {...markdownLinkTargetProps(href)}
     >
       {children}
-    </MessageLink>
+    </a>
   ),
   img: MarkdownImage,
 };
 
-const MarkdownCode: Components['code'] = ({ className, children }) => {
+interface MarkdownDocumentProps {
+  code: string;
+  isTg: boolean;
+  copyLabel?: string;
+}
+
+// A document block has its own markdown: it is parsed again only when its
+// code changes, not on every chunk streamed after it.
+const MarkdownDocument = memo(
+  ({ code, isTg, copyLabel }: MarkdownDocumentProps) => {
+    const { typing } = useMessage();
+    const normalizedCode = useMemo(
+      () => normalizeMessageMarkdown(code, { typing }),
+      [code, typing],
+    );
+    const { remarkPlugins, rehypePlugins } = useMarkdownPlugins(normalizedCode);
+
+    return (
+      <GeneratedDocumentBlock
+        code={normalizedCode}
+        copyLabel={copyLabel}
+        remarkPlugins={remarkPlugins}
+        rehypePlugins={rehypePlugins}
+        baseComponents={baseMarkdownComponents}
+        isTg={isTg}
+      />
+    );
+  },
+);
+
+const MarkdownCode: Components['code'] = ({ node, className, children }) => {
   const components = useContext(MessageMarkdownComponentsContext);
-  const { typing } = useMessage();
-  const { remarkPlugins, rehypePlugins } = useMarkdownPlugins();
+  const openCodeStart = useContext(MessageMarkdownOpenCodeContext);
   const { code, language, isInline } = getMarkdownCodeInfo(className, children);
 
   if (!code) return null;
@@ -176,13 +234,10 @@ const MarkdownCode: Components['code'] = ({ className, children }) => {
 
   if (isDoc || isTg) {
     return (
-      <GeneratedDocumentBlock
-        code={normalizeMessageMarkdown(code, { typing })}
-        copyLabel={components.document?.copyLabel}
-        remarkPlugins={remarkPlugins}
-        rehypePlugins={rehypePlugins}
-        baseComponents={baseMarkdownComponents}
+      <MarkdownDocument
+        code={code}
         isTg={isTg}
+        copyLabel={components.document?.copyLabel}
       />
     );
   }
@@ -191,13 +246,20 @@ const MarkdownCode: Components['code'] = ({ className, children }) => {
     return <MessageInlineCode>{code}</MessageInlineCode>;
   }
 
+  // Code that starts before the open fence is complete.
+  const start = node?.position?.start.offset;
+  const isTyped =
+    openCodeStart !== null && (start === undefined || start >= openCodeStart);
+
   return (
-    <MessageMultilineCode
-      {...components.code}
-      className={className}
-    >
-      {code}
-    </MessageMultilineCode>
+    <MessageCodeTypingContext.Provider value={isTyped}>
+      <MessageMultilineCode
+        {...components.code}
+        className={className}
+      >
+        {code}
+      </MessageMultilineCode>
+    </MessageCodeTypingContext.Provider>
   );
 };
 

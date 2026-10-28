@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 export interface MessageImageContextValue {
   width?: number;
@@ -10,11 +10,15 @@ export const MessageImageContext =
 
 export const MessageImageProvider: React.FC<
   MessageImageContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <MessageImageContext.Provider value={value}>
-    {children}
-  </MessageImageContext.Provider>
-);
+> = ({ children, width, height }) => {
+  const value = useMemo(() => ({ width, height }), [width, height]);
+
+  return (
+    <MessageImageContext.Provider value={value}>
+      {children}
+    </MessageImageContext.Provider>
+  );
+};
 
 export const useMessageImage = () => useContext(MessageImageContext);
 

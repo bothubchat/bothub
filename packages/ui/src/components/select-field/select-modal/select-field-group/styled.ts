@@ -1,5 +1,6 @@
 import { styled, css } from 'styled-components';
 import { SelectFieldSize } from '../types';
+import { themeVar } from '@/ui/theme';
 
 export const SelectFieldGroupStyled = styled.div`
   flex: 1;
@@ -30,7 +31,7 @@ export const SelectFieldGroupContent = styled.div<SelectFieldGroupContentProps>`
       }
 
       &::-webkit-scrollbar-thumb {
-        background: ${({ theme }) => theme.colors.accent.primary};
+        background: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
         border-radius: 2px;
       }
 
@@ -74,19 +75,17 @@ export const Shadow = styled.div<ShadowProps>`
     `}
 
   ${({ $onTop = false, theme }) => {
-    const color =
-      theme.mode === 'dark'
-        ? theme.colors.grayScale.gray4
-        : theme.colors.base.black;
+    const color = themeVar(theme, 'tokens.surfaceGroupHeader');
+    const transparent = themeVar(theme, 'tokens.surfaceGroupHeaderTransparent');
 
     return $onTop
       ? css`
           inset: -1px 8px auto 0;
-          background: linear-gradient(0deg, ${color}00 0%, ${color} 100%);
+          background: linear-gradient(0deg, ${transparent} 0%, ${color} 100%);
         `
       : css`
           inset: auto 8px -1px 0;
-          background: linear-gradient(180deg, ${color}00 0%, ${color} 100%);
+          background: linear-gradient(180deg, ${transparent} 0%, ${color} 100%);
         `;
   }}
 `;

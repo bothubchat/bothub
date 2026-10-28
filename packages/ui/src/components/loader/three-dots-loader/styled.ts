@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { themeVar } from '@/ui/theme';
 
 export const ThreeDotsLoaderStyled = styled.div`
   display: inline-flex;
@@ -24,24 +25,28 @@ export const ThreeDotsLoaderDotStyled = styled.div`
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   animation: threeDotsLoaderAnimation 1s infinite ease-in-out;
 
   @keyframes threeDotsLoaderAnimation {
     0% {
-      background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+      background-color: ${({ theme }) =>
+        themeVar(theme, 'colors.grayScale.gray3')};
     }
     25% {
-      background-color: ${({ theme }) => theme.colors.grayScale.gray2};
+      background-color: ${({ theme }) =>
+        themeVar(theme, 'colors.grayScale.gray2')};
     }
     50% {
-      background-color: ${({ theme }) => theme.colors.base.white};
+      background-color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
     }
     75% {
-      background-color: ${({ theme }) => theme.colors.grayScale.gray2};
+      background-color: ${({ theme }) =>
+        themeVar(theme, 'colors.grayScale.gray2')};
     }
     100% {
-      background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+      background-color: ${({ theme }) =>
+        themeVar(theme, 'colors.grayScale.gray3')};
     }
   }
 `;

@@ -2,6 +2,7 @@ import { styled } from 'styled-components';
 import { StatusProps } from './types';
 import { Typography } from '../typography';
 import { CheckSmallIcon } from '@/ui/icons';
+import { themeVar } from '@/ui/theme';
 
 export const StepperStyled = styled.div`
   width: 100%;
@@ -26,8 +27,8 @@ export const StepperStepPoint = styled.div<StatusProps>`
   position: relative;
   background-color: ${({ theme, $status }) =>
     $status === 'complete' || $status === 'active'
-      ? theme.colors.accent.primary
-      : theme.colors.grayScale.gray1};
+      ? themeVar(theme, 'colors.accent.primary')
+      : themeVar(theme, 'colors.grayScale.gray1')};
   transition: var(--transition-duration) background-color
     var(--transition-function);
   transition-delay: ${({ $status }) =>
@@ -41,8 +42,8 @@ export const StepperStepPointValue = styled(Typography).attrs<StatusProps>({
 })`
   color: ${({ theme, $status }) =>
     $status === 'incomplete'
-      ? theme.colors.grayScale.gray3
-      : theme.colors.base.white};
+      ? themeVar(theme, 'colors.grayScale.gray3')
+      : themeVar(theme, 'colors.base.white')};
 `;
 
 export const CheckIconContainer = styled.div<StatusProps>`
@@ -53,7 +54,7 @@ export const CheckIconContainer = styled.div<StatusProps>`
   height: 30px;
   position: absolute;
   border-radius: 50%;
-  background-color: ${({ theme }) => theme.colors.accent.primary};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
   transition: opacity var(--transition-duration) var(--transition-function);
   transition-delay: ${({ $status }) =>
     $status === 'complete' || $status === 'incomplete'
@@ -73,10 +74,10 @@ export const StepperLine = styled.div<StatusProps>`
   height: 3px;
   background-size: 300% 100%;
   background-image: ${({ theme }) => `linear-gradient(to right, 
-                  ${theme.colors.accent.primary} 0%, 
-                  ${theme.colors.accent.primary} 25%,
-                  ${theme.colors.grayScale.gray1} 50%,
-                  ${theme.colors.grayScale.gray1} 100%)`};
+                  ${themeVar(theme, 'colors.accent.primary')} 0%, 
+                  ${themeVar(theme, 'colors.accent.primary')} 25%,
+                  ${themeVar(theme, 'colors.grayScale.gray1')} 50%,
+                  ${themeVar(theme, 'colors.grayScale.gray1')} 100%)`};
   background-repeat: no-repeat;
   background-position-x: ${({ $status }) => {
     switch ($status) {

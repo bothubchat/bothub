@@ -36,6 +36,19 @@ function isEscaped(content: string, index: number): boolean {
   return backslashes % 2 === 1;
 }
 
+/** `isEscaped` for every offset of the content, computed in one pass. */
+function getEscapedOffsets(content: string): Uint8Array {
+  const escaped = new Uint8Array(content.length);
+  let backslashes = 0;
+
+  for (let index = 0; index < content.length; index += 1) {
+    escaped[index] = backslashes % 2;
+    backslashes = content[index] === '\\' ? backslashes + 1 : 0;
+  }
+
+  return escaped;
+}
+
 function looksLikeMathBody(body: string): boolean {
   if (MATH_BODY_PATTERN.test(body)) {
     return true;
@@ -65,15 +78,25 @@ function looksLikeCurrencySpan(body: string): boolean {
   return /^\d[\d.,]*\s/.test(body);
 }
 
+interface FencedCodeSplit {
+  segments: Segment[];
+  /**
+   * Start of the line that opens a code block that is not closed yet at the
+   * end of the content, `null` if the content does not end inside code.
+   */
+  openFenceStart: number | null;
+}
+
 /**
  * Splits content into fenced code blocks (``` and ~~~, including unclosed ones
  * while a message is streaming) and the rest of the text.
  */
-function splitFencedCode(content: string): Segment[] {
+function splitFencedCode(content: string): FencedCodeSplit {
   const segments: Segment[] = [];
   const lines = content.split('\n');
   let current: Segment = { kind: 'text', value: '' };
-  let fence: { char: string; length: number } | null = null;
+  let fence: { char: string; length: number; start: number } | null = null;
+  let lineStart = 0;
 
   const append = (kind: SegmentKind, value: string) => {
     if (current.kind !== kind) {
@@ -85,8 +108,10 @@ function splitFencedCode(content: string): Segment[] {
     current.value += value;
   };
 
-  lines.forEach((line, index) => {
+  for (const [index, line] of lines.entries()) {
     const value = index < lines.length - 1 ? `${line}\n` : line;
+    const start = lineStart;
+    lineStart += value.length;
 
     if (fence) {
       append('code', value);
@@ -98,25 +123,33 @@ function splitFencedCode(content: string): Segment[] {
       ) {
         fence = null;
       }
-      return;
+      continue;
     }
 
     const open = FENCE_OPEN_PATTERN.exec(line);
     // A backtick fence info string cannot contain backticks (```a``` is inline code).
     if (open && !(open[2][0] === '`' && open[3].includes('`'))) {
-      fence = { char: open[2][0], length: open[2].length };
+      fence = { char: open[2][0], length: open[2].length, start };
       append('code', value);
-      return;
+      continue;
     }
 
     append('text', value);
-  });
+  }
 
   if (current.value) {
     segments.push(current);
   }
 
-  return segments;
+  return { segments, openFenceStart: fence?.start ?? null };
+}
+
+/**
+ * Start of the line that opens the code block a streamed message ends in,
+ * `null` if all its code blocks are closed.
+ */
+export function getOpenCodeFenceStart(content: string): number | null {
+  return splitFencedCode(content).openFenceStart;
 }
 
 function splitInlineCode(content: string): Segment[] {
@@ -334,6 +367,11 @@ function findInlineMathClose(content: string, from: number): number {
  */
 function normalizeInlineDollars(content: string): string {
   let result = '';
+  // Every candidate scans from a digit, which `findInlineMathClose` never
+  // skips: a scan started at an earlier candidate passes this position in the
+  // same state, so its result holds until the found `$` is passed. Without
+  // reusing it, text with many prices (`$5`) took O(prices × length).
+  let lastCloseIndex: number | null = null;
 
   for (let index = 0; index < content.length; index += 1) {
     const char = content[index];
@@ -341,7 +379,13 @@ function normalizeInlineDollars(content: string): string {
       char === '$' && !isEscaped(content, index) && isDigit(content[index + 1]);
 
     if (isCurrencyCandidate) {
-      const closeIndex = findInlineMathClose(content, index + 1);
+      if (
+        lastCloseIndex === null ||
+        (lastCloseIndex !== -1 && lastCloseIndex <= index)
+      ) {
+        lastCloseIndex = findInlineMathClose(content, index + 1);
+      }
+      const closeIndex = lastCloseIndex;
       const body =
         closeIndex === -1 ? '' : content.slice(index + 1, closeIndex);
 
@@ -390,6 +434,9 @@ function findUnfinishedMath(segments: Segment[]): UnfinishedMath | null {
       continue;
     }
 
+    // `isEscaped` for every offset is O(n²) on a long run of backslashes.
+    const escaped = getEscapedOffsets(value);
+
     for (let offset = 0; offset < value.length; offset += 1) {
       const char = value[offset];
       const position = { segmentIndex, offset };
@@ -399,7 +446,7 @@ function findUnfinishedMath(segments: Segment[]): UnfinishedMath | null {
         continue;
       }
 
-      if (isEscaped(value, offset)) {
+      if (escaped[offset]) {
         continue;
       }
 
@@ -487,7 +534,7 @@ export function normalizeMessageMarkdown(
 ): string {
   const segments: Segment[] = [];
 
-  splitFencedCode(content).forEach((block) => {
+  splitFencedCode(content).segments.forEach((block) => {
     if (block.kind !== 'text') {
       segments.push(block);
       return;

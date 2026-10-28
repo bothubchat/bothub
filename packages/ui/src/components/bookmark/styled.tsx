@@ -2,6 +2,7 @@ import { styled, css, keyframes, DefaultTheme } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Button } from '@/ui/components/button';
 import { CloseIcon } from '@/ui/icons/close';
+import { themeVar } from '@/ui/theme';
 
 export const BookmarkName = styled(Typography).attrs({
   variant: 'body-m-semibold',
@@ -21,13 +22,13 @@ export const BookmarkCloseButton = styled(Button).attrs({
 
 const pulse = (theme: DefaultTheme) => keyframes`
   0% {
-    box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray5};
+    box-shadow: 0px 0px 0px 1px ${themeVar(theme, 'colors.grayScale.gray5')};
   }
   85% {
-    box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray1};
+    box-shadow: 0px 0px 0px 1px ${themeVar(theme, 'colors.grayScale.gray1')};
   }
   100% {
-    box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray5};
+    box-shadow: 0px 0px 0px 1px ${themeVar(theme, 'colors.grayScale.gray5')};
   }
 `;
 
@@ -48,18 +49,19 @@ export const BookmarkStyled: React.FC<BookmarkStyledProps> = styled.span<Bookmar
   height: 42px;
   margin: 1px;
   ${BookmarkName} {
-    color: ${({ theme }) => theme.colors.grayScale.gray1};
+    color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   }
   svg path {
-    fill: ${({ theme }) => theme.colors.grayScale.gray1} !important;
+    fill: ${({ theme }) =>
+      themeVar(theme, 'colors.grayScale.gray1')} !important;
   }
   ${({ $active }) =>
     $active &&
     css`
       cursor: default;
-      background: ${({ theme }) => theme.colors.grayScale.gray3};
+      background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
       ${BookmarkName} {
-        color: ${({ theme }) => theme.colors.base.white};
+        color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
       }
     `}
   ${({ $active }) =>
@@ -75,7 +77,7 @@ export const BookmarkStyled: React.FC<BookmarkStyledProps> = styled.span<Bookmar
     css`
       &:hover {
         box-shadow: 0px 0px 0px 1px
-          ${({ theme }) => theme.colors.grayScale.gray3};
+          ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
       }
     `}
 

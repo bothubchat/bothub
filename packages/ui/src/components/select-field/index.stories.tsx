@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import React, { useState } from 'react';
+import { fn } from 'storybook/test';
 import {
   SelectField,
   SelectFieldConsumer,
@@ -56,8 +57,8 @@ export const Basic: SelectFieldStory = {
       'Midjourney',
       'o3-mini',
     ],
-    onValueChange: (value: unknown) => console.log('onValueChange', value),
-    onChange: (value: unknown) => console.log('onChange', value),
+    onValueChange: fn(),
+    onChange: fn(),
   },
 };
 

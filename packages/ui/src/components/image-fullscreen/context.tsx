@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { ImageFullScreenData, ImageFullScreenDataItem } from './types';
 
 export interface ImageFullScreenContextValue {
@@ -14,10 +14,14 @@ export const ImageFullScreenContext =
 
 export const ImageFullScreenProvider: React.FC<
   ImageFullScreenContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <ImageFullScreenContext.Provider value={value}>
-    {children}
-  </ImageFullScreenContext.Provider>
-);
+> = ({ children, data, activeItem }) => {
+  const value = useMemo(() => ({ data, activeItem }), [data, activeItem]);
+
+  return (
+    <ImageFullScreenContext.Provider value={value}>
+      {children}
+    </ImageFullScreenContext.Provider>
+  );
+};
 
 export const useImageFullScreen = () => useContext(ImageFullScreenContext);

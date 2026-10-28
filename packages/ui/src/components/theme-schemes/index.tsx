@@ -54,6 +54,13 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
   const theme = useTheme();
 
   const [scheme, setScheme] = useState<ColorSchemeNames>(activeScheme);
+  // Follow `activeScheme` when the parent changes it; a click still updates
+  // the selection right away.
+  const [prevActiveScheme, setPrevActiveScheme] = useState(activeScheme);
+  if (prevActiveScheme !== activeScheme) {
+    setPrevActiveScheme(activeScheme);
+    setScheme(activeScheme);
+  }
 
   const handleClick = useCallback(
     (scheme: ColorSchemeNames) => {
@@ -63,10 +70,13 @@ export const ThemeSchemes: React.FC<ThemeSchemesProps> = ({
     [onClick],
   );
 
-  const handleCustomClick = useCallback((index: number) => {
-    setScheme('custom');
-    onCustomClick?.(index);
-  }, []);
+  const handleCustomClick = useCallback(
+    (index: number) => {
+      setScheme('custom');
+      onCustomClick?.(index);
+    },
+    [onCustomClick],
+  );
 
   return (
     <ThemeSchemesStyled>

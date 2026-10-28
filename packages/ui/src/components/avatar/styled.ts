@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { Skeleton } from '@/ui/components/skeleton';
 import { AvatarVariant } from './types';
+import { themeVar } from '@/ui/theme';
 
 export interface AvatarStyledProps {
   $size: number;
@@ -21,7 +22,7 @@ export const AvatarStyled = styled.span<AvatarStyledProps>`
     `}
 `;
 
-export const AvatarObject = styled.object.attrs({ type: 'image/jpeg' })`
+export const AvatarImage = styled.img`
   display: inline-flex;
   width: inherit;
   height: inherit;
@@ -45,10 +46,7 @@ export const AvatarBg = styled.div<AvatarBgProps>`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background-color: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.colors.grayScale.gray1
-      : theme.colors.grayScale.gray3};
+  background-color: ${({ theme }) => themeVar(theme, 'tokens.iconMuted')};
   ${({ $size }) => css`
     width: ${$size}px;
     height: ${$size}px;

@@ -1,19 +1,11 @@
 import { styled } from 'styled-components';
+import { themeVar } from '@/ui/theme';
 
 export const StyledLine = styled.div`
   width: 100%;
   height: 2px;
   border-radius: 2px;
-  background-color: ${({ theme }) => {
-    if (theme.bright) {
-      return theme.mode === 'dark'
-        ? theme.colors.base.black
-        : theme.colors.base.white;
-    }
-    return theme.mode === 'dark'
-      ? theme.colors.base.white
-      : theme.colors.base.black;
-  }};
+  background-color: ${({ theme }) => themeVar(theme, 'tokens.inkContrast')};
   position: absolute;
   left: 0;
   transition:

@@ -1,5 +1,6 @@
 import { css, styled } from 'styled-components';
 import { ArrowNarrowDownIcon } from '@/ui/icons';
+import { themeVar } from '@/ui/theme';
 
 export const MessageListScrollButton = styled.button<{
   $visible: boolean;
@@ -13,8 +14,8 @@ export const MessageListScrollButton = styled.button<{
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: 2px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  border: 2px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
   opacity: 0;
   z-index: ${({ theme }) => theme.zIndex.header};
   transform: translateX(-50%);
@@ -29,7 +30,8 @@ export const MessageListScrollButton = styled.button<{
     `}
 
   &:hover {
-    background-color: ${({ theme }) => theme.colors.grayScale.gray2};
+    background-color: ${({ theme }) =>
+      themeVar(theme, 'colors.grayScale.gray2')};
     cursor: pointer;
   }
 
@@ -38,6 +40,6 @@ export const MessageListScrollButton = styled.button<{
 
 export const MessageListArrowNarrowDownIcon = styled(ArrowNarrowDownIcon)`
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
