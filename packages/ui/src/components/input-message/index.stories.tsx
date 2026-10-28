@@ -16,6 +16,29 @@ export const Voice: InputMessageStory = {
   args: { ...Basic.args, voice: true },
 };
 
+// Пустой WAV: показать записанные голосовые без микрофона
+const emptyWav =
+  'data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
+
+const recordedVoice = (duration: number, waveData: number[]) => ({
+  src: `${emptyWav}#${duration}`,
+  blob: new Blob([], { type: 'audio/wav' }),
+  duration,
+  waveData,
+});
+
+/** Голосовые передаёт родитель (`voiceFiles`): так их можно вернуть в поле после ошибки отправки */
+export const VoiceFiles: InputMessageStory = {
+  args: {
+    ...Voice.args,
+    concatenateText: 'Голосовые будут объединены в одно сообщение',
+    voiceFiles: [
+      recordedVoice(4, [0.2, 0.5, 0.8, 0.4, 0.6, 0.3, 0.7, 0.2]),
+      recordedVoice(9, [0.4, 0.3, 0.6, 0.9, 0.5, 0.2, 0.4, 0.6]),
+    ],
+  },
+};
+
 export const UploadFileDisabled: InputMessageStory = {
   args: { ...Basic.args, uploadFileDisabled: true },
 };
