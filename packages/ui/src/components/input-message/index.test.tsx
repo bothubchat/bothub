@@ -419,6 +419,86 @@ describe('InputMessage sendLoading', () => {
   });
 });
 
+describe('InputMessage stop', () => {
+  afterEach(cleanup);
+
+  const stop = { stopAriaLabel: 'Остановить' };
+
+  test('replaces send with a stop button while generating', () => {
+    const onStop = vi.fn();
+    const { onSend } = renderComposer({ ...stop, onStop });
+
+    expect(screen.queryByLabelText('Отправить')).toBeNull();
+    fireEvent.click(screen.getByLabelText('Остановить'));
+
+    expect(onStop).toHaveBeenCalledTimes(1);
+    expect(onSend).not.toHaveBeenCalled();
+  });
+
+  test('stops even when sending is blocked', () => {
+    const onStop = vi.fn();
+    renderComposer({ ...stop, onStop, sendDisabled: true, sendLoading: true });
+
+    const button = screen.getByLabelText<HTMLButtonElement>('Остановить');
+    fireEvent.click(button);
+
+    expect(button.disabled).toBe(false);
+    expect(onStop).toHaveBeenCalledTimes(1);
+  });
+
+  test('brings send back once generation ends', () => {
+    const { rerender } = renderComposer({ ...stop, onStop: vi.fn() });
+
+    rerender({ onStop: undefined });
+
+    expect(screen.queryByLabelText('Остановить')).toBeNull();
+    expect(screen.getByLabelText('Отправить')).toBeInTheDocument();
+  });
+});
+
+describe('InputMessage header', () => {
+  afterEach(cleanup);
+
+  test('shows its content above the field', () => {
+    const { textarea } = renderComposer({
+      header: <button type="button">Первый кадр</button>,
+    });
+    const header = screen.getByRole('button', { name: 'Первый кадр' });
+    const order = [
+      ...document.querySelectorAll('textarea, [type="button"]'),
+    ].filter((node) => node === header || node === textarea);
+
+    expect(order).toEqual([header, textarea]);
+  });
+
+  test('does not move focus into the field when clicked', () => {
+    const onFrame = vi.fn();
+    const { textarea } = renderComposer({
+      header: (
+        <button
+          type="button"
+          onClick={onFrame}
+        >
+          Первый кадр
+        </button>
+      ),
+    });
+
+    fireEvent.click(screen.getByRole('button', { name: 'Первый кадр' }));
+
+    expect(onFrame).toHaveBeenCalledTimes(1);
+    expect(document.activeElement).not.toBe(textarea);
+  });
+
+  test('a click on the field area still focuses it', () => {
+    const { textarea } = renderComposer({ header: 'Кадры' });
+
+    fireEvent.click(textarea.parentElement as HTMLElement);
+
+    expect(document.activeElement).toBe(textarea);
+  });
+});
+
 describe('InputMessage paste', () => {
   afterEach(cleanup);
 

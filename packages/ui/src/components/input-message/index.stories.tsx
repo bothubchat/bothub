@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useEffect, useState } from 'react';
+import { styled } from 'styled-components';
 import { IInputMessageFile, InputMessage } from '.';
+import { themeVar } from '@/ui/theme';
 import { StoryDecorator } from '@/ui/story-decorator';
 import { Button } from '../button';
 import { QueueIcon } from '@/ui/icons';
@@ -188,9 +190,64 @@ export const SendLoading: InputMessageStory = {
   },
 };
 
+const FrameSlots = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+const FrameSlot = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px 6px 6px;
+  border: 1px dashed ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+  border-radius: 10px;
+  background: none;
+  color: ${({ theme }) => themeVar(theme, 'tokens.textDefault')};
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+
+  img {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+`;
+
+/** Шапка: что угодно над полем, например кадры для видео. Клик по ней не фокусирует поле */
+export const WithHeader: InputMessageStory = {
+  args: {
+    ...Basic.args,
+    header: (
+      <FrameSlots>
+        <FrameSlot type="button">
+          <img
+            src={photoUrl}
+            alt=""
+          />
+          Первый кадр
+        </FrameSlot>
+        <FrameSlot type="button">+ Последний кадр</FrameSlot>
+      </FrameSlots>
+    ),
+  },
+};
+
+/** Идёт генерация: на месте отправки кнопка остановки */
+export const Generating: InputMessageStory = {
+  args: {
+    ...Basic.args,
+    onStop: () => {},
+    stopAriaLabel: 'Остановить генерацию',
+  },
+};
+
 export default {
   title: 'Components/Message/Input',
   component: InputMessage,
   decorators: [StoryDecorator()],
-  args: { placeholder: 'Спроси о чем-нибудь...' },
+  // Без явного undefined Storybook подставит action и покажет стоп везде
+  args: { placeholder: 'Спроси о чем-нибудь...', onStop: undefined },
 } as InputMessageMeta;

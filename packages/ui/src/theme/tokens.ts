@@ -37,6 +37,11 @@ export const themeTokenDefinitions = {
     light: (theme) => theme.default.colors.base.white,
     dark: (theme) => theme.colors.grayScale.gray4,
   },
+  /** Поверх страницы: поле ввода сообщения */
+  surfaceRaised: {
+    light: (theme) => theme.default.colors.base.white,
+    dark: (theme) => theme.colors.grayScale.gray7,
+  },
   surfaceSecondary: {
     light: (theme) => theme.colors.grayScale.gray4,
     dark: (theme) => theme.colors.grayScale.gray3,
