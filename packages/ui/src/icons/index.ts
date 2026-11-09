@@ -406,3 +406,4 @@ export * from './text-lines-line';
 export * from './picture-line';
 export * from './note-line';
 export * from './wave-line';
+export * from './minus-line';

@@ -395,6 +395,7 @@ import {
   PictureLineIcon,
   NoteLineIcon,
   WaveLineIcon,
+  MinusLineIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -853,6 +854,7 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="PictureLineIcon">{PictureLineIcon}</IconItem>
         <IconItem name="NoteLineIcon">{NoteLineIcon}</IconItem>
         <IconItem name="WaveLineIcon">{WaveLineIcon}</IconItem>
+        <IconItem name="MinusLineIcon">{MinusLineIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
