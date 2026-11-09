@@ -407,3 +407,7 @@ export * from './picture-line';
 export * from './note-line';
 export * from './wave-line';
 export * from './minus-line';
+export * from './bell-line';
+export * from './expand-line';
+export * from './collapse-line';
+export * from './share-line';

@@ -30,18 +30,14 @@ export const MessagesScrollbarWrapper = styled(Scrollbar).attrs({
   })}
 `;
 
-export const MessagesContent = styled.div`
-  display: flex;
-  width: inherit;
-  justify-content: center;
-`;
-
+// Centred by its own margins: no extra flex wrapper around it
 export const MessagesContainer = styled.div<{ $fullWidth: boolean }>`
   display: flex;
   flex-direction: column-reverse; /* This is needed to automatically scroll down when adding new messages */
-  width: inherit;
+  width: 100%;
   max-width: ${({ theme, $fullWidth }) =>
     $fullWidth ? 'none' : theme.dashboard.chat.containerWidth};
+  margin: 0 auto;
 `;
 
 export const MessagesStart = styled.div`

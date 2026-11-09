@@ -396,6 +396,10 @@ import {
   NoteLineIcon,
   WaveLineIcon,
   MinusLineIcon,
+  BellLineIcon,
+  ExpandLineIcon,
+  CollapseLineIcon,
+  ShareLineIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -855,6 +859,10 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="NoteLineIcon">{NoteLineIcon}</IconItem>
         <IconItem name="WaveLineIcon">{WaveLineIcon}</IconItem>
         <IconItem name="MinusLineIcon">{MinusLineIcon}</IconItem>
+        <IconItem name="BellLineIcon">{BellLineIcon}</IconItem>
+        <IconItem name="ExpandLineIcon">{ExpandLineIcon}</IconItem>
+        <IconItem name="CollapseLineIcon">{CollapseLineIcon}</IconItem>
+        <IconItem name="ShareLineIcon">{ShareLineIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

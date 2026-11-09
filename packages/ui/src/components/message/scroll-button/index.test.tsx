@@ -39,6 +39,12 @@ const createScrollElement = () => {
 const getButton = (container: HTMLElement) =>
   container.querySelector('[data-test="scroll-button"]');
 
+// The button stays mounted to animate: hidden means out of the a11y tree
+const isShown = (container: HTMLElement) => {
+  const button = getButton(container);
+  return button !== null && button.getAttribute('aria-hidden') !== 'true';
+};
+
 describe('ScrollButton', () => {
   beforeEach(() => {
     ResizeObserverMock.instances = [];
@@ -57,13 +63,13 @@ describe('ScrollButton', () => {
     );
     const [observer] = ResizeObserverMock.instances;
 
-    expect(getButton(container)).toBeNull();
+    expect(isShown(container)).toBe(false);
     expect(observer.observed).toEqual([element, content]);
 
     size.scrollHeight = 300;
     act(() => observer.callback());
 
-    expect(getButton(container)).not.toBeNull();
+    expect(isShown(container)).toBe(true);
   });
 
   test('hides when scrolled to the bottom', () => {
@@ -73,14 +79,15 @@ describe('ScrollButton', () => {
       <ScrollButton scrollbarRef={scrollbarRef} />,
     );
 
-    expect(getButton(container)).not.toBeNull();
+    expect(isShown(container)).toBe(true);
 
     size.scrollTop = 200;
     act(() => {
       element.dispatchEvent(new Event('scroll'));
     });
 
-    expect(getButton(container)).toBeNull();
+    expect(isShown(container)).toBe(false);
+    expect(getButton(container)?.getAttribute('tabindex')).toBe('-1');
   });
 
   test('stops observing on unmount', () => {
