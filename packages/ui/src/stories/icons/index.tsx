@@ -321,6 +321,80 @@ import {
   BellIcon,
   KwaivgiIcon,
   DollarIcon,
+  ChatLineIcon,
+  CrownLineIcon,
+  CodeLineIcon,
+  BuildingLineIcon,
+  MonitorLineIcon,
+  HelpLineIcon,
+  GearLineIcon,
+  UserLineIcon,
+  TabChatsIcon,
+  TabProfileIcon,
+  TabPlansIcon,
+  TabSettingsIcon,
+  MenuLineIcon,
+  BackLineIcon,
+  ChatDashedLineIcon,
+  ChatPlusLineIcon,
+  ArrowRightLineIcon,
+  PaletteLineIcon,
+  GiftLineIcon,
+  ShieldLineIcon,
+  LinkLineIcon,
+  UsersLineIcon,
+  CardLineIcon,
+  SignOutLineIcon,
+  PlusLineIcon,
+  ChevronDownLineIcon,
+  TempChatLineIcon,
+  PanelHideLineIcon,
+  PanelShowLineIcon,
+  SearchLineIcon,
+  CloseLineIcon,
+  LayersLineIcon,
+  GridLineIcon,
+  ListLineIcon,
+  FolderLineIcon,
+  FolderPlusLineIcon,
+  DotsLineIcon,
+  CheckLineIcon,
+  SelectLineIcon,
+  PencilLineIcon,
+  ExportLineIcon,
+  TrashLineIcon,
+  FlagLineIcon,
+  LogoutLineIcon,
+  MicLineIcon,
+  ArrowUpLineIcon,
+  StopSquareIcon,
+  PaperclipLineIcon,
+  WrenchLineIcon,
+  SlidersLineIcon,
+  GlobeLineIcon,
+  ScalesLineIcon,
+  ImageLineIcon,
+  DocLineIcon,
+  BookLineIcon,
+  GitLineIcon,
+  VideoLineIcon,
+  MusicLineIcon,
+  SpeakerLineIcon,
+  TargetLineIcon,
+  SparkleLineIcon,
+  ChevronRightLineIcon,
+  ClockLineIcon,
+  GemLineIcon,
+  CopiesLineIcon,
+  ScreenLineIcon,
+  SpeakerOffLineIcon,
+  CameraLineIcon,
+  WandLineIcon,
+  RestoreLineIcon,
+  TextLinesLineIcon,
+  PictureLineIcon,
+  NoteLineIcon,
+  WaveLineIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -702,6 +776,83 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="BellIcon">{BellIcon}</IconItem>
         <IconItem name="KwaivgiIcon">{KwaivgiIcon}</IconItem>
         <IconItem name="DollarIcon">{DollarIcon}</IconItem>
+      </IconList>
+      <IconsTitle>Line icons</IconsTitle>
+      <IconList>
+        <IconItem name="ChatLineIcon">{ChatLineIcon}</IconItem>
+        <IconItem name="CrownLineIcon">{CrownLineIcon}</IconItem>
+        <IconItem name="CodeLineIcon">{CodeLineIcon}</IconItem>
+        <IconItem name="BuildingLineIcon">{BuildingLineIcon}</IconItem>
+        <IconItem name="MonitorLineIcon">{MonitorLineIcon}</IconItem>
+        <IconItem name="HelpLineIcon">{HelpLineIcon}</IconItem>
+        <IconItem name="GearLineIcon">{GearLineIcon}</IconItem>
+        <IconItem name="UserLineIcon">{UserLineIcon}</IconItem>
+        <IconItem name="TabChatsIcon">{TabChatsIcon}</IconItem>
+        <IconItem name="TabProfileIcon">{TabProfileIcon}</IconItem>
+        <IconItem name="TabPlansIcon">{TabPlansIcon}</IconItem>
+        <IconItem name="TabSettingsIcon">{TabSettingsIcon}</IconItem>
+        <IconItem name="MenuLineIcon">{MenuLineIcon}</IconItem>
+        <IconItem name="BackLineIcon">{BackLineIcon}</IconItem>
+        <IconItem name="ChatDashedLineIcon">{ChatDashedLineIcon}</IconItem>
+        <IconItem name="ChatPlusLineIcon">{ChatPlusLineIcon}</IconItem>
+        <IconItem name="ArrowRightLineIcon">{ArrowRightLineIcon}</IconItem>
+        <IconItem name="PaletteLineIcon">{PaletteLineIcon}</IconItem>
+        <IconItem name="GiftLineIcon">{GiftLineIcon}</IconItem>
+        <IconItem name="ShieldLineIcon">{ShieldLineIcon}</IconItem>
+        <IconItem name="LinkLineIcon">{LinkLineIcon}</IconItem>
+        <IconItem name="UsersLineIcon">{UsersLineIcon}</IconItem>
+        <IconItem name="CardLineIcon">{CardLineIcon}</IconItem>
+        <IconItem name="SignOutLineIcon">{SignOutLineIcon}</IconItem>
+        <IconItem name="PlusLineIcon">{PlusLineIcon}</IconItem>
+        <IconItem name="ChevronDownLineIcon">{ChevronDownLineIcon}</IconItem>
+        <IconItem name="TempChatLineIcon">{TempChatLineIcon}</IconItem>
+        <IconItem name="PanelHideLineIcon">{PanelHideLineIcon}</IconItem>
+        <IconItem name="PanelShowLineIcon">{PanelShowLineIcon}</IconItem>
+        <IconItem name="SearchLineIcon">{SearchLineIcon}</IconItem>
+        <IconItem name="CloseLineIcon">{CloseLineIcon}</IconItem>
+        <IconItem name="LayersLineIcon">{LayersLineIcon}</IconItem>
+        <IconItem name="GridLineIcon">{GridLineIcon}</IconItem>
+        <IconItem name="ListLineIcon">{ListLineIcon}</IconItem>
+        <IconItem name="FolderLineIcon">{FolderLineIcon}</IconItem>
+        <IconItem name="FolderPlusLineIcon">{FolderPlusLineIcon}</IconItem>
+        <IconItem name="DotsLineIcon">{DotsLineIcon}</IconItem>
+        <IconItem name="CheckLineIcon">{CheckLineIcon}</IconItem>
+        <IconItem name="SelectLineIcon">{SelectLineIcon}</IconItem>
+        <IconItem name="PencilLineIcon">{PencilLineIcon}</IconItem>
+        <IconItem name="ExportLineIcon">{ExportLineIcon}</IconItem>
+        <IconItem name="TrashLineIcon">{TrashLineIcon}</IconItem>
+        <IconItem name="FlagLineIcon">{FlagLineIcon}</IconItem>
+        <IconItem name="LogoutLineIcon">{LogoutLineIcon}</IconItem>
+        <IconItem name="MicLineIcon">{MicLineIcon}</IconItem>
+        <IconItem name="ArrowUpLineIcon">{ArrowUpLineIcon}</IconItem>
+        <IconItem name="StopSquareIcon">{StopSquareIcon}</IconItem>
+        <IconItem name="PaperclipLineIcon">{PaperclipLineIcon}</IconItem>
+        <IconItem name="WrenchLineIcon">{WrenchLineIcon}</IconItem>
+        <IconItem name="SlidersLineIcon">{SlidersLineIcon}</IconItem>
+        <IconItem name="GlobeLineIcon">{GlobeLineIcon}</IconItem>
+        <IconItem name="ScalesLineIcon">{ScalesLineIcon}</IconItem>
+        <IconItem name="ImageLineIcon">{ImageLineIcon}</IconItem>
+        <IconItem name="DocLineIcon">{DocLineIcon}</IconItem>
+        <IconItem name="BookLineIcon">{BookLineIcon}</IconItem>
+        <IconItem name="GitLineIcon">{GitLineIcon}</IconItem>
+        <IconItem name="VideoLineIcon">{VideoLineIcon}</IconItem>
+        <IconItem name="MusicLineIcon">{MusicLineIcon}</IconItem>
+        <IconItem name="SpeakerLineIcon">{SpeakerLineIcon}</IconItem>
+        <IconItem name="TargetLineIcon">{TargetLineIcon}</IconItem>
+        <IconItem name="SparkleLineIcon">{SparkleLineIcon}</IconItem>
+        <IconItem name="ChevronRightLineIcon">{ChevronRightLineIcon}</IconItem>
+        <IconItem name="ClockLineIcon">{ClockLineIcon}</IconItem>
+        <IconItem name="GemLineIcon">{GemLineIcon}</IconItem>
+        <IconItem name="CopiesLineIcon">{CopiesLineIcon}</IconItem>
+        <IconItem name="ScreenLineIcon">{ScreenLineIcon}</IconItem>
+        <IconItem name="SpeakerOffLineIcon">{SpeakerOffLineIcon}</IconItem>
+        <IconItem name="CameraLineIcon">{CameraLineIcon}</IconItem>
+        <IconItem name="WandLineIcon">{WandLineIcon}</IconItem>
+        <IconItem name="RestoreLineIcon">{RestoreLineIcon}</IconItem>
+        <IconItem name="TextLinesLineIcon">{TextLinesLineIcon}</IconItem>
+        <IconItem name="PictureLineIcon">{PictureLineIcon}</IconItem>
+        <IconItem name="NoteLineIcon">{NoteLineIcon}</IconItem>
+        <IconItem name="WaveLineIcon">{WaveLineIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>
