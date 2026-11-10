@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 export interface IconContextValue {
   size?: number;
@@ -14,8 +14,17 @@ export type IconProviderProps = IconContextValue & React.PropsWithChildren;
 
 export const IconProvider: React.FC<IconProviderProps> = ({
   children,
-  ...value
-}) => <IconContext.Provider value={value}>{children}</IconContext.Provider>;
+  size,
+  fill,
+  stroke,
+}) => {
+  const value = useMemo<IconContextValue>(
+    () => ({ size, fill, stroke }),
+    [size, fill, stroke],
+  );
+
+  return <IconContext.Provider value={value}>{children}</IconContext.Provider>;
+};
 
 export interface IconConsumerProps {
   children: (value?: IconContextValue) => React.ReactNode;

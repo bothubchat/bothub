@@ -37,7 +37,10 @@ export const MessageVersions = ({
 
   return (
     <S.MessageVersionsStyled $variant={variant}>
-      <S.MessageVersionsSwitchButton onClick={handlePrev}>
+      <S.MessageVersionsSwitchButton
+        type="button"
+        onClick={handlePrev}
+      >
         {'<'}
       </S.MessageVersionsSwitchButton>
       <S.MessageVersionsPagination>
@@ -45,7 +48,10 @@ export const MessageVersions = ({
         <S.MessageVersionsText>/</S.MessageVersionsText>
         <S.MessageVersionsText>{totalVersions}</S.MessageVersionsText>
       </S.MessageVersionsPagination>
-      <S.MessageVersionsSwitchButton onClick={handleNext}>
+      <S.MessageVersionsSwitchButton
+        type="button"
+        onClick={handleNext}
+      >
         {'>'}
       </S.MessageVersionsSwitchButton>
     </S.MessageVersionsStyled>

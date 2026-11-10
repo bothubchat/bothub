@@ -1,7 +1,7 @@
 import { Icon, icon } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme/hook';
 
-export const GrokIcon = icon(({ ...props }) => {
+export const GrokIcon = icon((props) => {
   const theme = useTheme();
 
   return (

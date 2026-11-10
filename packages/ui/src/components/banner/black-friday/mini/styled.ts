@@ -2,12 +2,14 @@ import { styled } from 'styled-components';
 import wave from './assets/wave-bg.svg';
 import percent from './assets/percent.svg';
 import { Typography } from '@/ui/components/typography';
+import { themeVar } from '@/ui/theme';
 
 export const BannerMiniStyled = styled.div`
   width: 100%;
   height: 80px;
   position: relative;
-  background: ${({ theme }) => theme.default.colors.grayScale.gray7};
+  background: ${({ theme }) =>
+    themeVar(theme, 'default.colors.grayScale.gray7')};
   padding: 16px 20px;
   border-radius: 14px;
   overflow: hidden;
@@ -66,7 +68,7 @@ export const BannerMiniTitle = styled.span`
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
   text-align: left;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
@@ -75,5 +77,5 @@ export const BannerMiniTitle = styled.span`
 export const BannerMiniText = styled(Typography).attrs({
   variant: 'body-s-regular',
 })`
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
 `;

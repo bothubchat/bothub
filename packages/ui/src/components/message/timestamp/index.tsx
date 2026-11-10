@@ -30,7 +30,7 @@ export const MessageTimestamp = ({
         $color={color}
         $variant={variant}
       >
-        {edited && `${editedText}`}
+        {edited && editedText}
       </TimestampText>
       <TimestampText
         $color={color}

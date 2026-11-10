@@ -15,6 +15,7 @@ import {
   MessageImageButton,
   MessageImageButtonZoneWrapper,
 } from './components/image/button';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageStyledProps {
   $variant: MessageVariant;
@@ -45,10 +46,7 @@ export const MessageStyledWrapper = styled.div<MessageStyledWrapperProps>`
   ${({ theme, $forkSelected }) =>
     $forkSelected &&
     css`
-      outline: 1.5px dashed
-        ${theme.scheme === 'custom'
-          ? theme.colors.custom.icon
-          : theme.colors.accent.primaryLight};
+      outline: 1.5px dashed ${themeVar(theme, 'tokens.messageActionIcon')};
       outline-offset: 3px;
       border-radius: 10px;
     `}
@@ -138,15 +136,11 @@ export const MessageName = styled(Typography).attrs({
   color: ${({ theme, $color }) => {
     switch ($color) {
       case 'green':
-        return theme.mode === 'dark'
-          ? theme.default.colors.base.white
-          : theme.colors.gpt3;
+        return themeVar(theme, 'tokens.messageAccentGreenInverse');
       case 'purple':
-        return theme.mode === 'dark'
-          ? theme.default.colors.base.white
-          : theme.colors.gpt4;
+        return themeVar(theme, 'tokens.messageAccentPurpleInverse');
       default:
-        return theme.colors.base.white;
+        return themeVar(theme, 'colors.base.white');
     }
   }};
 `;
@@ -325,13 +319,7 @@ export const MessageTransaction = styled(Typography).attrs({
   variant: 'body-m-regular',
 })`
   text-transform: uppercase;
-  color: ${({ theme }) => {
-    if (theme.mode === 'light') {
-      return theme.colors.grayScale.gray1;
-    }
-
-    return theme.default.colors.base.white;
-  }};
+  color: ${({ theme }) => themeVar(theme, 'tokens.transactionText')};
 `;
 
 export const MessageAction = styled(Button).attrs({

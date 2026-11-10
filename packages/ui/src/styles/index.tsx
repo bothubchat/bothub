@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BothubGlobalStyleStyled } from './styled';
 import { BothubScaleGlobalStyle, BothubScaleVariant } from './scale';
+import { useIsomorphicLayoutEffect } from '@/ui/utils/useIsomorphicLayoutEffect';
 
 export interface BothubGlobalStyleProps {
   margin?: string;
@@ -11,7 +12,9 @@ export const BothubGlobalStyle: React.FC<BothubGlobalStyleProps> = ({
   margin,
   scale = null,
 }) => {
-  useEffect(() => {
+  // A layout effect, so that the variable is set before the children read
+  // the layout: setting it later restyles the whole page once more
+  useIsomorphicLayoutEffect(() => {
     const resizeListener = () => {
       const height = window.innerHeight * 0.01;
 

@@ -1,5 +1,6 @@
 import { styled } from 'styled-components';
 import { Typography } from '../typography';
+import { themeVar } from '@/ui/theme';
 
 export const Form = styled.form`
   display: flex;
@@ -15,7 +16,7 @@ export const FormText = styled(Typography).attrs({
   variant: 'body-m-medium',
   component: 'p',
 })`
-  color: ${({ theme }) => theme.default.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.grayScale.gray1')};
   width: 100%;
   margin-bottom: 10px;
 `;

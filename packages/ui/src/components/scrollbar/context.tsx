@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { ScrollbarShadowsProps } from './types';
 
 export interface ScrollbarContextValue {
@@ -24,10 +24,45 @@ export const ScrollbarContext = React.createContext<ScrollbarContextValue>({
 
 export const ScrollbarProvider: React.FC<
   ScrollbarContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <ScrollbarContext.Provider value={value}>
-    {children}
-  </ScrollbarContext.Provider>
-);
+> = ({
+  children,
+  scrollbarSize,
+  scrollShadows,
+  setScroll,
+  disabled,
+  isLeft,
+  isRight,
+  isTop,
+  isBottom,
+}) => {
+  const value = useMemo<ScrollbarContextValue>(
+    () => ({
+      scrollbarSize,
+      scrollShadows,
+      setScroll,
+      disabled,
+      isLeft,
+      isRight,
+      isTop,
+      isBottom,
+    }),
+    [
+      scrollbarSize,
+      scrollShadows,
+      setScroll,
+      disabled,
+      isLeft,
+      isRight,
+      isTop,
+      isBottom,
+    ],
+  );
+
+  return (
+    <ScrollbarContext.Provider value={value}>
+      {children}
+    </ScrollbarContext.Provider>
+  );
+};
 
 export const useScrollbar = () => useContext(ScrollbarContext);

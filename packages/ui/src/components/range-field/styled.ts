@@ -5,6 +5,7 @@ import { Typography } from '@/ui/components/typography';
 import { RangeFieldValue } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
 import { adaptive } from '@/ui/adaptive';
+import { themeVar } from '@/ui/theme';
 
 export interface RangeFieldStyledProps {
   $fullWidth: boolean;
@@ -51,13 +52,13 @@ export const RangeFieldFormattedValue = styled.div`
   gap: 8px;
   padding: 14px 16px;
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
   font-size: 14px;
   line-height: 18px;
   font-weight: 400;
   width: 100%;
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   margin-bottom: 4px;
 `;
 
@@ -76,7 +77,7 @@ export const RangeFieldRange: React.FC<
     top: 0;
     margin: auto;
     border-radius: 4px;
-    background: ${({ theme }) => theme.colors.grayScale.gray3};
+    background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
     height: 8px;
     width: 100%;
     left: 0;
@@ -90,9 +91,9 @@ export const RangeFieldRange: React.FC<
     height: 8px;
     background: ${({ theme, $disabled }) => {
       if (!$disabled) {
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
       }
-      return theme.colors.grayScale.gray1;
+      return themeVar(theme, 'colors.grayScale.gray1');
     }}};
     ${({ $disabled }) =>
       $disabled &&
@@ -126,7 +127,7 @@ export const RangeFieldRangeThumb = styled.span<RangeFieldRangeThumbProps>`
   position: relative;
   flex-shrink: 0;
   border-radius: 50%;
-  background: ${({ theme }) => theme.default.colors.base.white};
+  background: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
   outline: none;
   ${({ $disabled }) =>
     $disabled &&
@@ -149,11 +150,7 @@ export const RangeFieldRangeThumb = styled.span<RangeFieldRangeThumbProps>`
       height: 20px;
     `,
   })}
-  ${({ theme }) =>
-    theme.mode === 'light' &&
-    css`
-      box-shadow: 0px 0px 0px 1px ${theme.default.colors.grayScale.gray6};
-    `}
+  box-shadow: ${({ theme }) => themeVar(theme, 'tokens.thumbShadow')};
 `;
 
 export const RangeFieldErrorText = styled(Typography).attrs({
@@ -161,5 +158,5 @@ export const RangeFieldErrorText = styled(Typography).attrs({
 })`
   display: inline-flex;
   margin-top: 8px;
-  color: ${({ theme }) => theme.colors.critic};
+  color: ${({ theme }) => themeVar(theme, 'colors.critic')};
 `;

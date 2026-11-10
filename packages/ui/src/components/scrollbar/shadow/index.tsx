@@ -48,9 +48,9 @@ export const ScrollbarShadow: React.FC<ScrollbarShadowProps> = ({
     opacity: 1,
   };
   if (isLeft || isRight) {
-    initialStyle.width = size;
+    animateStyle.width = size;
   } else if (isTop || isBottom) {
-    initialStyle.height = size;
+    animateStyle.height = size;
   }
 
   const visible =

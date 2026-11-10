@@ -1,6 +1,7 @@
 import { styled, css } from 'styled-components';
 import { SelectFieldSize } from '@/ui/components/select-field/types';
 import { Typography } from '@/ui/components/typography';
+import { themeVar } from '@/ui/theme';
 
 export interface SelectFieldOptionsStyledProps {
   $size: SelectFieldSize;
@@ -27,7 +28,7 @@ export const SelectFieldDivider = styled.div`
   flex-shrink: 0;
   width: 100%;
   height: 1px;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
 `;
 
 export interface SelectFieldEmptyProps {
@@ -89,7 +90,8 @@ export const SelectFieldRadio = styled.div<{
   }
 
   &:hover::before {
-    background-color: ${({ theme }) => theme.colors.accent.primary};
+    background-color: ${({ theme }) =>
+      themeVar(theme, 'colors.accent.primary')};
   }
 
   ${({ $disabled }) =>
@@ -131,7 +133,7 @@ export const SelectFieldEmptyText = styled(Typography).attrs({
   variant: 'input-sm',
 })`
   text-align: center;
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
 `;
 
 export const SelectFieldOptionSide = styled.div`
@@ -165,7 +167,8 @@ export const SelectFieldCheckBox = styled.div`
   }
 
   &:hover:before {
-    background-color: ${({ theme }) => theme.colors.accent.primary};
+    background-color: ${({ theme }) =>
+      themeVar(theme, 'colors.accent.primary')};
   }
 `;
 
@@ -192,5 +195,5 @@ export const SelectFieldCheckBoxName = styled(Typography).attrs({
 export const SelectFieldCheckBoxMail = styled(Typography).attrs({
   variant: 'body-s-regular',
 })`
-  color: ${({ theme }) => theme.colors.grayScale.gray6};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray6')};
 `;

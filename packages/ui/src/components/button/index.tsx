@@ -1,16 +1,7 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useImperativeHandle,
-  useRef,
-} from 'react';
+import React, { forwardRef, memo, useCallback, useMemo } from 'react';
 import { ButtonStyled, ButtonText } from './styled';
 import { useTheme } from '@/ui/theme';
-import {
-  IconProvider,
-  IconProviderProps,
-  isIconComponent,
-} from '@/ui/components/icon';
+import { IconProvider, isIconComponent } from '@/ui/components/icon';
 import {
   ButtonComponent,
   ButtonCorner,
@@ -20,7 +11,7 @@ import {
 import { useTooltip } from '@/ui/components/tooltip';
 import { Skeleton } from '@/ui/components/skeleton';
 import { InfoIcon } from '@/ui/icons/info';
-import { isBright } from '@/ui/utils/colors';
+import { isBrightColor } from './utils';
 
 export type ButtonProps = Omit<
   React.ComponentProps<'button'>,
@@ -45,7 +36,11 @@ export type ButtonProps = Omit<
   children?: React.ReactNode;
 };
 
-export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
+const skeletonOpacity: [number, number] = [0.15, 0.45];
+
+// Memoized: a button whose props did not change is not rendered again with
+// its parent, styled-components evaluating its styles is most of its cost.
+const ButtonBase = forwardRef<HTMLButtonElement | null, ButtonProps>(
   (
     {
       children,
@@ -57,8 +52,8 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
       corner = 'brick',
       startIcon = null,
       endIcon = null,
-      iconSize,
-      iconFill,
+      iconSize: iconSizeProp,
+      iconFill: iconFillProp,
       disabled = false,
       skeleton = false,
       color,
@@ -70,13 +65,15 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
   ) => {
     const theme = useTheme();
 
-    const elementRef = useRef<HTMLButtonElement | null>(null);
-
     const childrenArray: React.ReactNode[] = React.Children.toArray(children);
     const isIconButton: boolean = React.isValidElement(childrenArray[0])
       ? isIconComponent(childrenArray[0].type)
       : false;
-    if (typeof iconSize !== 'number') {
+
+    let iconSize: number;
+    if (typeof iconSizeProp === 'number') {
+      iconSize = iconSizeProp;
+    } else {
       switch (size) {
         case 'md':
           iconSize = 20;
@@ -86,74 +83,75 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
           break;
       }
     }
-    if (
-      typeof iconFill !== 'string' &&
-      variant !== 'text' &&
-      variant !== 'help'
-    ) {
+
+    const iconFill = useMemo<string | undefined>(() => {
+      if (
+        typeof iconFillProp === 'string' ||
+        variant === 'text' ||
+        variant === 'help'
+      ) {
+        return iconFillProp;
+      }
       if (disabled) {
-        iconFill = theme.colors.grayScale.gray1;
-      } else {
-        switch (variant) {
-          case 'primary':
-            if (theme.scheme === 'custom') {
-              if (isBright(theme.colors.accent.primary)) {
-                iconFill = isBright(theme.colors.custom.interface.text)
-                  ? theme.mode === 'dark'
-                    ? theme.colors.base.black
-                    : theme.default.colors.base.black
-                  : theme.colors.custom.interface.text;
-              }
+        return theme.colors.grayScale.gray1;
+      }
 
-              iconFill = isBright(theme.colors.custom.interface.text)
-                ? theme.colors.custom.interface.text
-                : theme.default.colors.base.white;
-
-              break;
+      switch (variant) {
+        case 'primary':
+          if (theme.scheme === 'custom') {
+            if (isBrightColor(theme.colors.accent.primary)) {
+              return isBrightColor(theme.colors.custom.interface.text)
+                ? theme.tokens.textOnBright
+                : theme.colors.custom.interface.text;
             }
 
-            iconFill = theme.bright
-              ? theme.mode === 'dark'
-                ? theme.colors.base.black
-                : theme.default.colors.base.black
+            return isBrightColor(theme.colors.custom.interface.text)
+              ? theme.colors.custom.interface.text
               : theme.default.colors.base.white;
-            break;
-          default:
-            iconFill = theme.colors.base.white;
-            break;
-        }
-      }
-    }
+          }
 
-    const iconProps: IconProviderProps = {
-      size: iconSize,
-      fill: iconFill,
-    };
+          return theme.bright
+            ? theme.tokens.textOnBright
+            : theme.default.colors.base.white;
+        default:
+          return theme.colors.base.white;
+      }
+    }, [iconFillProp, variant, disabled, theme]);
+
+    const skeletonColors = useMemo<[string]>(
+      () => [theme.colors.base.white],
+      [theme.colors.base.white],
+    );
 
     const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
+    const isNativeButton = component === 'button';
 
+    const { onMouseEnter, onMouseLeave } = props;
     const handleMouseEnter = useCallback<
       React.MouseEventHandler<HTMLButtonElement>
     >(
       (event) => {
-        props.onMouseEnter?.(event);
+        onMouseEnter?.(event);
         handleTooltipMouseEnter(event);
       },
-      [props.onMouseEnter, handleTooltipMouseEnter],
+      [onMouseEnter, handleTooltipMouseEnter],
     );
     const handleMouseLeave = useCallback<
       React.MouseEventHandler<HTMLButtonElement>
     >(
       (event) => {
-        props.onMouseLeave?.(event);
+        onMouseLeave?.(event);
         handleTooltipMouseLeave(event);
       },
-      [props.onMouseLeave, handleTooltipMouseLeave],
+      [onMouseLeave, handleTooltipMouseLeave],
     );
-
-    useImperativeHandle(ref, () => elementRef.current as HTMLButtonElement, [
-      elementRef.current,
-    ]);
+    // `disabled` does nothing on a/span/label, so block clicks (and link
+    // navigation or label activation) by hand.
+    const handleDisabledClick = useCallback<
+      React.MouseEventHandler<HTMLButtonElement>
+    >((event) => {
+      event.preventDefault();
+    }, []);
 
     return (
       <ButtonStyled
@@ -169,54 +167,62 @@ export const Button = forwardRef<HTMLButtonElement | null, ButtonProps>(
         $skeleton={skeleton}
         $disabled={disabled}
         $disableHoverColor={disableHoverColor}
+        $mode={theme.mode}
         $color={color}
         as={component}
-        {...(component === 'button' && {
+        {...(isNativeButton && {
           type,
           disabled,
         })}
+        {...(!isNativeButton &&
+          disabled && {
+            'aria-disabled': true,
+            onClick: handleDisabledClick,
+          })}
         {...(to && { to })}
         {...(component === 'a' && { href: props.href })}
         {...(component === 'label' && { htmlFor: props.htmlFor })}
-        ref={elementRef}
+        ref={ref}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {startIcon ? (
-          <IconProvider {...iconProps}>{startIcon}</IconProvider>
-        ) : null}
-        {!skeleton && (
-          <IconProvider {...iconProps}>
-            {variant === 'help' && <InfoIcon />}
-            {variant !== 'help' && (
-              <>
-                {typeof children === 'string' && (
-                  <ButtonText
-                    $variant={variant}
-                    $size={size}
-                    $disabled={disabled}
-                  >
-                    {children}
-                  </ButtonText>
-                )}
-                {typeof children !== 'string' && children}
-              </>
-            )}
-          </IconProvider>
-        )}
-        {skeleton && (
-          <Skeleton
-            width={70}
-            height={17.5}
-            colors={[theme.colors.base.white]}
-            opacity={[0.15, 0.45]}
-          />
-        )}
-        {endIcon ? <IconProvider {...iconProps}>{endIcon}</IconProvider> : null}
+        {/* One provider for the icons and the content: the skeleton
+            does not read it */}
+        <IconProvider
+          size={iconSize}
+          fill={iconFill}
+        >
+          {startIcon || null}
+          {!skeleton && variant === 'help' && <InfoIcon />}
+          {!skeleton &&
+            variant !== 'help' &&
+            (typeof children === 'string' ? (
+              <ButtonText
+                $variant={variant}
+                $size={size}
+                $disabled={disabled}
+              >
+                {children}
+              </ButtonText>
+            ) : (
+              children
+            ))}
+          {skeleton && (
+            <Skeleton
+              width={70}
+              height={17.5}
+              colors={skeletonColors}
+              opacity={skeletonOpacity}
+            />
+          )}
+          {endIcon || null}
+        </IconProvider>
       </ButtonStyled>
     );
   },
 );
+
+export const Button = memo(ButtonBase);
 
 export * from './types';
 export * from './styled';

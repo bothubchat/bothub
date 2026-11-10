@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import botAvatar from './assets/bot-avatar.png';
-import { AvatarBg, AvatarObject, AvatarSkeleton, AvatarStyled } from './styled';
+import { AvatarBg, AvatarImage, AvatarSkeleton, AvatarStyled } from './styled';
 import { AvatarVariant } from './types';
 import { IconProvider } from '../icon';
 import { UserProfileIcon } from '@/ui/icons';
@@ -30,7 +30,11 @@ export const Avatar: React.FC<AvatarProps> = ({
       break;
   }
 
-  return src ? (
+  // A broken image falls back to the placeholder, like a missing src.
+  const [failedSrc, setFailedSrc] = useState<string>();
+  const isImageAvailable = !!src && failedSrc !== src;
+
+  return isImageAvailable ? (
     <AvatarStyled
       {...props}
       $size={size}
@@ -41,11 +45,12 @@ export const Avatar: React.FC<AvatarProps> = ({
       aria-label={alt}
     >
       {!isSkeleton && !isChildren && (
-        <AvatarObject
-          data={src}
+        <AvatarImage
+          src={src}
           width={size}
           height={size}
-          aria-label={alt}
+          alt={alt ?? ''}
+          onError={() => setFailedSrc(src)}
         />
       )}
       {isChildren && !isSkeleton && (

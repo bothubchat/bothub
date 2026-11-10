@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useTransition, useSpring } from '@react-spring/web'; // Добавлен useSpring
+import React, { useCallback, useState } from 'react';
+import { useTransition } from '@react-spring/web';
 import {
   NotificationCloseButton,
   NotificationContent,
@@ -19,6 +19,7 @@ import { WarningBigIcon } from '@/ui/icons/warning-big';
 import { Loader } from '@/ui/components/loader';
 import { NotificationVariant } from './types';
 import { useNotifications } from './list';
+import { useEventCallback } from '@/ui/utils';
 
 export type NotificationCloseEventHandler = (notificationId: string) => unknown;
 
@@ -65,38 +66,35 @@ export const Notification: React.FC<NotificationProps> = ({
       iconComponent = Loader;
   }
 
-  const handleExitComplete = useCallback(() => {
-    if (!isOpen) {
+  const handleExitComplete = useEventCallback((item: boolean) => {
+    if (item) {
       onClose?.(notificationId);
     }
-  }, [isOpen, onClose, notificationId]);
+  });
 
-  const [{ width }, api] = useSpring(() => ({
-    width: '0%',
-  }));
-
-  useEffect(() => {
-    if (isOpen && autoClose) {
-      api.start({
-        from: { width: '0%' },
-        to: { width: '100%' },
-        config: { duration: autoClose },
-        onRest: (result) => {
-          if (result.finished) {
-            setIsOpen(false);
-          }
-        },
-      });
+  const close = useEventCallback(() => {
+    if (!isOpen) {
+      return;
     }
-  }, [isOpen, autoClose, api]);
 
-  const handleMouseEnter = useCallback(() => {
-    if (autoClose) api.pause();
-  }, [api, autoClose]);
+    setIsOpen(false);
+    // Outside the list there is no leave animation, and the transition
+    // doesn't report destroyed items without one
+    if (!isInNotificationList) {
+      onClose?.(notificationId);
+    }
+  });
 
-  const handleMouseLeave = useCallback(() => {
-    if (autoClose) api.resume();
-  }, [api, autoClose]);
+  // The progress bar is a CSS animation that pauses on hover, so the
+  // countdown doesn't rerender the notification on every frame
+  const handleProgressEnd = useCallback(
+    (event: React.AnimationEvent<HTMLDivElement>) => {
+      if (event.target === event.currentTarget) {
+        close();
+      }
+    },
+    [close],
+  );
 
   const notificationTransition = useTransition(
     isOpen,
@@ -108,9 +106,7 @@ export const Notification: React.FC<NotificationProps> = ({
           config: { duration: 250 },
           onDestroyed: handleExitComplete,
         }
-      : {
-          onDestroyed: handleExitComplete,
-        },
+      : {},
   );
 
   return notificationTransition(
@@ -120,15 +116,15 @@ export const Notification: React.FC<NotificationProps> = ({
           style={style}
           $variant={variant}
           className={className}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
         >
-          {autoClose && (
+          {autoClose ? (
             <NotifyProgressBar
+              key={autoClose}
               $variant={variant}
-              style={{ width }}
+              style={{ animationDuration: `${autoClose}ms` }}
+              onAnimationEnd={handleProgressEnd}
             />
-          )}
+          ) : null}
 
           <NotificationContent $text={hasTitleAndChildren}>
             <NotificationLeft $text={hasTitleAndChildren}>
@@ -146,7 +142,7 @@ export const Notification: React.FC<NotificationProps> = ({
             <NotificationRight>
               <NotificationCloseButton
                 aria-label={closeAriaLabel}
-                onClick={setIsOpen.bind(null, false)}
+                onClick={close}
               />
             </NotificationRight>
           </NotificationContent>

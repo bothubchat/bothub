@@ -3,6 +3,7 @@ import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
 import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
 import { BlockVariant } from './types';
+import { themeVar } from '@/ui/theme';
 
 export interface BlockStyledProps {
   $variant: BlockVariant;
@@ -16,7 +17,7 @@ export const BlockStyled = styled.div<BlockStyledProps>`
   width: 100%;
   height: 100%;
   transition: background 0.3s;
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
   overflow: hidden;
   max-height: 100vh;
   ${({ $variant }) => {
@@ -56,10 +57,12 @@ export const BlockHead = styled.div<BlockHeadProps>`
       border: none;
     `,
     tablet: css`
-      border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+      border-bottom: 1px solid
+        ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
     `,
     mobile: css`
-      border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+      border-bottom: 1px solid
+        ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
     `,
   })}
 

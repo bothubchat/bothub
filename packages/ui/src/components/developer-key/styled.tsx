@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { CopyIcon } from '@/ui/icons/copy';
 import { TrashIcon } from '@/ui/icons/trash';
+import { themeVar } from '@/ui/theme';
 
 export interface DeveloperKeyStyledProps {
   $skeleton: boolean;
@@ -21,9 +22,9 @@ export const DeveloperKeyStyled = styled.div<DeveloperKeyStyledProps>`
   align-items: center;
   gap: 10px;
   width: 100%;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   padding: 18px 16px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   border-radius: 8px;
   overflow: hidden;
   ${({ $skeleton }) => {
@@ -35,10 +36,12 @@ export const DeveloperKeyStyled = styled.div<DeveloperKeyStyledProps>`
     return css`
       cursor: pointer;
       &:hover {
-        border-color: ${({ theme }) => theme.colors.accent.primary};
+        border-color: ${({ theme }) =>
+          themeVar(theme, 'colors.accent.primary')};
       }
       &:focus {
-        border-color: ${({ theme }) => theme.colors.accent.primary};
+        border-color: ${({ theme }) =>
+          themeVar(theme, 'colors.accent.primary')};
         cursor: default;
       }
     `;
@@ -64,7 +67,7 @@ export const DeveloperKeyValue = styled(Typography).attrs({
   width: 100%;
   overflow: hidden;
   white-space: nowrap;
-  color: ${({ theme }) => theme.default.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.grayScale.gray1')};
   user-select: none;
 `;
 

@@ -1,7 +1,19 @@
 import { hexToRgb } from './hexToRgb';
 
+/**
+ * Whether a HEX color is bright. It is called from styles, so it never
+ * throws: a color it cannot parse counts as dark.
+ */
 export const isBright = (hex: string) => {
-  const [r, g, b] = hexToRgb(hex);
+  let rgb: [number, number, number];
+
+  try {
+    rgb = hexToRgb(hex);
+  } catch {
+    return false;
+  }
+
+  const [r, g, b] = rgb;
 
   // sRGB values
   const sR = r / 255;

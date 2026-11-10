@@ -37,6 +37,8 @@ export const SelectFieldGroup = ({
 
       onScrollTopChange(scrollTop);
     }
+    // The element may be mounted again: subscribe to the new one
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contentRef.current, onScrollTopChange]);
 
   useEffect(() => {
@@ -60,6 +62,7 @@ export const SelectFieldGroup = ({
       onResize.disconnect();
       el.removeEventListener('scroll', handleShadowsDisplay);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [contentRef.current, scrollTop]);
 
   return (

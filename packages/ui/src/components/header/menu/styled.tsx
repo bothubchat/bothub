@@ -2,6 +2,7 @@ import { createGlobalStyle, css, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { HeaderVariant } from '../types';
 import { adaptive } from '@/ui/adaptive';
+import { themeVar } from '@/ui/theme';
 
 export interface HeaderMenuStyledProps {
   $variant: HeaderVariant;
@@ -13,7 +14,7 @@ export const HeaderMenuStyled = styled.div`
 `;
 
 export const HeaderMenuContent = styled(animated.div)<HeaderMenuStyledProps>`
-  background: ${({ theme }) => theme.colors.base.black};
+  background: ${({ theme }) => themeVar(theme, 'colors.base.black')};
   overflow: auto;
   position: absolute;
   top: 0px;

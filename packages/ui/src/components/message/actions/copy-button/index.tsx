@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useSpring } from '@react-spring/web';
 
 import { CopyIcon } from '@/ui/icons/copy';
@@ -9,6 +8,7 @@ import { MessageActionEventHandler } from '../../types';
 
 import { MessageActionsButtonIconStyled } from './styled';
 import { useTheme } from '@/ui/theme';
+import { useCopiedState } from '@/ui/utils/useCopiedState';
 
 export const CopyButton = ({
   onCopy,
@@ -19,8 +19,7 @@ export const CopyButton = ({
 }) => {
   const theme = useTheme();
 
-  const [copied, setCopied] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
+  const { copied, markCopied } = useCopiedState(1000);
 
   const copySpring = useSpring({
     opacity: copied ? 0 : 1,
@@ -36,22 +35,9 @@ export const CopyButton = ({
   });
 
   const handleClick = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    setCopied(true);
+    markCopied();
     onCopy?.({});
-    setTimeoutId(setTimeout(() => setCopied(false), 1000));
   };
-
-  useEffect(
-    () => () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    },
-    [],
-  );
 
   return (
     <ActionButton

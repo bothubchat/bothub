@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { getTypographyStyles } from '@/ui/components/typography/styled';
 import { ArrowDownIcon, ArrowNarrowLeftIcon } from '@/ui/icons';
+import { themeVar } from '@/ui/theme';
 
 export const Container = styled.div`
   display: inline-flex;
@@ -21,11 +22,12 @@ export const PaginatorItem = styled.button.attrs<{
   border-radius: 8px;
   padding: 6px 14px;
   cursor: pointer;
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   ${({ $active }) =>
     $active &&
     css`
-      background-color: ${({ theme }) => theme.colors.accent.primary};
+      background-color: ${({ theme }) =>
+        themeVar(theme, 'colors.accent.primary')};
     `}
   ${({ $disabled }) =>
     $disabled &&

@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { adaptive } from '@/ui/adaptive';
 import { Plus2Icon } from '@/ui/icons/plus-2';
+import { themeVar } from '@/ui/theme';
 
 export const ThemeSchemesStyled = styled.div`
   display: flex;
@@ -26,16 +27,17 @@ export const ThemeAddButton = styled.button.attrs({
   align-items: center;
   margin: 13px 14px;
   border-radius: 26px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   &:hover {
     cursor: pointer;
-    outline: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+    outline: 1px solid
+      ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   }
   &:active {
     transform: scale(0.96);
   }
   svg path {
-    fill: ${({ theme }) => theme.colors.accent.primary};
+    fill: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
   }
   transition: scale 50ms ease-out;
 `;

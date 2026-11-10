@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 export interface HeaderNavDropdownContextValue {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -9,11 +9,15 @@ export const HeaderNavDropdownContext =
 
 export const HeaderNavDropdownProvider: React.FC<
   HeaderNavDropdownContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <HeaderNavDropdownContext.Provider value={value}>
-    {children}
-  </HeaderNavDropdownContext.Provider>
-);
+> = ({ children, setIsOpen }) => {
+  const value = useMemo(() => ({ setIsOpen }), [setIsOpen]);
+
+  return (
+    <HeaderNavDropdownContext.Provider value={value}>
+      {children}
+    </HeaderNavDropdownContext.Provider>
+  );
+};
 
 export function useHeaderNavDropdown(): HeaderNavDropdownContextValue {
   const value = useContext(HeaderNavDropdownContext);

@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { adaptive } from '@/ui/adaptive';
 import { Scrollbar, ScrollbarShadow } from '@/ui/components/scrollbar';
+import { themeVar } from '@/ui/theme';
 
 export const TabsStyled = styled.div`
   display: flex;
@@ -38,7 +39,7 @@ export const TabMobileListScrollbarWrapper = styled(Scrollbar).attrs(
   ({ theme }) => ({
     variant: 'secondary',
     scrollShadows: {
-      color: theme.colors.base.black,
+      color: themeVar(theme, 'colors.base.black'),
       left: <ScrollbarShadow side="left" />,
       right: <ScrollbarShadow side="right" />,
     },

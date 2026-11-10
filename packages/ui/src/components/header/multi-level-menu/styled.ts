@@ -15,6 +15,7 @@ import {
   StarGradientIcon,
   ArrowNarrowRightIcon,
 } from '@/ui/icons';
+import { themeVar } from '@/ui/theme';
 
 export const MultiLevelMenuStyled = styled.nav`
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
@@ -23,7 +24,7 @@ export const MultiLevelMenuStyled = styled.nav`
   @media (min-width: ${({ theme }) => theme.tablet.maxWidth}) {
     padding-left: 20px;
     border-left: 1px solid;
-    border-color: ${({ theme }) => theme.colors.grayScale.gray3};
+    border-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   }
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     padding: 30px 16px;
@@ -47,17 +48,17 @@ export const MultiLevelMenuWrapper = styled.ul`
 
 export const StartsIconMultiLevelMenu = styled(Imagine2Icon)`
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
 export const ArticleIconMultiLevelMenu = styled(ArticleIcon)`
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
 export const TgCircleIconMultiLevelMenu = styled(TgCircleIcon)`
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
 
@@ -95,7 +96,7 @@ export const MultiLevelMenuStarIconBasic = styled(StarGradientIcon)``;
 
 export const MultiLevelMenuStarIconPlans = styled(StarIcon)`
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
 
@@ -105,38 +106,38 @@ export const MultiLevelMenuFlexIcon = styled(BlackForestLabsIcon)`
 
 export const MultiLevelMenuActionChatIcon = styled(ActionChatIcon)`
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
 
 export const MultiLevelMenuReferalIcon = styled(ReferalIcon)`
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
 export const MultiLevelMenuSetchelIcon = styled(SetchelIcon)`
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
 export const MultiLevelMenuGearIcon = styled(CoderIcon)`
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
 export const MultiLevelMenuPublicIcon = styled(PublicIcon)`
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
 export const MultiLevelMenuBlogCircleIcon = styled(BlogCircleIcon)`
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
 export const MultiLevelMenuBlogNewsIcon = styled(NewsIcon)`
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
 
@@ -146,7 +147,7 @@ export const MultiLevelMenuArrowRight45 = styled(ArrowNarrowRightIcon)<{
   transform: rotate(-45deg);
   display: ${({ $hidden }) => ($hidden ? 'none' : 'inline-flex')};
   path {
-    fill: ${({ theme }) => theme.colors.base.white};
+    fill: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
   @media (max-width: 650px) {
     display: none;

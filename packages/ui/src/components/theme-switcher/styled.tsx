@@ -1,5 +1,6 @@
 import { css, styled } from 'styled-components';
 import { ThemeSwitcherMode } from './types';
+import { themeVar } from '@/ui/theme';
 
 export const ThemeSwitcherStyled = styled.div`
   display: inline-flex;
@@ -7,7 +8,7 @@ export const ThemeSwitcherStyled = styled.div`
   overflow: hidden;
   align-items: center;
   cursor: pointer;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   border: none;
   border-radius: 200px;
   padding: 2px;
@@ -42,9 +43,9 @@ export const ThemeSwitcherItemBackground = styled.span<ThemeSwitcherItemBackgrou
   left: 0px;
   height: 100%;
   aspect-ratio: 1 / 1;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   border-radius: 50%;
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
   ${({ $mode }) => {
     switch ($mode) {
       case 'light':

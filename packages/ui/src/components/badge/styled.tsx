@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { BadgeVariant } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
+import { themeVar } from '@/ui/theme';
 
 export interface BadgeStyledProps {
   $variant: BadgeVariant;
@@ -26,20 +27,18 @@ export const BadgeStyled = styled.div<BadgeStyledProps>`
   }}px;
   background: ${({ theme, $variant, $skeleton }) => {
     if ($skeleton) {
-      return theme.colors.grayScale.gray2;
+      return themeVar(theme, 'colors.grayScale.gray2');
     }
     switch ($variant) {
       case 'info':
-        return theme.mode === 'dark'
-          ? theme.colors.grayScale.gray3
-          : theme.colors.grayScale.gray5;
+        return themeVar(theme, 'tokens.badgeBackground');
       case 'blue':
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
       case 'critic':
       case 'error':
-        return theme.colors.critic;
+        return themeVar(theme, 'colors.critic');
       case 'success':
-        return theme.colors.green;
+        return themeVar(theme, 'colors.green');
     }
   }};
   ${({ $skeleton }) =>
@@ -59,9 +58,9 @@ export const BadgeText = styled(Typography).attrs({
   color: ${({ theme, $variant }) => {
     switch ($variant) {
       case 'info':
-        return theme.default.colors.base.white;
+        return themeVar(theme, 'default.colors.base.white');
       default:
-        return theme.default.colors.base.white;
+        return themeVar(theme, 'default.colors.base.white');
     }
   }};
   cursor: inherit;

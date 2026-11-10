@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { SpringValue, useSpring } from '@react-spring/web';
 import {
   HeaderMenuNavStyled,
@@ -65,6 +65,8 @@ export const HeaderMenuNav: React.FC<{
     }
   }, []);
 
+  useEffect(() => clearTimeouts, [clearTimeouts]);
+
   const handleClose = useCallback(() => {
     clearTimeouts();
     closeTimeout.current = setTimeout(() => {
@@ -101,7 +103,7 @@ export const HeaderMenuNav: React.FC<{
         }
       }, 50);
     },
-    [parent, startAnimation, clearTimeouts],
+    [items, parent, startAnimation, clearTimeouts],
   );
 
   const handleMouseEnterChild = useCallback(
@@ -224,7 +226,7 @@ const HeaderCollapseSubMenu: React.FC<{
   parent !== null &&
   child !== null &&
   child?.type === 'collapse' &&
-  child?.children?.length && (
+  !!child?.children?.length && (
     <HeaderMenuNavContentChildList
       $columns={child?.columns}
       style={springsChildContent}
@@ -302,11 +304,11 @@ const HeaderFirstLevelSubMenu: React.FC<{
     transform: SpringValue<string>;
   };
 }> = ({ parent, child, handleMouseEnterChild, springsChildContent }) =>
-  parent?.children?.length && (
+  !!parent?.children?.length && (
     <HeaderMenuNavContentList style={springsChildContent}>
-      {parent.children.map((item) => {
+      {parent.children.map((item, index) => {
         if (item.type === 'divider') {
-          return <Divider key={`divider-${Math.random()}`} />;
+          return <Divider key={`divider-${index}`} />;
         }
 
         return (

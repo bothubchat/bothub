@@ -32,6 +32,7 @@ export const ForkButton = ({
     <TooltipConsumer>
       {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
         <MessageForkButtonStyled
+          type="button"
           $selected={selected}
           aria-label={tooltipLabel ?? undefined}
           aria-pressed={selected}

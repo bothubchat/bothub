@@ -16,6 +16,7 @@ import {
   ScrollbarVariant,
 } from './types';
 import { ScrollbarProvider } from './context';
+import { useEventCallback } from '@/ui/utils/useEventCallback';
 
 export interface ScrollbarProps extends React.PropsWithChildren {
   className?: string;
@@ -39,6 +40,58 @@ export type ScrollbarScrollEventHandler = (event: {
   previousScrollTop: number;
 }) => unknown;
 
+interface ScrollbarEdges {
+  isLeft: boolean;
+  isRight: boolean;
+  isTop: boolean;
+  isBottom: boolean;
+}
+
+const initialEdges: ScrollbarEdges = {
+  isLeft: false,
+  isRight: false,
+  isTop: false,
+  isBottom: false,
+};
+
+const getScrollbarEdges = (
+  scrollbarEl: HTMLDivElement,
+  scrollShadowsSize: number,
+): ScrollbarEdges => {
+  const {
+    scrollTop,
+    scrollHeight,
+    clientHeight,
+    scrollLeft,
+    scrollWidth,
+    clientWidth,
+  } = scrollbarEl;
+
+  const isBiggerThanContentHeight = scrollShadowsSize > clientHeight;
+  const isBiggerThanContentWidth = scrollShadowsSize > clientWidth;
+
+  return {
+    isTop: !isBiggerThanContentHeight && scrollTop !== 0,
+    isBottom:
+      !isBiggerThanContentHeight &&
+      Math.round(scrollTop) + 1 < scrollHeight - clientHeight,
+    isLeft: !isBiggerThanContentWidth && scrollLeft !== 0,
+    isRight:
+      !isBiggerThanContentWidth &&
+      Math.round(scrollLeft) + 1 < scrollWidth - clientWidth,
+  };
+};
+
+const areEdgesEqual = (a: ScrollbarEdges, b: ScrollbarEdges): boolean =>
+  a.isLeft === b.isLeft &&
+  a.isRight === b.isRight &&
+  a.isTop === b.isTop &&
+  a.isBottom === b.isBottom;
+
+// Height of the content may settle slowly after mount (fonts, images), so
+// check once more after this delay.
+const slowLayoutTimeout = 500;
+
 export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
   (
     {
@@ -60,104 +113,113 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
     ref,
   ) => {
     const scrollbarRef = useRef<HTMLDivElement>(null);
-    const [isLeft, setIsLeft] = useState<boolean>(false);
-    const [isRight, setIsRight] = useState<boolean>(false);
-    const [isTop, setIsTop] = useState<boolean>(false);
-    const [isBottom, setIsBottom] = useState<boolean>(false);
+    // Edges are rendered only by the shadows, so they are state only in
+    // advanced mode; the rest of the scroll bookkeeping lives in refs.
+    const [edges, setEdges] = useState<ScrollbarEdges>(initialEdges);
+    const edgesRef = useRef<ScrollbarEdges>(initialEdges);
+    const stickyRef = useRef<boolean>(defaultStickyBottom);
+    const previousScrollTopRef = useRef<number>(0);
     const advancedMode = !!scrollShadows;
     const lockedMode = !!scrollLocked;
-    const [sticky, setSticky] = useState<boolean>(defaultStickyBottom);
-    const [previousScrollTop, setPreviousScrollTop] = useState<number>(0);
+    const stickyBottomEnabled = withStickyBottom || defaultStickyBottom;
     const scrollShadowsSize = scrollShadows?.size ?? 60;
 
-    const handleScroll = useCallback(
+    const applyEdges = useEventCallback((nextEdges: ScrollbarEdges) => {
+      if (advancedMode && !areEdgesEqual(edgesRef.current, nextEdges)) {
+        edgesRef.current = nextEdges;
+        setEdges(nextEdges);
+      }
+    });
+
+    const refreshEdges = useEventCallback((scrollbarEl: HTMLDivElement) => {
+      applyEdges(getScrollbarEdges(scrollbarEl, scrollShadowsSize));
+    });
+
+    const handleScroll = useEventCallback((scrollbarEl: HTMLDivElement) => {
+      const nextEdges = getScrollbarEdges(scrollbarEl, scrollShadowsSize);
+      const { isTop, isBottom } = nextEdges;
+      applyEdges(nextEdges);
+
+      const previousScrollTop = previousScrollTopRef.current;
+      const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
+      previousScrollTopRef.current = scrollbarEl.scrollTop;
+
+      if (withStickyBottom) {
+        const scrollBottom =
+          scrollbarEl.clientHeight -
+          Math.ceil(scrollbarEl.scrollHeight - scrollbarEl.scrollTop);
+        if (Math.abs(scrollBottom) < 20 && !isUpScroll) {
+          stickyRef.current = true;
+        } else if (isUpScroll) {
+          stickyRef.current = false;
+        }
+      }
+
+      if (disabled) {
+        scrollbarEl.scrollTo(0, 0);
+      }
+      onScroll?.({ isTop, isBottom, previousScrollTop });
+    });
+
+    const handleContentMutation = useEventCallback(
       (scrollbarEl: HTMLDivElement) => {
-        const {
-          scrollTop,
-          scrollHeight,
-          clientHeight,
-          scrollLeft,
-          scrollWidth,
-          clientWidth,
-        } = scrollbarEl;
-
-        const isBiggerThanContentHeight = scrollShadowsSize > clientHeight;
-        const isBiggerThanContentWidth = scrollShadowsSize > clientWidth;
-        const isTop = !isBiggerThanContentHeight && scrollTop !== 0;
-        const isBottom =
-          !isBiggerThanContentHeight &&
-          Math.round(scrollTop) + 1 < scrollHeight - clientHeight;
-
-        setIsTop(isTop);
-        setIsBottom(isBottom);
-        setIsLeft(!isBiggerThanContentWidth && scrollLeft !== 0);
-        setIsRight(
-          !isBiggerThanContentWidth &&
-            Math.round(scrollLeft) + 1 < scrollWidth - clientWidth,
-        );
-
-        const isUpScroll = previousScrollTop > scrollbarEl.scrollTop;
-        setPreviousScrollTop(scrollbarEl.scrollTop);
-
-        if (withStickyBottom) {
-          const scrollBottom =
-            scrollbarEl.clientHeight -
-            Math.ceil(scrollbarEl.scrollHeight - scrollbarEl.scrollTop);
-          if (Math.abs(scrollBottom) < 20 && !isUpScroll) {
-            setSticky(true);
-          } else if (isUpScroll) {
-            setSticky(false);
-          }
+        if (!stickyRef.current) {
+          return;
         }
 
-        if (disabled) {
-          scrollbarEl.scrollTo(0, 0);
+        handleScroll(scrollbarEl);
+
+        if (!lockedMode) {
+          scrollbarEl.scrollTop = scrollbarEl.scrollHeight;
         }
-        onScroll?.({ isTop, isBottom, previousScrollTop });
       },
-      [
-        scrollbarRef.current,
-        disabled,
-        previousScrollTop,
-        withStickyBottom,
-        scrollShadowsSize,
-        onScroll,
-      ],
+    );
+
+    const handleContentScroll = useCallback(
+      (event: React.UIEvent<HTMLDivElement>) => {
+        handleScroll(event.currentTarget);
+      },
+      [handleScroll],
     );
 
     useEffect(() => {
-      if (!isHorizontalScrollbar) {
+      const container = scrollbarRef.current;
+      if (!isHorizontalScrollbar || container === null) {
         return;
       }
-      const handleWheel = (e: WheelEvent) => {
-        if (scrollbarRef.current) {
-          e.preventDefault();
-          scrollbarRef.current.scrollLeft += e.deltaY;
+
+      // Turns vertical wheel into horizontal scroll. Not passive, otherwise
+      // preventDefault is ignored and the page scrolls as well; the page
+      // still scrolls when there is nothing to scroll horizontally.
+      const handleWheel = (event: WheelEvent) => {
+        const maxScrollLeft = container.scrollWidth - container.clientWidth;
+        if (
+          event.deltaY === 0 ||
+          maxScrollLeft <= 0 ||
+          (event.deltaY < 0 && container.scrollLeft <= 0) ||
+          (event.deltaY > 0 && container.scrollLeft >= maxScrollLeft - 1)
+        ) {
+          return;
         }
+
+        event.preventDefault();
+        container.scrollLeft += event.deltaY;
       };
-      const container = scrollbarRef.current;
-      if (container) {
-        container.addEventListener('wheel', handleWheel, { passive: true });
-      }
+      container.addEventListener('wheel', handleWheel, { passive: false });
 
       return () => {
-        if (container) {
-          container.removeEventListener('wheel', handleWheel);
-        }
+        container.removeEventListener('wheel', handleWheel);
       };
-    }, [isHorizontalScrollbar, scrollbarRef.current]);
+    }, [isHorizontalScrollbar, advancedMode]);
 
-    const setScroll = useCallback<SetScrollFunction>(
-      (options) => {
+    const setScroll: SetScrollFunction = useEventCallback(
+      (options?: SetScrollOptions) => {
         const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
 
         if (scrollbarEl === null) {
           return;
         }
-        if (
-          (lockedMode || typeof options !== 'undefined') &&
-          scrollbarEl !== null
-        ) {
+        if (lockedMode || typeof options !== 'undefined') {
           const { side } = options ?? scrollLocked ?? { side: 'bottom' };
 
           switch (side) {
@@ -167,18 +229,21 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
           }
         }
       },
-      [lockedMode, scrollLocked],
     );
 
     useImperativeHandle(
       ref,
       () => ({
-        element: scrollbarRef.current,
+        get element() {
+          return scrollbarRef.current;
+        },
         setScroll,
       }),
-      [scrollbarRef.current, setScroll],
+      [setScroll],
     );
 
+    // Subscribes once per element (the content element is recreated when
+    // `scrollShadows` toggles), not on every scroll.
     useEffect(() => {
       const scrollbarEl: HTMLDivElement | null = scrollbarRef.current;
       if (scrollbarEl === null) {
@@ -186,57 +251,63 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
       }
 
       handleScroll(scrollbarEl);
-      const slowScrollTimeout: number = 500;
-      let slowScrollListener = window.setTimeout(() => {
+      const slowLayoutTimer = window.setTimeout(() => {
         handleScroll(scrollbarEl);
-      }, slowScrollTimeout);
+      }, slowLayoutTimeout);
 
-      let observer: MutationObserver | null = null;
+      // Also covers window resizes that change the element size.
+      const resizeObserver = new ResizeObserver(() => {
+        handleScroll(scrollbarEl);
+      });
+      resizeObserver.observe(scrollbarEl);
 
-      if (sticky) {
-        observer = new MutationObserver(() => {
-          handleScroll(scrollbarEl);
-
-          if (sticky && !lockedMode) {
-            scrollbarEl.scrollTop = scrollbarEl.scrollHeight;
-          }
+      let mutationObserver: MutationObserver | null = null;
+      if (stickyBottomEnabled) {
+        mutationObserver = new MutationObserver(() => {
+          handleContentMutation(scrollbarEl);
         });
-
-        observer.observe(scrollbarEl, {
+        mutationObserver.observe(scrollbarEl, {
           childList: true,
           subtree: true,
         });
       }
 
-      const resizeListener = () => {
-        window.clearTimeout(slowScrollListener);
-
-        handleScroll(scrollbarEl);
-
-        // height of the scrollbar is updating very slow, so we need to wait for it and check again
-        slowScrollListener = window.setTimeout(() => {
-          handleScroll(scrollbarEl);
-        }, slowScrollTimeout);
+      return () => {
+        window.clearTimeout(slowLayoutTimer);
+        resizeObserver.disconnect();
+        mutationObserver?.disconnect();
       };
+    }, [
+      advancedMode,
+      stickyBottomEnabled,
+      handleScroll,
+      handleContentMutation,
+    ]);
 
-      window.addEventListener('resize', resizeListener);
-      let resizeObserver: ResizeObserver | null = null;
-      if (scrollbarRef.current) {
-        resizeObserver = new ResizeObserver((entries) => {
-          entries.forEach((entry) => {
-            handleScroll(entry.target as HTMLDivElement);
-          });
-        });
-        resizeObserver.observe(scrollbarRef.current);
+    // Rerendered content may change the scroll size without resizing the
+    // element: refresh the shadows once per frame after such renders.
+    const edgesFrameRef = useRef<number | null>(null);
+    useEffect(() => {
+      if (!advancedMode || edgesFrameRef.current !== null) {
+        return;
       }
 
-      return () => {
-        clearTimeout(slowScrollListener);
-        observer?.disconnect();
-        window.removeEventListener('resize', resizeListener);
-        resizeObserver?.disconnect();
-      };
-    }, [scrollbarRef.current, handleScroll, sticky]);
+      edgesFrameRef.current = window.requestAnimationFrame(() => {
+        edgesFrameRef.current = null;
+        if (scrollbarRef.current !== null) {
+          refreshEdges(scrollbarRef.current);
+        }
+      });
+    });
+    useEffect(
+      () => () => {
+        if (edgesFrameRef.current !== null) {
+          window.cancelAnimationFrame(edgesFrameRef.current);
+          edgesFrameRef.current = null;
+        }
+      },
+      [],
+    );
 
     const contentNode: React.ReactNode = (
       <ScrollbarContent
@@ -246,11 +317,7 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         $overflow={overflow}
         ref={scrollbarRef}
         className={className}
-        onScroll={() => {
-          if (scrollbarRef.current) {
-            handleScroll(scrollbarRef.current);
-          }
-        }}
+        onScroll={handleContentScroll}
       >
         {children}
       </ScrollbarContent>
@@ -265,10 +332,10 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         scrollShadows={scrollShadows}
         setScroll={setScroll}
         disabled={disabled}
-        isLeft={isLeft}
-        isRight={isRight}
-        isTop={isTop}
-        isBottom={isBottom}
+        isLeft={edges.isLeft}
+        isRight={edges.isRight}
+        isTop={edges.isTop}
+        isBottom={edges.isBottom}
       >
         <ScrollbarStyled
           $overflow={overflow}

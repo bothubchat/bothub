@@ -39,19 +39,20 @@ export const Badge: React.FC<BadgeProps> = ({
 
   const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
 
+  const { onMouseEnter, onMouseLeave } = props;
   const handleMouseEnter = useCallback<React.MouseEventHandler<HTMLDivElement>>(
     (event) => {
-      props.onMouseEnter?.(event);
+      onMouseEnter?.(event);
       handleTooltipMouseEnter(event);
     },
-    [props.onMouseEnter, handleTooltipMouseEnter],
+    [onMouseEnter, handleTooltipMouseEnter],
   );
   const handleMouseLeave = useCallback<React.MouseEventHandler<HTMLDivElement>>(
     (event) => {
-      props.onMouseLeave?.(event);
+      onMouseLeave?.(event);
       handleTooltipMouseLeave(event);
     },
-    [props.onMouseLeave, handleTooltipMouseLeave],
+    [onMouseLeave, handleTooltipMouseLeave],
   );
 
   return (

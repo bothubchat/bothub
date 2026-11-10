@@ -3,7 +3,12 @@
     "target": "ES2015",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["vite/client", "node"],
+    "types": [
+      "vite/client",
+      "node",
+      // matchers like toHaveTextContent in the package tests
+      "@testing-library/jest-dom/vitest"
+    ],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -11,15 +16,14 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
     "importHelpers": true,
-    "baseUrl": "./src",
     "paths": {
-      "@/ui/*": ["./*"]
+      "@/ui/*": ["./src/*"]
     }
   },
-  "include": ["./src", "./dist"]
+  "include": ["./src"]
 }

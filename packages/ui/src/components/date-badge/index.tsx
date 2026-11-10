@@ -19,19 +19,22 @@ export interface DateBadgeProps {
 
 export const DateBadge: React.FC<DateBadgeProps> = React.memo(
   ({ date, locale }) => {
-    if (!date) {
-      return null;
-    }
-
+    // Hooks run before the early return, so `date` may become empty later.
     const parsedDate = useMemo(
       () =>
-        new Date(date).toLocaleDateString(localeMap[locale], {
-          month: 'long',
-          day: 'numeric',
-          year: 'numeric',
-        }),
+        date
+          ? new Date(date).toLocaleDateString(localeMap[locale], {
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric',
+            })
+          : null,
       [date, locale],
     );
+
+    if (!parsedDate) {
+      return null;
+    }
 
     return (
       <DateBadgeStyled>

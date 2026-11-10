@@ -25,7 +25,9 @@ export const MenuTabs: React.FC<MenuTabsProps> = ({
   defaultTab,
   onChangeValue,
 }) => {
-  const [selectedTab, setTabs] = useState<string>(defaultTab || tabs[0].value);
+  const [selectedTab, setTabs] = useState<string>(
+    defaultTab || tabs[0]?.value || '',
+  );
   const refTabLine = useRef<HTMLDivElement>(null);
   const refTabs = useRef<HTMLDivElement>(null);
 
@@ -34,46 +36,67 @@ export const MenuTabs: React.FC<MenuTabsProps> = ({
     onChangeValue?.(tab);
   };
 
-  useEffect(() => {
-    const tabsAnimation = () => {
-      if (refTabLine.current && refTabs.current) {
-        const tabLine = refTabLine.current;
-        const tabsContent = refTabs.current;
+  const handleKeyDown = (event: React.KeyboardEvent, tab: string) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleClick(tab);
+    }
+  };
 
-        if (tabLine && tabsContent) {
-          const childIndex = tabs.findIndex(
-            ({ value }) => value === selectedTab,
-          );
-          const childTab = tabsContent.children[childIndex];
-          if (childTab) {
-            const parentTabRect = tabsContent.getBoundingClientRect();
-            const childTabRect = childTab.getBoundingClientRect();
-            const x1 = parentTabRect.left;
-            const x2 = childTabRect.left;
-            const x = x2 - x1;
-            tabLine.style.width = `${childTabRect.width}px`;
-            tabLine.style.left = `${x}px`;
-          }
-        }
+  const selectedIndex = tabs.findIndex(({ value }) => value === selectedTab);
+
+  useEffect(() => {
+    const tabLine = refTabLine.current;
+    const tabsContent = refTabs.current;
+    if (!tabLine || !tabsContent) {
+      return;
+    }
+
+    const updateTabLine = () => {
+      const childTab = tabsContent.children[selectedIndex];
+      if (childTab) {
+        const parentTabRect = tabsContent.getBoundingClientRect();
+        const childTabRect = childTab.getBoundingClientRect();
+        const x = childTabRect.left - parentTabRect.left;
+        tabLine.style.width = `${childTabRect.width}px`;
+        tabLine.style.transform = `translateX(${x}px)`;
       }
     };
-    tabsAnimation();
-    window.addEventListener('resize', tabsAnimation);
+
+    updateTabLine();
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', updateTabLine);
+      return () => {
+        window.removeEventListener('resize', updateTabLine);
+      };
+    }
+
+    // Tab positions only change when the tabs themselves resize
+    const observer = new ResizeObserver(updateTabLine);
+    observer.observe(tabsContent);
     return () => {
-      window.removeEventListener('resize', tabsAnimation);
+      observer.disconnect();
     };
-  }, [selectedTab, refTabs.current, refTabLine.current]);
+  }, [selectedIndex, tabs.length]);
 
   return (
     <MenuTabsStyled>
       <MenuTabsList>
         <MenuTabsWrapper>
-          <MenuTabsContent ref={refTabs}>
+          <MenuTabsContent
+            ref={refTabs}
+            role="tablist"
+          >
             {tabs.map(({ label, value }) => (
               <MenuTabsItem
                 $active={value === selectedTab}
                 key={value}
+                role="tab"
+                tabIndex={0}
+                aria-selected={value === selectedTab}
                 onClick={() => handleClick(value)}
+                onKeyDown={(event) => handleKeyDown(event, value)}
               >
                 <MenuTabsText>{label}</MenuTabsText>
               </MenuTabsItem>

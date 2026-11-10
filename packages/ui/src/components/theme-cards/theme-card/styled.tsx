@@ -3,6 +3,7 @@ import { Radio } from '@/ui/components/radio';
 import { Image } from '@/ui/components/image';
 import { Typography } from '@/ui/components/typography';
 import { adaptive } from '@/ui/adaptive';
+import { themeVar } from '@/ui/theme';
 
 export const ThemeCardStyled = styled.button`
   all: unset;
@@ -12,7 +13,7 @@ export const ThemeCardStyled = styled.button`
   overflow: hidden;
   border-radius: 20px;
   gap: 20px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray3};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   &:hover {
     cursor: pointer;
   }
@@ -25,7 +26,8 @@ export const ThemeCardTopbar = styled.div`
   display: flex;
   gap: 20px;
   padding: 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border-bottom: 1px solid
+    ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
 `;
 
 export const ThemeCardTopbarRadio = styled(Radio).attrs({

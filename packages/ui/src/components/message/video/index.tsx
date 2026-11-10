@@ -16,6 +16,7 @@ import { PauseButtonIcon } from '@/ui/icons/pause-button';
 import { PlayButtonIcon } from '@/ui/icons/play-button';
 import { MessageVideoVolume } from './volume';
 import { DownloadImgIcon } from '@/ui/icons';
+import { useMediaPlayback } from '../use-media-playback';
 
 export type MessageVideoProps = {
   src: string;
@@ -88,67 +89,91 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
   refreshSrc,
   downloadVideo,
 }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoPlayed, setVideoPlayed] = useState(false);
+  const timeLineRef = useRef<HTMLDivElement | null>(null);
+  // Progress (0..1) goes straight to a CSS variable on the timeline:
+  // timeupdate and scrubbing don't re-render the player.
+  const progressRef = useRef(0);
+  const currentTimeTextRef = useRef('00:00');
+  const isScrubbingRef = useRef(false);
   const [videoCurrentTime, setVideoCurrentTime] = useState('00:00');
   const [videoDuration, setVideoDuration] = useState('00:00');
-  const [videoProgress, setVideoProgress] = useState(0);
   const [videoFullScreen, setVideoFullScreen] = useState(false);
-  const [internalLoading, setInternalLoading] = useState(true);
-  const [timeLineMouseMove, setTimeLineMouseMove] = useState(false);
   const videoContainer = useRef<HTMLDivElement>(null);
   const iconSize = videoFullScreen ? 28 : 24;
 
-  const isLoading = internalLoading || externalLoading;
-
-  const markReady = useCallback((video: HTMLVideoElement) => {
-    if (Number.isFinite(video.duration) && video.duration > 0) {
-      setVideoDuration(formatTime(video.duration));
-    }
-    setInternalLoading(false);
+  const setProgress = useCallback((progress: number) => {
+    progressRef.current = progress;
+    timeLineRef.current?.style.setProperty(
+      '--video-progress',
+      String(progress),
+    );
   }, []);
 
-  const handleStart = useCallback(async () => {
-    if (isLoading) return;
+  // The timeline mounts once the video is ready: start it at the progress.
+  const setTimeLine = useCallback((element: HTMLDivElement | null) => {
+    timeLineRef.current = element;
+    element?.style.setProperty('--video-progress', String(progressRef.current));
+  }, []);
 
-    if (checkAlive) {
-      const isAlive = await checkAlive();
-
-      if (!isAlive) {
-        refreshSrc?.();
-        return;
-      }
-    }
-
-    if (videoRef.current) {
-      try {
-        await videoRef.current.play();
-      } catch {
-        setVideoPlayed(false);
-      }
-    }
-  }, [checkAlive, refreshSrc, isLoading]);
-
-  const handlePause = useCallback(() => {
-    if (videoRef.current) {
-      videoRef.current.pause();
+  // The label shows whole seconds: re-render only when it changes.
+  const setCurrentTimeText = useCallback((text: string) => {
+    if (currentTimeTextRef.current !== text) {
+      currentTimeTextRef.current = text;
+      setVideoCurrentTime(text);
     }
   }, []);
+
+  const {
+    mediaRef: videoRef,
+    isPlayed: videoPlayed,
+    setIsPlayed: setVideoPlayed,
+    isLoading,
+    setInternalLoading,
+    handleStart,
+    handlePause,
+    handleError,
+  } = useMediaPlayback<HTMLVideoElement>({
+    src,
+    externalLoading,
+    checkAlive,
+    refreshSrc,
+    onReset: () => {
+      setCurrentTimeText('00:00');
+      setVideoDuration('00:00');
+      setProgress(0);
+    },
+    // Safari sometimes already has the metadata when the src changes
+    onLoad: (video) => {
+      if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
+        markReady(video);
+      }
+    },
+  });
+
+  const markReady = useCallback(
+    (video: HTMLMediaElement) => {
+      if (Number.isFinite(video.duration) && video.duration > 0) {
+        setVideoDuration(formatTime(video.duration));
+      }
+      setInternalLoading(false);
+    },
+    [setInternalLoading],
+  );
 
   const handleTimeUpdate = useCallback(
     (e: React.SyntheticEvent<HTMLVideoElement>) => {
       const { currentTime, duration } = e.currentTarget;
 
-      setVideoCurrentTime(formatTime(currentTime));
+      setCurrentTimeText(formatTime(currentTime));
 
       if (!Number.isFinite(duration) || duration <= 0) {
-        setVideoProgress(0);
+        setProgress(0);
         return;
       }
 
-      setVideoProgress((currentTime / duration) * 100);
+      setProgress(currentTime / duration);
     },
-    [],
+    [setCurrentTimeText, setProgress],
   );
 
   const handleVideoLoaded = useCallback(
@@ -158,37 +183,51 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
     [markReady],
   );
 
+  // Position on the timeline, not on the element under the pointer: while
+  // scrubbing, the pointer moves over the whole container.
+  const seekTo = useCallback(
+    (clientX: number) => {
+      const video = videoRef.current;
+      const timeLine = timeLineRef.current;
+
+      if (!video || !timeLine) return;
+
+      const { duration } = video;
+      if (!Number.isFinite(duration) || duration <= 0) return;
+
+      const { width, left } = timeLine.getBoundingClientRect();
+      if (width <= 0) return;
+
+      const progress = Math.min(Math.max((clientX - left) / width, 0), 1);
+      setProgress(progress);
+      video.currentTime = progress * duration;
+    },
+    [setProgress, videoRef],
+  );
+
   const handleTimeUpdateClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       e.preventDefault();
-      if (!videoRef.current) return;
-
-      const { duration } = videoRef.current;
-      if (!Number.isFinite(duration) || duration <= 0) return;
-
-      const { clientX } = e;
-      const { width, left } = e.currentTarget.getBoundingClientRect();
-      const progress = ((clientX - left) / width) * 100;
-      setVideoProgress(progress);
-      videoRef.current.currentTime = (progress / 100) * duration;
+      seekTo(e.clientX);
     },
-    [],
+    [seekTo],
   );
 
   const handleStartMouseMove = useCallback(() => {
-    setTimeLineMouseMove(true);
+    isScrubbingRef.current = true;
   }, []);
 
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      if (!timeLineMouseMove) return;
-      handleTimeUpdateClick(event);
+      if (!isScrubbingRef.current) return;
+      event.preventDefault();
+      seekTo(event.clientX);
     },
-    [timeLineMouseMove, handleTimeUpdateClick],
+    [seekTo],
   );
 
   const handleStartMouseLeave = useCallback(() => {
-    setTimeLineMouseMove(false);
+    isScrubbingRef.current = false;
   }, []);
 
   const handleFullscreen = useCallback(async () => {
@@ -205,31 +244,16 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
     }
   }, []);
 
-  const handleChangeVolume = useCallback((volume: number) => {
-    if (videoRef.current) {
-      const newVolume = Math.floor(volume) / 100;
-      videoRef.current.volume = newVolume;
-      videoRef.current.muted = newVolume === 0;
-    }
-  }, []);
-
-  useEffect(() => {
-    setVideoPlayed(false);
-    setVideoCurrentTime('00:00');
-    setVideoDuration('00:00');
-    setVideoProgress(0);
-    setInternalLoading(true);
-
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.load();
-
-    // Safari иногда уже имеет metadata к моменту смены src.
-    if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
-      markReady(video);
-    }
-  }, [src, markReady]);
+  const handleChangeVolume = useCallback(
+    (volume: number) => {
+      if (videoRef.current) {
+        const newVolume = Math.floor(volume) / 100;
+        videoRef.current.volume = newVolume;
+        videoRef.current.muted = newVolume === 0;
+      }
+    },
+    [videoRef],
+  );
 
   useEffect(() => {
     const handleDocumentFullscreenChange = () => {
@@ -277,7 +301,7 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
         onPlay={() => setVideoPlayed(true)}
         onPause={() => setVideoPlayed(false)}
         onEnded={handlePause}
-        onError={() => setInternalLoading(false)}
+        onError={handleError}
         $isFullScreen={videoFullScreen}
         $isLoading={isLoading}
       />
@@ -294,9 +318,9 @@ export const MessageVideo: React.FC<MessageVideoProps> = ({
           $isVisible={!videoPlayed}
         >
           <MessageVideoTimeLine
+            ref={setTimeLine}
             onClick={handleTimeUpdateClick}
             onMouseDown={handleStartMouseMove}
-            $progress={videoProgress}
           />
           <MessageVideoControlsButtons $isFullScreen={videoFullScreen}>
             {videoPlayed ? (

@@ -5,7 +5,7 @@ import { Button } from '@/ui/components/button';
 import { Typography } from '@/ui/components/typography';
 import { TextReadIcon } from '@/ui/icons/text-read';
 import { TextHideIcon } from '@/ui/icons/text-hide';
-import { isBright } from '@/ui/utils';
+import { themeVar } from '@/ui/theme';
 
 export const MessageVoiceStyled = styled.div`
   display: inline-flex;
@@ -59,25 +59,10 @@ export const MessageVoiceDurationText = styled(Typography).attrs<{
 })`
   color: ${({ theme, $variant }) => {
     if ($variant === 'input') {
-      if (theme.scheme === 'standard') {
-        return '#A4C1FA';
-      }
-
-      return theme.colors.accent.primary;
+      return themeVar(theme, 'tokens.voiceInputText');
     }
 
-    /* In standard theme, theme.bright is false, but message background is light */
-    if (theme.scheme === 'standard') {
-      return theme.mode === 'dark'
-        ? theme.default.colors.base.white
-        : theme.default.colors.base.black;
-    }
-
-    return theme.bright ||
-      (theme.scheme === 'custom' &&
-        isBright(theme.colors.custom.message.user.background))
-      ? theme.default.colors.base.black
-      : theme.default.colors.base.white;
+    return themeVar(theme, 'tokens.voiceMessageText');
   }};
   user-select: none;
 `;
@@ -100,42 +85,33 @@ export const MessageVoiceText = styled(Typography).attrs({
   variant: 'body-m-regular',
 })<MessageVoiceTextProps>`
   width: 100%;
-  color: ${({ theme }) => {
-    if (
-      theme.bright ||
-      (theme.scheme === 'standard' && theme.mode === 'light')
-    ) {
-      return theme.default.colors.base.black;
-    }
-    return theme.default.colors.base.white;
-  }};
+  color: ${({ theme }) => themeVar(theme, 'tokens.userMessageText')};
   &::selection {
     ${({ $messageColor }) => {
       switch ($messageColor) {
         case 'default':
           return css`
             background: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.accent.primary
-                : theme.colors.base.white};
+              themeVar(theme, 'tokens.accentContrast')};
             color: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.base.white
-                : theme.colors.accent.primary};
+              themeVar(theme, 'tokens.messageAccentDefault')};
           `;
         case 'green':
           return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${({ theme }) => theme.colors.gpt3};
+            background: ${({ theme }) =>
+              themeVar(theme, 'default.colors.base.white')};
+            color: ${({ theme }) => themeVar(theme, 'colors.gpt3')};
           `;
         case 'purple':
           return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${({ theme }) => theme.colors.gpt4};
+            background: ${({ theme }) =>
+              themeVar(theme, 'default.colors.base.white')};
+            color: ${({ theme }) => themeVar(theme, 'colors.gpt4')};
           `;
         default:
           return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
+            background: ${({ theme }) =>
+              themeVar(theme, 'default.colors.base.white')};
             color: ${$messageColor};
           `;
       }
@@ -143,6 +119,10 @@ export const MessageVoiceText = styled(Typography).attrs({
   }
 `;
 
+// Played part of the wave: scaled from the left by --voice-progress (0..1),
+// so playback changes only a CSS variable instead of the width.
 export const StyledRect = styled.rect`
-  transition: width 0.25s ease-out;
+  transform: scaleX(var(--voice-progress, 0));
+  transform-origin: 0 0;
+  transition: transform 0.25s ease-out;
 `;

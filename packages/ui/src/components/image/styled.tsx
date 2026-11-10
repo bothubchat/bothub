@@ -3,14 +3,30 @@ import { Skeleton } from '@/ui/components/skeleton';
 
 export interface ImageImgProps {
   $hidden: boolean;
+  $lazy?: boolean;
 }
 
 export const ImageImg = styled.img<ImageImgProps>`
-  ${({ $hidden }) =>
-    $hidden &&
-    css`
+  ${({ $hidden, $lazy }) => {
+    if (!$hidden) {
+      return css``;
+    }
+
+    // A lazy image with display: none would never start loading.
+    if ($lazy) {
+      return css`
+        position: absolute !important;
+        top: 0;
+        left: 0;
+        opacity: 0 !important;
+        pointer-events: none !important;
+      `;
+    }
+
+    return css`
       display: none !important;
-    `}
+    `;
+  }}
   ${({ width }) => {
     if (typeof width === 'undefined') {
       return css``;
@@ -61,7 +77,15 @@ export interface ImageSkeletonProps {
 }
 
 export const ImageSkeleton = styled(Skeleton)<ImageSkeletonProps>`
-  width: ${({ $width }) => $width}px !important;
-  height: ${({ $height }) => $height}px !important;
+  ${({ $width }) =>
+    typeof $width === 'number' &&
+    css`
+      width: ${$width}px !important;
+    `}
+  ${({ $height }) =>
+    typeof $height === 'number' &&
+    css`
+      height: ${$height}px !important;
+    `}
   border-radius: 0px;
 `;

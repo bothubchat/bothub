@@ -21,4 +21,16 @@ describe('Transforms HEX to RGB', () => {
   test('#ABC format', () => {
     expect(hexToRgb('#ABC')).toEqual(expect.arrayContaining([170, 187, 204]));
   });
+
+  test('#ABCD format', () => {
+    expect(hexToRgb('#ABCD')).toEqual([170, 187, 204]);
+  });
+
+  test('rejects strings that only contain a HEX color', () => {
+    expect(() => hexToRgb('#, , ,')).toThrow();
+    expect(() => hexToRgb('#12345')).toThrow();
+    expect(() => hexToRgb('#1234567')).toThrow();
+    expect(() => hexToRgb('color: #123456')).toThrow();
+    expect(() => hexToRgb('#123456 ')).not.toThrow();
+  });
 });

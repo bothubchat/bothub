@@ -28,12 +28,13 @@ export const HeaderNavLink: React.FC<HeaderNavLinkProps> = ({
   const { variant, setIsMenuOpen } = useHeader();
   const { isInMenu } = useHeaderMenu();
 
+  const { onClick } = props;
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLAnchorElement>) => {
-      props.onClick?.(event);
+      onClick?.(event);
       setIsMenuOpen(false);
     },
-    [props.onClick],
+    [onClick, setIsMenuOpen],
   );
 
   return (

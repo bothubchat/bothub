@@ -22,8 +22,7 @@ import { MusicNoteIcon } from '@/ui/icons/music-note';
 import { PlayButtonIcon } from '@/ui/icons/play-button';
 import { PauseButtonIcon } from '@/ui/icons/pause-button';
 import { useMessage } from '../context';
-
-const AUDIO_PLAY_EVENT = 'messageVoicePlay';
+import { useMediaPlayback } from '../use-media-playback';
 
 export interface MessageMusicProps extends React.ComponentProps<'div'> {
   src: string;
@@ -46,89 +45,40 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
   const theme = useTheme();
   const { variant } = useMessage();
 
-  const audioRef = useRef<HTMLAudioElement>(null);
   const isSeekingRef = useRef(false);
 
-  const [internalLoading, setInternalLoading] = useState(true);
-  const [isPlayed, setIsPlayed] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [coverError, setCoverError] = useState(false);
 
-  const isLoading = internalLoading || externalLoading;
+  const {
+    mediaRef: audioRef,
+    isPlayed,
+    setIsPlayed,
+    isLoading,
+    setInternalLoading,
+    handleStart,
+    handlePause,
+    handleError,
+  } = useMediaPlayback<HTMLAudioElement>({
+    src,
+    externalLoading,
+    exclusive: true,
+    checkAlive,
+    refreshSrc,
+    onReset: () => {
+      setCurrentTime(0);
+      setDuration(0);
+      setCoverError(false);
+    },
+  });
+
   const hasCover = Boolean(coverSrc) && !coverError;
   const showSkeleton = isLoading && duration <= 0;
 
   useEffect(() => {
-    const handleOtherAudioPlay = (event: CustomEvent) => {
-      const currentAudio = audioRef.current;
-      const playingAudio = event.detail.audio;
-
-      if (
-        currentAudio &&
-        playingAudio !== currentAudio &&
-        !currentAudio.paused
-      ) {
-        currentAudio.pause();
-      }
-    };
-
-    window.addEventListener(
-      AUDIO_PLAY_EVENT,
-      handleOtherAudioPlay as EventListener,
-    );
-
-    return () => {
-      window.removeEventListener(
-        AUDIO_PLAY_EVENT,
-        handleOtherAudioPlay as EventListener,
-      );
-    };
-  }, []);
-
-  useEffect(() => {
-    setIsPlayed(false);
-    setCurrentTime(0);
-    setDuration(0);
-    setInternalLoading(true);
-    setCoverError(false);
-
-    if (audioRef.current) {
-      audioRef.current.load();
-    }
-  }, [src]);
-
-  useEffect(() => {
     setCoverError(false);
   }, [coverSrc]);
-
-  const handleStart = useCallback(async () => {
-    if (isLoading) return;
-
-    if (checkAlive) {
-      const isAlive = await checkAlive();
-
-      if (!isAlive) {
-        refreshSrc?.();
-        return;
-      }
-    }
-
-    if (audioRef.current) {
-      const event = new CustomEvent(AUDIO_PLAY_EVENT, {
-        detail: { audio: audioRef.current },
-      });
-      window.dispatchEvent(event);
-
-      await audioRef.current.play();
-    }
-  }, [checkAlive, refreshSrc, isLoading]);
-
-  const handlePause = useCallback(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-  }, []);
 
   const handleToggle = useCallback(() => {
     if (!audioRef.current || isLoading) return;
@@ -138,7 +88,7 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
     } else {
       handlePause();
     }
-  }, [isPlayed, isLoading, handleStart, handlePause]);
+  }, [isPlayed, isLoading, handleStart, handlePause, audioRef]);
 
   const seekTo = useCallback(
     (time: number) => {
@@ -152,18 +102,21 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
       audioEl.currentTime = nextTime;
       setCurrentTime(nextTime);
     },
-    [duration, isLoading],
+    [duration, isLoading, audioRef],
   );
 
-  const handleSliderChange = useCallback((value: number | number[]) => {
-    const next = typeof value === 'number' ? value : value[0];
-    isSeekingRef.current = true;
-    setCurrentTime(next);
+  const handleSliderChange = useCallback(
+    (value: number | number[]) => {
+      const next = typeof value === 'number' ? value : value[0];
+      isSeekingRef.current = true;
+      setCurrentTime(next);
 
-    if (audioRef.current) {
-      audioRef.current.currentTime = next;
-    }
-  }, []);
+      if (audioRef.current) {
+        audioRef.current.currentTime = next;
+      }
+    },
+    [audioRef],
+  );
 
   const handleSliderChangeComplete = useCallback(
     (value: number | number[]) => {
@@ -177,18 +130,18 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
   const handleTimeUpdate = useCallback(() => {
     if (isSeekingRef.current || !audioRef.current) return;
     setCurrentTime(audioRef.current.currentTime);
-  }, []);
+  }, [audioRef]);
 
   const handleLoadedMetadata = useCallback(() => {
     if (!audioRef.current) return;
     setDuration(audioRef.current.duration || 0);
     setInternalLoading(false);
-  }, []);
+  }, [audioRef, setInternalLoading]);
 
   const handleEnded = useCallback(() => {
     setCurrentTime(0);
     setIsPlayed(false);
-  }, []);
+  }, [setIsPlayed]);
 
   const iconFill =
     variant === 'assistant'
@@ -217,6 +170,7 @@ export const MessageMusic: React.FC<MessageMusicProps> = ({
         onPause={() => setIsPlayed(false)}
         onLoadedMetadata={handleLoadedMetadata}
         onCanPlayThrough={() => setInternalLoading(false)}
+        onError={handleError}
         onTimeUpdate={handleTimeUpdate}
         onEnded={handleEnded}
       />

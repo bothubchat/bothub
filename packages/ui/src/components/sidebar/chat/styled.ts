@@ -3,6 +3,7 @@ import { SidebarChatIcon } from '@/ui/icons';
 import { Typography } from '@/ui/components/typography';
 import { Skeleton } from '@/ui/components/skeleton';
 import { colorToRgba } from '@/ui/utils';
+import { inCollapsedSidebar } from '../collapsed';
 
 export const SidebarChatStyled = styled.div`
   display: flex;
@@ -10,6 +11,11 @@ export const SidebarChatStyled = styled.div`
   gap: 8px;
 `;
 
+/**
+ * One element for both sidebar states: a row with the name when the sidebar
+ * is open and a square icon button when it is collapsed. The collapsed look
+ * comes from the sidebar attribute, so collapsing doesn't touch the rows.
+ */
 export const SidebarChatBox = styled.div<{
   $active?: boolean;
 }>`
@@ -44,11 +50,43 @@ export const SidebarChatBox = styled.div<{
       background: ${({ theme }) =>
         colorToRgba(theme.colors.accent.primaryLight, 0.5)};
     `}
+
+  ${inCollapsedSidebar} & {
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+    max-height: 42px;
+    min-height: 0;
+    aspect-ratio: 1/1;
+    padding: 0;
+    border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+    &:hover {
+      background: ${({ $active, theme }) =>
+        $active ? colorToRgba(theme.colors.accent.primaryLight, 0.5) : 'none'};
+      &::before {
+        border-left: none;
+      }
+    }
+  }
 `;
 
-export const SidebarChatPromtLine = styled.div<{
-  percent: number;
-}>`
+/** Rendered in both states, shown only in the open sidebar */
+export const SidebarChatOpenOnly = styled.div`
+  display: contents;
+  ${inCollapsedSidebar} & {
+    display: none;
+  }
+`;
+
+/** Rendered in both states, shown only in the collapsed sidebar */
+export const SidebarChatCollapsedOnly = styled.div`
+  display: none;
+  ${inCollapsedSidebar} & {
+    display: contents;
+  }
+`;
+
+export const SidebarChatPromtLine = styled.div`
   position: relative;
   height: 3px;
   width: 100%;
@@ -61,10 +99,14 @@ export const SidebarChatPromtLine = styled.div<{
     top: 0;
     height: 3px;
     left: 0px;
-    width: ${({ percent }) => percent}%;
+    /* A variable instead of a class per percent */
+    width: var(--sidebar-chat-progress, 0%);
     height: 100%;
     transition: all 0.15s ease-in-out;
     background: ${({ theme }) => theme.colors.premiumGradient};
+  }
+  ${inCollapsedSidebar} & {
+    display: none;
   }
 `;
 
@@ -81,6 +123,13 @@ export const SidebarChatName = styled(Typography).attrs({
   overflow: hidden;
   z-index: 1;
   text-overflow: ellipsis;
+  /* Out of sight but still names the row for screen readers */
+  ${inCollapsedSidebar} & {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip-path: inset(50%);
+  }
 `;
 
 export const SidebarChatIconStyled = styled(SidebarChatIcon)``;
@@ -131,6 +180,10 @@ export const SidebarChatDragHandle = styled.div`
   z-index: 1;
   cursor: grab;
   touch-action: none;
+  ${inCollapsedSidebar} & {
+    flex: none;
+    cursor: inherit;
+  }
 `;
 
 export const SidebarChatDraggbleButton = styled.span`
@@ -139,6 +192,9 @@ export const SidebarChatDraggbleButton = styled.span`
   justify-content: center;
   flex-shrink: 0;
   cursor: grab;
+  ${inCollapsedSidebar} & {
+    display: none;
+  }
 `;
 
 export const SidebarChatLoadingText = styled(Typography).attrs({

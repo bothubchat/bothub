@@ -2,9 +2,9 @@ import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { Progress } from '@/ui/components/progress';
 import { UploadedFileStatus } from './types';
-import { colorToRgba } from '@/ui/utils';
 import { Button } from '../button';
 import { CloseIcon, LoaderCircularGradientIcon } from '@/ui/icons';
+import { ThemeMode, themeVar } from '@/ui/theme';
 
 type IsPrimary = { $isPrimary: boolean };
 
@@ -21,18 +21,15 @@ export const UploadedFileStyled = styled.div<
       ? css`
           padding: 12px 16px;
           gap: 10px;
-          background-color: ${colorToRgba(theme.colors.grayScale.gray4, 0.75)};
-          ${theme.mode === 'light' &&
-          css`
-            border: 1px solid ${theme.colors.grayScale.gray2};
-          `}
+          background-color: ${themeVar(theme, 'tokens.gray4Alpha75')};
+          border: ${themeVar(theme, 'tokens.uploadedFileBorder')};
         `
       : css`
           width: 430px;
           padding: 14px 16px;
           gap: 8px;
-          border: 1px solid ${theme.colors.grayScale.gray2};
-          background-color: ${theme.colors.base.black};
+          border: 1px solid ${themeVar(theme, 'colors.grayScale.gray2')};
+          background-color: ${themeVar(theme, 'colors.base.black')};
         `}
 
   ${({ $fullWidth }) =>
@@ -52,8 +49,8 @@ export const UploadedFileIcon = styled.div`
   display: flex;
   padding: 9px;
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background-color: ${({ theme }) => theme.colors.base.black};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.base.black')};
 `;
 
 export const UploadedFileInfo = styled.div`
@@ -65,8 +62,7 @@ export const UploadedFileInfo = styled.div`
 export const UploadedFileSize = styled(Typography).attrs({
   variant: 'body-xs-medium',
 })`
-  color: ${({ theme }) =>
-    theme.mode === 'dark' ? theme.colors.grayScale.gray6 : '#9CA3AF'};
+  color: ${({ theme }) => themeVar(theme, 'tokens.textTertiary')};
   text-transform: uppercase;
 `;
 
@@ -84,7 +80,7 @@ export const UploadedFileStatusChip = styled.div`
 
   border-radius: 10px;
   padding: 2px 8px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray4};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
 `;
 
 export const UploadedFileStatusChipText = styled(Typography).attrs({
@@ -93,9 +89,9 @@ export const UploadedFileStatusChipText = styled(Typography).attrs({
   color: ${({ theme, $status }) => {
     switch ($status) {
       case 'done':
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
       case 'error':
-        return theme.colors.critic;
+        return themeVar(theme, 'colors.critic');
     }
   }};
 `;
@@ -108,7 +104,7 @@ export const UploadedFileDeleteButton = styled(Button)`
 
 export const UploadedFileCloseIcon = styled(CloseIcon)`
   path {
-    fill: ${({ theme }) => theme.colors.grayScale.gray1};
+    fill: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   }
 `;
 
@@ -124,21 +120,22 @@ export const UploadedFileProgressBar = styled(Progress).attrs({
   & > div {
     height: 6px;
     border-radius: 4px;
-    background-color: ${({ theme }) => theme.colors.grayScale.gray2};
+    background-color: ${({ theme }) =>
+      themeVar(theme, 'colors.grayScale.gray2')};
 
     & > div {
       border-radius: 4px;
       background: ${({ theme, $status, $isPrimary }) => {
         switch ($status) {
           case 'error':
-            return `${theme.colors.critic}`;
+            return `${themeVar(theme, 'colors.critic')}`;
           case 'paused':
-            return `${theme.colors.grayScale.gray1}`;
+            return `${themeVar(theme, 'colors.grayScale.gray1')}`;
           default:
             return `${
               $isPrimary
-                ? theme.colors.gradient.light
-                : theme.colors.gradient.elite
+                ? themeVar(theme, 'colors.gradient.light')
+                : themeVar(theme, 'colors.gradient.elite')
             }`;
         }
       }};
@@ -146,12 +143,15 @@ export const UploadedFileProgressBar = styled(Progress).attrs({
   }
 `;
 
-export const UploadedFileLoaderIcon = styled(LoaderCircularGradientIcon)`
-  ${({ theme }) =>
-    theme.mode === 'light' &&
+export const UploadedFileLoaderIcon = styled(LoaderCircularGradientIcon)<{
+  /** Mode of the current theme: styles may get a theme of CSS variables. */
+  $mode: ThemeMode;
+}>`
+  ${({ theme, $mode }) =>
+    $mode === 'light' &&
     css`
       path {
-        fill: ${theme.colors.base.white};
+        fill: ${themeVar(theme, 'colors.base.white')};
       }
     `}
 `;
@@ -162,10 +162,10 @@ export const UploadedFileProgressValue = styled(Typography).attrs({
   flex: 0 0 fit-content;
   color: ${({ theme, $isMax, $status }) => {
     if ($status === 'error') {
-      return theme.colors.critic;
+      return themeVar(theme, 'colors.critic');
     }
     return $isMax
-      ? theme.colors.accent.primaryLight
-      : theme.colors.grayScale.gray1;
+      ? themeVar(theme, 'colors.accent.primaryLight')
+      : themeVar(theme, 'colors.grayScale.gray1');
   }};
 `;

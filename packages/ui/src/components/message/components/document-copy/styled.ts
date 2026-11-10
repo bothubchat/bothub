@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { themeVar } from '@/ui/theme';
 
 export const MessageDocumentContentBlock = styled.div`
   position: relative;
@@ -6,7 +7,7 @@ export const MessageDocumentContentBlock = styled.div`
   padding: 12px;
   border-radius: 12px;
   border: 1px solid;
-  border-color: ${({ theme }) => theme.colors.grayScale.gray1};
+  border-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
 
   .ai-generated-document-content {
     white-space: normal;
@@ -49,7 +50,7 @@ export const MessageDocumentCopyButton = styled.button`
   cursor: pointer;
   border-radius: 6px;
   border: 1px solid;
-  border-color: ${({ theme }) => theme.colors.grayScale.gray1};
+  border-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   background: transparent;
   color: inherit;
   opacity: 0.7;

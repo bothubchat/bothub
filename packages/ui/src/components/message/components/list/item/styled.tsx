@@ -1,6 +1,8 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageListVariant } from '../types';
+import { messageSelectionStyles } from '../../selection';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageListItemStyledProps {
   $variant: MessageListVariant;
@@ -15,10 +17,10 @@ export const MessageListItemStyled = styled(Typography).attrs({
   position: relative;
   color: ${({ theme, $messageColor }) => {
     if ($messageColor !== 'default') {
-      return theme.colors.base.white;
+      return themeVar(theme, 'colors.base.white');
     }
 
-    return theme.colors.base.white;
+    return themeVar(theme, 'colors.base.white');
   }};
   &:not(:first-child) {
     margin-top: 10px;
@@ -28,9 +30,9 @@ export const MessageListItemStyled = styled(Typography).attrs({
       case 'dot': {
         let dotColor: string;
         if ($messageColor !== 'default') {
-          dotColor = theme.default.colors.base.white;
+          dotColor = themeVar(theme, 'default.colors.base.white');
         } else {
-          dotColor = theme.colors.accent.primary;
+          dotColor = themeVar(theme, 'colors.accent.primary');
         }
 
         return css`
@@ -49,12 +51,9 @@ export const MessageListItemStyled = styled(Typography).attrs({
       case 'number': {
         let numberColor: string;
         if ($messageColor !== 'default') {
-          numberColor = theme.colors.base.white;
+          numberColor = themeVar(theme, 'colors.base.white');
         } else {
-          numberColor =
-            theme.mode === 'dark'
-              ? theme.default.colors.grayScale.gray6
-              : theme.default.colors.base.black;
+          numberColor = themeVar(theme, 'tokens.listMarker');
         }
 
         return css`
@@ -85,35 +84,6 @@ export const MessageListItemStyled = styled(Typography).attrs({
     }
   }
   &::selection {
-    ${({ $messageColor }) => {
-      switch ($messageColor) {
-        case 'default':
-          return css`
-            background: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.accent.primary
-                : theme.colors.base.white};
-            color: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.base.white
-                : theme.colors.accent.primary};
-          `;
-        case 'green':
-          return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${({ theme }) => theme.colors.gpt3};
-          `;
-        case 'purple':
-          return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${({ theme }) => theme.colors.gpt4};
-          `;
-        default:
-          return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${$messageColor};
-          `;
-      }
-    }}
+    ${({ $messageColor }) => messageSelectionStyles($messageColor)}
   }
 `;

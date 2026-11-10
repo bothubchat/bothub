@@ -32,6 +32,16 @@ export const Chip: React.FC<ChipProps> = ({
   >
     <ChipIncludes
       {...(isImage && { style: { cursor: 'pointer' } })}
+      {...(handleImageClick && {
+        role: 'button',
+        tabIndex: 0,
+        onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            handleImageClick();
+          }
+        },
+      })}
       onClick={handleImageClick}
       $variant={variant}
     >

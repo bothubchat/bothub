@@ -20,6 +20,31 @@ const INLINE_TAGS = [
 
 const TABLE_TAGS = ['TABLE', 'THEAD', 'TBODY', 'TFOOT', 'TR', 'TD', 'TH'];
 
+// `pre-wrap`: message paragraphs keep their line breaks, and so does code
+// copied without its `<pre>`.
+const OFFSCREEN_STYLE =
+  'position:fixed;top:0;left:-10000px;opacity:0;pointer-events:none;white-space:pre-wrap;';
+
+/**
+ * `innerText` of a detached element equals its `textContent`: line breaks
+ * between paragraphs, list items and table rows are lost. The element is
+ * attached offscreen for the time of reading.
+ */
+const getRenderedText = (element: HTMLElement): string => {
+  const host = document.createElement('div');
+  host.setAttribute('aria-hidden', 'true');
+  host.style.cssText = OFFSCREEN_STYLE;
+  host.appendChild(element);
+  document.body.appendChild(host);
+
+  try {
+    // jsdom does not implement `innerText`.
+    return element.innerText ?? element.textContent ?? '';
+  } finally {
+    host.remove();
+  }
+};
+
 export const processSelection = (
   range: Range,
   copyTgMarkdown: boolean,
@@ -148,6 +173,10 @@ export const processSelection = (
 
   const injectListMarkers = (el: HTMLElement, isMarkdown: boolean = false) => {
     const listItems = el.querySelectorAll('li');
+    // Items come in document order, so counting them per list gives each
+    // item's position without searching the list again (O(n²) on long lists).
+    const listItemCounts = new Map<Element, number>();
+
     listItems.forEach((li) => {
       let depth = 0;
       let current = li.parentElement;
@@ -162,11 +191,12 @@ export const processSelection = (
       let marker = '• ';
 
       const closestList = li.closest('ul, ol');
+      const index = closestList ? (listItemCounts.get(closestList) ?? 0) : 0;
+      if (closestList) {
+        listItemCounts.set(closestList, index + 1);
+      }
+
       if (closestList?.tagName === 'OL') {
-        const items = Array.from(closestList.querySelectorAll('li')).filter(
-          (item) => item.closest('ul, ol') === closestList,
-        );
-        const index = items.indexOf(li);
         const start = parseInt(closestList.getAttribute('start') || '1', 10);
 
         const dot = isMarkdown ? '\\.' : '.';
@@ -200,11 +230,11 @@ export const processSelection = (
       });
     });
 
-    plainText = getTgMarkdown(markdownDiv.innerText);
+    plainText = getTgMarkdown(getRenderedText(markdownDiv));
   } else {
     const plainDiv = tempDiv.cloneNode(true) as HTMLElement;
     injectListMarkers(plainDiv, false);
-    plainText = plainDiv.innerText;
+    plainText = getRenderedText(plainDiv);
   }
 
   return { html: finalHtml, plain: plainText };

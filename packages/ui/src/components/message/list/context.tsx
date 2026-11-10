@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { ScrollbarRef, SetScrollFunction } from '@/ui/components/scrollbar';
 
 export interface MessagesContextValue {
@@ -17,9 +17,15 @@ export const MessagesScrollContext =
 
 export const MessagesProvider: React.FC<
   MessagesContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <MessagesContext.Provider value={value}>{children}</MessagesContext.Provider>
-);
+> = ({ children, setScroll }) => {
+  const value = useMemo(() => ({ setScroll }), [setScroll]);
+
+  return (
+    <MessagesContext.Provider value={value}>
+      {children}
+    </MessagesContext.Provider>
+  );
+};
 
 export const MessagesScrollProvider: React.FC<
   { scrollbarRef: MessagesScrollValue } & React.PropsWithChildren

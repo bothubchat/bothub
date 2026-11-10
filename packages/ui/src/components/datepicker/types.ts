@@ -1,4 +1,4 @@
-import { UseFloatingReturn } from '@floating-ui/react-dom';
+import type { UseFloatingReturn } from '@floating-ui/react';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
 import { locales } from './utils/constants';
 

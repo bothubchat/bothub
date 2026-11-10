@@ -95,24 +95,18 @@ export function adaptive<Props extends object>(
       `}
       ${tablet &&
       css`
-        ${!isMiniTablet &&
-        css`
-          @media (min-width: ${parseInt(mobileMaxWidth) +
-            1}px) and (max-width: ${tabletMaxWidth}) {
-            ${tablet}
-          }
-        `}
-        ${isMiniTablet &&
-        css`
-          @media (min-width: ${parseInt(miniTabletMaxWidth) +
-            1}px) and (max-width: ${tabletMaxWidth}) {
-            ${tablet}
-          }
-          @media (min-width: ${parseInt(mobileMaxWidth) +
-            1}px) and (max-width: ${miniTabletMaxWidth}) {
-            ${miniTablet}
-          }
-        `}
+        @media (min-width: ${parseInt(
+            isMiniTablet ? miniTabletMaxWidth : mobileMaxWidth,
+          ) + 1}px) and (max-width: ${tabletMaxWidth}) {
+          ${tablet}
+        }
+      `}
+      ${isMiniTablet &&
+      css`
+        @media (min-width: ${parseInt(mobileMaxWidth) +
+          1}px) and (max-width: ${miniTabletMaxWidth}) {
+          ${miniTablet}
+        }
       `}
       ${mobile &&
       css`

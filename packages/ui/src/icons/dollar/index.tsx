@@ -1,6 +1,6 @@
 import { Icon, icon } from '@/ui/components/icon';
 
-export const DollarIcon = icon(({ ...props }) => (
+export const DollarIcon = icon((props) => (
   <Icon
     size={24}
     viewBox="0 0 24 24"

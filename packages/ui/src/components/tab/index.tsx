@@ -14,8 +14,10 @@ export const Tab: React.FC<TabProps> = ({
   onClick,
 }) => (
   <TabStyled
+    type="button"
     $active={active}
     className={className}
+    aria-pressed={active}
     onClick={onClick}
   >
     {typeof children !== 'string' && children}

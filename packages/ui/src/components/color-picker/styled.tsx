@@ -1,5 +1,6 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
+import { themeVar } from '@/ui/theme';
 
 export const ColorPickerStyled = styled.div`
   display: flex;
@@ -25,16 +26,16 @@ export const ColorPickerHex = styled(Typography).attrs({
   width: 100px;
   padding-block: 8px;
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
-  background-color: ${({ theme }) => theme.colors.base.black};
-  color: ${({ theme }) => theme.colors.base.white};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.base.black')};
+  color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
 `;
 
 export const ColorPickerPreview = styled.div`
   width: 60px;
   height: 36px;
   border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
 `;
 
 export interface ColorPickerBottomProps {
@@ -53,10 +54,10 @@ export const ColorPickerBottom = styled.button<ColorPickerBottomProps>`
     $active &&
     css`
       ${ColorPickerHex} {
-        border-color: ${theme.colors.accent.primary};
+        border-color: ${themeVar(theme, 'colors.accent.primary')};
       }
       ${ColorPickerPreview} {
-        border-color: ${theme.colors.accent.primary};
+        border-color: ${themeVar(theme, 'colors.accent.primary')};
       }
     `}
 `;

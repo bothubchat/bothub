@@ -1,6 +1,7 @@
 /node_modules
 /packages/**/node_modules
 /packages/**/dist
+/packages/**/.types
 /storybook-static
 .DS_Store
 ._.DS_Store

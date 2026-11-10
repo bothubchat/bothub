@@ -5,7 +5,7 @@
   },
   "extends": [
     "airbnb",
-    "airbnb-typescript",
+    "./eslint/airbnb-typescript.cjs",
     "plugin:@typescript-eslint/recommended",
     "plugin:storybook/recommended",
     "prettier"
@@ -29,7 +29,8 @@
     "prettier",
     "testing-library",
     "storybook",
-    "@vitest"
+    "@vitest",
+    "react-hooks"
   ],
   "rules": {
     "react/react-in-jsx-scope": "off",
@@ -39,15 +40,16 @@
     "jsx-a11y/click-events-have-key-events": [0],
     "no-unused-vars": "error",
     "react/jsx-props-no-spreading": "off",
-    "@typescript-eslint/no-throw-literal": "off",
-    "@typescript-eslint/indent": "off",
+    "no-throw-literal": "off",
     "no-trailing-spaces": "off",
     "consistent-return": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "no-param-reassign": "off",
-    "@typescript-eslint/comma-dangle": "off",
     "jsx-a11y/no-static-element-interactions": [0],
-    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-empty-object-type": [
+      "error",
+      { "allowInterfaces": "always" }
+    ],
     "@typescript-eslint/no-shadow": "off",
     "class-methods-use-this": "off",
     "import/extensions": "off",
@@ -78,13 +80,30 @@
       2,
       {
         "vars": "all",
-        "argsIgnorePattern": "^_$"
+        "argsIgnorePattern": "^_$",
+        "caughtErrors": "none"
       }
     ],
     "testing-library/await-async-queries": "error",
     "testing-library/no-await-sync-queries": "error",
     "testing-library/no-debugging-utils": "warn",
     "testing-library/no-dom-import": "off",
-    "no-continue": "off"
-  }
+    "no-continue": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.stories.tsx"],
+      "rules": {
+        "react-hooks/rules-of-hooks": "off"
+      }
+    },
+    {
+      "files": ["packages/ui/src/components/sidebar/**"],
+      "rules": {
+        "react-hooks/rules-of-hooks": "warn"
+      }
+    }
+  ]
 }

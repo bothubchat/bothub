@@ -1,6 +1,6 @@
 import { Icon, icon } from '@/ui/components/icon';
 
-export const Arrow2DownIcon = icon(({ ...props }) => (
+export const Arrow2DownIcon = icon((props) => (
   <Icon
     width="24"
     height="25"

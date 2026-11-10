@@ -1,40 +1,65 @@
 import { css, keyframes, styled } from 'styled-components';
 import React from 'react';
 import { ButtonCorner, ButtonSize, ButtonVariant } from './types';
-import { isBright } from '@/ui/utils/colors';
+import { ThemeMode, themeVar } from '@/ui/theme';
+import { cachedStyles } from '@/ui/utils/styles/cachedStyles';
 
-const boxShadowAnimation = (initialColor: string) => keyframes`
-  0% {
-    box-shadow: 0px 0px 0px 1px ${initialColor} inset;
-  }
-  10% {
-    box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.4) inset;
-  }
-  80% {
-    box-shadow: 0px 0.9px 0px 0px rgba(255, 255, 255, 0.4) inset;
-  }
-  100% {
-    box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
-  }
-`;
+type Keyframes = ReturnType<typeof keyframes>;
 
-const reverseBoxShadowAnimation = (initialColor: string) => keyframes`
-  0% {
-    box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
+// Keyframes depend only on the theme color, so build them once per color
+// instead of on every render.
+const boxShadowAnimations = new Map<string, Keyframes>();
+const reverseBoxShadowAnimations = new Map<string, Keyframes>();
+
+const boxShadowAnimation = (initialColor: string): Keyframes => {
+  let animation = boxShadowAnimations.get(initialColor);
+  if (!animation) {
+    animation = keyframes`
+      0% {
+        box-shadow: 0px 0px 0px 1px ${initialColor} inset;
+      }
+      10% {
+        box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.4) inset;
+      }
+      80% {
+        box-shadow: 0px 0.9px 0px 0px rgba(255, 255, 255, 0.4) inset;
+      }
+      100% {
+        box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
+      }
+    `;
+    boxShadowAnimations.set(initialColor, animation);
   }
-  10% {
-    box-shadow: 0px 0.9px 0px 0px rgba(255, 255, 255, 0.4) inset;
+
+  return animation;
+};
+
+const reverseBoxShadowAnimation = (initialColor: string): Keyframes => {
+  let animation = reverseBoxShadowAnimations.get(initialColor);
+  if (!animation) {
+    animation = keyframes`
+      0% {
+        box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
+      }
+      10% {
+        box-shadow: 0px 0.9px 0px 0px rgba(255, 255, 255, 0.4) inset;
+      }
+      50% {
+        box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.4) inset;
+      }
+      100% {
+        box-shadow: 0px 0px 0px 1px ${initialColor} inset;
+      }
+    `;
+    reverseBoxShadowAnimations.set(initialColor, animation);
   }
-  50% {
-    box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.4) inset;
-  }
-  100% {
-    box-shadow: 0px 0px 0px 1px ${initialColor} inset;
-  }
-`;
+
+  return animation;
+};
+
+const buttonColorProperty = '--bothub-button-color';
 
 export interface ButtonStyledProps {
-  ref: React.RefObject<HTMLButtonElement>;
   $icon: boolean;
   $variant: ButtonVariant;
   $size: ButtonSize;
@@ -45,9 +70,13 @@ export interface ButtonStyledProps {
   $disabled: boolean;
   $disableHoverColor: boolean;
   $color?: string;
+  /** Mode of the current theme: styles may get a theme of CSS variables. */
+  $mode: ThemeMode;
 }
 
-export const ButtonStyled = styled.button<ButtonStyledProps>`
+// `$color` goes through a CSS custom property, so arbitrary colors share one
+// generated class instead of adding a rule per color.
+const buttonRules = css<ButtonStyledProps>`
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -72,18 +101,18 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
   }
 
   ${({ theme, $disabled, $variant, $skeleton, $color }) => {
+    const color = $color ? `var(${buttonColorProperty})` : undefined;
+
     switch ($variant) {
       case 'primary': {
         let backgroundColor: string;
 
-        if ($color) {
-          backgroundColor = $color;
+        if (color) {
+          backgroundColor = color;
         } else if ($disabled || $skeleton) {
-          backgroundColor = theme.colors.grayScale.gray3;
-        } else if (theme.mode === 'light' && theme.scheme === 'standard') {
-          backgroundColor = theme.colors.accent.primaryLight;
+          backgroundColor = themeVar(theme, 'colors.grayScale.gray3');
         } else {
-          backgroundColor = theme.colors.accent.primary;
+          backgroundColor = themeVar(theme, 'tokens.buttonPrimaryBackground');
         }
 
         return css`
@@ -95,20 +124,21 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
           !$skeleton &&
           css`
             &:hover {
-              background: ${$color ?? theme.colors.accent.strong};
+              background: ${color ?? themeVar(theme, 'colors.accent.strong')};
             }
             &:active {
-              background: ${$color ?? theme.colors.accent.strongDown};
+              background: ${color ??
+              themeVar(theme, 'colors.accent.strongDown')};
             }
           `}
         `;
       }
       case 'primary-transparent':
         return css`
-          background: ${$color ??
+          background: ${color ??
           ($disabled || $skeleton
-            ? theme.colors.grayScale.gray3
-            : theme.colors.accent.primary)};
+            ? themeVar(theme, 'colors.grayScale.gray3')
+            : themeVar(theme, 'colors.accent.primary'))};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: ${$disabled || $skeleton ? 1 : 0.5};
 
@@ -124,25 +154,30 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
       case 'primary-outline':
         return css`
           background: ${$disabled || $skeleton
-            ? theme.colors.grayScale.gray3
+            ? themeVar(theme, 'colors.grayScale.gray3')
             : 'rgba(255, 255, 255, 0)'};
 
           box-shadow: ${$disabled || $skeleton
             ? 'box-shadow: 0px 0px 0px 1px rgba(255, 255, 255, 0.0) inset;'
-            : `0px 0px 0px 1px ${theme.colors.accent.primary} inset`};
-          animation: ${reverseBoxShadowAnimation(theme.colors.accent.primary)}
+            : `0px 0px 0px 1px ${themeVar(theme, 'colors.accent.primary')} inset`};
+          animation: ${reverseBoxShadowAnimation(
+              themeVar(theme, 'colors.accent.primary'),
+            )}
             0.3s linear forwards;
 
           ${!$disabled &&
           !$skeleton &&
           css`
             &:hover {
-              background: ${$color ?? theme.colors.accent.primary};
-              animation: ${boxShadowAnimation(theme.colors.accent.primary)} 0.3s
-                linear forwards;
+              background: ${color ?? themeVar(theme, 'colors.accent.primary')};
+              animation: ${boxShadowAnimation(
+                  themeVar(theme, 'colors.accent.primary'),
+                )}
+                0.3s linear forwards;
             }
             &:active {
-              background: ${$color ?? theme.colors.accent.strongDown};
+              background: ${color ??
+              themeVar(theme, 'colors.accent.strongDown')};
               transform: translateY(1px);
               box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0) inset;
             }
@@ -150,49 +185,61 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
         `;
       case 'secondary':
         return css`
-          background: ${$color ?? theme.colors.grayScale.gray4};
-          box-shadow: 0px 0px 0px 1px ${theme.colors.grayScale.gray2} inset;
-          animation: ${reverseBoxShadowAnimation(theme.colors.grayScale.gray2)}
+          background: ${color ?? themeVar(theme, 'colors.grayScale.gray4')};
+          box-shadow: 0px 0px 0px 1px
+            ${themeVar(theme, 'colors.grayScale.gray2')} inset;
+          animation: ${reverseBoxShadowAnimation(
+              themeVar(theme, 'colors.grayScale.gray2'),
+            )}
             0.3s linear forwards;
 
           ${!$disabled &&
           !$skeleton &&
           css`
             &:hover {
-              background: ${$color ?? theme.colors.grayScale.gray2};
-              animation: ${boxShadowAnimation(theme.colors.grayScale.gray2)}
+              background: ${color ?? themeVar(theme, 'colors.grayScale.gray2')};
+              animation: ${boxShadowAnimation(
+                  themeVar(theme, 'colors.grayScale.gray2'),
+                )}
                 0.3s linear forwards;
             }
             &:active {
-              background: ${$color ?? theme.colors.grayScale.gray3};
+              background: ${color ?? themeVar(theme, 'colors.grayScale.gray3')};
             }
           `}
         `;
       case 'gradient':
         return css`
-          background: ${$color ?? theme.colors.gradient.elite20};
-          box-shadow: 0px 0px 0px 1px ${theme.colors.gradient.elite20} inset;
-          animation: ${reverseBoxShadowAnimation(theme.colors.gradient.elite20)}
+          background: ${color ?? themeVar(theme, 'colors.gradient.elite20')};
+          box-shadow: 0px 0px 0px 1px
+            ${themeVar(theme, 'colors.gradient.elite20')} inset;
+          animation: ${reverseBoxShadowAnimation(
+              themeVar(theme, 'colors.gradient.elite20'),
+            )}
             0.3s linear forwards;
 
           ${!$disabled &&
           !$skeleton &&
           css`
             &:hover {
-              background: ${$color ?? theme.colors.gradient.elite20};
-              animation: ${boxShadowAnimation(theme.colors.gradient.elite20)}
+              background: ${color ??
+              themeVar(theme, 'colors.gradient.elite20')};
+              animation: ${boxShadowAnimation(
+                  themeVar(theme, 'colors.gradient.elite20'),
+                )}
                 0.3s linear forwards;
             }
             &:active {
-              background: ${$color ?? theme.colors.gradient.elite20};
+              background: ${color ??
+              themeVar(theme, 'colors.gradient.elite20')};
             }
           `}
         `;
       case 'success':
         return css`
           background: ${$disabled || $skeleton
-            ? ($color ?? theme.colors.grayScale.gray2)
-            : theme.colors.green};
+            ? (color ?? themeVar(theme, 'colors.grayScale.gray2'))
+            : themeVar(theme, 'colors.green')};
           box-shadow: 0px 1px 1px 0px rgba(255, 255, 255, 0.4) inset;
           opacity: 1;
 
@@ -200,10 +247,10 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
           !$skeleton &&
           css`
             &:hover {
-              background: ${theme.colors.accent.strong};
+              background: ${themeVar(theme, 'colors.accent.strong')};
             }
             &:active {
-              background: ${theme.colors.accent.strongDown};
+              background: ${themeVar(theme, 'colors.accent.strongDown')};
             }
           `}
         `;
@@ -300,13 +347,12 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
     if ($icon) {
       return css`
         svg path {
-          fill: ${$iconFill ?? theme.colors.grayScale.gray1} !important;
+          fill: ${$iconFill ??
+          themeVar(theme, 'colors.grayScale.gray1')} !important;
         }
         &:hover {
           svg path {
-            fill: ${theme.mode === 'light'
-              ? theme.default.colors.accent.primary
-              : theme.colors.base.white} !important;
+            fill: ${themeVar(theme, 'tokens.accentContrast')} !important;
           }
         }
       `;
@@ -315,10 +361,10 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
     return css`
       &:hover {
         ${ButtonText} {
-          color: ${theme.colors.accent.primary};
+          color: ${themeVar(theme, 'colors.accent.primary')};
         }
         svg path {
-          fill: ${theme.colors.accent.primary} !important;
+          fill: ${themeVar(theme, 'colors.accent.primary')} !important;
         }
       }
     `;
@@ -328,21 +374,21 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
     css`
       &:hover {
         svg path {
-          fill: ${theme.colors.base.white} !important;
+          fill: ${themeVar(theme, 'colors.base.white')} !important;
         }
       }
     `}
-  ${({ theme, $variant }) =>
+  ${({ theme, $variant, $mode }) =>
     $variant === 'primary-outline' &&
-    theme.mode === 'light' &&
+    $mode === 'light' &&
     css`
       &:hover,
       &:active {
         ${ButtonText} {
-          color: ${theme.colors.base.black};
+          color: ${themeVar(theme, 'colors.base.black')};
         }
         svg path {
-          fill: ${theme.colors.base.black};
+          fill: ${themeVar(theme, 'colors.base.black')};
         }
       }
     `}
@@ -353,51 +399,62 @@ export const ButtonStyled = styled.button<ButtonStyledProps>`
               transform 0.3s ease-out;
 `;
 
+// Buttons are many and re-render with their parents: their styles are built
+// once per theme and combination of props, then only looked up.
+const getButtonStyles = cachedStyles<ButtonStyledProps>(buttonRules, (props) =>
+  [
+    props.$variant,
+    props.$size,
+    props.$corner,
+    props.$icon,
+    props.$fullWidth,
+    props.$skeleton,
+    props.$disabled,
+    props.$disableHoverColor,
+    props.$mode,
+    props.$color ? 'color' : '',
+    props.$iconFill ?? '',
+  ].join('|'),
+);
+
+export const ButtonStyled = styled.button.attrs<ButtonStyledProps>(
+  ({ $color, style }) =>
+    $color
+      ? {
+          style: {
+            ...style,
+            [buttonColorProperty]: $color,
+          } as React.CSSProperties,
+        }
+      : {},
+)`
+  ${getButtonStyles}
+`;
+
 export interface ButtonTextProps {
   $variant: ButtonVariant;
   $size: ButtonSize;
   $disabled: boolean;
 }
 
-export const ButtonText = styled.span<ButtonTextProps>`
+const buttonTextRules = css<ButtonTextProps>`
   display: inline-flex;
   width: auto;
   font-weight: 500;
   transition: color 0.3s ease-out;
   color: ${({ theme, $variant, $disabled }) => {
     if ($disabled) {
-      return theme.colors.grayScale.gray1;
+      return themeVar(theme, 'colors.grayScale.gray1');
     }
 
     switch ($variant) {
       case 'primary':
       case 'primary-transparent':
-        if (theme.scheme === 'custom') {
-          if (theme.bright) {
-            return isBright(theme.colors.custom.interface.text)
-              ? theme.mode === 'dark'
-                ? theme.colors.base.black
-                : theme.default.colors.base.black
-              : theme.colors.custom.interface.text;
-          }
-
-          return isBright(theme.colors.custom.interface.text)
-            ? theme.colors.custom.interface.text
-            : theme.default.colors.base.white;
-        }
-
-        if (theme.bright) {
-          return theme.mode === 'dark'
-            ? theme.colors.base.black
-            : theme.colors.base.white;
-        }
-        return theme.default.colors.base.white;
+        return themeVar(theme, 'tokens.buttonPrimaryText');
       case 'primary-outline':
-        return theme.mode === 'light'
-          ? theme.default.colors.base.black
-          : theme.colors.base.white;
+        return themeVar(theme, 'tokens.textStrong');
       default:
-        return theme.colors.base.white;
+        return themeVar(theme, 'colors.base.white');
     }
   }};
   ${({ $size }) => {
@@ -412,4 +469,10 @@ export const ButtonText = styled.span<ButtonTextProps>`
         `;
     }
   }}
+`;
+
+export const ButtonText = styled.span<ButtonTextProps>`
+  ${cachedStyles<ButtonTextProps>(buttonTextRules, (props) =>
+    [props.$variant, props.$size, props.$disabled].join('|'),
+  )}
 `;

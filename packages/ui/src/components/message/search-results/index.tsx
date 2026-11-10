@@ -13,7 +13,7 @@ import {
   SearchResultsItemDownload,
 } from './styled';
 import { MessageMarkdown } from '../markdown';
-import { useMeasure } from '@/ui/utils';
+import { useEventCallback, useMeasure } from '@/ui/utils';
 import { DownloadImgIcon } from '@/ui/icons';
 import { Tooltip, TooltipConsumer } from '../../tooltip';
 import { reasoningComponentsOverride } from '../reasoning-block/markdown-components';
@@ -37,41 +37,62 @@ export type MessageSearchResultsProps = {
   pendingMessage: boolean;
 };
 
+// search() ignores lastIndex, so a regex with the g flag matches every url.
+const isDownloadable = (url: string, regex?: RegExp) =>
+  !!regex && url.search(regex) !== -1;
+
 export const MessageSearchResults: React.FC<MessageSearchResultsProps> = ({
   downloadHandler,
   downloadText,
   regexFilterDownloadHandler,
   pendingMessage,
   ...props
-}) => (
-  <SearchResultsList>
-    {props.results.map((result, index) => (
-      <MessageSearchResultsItem
-        result={result}
-        index={index}
-        key={index}
-        pendingMessage={pendingMessage}
-        downloadText={downloadText}
-        {...(regexFilterDownloadHandler?.test(result.url) && {
-          downloadHandler: () => downloadHandler?.(result, index),
-        })}
-      />
-    ))}
-  </SearchResultsList>
-);
+}) => {
+  // A stable handler keeps the memoized items from rerendering.
+  const handleDownload = useEventCallback(
+    (result: MessageSearchResultsItemType, index: number) =>
+      downloadHandler?.(result, index),
+  );
+  const urlCounts = new Map<string, number>();
+
+  return (
+    <SearchResultsList>
+      {props.results.map((result, index) => {
+        // The url keeps the key stable; repeated urls get a counter.
+        const urlCount = urlCounts.get(result.url) ?? 0;
+        urlCounts.set(result.url, urlCount + 1);
+
+        return (
+          <MessageSearchResultsItem
+            result={result}
+            index={index}
+            key={urlCount ? `${result.url}#${urlCount}` : result.url}
+            pendingMessage={pendingMessage}
+            downloadText={downloadText}
+            onDownload={
+              isDownloadable(result.url, regexFilterDownloadHandler)
+                ? handleDownload
+                : undefined
+            }
+          />
+        );
+      })}
+    </SearchResultsList>
+  );
+};
 
 const MessageSearchResultsItem = memo(
   ({
     result,
     index,
     pendingMessage,
-    downloadHandler,
+    onDownload,
     downloadText,
   }: {
     pendingMessage: boolean;
     result: MessageSearchResultsItemType;
     index: number;
-    downloadHandler?: () => void;
+    onDownload?: (result: MessageSearchResultsItemType, index: number) => void;
     downloadText?: string;
   }) => {
     const [wrapperRef, wrapperDimensions] = useMeasure<HTMLDivElement>();
@@ -110,12 +131,12 @@ const MessageSearchResultsItem = memo(
               {index + 1}
             </Typography>
           </SearchResultsItemNumber>
-          {downloadHandler && (
+          {onDownload && (
             <Tooltip label={downloadText}>
               <TooltipConsumer>
                 {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
                   <SearchResultsItemDownload
-                    onClick={downloadHandler}
+                    onClick={() => onDownload(result, index)}
                     onMouseEnter={handleTooltipMouseEnter}
                     onMouseLeave={handleTooltipMouseLeave}
                   >

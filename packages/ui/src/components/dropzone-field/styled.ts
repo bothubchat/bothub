@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { Typography } from '../typography';
-import { colorToRgba } from '@/ui/utils';
+import { themeVar } from '@/ui/theme';
 
 export const DropzoneFieldStyled = styled.div<{
   $fullWidth: boolean;
@@ -11,18 +11,10 @@ export const DropzoneFieldStyled = styled.div<{
   justify-content: stretch;
   gap: 20px;
 
-  background-color: ${({ theme }) =>
-    colorToRgba(theme.colors.grayScale.gray4, 0.75)};
+  background-color: ${({ theme }) => themeVar(theme, 'tokens.gray4Alpha75')};
   padding: 20px;
   border-radius: 20px;
-  background-image: ${({ theme }) => {
-    const dark =
-      "data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' vector-effect='non-scaling-stroke' stroke='%23222B44FF' stroke-width='4' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e";
-    const light =
-      "data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='20' ry='20' vector-effect='non-scaling-stroke' stroke='%23CDD5DA' stroke-width='4' stroke-dasharray='8%2c 16' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e";
-
-    return `url("${theme.mode === 'light' ? light : dark}")`;
-  }};
+  background-image: ${({ theme }) => themeVar(theme, 'tokens.dropzoneBorder')};
 
   transition: background 0.3s ease-out;
 
@@ -36,7 +28,8 @@ export const DropzoneFieldStyled = styled.div<{
 
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     padding: 18px;
-    border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+    border: 1px solid
+      ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
     background-image: none;
   }
 
@@ -62,7 +55,7 @@ export const DropzoneFieldRightLabelsContainer = styled.div`
 export const DropzoneFieldRightLabel = styled(Typography).attrs({
   variant: 'body-xs-medium',
 })`
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
 `;
 
 export const DropzoneFieldInput = styled.input`
@@ -79,4 +72,10 @@ export const DropzoneFieldPlaceholder = styled.div`
   justify-content: center;
   position: relative;
   padding: 20px;
+`;
+
+export const DropzoneFieldErrorText = styled(Typography).attrs({
+  variant: 'input-md',
+})`
+  color: ${({ theme }) => themeVar(theme, 'colors.critic')};
 `;

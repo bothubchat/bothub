@@ -4,6 +4,7 @@ import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons/arrow-down';
 import { Avatar } from '@/ui/components/avatar';
+import { themeVar } from '@/ui/theme';
 
 export interface HeaderUserInfoHeadProps {
   $inMenu: boolean;
@@ -17,12 +18,9 @@ export const HeaderUserInfoHead: React.FC<
   align-items: center;
   gap: 22px;
   padding: 8px 14px;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   border-radius: 6px;
-  background: ${({ theme }) =>
-    theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray4};
+  background: ${({ theme }) => themeVar(theme, 'tokens.surfaceElevated')};
   transition: background 0.3s ease-out;
   ${({ $inMenu }) =>
     $inMenu &&
@@ -31,7 +29,7 @@ export const HeaderUserInfoHead: React.FC<
       justify-content: space-between;
     `}
   &:hover {
-    background: ${({ theme }) => theme.colors.grayScale.gray3};
+    background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   }
 `;
 
@@ -77,9 +75,9 @@ export interface HeaderUserInfoBodyProps {
 
 export const HeaderUserInfoBody = styled(animated.div)<HeaderUserInfoBodyProps>`
   display: flex;
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   border-radius: 6px;
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
   margin-top: 14px;
   padding: 14px 0px;
   width: 170px;

@@ -1,4 +1,5 @@
 import { styled } from 'styled-components';
+import { themeVar } from '@/ui/theme';
 
 export const HeaderLangDropdownItemStyled = styled.li`
   display: inline-flex;
@@ -6,12 +7,12 @@ export const HeaderLangDropdownItemStyled = styled.li`
   justify-content: center;
   line-height: 22px;
   padding: 6px 0px;
-  color: ${({ theme }) => theme.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   font-weight: 700;
   font-size: 16px;
   text-transform: uppercase;
   cursor: pointer;
   &:hover {
-    color: ${({ theme }) => theme.colors.accent.primaryLight};
+    color: ${({ theme }) => themeVar(theme, 'colors.accent.primaryLight')};
   }
 `;

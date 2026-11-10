@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 export interface HeaderLangDropdownContextValue {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -9,11 +9,15 @@ export const HeaderLangDropdownContext =
 
 export const HeaderLangDropdownProvider: React.FC<
   HeaderLangDropdownContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <HeaderLangDropdownContext.Provider value={value}>
-    {children}
-  </HeaderLangDropdownContext.Provider>
-);
+> = ({ children, setIsOpen }) => {
+  const value = useMemo(() => ({ setIsOpen }), [setIsOpen]);
+
+  return (
+    <HeaderLangDropdownContext.Provider value={value}>
+      {children}
+    </HeaderLangDropdownContext.Provider>
+  );
+};
 
 export function useHeaderLangDropdown(): HeaderLangDropdownContextValue {
   const value = useContext(HeaderLangDropdownContext);

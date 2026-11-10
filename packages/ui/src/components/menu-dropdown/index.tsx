@@ -1,7 +1,8 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useTransition } from '@react-spring/web';
 import { MenuIcon } from '@/ui/icons/menu';
 import { CloseIcon } from '@/ui/icons/close';
+import { useOnClickOutside } from '@/ui/utils';
 import { MenuDropdownProvider } from './context';
 import {
   MenuDropdownBlock,
@@ -25,31 +26,13 @@ export const MenuDropdown: React.FC<MenuDropdownProps> = ({
 
   const menuDropdownRef = useRef<HTMLDivElement>(null);
   const handleToggle = useCallback(() => {
-    setIsOpen(!isOpen);
-  }, [isOpen]);
+    setIsOpen((prev) => !prev);
+  }, []);
 
   const Icon = isOpen ? CloseIcon : MenuIcon;
 
-  useEffect(() => {
-    const clickListener = (event: Event) => {
-      const menuDropdownEl: HTMLDivElement | null = menuDropdownRef.current;
-
-      if (menuDropdownEl === null) {
-        return;
-      }
-      if (menuDropdownEl.contains(event.target as Element)) {
-        return;
-      }
-
-      setIsOpen(false);
-    };
-
-    document.addEventListener('click', clickListener);
-
-    return () => {
-      document.removeEventListener('click', clickListener);
-    };
-  }, []);
+  // Listen for outside clicks only while the dropdown is open
+  useOnClickOutside(menuDropdownRef, () => setIsOpen(false), isOpen);
 
   const dropdownTransition = useTransition(isOpen, {
     from: { scale: 0.85, opacity: 0 },
@@ -69,6 +52,7 @@ export const MenuDropdown: React.FC<MenuDropdownProps> = ({
       >
         <MenuDropdownToggleButton
           disabled={disabled}
+          aria-expanded={isOpen}
           onClick={handleToggle}
         >
           <Icon />

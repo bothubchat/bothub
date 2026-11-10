@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
+import { useCopiedState } from '@/ui/utils/useCopiedState';
 import {
   DeveloperKeyContent,
   DeveloperKeyCopyIcon,
@@ -41,11 +42,9 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
 }) => {
   const theme = useTheme();
 
-  const [isCopied, setIsCopied] = useState(false);
+  const { copied: isCopied, markCopied, resetCopied } = useCopiedState();
 
-  const handleBlur = useCallback(() => {
-    setIsCopied(false);
-  }, []);
+  const handleBlur = resetCopied;
 
   const handleClick = useCallback(() => {
     if (skeleton || isCopied) {
@@ -56,8 +55,8 @@ export const DeveloperKey: React.FC<DeveloperKeyProps> = ({
       onCopy?.(children);
     }
 
-    setIsCopied(true);
-  }, [skeleton, isCopied, children, onCopy]);
+    markCopied();
+  }, [skeleton, isCopied, children, onCopy, markCopied]);
 
   const handleDelete = useCallback(() => {
     if (skeleton) {

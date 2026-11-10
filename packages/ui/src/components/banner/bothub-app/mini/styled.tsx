@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Badge } from '@/ui/components/badge';
 import { Typography } from '@/ui/components/typography';
+import { themeVar } from '@/ui/theme';
 
 export const BothubAppBannerMiniStyled = styled.a`
   position: relative;
@@ -22,7 +23,7 @@ export const BothubAppBannerMiniStyled = styled.a`
     opacity: 0.2;
     outline: 2px solid rgba(0, 0, 0, 0.3);
     outline-offset: -2px;
-    background: ${({ theme }) => theme.colors.premiumGradient};
+    background: ${({ theme }) => themeVar(theme, 'colors.premiumGradient')};
   }
   &:hover {
     &:before {

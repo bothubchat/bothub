@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import {
   DescriptionCardBackground,
   DescriptionCardBackgroundWrapper,
@@ -27,6 +27,10 @@ export interface DescriptionCardProps
   children?: React.ReactNode;
 }
 
+const HOVER_X = '--description-card-hover-x';
+const HOVER_Y = '--description-card-hover-y';
+const HOVER_POSITION = `var(${HOVER_X}, 0px) var(${HOVER_Y}, 0px)`;
+
 export const DescriptionCard: React.FC<DescriptionCardProps> = ({
   icon = <LinksIcon />,
   title,
@@ -38,29 +42,29 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
 }) => {
   const theme = useTheme();
 
-  const [hoverX, setHoverX] = useState(0);
-  const [hoverY, setHoverY] = useState(0);
-
+  // The pointer position goes to CSS variables instead of state, so moving
+  // the mouse does not rerender the card.
+  const { onMouseMove, onMouseLeave } = props;
   const handleMouseMove = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      const hoverX: number = event.pageX - event.currentTarget.offsetLeft;
-      const hoverY: number = event.pageY - event.currentTarget.offsetTop;
+      const card = event.currentTarget;
+      const { left, top } = card.getBoundingClientRect();
 
-      setHoverX(hoverX);
-      setHoverY(hoverY);
+      card.style.setProperty(HOVER_X, `${event.clientX - left}px`);
+      card.style.setProperty(HOVER_Y, `${event.clientY - top}px`);
 
-      props.onMouseMove?.(event);
+      onMouseMove?.(event);
     },
-    [props.onMouseMove],
+    [onMouseMove],
   );
   const handleMouseLeave = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      setHoverX(0);
-      setHoverY(0);
+      event.currentTarget.style.removeProperty(HOVER_X);
+      event.currentTarget.style.removeProperty(HOVER_Y);
 
-      props.onMouseLeave?.(event);
+      onMouseLeave?.(event);
     },
-    [props.onMouseLeave],
+    [onMouseLeave],
   );
 
   return (
@@ -76,7 +80,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
         style={
           variant !== 'tertiary'
             ? {
-                background: `radial-gradient(100% 100% at ${hoverX}px ${hoverY}px, ${theme.colors.accent.primary}, rgba(0, 0, 0, 0.0))`,
+                background: `radial-gradient(100% 100% at ${HOVER_POSITION}, ${theme.colors.accent.primary}, rgba(0, 0, 0, 0.0))`,
               }
             : {}
         }
@@ -86,7 +90,7 @@ export const DescriptionCard: React.FC<DescriptionCardProps> = ({
           style={
             variant !== 'tertiary'
               ? {
-                  background: `radial-gradient(80% 70% at ${hoverX}px ${hoverY}px, rgba(28, 100, 242, 0.38) 9.34%, rgba(0, 0, 0, 0.00) 100%), #121825`,
+                  background: `radial-gradient(80% 70% at ${HOVER_POSITION}, rgba(28, 100, 242, 0.38) 9.34%, rgba(0, 0, 0, 0.00) 100%), #121825`,
                 }
               : {}
           }

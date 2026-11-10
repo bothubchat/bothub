@@ -9,7 +9,7 @@ import { PauseIcon } from '@/ui/icons/pause';
 import { PlayIcon } from '@/ui/icons/play';
 import { ExclamationIcon } from '@/ui/icons/exclamation';
 import { Typography } from '@/ui/components/typography';
-import { isBright } from '@/ui/utils';
+import { themeVar } from '@/ui/theme';
 
 export interface InputMessageStyledProps {
   $active: boolean;
@@ -28,20 +28,18 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
   border: 1px solid
     ${({ theme, $active, $disabled }) => {
       if ($disabled) {
-        return theme.colors.grayScale.gray2;
+        return themeVar(theme, 'colors.grayScale.gray2');
       }
       return $active
-        ? theme.colors.accent.primary
-        : theme.colors.grayScale.gray2;
+        ? themeVar(theme, 'colors.accent.primary')
+        : themeVar(theme, 'colors.grayScale.gray2');
     }};
   background: ${({ theme, $disabled }) => {
     if ($disabled) {
-      return theme.colors.grayScale.gray3;
+      return themeVar(theme, 'colors.grayScale.gray3');
     }
 
-    return theme.mode === 'light'
-      ? theme.default.colors.base.white
-      : theme.colors.grayScale.gray4;
+    return themeVar(theme, 'tokens.surfaceElevated');
   }};
   width: 100%;
   padding: 14px 20px;
@@ -63,7 +61,8 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
     !$disabled &&
     css`
       &:hover {
-        border-color: ${({ theme }) => theme.colors.accent.primary};
+        border-color: ${({ theme }) =>
+          themeVar(theme, 'colors.accent.primary')};
       }
     `}
   ${({ $dragActive }) =>
@@ -178,7 +177,7 @@ export const InputMessageConcatenateWarning = styled(Typography).attrs(
     variant: 'body-m-regular',
     children: (
       <>
-        <ExclamationIcon fill={theme.colors.accent.primaryLight} />
+        <ExclamationIcon fill={themeVar(theme, 'colors.accent.primaryLight')} />
         {children}
       </>
     ),
@@ -187,7 +186,14 @@ export const InputMessageConcatenateWarning = styled(Typography).attrs(
   display: flex;
   align-items: center;
   gap: 8px;
-  color: ${({ theme }) => theme.colors.accent.primaryLight};
+  color: ${({ theme }) => themeVar(theme, 'colors.accent.primaryLight')};
+`;
+
+// Пустой остаётся в дереве доступности, но не занимает места и не добавляет gap
+export const InputMessageStatus = styled.div`
+  &:empty {
+    position: absolute;
+  }
 `;
 
 export const InputMessageVoiceFileDelete = styled(Button).attrs({
@@ -197,7 +203,7 @@ export const InputMessageVoiceFileDelete = styled(Button).attrs({
 })`
   &:hover {
     svg path {
-      fill: ${({ theme }) => theme.colors.accent.primary};
+      fill: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
     }
   }
 `;
@@ -212,23 +218,29 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   width: 100%;
   min-height: 22px;
   max-height: 270px;
+  /* The browser sizes the field to its text: use-input does not measure it,
+     and the inline height it sets for other browsers does not apply. */
+  @supports (field-sizing: content) {
+    field-sizing: content;
+    height: auto !important;
+  }
   background: none;
   outline: none;
   resize: none;
   border: none;
   color: ${({ theme, $disabled }) => {
     if ($disabled) {
-      return theme.colors.grayScale.gray1;
+      return themeVar(theme, 'colors.grayScale.gray1');
     }
 
-    return theme.colors.base.white;
+    return themeVar(theme, 'colors.base.white');
   }};
   flex-shrink: 0;
   overflow: auto;
   scrollbar-width: none;
   padding: 0px;
   &::placeholder {
-    color: ${({ theme }) => theme.colors.grayScale.gray1};
+    color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   }
   &::-webkit-scrollbar {
     display: none;
@@ -280,24 +292,22 @@ export const InputMessageVoiceButton = styled(
   variant: 'text',
   startIcon: <VoiceIcon />,
   iconFill: disabled
-    ? theme.colors.grayScale.gray1
-    : isBright(theme.colors.grayScale.gray4)
-      ? theme.default.colors.base.black
-      : theme.default.colors.base.white,
+    ? themeVar(theme, 'colors.grayScale.gray1')
+    : themeVar(theme, 'tokens.surfaceIcon'),
   disableHoverColor: true,
 }))`
   margin-inline: 10px;
   padding: 10px;
   border-radius: 8px;
   background-color: ${({ theme, $isRecording }) =>
-    $isRecording ? theme.colors.critic : 'transparent'};
+    $isRecording ? themeVar(theme, 'colors.critic') : 'transparent'};
   position: relative;
   z-index: 0;
   ${({ theme, $isRecording }) =>
     $isRecording &&
     css`
       svg path {
-        fill: ${theme.default.colors.base.white} !important;
+        fill: ${themeVar(theme, 'default.colors.base.white')} !important;
       }
     `}
   &:before {
@@ -307,7 +317,7 @@ export const InputMessageVoiceButton = styled(
     position: absolute;
     top: -20%;
     left: -20%;
-    background-color: ${({ theme }) => theme.colors.critic};
+    background-color: ${({ theme }) => themeVar(theme, 'colors.critic')};
     opacity: ${({ $isRecording }) => ($isRecording ? 1 : 0)};
     filter: blur(18px);
     z-index: -1;
@@ -327,7 +337,7 @@ export const InputMessageVoiceRecordDot = styled.span`
   display: inline-flex;
   width: 8px;
   height: 8px;
-  background: ${({ theme }) => theme.colors.critic};
+  background: ${({ theme }) => themeVar(theme, 'colors.critic')};
   border-radius: 50%;
   animation: ${() => keyframes`
       from {
@@ -380,7 +390,7 @@ export const InputMessageContentTextWrapper = styled.div`
 export const InputMessageContentActionText = styled(Typography).attrs({
   variant: 'body-l-regular',
 })`
-  color: ${({ theme }) => theme.colors.accent.primary};
+  color: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
 `;
 
 export const InputMessageContentTextMessage = styled(Typography).attrs({
@@ -389,14 +399,13 @@ export const InputMessageContentTextMessage = styled(Typography).attrs({
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: ${({ theme }) =>
-    theme.mode === 'dark' ? theme.colors.base.white : theme.colors.base.black};
+  color: ${({ theme }) => themeVar(theme, 'tokens.inkLight')};
 `;
 
 export const InputMessageContentTextFiles = styled(
   InputMessageContentTextMessage,
 )`
-  color: ${({ theme }) => theme.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
 `;
 
 export const InputMessageCloseEditButton = styled.button`

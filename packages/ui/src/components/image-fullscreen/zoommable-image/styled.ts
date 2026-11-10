@@ -10,7 +10,6 @@ export const ZoommableImageContainer = styled.div`
 
 export const ZoommableImageWrapper = styled.div`
   position: relative;
-  will-change: transform;
   transform-origin: center;
 `;
 

@@ -32,7 +32,8 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
   useEffect(() => {
     const dropdownEl: HTMLDivElement | null = dropdownRef.current;
 
-    if (dropdownEl !== null) {
+    // Закрытое меню не слушает document и window: меню есть у каждого чата
+    if (isOpen && dropdownEl !== null) {
       const clickListener = (event: Event) => {
         if (!dropdownEl.contains(event.target as Node)) {
           setIsOpen(false);
@@ -50,7 +51,7 @@ export const SidebarListActions: React.FC<SidebarDropdownProps> = ({
         window.removeEventListener('scroll', scrollListener, true);
       };
     }
-  }, []);
+  }, [isOpen]);
 
   const contentPosition = dropdownRef.current?.getBoundingClientRect() ?? {
     right: 0,

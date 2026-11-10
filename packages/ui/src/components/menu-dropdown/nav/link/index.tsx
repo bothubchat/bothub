@@ -27,13 +27,14 @@ export const MenuDropdownNavLink: React.FC<MenuDropdownNavLinkProps> = ({
 }) => {
   const { setIsOpen } = useMenuDropdown();
 
+  const { onClick } = props;
   const handleClick = useCallback<React.MouseEventHandler<HTMLAnchorElement>>(
     (event) => {
       setIsOpen(false);
 
-      props.onClick?.(event);
+      onClick?.(event);
     },
-    [props.onClick],
+    [onClick, setIsOpen],
   );
 
   return (

@@ -1,5 +1,7 @@
-import { css, styled } from 'styled-components';
+import { styled } from 'styled-components';
 import { MessageColor } from '../../types';
+import { messageSelectionStyles } from '../selection';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageBlockquoteStyledProps {
   $messageColor: MessageColor;
@@ -11,50 +13,21 @@ export const MessageBlockquoteStyled = styled.blockquote<MessageBlockquoteStyled
   border-left: 3px solid
     ${({ theme, $messageColor }) => {
       if ($messageColor !== 'default') {
-        return theme.default.colors.base.white;
+        return themeVar(theme, 'default.colors.base.white');
       }
 
-      return theme.colors.accent.primary;
+      return themeVar(theme, 'colors.accent.primary');
     }};
   color: ${({ theme, $messageColor }) => {
     if ($messageColor !== 'default') {
-      return theme.default.colors.base.white;
+      return themeVar(theme, 'default.colors.base.white');
     }
 
-    return theme.colors.base.white;
+    return themeVar(theme, 'colors.base.white');
   }};
   opacity: 0.9;
 
   &::selection {
-    ${({ $messageColor }) => {
-      switch ($messageColor) {
-        case 'default':
-          return css`
-            background: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.accent.primary
-                : theme.colors.base.white};
-            color: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.base.white
-                : theme.colors.accent.primary};
-          `;
-        case 'green':
-          return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${({ theme }) => theme.colors.gpt3};
-          `;
-        case 'purple':
-          return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${({ theme }) => theme.colors.gpt4};
-          `;
-        default:
-          return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${$messageColor};
-          `;
-      }
-    }}
+    ${({ $messageColor }) => messageSelectionStyles($messageColor)}
   }
 `;

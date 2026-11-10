@@ -9,7 +9,11 @@ import {
   ValueSetter,
   ValueType,
 } from './types';
-import { findNearestScrollableParent } from '@/ui/utils';
+import {
+  findNearestScrollableParent,
+  useControllableState,
+  useEventCallback,
+} from '@/ui/utils';
 
 export interface UseSelectFieldDefaultProps {
   multiple?: false;
@@ -101,34 +105,28 @@ export const useSelectField = <
     [multiple, onChange, onValueChange],
   );
 
-  let [value, setValue] = useState<ValueType>(multiple ? [] : null) as [
-    ValueType,
-    ValueSetter,
-  ];
-  if (typeof initialValue !== 'undefined') {
-    [value, setValue] = [initialValue, setExternalValue];
-  }
-
-  const setValueHandler = (value: ValueType) => {
-    if (setValue === setExternalValue) {
-      setValue(value);
-    } else {
-      setValue(value);
-      setExternalValue(value);
-    }
-  };
+  const [value, setValue] = useControllableState<ValueType>({
+    value: initialValue,
+    defaultValue: multiple ? [] : null,
+    onChange: setExternalValue,
+  });
+  const setValueHandler: ValueSetter = setValue;
 
   const isKeyboardOpen = useRef(false);
   const triggerRef = useRef<TriggerType>(null);
   const selectModalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // The height only matters while the modal is visible, so the window is
+    // not listened to while the select is closed.
+    if (!isOpen || typeof contentHeight !== 'number') return;
+
     const listener = () => {
       const trigger = triggerRef.current;
 
-      if (!trigger || !height || !contentHeight) return;
+      if (!trigger || !contentHeight) return;
 
-      let modalMaxHeight = contentHeight;
+      let modalMaxHeight: number;
 
       const { top, bottom } = trigger.getBoundingClientRect();
 
@@ -136,9 +134,6 @@ export const useSelectField = <
         modalMaxHeight = top - 20;
       } else {
         modalMaxHeight = window.innerHeight - bottom - 20;
-      }
-      if (typeof contentHeight === 'string') {
-        return;
       }
       if (modalMaxHeight < contentHeight) {
         setHeight(modalMaxHeight);
@@ -152,12 +147,14 @@ export const useSelectField = <
     window.addEventListener('resize', listener);
 
     return () => window.removeEventListener('resize', listener);
-  }, [triggerRef.current, height, placement, contentHeight, isOpen]);
+  }, [placement, contentHeight, isOpen]);
+
+  const handleCloseEvent = useEventCallback(onClose);
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
-    onClose?.();
-  }, []);
+    handleCloseEvent();
+  }, [handleCloseEvent]);
 
   useEffect(() => {
     if (!isOpen || !triggerRef.current) return;
@@ -168,7 +165,7 @@ export const useSelectField = <
     scrollParent.addEventListener('scroll', handleClose);
 
     return () => scrollParent.removeEventListener('scroll', handleClose);
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -205,110 +202,107 @@ export const useSelectField = <
       window.removeEventListener('resize', listener);
       window.removeEventListener('orientationchange', listener);
     };
-  }, [isOpen]);
+  }, [isOpen, handleClose]);
 
-  const handleInputClick = useCallback(
-    (native: boolean, event: React.MouseEvent<HTMLElement>) => {
-      onSelectClick?.();
-      const triggerEl: HTMLElement | null = triggerRef.current;
-      const selectModalEl: HTMLDivElement | null = selectModalRef.current;
+  const handleInputClickImpl = (
+    native: boolean,
+    event: React.MouseEvent<HTMLElement>,
+  ) => {
+    onSelectClick?.();
+    const triggerEl: HTMLElement | null = triggerRef.current;
+    const selectModalEl: HTMLDivElement | null = selectModalRef.current;
 
-      if (!triggerEl || !selectModalEl || disabled) {
-        return;
-      }
-      if (native) {
-        event.stopPropagation();
-      }
+    if (!triggerEl || !selectModalEl || disabled) {
+      return;
+    }
+    if (native) {
+      event.stopPropagation();
+    }
 
-      const windowHeight =
-        window.innerHeight || document.documentElement.clientHeight;
+    const windowHeight =
+      window.innerHeight || document.documentElement.clientHeight;
 
-      const { width, height, top, bottom, left, right } =
-        triggerEl.getBoundingClientRect();
-      const { width: modalWidth } = selectModalEl.getBoundingClientRect();
+    const { width, height, top, bottom, left, right } =
+      triggerEl.getBoundingClientRect();
+    const { width: modalWidth } = selectModalEl.getBoundingClientRect();
 
-      let newPlacement = placement;
+    let newPlacement = placement;
 
-      if (
-        top - 186 < 0 ||
-        (typeof contentHeight === 'number' &&
-          contentHeight > top &&
-          windowHeight - bottom > top)
-      ) {
-        if (initialPlacement === 'bottom-center') {
-          newPlacement = 'bottom-center';
-        } else if (
-          initialPlacement === 'bottom-right' ||
-          initialPlacement === 'top-right'
-        ) {
-          newPlacement = 'bottom-right';
-        } else {
-          newPlacement = 'bottom-left';
-        }
+    if (
+      top - 186 < 0 ||
+      (typeof contentHeight === 'number' &&
+        contentHeight > top &&
+        windowHeight - bottom > top)
+    ) {
+      if (initialPlacement === 'bottom-center') {
+        newPlacement = 'bottom-center';
       } else if (
-        bottom + 186 > windowHeight ||
-        (typeof contentHeight === 'number' &&
-          contentHeight > windowHeight - bottom &&
-          windowHeight - bottom < top)
+        initialPlacement === 'bottom-right' ||
+        initialPlacement === 'top-right'
       ) {
-        if (
-          initialPlacement === 'top-right' ||
-          initialPlacement === 'bottom-right'
-        ) {
-          newPlacement = 'top-right';
-        } else {
-          newPlacement = 'top-left';
-        }
+        newPlacement = 'bottom-right';
       } else {
-        newPlacement = initialPlacement;
+        newPlacement = 'bottom-left';
       }
-
-      let x: number = 0;
-      let y: number = 0;
-
-      switch (newPlacement) {
-        case 'bottom-left':
-          x = left + window.scrollX;
-          y = top + window.scrollY + height;
-          break;
-        case 'bottom-center':
-          x = Math.floor((left + right) / 2 + window.scrollX - modalWidth / 2);
-          y = top + window.scrollY + height;
-          break;
-        case 'bottom-right':
-          x = left + window.scrollX + width - modalWidth;
-          y = top + window.scrollY + height;
-          break;
-        case 'top-left':
-          x = left + window.scrollX;
-          y = top + window.scrollY;
-          break;
-        case 'top-right':
-          x = left + window.scrollX + width;
-          y = top + window.scrollY;
-          break;
-      }
-
-      setX(x);
-      setY(y);
-      setWidth(width);
-      setPlacement(newPlacement);
-
-      if (native) {
-        setIsOpen(true);
+    } else if (
+      bottom + 186 > windowHeight ||
+      (typeof contentHeight === 'number' &&
+        contentHeight > windowHeight - bottom &&
+        windowHeight - bottom < top)
+    ) {
+      if (
+        initialPlacement === 'top-right' ||
+        initialPlacement === 'bottom-right'
+      ) {
+        newPlacement = 'top-right';
       } else {
-        setIsOpen(!isOpen);
+        newPlacement = 'top-left';
       }
-    },
-    [
-      disabled,
-      isOpen,
-      placement,
-      initialPlacement,
-      onSelectClick,
-      contentHeight,
-    ],
-  );
+    } else {
+      newPlacement = initialPlacement;
+    }
+
+    let x: number = 0;
+    let y: number = 0;
+
+    switch (newPlacement) {
+      case 'bottom-left':
+        x = left + window.scrollX;
+        y = top + window.scrollY + height;
+        break;
+      case 'bottom-center':
+        x = Math.floor((left + right) / 2 + window.scrollX - modalWidth / 2);
+        y = top + window.scrollY + height;
+        break;
+      case 'bottom-right':
+        x = left + window.scrollX + width - modalWidth;
+        y = top + window.scrollY + height;
+        break;
+      case 'top-left':
+        x = left + window.scrollX;
+        y = top + window.scrollY;
+        break;
+      case 'top-right':
+        x = left + window.scrollX + width;
+        y = top + window.scrollY;
+        break;
+    }
+
+    setX(x);
+    setY(y);
+    setWidth(width);
+    setPlacement(newPlacement);
+
+    if (native) {
+      setIsOpen(true);
+    } else {
+      setIsOpen((isOpen) => !isOpen);
+    }
+  };
+
+  // Stable identity: the trigger and the context get the same handler on
+  // every render, while it still reads the latest props.
+  const handleInputClick = useEventCallback(handleInputClickImpl);
 
   return {
     x,
@@ -322,7 +316,7 @@ export const useSelectField = <
     value,
     disabled,
     multiple,
-    contentHeight: height,
+    contentHeight: typeof contentHeight === 'number' ? height : contentHeight,
     handleInputClick,
     handleClose,
     setValue: setValueHandler,

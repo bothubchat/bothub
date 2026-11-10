@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { LoaderCircularIcon } from '@/ui/icons/loader-circular';
 import { BadgeProgressColor } from './types';
+import { themeVar } from '@/ui/theme';
 
 export interface BadgeProgressStyledProps {
   $color: BadgeProgressColor;
@@ -20,8 +21,8 @@ export const BadgeProgressStyled = styled.div<BadgeProgressStyledProps>`
     ${BadgeProgressText},
     ${BadgeProgressTextBold} {
       color: ${$color === 'primary'
-        ? theme.default.colors.base.white
-        : theme.default.colors.base.black};
+        ? themeVar(theme, 'default.colors.base.white')
+        : themeVar(theme, 'default.colors.base.black')};
     }
   `}
 `;
@@ -48,10 +49,10 @@ export const BadgeProgressLine = styled.div<BadgeProgressLineProps>`
   height: inherit;
   background: ${({ theme, $color }) => {
     if ($color === 'primary') {
-      return theme.colors.accent.primary;
+      return themeVar(theme, 'colors.accent.primary');
     }
 
-    return theme.default.colors.base.white;
+    return themeVar(theme, 'default.colors.base.white');
   }};
 `;
 
@@ -59,7 +60,7 @@ export const BadgeProgressLineFilled = styled.div`
   display: flex;
   width: inherit;
   height: inherit;
-  background: ${({ theme }) => theme.colors.accent.primaryLight};
+  background: ${({ theme }) => themeVar(theme, 'colors.accent.primaryLight')};
   transition: width 0.3s ease-in-out;
 `;
 
@@ -81,7 +82,7 @@ export const BadgeProgressText = styled(Typography).attrs({
   variant: 'body-s-regular',
 })`
   cursor: inherit;
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
   white-space: nowrap;
 `;
 
@@ -89,5 +90,5 @@ export const BadgeProgressTextBold = styled(Typography).attrs({
   variant: 'body-s-medium',
 })`
   cursor: inherit;
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
 `;

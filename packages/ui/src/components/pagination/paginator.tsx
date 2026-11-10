@@ -7,6 +7,9 @@ export const Paginator = ({
   onChange,
   lastPage,
   arrowStyles = 'default',
+  'aria-label': ariaLabel,
+  prevPageAriaLabel,
+  nextPageAriaLabel,
 }: PaginatorProps) => {
   const pages = usePaginatorPages(current ?? 1, lastPage);
 
@@ -31,9 +34,14 @@ export const Paginator = ({
   };
 
   return (
-    <S.Container>
+    <S.Container
+      role="navigation"
+      aria-label={ariaLabel}
+    >
       <S.ControlButton
         $disabled={lastPage === 1}
+        aria-disabled={lastPage === 1 || undefined}
+        aria-label={prevPageAriaLabel}
         onClick={handlePrevPage}
       >
         {arrowStyles === 'caret' ? <S.ArrowCaretIcon /> : <S.ArrowIcon />}
@@ -43,6 +51,11 @@ export const Paginator = ({
           key={page.id}
           $active={page.value === current}
           $disabled={page.value === emptySpace || page.value === current}
+          aria-current={page.value === current ? 'page' : undefined}
+          {...(page.value === emptySpace && {
+            tabIndex: -1,
+            'aria-hidden': true,
+          })}
           onClick={
             typeof page.value === 'number'
               ? changePage.bind(null, page.value)
@@ -54,6 +67,8 @@ export const Paginator = ({
       ))}
       <S.ControlButton
         $disabled={lastPage === 1}
+        aria-disabled={lastPage === 1 || undefined}
+        aria-label={nextPageAriaLabel}
         onClick={handleNextPage}
       >
         {arrowStyles === 'caret' ? (

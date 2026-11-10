@@ -1,5 +1,6 @@
 import React, {
   useCallback,
+  useDeferredValue,
   useEffect,
   useMemo,
   useRef,
@@ -11,10 +12,12 @@ import { SearchSimpleIcon } from '@/ui/icons';
 
 import { Portal } from '@/ui/components/portal';
 import { ScrollableTabsProps } from '@/ui/components/scrollable-tabs';
+import { useEventCallback } from '@/ui/utils';
 
 import { SelectFieldGroup } from './select-field-group';
 import { SelectFieldOptions } from './option';
 import { filterData } from './filterData';
+import { getSelectFieldItemKey } from '../helpers';
 
 import { UseSelectFieldReturnType } from '../useSelectField';
 import {
@@ -95,11 +98,19 @@ export const SelectModal = ({
 }: SelectModalProps) => {
   const [openedOptions, setOpenedOptions] = useState<(string | number)[]>([]);
   const [searchValue, setSearchValue] = useState('');
+  const deferredSearchValue = useDeferredValue(searchValue);
   const scrollTop = useRef(0);
 
-  const handleScrollTopChange = (value: number) => {
+  // Options are mounted on the first open and kept afterwards: a select that
+  // was never opened costs almost nothing, and reopening stays cheap.
+  const [isContentMounted, setIsContentMounted] = useState(isOpen);
+  if (isOpen && !isContentMounted) {
+    setIsContentMounted(true);
+  }
+
+  const handleScrollTopChange = useCallback((value: number) => {
     scrollTop.current = value;
-  };
+  }, []);
 
   const handleSearchChange = useCallback<
     React.ChangeEventHandler<HTMLInputElement>
@@ -134,7 +145,12 @@ export const SelectModal = ({
         )
       ) {
         if (multiple && Array.isArray(value)) {
-          setValue([...new Set([...value, item])]);
+          const itemKey = getSelectFieldItemKey(item);
+          const isSelected = value.some(
+            (selectedItem) => getSelectFieldItemKey(selectedItem) === itemKey,
+          );
+
+          setValue(isSelected ? [...value] : [...value, item]);
         } else {
           setValue(item);
         }
@@ -151,6 +167,10 @@ export const SelectModal = ({
     },
     [value, multiple, disableSelect, setValue, onOptionClick, handleClose],
   );
+
+  // Options get the same handler on every render, so memoized options are
+  // not rerendered when the value changes.
+  const handleStableOptionClick = useEventCallback(handleOptionClick);
 
   useEffect(() => {
     setOpenedOptions(openedModel ? [openedModel] : []);
@@ -218,6 +238,12 @@ export const SelectModal = ({
     [initialData, openedOptions, onOpenedOptionChange],
   );
 
+  const hasOnSearch = !!onSearch;
+  const filteredData = useMemo(
+    () => (hasOnSearch ? data : filterData(data, deferredSearchValue)),
+    [hasOnSearch, data, deferredSearchValue],
+  );
+
   return (
     <SelectModalWrapper>
       <S.SelectModalStyled
@@ -226,6 +252,7 @@ export const SelectModal = ({
         $disablePortal={disablePortal}
         $placement={placement}
         ref={selectModalRef}
+        inert={!isOpen}
         style={{
           ...modalStyles,
           ...(x !== 0 && {
@@ -300,7 +327,7 @@ export const SelectModal = ({
                   }
                 />
               )}
-              {data.length > 0 ? (
+              {!isContentMounted ? null : data.length > 0 ? (
                 <SelectFieldGroup
                   scrollTop={scrollTop.current}
                   onScrollTopChange={handleScrollTopChange}
@@ -310,25 +337,25 @@ export const SelectModal = ({
                 >
                   <SelectFieldOptions
                     value={value}
-                    data={onSearch ? data : filterData(data, searchValue)}
+                    data={filteredData}
                     size={size}
                     disableSelect={disableSelect}
                     onGroupCheckboxClick={onGroupCheckboxClick}
-                    onOptionClick={handleOptionClick}
+                    onOptionClick={handleStableOptionClick}
                     selectedColor={selectedColor}
                   />
                 </SelectFieldGroup>
               ) : (
                 empty
               )}
-              {after && (
+              {isContentMounted && after && (
                 <S.SelectModalAfter>
                   <SelectFieldOptions
                     value={value}
                     data={after}
                     size={size}
                     disableSelect={disableSelect}
-                    onOptionClick={handleOptionClick}
+                    onOptionClick={handleStableOptionClick}
                     selectedColor={selectedColor}
                   />
                 </S.SelectModalAfter>

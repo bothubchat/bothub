@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { HeaderVariant } from '../types';
 import { adaptive } from '@/ui/adaptive';
+import { themeVar } from '@/ui/theme';
 
 export interface HeaderNavStyledProps {
   $variant: HeaderVariant;
@@ -34,7 +35,7 @@ export const HeaderNavStyled = styled.nav<HeaderNavStyledProps>`
         case 'main':
           return css`
             border-left: 1px solid
-              ${({ theme }) => theme.colors.grayScale.gray3};
+              ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
           `;
         case 'dashboard':
           return css``;

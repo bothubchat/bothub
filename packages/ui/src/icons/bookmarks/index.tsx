@@ -1,6 +1,6 @@
 import { Icon, icon } from '@/ui/components/icon';
 
-export const BookmarksIcon = icon(({ ...props }) => (
+export const BookmarksIcon = icon((props) => (
   <Icon
     size={16}
     viewBox="0 0 16 16"

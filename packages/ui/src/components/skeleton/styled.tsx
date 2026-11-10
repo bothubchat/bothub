@@ -1,75 +1,44 @@
-import { styled, css, DefaultTheme, keyframes } from 'styled-components';
+import { styled, css, keyframes } from 'styled-components';
 import { SkeletonVariant } from './types';
+import { themeVar } from '@/ui/theme';
 
-const pulse = ({
-  theme,
-  $opacity,
-  $colors,
-}: {
-  theme: DefaultTheme;
-  $opacity?: [number, number?];
-  $colors?: [string, string?];
-}) => keyframes`
+// Sizes, colors and opacity come from custom properties set inline by
+// `Skeleton`, so these keyframes and the class below don't change per value.
+export const skeletonProperties = {
+  width: '--bothub-skeleton-width',
+  height: '--bothub-skeleton-height',
+  colorFrom: '--bothub-skeleton-color-from',
+  colorTo: '--bothub-skeleton-color-to',
+  opacityFrom: '--bothub-skeleton-opacity-from',
+  opacityTo: '--bothub-skeleton-opacity-to',
+} as const;
+
+const pulse = keyframes`
   0% {
-    background: ${
-      $colors?.[0] ??
-      (theme.mode === 'light'
-        ? theme.colors.grayScale.gray2
-        : theme.colors.grayScale.gray5)
-    };
-    opacity: ${$opacity?.[0] ?? 1};
+    background: var(${skeletonProperties.colorFrom});
+    opacity: var(${skeletonProperties.opacityFrom}, 1);
   }
   85% {
-    background: ${
-      $colors?.[1] ??
-      (theme.mode === 'light'
-        ? theme.colors.grayScale.gray5
-        : theme.colors.grayScale.gray1)
-    };
-    opacity: ${$opacity?.[1] ?? 1};
+    background: var(${skeletonProperties.colorTo});
+    opacity: var(${skeletonProperties.opacityTo}, 1);
   }
   100% {
-    background: ${
-      $colors?.[0] ??
-      (theme.mode === 'light'
-        ? theme.colors.grayScale.gray2
-        : theme.colors.grayScale.gray5)
-    };
-    opacity: ${$opacity?.[0] ?? 1};
+    background: var(${skeletonProperties.colorFrom});
+    opacity: var(${skeletonProperties.opacityFrom}, 1);
   }
 `;
 
 export interface SkeletonStyledProps {
   $variant?: SkeletonVariant;
-  $width?: number | string;
-  $height?: number | string;
-  $fullWidth: boolean;
-  $colors?: [string, string?];
-  $opacity?: [number, number?];
 }
 
 export const SkeletonStyled = styled.span<SkeletonStyledProps>`
   display: inline-flex;
   flex-shrink: 0;
   vertical-align: middle;
-  width: ${({ $fullWidth, $width }) => {
-    if ($fullWidth) {
-      return '100%';
-    }
-    if (typeof $width === 'number' || typeof $width === 'string') {
-      return `${$width}px`;
-    }
-
-    return 'var(--skeleton-width, 40px)';
-  }};
-  height: ${({ $height }) => {
-    if (typeof $height === 'number' || typeof $height === 'string') {
-      return `${$height}px`;
-    }
-
-    return 'var(--skeleton-height, 40px)';
-  }};
-  background: ${({ theme }) => theme.colors.grayScale.gray1};
+  width: var(${skeletonProperties.width}, var(--skeleton-width, 40px));
+  height: var(${skeletonProperties.height}, var(--skeleton-height, 40px));
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
   cursor: progress;
   ${({ $variant }) => {
     switch ($variant) {
@@ -87,12 +56,10 @@ export const SkeletonStyled = styled.span<SkeletonStyledProps>`
         `;
     }
   }}
-  animation: ${({ theme, $opacity, $colors }) => css`
-    ${pulse({
-      theme,
-      $opacity,
-      $colors,
-    })} 2s infinite forwards;
-  `};
+  ${skeletonProperties.colorFrom}: ${({ theme }) =>
+    themeVar(theme, 'tokens.skeletonFrom')};
+  ${skeletonProperties.colorTo}: ${({ theme }) =>
+    themeVar(theme, 'tokens.skeletonTo')};
+  animation: ${pulse} 2s infinite forwards;
   overflow: hidden;
 `;

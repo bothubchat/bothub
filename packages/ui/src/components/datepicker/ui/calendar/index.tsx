@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { useEventCallback } from '@/ui/utils';
 import { useInfoDate } from '../../hooks';
 import {
   DatepickerProps,
@@ -51,6 +52,58 @@ const getDefaultValue = (
   return null;
 };
 
+const getValueKey = (value?: CalendarProps['value']) => {
+  if (Array.isArray(value)) {
+    return `${new Date(value[0]).getTime()}-${
+      value[1] ? new Date(value[1]).getTime() : ''
+    }`;
+  }
+
+  return value ? String(new Date(value).getTime()) : '';
+};
+
+type DatepickerDayProps = {
+  date: Date;
+  isActive: boolean;
+  isBetweenSelected: boolean;
+  isOutRange: boolean;
+  isStartDate: boolean;
+  isFinishDate: boolean;
+  hoverable: boolean;
+  onSelect: (date: Date) => void;
+  onHover: (date: Date | null) => void;
+};
+
+// Memoized, so hovering a day in range mode rerenders only the days whose
+// highlight changes
+const DatepickerDay = memo(
+  ({
+    date,
+    isActive,
+    isBetweenSelected,
+    isOutRange,
+    isStartDate,
+    isFinishDate,
+    hoverable,
+    onSelect,
+    onHover,
+  }: DatepickerDayProps) => (
+    <S.DateGridInteractiveItem
+      tabIndex={-1}
+      $isBetweenSelected={isBetweenSelected}
+      $active={isActive}
+      $outRange={isOutRange}
+      $startDate={isStartDate}
+      $finishDate={isFinishDate}
+      onMouseEnter={hoverable ? () => onHover(date) : undefined}
+      onMouseLeave={hoverable ? () => onHover(null) : undefined}
+      onClick={() => onSelect(date)}
+    >
+      <S.DayOfMonth>{date.getDate()}</S.DayOfMonth>
+    </S.DateGridInteractiveItem>
+  ),
+);
+
 export const DatepickerCalendar = ({
   value,
   closeFn,
@@ -81,8 +134,10 @@ export const DatepickerCalendar = ({
     setCalendarDate(addMont(calendarDate));
   };
 
-  const handleSelectDate = (newValue: Date) => {
+  const handleSelectDate = useEventCallback((newValue: Date) => {
     const isArrayValue = Array.isArray(localValue);
+    // The clicked day is hovered, which highlights nothing
+    setHoveredItem(null);
 
     if (range) {
       if (isArrayValue) {
@@ -109,7 +164,11 @@ export const DatepickerCalendar = ({
     } else {
       setLocalValue(null);
     }
-  };
+  });
+
+  const handleHover = useCallback((date: Date | null) => {
+    setHoveredItem(date);
+  }, []);
 
   const handleSave = () => {
     if (range && Array.isArray(localValue)) {
@@ -130,9 +189,15 @@ export const DatepickerCalendar = ({
     closeFn?.();
   };
 
+  // Compare dates by time, so a new array with the same dates doesn't reset
+  // the shown month
+  const valueKey = getValueKey(value);
   useEffect(() => {
     setCalendarDate(getDefaultCalendarDate(value));
-  }, [value]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [valueKey]);
+
+  const handleClose = useEventCallback(closeFn);
 
   useEffect(() => {
     const clickListener = (event: Event) => {
@@ -144,17 +209,26 @@ export const DatepickerCalendar = ({
         return;
       }
 
-      closeFn?.();
+      handleClose();
     };
 
-    document.addEventListener('click', clickListener);
+    // Subscribe after the click that opened the calendar has finished,
+    // so the trigger doesn't need to stop its propagation
+    const timer = setTimeout(() => {
+      document.addEventListener('click', clickListener);
+    });
 
     return () => {
+      clearTimeout(timer);
       document.removeEventListener('click', clickListener);
     };
-  }, [closeFn]);
+  }, [handleClose]);
 
   const isArrayLocalValue = Array.isArray(localValue);
+  // The hovered day only matters while the end of a range is being chosen
+  const isSelectingRangeEnd = Boolean(
+    range && isArrayLocalValue && !localValue[1],
+  );
 
   return (
     <S.Wrapper ref={wrapperRef}>
@@ -205,27 +279,25 @@ export const DatepickerCalendar = ({
           }
 
           return (
-            <S.DateGridInteractiveItem
+            <DatepickerDay
               key={monthDay.getTime()}
-              tabIndex={-1}
-              $isBetweenSelected={isBetweenSelected}
-              $active={isActive}
-              $outRange={monthDay.getMonth() !== calendarDate.getMonth()}
-              $startDate={Boolean(
+              date={monthDay}
+              isActive={isActive}
+              isBetweenSelected={isBetweenSelected}
+              isOutRange={monthDay.getMonth() !== calendarDate.getMonth()}
+              isStartDate={Boolean(
                 isArrayLocalValue &&
                   ((hoveredItem && hoveredItem > localValue[0]) ||
                     localValue[1]) &&
                   isEqualDaysOfDate(localValue[0], monthDay),
               )}
-              $finishDate={Boolean(
+              isFinishDate={Boolean(
                 isArrayLocalValue && isEqualDaysOfDate(localValue[1], monthDay),
               )}
-              onMouseEnter={() => setHoveredItem(monthDay)}
-              onMouseLeave={() => setHoveredItem(null)}
-              onClick={() => handleSelectDate(monthDay)}
-            >
-              <S.DayOfMonth>{monthDay.getDate()}</S.DayOfMonth>
-            </S.DateGridInteractiveItem>
+              hoverable={isSelectingRangeEnd}
+              onSelect={handleSelectDate}
+              onHover={handleHover}
+            />
           );
         })}
       </S.DateGrid>

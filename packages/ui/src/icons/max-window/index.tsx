@@ -1,6 +1,6 @@
 import { Icon, icon } from '@/ui/components/icon';
 
-export const MaxWindowIcon = icon(({ ...props }) => (
+export const MaxWindowIcon = icon((props) => (
   <Icon
     size={18}
     viewBox="0 0 18 18"

@@ -16,20 +16,13 @@ export const resetTimeInDate = (date: number | string | Date) =>
     minutes: 0,
   });
 
+// Always 6 weeks (42 days) starting from the Sunday on or before the 1st
 export const getCalendarDays = (month: number, year: number) => {
-  const firstDay = new Date(year, month, 1);
-  const lastDay = new Date(year, month, 0);
-  const startDate = new Date(firstDay);
-  const endDate = new Date(lastDay);
+  const startDate = new Date(year, month, 1);
 
   // Adjust start date to the nearest Sunday
   while (startDate.getDay() !== 0) {
     startDate.setDate(startDate.getDate() - 1);
-  }
-
-  // Adjust end date to the nearest Saturday
-  while (endDate.getDay() !== 6) {
-    endDate.setDate(endDate.getDate() + 1);
   }
 
   const dates = [];
@@ -43,8 +36,15 @@ export const getCalendarDays = (month: number, year: number) => {
   return dates;
 };
 
+const monthFormatters = new Map<Locale, Intl.DateTimeFormat>();
+
 export const getMonthName = (month: number, locale: Locale) => {
-  const intl = new Intl.DateTimeFormat(locale, { month: 'long' });
+  let intl = monthFormatters.get(locale);
+  if (!intl) {
+    intl = new Intl.DateTimeFormat(locale, { month: 'long' });
+    monthFormatters.set(locale, intl);
+  }
+
   return intl.format(new Date(Date.UTC(2022, month, 1)));
 };
 

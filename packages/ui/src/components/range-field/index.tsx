@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import { Tooltip, TooltipConsumer, useTooltip } from '@/ui/components/tooltip';
 import {
   RangeFieldErrorText,
@@ -10,7 +10,8 @@ import {
   RangeFieldStyled,
 } from './styled';
 import { RangeFieldValue } from './types';
-import { Skeleton } from '@/ui/components/skeleton';
+import { useControllableState } from '@/ui/utils';
+import { FieldLabel } from '@/ui/components/field-label';
 
 export interface RangeFieldProps {
   className?: string;
@@ -45,17 +46,14 @@ export const RangeField: React.FC<RangeFieldProps> = ({
 }) => {
   const { handleTooltipMouseEnter, handleTooltipMouseLeave } = useTooltip();
 
-  const [value, setValue] =
-    typeof initialValue === 'number' || Array.isArray(initialValue)
-      ? [initialValue, onChange]
-      : useState<RangeFieldValue>([0]);
-
-  const handleChange = useCallback(
-    (value: RangeFieldValue) => {
-      setValue?.(value);
-    },
-    [setValue],
-  );
+  const [value, setValue] = useControllableState<RangeFieldValue>({
+    value:
+      typeof initialValue === 'number' || Array.isArray(initialValue)
+        ? initialValue
+        : undefined,
+    defaultValue: [0],
+    onChange,
+  });
 
   return (
     <RangeFieldStyled
@@ -63,20 +61,15 @@ export const RangeField: React.FC<RangeFieldProps> = ({
       $disabled={disabled}
       onPointerLeave={onPointerLeave}
     >
-      {label && skeleton && (
-        <RangeFieldLabel>
-          <Skeleton width={100} />
-        </RangeFieldLabel>
-      )}
-      {typeof label === 'string' && !skeleton && (
-        <RangeFieldLabel
-          onPointerLeave={handleTooltipMouseEnter}
-          onPointerEnter={handleTooltipMouseLeave}
-        >
-          {label}
-        </RangeFieldLabel>
-      )}
-      {typeof label !== 'string' && !skeleton && label}
+      <FieldLabel
+        as={RangeFieldLabel}
+        label={label}
+        skeleton={skeleton}
+        labelProps={{
+          onPointerEnter: handleTooltipMouseEnter,
+          onPointerLeave: handleTooltipMouseLeave,
+        }}
+      />
       {preview && (
         <RangeFieldFormattedValue>{preview(value)}</RangeFieldFormattedValue>
       )}
@@ -114,7 +107,7 @@ export const RangeField: React.FC<RangeFieldProps> = ({
                     {node}
                   </RangeFieldRangeThumb>
                 )}
-                onChange={handleChange}
+                onChange={setValue}
               />
             )}
           </TooltipConsumer>

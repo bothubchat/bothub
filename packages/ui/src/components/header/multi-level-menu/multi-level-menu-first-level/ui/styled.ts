@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { ArrowDownIcon } from '@/ui/icons';
 import { Typography } from '@/ui/components/typography';
+import { themeVar } from '@/ui/theme';
 
 export const MultiLevelFirstLevelMenuLi = styled.li<{
   $gotChild: boolean;
@@ -38,7 +39,7 @@ export const MultiLevelMenuFirstLevelHeader = styled.div<{ $active: boolean }>`
       ? 'linear-gradient(90deg, rgba(28, 100, 242, 0.2) -0.39%, rgba(212, 28, 242, 0.2) 99.61%)'
       : 'transparent'};
   border-color: ${({ $active, theme }) =>
-    $active ? theme.colors.grayScale.gray3 : 'transparent'};
+    $active ? themeVar(theme, 'colors.grayScale.gray3') : 'transparent'};
   border-radius: ${({ $active }) => ($active ? '10px' : '10px')};
 
   &:hover,
@@ -49,7 +50,7 @@ export const MultiLevelMenuFirstLevelHeader = styled.div<{ $active: boolean }>`
       rgba(212, 28, 242, 0.2) 99.61%
     );
     border: 1px solid;
-    border-color: ${({ theme }) => theme.colors.grayScale.gray3};
+    border-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
     border-radius: 10px;
     padding: 10px;
   }

@@ -4,6 +4,7 @@ import { Button } from '@/ui/components/button';
 import { Plus2Icon } from '@/ui/icons/plus-2';
 import { adaptive } from '@/ui/adaptive';
 import { GearIcon } from '@/ui/icons/gear';
+import { themeVar } from '@/ui/theme';
 
 export const DeveloperKeysStyled = styled.div`
   display: flex;
@@ -32,7 +33,7 @@ export const DeveloperKeysIcon = styled(GearIcon).attrs({
 })`
   padding: 10px;
   border-radius: 8px;
-  border: ${({ theme }) => theme.colors.grayScale.gray1} 1px solid;
+  border: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')} 1px solid;
 `;
 
 export const DeveloperKeyList = styled.div`

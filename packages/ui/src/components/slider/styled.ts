@@ -1,6 +1,7 @@
 import { styled, css } from 'styled-components';
 import { Scrollbar } from '../scrollbar';
 import { ArrowsSize } from './types';
+import { ThemeMode, themeVar } from '@/ui/theme';
 
 export const SliderContainer = styled.div`
   width: 100%;
@@ -19,6 +20,8 @@ export const SliderArrow = styled.div<{
   $hidden: boolean;
   $arrowsSize: ArrowsSize;
   $isLeftArrow?: boolean;
+  /** Mode of the current theme: styles may get a theme of CSS variables. */
+  $mode: ThemeMode;
 }>`
   height: 100%;
   position: absolute;
@@ -44,17 +47,13 @@ export const SliderArrow = styled.div<{
           width: 122px;
 
           background: ${({ theme }) =>
-            theme.mode === 'light'
-              ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
-              : 'linear-gradient(-90deg, #12182500 0%, #121825 100%)'};
+            themeVar(theme, 'tokens.sliderFadeSmall')};
         `;
       case 'md':
         return css`
           width: 80px;
           background: ${({ theme }) =>
-            theme.mode === 'light'
-              ? 'linear-gradient(-90deg, #F5F6F700 0%, #F5F6F7 100%)'
-              : 'linear-gradient(-90deg, #0e0c1500 0%, #0e0c15 100%)'};
+            themeVar(theme, 'tokens.sliderFadeMedium')};
         `;
     }
   }};
@@ -87,11 +86,11 @@ export const SliderArrow = styled.div<{
       }
     }};
 
-    ${({ theme }) =>
-      theme.mode === 'light' &&
+    ${({ $mode }) =>
+      $mode === 'light' &&
       css`
         path {
-          stroke: ${({ theme }) => theme.colors.grayScale.gray1};
+          stroke: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
         }
       `};
   }

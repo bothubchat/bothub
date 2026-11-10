@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTransition } from '@react-spring/web';
 import {
   MultiLevelMenuArrowDownIcon,
@@ -41,12 +41,19 @@ export const MultiLevelMenuAccordion: React.FC<IMultiLevelMenuAccordion> = ({
   handleAccordionToggle,
 }) => {
   const [selectedItem, setSelectedItem] = useState<TFirstLevelItem | undefined>(
-    menuItem.children && menuItem.children[0].children
-      ? menuItem.children[0]
-      : undefined,
+    menuItem.children?.[0]?.children ? menuItem.children[0] : undefined,
   );
 
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    },
+    [],
+  );
 
   const handleMouseEnter = (item: TFirstLevelItem, index: number) => {
     setSelectedItem(undefined);

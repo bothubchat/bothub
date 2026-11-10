@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import {
   FileFieldBlock,
   FileFieldErrorText,
@@ -21,6 +21,7 @@ import {
   WordIcon,
   XlsIcon,
 } from '@/ui/icons';
+import { useControllableState } from '@/ui/utils';
 
 export type FileFieldChangeEventHandler = (files: File[]) => unknown;
 
@@ -57,44 +58,38 @@ export const FileField: React.FC<FileFieldProps> = ({
   icon = <FileFieldIcon />,
   ...props
 }) => {
-  const setInitialFilesChange = useCallback<FileFieldChangeEventHandler>(
-    (files) => {
-      onChange?.(files);
-    },
-    [onChange],
-  );
-
-  const [files, setFiles] = Array.isArray(initialFiles)
-    ? [initialFiles, setInitialFilesChange]
-    : useState<File[]>([]);
+  const [files, setFiles] = useControllableState<File[]>({
+    value: Array.isArray(initialFiles) ? initialFiles : undefined,
+    defaultValue: [],
+    onChange,
+  });
 
   const handleInputChange = useCallback<
     React.ChangeEventHandler<HTMLInputElement>
   >(
     (event) => {
+      const selectedFiles = [...(event.currentTarget.files ?? [])];
+
       if (multiple) {
-        setFiles([
+        setFiles((files) => [
           ...new Map(
-            [...files, ...(event.currentTarget.files ?? [])].map((file) => [
-              file.name,
-              file,
-            ]),
+            [...files, ...selectedFiles].map((file) => [file.name, file]),
           ).values(),
         ]);
       } else {
-        setFiles([...(event.currentTarget.files ?? [])].slice(0, 1));
+        setFiles(selectedFiles.slice(0, 1));
       }
     },
-    [files, setFiles, multiple],
+    [setFiles, multiple],
   );
 
   const handleFileDelete = useCallback(
     (file: File, event: React.MouseEvent) => {
       event.preventDefault();
 
-      setFiles(files.filter(({ name }) => name !== file.name));
+      setFiles((files) => files.filter(({ name }) => name !== file.name));
     },
-    [files, setFiles],
+    [setFiles],
   );
 
   return (
@@ -135,13 +130,13 @@ export const FileField: React.FC<FileFieldProps> = ({
                 {files.map((file) => {
                   let iconNode: React.ReactNode;
 
-                  if (file.name.match(/.txt$/i)) {
+                  if (file.name.match(/\.txt$/i)) {
                     iconNode = <TxtIcon />;
-                  } else if (file.name.match(/.docx$/i)) {
+                  } else if (file.name.match(/\.docx$/i)) {
                     iconNode = <WordIcon />;
-                  } else if (file.name.match(/.xlsx$/i)) {
+                  } else if (file.name.match(/\.xlsx$/i)) {
                     iconNode = <XlsIcon />;
-                  } else if (file.name.match(/.pdf$/i)) {
+                  } else if (file.name.match(/\.pdf$/i)) {
                     iconNode = <PdfIcon />;
                   } else {
                     iconNode = <AttachFileIcon />;

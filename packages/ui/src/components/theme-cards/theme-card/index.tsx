@@ -68,7 +68,7 @@ export const ThemeCard: React.FC<ThemeCardProps> = ({
 
   const handleClick = useCallback(() => {
     onClick?.(variant);
-  }, []);
+  }, [onClick, variant]);
 
   return (
     <ThemeCardStyled onClick={handleClick}>

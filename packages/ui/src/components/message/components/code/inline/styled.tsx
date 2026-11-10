@@ -1,6 +1,8 @@
 import { styled, css } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '@/ui/components/message';
+import { messageSelectionStyles } from '../../selection';
+import { themeVar } from '@/ui/theme';
 
 export interface MessageInlineCodeStyledProps {
   $messageVariant: MessageVariant;
@@ -17,54 +19,23 @@ export const MessageInlineCodeStyled = styled(Typography).attrs({
     switch ($messageVariant) {
       case 'user':
         return css`
-          background: ${theme.colors.accent.primaryLight};
-          color: ${theme.default.colors.base.white};
+          background: ${themeVar(theme, 'colors.accent.primaryLight')};
+          color: ${themeVar(theme, 'default.colors.base.white')};
         `;
       case 'assistant':
         if ($messageColor !== 'default') {
           return css`
-            color: ${theme.colors.base.white};
-            background: ${theme.colors.grayScale.gray3};
+            color: ${themeVar(theme, 'colors.base.white')};
+            background: ${themeVar(theme, 'colors.grayScale.gray3')};
           `;
         }
 
         return css`
-          background: ${theme.mode === 'light'
-            ? theme.default.colors.base.white
-            : theme.colors.grayScale.gray3};
+          background: ${themeVar(theme, 'tokens.surfaceTertiary')};
         `;
     }
   }}
   &::selection {
-    ${({ $messageColor }) => {
-      switch ($messageColor) {
-        case 'default':
-          return css`
-            background: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.accent.primary
-                : theme.colors.base.white};
-            color: ${({ theme }) =>
-              theme.mode === 'light'
-                ? theme.default.colors.base.white
-                : theme.colors.accent.primary};
-          `;
-        case 'green':
-          return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${({ theme }) => theme.colors.gpt3};
-          `;
-        case 'purple':
-          return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${({ theme }) => theme.colors.gpt4};
-          `;
-        default:
-          return css`
-            background: ${({ theme }) => theme.default.colors.base.white};
-            color: ${$messageColor};
-          `;
-      }
-    }}
+    ${({ $messageColor }) => messageSelectionStyles($messageColor)}
   }
 `;

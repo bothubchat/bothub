@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import {
   autoUpdate,
   flip,
@@ -23,13 +23,13 @@ export const Datepicker = ({
   });
   const theme = useTheme();
 
+  const handleClose = useCallback(() => {
+    setOpen(false);
+  }, []);
+
   return (
     <>
-      {refs && (
-        <div onClick={(e) => e.stopPropagation()}>
-          {children(refs.setReference, setOpen, open)}
-        </div>
-      )}
+      {refs && <div>{children(refs.setReference, setOpen, open)}</div>}
       {open &&
         createPortal(
           <div
@@ -41,9 +41,7 @@ export const Datepicker = ({
           >
             <DatepickerCalendar
               {...datepickerProps}
-              closeFn={() => {
-                setOpen(false);
-              }}
+              closeFn={handleClose}
             />
           </div>,
           document.body,

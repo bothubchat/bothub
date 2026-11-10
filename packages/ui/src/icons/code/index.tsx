@@ -1,6 +1,6 @@
 import { Icon, icon } from '@/ui/components/icon';
 
-export const CodeIcon = icon(({ ...props }) => (
+export const CodeIcon = icon((props) => (
   <Icon
     viewBox="0 0 80 68"
     fill="none"

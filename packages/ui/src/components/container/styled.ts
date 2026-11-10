@@ -12,7 +12,7 @@ export const ContainerStyled = styled.div<ContainerStyledProps>`
       max-width: 1370px;
       margin: auto;
       padding: 0px 40px;
-      @media (max-width: ${theme.mobile.maxWidth}) {
+      @media (max-width: ${theme.tablet.maxWidth}) {
         padding: 0px 30px;
       }
       @media (max-width: ${theme.mobile.maxWidth}) {

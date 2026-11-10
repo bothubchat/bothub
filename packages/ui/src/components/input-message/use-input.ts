@@ -1,41 +1,54 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { isMobileDevice } from './utils';
+import { useEventCallback, useIsomorphicLayoutEffect } from '@/ui/utils';
+import { isMobileDevice, isTouchDevice } from './utils';
+import {
+  autosizeTextarea,
+  supportsFieldSizing,
+  type AutosizeState,
+} from './autosize';
 
 export type MessageSubmitKey = 'enter' | 'ctrlEnter';
 
+export const TEXTAREA_MIN_HEIGHT = 'calc(var(--bothub-scale, 1) * 22px)';
+
+/** Фокус «ничей» или уже в поле: возвращаем его, не отбирая у другого поля */
+const canRestoreFocus = (el: HTMLElement) => {
+  const active = document.activeElement;
+  return active === null || active === document.body || active === el;
+};
+
 interface UseInputProps {
-  initialMessage?: string;
+  message: string;
+  setMessage: (message: string) => unknown;
   disabled?: boolean;
   sendDisabled?: boolean;
   autoFocus?: boolean;
   messageSubmitKey?: MessageSubmitKey;
-  onChange?: (value: string) => unknown;
   onSendMessage?: () => unknown;
   onTextAreaChange?: React.ChangeEventHandler<HTMLTextAreaElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLTextAreaElement>;
   onFocus?: (e: React.FocusEvent<HTMLTextAreaElement, Element>) => unknown;
   onBlur?: (e: React.FocusEvent<HTMLTextAreaElement, Element>) => unknown;
 }
 
 export const useInput = ({
-  initialMessage,
+  message,
+  setMessage,
   disabled,
   sendDisabled,
   autoFocus,
   messageSubmitKey = 'enter',
-  onChange,
   onSendMessage,
   onTextAreaChange,
+  onKeyDown,
   onFocus,
   onBlur,
 }: UseInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [isFocus, setIsFocus] = useState((!disabled && autoFocus) ?? false);
-  const [height, setHeight] = useState('calc(var(--bothub-scale, 1) * 22px)');
-  const [message, setMessage] =
-    typeof initialMessage === 'string'
-      ? [initialMessage, onChange]
-      : useState('');
+  // Сколько раз пытались отправить с клавиатуры, пока отправка недоступна
+  const [sendBlockedCount, setSendBlockedCount] = useState(0);
 
   const handleFocus = useCallback<React.FocusEventHandler<HTMLTextAreaElement>>(
     (event) => {
@@ -63,118 +76,152 @@ export const useInput = ({
     React.ChangeEventHandler<HTMLTextAreaElement>
   >(
     (event) => {
-      setMessage?.(event.target.value);
+      setMessage(event.target.value);
       onTextAreaChange?.(event);
     },
     [setMessage, onTextAreaChange],
   );
 
+  // Был ли фокус в поле, когда его заблокировали: после разблокировки вернём его
+  const restoreFocusRef = useRef(false);
+
   useEffect(() => {
     const textareaEl = textareaRef.current;
-    if (!textareaEl || disabled) return;
+    if (!textareaEl) return;
 
-    const shouldFocus = !disabled && !!autoFocus;
-
-    setIsFocus(shouldFocus);
-
-    if (shouldFocus) {
-      textareaEl.focus();
-    } else if (document.activeElement === textareaEl) {
-      textareaEl.blur();
-    }
-  }, [disabled, autoFocus]);
-
-  useEffect(() => {
-    const textareaEl: HTMLElement | null = textareaRef.current;
-
-    if (textareaEl === null) {
+    if (disabled) {
+      // isFocus — состояние до блокировки: Chrome уже перевёл фокус на body,
+      // Firefox и Safari оставили его на поле
+      if (isFocus) restoreFocusRef.current = true;
       return;
     }
 
-    const insertNewlineAtCursor = () => {
-      const el = textareaRef.current;
-      if (!el) return;
+    const hadFocus = restoreFocusRef.current;
+    restoreFocusRef.current = false;
 
-      const allText = el.value;
-      const currentPos = el.selectionStart ?? 0;
-      const beforeText = allText.slice(0, currentPos);
-      const afterText = allText.slice(currentPos);
+    if (autoFocus) {
+      textareaEl.focus();
+    } else if (isTouchDevice()) {
+      // На телефоне и планшете закрываем клавиатуру, как раньше
+      if (document.activeElement === textareaEl) textareaEl.blur();
+    } else if (hadFocus && canRestoreFocus(textareaEl)) {
+      textareaEl.focus();
+    }
 
-      setMessage?.(`${beforeText}\n${afterText}`);
-      setCursorPosition(el, currentPos + 1);
-    };
+    // Браузер может снять фокус с заблокированного поля без blur.
+    // Тот же setState на маунте даёт лишний рендер при первом вводе
+    const hasFocus = document.activeElement === textareaEl;
+    if (hasFocus !== isFocus) setIsFocus(hasFocus);
+    // isFocus читаем на момент смены disabled, а не следим за ним
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [disabled, autoFocus]);
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      event.stopPropagation();
+  useEffect(() => {
+    if (!sendDisabled && sendBlockedCount !== 0) setSendBlockedCount(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sendDisabled]);
 
-      if (sendDisabled) return;
+  const insertNewlineAtCursor = useCallback(() => {
+    const el = textareaRef.current;
+    if (!el) return;
 
-      if (event.key !== 'Enter') {
+    const allText = el.value;
+    const currentPos = el.selectionStart ?? 0;
+    const beforeText = allText.slice(0, currentPos);
+    const afterText = allText.slice(currentPos);
+
+    setMessage(`${beforeText}\n${afterText}`);
+    setCursorPosition(el, currentPos + 1);
+  }, [setMessage]);
+
+  // Пропс onKeyDown вместо addEventListener: подписка не пересоздаётся на
+  // каждый ввод, а onKeyDown потребителя срабатывает
+  const handleKeyDown = useEventCallback(
+    (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      onKeyDown?.(event);
+
+      // Enter, которым подтверждают ввод через IME, не отправляет сообщение.
+      // Safari к этому моменту уже закончил композицию и отдаёт keyCode 229
+      if (
+        event.defaultPrevented ||
+        event.key !== 'Enter' ||
+        event.nativeEvent.isComposing ||
+        event.keyCode === 229
+      ) {
         return;
       }
 
-      const isMobile = isMobileDevice();
-      if (isMobile) {
-        return;
-      }
-
-      if (event.shiftKey) {
-        return;
-      }
-
-      if (!isFocus) {
+      if (isMobileDevice() || event.shiftKey) {
         return;
       }
 
       const ctrlOrMeta = event.ctrlKey || event.metaKey;
+      const isSubmit = messageSubmitKey === 'enter' ? !ctrlOrMeta : ctrlOrMeta;
 
-      if (messageSubmitKey === 'enter') {
-        if (ctrlOrMeta) {
+      if (!isSubmit) {
+        // Ctrl+Enter / Cmd+Enter в режиме 'enter' — перенос строки,
+        // Enter в режиме 'ctrlEnter' переносит строку сам
+        if (messageSubmitKey === 'enter') {
           event.preventDefault();
+          event.stopPropagation();
           insertNewlineAtCursor();
-          return;
         }
-        event.preventDefault();
-        onSendMessage?.();
-        setHeight('calc(var(--bothub-scale, 1) * 22px)');
         return;
       }
 
-      // messageSubmitKey === 'ctrlEnter'
-      if (ctrlOrMeta) {
-        event.preventDefault();
-        onSendMessage?.();
-        setHeight('calc(var(--bothub-scale, 1) * 22px)');
+      // Останавливаем только обработанные клавиши, остальные всплывают
+      event.preventDefault();
+      event.stopPropagation();
+
+      // Отправка недоступна: не переносим строку, а показываем причину
+      if (sendDisabled) {
+        setSendBlockedCount((count) => count + 1);
+        return;
       }
-    };
 
-    textareaEl.addEventListener('keydown', handleKeyDown);
-    return () => {
-      textareaEl.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isFocus, message, messageSubmitKey, onSendMessage, setMessage]);
+      onSendMessage?.();
+    },
+  );
 
-  useEffect(() => {
+  // Высота поля и текст, для которых она посчитана
+  const autosizedRef = useRef<AutosizeState>({
+    textarea: null,
+    message: '',
+    height: 0,
+  });
+
+  // Где есть field-sizing: content, высоту по тексту считает CSS (styled.tsx).
+  // Иначе — до отрисовки и без второго коммита, при новом тексте или новом
+  // элементе (textarea могла смонтироваться заново)
+  useIsomorphicLayoutEffect(() => {
     const textareaEl = textareaRef.current;
-    if (textareaEl === null) return;
+    const autosized = autosizedRef.current;
 
-    textareaEl.style.height = 'calc(var(--bothub-scale, 1) * 22px)';
-    textareaEl.style.height = `${textareaEl.scrollHeight}px`;
+    if (
+      textareaEl === null ||
+      supportsFieldSizing() ||
+      (autosized.textarea === textareaEl && autosized.message === message)
+    ) {
+      return;
+    }
 
-    setHeight(`${textareaEl.scrollHeight}px`);
-  }, [message, autoFocus]);
+    autosizedRef.current = autosizeTextarea(
+      textareaEl,
+      message,
+      autosized,
+      TEXTAREA_MIN_HEIGHT,
+    );
+  });
 
   return {
     textareaRef,
     isFocus,
-    height,
-    message,
-    setHeight,
-    setMessage,
+    sendBlockedCount,
     handleFocus,
     handleBlur,
     handleClick,
     handleChange,
+    handleKeyDown,
   };
 };
 

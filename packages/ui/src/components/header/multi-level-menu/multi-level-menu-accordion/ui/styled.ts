@@ -2,8 +2,8 @@ import { styled } from 'styled-components';
 import { animated, AnimatedProps } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon } from '@/ui/icons';
-import { colorToRgba } from '@/ui/utils';
 import { MultiLevelMenuSecondLevelArrowRight45 } from '../../styled';
+import { themeVar } from '@/ui/theme';
 
 export const MultiLevelMenuFirstLevelWrapper: React.FC<
   AnimatedProps<React.ComponentProps<'div'>> & { $open: boolean }
@@ -18,9 +18,9 @@ export const MultiLevelMenuFirstLevelWrapper: React.FC<
     padding: 16px;
     max-width: 1169px;
     width: 1169px;
-    background-color: ${({ theme }) => theme.colors.base.black};
+    background-color: ${({ theme }) => themeVar(theme, 'colors.base.black')};
     border: 1px solid;
-    border-color: ${({ theme }) => theme.colors.grayScale.gray2};
+    border-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   }
 `;
 export const MultiLevelMenuFirstLevelUl = styled.ul`
@@ -58,7 +58,9 @@ export const MultiLevelMenuTitle = styled(Typography).attrs({
   transition: color 0.2s ease-in-out;
   @media (min-width: ${({ theme }) => theme.tablet.maxWidth}) {
     color: ${({ theme, $open }) =>
-      $open ? theme.colors.accent.primaryLight : theme.colors.base.white};
+      $open
+        ? themeVar(theme, 'colors.accent.primaryLight')
+        : themeVar(theme, 'colors.base.white')};
   }
 `;
 
@@ -104,7 +106,7 @@ export const MultiLevelMenuSecondLevelLi = styled.li<{
   padding-top: 8px;
   padding-bottom: 8px;
   border-bottom: 1px solid;
-  border-color: ${({ theme }) => theme.colors.grayScale.gray2};
+  border-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   &:last-child {
     border-bottom: none;
   }
@@ -125,10 +127,10 @@ export const MultiLevelMenuSecondLevelLi = styled.li<{
   &:hover {
     ${MultiLevelMenuSecondLevelLiHover} {
       background: ${({ theme }) =>
-        colorToRgba(theme.colors.accent.primary, 0.2)};
+        themeVar(theme, 'tokens.accentPrimaryAlpha20')};
     }
     ${MultiLevelMenuSecondLevelArrowRight45} {
-      background: ${({ theme }) => theme.colors.accent.primary};
+      background: ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
     }
   }
 `;
@@ -182,5 +184,5 @@ export const MultiLevelMenuSecondLevelTitle = styled(Typography).attrs({
 export const MultiLevelMenuSecondLevelSubTitle = styled(
   MultiLevelMenuSecondLevelTitle,
 )`
-  color: ${({ theme }) => theme.colors.grayScale.gray6};
+  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray6')};
 `;

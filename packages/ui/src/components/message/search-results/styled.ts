@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { TypographyStyled } from '@/ui/components/typography/styled';
+import { themeVar } from '@/ui/theme';
 
 export const SearchResultsList = styled.ul`
   width: 100%;
@@ -28,12 +29,10 @@ export const SearchResultsItemStyled = styled.li`
 
   &:hover {
     background-color: ${({ theme }) =>
-      theme.mode === 'light'
-        ? 'rgba(71, 133, 255, 0.2)'
-        : 'rgba(28, 100, 242, 0.2)'};
+      themeVar(theme, 'tokens.searchResultHoverBackground')};
 
     & > div[data-source-content] ${TypographyStyled} {
-      color: ${({ theme }) => theme.colors.base.white};
+      color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
     }
   }
 `;
@@ -58,7 +57,7 @@ export const SearchResultsItemHeader = styled.div`
 
 export const SearchResultsItemName = styled(Typography)`
   &[data-source-name] {
-    color: ${({ theme }) => theme.colors.base.white};
+    color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
   white-space: nowrap;
   overflow: hidden;
@@ -74,7 +73,7 @@ export const SearchResultsItemNumber = styled.div`
   min-width: 24px;
   height: 22px;
   border-radius: 100px;
-  background-color: ${({ theme }) => theme.colors.grayScale.gray1};
+  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
 
   & > span[data-source-number] {
     color: #fff;
@@ -91,7 +90,7 @@ export const SearchResultsItemDownload = styled.div`
 
 export const SearchResultsItemTitle = styled(Typography)`
   &[data-source-title] {
-    color: ${({ theme }) => theme.colors.base.white};
+    color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
   }
 `;
 

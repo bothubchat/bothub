@@ -3,4 +3,7 @@ export type PaginatorProps = {
   onChange(page: number): void;
   lastPage: number;
   arrowStyles?: 'default' | 'caret';
+  'aria-label'?: string;
+  prevPageAriaLabel?: string;
+  nextPageAriaLabel?: string;
 };

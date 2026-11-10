@@ -10,6 +10,7 @@ import { ArrowNarrowLeftIcon } from '@/ui/icons/arrow-narrow-left';
 import { ArrowNarrowRightIcon } from '@/ui/icons/arrow-narrow-right';
 import { adaptive } from '@/ui/adaptive';
 import { ZoommableImage } from './zoommable-image';
+import { themeVar } from '@/ui/theme';
 
 export const ImageFullScreenStyled = styled.div`
   display: flex;
@@ -55,8 +56,9 @@ export const ImageFullScreenTopBlock = styled.div`
   display: flex;
   flex-shrink: 0;
   width: 100%;
-  background: ${({ theme }) => theme.colors.grayScale.gray4};
-  border-bottom: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
+  border-bottom: 1px solid
+    ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   border-radius: 17px;
   overflow: hidden;
   padding: 16px 24px;
@@ -220,7 +222,7 @@ export const ImageFullScreenPreview = styled.div`
   flex-shrink: 0;
   border-radius: 14px;
   overflow: hidden;
-  background: ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   margin-top: 20px;
   pointer-events: auto;
   ${adaptive({
@@ -237,6 +239,12 @@ export const ImageFullScreenPreview = styled.div`
 export const ImageFullScreenPreviewImages = styled.div`
   display: flex;
   gap: 10px;
+`;
+
+/** Positions the hidden lazy image over the skeleton while it loads. */
+export const ImageFullScreenPreviewImageWrapper = styled.span`
+  display: inline-flex;
+  position: relative;
 `;
 
 export interface ImageFullScreenPreviewImageProps {

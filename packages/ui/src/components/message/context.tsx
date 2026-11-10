@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import {
   MessageCodeCopyEventHandler,
   MessageColor,
@@ -22,9 +22,17 @@ export const MessageContext = React.createContext<MessageContextValue>({
 
 export const MessageProvider: React.FC<
   MessageContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <MessageContext.Provider value={value}>{children}</MessageContext.Provider>
-);
+> = ({ children, variant, color, typing, onCopy, onCodeCopy }) => {
+  // Every markdown node reads this context, so a new value would rerender them all.
+  const value = useMemo<MessageContextValue>(
+    () => ({ variant, color, typing, onCopy, onCodeCopy }),
+    [variant, color, typing, onCopy, onCodeCopy],
+  );
+
+  return (
+    <MessageContext.Provider value={value}>{children}</MessageContext.Provider>
+  );
+};
 
 export const useMessage = () => useContext(MessageContext);
 

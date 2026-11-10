@@ -3,6 +3,7 @@ import { animated } from '@react-spring/web';
 import { Button } from '@/ui/components/button';
 import { adaptive } from '@/ui/adaptive';
 import { Scrollbar } from '../scrollbar';
+import { themeVar } from '@/ui/theme';
 
 export const MenuDropdownStyled = styled.div``;
 
@@ -20,8 +21,8 @@ export const MenuDropdownBlock = styled(animated.div)`
   z-index: ${({ theme }) => theme.zIndex.menu};
   top: 60px;
   left: 16px;
-  background: ${({ theme }) => theme.colors.base.black};
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  background: ${({ theme }) => themeVar(theme, 'colors.base.black')};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   border-radius: 12px;
   overflow: hidden;
   padding: 16px;

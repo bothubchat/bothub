@@ -1,12 +1,13 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
+import { themeVar } from '@/ui/theme';
 
 export const BreadcrumbsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 4px;
-  color: ${({ theme }) => theme.default.colors.grayScale.gray1};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.grayScale.gray1')};
 `;
 
 export const BreadcrumbsItem = styled(Typography).attrs({
@@ -20,7 +21,7 @@ export const BreadcrumbsItem = styled(Typography).attrs({
       cursor: pointer;
       transition: 0.25s color;
       &:hover {
-        color: ${theme.colors.base.white};
+        color: ${themeVar(theme, 'colors.base.white')};
       }
     `};
 `;

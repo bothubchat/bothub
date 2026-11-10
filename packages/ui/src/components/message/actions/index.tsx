@@ -1,4 +1,4 @@
-import {
+import React, {
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -35,7 +35,7 @@ import { ModalOption } from './types';
 
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
-import { colorToRgba } from '@/ui/utils';
+import { colorToRgba, useOnClickOutside } from '@/ui/utils';
 import { MoneyPlusIcon, ShieldIcon } from '@/ui/icons';
 
 const MENU_OFFSET = 36;
@@ -136,6 +136,7 @@ export const MessageActions = ({
   const timeoutIdRef = useRef<number | null>(null);
   const messageActionsRef = useRef<HTMLDivElement | null>(null);
   const messageActionsMenuRef = useRef<HTMLDivElement | null>(null);
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const modalRef = useRef<HTMLDivElement | null>(null);
 
@@ -274,16 +275,32 @@ export const MessageActions = ({
     setMenuShown(true);
   }, [calculateInversion]);
 
-  const handleButtonHoverIn = useCallback(() => {
-    handleMenuOpen();
-  }, [handleMenuOpen]);
-
   const handleButtonHoverOut = useCallback(() => {
     timeoutIdRef.current = window.setTimeout(() => {
       setMenuShown(false);
       timeoutIdRef.current = null;
     }, 300);
   }, []);
+
+  // Only a mouse opens the menu on hover: on touch the hover would open it
+  // right before the click toggles it closed.
+  const handleButtonPointerEnter = useCallback(
+    (event: React.PointerEvent<HTMLButtonElement>) => {
+      if (event.pointerType === 'mouse') {
+        handleMenuOpen();
+      }
+    },
+    [handleMenuOpen],
+  );
+
+  const handleButtonPointerLeave = useCallback(
+    (event: React.PointerEvent<HTMLButtonElement>) => {
+      if (event.pointerType === 'mouse') {
+        handleButtonHoverOut();
+      }
+    },
+    [handleButtonHoverOut],
+  );
 
   const handleButtonClick = useCallback(() => {
     if (menuShown) {
@@ -316,7 +333,7 @@ export const MessageActions = ({
       }
       setMenuShown(false);
     },
-    [id, message, onDelete, onResend, onEdit, onUpdate],
+    [id, message, variant, onDelete, onResend, onEdit, onUpdate],
   );
 
   const handleTgCopy = useCallback(() => {
@@ -333,6 +350,35 @@ export const MessageActions = ({
     onReport?.({ id, message });
     setMenuShown(false);
   }, [id, message, onReport]);
+
+  const handleMenuBlur = useCallback(
+    (event: React.FocusEvent<HTMLDivElement>) => {
+      // Focus moving to an option must not close the menu before the click.
+      if (!event.currentTarget.contains(event.relatedTarget)) {
+        setMenuShown(false);
+      }
+    },
+    [],
+  );
+
+  const handleMenuKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === 'Escape' && menuShown) {
+        setMenuShown(false);
+        menuButtonRef.current?.focus();
+      }
+    },
+    [menuShown],
+  );
+
+  // Blur doesn't close the menu where buttons don't take focus on click (Safari).
+  useOnClickOutside(
+    messageActionsMenuRef,
+    () => {
+      setMenuShown(false);
+    },
+    menuShown,
+  );
 
   const modalTransition = useTransition(menuShown, {
     from: {
@@ -396,20 +442,16 @@ export const MessageActions = ({
           {modalEnabled && (
             <S.MessageActionsMenuStyled
               ref={messageActionsMenuRef}
-              onBlur={() => {
-                setMenuShown(false);
-              }}
+              onBlur={handleMenuBlur}
+              onKeyDown={handleMenuKeyDown}
             >
               <ActionButton
+                ref={menuButtonRef}
                 tooltipLabel={menuAriaLabel}
                 aria-expanded={menuShown}
                 aria-haspopup="menu"
-                onMouseEnter={
-                  'ontouchstart' in window ? undefined : handleButtonHoverIn
-                }
-                onMouseLeave={
-                  'ontouchstart' in window ? undefined : handleButtonHoverOut
-                }
+                onPointerEnter={handleButtonPointerEnter}
+                onPointerLeave={handleButtonPointerLeave}
                 onClick={handleButtonClick}
               >
                 <MenuDotIcon size={18} />
@@ -421,6 +463,7 @@ export const MessageActions = ({
                       style={style}
                       key="message-actions-modal"
                       ref={modalRef}
+                      role="menu"
                       onMouseEnter={handleMenuOpen}
                       onMouseLeave={handleButtonHoverOut}
                       $variant={variant}

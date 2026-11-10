@@ -7,7 +7,11 @@ export const MenuOption = ({
   children: React.ReactNode;
   onClick?: () => void;
 }) => (
-  <S.MessageActionsMenuModalOption onClick={onClick}>
+  <S.MessageActionsMenuModalOption
+    type="button"
+    role="menuitem"
+    onClick={onClick}
+  >
     {children}
   </S.MessageActionsMenuModalOption>
 );

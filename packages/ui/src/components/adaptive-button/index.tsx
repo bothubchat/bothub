@@ -19,6 +19,8 @@ export const AdaptiveButton: React.FC<AdaptiveButtonProps> = ({
     {...tooltip}
   >
     <AdaptiveButtonStyled
+      variant={variant}
+      size={size}
       $variant={variant}
       $size={size}
       {...props}

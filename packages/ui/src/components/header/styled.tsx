@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { Container } from '../container';
 import { HeaderVariant } from './types';
 import { adaptive } from '@/ui/adaptive';
+import { themeVar } from '@/ui/theme';
 
 export const HeaderOffset = styled.div`
   display: flex;
@@ -89,7 +90,7 @@ export const HeaderContent = styled.div<HeaderContentProps>`
     switch ($variant) {
       case 'main':
         return css`
-          border-bottom: 1px solid ${theme.colors.grayScale.gray3};
+          border-bottom: 1px solid ${themeVar(theme, 'colors.grayScale.gray3')};
           backdrop-filter: blur(9px);
           -webkit-backdrop-filter: blur(9px);
           background-color: rgba(18, 24, 37, 0.4);
@@ -113,7 +114,7 @@ export const HeaderContent = styled.div<HeaderContentProps>`
 
         return css`
           transition: background-color 0.3s;
-          background-color: ${theme.colors.grayScale.gray4};
+          background-color: ${themeVar(theme, 'colors.grayScale.gray4')};
           ${adaptiveStyle}
         `;
       }

@@ -2,11 +2,12 @@ import { css, styled } from 'styled-components';
 import { animated } from '@react-spring/web';
 import { Typography } from '@/ui/components/typography';
 import { ArrowDownIcon, ArrowNarrowDownIcon } from '@/ui/icons';
-import { colorToRgba } from '@/ui/utils';
+import { themeVar } from '@/ui/theme';
 
 export const HeaderMenuNavStyled = styled.div`
   padding-left: 20px;
-  border-left: 1px solid ${({ theme }) => theme.colors.grayScale.gray3};
+  border-left: 1px solid
+    ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   height: 34px;
   display: flex;
   align-items: center;
@@ -59,8 +60,8 @@ export const HeaderMenuNavLabel = styled(Typography).attrs<{
 
 export const HeaderMenuNavContent = styled.div<{ $open?: boolean }>`
   display: ${({ $open }) => ($open ? 'flex' : 'none')};
-  background: ${({ theme }) => theme.colors.base.black};
-  border: 1px solid ${({ theme }) => theme.colors.grayScale.gray2};
+  background: ${({ theme }) => themeVar(theme, 'colors.base.black')};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   border-radius: 17px;
   position: absolute;
   top: 84px;
@@ -137,8 +138,8 @@ export const HeaderMenuNavMainLink = styled.a<{
   ${({ $active, theme }) =>
     $active &&
     `
-    outline: 1px solid ${theme.colors.grayScale.gray3};
-    background: ${theme.colors.gradient.elite20};
+    outline: 1px solid ${themeVar(theme, 'colors.grayScale.gray3')};
+    background: ${themeVar(theme, 'colors.gradient.elite20')};
   `}
   @media (max-width: ${({ theme }) => theme.tablet.maxWidth}) {
     width: 100%;
@@ -171,10 +172,10 @@ export const HeaderMenuNavLink = styled.a<{
   transition: background 0.2s ease-in-out;
   ${({ theme }) => css`
     &:hover {
-      outline: 1px solid ${theme.colors.grayScale.gray3};
-      background: ${colorToRgba(theme.colors.accent.primary, 0.2)};
+      outline: 1px solid ${themeVar(theme, 'colors.grayScale.gray3')};
+      background: ${themeVar(theme, 'tokens.accentPrimaryAlpha20')};
       ${`& ${HeaderMenuNavItemBgIcon} {
-          background: ${theme.colors.accent.primary};
+          background: ${themeVar(theme, 'colors.accent.primary')};
         }`}
     }
   `}

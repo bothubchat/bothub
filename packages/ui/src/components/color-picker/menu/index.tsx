@@ -23,6 +23,7 @@ import { hexToRgb } from '@/ui/utils/colors/hexToRgb';
 import { hsvToRgb } from '@/ui/utils/colors/hsvToRgb';
 import { rgbToHex } from '@/ui/utils/colors/rgbToHex';
 import { rgbToHsv } from '@/ui/utils/colors/rgbToHsv';
+import { useEventCallback } from '@/ui/utils/useEventCallback';
 
 export type ColorPickerMenuChangeEventHandler = (hex: string) => unknown;
 export type ColorPickerMenuEventHandler = () => unknown;
@@ -34,6 +35,39 @@ export interface ColorPickerMenuProps {
   onClose?: ColorPickerMenuEventHandler;
 }
 
+// [hue 0-360 deg, saturation 0-100 %, brightness 0-100 %]
+type Hsv = [number, number, number];
+
+const defaultHsv: Hsv = [180, 100, 100];
+
+const hexToHsv = (hex: string): Hsv => {
+  try {
+    return rgbToHsv(hexToRgb(hex));
+  } catch {
+    return defaultHsv;
+  }
+};
+
+const isSameHsv = (a: Hsv, b: Hsv) =>
+  a[0] === b[0] && a[1] === b[1] && a[2] === b[2];
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.max(min, Math.min(max, value));
+
+type GetDraggedHsv = (x: number, y: number, rect: DOMRect, prev: Hsv) => Hsv;
+
+const getAreaHsv: GetDraggedHsv = (x, y, rect, [hue]) => [
+  hue,
+  clamp(Math.round((x / rect.width) * 100), 0, 100),
+  clamp(Math.round(100 - (y / rect.height) * 100), 0, 100),
+];
+
+const getHueHsv: GetDraggedHsv = (x, _y, rect, [, saturation, brightness]) => [
+  clamp(Math.round((x / rect.width) * 360), 0, 359),
+  saturation,
+  brightness,
+];
+
 export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
   color,
   parentRef,
@@ -41,13 +75,16 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
   onClose,
 }) => {
   const theme = useTheme();
+  const initialColor = color ?? theme.colors.accent.primary;
 
-  const [hue, setHue] = useState<number>(180); // [0 - 360] deg
-  const [saturation, setSaturation] = useState<number>(100); // [0 - 100] %
-  const [brightness, setBrightness] = useState<number>(100); // [0 - 100] %
-  const [hexColor, setHexColor] = useState<string>(
-    (color ?? theme.colors.accent.primary).toUpperCase(),
+  // Derived from the passed color without reporting it back: converting it
+  // to HSV and back changes it slightly (#1c64f2 -> #1C63F2)
+  const [hsv, setHsv] = useState<Hsv>(() => hexToHsv(initialColor));
+  const [hexColor, setHexColor] = useState<string>(() =>
+    initialColor.toUpperCase(),
   );
+  const hsvRef = useRef(hsv);
+  const stopDragRef = useRef<(() => void) | null>(null);
 
   const { refs, floatingStyles } = useFloating({
     placement: 'right-end',
@@ -59,97 +96,98 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
     ],
   });
 
-  const initial = useRef<boolean>(true);
+  const handleChange = useEventCallback(onChange);
+  const handleClose = useEventCallback(onClose);
 
-  const hueSliderRef = useRef<HTMLDivElement>(null);
-  const colorAreaRef = useRef<HTMLDivElement>(null);
-
-  const handleHueChange = useCallback((e: MouseEvent) => {
-    if (!hueSliderRef.current) return;
-
-    const rect = hueSliderRef.current.getBoundingClientRect();
-    const { width } = rect;
-    const x = e.clientX - rect.left;
-
-    const newHue = Math.max(0, Math.min(359, Math.round((x / width) * 360)));
-    setHue(newHue);
-  }, []);
-
-  const handleColorChange = useCallback((e: MouseEvent) => {
-    if (!colorAreaRef.current) return;
-
-    const rect = colorAreaRef.current.getBoundingClientRect();
-    const { width, height } = rect;
-
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-
-    const newSaturation = Math.max(
-      0,
-      Math.min(100, Math.round((x / width) * 100)),
-    );
-    const newBrightness = Math.max(
-      0,
-      Math.min(100, Math.round(100 - (y / height) * 100)),
-    );
-
-    setSaturation(newSaturation);
-    setBrightness(newBrightness);
-  }, []);
-
-  const handleMouseDown = useCallback(
-    (e: MouseEvent, callback: (e: MouseEvent) => unknown) => {
-      callback(e);
-
-      const handleMouseMove = (e: MouseEvent) => {
-        callback(e);
-      };
-
-      const handleMouseUp = () => {
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-      };
-
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-    },
-    [],
-  );
-
-  const handleOutsideClick = useCallback(
-    (e: MouseEvent) => {
-      const target = e.target as Node;
-
-      if (
-        !initial.current &&
-        !parentRef?.current?.contains(target) &&
-        !refs.floating.current?.contains(target)
-      ) {
-        onClose?.();
+  const changeHsv = useCallback(
+    (next: Hsv) => {
+      if (isSameHsv(next, hsvRef.current)) {
+        return;
       }
+
+      const hex = rgbToHex(hsvToRgb(next));
+      hsvRef.current = next;
+      setHsv(next);
+      setHexColor(hex);
+      handleChange(hex);
     },
-    [onClose, parentRef, refs.floating],
+    [handleChange],
   );
+
+  const startDrag = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>, getHsv: GetDraggedHsv) => {
+      stopDragRef.current?.();
+
+      // Measured once per drag instead of on every mousemove
+      const rect = event.currentTarget.getBoundingClientRect();
+      const update = (clientX: number, clientY: number) => {
+        changeHsv(
+          getHsv(clientX - rect.left, clientY - rect.top, rect, hsvRef.current),
+        );
+      };
+
+      let frameId = 0;
+      let lastMove: MouseEvent | null = null;
+      const listeners = new AbortController();
+
+      const stopDrag = () => {
+        cancelAnimationFrame(frameId);
+        listeners.abort();
+        stopDragRef.current = null;
+      };
+
+      // At most one update per frame
+      const handleMouseMove = (moveEvent: MouseEvent) => {
+        lastMove = moveEvent;
+        if (frameId) {
+          return;
+        }
+
+        frameId = requestAnimationFrame(() => {
+          frameId = 0;
+          if (lastMove) {
+            update(lastMove.clientX, lastMove.clientY);
+          }
+        });
+      };
+
+      const handleMouseUp = (upEvent: MouseEvent) => {
+        update(upEvent.clientX, upEvent.clientY);
+        stopDrag();
+      };
+
+      update(event.clientX, event.clientY);
+      document.addEventListener('mousemove', handleMouseMove, {
+        signal: listeners.signal,
+      });
+      document.addEventListener('mouseup', handleMouseUp, {
+        signal: listeners.signal,
+      });
+      stopDragRef.current = stopDrag;
+    },
+    [changeHsv],
+  );
+
+  // Don't leave document listeners behind when closed in the middle of a drag
+  useEffect(() => () => stopDragRef.current?.(), []);
 
   const handleColorInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const val = e.target.value.toUpperCase();
-      if (/^#[\dABCDEF]{0,6}$/.test(val)) {
-        if (val.length === 7) {
-          const rgb = hexToRgb(val);
-          const [h, s, v] = rgbToHsv(rgb);
+      if (!/^#[\dABCDEF]{0,6}$/.test(val)) {
+        return;
+      }
 
-          setHue(h);
-          setSaturation(s);
-          setBrightness(v);
+      setHexColor(val);
 
-          return;
-        }
-
-        setHexColor(val);
+      if (val.length === 7) {
+        const next = hexToHsv(val);
+        hsvRef.current = next;
+        setHsv(next);
+        handleChange(val);
       }
     },
-    [],
+    [handleChange],
   );
 
   const handleFocusInput = useCallback(() => {
@@ -161,41 +199,25 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
   }, [parentRef, refs]);
 
   useEffect(() => {
-    if (!initial.current || !color) return;
+    const handleOutsideClick = (e: MouseEvent) => {
+      const target = e.target as Node;
 
-    const rgb = hexToRgb(color);
-    const [h, s, v] = rgbToHsv(rgb);
+      if (
+        !parentRef?.current?.contains(target) &&
+        !refs.floating.current?.contains(target)
+      ) {
+        handleClose();
+      }
+    };
 
-    setHue(h);
-    setSaturation(s);
-    setBrightness(v);
-  }, []);
-
-  useEffect(() => {
-    if (initial.current) {
-      initial.current = false;
-      return;
-    }
-
-    const rgb = hsvToRgb([hue, saturation, brightness]);
-
-    const hex = rgbToHex(rgb);
-
-    setHexColor(hex);
-    onChange?.(hex);
-  }, [hue, saturation, brightness]);
-
-  useEffect(() => {
     window.addEventListener('click', handleOutsideClick);
     return () => {
       window.removeEventListener('click', handleOutsideClick);
     };
-  }, []);
+  }, [handleClose, parentRef, refs.floating]);
 
+  const [hue, saturation, brightness] = hsv;
   const hueColor = `hsl(${hue}, 100%, 50%)`;
-  const huePosition = `${(hue / 360) * 100}%`;
-  const colorPositionX = `${saturation}%`;
-  const colorPositionY = `${100 - brightness}%`;
 
   return createPortal(
     <ColorPickerMenuStyled
@@ -214,33 +236,31 @@ export const ColorPickerMenu: React.FC<ColorPickerMenuProps> = ({
         <ColorPickerMenuCloseButton onClick={onClose} />
       </ColorPickerMenuHeader>
       <ColorPickerMenuArea
-        ref={colorAreaRef}
         style={{
           background: `
-          linear-gradient(to right, white, ${hueColor}), 
+          linear-gradient(to right, white, ${hueColor}),
           linear-gradient(to top, black, transparent)
         `,
         }}
-        // @ts-ignore
-        onMouseDown={(e) => handleMouseDown(e, handleColorChange)}
+        onMouseDown={(e) => startDrag(e, getAreaHsv)}
       >
         <ColorPickerMenuSelector
-          style={{
-            top: colorPositionY,
-            left: colorPositionX,
-          }}
+          style={
+            {
+              '--selector-x': saturation,
+              '--selector-y': 100 - brightness,
+            } as React.CSSProperties
+          }
         />
       </ColorPickerMenuArea>
-      <ColorPickerMenuHueSlider
-        ref={hueSliderRef}
-        // @ts-ignore
-        onMouseDown={(e) => handleMouseDown(e, handleHueChange)}
-      >
+      <ColorPickerMenuHueSlider onMouseDown={(e) => startDrag(e, getHueHsv)}>
         <ColorPickerMenuSelector
-          style={{
-            top: '50%',
-            left: huePosition,
-          }}
+          style={
+            {
+              '--selector-x': (hue / 360) * 100,
+              '--selector-y': 50,
+            } as React.CSSProperties
+          }
         />
       </ColorPickerMenuHueSlider>
     </ColorPickerMenuStyled>,

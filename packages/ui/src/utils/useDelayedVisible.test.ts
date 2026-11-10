@@ -1,5 +1,5 @@
-import { describe, expect, test } from 'vitest';
-import { renderHook, waitFor } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { act, renderHook } from '@testing-library/react';
 import {
   useDelayedVisible,
   UseDelayedVisibleDefaultProps,
@@ -15,86 +15,92 @@ const useHook = ({
   showDelay?: number;
 }) => useDelayedVisible(visible, showDelay, hideDelay);
 
+const { showDelay, hideDelay } = UseDelayedVisibleDefaultProps;
+
+// Fake timers: real ones made the delays flaky under a loaded test run.
 describe('useDelayedVisible', () => {
-  test.concurrent('should have correct default values', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  test('starts visible', () => {
     const { result } = renderHook(useHook, {
-      initialProps: {
-        visible: true,
-      },
+      initialProps: { visible: true },
     });
+
     expect(result.current.delayedVisible).toBe(true);
     expect(result.current.mounted).toBe(true);
   });
 
-  test.concurrent('should have correct default values', () => {
+  test('starts hidden', () => {
     const { result } = renderHook(useHook, {
-      initialProps: {
-        visible: false,
-      },
+      initialProps: { visible: false },
     });
+
     expect(result.current.delayedVisible).toBe(false);
     expect(result.current.mounted).toBe(false);
   });
 
-  test.concurrent('should become visible only after showDelay', async () => {
+  test('becomes visible only after showDelay', () => {
     const { result, rerender } = renderHook(useHook, {
-      initialProps: {
-        visible: false,
-      },
+      initialProps: { visible: false },
     });
-    expect(result.current.delayedVisible).toBe(false);
-    expect(result.current.mounted).toBe(false);
 
     rerender({ visible: true });
+    act(() => {
+      vi.advanceTimersByTime(showDelay - 1);
+    });
 
-    await waitFor(
-      () => {
-        expect(result.current.delayedVisible).toBe(false);
-        expect(result.current.mounted).toBe(true);
-      },
-      {
-        timeout: UseDelayedVisibleDefaultProps.showDelay / 2,
-      },
-    );
+    expect(result.current.delayedVisible).toBe(false);
+    expect(result.current.mounted).toBe(true);
 
-    await waitFor(
-      () => {
-        expect(result.current.delayedVisible).toBe(true);
-        expect(result.current.mounted).toBe(true);
-      },
-      {
-        timeout: UseDelayedVisibleDefaultProps.showDelay + 15,
-      },
-    );
+    act(() => {
+      vi.advanceTimersByTime(1);
+    });
+
+    expect(result.current.delayedVisible).toBe(true);
+    expect(result.current.mounted).toBe(true);
   });
 
-  test.concurrent('should hide after only hideDelay', async () => {
+  test('hides only after hideDelay', () => {
     const { result, rerender } = renderHook(useHook, {
-      initialProps: {
-        visible: true,
-      },
+      initialProps: { visible: true },
     });
+
+    rerender({ visible: false });
+    act(() => {
+      vi.advanceTimersByTime(hideDelay - 1);
+    });
+
     expect(result.current.delayedVisible).toBe(true);
     expect(result.current.mounted).toBe(true);
 
-    rerender({ visible: false });
+    act(() => {
+      vi.advanceTimersByTime(1);
+    });
 
-    await waitFor(
-      () => {
-        expect(result.current.delayedVisible).toBe(true);
-        expect(result.current.mounted).toBe(true);
-      },
-      {
-        timeout: UseDelayedVisibleDefaultProps.hideDelay / 2,
-      },
-    );
+    expect(result.current.delayedVisible).toBe(false);
+    expect(result.current.mounted).toBe(false);
+  });
 
-    await waitFor(
-      () => {
-        expect(result.current.delayedVisible).toBe(false);
-        expect(result.current.mounted).toBe(false);
-      },
-      { timeout: UseDelayedVisibleDefaultProps.hideDelay + 15 },
-    );
+  test('uses a hideDelay changed while hiding', () => {
+    const { result, rerender } = renderHook(useHook, {
+      initialProps: { visible: true, hideDelay: 1000 },
+    });
+
+    rerender({ visible: false, hideDelay: 1000 });
+    act(() => {
+      vi.advanceTimersByTime(100);
+    });
+    rerender({ visible: false, hideDelay: 50 });
+    act(() => {
+      vi.advanceTimersByTime(50);
+    });
+
+    expect(result.current.delayedVisible).toBe(false);
   });
 });

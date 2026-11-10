@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 export interface SelectFieldContextValue {
   selectRef: React.RefObject<HTMLElement | null>;
@@ -12,11 +12,18 @@ export const SelectFieldContext = React.createContext<SelectFieldContextValue>({
 
 export const SelectFieldProvider: React.FC<
   SelectFieldContextValue & React.PropsWithChildren
-> = ({ children, ...value }) => (
-  <SelectFieldContext.Provider value={value}>
-    {children}
-  </SelectFieldContext.Provider>
-);
+> = ({ children, selectRef, handleSelectClick }) => {
+  const value = useMemo(
+    () => ({ selectRef, handleSelectClick }),
+    [selectRef, handleSelectClick],
+  );
+
+  return (
+    <SelectFieldContext.Provider value={value}>
+      {children}
+    </SelectFieldContext.Provider>
+  );
+};
 
 export const SelectFieldConsumer = SelectFieldContext.Consumer;
 

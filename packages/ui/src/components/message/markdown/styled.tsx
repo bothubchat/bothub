@@ -22,13 +22,26 @@ import {
   MessageMultilineCodeContentContainer,
   MessageMultilineCodeLastLine,
 } from '../components/code/multiline/content/styled';
+import { themeVar } from '@/ui/theme';
+import { markdownClassNames } from './class-names';
+import { MarkdownNodeStylesProps, markdownNodeStyles } from './node-styles';
 
-export const MessageMarkdownStyled = styled.div`
+const node = (name: keyof typeof markdownClassNames) =>
+  `.${markdownClassNames[name]}`;
+
+/*
+ * Holds the styles of the markdown elements. Defined before
+ * MessageMarkdownLine, so its rules come first in the stylesheet: the
+ * first/last child margins of the line win over the element margins, as
+ * they did over the classes of the styled components.
+ */
+export const MessageMarkdownStyled = styled.div<MarkdownNodeStylesProps>`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 10px;
   width: 100%;
+  ${markdownNodeStyles}
 `;
 
 export interface MessageMarkdownStyledProps {
@@ -36,16 +49,15 @@ export interface MessageMarkdownStyledProps {
   $color: MessageColor;
 }
 
+/*
+ * The styled components stay in the selectors: `componentsOverride` (the
+ * reasoning block) still renders them.
+ */
 export const MessageMarkdownLine = React.memo(
   styled.div<MessageMarkdownStyledProps>`
     display: block;
     width: 100%;
-    color: ${({ theme }) => {
-      if (theme.scheme === 'custom') {
-        return theme.colors.custom.message.assistant.text;
-      }
-      return theme.mode === 'dark' ? theme.colors.base.white : '#a1a19a';
-    }};
+    color: ${({ theme }) => themeVar(theme, 'tokens.markdownText')};
 
     font-weight: 400;
     font-size: 16px;
@@ -56,12 +68,12 @@ export const MessageMarkdownLine = React.memo(
     > *:last-child {
       margin-bottom: 0px;
     }
-    > ${MessagePre}:first-child {
+    > ${MessagePre}:first-child, > ${node('pre')}:first-child {
       > ${MessageMultilineCodeStyled} {
         margin-top: 0px;
       }
     }
-    > ${MessagePre}:last-child {
+    > ${MessagePre}:last-child, > ${node('pre')}:last-child {
       > ${MessageMultilineCodeStyled} {
         margin-bottom: 0px;
       }
@@ -72,17 +84,32 @@ export const MessageMarkdownLine = React.memo(
         &:last-child
           > ${MessageParagraphStyled}:last-child,
           &:last-child
+          > ${node('paragraph')}:last-child,
+          &:last-child
           > ${MessageBoldStyled}:last-child,
+          &:last-child
+          > ${node('bold')}:last-child,
           &:last-child
           > ${MessageItalicStyled}:last-child,
           &:last-child
+          > ${node('italic')}:last-child,
+          &:last-child
           > ${MessageStrikeStyled}:last-child,
           &:last-child
+          > ${node('strike')}:last-child,
+          &:last-child
           > ${MessageBlockquoteStyled}:last-child,
+          &:last-child
+          > ${node('blockquote')}:last-child,
           &:last-child
           > ${MessageInlineCodeStyled}:last-child,
           &:last-child
           > ${MessagePre}:last-child
+          > ${MessageMultilineCodeStyled}:last-child
+          ${MessageMultilineCodeContentContainer}
+          ${MessageMultilineCodeLastLine}:last-child,
+          &:last-child
+          > ${node('pre')}:last-child
           > ${MessageMultilineCodeStyled}:last-child
           ${MessageMultilineCodeContentContainer}
           ${MessageMultilineCodeLastLine}:last-child,
@@ -93,17 +120,35 @@ export const MessageMarkdownLine = React.memo(
           pre
           code:last-child,
         &:last-child
+          > ${node('pre')}:last-child
+          > ${MessageMultilineCodeStyled}:last-child
+          ${MessageMultilineCodeContentContainer}
+          pre
+          code:last-child,
+        &:last-child
           > ${MessageTableStyled}
           *:last-child
           > ${MessageTableRow}:last-child
           > ${MessageTableCellStyled}:last-child,
           &:last-child
+          > ${node('table')}
+          *:last-child
+          > tr:last-child
+          > ${node('tableCell')}:last-child,
+          &:last-child
           > ${MessageListStyled}:last-child
           > ${MessageListItemStyled}:last-child,
           &:last-child
+          > ${node('list')}:last-child
+          > ${node('listItem')}:last-child,
+          &:last-child
           > ${MessageTitleStyled}:last-child,
           &:last-child
-          > ${MessageLinkStyled}:last-child {
+          > ${node('title')}:last-child,
+          &:last-child
+          > ${MessageLinkStyled}:last-child,
+          &:last-child
+          > ${node('link')}:last-child {
           &:after {
             display: inline-flex;
             width: calc(var(--bothub-typing-cursor-size, 21px) / 3.5);
@@ -111,8 +156,8 @@ export const MessageMarkdownLine = React.memo(
             border-radius: calc(var(--bothub-typing-cursor-size, 21px) / 7);
             flex-shrink: 0;
             background: ${$color !== 'default'
-              ? theme.default.colors.base.white
-              : theme.colors.base.white};
+              ? themeVar(theme, 'default.colors.base.white')
+              : themeVar(theme, 'colors.base.white')};
             vertical-align: text-top;
             animation: ${messageTextCursorOpacity} 0.9s infinite;
             content: '';

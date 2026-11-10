@@ -5,10 +5,10 @@ import dashboardDesktop from './assets/dashboard/desktop.svg';
 import dashboardTablet from './assets/dashboard/tablet.svg';
 import dashboardMobile from './assets/dashboard/mobile.svg';
 import mainDesktop from './assets/main/desktop.svg';
-import mainTablet from './assets/main/tablet.svg';
 import mainMobile from './assets/main/mobile.svg';
 import wave from './assets/wave.svg';
 import { Typography } from '@/ui/components/typography';
+import { themeVar } from '@/ui/theme';
 
 interface BlackFridayBannerStyledProps {
   $variant?: 'dashboard' | 'main';
@@ -19,7 +19,8 @@ export const BlackFridayBannerStyled = styled.div<BlackFridayBannerStyledProps>`
   display: flex;
   align-items: center;
   padding: 60px 40px;
-  background: ${({ theme }) => theme.default.colors.grayScale.gray7};
+  background: ${({ theme }) =>
+    themeVar(theme, 'default.colors.grayScale.gray7')};
   border-radius: 24px;
   width: 100%;
 
@@ -86,7 +87,7 @@ export const BlackFridayBannerBackgroundText = styled.div<{
   bottom: 0;
   opacity: 0.1;
   z-index: 1;
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
   overflow: hidden;
   text-transform: uppercase;
   font-family: inherit;
@@ -232,7 +233,7 @@ export const BlackFridayBannerBackgroundMainDesktop = styled(
 export const BlackFridayBannerBackgroundMainTablet = styled(
   BlackFridayBannerBackground,
 ).attrs({
-  src: mainTablet,
+  src: dashboardDesktop, // main/tablet.svg was a byte-identical copy
 })`
   ${adaptive({
     variant: 'main',
@@ -267,7 +268,7 @@ export const BlackFridayContainer = styled.div<{
   align-items: flex-start;
   gap: 20px;
   flex-direction: column;
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
   ${({ $variant }) => {
     switch ($variant) {
       case 'dashboard':

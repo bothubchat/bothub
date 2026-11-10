@@ -15,7 +15,10 @@ export const BothubUIProvider: React.FC<BothubUIProviderProps> = ({
   children,
 }) => (
   <ThemeProvider {...theme}>
-    {children}
+    {/* Global styles are inserted in a layout effect, and effects run in
+        tree order: placed first, they are in the document before the
+        children read the layout, which is then computed once, not twice */}
     {!disableGlobalStyle && <BothubGlobalStyle {...globalStyle} />}
+    {children}
   </ThemeProvider>
 );

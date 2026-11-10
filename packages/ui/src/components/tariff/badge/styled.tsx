@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { UserTariff } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
+import { themeVar } from '@/ui/theme';
 
 export interface UserTariffBadgeStyledProps {
   $skeleton: boolean;
@@ -28,17 +29,17 @@ export const UserTariffBadgeStyled = styled.div<UserTariffBadgeStyledProps>`
   border-radius: 10px;
   background: ${({ theme, $tariff, $skeleton }) => {
     if ($skeleton) {
-      return theme.colors.grayScale.gray2;
+      return themeVar(theme, 'colors.grayScale.gray2');
     }
     switch ($tariff) {
       case 'FREE':
         return '#00000000';
       case 'BASIC':
-        return theme.colors.accent.primary;
+        return themeVar(theme, 'colors.accent.primary');
       case 'DELUXE':
       case 'ELITE':
       case 'PREMIUM':
-        return theme.colors.premiumGradient;
+        return themeVar(theme, 'colors.premiumGradient');
     }
   }};
   ${({ $skeleton }) =>
@@ -51,7 +52,7 @@ export const UserTariffBadgeStyled = styled.div<UserTariffBadgeStyledProps>`
 export const UserTariffBadgeText = styled(Typography).attrs({
   variant: 'body-m-medium',
 })`
-  color: ${({ theme }) => theme.default.colors.base.white};
+  color: ${({ theme }) => themeVar(theme, 'default.colors.base.white')};
   cursor: inherit;
   white-space: nowrap;
   text-transform: capitalize;

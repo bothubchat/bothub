@@ -1,11 +1,9 @@
-import React, { ReactNode, useCallback, useEffect, useRef } from 'react';
-import { marked } from 'marked';
+import React, { ReactNode, useEffect, useMemo, useRef } from 'react';
 import {
   MessageBlock,
   MessageBlockBottomPanel,
   MessageBlockTransaction,
   MessageBlockContent,
-  MessageBlockScrollbarWrapper,
   MessageBlockWrapper,
   MessageContent,
   MessageName,
@@ -29,19 +27,15 @@ import {
 import { Loader } from '@/ui/components/loader';
 import { Skeleton } from '@/ui/components/skeleton';
 import { useTheme } from '@/ui/theme';
-import {
-  CLIPBOARD_NORMAL_STYLE,
-  colorToRgba,
-  getTgMarkdown,
-  prepareClipboardHtml,
-} from '@/ui/utils';
+import { colorToRgba, getTgMarkdown, useEventCallback } from '@/ui/utils';
 import { MessageProvider } from './context';
 import { MessageComponentsProps, MessageParagraph } from './components';
 import { MessageMarkdown } from './markdown';
-import { ScrollbarShadow } from '@/ui/components/scrollbar';
+import { MessageBlockScroller } from './block-scroller';
 import { MessageTimestamp } from './timestamp';
 import { MessageActions } from './actions';
 import { MessageVersions } from './versions';
+import { getRichText, preloadRichText } from './rich-text';
 
 export interface MessageProps {
   id?: string;
@@ -104,12 +98,35 @@ export interface MessageProps {
   onDownload?: () => void;
 }
 
-export const Message: React.FC<MessageProps> = ({
+const getPlainText = (html: HTMLElement) => {
+  const clipboardItem = new ClipboardItem({
+    'text/plain': new Blob([html.innerText.replace(/\n{3,}/g, '\n\n')], {
+      type: 'text/plain',
+    }),
+  });
+  return [clipboardItem];
+};
+
+const getTgText = (string: string) => {
+  const tgMarkdown = getTgMarkdown(string);
+
+  const clipboardItem = new ClipboardItem({
+    'text/plain': new Blob([tgMarkdown], { type: 'text/plain' }),
+  });
+  return [clipboardItem];
+};
+
+const isSupportedColor = (color: string) =>
+  typeof CSS === 'object' &&
+  typeof CSS.supports === 'function' &&
+  CSS.supports('background', color);
+
+const MessageBase: React.FC<MessageProps> = ({
   id,
   content,
   className,
   variant = 'user',
-  color = 'default',
+  color: colorProp = 'default',
   name,
   tags,
   avatar,
@@ -167,124 +184,76 @@ export const Message: React.FC<MessageProps> = ({
   const theme = useTheme();
   const messageRef = useRef<HTMLDivElement | null>(null);
   const messageBlockContentRef = useRef<HTMLDivElement | null>(null);
-  const messageText = useRef<string | null>(null);
-
-  const getRichText = useCallback(async () => {
-    const htmlContent = prepareClipboardHtml(
-      (await marked.parse(messageText.current!)).replace(
-        /<p>([\s\S]*?)<\/p>/g,
-        `<pre style="${CLIPBOARD_NORMAL_STYLE}font-family:inherit;white-space:pre-wrap;">$1</pre>`,
-      ),
-    );
-
-    const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([messageText.current!], { type: 'text/plain' }),
-      'text/html': new Blob([htmlContent], { type: 'text/html' }),
-    });
-    return [clipboardItem];
-  }, []);
-
-  const getPlainText = useCallback((html: HTMLElement) => {
-    const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([html.innerText.replace(/\n{3,}/g, '\n\n')], {
-        type: 'text/plain',
-      }),
-    });
-    return [clipboardItem];
-  }, []);
-
-  const getTgText = useCallback((string: string) => {
-    const tgMarkdown = getTgMarkdown(string);
-
-    const clipboardItem = new ClipboardItem({
-      'text/plain': new Blob([tgMarkdown], { type: 'text/plain' }),
-    });
-    return [clipboardItem];
-  }, []);
-
-  const handlePlainTextCopy = useCallback(() => {
+  // The handlers keep their identity, so the context and the memoized
+  // children don't rerender on every streaming chunk, and they always read
+  // the latest content and onCopy.
+  const handlePlainTextCopy = useEventCallback(() => {
     if (messageBlockContentRef.current) {
       return onCopy?.(getPlainText(messageBlockContentRef.current));
     }
-  }, [content]);
+  });
 
-  const handleTgTextCopy = useCallback(() => {
-    if (messageText.current) {
-      return onCopy?.(getTgText(messageText.current));
+  const handleTgTextCopy = useEventCallback(() => {
+    if (content) {
+      return onCopy?.(getTgText(content));
     }
-  }, []);
+  });
 
-  const handleRichTextCopy = useCallback(async () => {
-    if (messageText.current) {
-      return onCopy?.(await getRichText());
+  // No await before onCopy: the clipboard is written within the click.
+  const handleRichTextCopy = useEventCallback(() => {
+    if (content) {
+      return onCopy?.(getRichText(content));
     }
-  }, []);
+  });
 
-  if (
-    !(
-      color &&
-      typeof CSS === 'object' &&
-      typeof CSS.supports === 'function' &&
-      CSS.supports('background', color ?? '#000')
-    )
-  ) {
-    color = 'default';
-  }
+  const handleCodeCopy = useEventCallback(onCodeCopy);
 
-  let hexColor: string;
-  switch (variant) {
-    case 'user':
-      switch (color) {
-        case 'default':
-          if (theme.scheme === 'custom') {
-            hexColor = theme.colors.custom.message.user.background;
-            break;
-          }
-          if (theme.scheme === 'standard') {
-            hexColor =
-              theme.mode === 'dark'
+  const canCopy = !disableCopy && !hideActions && !skeleton && !!onCopy;
+  useEffect(() => {
+    if (canCopy) {
+      preloadRichText();
+    }
+  }, [canCopy]);
+
+  const color = useMemo(
+    () => (colorProp && isSupportedColor(colorProp) ? colorProp : 'default'),
+    [colorProp],
+  );
+
+  const hexColor = useMemo(() => {
+    switch (variant) {
+      case 'user':
+        switch (color) {
+          case 'default':
+            if (theme.scheme === 'custom') {
+              return theme.colors.custom.message.user.background;
+            }
+            if (theme.scheme === 'standard') {
+              return theme.mode === 'dark'
                 ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
                 : colorToRgba(theme.colors.accent.primaryLight, 0.2);
-            break;
-          }
-          hexColor = theme.colors.accent.primary;
-          break;
-        case 'green':
-          hexColor = theme.colors.gpt3;
-          break;
-        case 'purple':
-          hexColor = theme.colors.gpt4;
-          break;
-        default:
-          hexColor = color;
-          break;
-      }
-      break;
-    case 'assistant':
-      switch (color) {
-        case 'default':
-          hexColor =
-            theme.mode === 'dark'
-              ? theme.colors.grayScale.gray2
-              : theme.colors.grayScale.gray3;
-          break;
-        case 'green':
-          hexColor = theme.colors.gpt3;
-          break;
-        case 'purple':
-          hexColor = theme.colors.gpt4;
-          break;
-        default:
-          hexColor = color;
-          break;
-      }
-      break;
-  }
-
-  useEffect(() => {
-    if (!content) return;
-    messageText.current = content;
-  }, [content]);
+            }
+            return theme.colors.accent.primary;
+          case 'green':
+            return theme.colors.gpt3;
+          case 'purple':
+            return theme.colors.gpt4;
+          default:
+            return color;
+        }
+      case 'assistant':
+        switch (color) {
+          case 'default':
+            return theme.tokens.borderSecondary;
+          case 'green':
+            return theme.colors.gpt3;
+          case 'purple':
+            return theme.colors.gpt4;
+          default:
+            return color;
+        }
+    }
+  }, [variant, color, theme]);
 
   return (
     <MessageProvider
@@ -292,7 +261,8 @@ export const Message: React.FC<MessageProps> = ({
       color={color}
       typing={typing}
       onCopy={handlePlainTextCopy}
-      onCodeCopy={onCodeCopy}
+      // Stays undefined without a handler, as before.
+      onCodeCopy={onCodeCopy && handleCodeCopy}
     >
       <MessageStyledWrapper
         $variant={variant}
@@ -330,14 +300,7 @@ export const Message: React.FC<MessageProps> = ({
                   $hasTimestamp={!!timestamp}
                   $timestampPosition={timestampPosition}
                 >
-                  <MessageBlockScrollbarWrapper
-                    scrollShadows={{
-                      color: hexColor,
-                      size: 60,
-                      left: <ScrollbarShadow side="left" />,
-                      right: <ScrollbarShadow side="right" />,
-                    }}
-                  >
+                  <MessageBlockScroller color={hexColor}>
                     <MessageBlockContent
                       ref={messageBlockContentRef}
                       $variant={variant}
@@ -369,9 +332,7 @@ export const Message: React.FC<MessageProps> = ({
                               colors={[
                                 variant === 'user'
                                   ? theme.colors.base.white
-                                  : theme.mode === 'light'
-                                    ? theme.default.colors.base.black
-                                    : theme.colors.grayScale.gray6,
+                                  : theme.tokens.textSecondary,
                               ]}
                             />
                           </MessageParagraph>
@@ -388,7 +349,7 @@ export const Message: React.FC<MessageProps> = ({
                         color={hexColor}
                       />
                     )}
-                  </MessageBlockScrollbarWrapper>
+                  </MessageBlockScroller>
                 </MessageBlock>
               </MessageBlockWrapper>
               {timestamp && variant === 'assistant' && (
@@ -464,6 +425,10 @@ export const Message: React.FC<MessageProps> = ({
     </MessageProvider>
   );
 };
+
+// While a reply streams, only the message whose props changed rerenders.
+export const Message: React.FC<MessageProps> = React.memo(MessageBase);
+Message.displayName = 'Message';
 
 export * from './types';
 export * from './styled';
