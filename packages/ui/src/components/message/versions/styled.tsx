@@ -1,49 +1,62 @@
 import { styled } from 'styled-components';
-import { Typography } from '../../typography';
-import { MessageVariant } from '../types';
 import { themeVar } from '@/ui/theme';
 
-export const MessageVersionsStyled = styled.div<{
-  $variant?: MessageVariant;
-}>`
+/** Версии сообщения в строке действий: стрелки и «2 / 3» между ними */
+export const MessageVersionsStyled = styled.div`
   display: flex;
   align-items: center;
+  gap: 2px;
+  color: ${({ theme }) => themeVar(theme, 'tokens.textSecondary')};
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
-  ${({ $variant }) => ($variant === 'assistant' ? 'margin-left: auto;' : '')}
 `;
 
 export const MessageVersionsPagination = styled.div`
   display: flex;
-  gap: 4px;
+  gap: 3px;
   justify-content: center;
   align-items: center;
+  min-width: 30px;
 `;
 
-export const MessageVersionsText = styled(Typography).attrs({
-  variant: 'body-m-medium',
-})`
-  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
+export const MessageVersionsText = styled.span`
+  font-size: 12px;
+  line-height: 18px;
+  font-variant-numeric: tabular-nums;
 `;
 
 export const MessageVersionsSwitchButton = styled.button`
   all: unset;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-inline: 4px;
-  padding: 4px;
-  border-radius: 4px;
-  color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
-  &:hover {
-    background-color: ${({ theme }) =>
-      themeVar(theme, 'colors.grayScale.gray3')};
-  }
-  &:active {
-    transform: translateY(1px);
-    color: #4785ff;
-  }
-  transition: all 50ms ease-out;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
   cursor: pointer;
+  transition:
+    background-color 120ms ease-out,
+    color 120ms ease-out;
+  &:hover:not(:disabled) {
+    background-color: ${({ theme }) => themeVar(theme, 'tokens.hoverOverlay')};
+    color: ${({ theme }) => themeVar(theme, 'tokens.textStrong')};
+  }
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => themeVar(theme, 'tokens.borderFocus')};
+    outline-offset: -2px;
+  }
+  &:disabled {
+    cursor: default;
+    opacity: 0.4;
+  }
+`;
+
+export const MessageVersionsPrevIcon = styled.span`
+  display: flex;
+  transform: rotate(180deg);
 `;

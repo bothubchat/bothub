@@ -1,9 +1,14 @@
 import * as S from './styled';
+import { ChevronRightLineIcon } from '@/ui/icons/chevron-right-line';
 
 import { MessageVariant, MessageVersionEventHandler } from '../types';
 
+const ICON_SIZE = 14;
+
 export type MessageVersionsType = {
   id?: string;
+  /** Не используется: переключатель стоит в строке действий у любого сообщения */
+  // eslint-disable-next-line react/no-unused-prop-types
   variant?: MessageVariant;
   version?: number;
   totalVersions?: number;
@@ -13,7 +18,6 @@ export type MessageVersionsType = {
 
 export const MessageVersions = ({
   id,
-  variant,
   version,
   totalVersions,
   onNextVersion,
@@ -36,12 +40,15 @@ export const MessageVersions = ({
   };
 
   return (
-    <S.MessageVersionsStyled $variant={variant}>
+    <S.MessageVersionsStyled>
       <S.MessageVersionsSwitchButton
         type="button"
+        disabled={version === 1}
         onClick={handlePrev}
       >
-        {'<'}
+        <S.MessageVersionsPrevIcon>
+          <ChevronRightLineIcon size={ICON_SIZE} />
+        </S.MessageVersionsPrevIcon>
       </S.MessageVersionsSwitchButton>
       <S.MessageVersionsPagination>
         <S.MessageVersionsText>{version}</S.MessageVersionsText>
@@ -50,9 +57,10 @@ export const MessageVersions = ({
       </S.MessageVersionsPagination>
       <S.MessageVersionsSwitchButton
         type="button"
+        disabled={version === totalVersions}
         onClick={handleNext}
       >
-        {'>'}
+        <ChevronRightLineIcon size={ICON_SIZE} />
       </S.MessageVersionsSwitchButton>
     </S.MessageVersionsStyled>
   );

@@ -400,6 +400,12 @@ import {
   ExpandLineIcon,
   CollapseLineIcon,
   ShareLineIcon,
+  CopyLineIcon,
+  RefreshLineIcon,
+  ThumbUpLineIcon,
+  ThumbDownLineIcon,
+  ForkLineIcon,
+  DownloadLineIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -863,6 +869,12 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="ExpandLineIcon">{ExpandLineIcon}</IconItem>
         <IconItem name="CollapseLineIcon">{CollapseLineIcon}</IconItem>
         <IconItem name="ShareLineIcon">{ShareLineIcon}</IconItem>
+        <IconItem name="CopyLineIcon">{CopyLineIcon}</IconItem>
+        <IconItem name="RefreshLineIcon">{RefreshLineIcon}</IconItem>
+        <IconItem name="ThumbUpLineIcon">{ThumbUpLineIcon}</IconItem>
+        <IconItem name="ThumbDownLineIcon">{ThumbDownLineIcon}</IconItem>
+        <IconItem name="ForkLineIcon">{ForkLineIcon}</IconItem>
+        <IconItem name="DownloadLineIcon">{DownloadLineIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

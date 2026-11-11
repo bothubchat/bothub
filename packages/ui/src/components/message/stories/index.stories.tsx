@@ -5,6 +5,7 @@ import { fn } from 'storybook/test';
 import { Skeleton as BothubSkeleton } from '@/ui/components/skeleton';
 import {
   Message,
+  MessageActionButton,
   MessageAvatar,
   MessageBadgeProgress,
   MessageButton,
@@ -51,12 +52,14 @@ import {
   GenerationIcon,
   MjWhiteIcon,
   SearchPlusIcon,
+  SpeakerLineIcon,
   SquareIcon,
   StopIcon,
+  ThumbDownLineIcon,
+  ThumbUpLineIcon,
   UpdateIcon,
   UpscaleIcon,
   WebSearchIcon,
-  XlsBigIcon,
 } from '@/ui/icons';
 import { Typography } from '@/ui/components/typography';
 import { MessageSearchResults } from '../search-results';
@@ -118,6 +121,40 @@ export const Assistant: MessageStory = {
     updateTooltipLabel: 'Повторная генерация',
     copyTooltipLabel: 'Копировать',
     encryptionTooltipLabel: 'Зашифровать',
+  },
+};
+
+/**
+ * Свои действия потребителя стоят в ряду под ответом между «повторить»
+ * и «форк»: оценка, озвучка. Справа — время и стоимость
+ */
+export const ActionsAddon: MessageStory = {
+  args: {
+    ...Assistant.args,
+    name: 'Claude Sonnet 4.6',
+    transaction: <MessageTransaction>1 820 CAPS</MessageTransaction>,
+    children:
+      'Нашёл три пункта, которые стоит пересмотреть до подписания договора.',
+    disableFork: false,
+    forkTooltipLabel: 'Форк чата',
+    onFork: fn(),
+    actionsAddon: (
+      <>
+        <MessageActionButton
+          tooltipLabel="Нравится"
+          aria-pressed
+          active
+        >
+          <ThumbUpLineIcon size={16} />
+        </MessageActionButton>
+        <MessageActionButton tooltipLabel="Не нравится">
+          <ThumbDownLineIcon size={16} />
+        </MessageActionButton>
+        <MessageActionButton tooltipLabel="Озвучить">
+          <SpeakerLineIcon size={16} />
+        </MessageActionButton>
+      </>
+    ),
   },
 };
 
@@ -185,6 +222,22 @@ const narrowColumn: MessageStory['decorators'] = [
     </div>
   ),
 ];
+
+/**
+ * Строка под ответом: действия, версии и стоимость одним блоком, время — у
+ * дальнего края. В узкой колонке действия, которым не хватило места, уходят
+ * в меню «ещё» с конца и возвращаются, когда место появляется. На телефоне
+ * меню открывается шторкой у нижнего края экрана
+ */
+export const ActionsOverflow: MessageStory = {
+  args: {
+    ...ActionsAddon.args,
+    menuText: 'Действия',
+    version: 2,
+    totalVersions: 3,
+  },
+  decorators: narrowColumn,
+};
 
 export const WideTable: MessageStory = {
   args: {
@@ -762,37 +815,30 @@ export const TypingLongAnswer: MessageStory = {
   },
 };
 
+/** Файлы — карточки над пузырём: тип в плитке, имя и размер */
 export const Files: MessageStory = {
   args: {
     ...User.args,
-    children: (
-      <>
-        <MessageMarkdown>Привет! Вот держи файлы:</MessageMarkdown>
-        <MessageFiles>
-          <MessageFile
-            icon={<XlsBigIcon />}
-            name="bothubfile_archive.xls"
-            size="367 KB"
-          />
-          <MessageFile
-            name="bothubfile_archive.XLS"
-            size="367 KB"
-          />
-          <MessageFile
-            icon={<XlsBigIcon />}
-            name="bothubfile_bothubfile_bothubfile_bothubfile_bothubfile_archive.xls"
-            size="367 KB"
-          />
-          <MessageFile
-            name="bothubfile_archive.docx"
-            size="367 KB"
-          />
-          <MessageFile
-            name="attach-file-big.svg"
-            size="3 KB"
-          />
-        </MessageFiles>
-      </>
+    children: 'Привет! Вот держи файлы:',
+    attachments: (
+      <MessageFiles>
+        <MessageFile
+          name="dogovor_arendy.pdf"
+          size="2,4 МБ"
+        />
+        <MessageFile
+          name="bothubfile_archive.XLS"
+          size="367 KB"
+        />
+        <MessageFile
+          name="bothubfile_bothubfile_bothubfile_bothubfile_bothubfile_archive.docx"
+          size="367 KB"
+        />
+        <MessageFile
+          name="attach-file-big.svg"
+          size="3 KB"
+        />
+      </MessageFiles>
     ),
   },
 };

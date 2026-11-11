@@ -3,12 +3,16 @@ import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '@/ui/components/message';
 import { themeVar } from '@/ui/theme';
 
+/** Блок кода — карточка: строка с языком и копированием, под ней код */
 export const MessageMultilineCodeStyled = styled.div`
   display: flex;
   flex-direction: column;
-  border-radius: 8px;
+  /* В колонке сообщения блок занимает всю ширину, а не жмётся по коду */
+  align-self: stretch;
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
+  border-radius: 12px;
   overflow: hidden;
-  margin: 10px 0px;
+  margin: 12px 0px;
 `;
 
 export interface MessageMultilineCodeHeadProps {
@@ -29,10 +33,11 @@ export const MessageMultilineCodeHead = styled.div<MessageMultilineCodeHeadProps
           return themeVar(theme, 'tokens.codeAccent');
         }
 
-        return themeVar(theme, 'colors.accent.primary');
+        return themeVar(theme, 'tokens.surfaceRaised');
     }
   }};
-  padding: 14px;
+  min-height: 38px;
+  padding: 0 6px 0 14px;
 `;
 
 export interface MessageMultilineCodeLanguageProps {
@@ -43,6 +48,10 @@ export interface MessageMultilineCodeLanguageProps {
 export const MessageMultilineCodeLanguage = styled(Typography).attrs({
   variant: 'body-l-medium',
 })<MessageMultilineCodeLanguageProps>`
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
   color: ${({ theme, $messageVariant, $messageColor }) => {
     switch ($messageVariant) {
       case 'user':
@@ -50,7 +59,7 @@ export const MessageMultilineCodeLanguage = styled(Typography).attrs({
       case 'assistant':
         switch ($messageColor) {
           case 'default':
-            return themeVar(theme, 'default.colors.base.white');
+            return themeVar(theme, 'tokens.textSecondary');
           case 'green':
             return themeVar(theme, 'tokens.messageAccentGreen');
           case 'purple':
