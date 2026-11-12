@@ -1,63 +1,26 @@
 import { styled, css } from 'styled-components';
-import { Typography } from '@/ui/components/typography';
-import { adaptive } from '@/ui/adaptive';
-import {
-  MessageColor,
-  MessageTimestampPosition,
-  MessageVariant,
-} from '../types';
-import { isBright } from '@/ui/utils';
-import { themeVar } from '@/ui/theme';
+import { messageRevealOnHover } from '../styled';
 
-export interface TimestampProps {
-  $timestampPosition?: MessageTimestampPosition;
-}
-export const TimestampStyled = styled.div<TimestampProps>`
+/** Время и пометка сообщения в строке под ним: «изменено 14:20» */
+export const TimestampStyled = styled.div`
   display: flex;
+  align-items: center;
   gap: 6px;
-  justify-content: flex-end;
-  grid-area: timestamp;
-  text-align: right;
-  width: 100%;
-
-  ${({ $timestampPosition }) => {
-    switch ($timestampPosition) {
-      case 'right':
-        return css`
-          margin-top: auto;
-        `;
-      case 'bottom':
-        return css`
-          margin-left: auto;
-        `;
-    }
-  }};
+  white-space: nowrap;
 `;
 
 export interface TimestampTextProp {
-  $color: MessageColor;
-  $variant: MessageVariant;
+  /** Время под пузырём пользователя видно по наведению, пометка — всегда */
+  $reveal?: boolean;
 }
-export const TimestampText = styled(Typography).attrs({
-  variant: 'body-s-regular',
-})<TimestampTextProp>`
-  color: ${({ theme, $color, $variant }) => {
-    if ($variant === 'assistant') {
-      return themeVar(theme, 'tokens.timestampAssistantText');
-    }
-    return isBright($color)
-      ? themeVar(theme, 'tokens.timestampUserTextOnBright')
-      : themeVar(theme, 'tokens.timestampUserText');
-  }} !important;
-  ${adaptive({
-    desktop: css`
-      font-size: 12px;
-    `,
-    tablet: css`
-      font-size: 10px;
-    `,
-    mobile: css`
-      font-size: 10px;
-    `,
-  })};
+
+export const TimestampText = styled.span<TimestampTextProp>`
+  font-size: 12px;
+  line-height: 18px;
+  font-variant-numeric: tabular-nums;
+  ${({ $reveal }) =>
+    $reveal &&
+    css`
+      ${messageRevealOnHover}
+    `}
 `;

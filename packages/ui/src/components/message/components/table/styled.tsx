@@ -5,10 +5,10 @@ import { themeVar } from '@/ui/theme';
 export const MessageTableStyled = styled.div``;
 
 export const MessageTableContent = styled.table`
-  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
   border-collapse: separate;
   border-spacing: 0px;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
   ${() => css`
     ${MessageTableRow} {

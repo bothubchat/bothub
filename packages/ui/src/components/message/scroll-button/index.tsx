@@ -55,10 +55,14 @@ export const ScrollButton: React.FC<IScrollButton> = ({ scrollbarRef }) => {
     };
   }, [scrollbarRef]);
 
-  if (isAtBottom || !isScrollable) return null;
+  // Always mounted: it fades and slides in and out instead of popping
+  const visible = !isAtBottom && isScrollable;
+
   return (
     <MessageListScrollButton
-      $visible={!isAtBottom && isScrollable}
+      $visible={visible}
+      aria-hidden={!visible || undefined}
+      tabIndex={visible ? undefined : -1}
       onClick={handleScrollToBottom}
       type="button"
       data-test="scroll-button"

@@ -10,18 +10,16 @@ describe('MessageTimestamp', () => {
     cleanup();
   });
 
-  test('shows the edited label next to the time', () => {
+  test('shows the edited label after the time, at the edge', () => {
     const { container } = customRender(
       <MessageTimestamp
         time={TIME}
         edited
         editedText="edited"
-        position="right"
-        color="#000"
       />,
     );
 
-    expect(container.textContent).toBe('edited09:05');
+    expect(container.textContent).toBe('09:05edited');
   });
 
   test('does not print undefined without the edited label', () => {
@@ -29,11 +27,27 @@ describe('MessageTimestamp', () => {
       <MessageTimestamp
         time={TIME}
         edited
-        position="right"
-        color="#000"
       />,
     );
 
     expect(container.textContent).toBe('09:05');
+  });
+
+  // A message that is still being sent has a label before it has a time.
+  test('shows the label of a message without a time', () => {
+    const { container } = customRender(
+      <MessageTimestamp
+        edited
+        editedText="sending"
+      />,
+    );
+
+    expect(container.textContent).toBe('sending');
+  });
+
+  test('renders nothing without a time and a label', () => {
+    const { container } = customRender(<MessageTimestamp />);
+
+    expect(container.textContent).toBe('');
   });
 });

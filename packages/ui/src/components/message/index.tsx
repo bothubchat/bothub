@@ -1,7 +1,9 @@
 import React, { ReactNode, useEffect, useMemo, useRef } from 'react';
 import {
+  MessageAttachments,
   MessageBlock,
   MessageBlockBottomPanel,
+  MessageBlockMeta,
   MessageBlockTransaction,
   MessageBlockContent,
   MessageBlockWrapper,
@@ -73,17 +75,37 @@ export interface MessageProps {
   downloadTooltipLabel?: string | null;
   encryptionTooltipLabel?: string | null;
   cacheTokenTooltipLabel?: string | null;
+  /**
+   * Название меню «ещё»: имя его кнопки для скринридера и заголовок шторки,
+   * которой меню открывается на телефоне
+   */
+  menuText?: string | null;
   typing?: boolean;
   timestamp?: string | number;
+  /**
+   * Не используется: время стоит в строке под сообщением. Оставлен, чтобы
+   * не ломать тех, кто его передаёт
+   */
+  // eslint-disable-next-line react/no-unused-prop-types
   timestampPosition?: MessageTimestampPosition;
   skeleton?: boolean;
   buttons?: ReactNode;
+  /**
+   * Вложения сообщения — MessageFiles с MessageFile. Стоят над текстом: у
+   * пользователя над пузырём, у ответа под именем
+   */
+  attachments?: ReactNode;
   after?: ReactNode;
   components?: MessageComponentsProps;
   children?: ReactNode;
   version?: number;
   totalVersions?: number;
   hideActions?: boolean;
+  /**
+   * Свои действия в ряду под сообщением, между «повторить» и «форк»: оценка,
+   * озвучка. Собираются из MessageActionButton
+   */
+  actionsAddon?: ReactNode;
   loader?: boolean;
   onCopy?: MessageCopyEventHandler;
   onCodeCopy?: MessageCodeCopyEventHandler;
@@ -157,17 +179,19 @@ const MessageBase: React.FC<MessageProps> = ({
   forkTooltipLabel,
   encryptionTooltipLabel,
   cacheTokenTooltipLabel,
+  menuText,
   typing = false,
   timestamp,
-  timestampPosition = 'right',
   skeleton = false,
   buttons,
+  attachments,
   after,
   components,
   children,
   version,
   totalVersions,
   hideActions,
+  actionsAddon,
   loader,
   onCopy,
   onCodeCopy,
@@ -230,7 +254,7 @@ const MessageBase: React.FC<MessageProps> = ({
             }
             if (theme.scheme === 'standard') {
               return theme.mode === 'dark'
-                ? colorToRgba(theme.colors.accent.primaryLight, 0.5)
+                ? theme.colors.accent.primary
                 : colorToRgba(theme.colors.accent.primaryLight, 0.2);
             }
             return theme.colors.accent.primary;
@@ -269,7 +293,7 @@ const MessageBase: React.FC<MessageProps> = ({
         $forkSelected={forkSelected}
         ref={messageRef}
       >
-        <MessageStyledWithBottomPanel>
+        <MessageStyledWithBottomPanel $variant={variant}>
           <MessageStyled
             $variant={variant}
             className={className}
@@ -277,10 +301,15 @@ const MessageBase: React.FC<MessageProps> = ({
           >
             <MessageContent $variant={variant}>
               {name && (
-                <MessageTop>
+                <MessageTop $variant={variant}>
                   {typeof name === 'string' && (
                     <MessageSender>
-                      <MessageName $color={color}>{name}</MessageName>
+                      <MessageName
+                        $color={color}
+                        $variant={variant}
+                      >
+                        {name}
+                      </MessageName>
                       {tags}
                     </MessageSender>
                   )}
@@ -288,22 +317,30 @@ const MessageBase: React.FC<MessageProps> = ({
                 </MessageTop>
               )}
               {typeof name !== 'string' && name}
-              <MessageAvatarWrapper $variant={variant}>
+              <MessageAvatarWrapper
+                $variant={variant}
+                $hasName={!!name}
+              >
                 <MessageAvatar>{avatar}</MessageAvatar>
               </MessageAvatarWrapper>
 
+              {attachments && (
+                <MessageAttachments $variant={variant}>
+                  {attachments}
+                </MessageAttachments>
+              )}
               <MessageBlockWrapper>
                 <MessageBlock
                   $variant={variant}
                   $hexColor={hexColor}
                   $skeleton={skeleton}
-                  $hasTimestamp={!!timestamp}
-                  $timestampPosition={timestampPosition}
                 >
                   <MessageBlockScroller color={hexColor}>
                     <MessageBlockContent
                       ref={messageBlockContentRef}
                       $variant={variant}
+                      // По нему пузырь без содержимого узнаёт, что он пуст
+                      data-message-content
                     >
                       <>
                         {!skeleton &&
@@ -340,31 +377,13 @@ const MessageBase: React.FC<MessageProps> = ({
                         {after}
                       </>
                     </MessageBlockContent>
-                    {variant === 'user' && (
-                      <MessageTimestamp
-                        edited={edited}
-                        editedText={editedText}
-                        time={timestamp}
-                        position={timestampPosition}
-                        color={hexColor}
-                      />
-                    )}
                   </MessageBlockScroller>
                 </MessageBlock>
               </MessageBlockWrapper>
-              {timestamp && variant === 'assistant' && (
-                <MessageTimestamp
-                  time={timestamp}
-                  position={timestampPosition}
-                  color={hexColor}
-                />
-              )}
-              <MessageBlockBottomPanel $variant={variant}>
-                {transaction && (
-                  <MessageBlockTransaction>
-                    {transaction}
-                  </MessageBlockTransaction>
-                )}
+              <MessageBlockBottomPanel
+                $variant={variant}
+                $inFlow={!!buttons}
+              >
                 {!skeleton && !hideActions && (
                   <MessageActions
                     id={id}
@@ -396,6 +415,7 @@ const MessageBase: React.FC<MessageProps> = ({
                     forkTooltipLabel={forkTooltipLabel}
                     encryptionTooltipLabel={encryptionTooltipLabel}
                     cacheTokenTooltipLabel={cacheTokenTooltipLabel}
+                    menuAriaLabel={menuText}
                     onEdit={onEdit}
                     onResend={onUpdate}
                     onDelete={onDelete}
@@ -405,6 +425,7 @@ const MessageBase: React.FC<MessageProps> = ({
                     onPlainTextCopy={handlePlainTextCopy}
                     onTgCopy={handleTgTextCopy}
                     onCopy={handleRichTextCopy}
+                    addon={actionsAddon}
                   />
                 )}
 
@@ -416,10 +437,31 @@ const MessageBase: React.FC<MessageProps> = ({
                   onPrevVersion={onPrevVersion}
                   variant={variant}
                 />
+                {/* Стоимость — одним блоком с действиями, время — у края */}
+                {transaction && (
+                  <MessageBlockTransaction
+                    $variant={variant}
+                    {...(variant === 'user' && { 'data-message-reveal': true })}
+                  >
+                    {transaction}
+                  </MessageBlockTransaction>
+                )}
+                <MessageBlockMeta $variant={variant}>
+                  <MessageTimestamp
+                    // Пометка «изменено» стоит только у своих сообщений
+                    edited={variant === 'user' && edited}
+                    editedText={editedText}
+                    time={timestamp}
+                  />
+                </MessageBlockMeta>
               </MessageBlockBottomPanel>
             </MessageContent>
           </MessageStyled>
-          <MessageButtonsStyled>{buttons}</MessageButtonsStyled>
+          {buttons && (
+            <MessageButtonsStyled $variant={variant}>
+              {buttons}
+            </MessageButtonsStyled>
+          )}
         </MessageStyledWithBottomPanel>
       </MessageStyledWrapper>
     </MessageProvider>
@@ -432,6 +474,7 @@ Message.displayName = 'Message';
 
 export * from './types';
 export * from './styled';
+export { ActionButton as MessageActionButton } from './actions/action-button';
 export * from './context';
 export * from './list';
 export * from './copy';

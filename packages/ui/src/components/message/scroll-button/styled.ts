@@ -16,26 +16,44 @@ export const MessageListScrollButton = styled.button<{
   border-radius: 50%;
   border: 2px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
   background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
-  opacity: 0;
   z-index: ${({ theme }) => theme.zIndex.header};
-  transform: translateX(-50%);
-  pointer-events: none;
   cursor: pointer;
+  /* Hidden: drops a little and fades; visibility goes last, after the fade */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, 8px) scale(0.92);
+  transition:
+    opacity 180ms ease-out,
+    transform 260ms cubic-bezier(0.32, 0.72, 0, 1),
+    visibility 0s linear 260ms,
+    background-color 150ms ease;
 
   ${({ $visible }) =>
     $visible &&
     css`
       opacity: 1;
+      visibility: visible;
       pointer-events: auto;
+      transform: translate(-50%, 0) scale(1);
+      transition:
+        opacity 180ms ease-out,
+        transform 260ms cubic-bezier(0.32, 0.72, 0, 1),
+        visibility 0s,
+        background-color 150ms ease;
     `}
 
   &:hover {
     background-color: ${({ theme }) =>
       themeVar(theme, 'colors.grayScale.gray2')};
-    cursor: pointer;
   }
 
-  transition: all 0.1s linear;
+  @media (prefers-reduced-motion: reduce) {
+    transform: translateX(-50%);
+    transition:
+      opacity 150ms linear,
+      visibility 0s linear ${({ $visible }) => ($visible ? 0 : 150)}ms;
+  }
 `;
 
 export const MessageListArrowNarrowDownIcon = styled(ArrowNarrowDownIcon)`

@@ -1,6 +1,7 @@
 import { css, styled } from 'styled-components';
 import { TypographyStyled } from '@/ui/components/typography/styled';
-import { ArrowUpIcon } from '@/ui/icons/arrow-up';
+import { ChevronDownLineIcon } from '@/ui/icons/chevron-down-line';
+import { colorToRgba } from '@/ui/utils';
 import { themeVar } from '@/ui/theme';
 
 export const ReasoningBlockStyled = styled.div<{
@@ -45,8 +46,8 @@ export const ReasoningBlockContentWrapper = styled.div<{
 
   & > div > div:nth-child(2) {
     border-left: 1px solid
-      ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
-    padding-left: 10px;
+      ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+    padding-left: 12px;
   }
 
   & ${TypographyStyled} {
@@ -58,51 +59,62 @@ export const ReasoningBlockContentWrapper = styled.div<{
   }
 `;
 
+/**
+ * Плашка из макета: значок, подпись и стрелка в рамке. Подпись приходит от
+ * потребителя — её шрифт и цвет плашка задаёт сама
+ */
 export const ReasoningBlockButton = styled.button`
+  all: unset;
+  box-sizing: border-box;
   width: fit-content;
+  max-width: 100%;
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 15px;
-  border-radius: 10px;
-  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
-  background-color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+  color: ${({ theme }) => colorToRgba(theme.tokens.textDefault, 0.8)};
+  font-size: 12px;
+  line-height: 16px;
   cursor: pointer;
-  outline: none;
   transition:
-    background-color 0.3s ease-out,
-    border-color 0.3s ease-in-out;
+    background-color 120ms ease-out,
+    color 120ms ease-out;
 
-  &:hover {
-    background-color: ${({ theme }) =>
-      themeVar(theme, 'colors.grayScale.gray5')};
+  & ${TypographyStyled} {
+    color: inherit;
+    font-size: inherit;
+    line-height: inherit;
   }
 
-  &:active {
-    background-color: ${({ theme }) =>
-      themeVar(theme, 'colors.grayScale.gray4')};
+  svg {
+    flex-shrink: 0;
   }
 
-  &:disabled,
-  &:disabled:hover,
-  &:disabled:active {
+  &:hover:not(:disabled) {
+    background-color: ${({ theme }) => themeVar(theme, 'tokens.hoverOverlay')};
+    color: ${({ theme }) => themeVar(theme, 'tokens.textStrong')};
+  }
+
+  &:disabled {
     cursor: default;
-    background-color: ${({ theme }) =>
-      themeVar(theme, 'colors.grayScale.gray3')};
   }
 
   &:focus-visible {
-    border: 1px solid ${({ theme }) => themeVar(theme, 'colors.accent.primary')};
+    outline: 2px solid ${({ theme }) => themeVar(theme, 'tokens.borderFocus')};
+    outline-offset: 1px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
+    min-height: 34px;
   }
 `;
 
-export const ReasoningBlockButtonArrow = styled(ArrowUpIcon)<{
+export const ReasoningBlockButtonArrow = styled(ChevronDownLineIcon)<{
   $isOpen: boolean;
 }>`
   transition: transform 0.2s ease-in-out;
-  transform: ${({ $isOpen }) => ($isOpen ? 'rotate(0deg)' : 'rotate(180deg)')};
-
-  & path {
-    stroke: ${({ theme }) => themeVar(theme, 'colors.base.white')};
-  }
+  transform: ${({ $isOpen }) => ($isOpen ? 'rotate(180deg)' : 'rotate(0deg)')};
 `;

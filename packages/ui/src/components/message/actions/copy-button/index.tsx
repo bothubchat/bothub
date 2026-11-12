@@ -1,24 +1,24 @@
 import { useSpring } from '@react-spring/web';
 
-import { CopyIcon } from '@/ui/icons/copy';
-import { CheckSmallIcon } from '@/ui/icons/check-small';
+import { CopyLineIcon } from '@/ui/icons/copy-line';
+import { CheckLineIcon } from '@/ui/icons/check-line';
 
 import { ActionButton } from '../action-button';
 import { MessageActionEventHandler } from '../../types';
+import { ACTION_ICON_SIZE } from '../constants';
 
 import { MessageActionsButtonIconStyled } from './styled';
-import { useTheme } from '@/ui/theme';
 import { useCopiedState } from '@/ui/utils/useCopiedState';
 
 export const CopyButton = ({
   onCopy,
   tooltipLabel,
+  compact,
 }: {
   onCopy?: MessageActionEventHandler;
   tooltipLabel?: string | null;
+  compact?: boolean;
 }) => {
-  const theme = useTheme();
-
   const { copied, markCopied } = useCopiedState(1000);
 
   const copySpring = useSpring({
@@ -41,20 +41,17 @@ export const CopyButton = ({
 
   return (
     <ActionButton
+      compact={compact}
       onClick={handleClick}
       tooltipLabel={tooltipLabel}
     >
       {!copied ? (
         <MessageActionsButtonIconStyled style={copySpring}>
-          <CopyIcon size={20} />
+          <CopyLineIcon size={ACTION_ICON_SIZE} />
         </MessageActionsButtonIconStyled>
       ) : (
         <MessageActionsButtonIconStyled style={markSpring}>
-          <CheckSmallIcon
-            {...(theme.scheme === 'custom' && {
-              fill: theme.colors.custom.icon,
-            })}
-          />
+          <CheckLineIcon size={ACTION_ICON_SIZE} />
         </MessageActionsButtonIconStyled>
       )}
     </ActionButton>

@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import { MessageMultilineCodeCopyButtonStyled } from './styled';
 import { useMessage } from '@/ui/components/message/context';
 import { MessageVariant } from '@/ui/components/message/types';
-import { CheckSmallIcon } from '@/ui/icons/check-small';
-import { CopyIcon } from '@/ui/icons/copy';
+import { CheckLineIcon } from '@/ui/icons/check-line';
+import { CopyLineIcon } from '@/ui/icons/copy-line';
 import { useCopiedState } from '@/ui/utils/useCopiedState';
 
 export interface MessageMultilineCodeCopyButtonProps {
@@ -37,8 +37,8 @@ export const MessageMultilineCodeCopyButton: React.FC<
       $messageColor={messageColor}
       onClick={handleClick}
     >
-      {!isCopied && <CopyIcon />}
-      {isCopied && <CheckSmallIcon />}
+      {!isCopied && <CopyLineIcon size={16} />}
+      {isCopied && <CheckLineIcon size={16} />}
     </MessageMultilineCodeCopyButtonStyled>
   );
 };

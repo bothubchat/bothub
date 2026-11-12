@@ -1,6 +1,5 @@
-import { styled, css } from 'styled-components';
+import { styled } from 'styled-components';
 import { MessageVariant } from '@/ui/components/message';
-import { Button } from '@/ui/components/button';
 import { themeVar } from '@/ui/theme';
 
 export interface MessageMultilineCodeCopyButtonStyledProps {
@@ -9,52 +8,49 @@ export interface MessageMultilineCodeCopyButtonStyledProps {
   $messageColor: string;
 }
 
-export const MessageMultilineCodeCopyButtonStyled = styled(Button).attrs({
-  variant: 'text',
+/** Копирование кода: значок на прозрачном поле, как действия под сообщением */
+export const MessageMultilineCodeCopyButtonStyled = styled.button.attrs({
+  type: 'button',
 })<MessageMultilineCodeCopyButtonStyledProps>`
-  ${({ $focus }) =>
-    $focus &&
-    css`
-      cursor: default;
-    `}
-  > svg path {
-    fill: ${({ theme, $messageVariant, $messageColor }) => {
-      switch ($messageVariant) {
-        case 'user':
-          return themeVar(theme, 'colors.accent.primary');
-        case 'assistant':
-          switch ($messageColor) {
-            case 'default':
-              return themeVar(theme, 'default.colors.base.white');
-            case 'green':
-              return themeVar(theme, 'tokens.messageAccentGreen');
-            case 'purple':
-              return themeVar(theme, 'tokens.messageAccentPurple');
-            default:
-              return $messageColor;
-          }
-      }
-    }} !important;
-  }
-  &:hover {
-    > svg path {
-      fill: ${({ theme, $messageVariant, $messageColor }) => {
-        switch ($messageVariant) {
-          case 'user':
-            return themeVar(theme, 'colors.accent.primary');
-          case 'assistant':
-            switch ($messageColor) {
-              case 'default':
-                return themeVar(theme, 'default.colors.base.white');
-              case 'green':
-                return themeVar(theme, 'tokens.messageAccentGreen');
-              case 'purple':
-                return themeVar(theme, 'tokens.messageAccentPurple');
-              default:
-                return $messageColor;
-            }
+  all: unset;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  cursor: ${({ $focus }) => ($focus ? 'default' : 'pointer')};
+  color: ${({ theme, $messageVariant, $messageColor }) => {
+    switch ($messageVariant) {
+      case 'user':
+        return themeVar(theme, 'colors.accent.primary');
+      case 'assistant':
+        switch ($messageColor) {
+          case 'default':
+            return themeVar(theme, 'tokens.textSecondary');
+          case 'green':
+            return themeVar(theme, 'tokens.messageAccentGreen');
+          case 'purple':
+            return themeVar(theme, 'tokens.messageAccentPurple');
+          default:
+            return $messageColor;
         }
-      }} !important;
     }
+  }};
+  transition:
+    background-color 120ms ease-out,
+    color 120ms ease-out;
+  &:hover {
+    background-color: ${({ theme }) => themeVar(theme, 'tokens.hoverOverlay')};
+    ${({ theme, $messageVariant, $messageColor }) =>
+      $messageVariant === 'assistant' &&
+      $messageColor === 'default' &&
+      `color: ${themeVar(theme, 'tokens.textStrong')};`}
+  }
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => themeVar(theme, 'tokens.borderFocus')};
+    outline-offset: -2px;
   }
 `;

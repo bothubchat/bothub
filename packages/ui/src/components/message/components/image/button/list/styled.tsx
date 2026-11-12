@@ -2,7 +2,7 @@ import { css, styled } from 'styled-components';
 
 export const MessageImageButtonsStyled = styled.div`
   display: flex;
-  padding: 14px;
+  padding: 6px;
   position: absolute;
   top: 0px;
   bottom: 0px;
@@ -19,20 +19,22 @@ export const MessageImageButtonsContent = styled.div<MessageImageButtonsContentP
   display: flex;
   width: 100%;
   height: 100%;
-  gap: 10px;
+  gap: 4px;
   position: relative;
+  /* Кнопки стоят в правом нижнем углу плитки, как в макете; на узкой —
+  столбиком от того же угла */
   ${({ $column }) => {
     if ($column) {
       return css`
         flex-direction: column-reverse;
-        justify-content: flex-end;
+        justify-content: flex-start;
         align-items: flex-end;
       `;
     }
 
     return css`
       justify-content: flex-end;
-      align-items: flex-start;
+      align-items: flex-end;
     `;
   }}
 `;

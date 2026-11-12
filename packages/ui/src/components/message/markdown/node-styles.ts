@@ -5,6 +5,7 @@ import { cachedStyles } from '@/ui/utils/styles/cachedStyles';
 import { MessageColor, MessageVariant } from '../types';
 import { messageSelectionStyles } from '../components/selection';
 import { markdownClassNames } from './class-names';
+import { getMessageLineHeight } from '../components/text';
 
 export interface MarkdownNodeStylesProps {
   $variant: MessageVariant;
@@ -115,6 +116,7 @@ const nodeRules = css<MarkdownNodeStylesProps>`
           ? 'tokens.paragraphUserText'
           : 'tokens.paragraphAssistantText',
       )};
+    line-height: ${({ $variant }) => getMessageLineHeight($variant)};
     margin: 10px 0px;
     overflow-wrap: break-word;
     word-break: normal;
@@ -218,7 +220,17 @@ const nodeRules = css<MarkdownNodeStylesProps>`
     ${bodyText}
     display: block;
     position: relative;
-    color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
+    color: ${({ theme, $variant, $color }) =>
+      themeVar(
+        theme,
+        // eslint-disable-next-line no-nested-ternary
+        $color !== 'default'
+          ? 'colors.base.white'
+          : $variant === 'user'
+            ? 'tokens.paragraphUserText'
+            : 'tokens.paragraphAssistantText',
+      )};
+    line-height: ${({ $variant }) => getMessageLineHeight($variant)};
     &:not(:first-child) {
       margin-top: 10px;
     }
@@ -275,10 +287,10 @@ const nodeRules = css<MarkdownNodeStylesProps>`
 
   ${node('tableContent')} {
     border: 1px solid
-      ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+      ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
     border-collapse: separate;
     border-spacing: 0px;
-    border-radius: 8px;
+    border-radius: 10px;
     overflow: hidden;
     tr {
       &:first-child {
@@ -316,12 +328,11 @@ const nodeRules = css<MarkdownNodeStylesProps>`
 
   ${node('tableCell')} {
     border: 1px solid
-      ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
-    background: ${({ theme }) => themeVar(theme, 'colors.base.black')};
-    padding: 10px;
+      ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
+    padding: 8px 12px;
   }
   th${node('tableCell')} {
-    background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
+    background: ${({ theme }) => themeVar(theme, 'tokens.surfaceRaised')};
   }
 
   ${node('tableCellText')} {

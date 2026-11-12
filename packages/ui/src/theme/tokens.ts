@@ -37,6 +37,11 @@ export const themeTokenDefinitions = {
     light: (theme) => theme.default.colors.base.white,
     dark: (theme) => theme.colors.grayScale.gray4,
   },
+  /** Поверх страницы: поле ввода сообщения */
+  surfaceRaised: {
+    light: (theme) => theme.default.colors.base.white,
+    dark: (theme) => theme.colors.grayScale.gray7,
+  },
   surfaceSecondary: {
     light: (theme) => theme.colors.grayScale.gray4,
     dark: (theme) => theme.colors.grayScale.gray3,
@@ -341,10 +346,16 @@ export const derivedThemeTokenDefinitions = {
     }
     return theme.bright ? tokens.inkDark : theme.default.colors.base.white;
   },
-  paragraphAssistantText: (theme) =>
-    isCustom(theme)
-      ? theme.colors.custom.message.assistant.text
-      : theme.colors.base.white,
+  // Softer than white in the dark mode, as in the mockup: bold text and
+  // titles stay pure white and stand out against it.
+  paragraphAssistantText: (theme) => {
+    if (isCustom(theme)) {
+      return theme.colors.custom.message.assistant.text;
+    }
+    return theme.mode === 'dark'
+      ? colorToRgba(theme.colors.base.white, 0.9)
+      : theme.colors.base.white;
+  },
   timestampUserText: (theme, tokens) => {
     if (isStandardLight(theme)) {
       return theme.default.colors.base.black;
