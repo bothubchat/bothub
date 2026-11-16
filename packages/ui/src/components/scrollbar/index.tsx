@@ -269,6 +269,9 @@ export const Scrollbar = forwardRef<ScrollbarRef, ScrollbarProps>(
         mutationObserver.observe(scrollbarEl, {
           childList: true,
           subtree: true,
+          // A streaming reply grows the text of its last paragraph in place,
+          // without adding nodes.
+          characterData: true,
         });
       }
 
