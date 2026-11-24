@@ -8,13 +8,13 @@ import React, {
 } from 'react';
 
 import { easings, useTransition } from '@react-spring/web';
-import { MenuDotIcon } from '@/ui/icons/menu-dot';
-import { UpdateIcon } from '@/ui/icons/update';
-import { ResendIcon } from '@/ui/icons/resend';
-import { EditIcon } from '@/ui/icons/edit';
-import { TrashIcon } from '@/ui/icons/trash';
-import { ThumbDownIcon } from '@/ui/icons/thumb-down';
-import { CopyIcon } from '@/ui/icons/copy';
+import { DotsLineIcon } from '@/ui/icons/dots-line';
+import { RefreshLineIcon } from '@/ui/icons/refresh-line';
+import { PencilLineIcon } from '@/ui/icons/pencil-line';
+import { TrashLineIcon } from '@/ui/icons/trash-line';
+import { ThumbDownLineIcon } from '@/ui/icons/thumb-down-line';
+import { CopyLineIcon } from '@/ui/icons/copy-line';
+import { ShieldLineIcon } from '@/ui/icons/shield-line';
 import { DownloadImgIcon } from '@/ui/icons/download-img';
 
 import * as S from './styled';
@@ -29,14 +29,20 @@ import { MenuOption } from './menu-option';
 import { CopyButton } from './copy-button';
 import { ForkButton } from './fork-button';
 import { ActionButton } from './action-button';
+import { ACTION_ICON_SIZE } from './constants';
 
 import { useScrollbarRef } from '../list';
+import { MessageActionsReserve } from '../styled';
 import { ModalOption } from './types';
+import { ActionMenuPlacement } from './placement';
+import { flattenActions, useActionsOverflow } from './overflow';
+import { MessageActionsSheet } from './sheet';
+import { matchesMedia } from './media';
 
 import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { colorToRgba, useOnClickOutside } from '@/ui/utils';
-import { MoneyPlusIcon, ShieldIcon } from '@/ui/icons';
+import { MoneyPlusIcon } from '@/ui/icons/money-plus';
 
 const MENU_OFFSET = 36;
 const MENU_PADDING = 8;
@@ -83,7 +89,10 @@ type MessageActionsProps = {
   onTgCopy?: MessageTgCopyEventHandler;
   onCopy?: MessageActionEventHandler;
   onDownload?: () => void;
+  /** Имя кнопки «ещё» для скринридера и заголовок шторки на телефоне */
   menuAriaLabel?: string | null;
+  /** Свои действия потребителя: встают между «повторить» и «форк» */
+  addon?: React.ReactNode;
 };
 
 export const MessageActions = ({
@@ -126,15 +135,17 @@ export const MessageActions = ({
   onCopy,
   onDownload,
   menuAriaLabel,
+  addon,
 }: MessageActionsProps) => {
   const theme = useTheme();
 
   const [menuShown, setMenuShown] = useState(false);
+  // На телефоне меню открывается шторкой снизу, а не окошком у кнопки
+  const [isSheet, setIsSheet] = useState(false);
   const [invertedX, setInvertedX] = useState<boolean>(false);
   const [invertedY, setInvertedY] = useState<boolean>(false);
 
   const timeoutIdRef = useRef<number | null>(null);
-  const messageActionsRef = useRef<HTMLDivElement | null>(null);
   const messageActionsMenuRef = useRef<HTMLDivElement | null>(null);
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
 
@@ -148,9 +159,12 @@ export const MessageActions = ({
     }
 
     return theme.scheme === 'standard' || theme.mode === 'light'
-      ? theme.colors.grayScale.gray1
+      ? theme.tokens.textSecondary
       : theme.colors.accent.primary;
   }, [theme]);
+
+  // Под пузырём пользователя ряд ниже и виден по наведению
+  const compact = variant === 'user';
 
   const modalEnabled = useMemo(() => {
     if (skeleton) {
@@ -222,94 +236,9 @@ export const MessageActions = ({
     variant,
   ]);
 
-  const calculateInversion = useCallback(() => {
-    const container = useScrollRef?.current?.element;
-    const actions = messageActionsMenuRef.current ?? messageActionsRef.current;
-    const modal = modalRef?.current;
-
-    if (!container || !actions) return;
-
-    const containerRect = container.getBoundingClientRect();
-    const actionsRect = actions.getBoundingClientRect();
-
-    const menuHeight =
-      modal?.offsetHeight ??
-      modalOptionsCount * MENU_ESTIMATED_OPTION_HEIGHT +
-        MENU_ESTIMATED_VERTICAL_PADDING;
-    const menuWidth = modal?.offsetWidth ?? MENU_ESTIMATED_WIDTH;
-
-    const spaceBelow = containerRect.bottom - actionsRect.bottom;
-    const spaceAbove = actionsRect.top - containerRect.top;
-
-    const shouldInvertY =
-      spaceBelow < menuHeight + MENU_OFFSET + MENU_PADDING &&
-      spaceAbove > MENU_PADDING;
-
-    const spaceLeft = actionsRect.left - containerRect.left;
-    const spaceRight = containerRect.right - actionsRect.right;
-
-    let shouldInvertX = false;
-    if (variant === 'assistant') {
-      shouldInvertX = spaceLeft < menuWidth + MENU_PADDING;
-    } else {
-      shouldInvertX = spaceRight < menuWidth + MENU_PADDING;
-    }
-
-    setInvertedY(shouldInvertY);
-    setInvertedX(shouldInvertX);
-  }, [modalOptionsCount, useScrollRef, variant]);
-
-  useLayoutEffect(() => {
-    if (menuShown) {
-      calculateInversion();
-    }
-  }, [menuShown, calculateInversion]);
-
-  const handleMenuOpen = useCallback(() => {
-    if (timeoutIdRef.current) {
-      window.clearTimeout(timeoutIdRef.current);
-      timeoutIdRef.current = null;
-    }
-
-    calculateInversion();
-    setMenuShown(true);
-  }, [calculateInversion]);
-
-  const handleButtonHoverOut = useCallback(() => {
-    timeoutIdRef.current = window.setTimeout(() => {
-      setMenuShown(false);
-      timeoutIdRef.current = null;
-    }, 300);
+  const closeMenu = useCallback(() => {
+    setMenuShown(false);
   }, []);
-
-  // Only a mouse opens the menu on hover: on touch the hover would open it
-  // right before the click toggles it closed.
-  const handleButtonPointerEnter = useCallback(
-    (event: React.PointerEvent<HTMLButtonElement>) => {
-      if (event.pointerType === 'mouse') {
-        handleMenuOpen();
-      }
-    },
-    [handleMenuOpen],
-  );
-
-  const handleButtonPointerLeave = useCallback(
-    (event: React.PointerEvent<HTMLButtonElement>) => {
-      if (event.pointerType === 'mouse') {
-        handleButtonHoverOut();
-      }
-    },
-    [handleButtonHoverOut],
-  );
-
-  const handleButtonClick = useCallback(() => {
-    if (menuShown) {
-      setMenuShown(false);
-      return;
-    }
-
-    handleMenuOpen();
-  }, [handleMenuOpen, menuShown]);
 
   const handleOptionClick = useCallback(
     (option: ModalOption) => {
@@ -351,14 +280,227 @@ export const MessageActions = ({
     setMenuShown(false);
   }, [id, message, onReport]);
 
+  // Порядок из макета: копировать, повторить, свои действия (оценка), форк,
+  // остальное. Когда ряду тесно, действия уходят в меню «ещё» с конца
+  const actions = [
+    !disableCopy && (
+      <CopyButton
+        key="copy"
+        compact={compact}
+        onCopy={onCopy}
+        tooltipLabel={copyTooltipLabel}
+      />
+    ),
+    !disableUpdate && variant !== 'user' && (
+      <ActionButton
+        key="update"
+        id={id}
+        message={message}
+        onClick={onUpdate}
+        tooltipLabel={updateTooltipLabel}
+      >
+        <RefreshLineIcon size={ACTION_ICON_SIZE} />
+      </ActionButton>
+    ),
+    editOutOfMenu && (
+      <ActionButton
+        key="edit"
+        id={id}
+        message={message}
+        compact={compact}
+        onClick={() => {
+          handleOptionClick('edit');
+        }}
+        tooltipLabel={editText}
+      >
+        <PencilLineIcon size={ACTION_ICON_SIZE} />
+      </ActionButton>
+    ),
+    ...flattenActions(addon, 'addon'),
+    !disableFork && (
+      <ForkButton
+        key="fork"
+        id={id}
+        message={message}
+        selected={forkSelected}
+        compact={compact}
+        tooltipLabel={forkTooltipLabel}
+        onFork={onFork}
+      />
+    ),
+    !modalEnabled && !disableDelete && (
+      <ActionButton
+        key="delete"
+        id={id}
+        message={message}
+        compact={compact}
+        onClick={onDelete}
+        tooltipLabel={deleteText}
+      >
+        <TrashLineIcon size={ACTION_ICON_SIZE} />
+      </ActionButton>
+    ),
+    !modalEnabled &&
+      !disableDelete &&
+      !!onReportText &&
+      !!onReport &&
+      variant !== 'user' && (
+        <ActionButton
+          key="report"
+          tooltipLabel={onReportText}
+          onClick={handleReportClick}
+        >
+          <ThumbDownLineIcon size={ACTION_ICON_SIZE} />
+        </ActionButton>
+      ),
+    !disableDownload && (
+      <ActionButton
+        key="download"
+        compact={compact}
+        tooltipLabel={downloadTooltipLabel}
+        onClick={onDownload}
+      >
+        <IconProvider fill={iconColor}>
+          <DownloadImgIcon size={ACTION_ICON_SIZE} />
+        </IconProvider>
+      </ActionButton>
+    ),
+    !disableEncryption && (
+      <ActionButton
+        key="encryption"
+        compact={compact}
+        tooltipLabel={encryptionTooltipLabel}
+      >
+        <ShieldLineIcon size={ACTION_ICON_SIZE} />
+      </ActionButton>
+    ),
+    hasCacheTokens && (
+      <ActionButton
+        key="cache"
+        compact={compact}
+        tooltipLabel={cacheTokenTooltipLabel}
+      >
+        <IconProvider
+          size={ACTION_ICON_SIZE}
+          stroke={iconColor}
+        >
+          <MoneyPlusIcon />
+        </IconProvider>
+      </ActionButton>
+    ),
+  ].filter(Boolean);
+
+  const { rowRef, reserveRef, visibleCount, hiddenCount, reserveWidth } =
+    useActionsOverflow(actions.length, modalEnabled);
+  const hasMenu = modalEnabled || hiddenCount > 0;
+  const menuOptionsCount = (modalEnabled ? modalOptionsCount : 0) + hiddenCount;
+
+  const calculateInversion = useCallback(() => {
+    const container = useScrollRef?.current?.element;
+    const anchor = messageActionsMenuRef.current ?? rowRef.current;
+    const modal = modalRef?.current;
+
+    if (!container || !anchor) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const actionsRect = anchor.getBoundingClientRect();
+
+    const menuHeight =
+      modal?.offsetHeight ??
+      menuOptionsCount * MENU_ESTIMATED_OPTION_HEIGHT +
+        MENU_ESTIMATED_VERTICAL_PADDING;
+    const menuWidth = modal?.offsetWidth ?? MENU_ESTIMATED_WIDTH;
+
+    const spaceBelow = containerRect.bottom - actionsRect.bottom;
+    const spaceAbove = actionsRect.top - containerRect.top;
+
+    const shouldInvertY =
+      spaceBelow < menuHeight + MENU_OFFSET + MENU_PADDING &&
+      spaceAbove > MENU_PADDING;
+
+    // The menu opens from its own button: to the right under a reply, to the
+    // left under a user bubble, and flips when it would leave the feed.
+    const spaceToRight = containerRect.right - actionsRect.left;
+    const spaceToLeft = actionsRect.right - containerRect.left;
+    const shouldInvertX =
+      (variant === 'assistant' ? spaceToRight : spaceToLeft) <
+      menuWidth + MENU_PADDING;
+
+    setInvertedY(shouldInvertY);
+    setInvertedX(shouldInvertX);
+  }, [menuOptionsCount, rowRef, useScrollRef, variant]);
+
+  useLayoutEffect(() => {
+    if (menuShown && !isSheet) {
+      calculateInversion();
+    }
+  }, [menuShown, isSheet, calculateInversion]);
+
+  const isPhone = useCallback(
+    () => matchesMedia(`(max-width: ${theme.mobile.maxWidth})`),
+    [theme.mobile.maxWidth],
+  );
+
+  const handleMenuOpen = useCallback(() => {
+    if (timeoutIdRef.current) {
+      window.clearTimeout(timeoutIdRef.current);
+      timeoutIdRef.current = null;
+    }
+
+    const sheet = isPhone();
+
+    setIsSheet(sheet);
+    if (!sheet) {
+      calculateInversion();
+    }
+    setMenuShown(true);
+  }, [calculateInversion, isPhone]);
+
+  const handleButtonHoverOut = useCallback(() => {
+    timeoutIdRef.current = window.setTimeout(() => {
+      setMenuShown(false);
+      timeoutIdRef.current = null;
+    }, 300);
+  }, []);
+
+  // Only a mouse opens the menu on hover: on touch the hover would open it
+  // right before the click toggles it closed. A sheet opens by a press only.
+  const handleButtonPointerEnter = useCallback(
+    (event: React.PointerEvent<HTMLButtonElement>) => {
+      if (event.pointerType === 'mouse' && !isPhone()) {
+        handleMenuOpen();
+      }
+    },
+    [handleMenuOpen, isPhone],
+  );
+
+  const handleButtonPointerLeave = useCallback(
+    (event: React.PointerEvent<HTMLButtonElement>) => {
+      if (event.pointerType === 'mouse' && !isSheet) {
+        handleButtonHoverOut();
+      }
+    },
+    [handleButtonHoverOut, isSheet],
+  );
+
+  const handleButtonClick = useCallback(() => {
+    if (menuShown) {
+      setMenuShown(false);
+      return;
+    }
+
+    handleMenuOpen();
+  }, [handleMenuOpen, menuShown]);
+
   const handleMenuBlur = useCallback(
     (event: React.FocusEvent<HTMLDivElement>) => {
-      // Focus moving to an option must not close the menu before the click.
-      if (!event.currentTarget.contains(event.relatedTarget)) {
+      // The sheet lives in the body and is closed by its backdrop. Focus
+      // moving to an option must not close the menu before the click.
+      if (!isSheet && !event.currentTarget.contains(event.relatedTarget)) {
         setMenuShown(false);
       }
     },
-    [],
+    [isSheet],
   );
 
   const handleMenuKeyDown = useCallback(
@@ -372,15 +514,9 @@ export const MessageActions = ({
   );
 
   // Blur doesn't close the menu where buttons don't take focus on click (Safari).
-  useOnClickOutside(
-    messageActionsMenuRef,
-    () => {
-      setMenuShown(false);
-    },
-    menuShown,
-  );
+  useOnClickOutside(messageActionsMenuRef, closeMenu, menuShown && !isSheet);
 
-  const modalTransition = useTransition(menuShown, {
+  const modalTransition = useTransition(menuShown && !isSheet, {
     from: {
       opacity: 0,
       y: 5,
@@ -400,19 +536,17 @@ export const MessageActions = ({
   });
 
   useEffect(() => {
-    if (!menuShown) return;
+    // The sheet has its own list that may scroll
+    if (!menuShown || isSheet) return;
 
-    const handleGlobalClose = () => {
-      setMenuShown(false);
-    };
-    window.addEventListener('scroll', handleGlobalClose, true);
+    window.addEventListener('scroll', closeMenu, true);
     return () => {
-      window.removeEventListener('scroll', handleGlobalClose, true);
+      window.removeEventListener('scroll', closeMenu, true);
     };
-  }, [menuShown]);
+  }, [menuShown, isSheet, closeMenu]);
 
   useEffect(() => {
-    if (!menuShown) return;
+    if (!menuShown || isSheet) return;
 
     const handleResize = () => {
       calculateInversion();
@@ -421,7 +555,7 @@ export const MessageActions = ({
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [menuShown, calculateInversion]);
+  }, [menuShown, isSheet, calculateInversion]);
 
   useEffect(
     () => () => {
@@ -432,212 +566,169 @@ export const MessageActions = ({
     [],
   );
 
-  return (
-    <S.MessageActionsStyled
-      $variant={variant}
-      ref={messageActionsRef}
-    >
-      <>
-        <IconProvider fill={iconColor}>
-          {modalEnabled && (
-            <S.MessageActionsMenuStyled
-              ref={messageActionsMenuRef}
-              onBlur={handleMenuBlur}
-              onKeyDown={handleMenuKeyDown}
-            >
-              <ActionButton
-                ref={menuButtonRef}
-                tooltipLabel={menuAriaLabel}
-                aria-expanded={menuShown}
-                aria-haspopup="menu"
-                onPointerEnter={handleButtonPointerEnter}
-                onPointerLeave={handleButtonPointerLeave}
-                onClick={handleButtonClick}
-              >
-                <MenuDotIcon size={18} />
-              </ActionButton>
-              {modalTransition(
-                (style, show) =>
-                  show && (
-                    <S.MessageActionsMenuModal
-                      style={style}
-                      key="message-actions-modal"
-                      ref={modalRef}
-                      role="menu"
-                      onMouseEnter={handleMenuOpen}
-                      onMouseLeave={handleButtonHoverOut}
-                      $variant={variant}
-                      $invertedX={invertedX}
-                      $invertedY={invertedY}
-                    >
-                      {!disableCopy && copyPlainText && onPlainTextCopy && (
-                        <MenuOption onClick={handlePlainTextCopy}>
-                          <S.MessageActionsMenuModalOptionContent>
-                            <CopyIcon />
-                            <S.MessageActionsButtonText>
-                              {copyPlainText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
-                      {!disableCopy && copyTgText && onTgCopy && (
-                        <MenuOption onClick={handleTgCopy}>
-                          <S.MessageActionsMenuModalOptionContent>
-                            <CopyIcon />
-                            <S.MessageActionsButtonText>
-                              {copyTgText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
-                      {!disableResend &&
-                        variant === 'user' &&
-                        resendText &&
-                        onResend && (
-                          <MenuOption
-                            onClick={() => {
-                              handleOptionClick('resend');
-                            }}
-                          >
-                            <S.MessageActionsMenuModalOptionContent>
-                              <ResendIcon />
-                              <S.MessageActionsButtonText>
-                                {resendText}
-                              </S.MessageActionsButtonText>
-                            </S.MessageActionsMenuModalOptionContent>
-                          </MenuOption>
-                        )}
-                      {!editOutOfMenu && !disableEdit && editText && onEdit && (
-                        <MenuOption
-                          onClick={() => {
-                            handleOptionClick('edit');
-                          }}
-                        >
-                          <S.MessageActionsMenuModalOptionContent>
-                            <EditIcon />
-                            <S.MessageActionsButtonText>
-                              {editText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
-                      {!disableDelete && deleteText && onDelete && (
-                        <MenuOption
-                          onClick={() => {
-                            handleOptionClick('delete');
-                          }}
-                        >
-                          <S.MessageActionsMenuModalOptionContent>
-                            <TrashIcon />
-                            <S.MessageActionsButtonText>
-                              {deleteText}
-                            </S.MessageActionsButtonText>
-                          </S.MessageActionsMenuModalOptionContent>
-                        </MenuOption>
-                      )}
-                      {!disableDelete &&
-                        onReportText &&
-                        onReport &&
-                        variant !== 'user' && (
-                          <MenuOption onClick={handleReportClick}>
-                            <S.MessageActionsMenuModalOptionContent>
-                              <ThumbDownIcon size={18} />
-                              <S.MessageActionsButtonText>
-                                {onReportText}
-                              </S.MessageActionsButtonText>
-                            </S.MessageActionsMenuModalOptionContent>
-                          </MenuOption>
-                        )}
-                    </S.MessageActionsMenuModal>
-                  ),
-              )}
-            </S.MessageActionsMenuStyled>
+  if (actions.length === 0 && !hasMenu) {
+    return null;
+  }
+
+  // Сначала действия, которым не хватило места в ряду, затем свои пункты меню
+  const options = (
+    <>
+      {hiddenCount > 0 && (
+        <ActionMenuPlacement onSelect={closeMenu}>
+          {actions.slice(visibleCount)}
+        </ActionMenuPlacement>
+      )}
+      {hiddenCount > 0 && modalEnabled && modalOptionsCount > 0 && (
+        <S.MessageActionsMenuDivider aria-hidden />
+      )}
+      {modalEnabled && (
+        <>
+          {!disableCopy && copyPlainText && onPlainTextCopy && (
+            <MenuOption onClick={handlePlainTextCopy}>
+              <S.MessageActionsMenuModalOptionContent>
+                <CopyLineIcon size={ACTION_ICON_SIZE} />
+                <S.MessageActionsButtonText>
+                  {copyPlainText}
+                </S.MessageActionsButtonText>
+              </S.MessageActionsMenuModalOptionContent>
+            </MenuOption>
           )}
-          {!modalEnabled && !disableDelete && (
-            <ActionButton
-              id={id}
-              message={message}
-              onClick={onDelete}
-              tooltipLabel={deleteText}
-            >
-              <TrashIcon size={20} />
-            </ActionButton>
+          {!disableCopy && copyTgText && onTgCopy && (
+            <MenuOption onClick={handleTgCopy}>
+              <S.MessageActionsMenuModalOptionContent>
+                <CopyLineIcon size={ACTION_ICON_SIZE} />
+                <S.MessageActionsButtonText>
+                  {copyTgText}
+                </S.MessageActionsButtonText>
+              </S.MessageActionsMenuModalOptionContent>
+            </MenuOption>
           )}
-          {!disableUpdate && variant !== 'user' && (
-            <ActionButton
-              id={id}
-              message={message}
-              onClick={onUpdate}
-              tooltipLabel={updateTooltipLabel}
+          {!disableResend && variant === 'user' && resendText && onResend && (
+            <MenuOption
+              onClick={() => {
+                handleOptionClick('resend');
+              }}
             >
-              <UpdateIcon size={18} />
-            </ActionButton>
+              <S.MessageActionsMenuModalOptionContent>
+                <RefreshLineIcon size={ACTION_ICON_SIZE} />
+                <S.MessageActionsButtonText>
+                  {resendText}
+                </S.MessageActionsButtonText>
+              </S.MessageActionsMenuModalOptionContent>
+            </MenuOption>
           )}
-          {editOutOfMenu && (
-            <ActionButton
-              id={id}
-              message={message}
+          {!editOutOfMenu && !disableEdit && editText && onEdit && (
+            <MenuOption
               onClick={() => {
                 handleOptionClick('edit');
               }}
-              tooltipLabel={editText}
             >
-              <EditIcon size={18} />
-            </ActionButton>
+              <S.MessageActionsMenuModalOptionContent>
+                <PencilLineIcon size={ACTION_ICON_SIZE} />
+                <S.MessageActionsButtonText>
+                  {editText}
+                </S.MessageActionsButtonText>
+              </S.MessageActionsMenuModalOptionContent>
+            </MenuOption>
           )}
-          {!disableCopy && (
-            <CopyButton
-              onCopy={onCopy}
-              tooltipLabel={copyTooltipLabel}
-            />
+          {!disableDelete && deleteText && onDelete && (
+            <MenuOption
+              onClick={() => {
+                handleOptionClick('delete');
+              }}
+            >
+              <S.MessageActionsMenuModalOptionContent>
+                <TrashLineIcon size={ACTION_ICON_SIZE} />
+                <S.MessageActionsButtonText>
+                  {deleteText}
+                </S.MessageActionsButtonText>
+              </S.MessageActionsMenuModalOptionContent>
+            </MenuOption>
           )}
-          {!disableFork && (
-            <ForkButton
-              id={id}
-              message={message}
-              selected={forkSelected}
-              tooltipLabel={forkTooltipLabel}
-              iconColor={iconColor}
-              onFork={onFork}
-            />
+          {!disableDelete && onReportText && onReport && variant !== 'user' && (
+            <MenuOption onClick={handleReportClick}>
+              <S.MessageActionsMenuModalOptionContent>
+                <ThumbDownLineIcon size={ACTION_ICON_SIZE} />
+                <S.MessageActionsButtonText>
+                  {onReportText}
+                </S.MessageActionsButtonText>
+              </S.MessageActionsMenuModalOptionContent>
+            </MenuOption>
           )}
-          {!modalEnabled &&
-            !disableDelete &&
-            onReportText &&
-            onReport &&
-            variant !== 'user' && (
-              <ActionButton
-                tooltipLabel={onReportText}
-                onClick={handleReportClick}
-              >
-                <ThumbDownIcon size={18} />
-              </ActionButton>
-            )}
-        </IconProvider>
-      </>
-      {!disableDownload && (
-        <ActionButton
-          tooltipLabel={downloadTooltipLabel}
-          onClick={onDownload}
+        </>
+      )}
+    </>
+  );
+
+  const menu = hasMenu && (
+    <S.MessageActionsMenuStyled
+      ref={messageActionsMenuRef}
+      onBlur={handleMenuBlur}
+      onKeyDown={handleMenuKeyDown}
+    >
+      <ActionButton
+        ref={menuButtonRef}
+        compact={compact}
+        aria-label={menuAriaLabel ?? undefined}
+        aria-expanded={menuShown}
+        aria-haspopup="menu"
+        onPointerEnter={handleButtonPointerEnter}
+        onPointerLeave={handleButtonPointerLeave}
+        onClick={handleButtonClick}
+      >
+        <DotsLineIcon size={ACTION_ICON_SIZE} />
+      </ActionButton>
+      {isSheet && (
+        <MessageActionsSheet
+          open={menuShown}
+          title={menuAriaLabel}
+          onClose={closeMenu}
         >
-          <DownloadImgIcon size={18} />
-        </ActionButton>
+          {options}
+        </MessageActionsSheet>
       )}
-      {!disableEncryption && (
-        <ActionButton tooltipLabel={encryptionTooltipLabel}>
-          <ShieldIcon size={18} />
-        </ActionButton>
+      {modalTransition(
+        (style, show) =>
+          show && (
+            <S.MessageActionsMenuModal
+              style={style}
+              key="message-actions-modal"
+              ref={modalRef}
+              role="menu"
+              onMouseEnter={handleMenuOpen}
+              onMouseLeave={handleButtonHoverOut}
+              $variant={variant}
+              $invertedX={invertedX}
+              $invertedY={invertedY}
+            >
+              {options}
+            </S.MessageActionsMenuModal>
+          ),
       )}
-      {hasCacheTokens && (
-        <ActionButton tooltipLabel={cacheTokenTooltipLabel}>
-          <IconProvider
-            size={18}
-            stroke={theme.colors.grayScale.gray1}
-          >
-            <MoneyPlusIcon />
-          </IconProvider>
-        </ActionButton>
+    </S.MessageActionsMenuStyled>
+  );
+
+  return (
+    <>
+      <S.MessageActionsStyled
+        $variant={variant}
+        $color={iconColor}
+        ref={rowRef}
+        {...(compact && { 'data-message-reveal': true })}
+      >
+        <S.MessageActionsList>
+          {actions.slice(0, visibleCount)}
+        </S.MessageActionsList>
+        {menu}
+      </S.MessageActionsStyled>
+      {hiddenCount > 0 && (
+        <MessageActionsReserve
+          ref={reserveRef}
+          $variant={variant}
+          style={{ flexBasis: reserveWidth }}
+          aria-hidden
+        />
       )}
-    </S.MessageActionsStyled>
+    </>
   );
 };

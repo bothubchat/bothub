@@ -2,6 +2,7 @@ import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageVariant } from '@/ui/components/message';
 import { messageSelectionStyles } from '../selection';
+import { getMessageLineHeight } from '../text';
 import { themeVar } from '@/ui/theme';
 
 export interface MessageParagraphStyledProps {
@@ -21,6 +22,7 @@ export const MessageParagraphStyled = styled(
 
     return themeVar(theme, 'tokens.paragraphAssistantText');
   }};
+  line-height: ${({ $variant }) => getMessageLineHeight($variant)};
   ${({ $disableMargin }) =>
     !$disableMargin &&
     css`

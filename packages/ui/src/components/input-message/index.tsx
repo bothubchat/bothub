@@ -16,6 +16,7 @@ import {
   InputMessageContentTextWrapper,
   InputMessageContentInfo,
   InputMessageActions,
+  InputMessageHeader,
 } from './styled';
 import {
   EditingProps,
@@ -60,6 +61,9 @@ export type InputMessageSendEventHandler = (
 
 export type InputMessageVoiceEventHandler = (blob: Blob) => unknown;
 
+// Кнопки в шапке поля работают сами по себе: фокус в поле от них не прыгает
+const stopPropagation = (event: React.MouseEvent) => event.stopPropagation();
+
 export type { MessageSubmitKey };
 
 export interface InputMessageProps
@@ -80,6 +84,14 @@ export interface InputMessageProps
   imageRequiredText?: string;
   sendWarning?: React.ReactNode;
   sendAddon?: React.ReactNode;
+  /**
+   * Над полем ввода: кадры видео, референсы и другое, что уйдёт вместе
+   * с сообщением. Клики в нём не переводят фокус в поле
+   */
+  header?: React.ReactNode;
+  /** Идёт генерация: кнопка отправки сменяется кнопкой остановки */
+  onStop?: () => unknown;
+  stopAriaLabel?: string;
   sendDisabled?: boolean;
   /**
    * Почему отправка недоступна. Показывается после попытки отправить
@@ -127,6 +139,9 @@ export const InputMessage: React.FC<InputMessageProps> = ({
   imageRequiredText,
   sendWarning,
   sendAddon,
+  header,
+  onStop,
+  stopAriaLabel,
   disabled = false,
   sendDisabled = false,
   sendDisabledReason,
@@ -304,6 +319,11 @@ export const InputMessage: React.FC<InputMessageProps> = ({
           {actions}
         </InputMessageActions>
         <InputMessageMain onClick={handleClick}>
+          {header && (
+            <InputMessageHeader onClick={stopPropagation}>
+              {header}
+            </InputMessageHeader>
+          )}
           {editingProps?.isEditing && (
             <InputMessageEditWrapper>
               <IconProvider size={24}>
@@ -412,6 +432,8 @@ export const InputMessage: React.FC<InputMessageProps> = ({
             isVoiceRecording={isVoiceRecording}
             isVoicePaused={isVoicePaused}
             sendAddon={sendAddon}
+            onStop={onStop}
+            stopAriaLabel={stopAriaLabel}
             sendAriaLabel={sendAriaLabel}
             saveAriaLabel={saveAriaLabel}
             voiceAriaLabel={voiceAriaLabel}

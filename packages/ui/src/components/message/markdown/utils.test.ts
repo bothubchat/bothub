@@ -1,5 +1,10 @@
 import { expect, test, describe } from 'vitest';
-import { getOpenCodeFenceStart, normalizeMessageMarkdown } from './utils';
+import {
+  formatMessageDocumentLines,
+  getOpenCodeFenceStart,
+  normalizeMessageMarkdown,
+  unwrapDocumentBlocks,
+} from './utils';
 
 describe('normalizeMessageMarkdown', () => {
   test('escapes currency dollars so they are not treated as math', () => {
@@ -334,5 +339,30 @@ describe('getOpenCodeFenceStart', () => {
     ['inline code with three backticks', 'Код ```a``` в строке'],
   ])('ignores %s', (_, content) => {
     expect(getOpenCodeFenceStart(content)).toBeNull();
+  });
+});
+
+describe('unwrapDocumentBlocks', () => {
+  test('turns document blocks into the markdown of the message', () => {
+    expect(
+      unwrapDocumentBlocks('Готово:\n\n```doc\n# Policy\n- a\n```\n\nКонец'),
+    ).toBe('Готово:\n\n# Policy\n- a\n\nКонец');
+    expect(unwrapDocumentBlocks('```result\nA\n```\n~~~tg\nB\n~~~')).toBe(
+      'A\nB',
+    );
+  });
+
+  test('keeps code blocks and document fences inside them', () => {
+    const content = '```ts\nconst a = 1;\n```\n\n````md\n```doc\nA\n```\n````';
+    expect(unwrapDocumentBlocks(content)).toBe(content);
+  });
+});
+
+describe('formatMessageDocumentLines', () => {
+  test('lays out the lines of the text, not of the code', () => {
+    const content = '- a\n1.2. b\n\n```\n- a\n1.2. b\n```';
+    const expected = '- a\n\n1.2. b\n\n```\n- a\n1.2. b\n```';
+
+    expect(formatMessageDocumentLines(content)).toBe(expected);
   });
 });

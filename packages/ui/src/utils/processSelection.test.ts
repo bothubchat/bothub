@@ -32,6 +32,48 @@ describe('processSelection', () => {
     );
   });
 
+  test('keeps the text of a list item on the line of its number', () => {
+    // As react-markdown renders a list with blank lines between its items.
+    const range = selectHtml(
+      '<p>Date: A</p>\n<ol>\n<li>\n<p>INTRODUCTION<br>1.1. First</p>\n<ul>\n<li>a</li>\n</ul>\n</li>\n</ol>\n<pre><code>x\ny</code></pre>',
+    );
+
+    // jsdom has no `innerText`: newlines in the text are the text nodes.
+    expect(processSelection(range, false, false).plain).toBe(
+      'Date: A1. INTRODUCTION1.1. First  • ax\ny',
+    );
+  });
+
+  test('separates a heading after a list with an empty line', () => {
+    // jsdom has no `innerText`: like a browser, this one puts an empty line
+    // around paragraphs only and a line break before a list item.
+    const read = (node: Node): string => {
+      const text = Array.from(node.childNodes).map(read).join('');
+      if (!(node instanceof HTMLElement)) return node.textContent ?? '';
+      if (node.tagName === 'P') return `\n\n${text}\n\n`;
+      if (node.tagName === 'LI') return `\n${text}`;
+      return text;
+    };
+    Object.defineProperty(HTMLElement.prototype, 'innerText', {
+      configurable: true,
+      get(this: HTMLElement) {
+        return read(this)
+          .replace(/\n{3,}/g, '\n\n')
+          .trim();
+      },
+    });
+
+    try {
+      const range = selectHtml('<ul><li>a</li></ul><h3>3. Title</h3>');
+      expect(processSelection(range, false, false).plain).toBe(
+        '• a\n\n3. Title',
+      );
+    } finally {
+      // `innerText` was never defined on the prototype before.
+      Reflect.deleteProperty(HTMLElement.prototype, 'innerText');
+    }
+  });
+
   // Every item used to search its whole list again: 2000 items took seconds.
   test('does not search the list again for every item', () => {
     const countSearches = (length: number) => {

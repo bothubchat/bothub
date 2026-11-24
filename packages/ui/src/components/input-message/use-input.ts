@@ -9,7 +9,8 @@ import {
 
 export type MessageSubmitKey = 'enter' | 'ctrlEnter';
 
-export const TEXTAREA_MIN_HEIGHT = 'calc(var(--bothub-scale, 1) * 22px)';
+// Две строки текста и отступы поля: место под мысль видно сразу
+export const TEXTAREA_MIN_HEIGHT = 'calc(var(--bothub-scale, 1) * 48px)';
 
 /** Фокус «ничей» или уже в поле: возвращаем его, не отбирая у другого поля */
 const canRestoreFocus = (el: HTMLElement) => {

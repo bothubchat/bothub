@@ -81,7 +81,7 @@ export const MessageReasoningBlock = ({
           {!isReasoning && !!content && (
             <ReasoningBlockButtonArrow
               $isOpen={isOpen}
-              size={16}
+              size={14}
             />
           )}
         </ReasoningBlockButton>

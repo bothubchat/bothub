@@ -3,15 +3,14 @@ import { Typography } from '@/ui/components/typography';
 import { themeVar } from '@/ui/theme';
 
 export const MessageTableCellStyled = styled.td`
-  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
-  background: ${({ theme }) => themeVar(theme, 'colors.base.black')};
-  padding: 10px;
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray3')};
+  padding: 8px 12px;
 `;
 
 export const MessageTableHeadCell = styled(MessageTableCellStyled).attrs({
   as: 'th',
 })`
-  background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray4')};
+  background: ${({ theme }) => themeVar(theme, 'tokens.surfaceRaised')};
 `;
 
 export interface MessageTableCellTextProps {

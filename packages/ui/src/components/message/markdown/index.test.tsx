@@ -181,6 +181,44 @@ describe('MessageMarkdown', () => {
     expect(container.textContent).not.toContain('<br>');
   });
 
+  test('keeps single line breaks inside list items and paragraphs', () => {
+    const { container } = renderMarkdown(
+      'Name: A\nDate: B\n\n- INTRODUCTION\n*First* clause\nSecond clause',
+    );
+
+    const paragraph = container.querySelector('p');
+    expect(paragraph?.querySelectorAll('br')).toHaveLength(1);
+    // No newline after <br>: `pre-wrap` would show it as an empty line.
+    expect(paragraph?.textContent).toBe('Name: ADate: B');
+
+    const item = container.querySelector('li');
+    expect(item?.querySelectorAll('br')).toHaveLength(2);
+    expect(item?.querySelector('em')?.textContent).toBe('First');
+    expect(item?.textContent).toBe('INTRODUCTIONFirst clauseSecond clause');
+  });
+
+  test.each([
+    ['the message', ''],
+    ['a document block', '```doc\n'],
+  ])('lays out the clauses of %s', (_, fence) => {
+    const { container } = renderMarkdown(
+      `${fence}2. SCOPE\n2.2. Covered:\n     - Custody.\n2.3. All customers of\n   the Company.${fence ? '\n```' : ''}`,
+    );
+
+    expect(container.querySelector('ol')).toBeNull();
+    expect(container.querySelector('h3')?.textContent).toBe('2. SCOPE');
+    expect(container.querySelector('ul > li')?.textContent).toBe('Custody.');
+    const clause = [...container.querySelectorAll('p')].at(-1);
+    expect(clause?.textContent).toBe('2.3. All customers of the Company.');
+  });
+
+  test('does not add line breaks to fenced code', () => {
+    const { container } = renderMarkdown('```\na\nb\n```');
+
+    expect(container.querySelector('pre')).not.toBeNull();
+    expect(container.querySelector('pre br')).toBeNull();
+  });
+
   test('renders simple nodes as plain tags with classes', () => {
     const { container } = renderMarkdown(
       [

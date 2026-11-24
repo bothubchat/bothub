@@ -1,5 +1,9 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { getRichText, preloadRichText } from './rich-text';
+import {
+  getMarkdownPlainText,
+  getRichText,
+  preloadRichText,
+} from './rich-text';
 
 class ClipboardItemMock {
   constructor(readonly items: Record<string, Blob | Promise<Blob>>) {}
@@ -44,9 +48,9 @@ describe('rich text copy', () => {
     runIdle();
     const html = await readBlob(await pending);
     expect(html).toContain('<strong>a</strong>');
-    // Paragraphs keep their line breaks in editors that drop <p> margins.
-    expect(html).toContain('white-space:pre-wrap');
-    expect(html).not.toContain('<p>');
+    // Paragraphs stay paragraphs: Word pastes <pre> in a monospace font.
+    expect(html).toContain('<p ');
+    expect(html).not.toContain('<pre');
   });
 
   test('builds the HTML within the call once marked is loaded', async () => {
@@ -57,5 +61,42 @@ describe('rich text copy', () => {
     expect(await readBlob(items['text/html'] as Blob)).toContain(
       '<em>one</em>',
     );
+  });
+
+  test('copies single line breaks as <br>, also inside list items', async () => {
+    const items = getItems(
+      getRichText('Name: A\nDate: B\n\n- INTRODUCTION\nFirst clause'),
+    );
+    const html = await readBlob(items['text/html'] as Blob);
+
+    expect(html).toContain('Name: A<br>Date: B');
+    expect(html).toContain('INTRODUCTION<br>First clause');
+  });
+
+  test('copies a document block formatted, not as code', async () => {
+    const text =
+      'Готово:\n\n```doc\n# Policy\n- Custody.\n2.3. All **clients**\n   of the Company.\n```';
+    const items = getItems(getRichText(text));
+    const html = await readBlob(items['text/html'] as Blob);
+
+    expect(html).toContain('<h1');
+    expect(html).toContain('<li');
+    expect(html).toContain(
+      '2.3. All <strong>clients</strong> of the Company.</p>',
+    );
+    expect(html).not.toContain('<code');
+    // The plain text is the message as it was written.
+    expect(await readBlob(items['text/plain'] as Blob)).toBe(text);
+  });
+
+  test('copies the text without formatting with the list numbers', async () => {
+    const items = getItems(
+      getMarkdownPlainText('Готово:\n\n```doc\n1. **Intro**\n- Custody.\n```'),
+    );
+    const plain = await readBlob(items['text/plain'] as Blob);
+
+    // jsdom has no `innerText`, so the text comes without line breaks.
+    expect(plain).toBe('Готово:1. Intro• Custody.');
+    expect(items['text/html']).toBeUndefined();
   });
 });

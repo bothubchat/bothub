@@ -2,70 +2,61 @@ import React from 'react';
 import {
   MessageFileInfo,
   MessageFileName,
+  MessageFilePreview,
   MessageFileSize,
   MessageFileStyled,
+  MessageFileTile,
 } from './styled';
-import { IconProvider } from '@/ui/components/icon';
-import { PdfBigIcon } from '@/ui/icons/pdf-big';
-import { TxtBigIcon } from '@/ui/icons/txt-big';
-import { WordBigIcon } from '@/ui/icons/word-big';
-import { XlsBigIcon } from '@/ui/icons/xls-big';
-import { useMessage } from '../context';
-import { useTheme } from '@/ui/theme';
-import { AttachFileBigIcon } from '@/ui/icons/attach-file-big';
+import { getFileKind } from './kind';
 
 export interface MessageFileProps extends React.ComponentProps<'a'> {
+  /** Своё содержимое плитки вместо расширения */
   icon?: React.ReactNode;
+  /** Адрес превью: картинка показывается миниатюрой вместо плитки */
+  preview?: string;
   name: React.ReactNode;
   size: React.ReactNode;
 }
 
+// Длинное имя показываем с конца: по расширению и хвосту файл узнают
+const NAME_LIMIT = 32;
+
 export const MessageFile: React.FC<MessageFileProps> = ({
   icon,
+  preview,
   name,
   size,
   ...props
 }) => {
-  const theme = useTheme();
-  const { variant } = useMessage();
-
-  let iconNode: React.ReactNode;
-
-  if (typeof name === 'string' && !icon) {
-    if (/\.txt$/i.test(name)) {
-      iconNode = <TxtBigIcon />;
-    } else if (/\.docx?$/i.test(name)) {
-      iconNode = <WordBigIcon />;
-    } else if (/\.xlsx?$/i.test(name)) {
-      iconNode = <XlsBigIcon />;
-    } else if (/\.pdf$/i.test(name)) {
-      iconNode = <PdfBigIcon />;
-    } else {
-      iconNode = <AttachFileBigIcon />;
-    }
-  } else {
-    iconNode = icon;
-  }
+  const kind = getFileKind(typeof name === 'string' ? name : '');
 
   return (
-    <MessageFileStyled {...props}>
-      <IconProvider
-        fill={theme.default.colors.base.white}
-        size={46}
-      >
-        {iconNode}
-      </IconProvider>
+    <MessageFileStyled
+      $withPreview={!!preview}
+      {...props}
+    >
+      {preview ? (
+        <MessageFilePreview
+          src={preview}
+          alt=""
+        />
+      ) : (
+        <MessageFileTile
+          $tint={kind.tint}
+          aria-hidden
+        >
+          {icon ?? kind.label}
+        </MessageFileTile>
+      )}
       <MessageFileInfo>
         {typeof name === 'string' && (
-          <MessageFileName $variant={variant}>
-            {name.length > 32 && '...'}
-            {name.slice(-32)}
+          <MessageFileName>
+            {name.length > NAME_LIMIT && '...'}
+            {name.slice(-NAME_LIMIT)}
           </MessageFileName>
         )}
         {typeof name !== 'string' && name}
-        {typeof size === 'string' && (
-          <MessageFileSize $variant={variant}>{size}</MessageFileSize>
-        )}
+        {typeof size === 'string' && <MessageFileSize>{size}</MessageFileSize>}
         {typeof size !== 'string' && size}
       </MessageFileInfo>
     </MessageFileStyled>
@@ -73,3 +64,4 @@ export const MessageFile: React.FC<MessageFileProps> = ({
 };
 
 export * from './styled';
+export * from './kind';

@@ -1,11 +1,13 @@
 import React, { memo, useCallback, useRef } from 'react';
-import { AttachIcon } from '@/ui/icons/attach';
 import { CheckSmallIcon } from '@/ui/icons';
 import { LoaderCircularIcon } from '@/ui/icons/loader-circular';
-import { useTheme } from '@/ui/theme';
+import { MicLineIcon } from '@/ui/icons/mic-line';
+import { PaperclipLineIcon } from '@/ui/icons/paperclip-line';
+import { StopSquareIcon } from '@/ui/icons/stop-square';
 import {
   InputMessageSendButton,
   InputMessageSendIcon,
+  InputMessageStopButton,
   InputMessageUploadFile,
   InputMessageUploadFileInput,
   InputMessageUploadFileLabel,
@@ -34,7 +36,6 @@ export const InputMessageUploadControl: React.FC<InputMessageUploadControlProps>
       attachAriaLabel,
       onFileInputChange,
     }) => {
-      const theme = useTheme();
       const fileInputRef = useRef<HTMLInputElement | null>(null);
       const isDisabled = filesCount >= uploadFileLimit || disabled;
 
@@ -52,10 +53,7 @@ export const InputMessageUploadControl: React.FC<InputMessageUploadControlProps>
             aria-label={attachAriaLabel}
             onClick={handleOpenFiles}
           >
-            <AttachIcon
-              size={18}
-              fill={theme.colors.base.white}
-            />
+            <PaperclipLineIcon size={18} />
           </InputMessageUploadFileLabel>
           <InputMessageUploadFileInput
             ref={fileInputRef}
@@ -82,6 +80,9 @@ export interface InputMessageSendControlsProps {
   isVoiceRecording: boolean;
   isVoicePaused: boolean;
   sendAddon?: React.ReactNode;
+  /** Идёт генерация: вместо отправки кнопка остановки */
+  onStop?: () => unknown;
+  stopAriaLabel?: string;
   sendAriaLabel?: string;
   saveAriaLabel?: string;
   voiceAriaLabel?: string;
@@ -108,6 +109,8 @@ export const InputMessageSendControls: React.FC<InputMessageSendControlsProps> =
       isVoiceRecording,
       isVoicePaused,
       sendAddon,
+      onStop,
+      stopAriaLabel,
       sendAriaLabel,
       saveAriaLabel,
       voiceAriaLabel,
@@ -120,7 +123,13 @@ export const InputMessageSendControls: React.FC<InputMessageSendControlsProps> =
       onVoicePause,
       onVoiceResume,
     }) => {
-      const theme = useTheme();
+      const handleStop = useCallback(
+        (event: React.MouseEvent<HTMLButtonElement>) => {
+          event.stopPropagation();
+          onStop?.();
+        },
+        [onStop],
+      );
 
       return (
         <>
@@ -148,10 +157,21 @@ export const InputMessageSendControls: React.FC<InputMessageSendControlsProps> =
                 !isVoiceRecording ? onVoiceRecordStart : onVoiceRecordEnd
               }
               data-test="submit-message"
-            />
+            >
+              <MicLineIcon size={18} />
+            </InputMessageVoiceButton>
           )}
           {!hiddenSend && !isVoiceRecording && sendAddon}
-          {!hiddenSend && !isVoiceRecording && (
+          {!hiddenSend && !isVoiceRecording && onStop && (
+            <InputMessageStopButton
+              aria-label={stopAriaLabel}
+              onClick={handleStop}
+              data-test="stop-generation"
+            >
+              <StopSquareIcon size={18} />
+            </InputMessageStopButton>
+          )}
+          {!hiddenSend && !isVoiceRecording && !onStop && (
             <InputMessageSendButton
               disabled={disabled || sendDisabled || isVoiceRecording}
               aria-busy={sendLoading || undefined}
@@ -159,19 +179,14 @@ export const InputMessageSendControls: React.FC<InputMessageSendControlsProps> =
                 isEditing ? (saveAriaLabel ?? sendAriaLabel) : sendAriaLabel
               }
               onClick={onSend}
-              {...(theme.bright && {
-                iconFill: theme.default.colors.base.black,
-              })}
-              // Лоадер цветом иконок поля: серый заблокированной кнопки почти не виден
-              {...(sendLoading && { iconFill: theme.colors.base.white })}
               data-test="submit-message"
             >
               {sendLoading ? (
-                <LoaderCircularIcon />
+                <LoaderCircularIcon fill="currentColor" />
               ) : isEditing ? (
-                <CheckSmallIcon />
+                <CheckSmallIcon fill="currentColor" />
               ) : (
-                <InputMessageSendIcon />
+                <InputMessageSendIcon size={18} />
               )}
             </InputMessageSendButton>
           )}

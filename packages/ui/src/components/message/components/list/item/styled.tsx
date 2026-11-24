@@ -1,12 +1,16 @@
 import { css, styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
 import { MessageListVariant } from '../types';
+import { MessageVariant } from '../../../types';
+import { getMessageLineHeight } from '../../text';
 import { messageSelectionStyles } from '../../selection';
 import { themeVar } from '@/ui/theme';
 
 export interface MessageListItemStyledProps {
   $variant: MessageListVariant;
   $messageColor: string;
+  /** Чьё сообщение: от него цвет и интервал текста, как у абзаца */
+  $messageVariant?: MessageVariant;
 }
 
 export const MessageListItemStyled = styled(Typography).attrs({
@@ -15,13 +19,20 @@ export const MessageListItemStyled = styled(Typography).attrs({
 })<MessageListItemStyledProps>`
   display: block;
   position: relative;
-  color: ${({ theme, $messageColor }) => {
+  color: ${({ theme, $messageColor, $messageVariant }) => {
     if ($messageColor !== 'default') {
       return themeVar(theme, 'colors.base.white');
     }
 
-    return themeVar(theme, 'colors.base.white');
+    return themeVar(
+      theme,
+      $messageVariant === 'user'
+        ? 'tokens.paragraphUserText'
+        : 'tokens.paragraphAssistantText',
+    );
   }};
+  line-height: ${({ $messageVariant = 'assistant' }) =>
+    getMessageLineHeight($messageVariant)};
   &:not(:first-child) {
     margin-top: 10px;
   }

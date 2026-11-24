@@ -6,7 +6,7 @@ import { Skeleton } from '@/ui/components/skeleton';
 
 export const MessageImageStyled = styled.div`
   display: inline-flex;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   width: min-content;
   position: relative;

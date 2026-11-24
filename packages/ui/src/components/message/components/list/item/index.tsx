@@ -9,13 +9,14 @@ export const MessageListItem: React.FC<MessageListItemProps> = ({
   children,
   ...props
 }) => {
-  const { color } = useMessage();
+  const { color, variant: messageVariant } = useMessage();
   const { variant } = useMessageList();
 
   return (
     <MessageListItemStyled
       $variant={variant}
       $messageColor={color}
+      $messageVariant={messageVariant}
       {...props}
       ref={null}
     >

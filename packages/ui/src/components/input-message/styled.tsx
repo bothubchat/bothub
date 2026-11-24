@@ -1,10 +1,10 @@
 import React from 'react';
 import { css, keyframes, styled } from 'styled-components';
 import { Button } from '@/ui/components/button';
-import { SendIcon } from '@/ui/icons/send';
+import { ArrowUpLineIcon } from '@/ui/icons/arrow-up-line';
+import { colorToRgba } from '@/ui/utils';
 import { CloseIcon } from '@/ui/icons/close';
 import { Chip } from '@/ui/components/chip';
-import { VoiceIcon } from '@/ui/icons/voice';
 import { PauseIcon } from '@/ui/icons/pause';
 import { PlayIcon } from '@/ui/icons/play';
 import { ExclamationIcon } from '@/ui/icons/exclamation';
@@ -22,9 +22,9 @@ export interface InputMessageStyledProps {
 export const InputMessageStyled = styled.div<InputMessageStyledProps>`
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   position: relative;
-  border-radius: 10px;
+  border-radius: 18px;
   border: 1px solid
     ${({ theme, $active, $disabled }) => {
       if ($disabled) {
@@ -39,10 +39,13 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
       return themeVar(theme, 'colors.grayScale.gray3');
     }
 
-    return themeVar(theme, 'tokens.surfaceElevated');
+    return themeVar(theme, 'tokens.surfaceRaised');
   }};
+  box-shadow: 0 10px 30px
+    ${({ theme }) =>
+      colorToRgba(theme.default.colors.base.black, theme.bright ? 0.08 : 0.25)};
   width: 100%;
-  padding: 14px 20px;
+  padding: 12px 12px 10px;
   max-width: ${({ theme }) => theme.dashboard.chat.containerWidth};
   box-sizing: border-box;
   overflow: visible;
@@ -71,17 +74,18 @@ export const InputMessageStyled = styled.div<InputMessageStyledProps>`
     opacity: 0.85;
   `}
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
-    padding: 12px 12px;
+    padding: 10px 10px 8px;
   }
 `;
 
 export const InputMessageContent = styled.div`
   width: 100%;
-  gap: 14px;
+  gap: 10px;
   display: grid;
   grid-template-areas: 'input input input' 'configure . buttons';
   grid-auto-rows: min-content;
-  grid-auto-columns: min-content auto min-content;
+  /* Кнопки слева сжимаются, если места мало: отправка всегда на виду */
+  grid-template-columns: minmax(0, max-content) 1fr max-content;
   align-items: center;
 `;
 
@@ -90,7 +94,8 @@ export const InputMessageConfigure = styled.div`
   align-items: center;
   gap: 14px;
   position: relative;
-  width: fit-content;
+  min-width: 0;
+  max-width: 100%;
   height: 100%;
   user-select: none;
   grid-area: configure;
@@ -113,25 +118,62 @@ export interface InputMessageUploadFileLabelProps {
   $disabled?: boolean;
 }
 
-export const InputMessageUploadFileLabel = styled(
-  Button,
-).attrs<InputMessageUploadFileLabelProps>({
-  variant: 'secondary',
-})`
-  border: none !important;
-  display: inline-flex;
-  width: auto;
+// Круглые кнопки поля — свои, не Button: он красит пути иконок заливкой, а
+// иконки здесь контурные
+const roundButton = css`
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 50%;
+  font: inherit;
   cursor: pointer;
-  outline: none !important;
-  border-radius: 50% !important;
-  box-shadow: none !important;
-  aspect-ratio: 1/1;
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => themeVar(theme, 'tokens.borderFocus')};
+    outline-offset: 2px;
+  }
+
+  svg {
+    pointer-events: none;
+  }
+`;
+
+export const InputMessageUploadFileLabel = styled.button.attrs({
+  type: 'button',
+})<InputMessageUploadFileLabelProps>`
+  ${roundButton}
+  width: 34px;
+  height: 34px;
+  border: 1px solid ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+  background: none;
+  color: ${({ theme }) => themeVar(theme, 'tokens.textDefault')};
+  ${({ $disabled }) =>
+    $disabled &&
+    css`
+      cursor: default;
+      opacity: 0.5;
+    `}
+
+  &:hover {
+    background: ${({ theme, $disabled }) =>
+      $disabled ? 'none' : themeVar(theme, 'tokens.hoverOverlay')};
+  }
 `;
 
 export const InputMessageActions = styled.div`
   display: flex;
-  gap: 4px;
+  gap: 6px;
   align-items: center;
+  min-width: 0;
+`;
+
+/** Над полем: кадры видео, референсы и другое, что относится к сообщению */
+export const InputMessageHeader = styled.div`
+  width: 100%;
+  cursor: default;
 `;
 
 export const InputMessageMain = styled.div`
@@ -216,7 +258,7 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
   display: flex;
   height: auto;
   width: 100%;
-  min-height: 22px;
+  min-height: 48px;
   max-height: 270px;
   /* The browser sizes the field to its text: use-input does not measure it,
      and the inline height it sets for other browsers does not apply. */
@@ -252,20 +294,42 @@ export const InputMessageTextArea = styled.textarea<InputMessageTextAreaProps>`
     `}
 
   font-weight: 400;
-  font-size: 18px;
-  line-height: 23.4px;
+  font-size: 15px;
+  line-height: 22px;
+  padding: 2px 4px;
+  box-sizing: border-box;
   @media (max-width: ${({ theme }) => theme.mobile.maxWidth}) {
     font-size: 16px;
-    line-height: 22px;
   }
 `;
 
-export const InputMessageSendButton = styled(Button)`
-  flex-shrink: 0;
-  svg {
-    pointer-events: none;
+export const InputMessageSendButton = styled.button.attrs({
+  type: 'button',
+})`
+  ${roundButton}
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: ${({ theme }) =>
+    themeVar(theme, 'tokens.buttonPrimaryBackground')};
+  color: ${({ theme }) => themeVar(theme, 'tokens.buttonPrimaryText')};
+
+  &:disabled {
+    background: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray2')};
+    color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
+    cursor: default;
+  }
+
+  // Отправка идёт: лоадер на цвете кнопки, серый заблокированной почти не виден
+  &[aria-busy='true'] {
+    background: ${({ theme }) =>
+      themeVar(theme, 'tokens.buttonPrimaryBackground')};
+    color: ${({ theme }) => themeVar(theme, 'tokens.buttonPrimaryText')};
   }
 `;
+
+/** На месте отправки, пока идёт генерация */
+export const InputMessageStopButton = styled(InputMessageSendButton)``;
 
 export const InputMessageVoicePauseButton = styled(Button).attrs({
   variant: 'text',
@@ -286,30 +350,33 @@ export interface InputMessageVoiceButtonProps {
   disabled?: boolean;
 }
 
-export const InputMessageVoiceButton = styled(
-  InputMessageSendButton,
-).attrs<InputMessageVoiceButtonProps>(({ theme, disabled }) => ({
-  variant: 'text',
-  startIcon: <VoiceIcon />,
-  iconFill: disabled
-    ? themeVar(theme, 'colors.grayScale.gray1')
-    : themeVar(theme, 'tokens.surfaceIcon'),
-  disableHoverColor: true,
-}))`
-  margin-inline: 10px;
-  padding: 10px;
-  border-radius: 8px;
+export const InputMessageVoiceButton = styled.button.attrs({
+  type: 'button',
+})<InputMessageVoiceButtonProps>`
+  ${roundButton}
+  width: 36px;
+  height: 36px;
+  border: none;
   background-color: ${({ theme, $isRecording }) =>
     $isRecording ? themeVar(theme, 'colors.critic') : 'transparent'};
+  color: ${({ theme, $isRecording }) =>
+    $isRecording
+      ? themeVar(theme, 'default.colors.base.white')
+      : themeVar(theme, 'tokens.textDefault')};
   position: relative;
   z-index: 0;
-  ${({ theme, $isRecording }) =>
-    $isRecording &&
-    css`
-      svg path {
-        fill: ${themeVar(theme, 'default.colors.base.white')} !important;
-      }
-    `}
+
+  &:disabled {
+    color: ${({ theme }) => themeVar(theme, 'colors.grayScale.gray1')};
+    cursor: default;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: ${({ theme, $isRecording }) =>
+      $isRecording
+        ? themeVar(theme, 'colors.critic')
+        : themeVar(theme, 'tokens.hoverOverlay')};
+  }
   &:before {
     content: '';
     height: 140%;
@@ -325,7 +392,7 @@ export const InputMessageVoiceButton = styled(
   }
 `;
 
-export const InputMessageSendIcon = SendIcon;
+export const InputMessageSendIcon = ArrowUpLineIcon;
 
 export const InputMessageVoiceRecord = styled.div`
   display: flex;

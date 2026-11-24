@@ -12,7 +12,7 @@ import {
 import { MessageCodeTypingContext } from '@/ui/components/message/components/code/multiline/content/typing';
 import { useMessage } from '@/ui/components/message/context';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
-import { normalizeMessageMarkdown } from './utils';
+import { formatMessageDocumentLines, normalizeMessageMarkdown } from './utils';
 import { MATH_TAG_NAME, getLoadedMath } from './math-loader';
 import type { MarkdownMathProps } from './math';
 import { markdownClassNames } from './class-names';
@@ -204,7 +204,8 @@ const MarkdownDocument = memo(
   ({ code, isTg, copyLabel }: MarkdownDocumentProps) => {
     const { typing } = useMessage();
     const normalizedCode = useMemo(
-      () => normalizeMessageMarkdown(code, { typing }),
+      () =>
+        normalizeMessageMarkdown(formatMessageDocumentLines(code), { typing }),
       [code, typing],
     );
     const { remarkPlugins, rehypePlugins } = useMarkdownPlugins(normalizedCode);

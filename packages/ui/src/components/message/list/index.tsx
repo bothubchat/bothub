@@ -7,7 +7,6 @@ import React, {
 import {
   MessageList,
   MessagesContainer,
-  MessagesContent,
   MessagesScrollbarWrapper,
   MessagesStart,
   MessagesStyled,
@@ -76,14 +75,12 @@ export const Messages = forwardRef<MessagesRef, MessagesProps>(
             withStickyBottom
             defaultStickyBottom
           >
-            <MessagesContent>
-              <MessagesContainer $fullWidth={fullWidth}>
-                <MessagesScrollProvider scrollbarRef={scrollbarRef}>
-                  <MessageList>{children}</MessageList>
-                </MessagesScrollProvider>
-                <MessagesStart ref={startRef} />
-              </MessagesContainer>
-            </MessagesContent>
+            <MessagesContainer $fullWidth={fullWidth}>
+              <MessagesScrollProvider scrollbarRef={scrollbarRef}>
+                <MessageList>{children}</MessageList>
+              </MessagesScrollProvider>
+              <MessagesStart ref={startRef} />
+            </MessagesContainer>
           </MessagesScrollbarWrapper>
           {scrollButton && <ScrollButton scrollbarRef={scrollbarRef} />}
         </MessagesStyled>

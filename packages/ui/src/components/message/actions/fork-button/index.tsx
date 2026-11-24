@@ -1,18 +1,15 @@
-import React from 'react';
-
-import { IconProvider } from '@/ui/components/icon';
-import { Tooltip, TooltipConsumer } from '@/ui/components/tooltip';
-import { ForkChatIcon } from '@/ui/icons/fork-chat';
+import { ForkLineIcon } from '@/ui/icons/fork-line';
 
 import { MessageActionEventHandler } from '../../types';
-import { MessageForkButtonStyled } from './styled';
+import { ActionButton } from '../action-button';
+import { ACTION_ICON_SIZE } from '../constants';
 
 interface ForkButtonProps {
   id?: string;
   message?: string;
   selected?: boolean;
   tooltipLabel?: string | null;
-  iconColor?: string;
+  compact?: boolean;
   onFork?: MessageActionEventHandler;
 }
 
@@ -21,36 +18,18 @@ export const ForkButton = ({
   message,
   selected,
   tooltipLabel,
-  iconColor,
+  compact,
   onFork,
 }: ForkButtonProps) => (
-  <Tooltip
-    label={tooltipLabel}
-    placement="top"
-    align="center"
+  <ActionButton
+    id={id}
+    message={message}
+    active={selected}
+    compact={compact}
+    aria-pressed={selected}
+    tooltipLabel={tooltipLabel}
+    onClick={onFork}
   >
-    <TooltipConsumer>
-      {({ handleTooltipMouseEnter, handleTooltipMouseLeave }) => (
-        <MessageForkButtonStyled
-          type="button"
-          $selected={selected}
-          aria-label={tooltipLabel ?? undefined}
-          aria-pressed={selected}
-          onClick={() => {
-            onFork?.({ id, message });
-          }}
-          onMouseEnter={(e: React.MouseEvent<HTMLButtonElement>) => {
-            handleTooltipMouseEnter(e);
-          }}
-          onMouseLeave={(e: React.MouseEvent<HTMLButtonElement>) => {
-            handleTooltipMouseLeave(e);
-          }}
-        >
-          <IconProvider stroke={iconColor}>
-            <ForkChatIcon size={18} />
-          </IconProvider>
-        </MessageForkButtonStyled>
-      )}
-    </TooltipConsumer>
-  </Tooltip>
+    <ForkLineIcon size={ACTION_ICON_SIZE} />
+  </ActionButton>
 );
