@@ -34,13 +34,16 @@ const scrollTo = (element: HTMLElement, scrollTop: number) => {
 
 // В jsdom нет layout: высота окна 100 px, каждое сообщение — 100 px,
 // scrollTop ограничен, как в браузере
-const mockLayout = (element: HTMLElement) => {
+const mockLayout = (
+  element: HTMLElement,
+  getContentHeight = () => element.children.length * 100,
+) => {
   let scrollTop = 0;
   Object.defineProperties(element, {
     clientHeight: { configurable: true, value: 100 },
     scrollHeight: {
       configurable: true,
-      get: () => element.children.length * 100,
+      get: getContentHeight,
     },
     scrollTop: {
       configurable: true,
@@ -61,6 +64,19 @@ const Feed = ({ count }: { count: number }) => (
       {Array.from({ length: count }, (_, index) => (
         <p key={index}>Message {index}</p>
       ))}
+    </Scrollbar>
+  </TestProvider>
+);
+
+// Ответ печатается в последнем абзаце: узлы те же, растёт только их текст
+const StreamedAnswer = ({ text }: { text: string }) => (
+  <TestProvider>
+    <Scrollbar
+      withStickyBottom
+      defaultStickyBottom
+    >
+      <p>Message</p>
+      <p>{text}</p>
     </Scrollbar>
   </TestProvider>
 );
@@ -137,5 +153,25 @@ describe('Scrollbar', () => {
       rerender(<Feed count={6} />);
     });
     await waitFor(() => expect(scrollbar.scrollTop).toBe(500));
+  });
+
+  test('follows a paragraph growing in place while it is scrolled to the end', async () => {
+    const { rerender } = render(<StreamedAnswer text="Sure" />);
+    const scrollbar = getScrollbar();
+    // каждый символ — 10 px текста: «Message» и «Sure» — 110 px
+    mockLayout(scrollbar, () => (scrollbar.textContent?.length ?? 0) * 10);
+    scrollTo(scrollbar, 10);
+
+    await act(async () => {
+      rerender(<StreamedAnswer text="Sure, here is the answer" />);
+    });
+    await waitFor(() => expect(scrollbar.scrollTop).toBe(210));
+    fireEvent.scroll(scrollbar);
+
+    scrollTo(scrollbar, 50);
+    await act(async () => {
+      rerender(<StreamedAnswer text="Sure, here is the answer, and more" />);
+    });
+    expect(scrollbar.scrollTop).toBe(50);
   });
 });
