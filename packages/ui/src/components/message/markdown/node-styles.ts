@@ -259,6 +259,11 @@ const nodeRules = css<MarkdownNodeStylesProps>`
     & > ol {
       padding-left: 22px;
     }
+    /* Items separated by a blank line wrap their text in a paragraph: as a
+       block it would start on the line below the inline number. */
+    & > ${node('paragraph')}:first-child {
+      display: inline;
+    }
   }
   ul${node('list')}, ol${node('list')} {
     & > ${node('listItem')}.task-list-item {
