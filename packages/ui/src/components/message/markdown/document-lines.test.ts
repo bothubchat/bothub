@@ -67,4 +67,41 @@ describe('formatDocumentLines', () => {
 
     expect(formatDocumentLines(text)).toBe(text);
   });
+
+  test('makes a title in capitals on a line of its own a section heading', () => {
+    // Markdown joined `6. QUALIFICATIONS` with the list above as its `5.`.
+    expect(
+      formatDocumentLines(
+        '5. OPINION AND CONCLUSIONS\n\nWe are of the opinion:\n\n1. Lawful.\n2. No license.\n\n6. QUALIFICATIONS\n\nCosta Rica only.',
+      ),
+    ).toBe(
+      '### 5. OPINION AND CONCLUSIONS\n\nWe are of the opinion:\n\n1. Lawful.\n2. No license.\n\n### 6. QUALIFICATIONS\n\nCosta Rica only.',
+    );
+    expect(formatDocumentLines('\n2. ВВЕДЕНИЕ (KYC)\n')).toBe(
+      '\n### 2. ВВЕДЕНИЕ (KYC)\n',
+    );
+  });
+
+  test('keeps capitals and other titles in a list a list', () => {
+    const text = [
+      '1. YES',
+      '2. NO',
+      '',
+      '3. Install the app',
+      '',
+      '4. [Company Name] LTD',
+      '',
+    ].join('\n');
+
+    expect(formatDocumentLines(text)).toBe(text);
+  });
+
+  test('keeps a line of underscores the place for a signature', () => {
+    expect(formatDocumentLines('Yours faithfully,\n\n  ________\n[Name]')).toBe(
+      `Yours faithfully,\n\n${'\\_'.repeat(8)}\n[Name]`,
+    );
+    expect(formatDocumentLines('a\n\n___\n\n---\n\nb')).toBe(
+      'a\n\n___\n\n---\n\nb',
+    );
+  });
 });

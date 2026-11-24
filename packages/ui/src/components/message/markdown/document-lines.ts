@@ -4,6 +4,11 @@ const LIST_LINE_PATTERN = /^[ \t]*(?:[-*+]|\d{1,9}[.)])[ \t]/;
 // `1. Title` at the start of the line.
 const SECTION_LINE_PATTERN = /^(\d{1,9})\.[ \t]+(\S.*)$/;
 const SECTION_HEADING_MARK = '###';
+// No lowercase letters, at least one capital one.
+const CAPITALS_TITLE_PATTERN = /^\P{Ll}*\p{Lu}\P{Ll}*$/u;
+const MAX_SECTION_TITLE_LENGTH = 120;
+// Models draw the place for a signature with underscores: `________`.
+const SIGNATURE_LINE_PATTERN = /^[ \t]*_{5,}[ \t]*$/;
 const BULLET_LINE_PATTERN = /^[ \t]*[-*+][ \t]/;
 const INDENTED_BULLET_PATTERN = /^([ \t]+)[-*+][ \t]/;
 const INDENTED_LINE_PATTERN = /^[ \t]/;
@@ -59,25 +64,53 @@ const findNextContentLine = (
   return undefined;
 };
 
+interface SectionContext {
+  previous: string | undefined;
+  next: string | undefined;
+  nextContent: string | undefined;
+}
+
+const hasOwnClauseBelow = (number: string, nextContent?: string): boolean =>
+  !!nextContent &&
+  nextContent.startsWith(`${number}.`) &&
+  CLAUSE_LINE_PATTERN.test(nextContent);
+
+// `1. TITLE` alone between blank lines, without lowercase letters.
+const isCapitalsTitle = (
+  title: string,
+  { previous, next }: SectionContext,
+): boolean =>
+  isBlank(previous) &&
+  isBlank(next) &&
+  title.length <= MAX_SECTION_TITLE_LENGTH &&
+  CAPITALS_TITLE_PATTERN.test(title);
+
 /**
- * `1. Title` with its clauses `1.1.` below is the heading of a section, not a
- * list of one item: editors indent a list, so the section would stand to the
- * right of its own clauses.
+ * `1. Title` with its clauses `1.1.` below, or `1. TITLE` in capitals on a
+ * line of its own, is the heading of a section, not a list of one item:
+ * editors indent a list, so the section would stand to the right of its own
+ * clauses, and markdown joins it with a list next to it and numbers it anew
+ * (`6. QUALIFICATIONS` after a list of 4 items became `5.`).
  */
 const getSectionHeading = (
   line: string,
-  next: string | undefined,
+  context: SectionContext,
 ): string | null => {
   const section = SECTION_LINE_PATTERN.exec(line);
-  if (!section || !next) {
+  if (!section) {
     return null;
   }
 
   const [, number, title] = section;
-  return next.startsWith(`${number}.`) && CLAUSE_LINE_PATTERN.test(next)
+  return hasOwnClauseBelow(number, context.nextContent) ||
+    isCapitalsTitle(title, context)
     ? `${SECTION_HEADING_MARK} ${number}. ${title}`
     : null;
 };
+
+// A line of underscores is the place for a signature, not a markdown rule.
+const keepSignatureLine = (line: string): string =>
+  SIGNATURE_LINE_PATTERN.test(line) ? line.trim().replace(/_/g, '\\_') : line;
 
 /**
  * Lines of a document written by a model without blank lines between its
@@ -100,7 +133,11 @@ export function formatDocumentLines(text: string): string {
       continue;
     }
 
-    const heading = getSectionHeading(line, findNextContentLine(source, index));
+    const heading = getSectionHeading(line, {
+      previous,
+      next: source[index + 1],
+      nextContent: findNextContentLine(source, index),
+    });
     if (heading) {
       clause = null;
       lines.push(heading);
@@ -120,7 +157,9 @@ export function formatDocumentLines(text: string): string {
       clause = null;
     }
 
-    lines.push(clause ? dedentClauseBullet(line, clause) : line);
+    lines.push(
+      clause ? dedentClauseBullet(line, clause) : keepSignatureLine(line),
+    );
   }
 
   return lines.join('\n');
