@@ -30,9 +30,18 @@ const setTime = (videoEl: HTMLVideoElement, currentTime: number) => {
   });
 };
 
+const defineValue = (
+  videoEl: HTMLVideoElement,
+  name: keyof HTMLVideoElement,
+  value: unknown,
+) => {
+  Object.defineProperty(videoEl, name, { configurable: true, value });
+};
+
 const renderReady = (
   props: Partial<MessageVideoProps> = {},
   onCommit?: () => void,
+  size: { width: number; height: number } = { width: 1920, height: 1080 },
 ) => {
   const result = customRender(
     <React.Profiler
@@ -45,33 +54,19 @@ const renderReady = (
     </React.Profiler>,
   );
   const videoEl = result.container.querySelector('video') as HTMLVideoElement;
-  Object.defineProperty(videoEl, 'duration', {
-    configurable: true,
-    value: DURATION,
-  });
+  defineValue(videoEl, 'duration', DURATION);
+  defineValue(videoEl, 'videoWidth', size.width);
+  defineValue(videoEl, 'videoHeight', size.height);
   setTime(videoEl, 0);
   fireEvent.loadedMetadata(videoEl);
 
   const playerEl = videoEl.parentElement as HTMLElement;
-  const controls = playerEl.children[1] as HTMLElement;
-  const timeLine = controls.children[0] as HTMLElement;
-  const volumeLine = controls.children[1].children[1]
-    .children[1] as HTMLElement;
 
-  return { ...result, videoEl, playerEl, timeLine, volumeLine };
+  return { ...result, videoEl, playerEl };
 };
 
-const mockRect = (element: HTMLElement, left: number, width: number) => {
-  element.getBoundingClientRect = () =>
-    ({
-      left,
-      width,
-      top: 0,
-      height: 6,
-      right: left + width,
-      bottom: 6,
-    }) as DOMRect;
-};
+const progressOf = (playerEl: HTMLElement) =>
+  playerEl.style.getPropertyValue('--video-progress');
 
 describe('MessageVideo', () => {
   let play: MockInstance<HTMLMediaElement['play']>;
@@ -94,10 +89,10 @@ describe('MessageVideo', () => {
 
   test('moves progress without new classes or re-renders', () => {
     let commits = 0;
-    const { videoEl, timeLine } = renderReady({}, () => {
+    const { videoEl, playerEl } = renderReady({}, () => {
       commits++;
     });
-    const { className } = timeLine;
+    const { className } = playerEl;
     const styleText = () =>
       [...document.querySelectorAll('style')]
         .map((style) => style.textContent)
@@ -110,51 +105,142 @@ describe('MessageVideo', () => {
       fireEvent.timeUpdate(videoEl);
     }
 
-    expect(timeLine.className).toBe(className);
+    expect(playerEl.className).toBe(className);
     expect(styleText()).toBe(css);
-    expect(timeLine.style.getPropertyValue('--video-progress')).toBe(
-      String(0.75 / DURATION),
-    );
+    expect(progressOf(playerEl)).toBe(String(0.75 / DURATION));
     expect(commits).toBe(0);
-    expect(screen.getByText('00:00 / 10:00')).toBeTruthy();
+    expect(screen.getByText('0:00 / 10:00')).toBeTruthy();
 
     setTime(videoEl, 61);
     fireEvent.timeUpdate(videoEl);
 
-    expect(screen.getByText('01:01 / 10:00')).toBeTruthy();
+    expect(screen.getByText('1:01 / 10:00')).toBeTruthy();
+    expect((screen.getByLabelText('Перемотка') as HTMLInputElement).value).toBe(
+      '61',
+    );
   });
 
-  test('seeks by the timeline position while scrubbing over the player', () => {
-    const { videoEl, playerEl, timeLine } = renderReady();
-    mockRect(playerEl, 0, 640);
-    mockRect(timeLine, 100, 400);
+  test('seeks with the timeline input', () => {
+    const { videoEl, playerEl } = renderReady();
+    const seek = screen.getByLabelText('Перемотка') as HTMLInputElement;
 
-    fireEvent.mouseDown(timeLine);
-    fireEvent.mouseMove(playerEl, { clientX: 200 });
+    expect(seek.getAttribute('aria-valuetext')).toBe('0:00 / 10:00');
 
-    expect(videoEl.currentTime).toBe(DURATION / 4);
-    expect(timeLine.style.getPropertyValue('--video-progress')).toBe('0.25');
+    fireEvent.change(seek, { target: { value: '150' } });
 
-    fireEvent.mouseMove(playerEl, { clientX: 600 });
-    expect(videoEl.currentTime).toBe(DURATION);
-
-    fireEvent.mouseUp(playerEl);
-    fireEvent.mouseMove(playerEl, { clientX: 100 });
-    expect(videoEl.currentTime).toBe(DURATION);
+    expect(videoEl.currentTime).toBe(150);
+    expect(progressOf(playerEl)).toBe('0.25');
+    expect(screen.getByText('2:30 / 10:00')).toBeTruthy();
   });
 
-  test('drags the volume without new classes', () => {
-    const { videoEl, volumeLine } = renderReady();
-    mockRect(volumeLine, 0, 100);
-    const { className } = volumeLine;
+  test('plays, seeks and mutes from the keyboard', () => {
+    const { videoEl, playerEl } = renderReady();
 
-    fireEvent.mouseDown(volumeLine);
-    fireEvent.mouseMove(volumeLine, { clientX: 30 });
-    fireEvent.mouseMove(volumeLine, { clientX: 40 });
+    fireEvent.keyDown(playerEl, { key: ' ', code: 'Space' });
+    expect(play).toHaveBeenCalledTimes(1);
 
-    expect(volumeLine.className).toBe(className);
-    expect(volumeLine.style.getPropertyValue('--video-volume')).toBe('40%');
+    fireEvent.keyDown(playerEl, { key: 'ArrowRight', code: 'ArrowRight' });
+    expect(videoEl.currentTime).toBe(5);
+
+    fireEvent.keyDown(playerEl, { key: '5', code: 'Digit5' });
+    expect(videoEl.currentTime).toBe(DURATION / 2);
+
+    // The key's place, not its letter: "ь" is M in the Russian layout.
+    fireEvent.keyDown(playerEl, { key: 'ь', code: 'KeyM' });
+    expect(videoEl.muted).toBe(true);
+
+    fireEvent.keyDown(playerEl, { key: 'ArrowRight', ctrlKey: true });
+    expect(videoEl.currentTime).toBe(DURATION / 2);
+  });
+
+  test('leaves Space to a focused button', () => {
+    renderReady();
+    const fullscreen = screen.getByRole('button', { name: 'Во весь экран' });
+
+    fireEvent.keyDown(fullscreen, { key: ' ', code: 'Space' });
+
+    expect(play).not.toHaveBeenCalled();
+  });
+
+  test('sets the volume from the slider and mutes from the icon', () => {
+    const { videoEl } = renderReady();
+
+    fireEvent.change(screen.getByLabelText('Громкость'), {
+      target: { value: '40' },
+    });
     expect(videoEl.volume).toBe(0.4);
+    expect(videoEl.muted).toBe(false);
+
+    fireEvent.click(screen.getByRole('button', { name: 'Выключить звук' }));
+    expect(videoEl.muted).toBe(true);
+    expect((screen.getByLabelText('Громкость') as HTMLInputElement).value).toBe(
+      '0',
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Включить звук' }));
+    expect(videoEl.muted).toBe(false);
+    expect(videoEl.volume).toBe(0.4);
+  });
+
+  test('picks a playback rate from the menu', () => {
+    const { videoEl } = renderReady();
+
+    fireEvent.click(screen.getByRole('button', { name: /^Скорость 1×$/ }));
+    const faster = screen.getByRole('menuitemradio', { name: /^1[.,]5×$/ });
+    fireEvent.click(faster);
+
+    expect(videoEl.playbackRate).toBe(1.5);
+    expect(screen.queryByRole('menu')).toBeNull();
+    expect(
+      screen.getByRole('button', { name: /^Скорость 1[.,]5×$/ }),
+    ).toBeTruthy();
+  });
+
+  test('closes the rate menu on Escape without seeking', () => {
+    const { videoEl } = renderReady();
+
+    fireEvent.click(screen.getByRole('button', { name: /^Скорость/ }));
+    const menu = screen.getByRole('menu');
+    fireEvent.keyDown(menu, { key: 'ArrowRight', code: 'ArrowRight' });
+    fireEvent.keyDown(menu, { key: 'Escape', code: 'Escape' });
+
+    expect(videoEl.currentTime).toBe(0);
+    expect(screen.queryByRole('menu')).toBeNull();
+  });
+
+  test('takes the proportions of a vertical video', () => {
+    const { playerEl } = renderReady({}, undefined, {
+      width: 1080,
+      height: 1920,
+    });
+
+    expect(playerEl.style.getPropertyValue('--video-aspect')).toBe(
+      String(1080 / 1920),
+    );
+  });
+
+  test('shows the error with a retry that asks for a new src', () => {
+    const refreshSrc = vi.fn();
+    const { videoEl } = renderReady({ refreshSrc });
+    defineValue(videoEl, 'error', { code: 4 });
+
+    fireEvent.error(videoEl);
+
+    expect(screen.getByRole('alert').textContent).toContain(
+      'Не удалось загрузить видео',
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'Повторить' }));
+
+    expect(refreshSrc).toHaveBeenCalledTimes(1);
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+
+  test('takes custom labels', () => {
+    renderReady({ labels: { player: 'Video player', seek: 'Seek' } });
+
+    expect(screen.getByRole('group', { name: 'Video player' })).toBeTruthy();
+    expect(screen.getByLabelText('Seek')).toBeTruthy();
   });
 
   test('calls play synchronously even when checkAlive is async', () => {

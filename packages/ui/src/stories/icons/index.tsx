@@ -406,6 +406,14 @@ import {
   ThumbDownLineIcon,
   ForkLineIcon,
   DownloadLineIcon,
+  VolumeLineIcon,
+  VolumeLowLineIcon,
+  VolumeMuteLineIcon,
+  FullscreenLineIcon,
+  FullscreenExitLineIcon,
+  ReplayLineIcon,
+  Rewind10LineIcon,
+  Forward10LineIcon,
 } from '@/ui/icons';
 import { IconItem } from './item';
 import { IconProvider, IconProviderProps } from '@/ui/components/icon';
@@ -875,6 +883,16 @@ export const Icons: React.FC<IconsProps> = ({ ...props }) => (
         <IconItem name="ThumbDownLineIcon">{ThumbDownLineIcon}</IconItem>
         <IconItem name="ForkLineIcon">{ForkLineIcon}</IconItem>
         <IconItem name="DownloadLineIcon">{DownloadLineIcon}</IconItem>
+        <IconItem name="VolumeLineIcon">{VolumeLineIcon}</IconItem>
+        <IconItem name="VolumeLowLineIcon">{VolumeLowLineIcon}</IconItem>
+        <IconItem name="VolumeMuteLineIcon">{VolumeMuteLineIcon}</IconItem>
+        <IconItem name="FullscreenLineIcon">{FullscreenLineIcon}</IconItem>
+        <IconItem name="FullscreenExitLineIcon">
+          {FullscreenExitLineIcon}
+        </IconItem>
+        <IconItem name="ReplayLineIcon">{ReplayLineIcon}</IconItem>
+        <IconItem name="Rewind10LineIcon">{Rewind10LineIcon}</IconItem>
+        <IconItem name="Forward10LineIcon">{Forward10LineIcon}</IconItem>
       </IconList>
     </IconsStyled>
   </IconProvider>

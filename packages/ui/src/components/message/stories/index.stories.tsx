@@ -881,7 +881,37 @@ export const VoiceProcessing: MessageStory = {
 export const Video: MessageStory = {
   args: {
     ...User.args,
-    children: <MessageVideo src={videoWebm} />,
+    children: (
+      <MessageVideo
+        src={videoWebm}
+        downloadVideo={fn()}
+      />
+    ),
+  },
+};
+
+export const VideoLoading: MessageStory = {
+  args: {
+    ...User.args,
+    children: (
+      <MessageVideo
+        src={videoWebm}
+        isLoading
+      />
+    ),
+  },
+};
+
+// The data is not a video: the player shows the error with a retry.
+export const VideoError: MessageStory = {
+  args: {
+    ...User.args,
+    children: (
+      <MessageVideo
+        src="data:video/mp4;base64,AAAA"
+        refreshSrc={fn()}
+      />
+    ),
   },
 };
 

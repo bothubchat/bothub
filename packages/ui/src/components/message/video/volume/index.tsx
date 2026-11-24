@@ -1,69 +1,74 @@
-import { useCallback, useRef, useState } from 'react';
-import { VolumeIcon } from '@/ui/icons/volume';
+import { useCallback } from 'react';
+import { VolumeLineIcon } from '@/ui/icons/volume-line';
+import { VolumeLowLineIcon } from '@/ui/icons/volume-low-line';
+import { VolumeMuteLineIcon } from '@/ui/icons/volume-mute-line';
 import {
-  MessageVideoControlsButton,
-  MessageVideoVolumeContainer,
-  MessageVideoVolumeLine,
+  MessageVideoButton,
+  MessageVideoVolumeInput,
+  MessageVideoVolumeSlider,
+  MessageVideoVolumeStyled,
 } from '../styled';
 
-type MessageVideoVolumeProps = {
-  iconSize?: number;
-  handleChangeVolume?: (volume: number) => void;
+export interface MessageVideoVolumeProps {
+  /** 0..1, kept while the sound is off. */
+  volume: number;
+  isMuted: boolean;
+  iconSize: number;
+  muteLabel: string;
+  unmuteLabel: string;
+  volumeLabel: string;
+  onToggleMute: () => void;
+  onVolumeChange: (volume: number) => void;
+}
+
+const getVolumeIcon = (level: number) => {
+  if (level === 0) return VolumeMuteLineIcon;
+  return level < 0.5 ? VolumeLowLineIcon : VolumeLineIcon;
 };
 
 export const MessageVideoVolume: React.FC<MessageVideoVolumeProps> = ({
-  iconSize = 16,
-  handleChangeVolume,
+  volume,
+  isMuted,
+  iconSize,
+  muteLabel,
+  unmuteLabel,
+  volumeLabel,
+  onToggleMute,
+  onVolumeChange,
 }) => {
-  const isDraggingRef = useRef(false);
-  const [volume, setVolume] = useState(100);
+  const level = isMuted ? 0 : volume;
+  const percent = Math.round(level * 100);
+  const Icon = getVolumeIcon(level);
 
-  const handleVolumeUpdateClick = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      e.preventDefault();
-      const { clientX } = e;
-      const { width, left } = e.currentTarget.getBoundingClientRect();
-      const progress = ((clientX - left) / width) * 100;
-      if (progress > 100 || progress < 0) {
-        return;
-      }
-      setVolume(progress);
-      handleChangeVolume?.(progress);
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onVolumeChange(Number(event.currentTarget.value) / 100);
     },
-    [handleChangeVolume],
+    [onVolumeChange],
   );
-
-  const handleStartMouseMove = useCallback(() => {
-    isDraggingRef.current = true;
-  }, []);
-
-  const handleMouseMove = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      if (!isDraggingRef.current) return;
-      handleVolumeUpdateClick(event);
-    },
-    [handleVolumeUpdateClick],
-  );
-
-  const handleStartMouseLeave = useCallback(() => {
-    isDraggingRef.current = false;
-  }, []);
 
   return (
-    <MessageVideoVolumeContainer onMouseLeave={handleStartMouseLeave}>
-      <MessageVideoControlsButton>
-        <VolumeIcon
-          fill="#fff"
-          size={iconSize}
+    <MessageVideoVolumeStyled>
+      <MessageVideoButton
+        type="button"
+        aria-label={level === 0 ? unmuteLabel : muteLabel}
+        onClick={onToggleMute}
+      >
+        <Icon size={iconSize} />
+      </MessageVideoButton>
+      <MessageVideoVolumeSlider>
+        <MessageVideoVolumeInput
+          type="range"
+          min={0}
+          max={100}
+          step={1}
+          value={percent}
+          aria-label={volumeLabel}
+          aria-valuetext={`${percent}%`}
+          onChange={handleChange}
+          style={{ '--video-volume': `${percent}%` } as React.CSSProperties}
         />
-      </MessageVideoControlsButton>
-      <MessageVideoVolumeLine
-        onClick={handleVolumeUpdateClick}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleStartMouseLeave}
-        onMouseDown={handleStartMouseMove}
-        style={{ '--video-volume': `${volume}%` } as React.CSSProperties}
-      />
-    </MessageVideoVolumeContainer>
+      </MessageVideoVolumeSlider>
+    </MessageVideoVolumeStyled>
   );
 };
