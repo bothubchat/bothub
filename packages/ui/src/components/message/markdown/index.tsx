@@ -10,7 +10,11 @@ import {
   MessageMarkdownComponentsProvider,
   messageMarkdownComponents,
 } from './markdown-components';
-import { getOpenCodeFenceStart, normalizeMessageMarkdown } from './utils';
+import {
+  formatMessageDocumentLines,
+  getOpenCodeFenceStart,
+  normalizeMessageMarkdown,
+} from './utils';
 import { useMarkdownPlugins } from './useMarkdownPlugins';
 import { useStableComponents } from './useStableComponents';
 import { getMarkdownBlocks } from './blocks';
@@ -53,7 +57,9 @@ export const MessageMarkdown = forwardRef<HTMLDivElement, MessageMarkdownProps>(
     const formattedChildren = useMemo(
       () =>
         typeof children === 'string' && !isDisabled
-          ? normalizeMessageMarkdown(children, { typing })
+          ? normalizeMessageMarkdown(formatMessageDocumentLines(children), {
+              typing,
+            })
           : children,
       [children, isDisabled, typing],
     );

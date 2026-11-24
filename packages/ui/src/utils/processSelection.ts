@@ -45,6 +45,49 @@ const getRenderedText = (element: HTMLElement): string => {
   }
 };
 
+const BLANK_LINE_PATTERN = /^\s*\n\s*$/;
+
+const unwrapElement = (element: Element): void => {
+  element.replaceWith(...Array.from(element.childNodes));
+};
+
+// `innerText` puts an empty line around a paragraph only, so a heading
+// right after a list would be read without one.
+const headingToParagraph = (heading: Element): void => {
+  const paragraph = document.createElement('p');
+  paragraph.append(...Array.from(heading.childNodes));
+  heading.replaceWith(paragraph);
+};
+
+/**
+ * Markdown puts newlines between blocks, and an item of a list with blank
+ * lines wraps its text in a paragraph. Read with `pre-wrap`, the newlines
+ * become empty lines and the paragraph moves the text below the number.
+ */
+const prepareForPlainText = (root: HTMLElement): void => {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const blankNodes: Node[] = [];
+
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+    if (
+      BLANK_LINE_PATTERN.test(node.nodeValue ?? '') &&
+      !node.parentElement?.closest('pre, code')
+    ) {
+      blankNodes.push(node);
+    }
+  }
+  blankNodes.forEach((node) => node.parentNode?.removeChild(node));
+
+  root.querySelectorAll('li').forEach((li) => {
+    const first = li.firstChild;
+    if (first instanceof HTMLParagraphElement) {
+      unwrapElement(first);
+    }
+  });
+
+  root.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(headingToParagraph);
+};
+
 export const processSelection = (
   range: Range,
   copyTgMarkdown: boolean,
@@ -211,6 +254,7 @@ export const processSelection = (
 
   if (copyTgMarkdown && !isInCodeBlock) {
     const markdownDiv = tempDiv.cloneNode(true) as HTMLElement;
+    prepareForPlainText(markdownDiv);
     injectListMarkers(markdownDiv, true);
 
     const formats = [
@@ -233,6 +277,7 @@ export const processSelection = (
     plainText = getTgMarkdown(getRenderedText(markdownDiv));
   } else {
     const plainDiv = tempDiv.cloneNode(true) as HTMLElement;
+    prepareForPlainText(plainDiv);
     injectListMarkers(plainDiv, false);
     plainText = getRenderedText(plainDiv);
   }

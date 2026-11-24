@@ -37,7 +37,11 @@ import { MessageBlockScroller } from './block-scroller';
 import { MessageTimestamp } from './timestamp';
 import { MessageActions } from './actions';
 import { MessageVersions } from './versions';
-import { getRichText, preloadRichText } from './rich-text';
+import {
+  getMarkdownPlainText,
+  getRichText,
+  preloadRichText,
+} from './rich-text';
 
 export interface MessageProps {
   id?: string;
@@ -212,6 +216,11 @@ const MessageBase: React.FC<MessageProps> = ({
   // children don't rerender on every streaming chunk, and they always read
   // the latest content and onCopy.
   const handlePlainTextCopy = useEventCallback(() => {
+    // An answer is markdown: its rendered text has no list numbers (they are
+    // drawn by CSS) and has the labels of its buttons.
+    if (variant !== 'user' && content) {
+      return onCopy?.(getMarkdownPlainText(content));
+    }
     if (messageBlockContentRef.current) {
       return onCopy?.(getPlainText(messageBlockContentRef.current));
     }

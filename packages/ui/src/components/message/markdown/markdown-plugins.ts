@@ -109,4 +109,41 @@ const remarkHtmlBreak: Plugin<[], Root> = () => (tree) => {
   transform(tree);
 };
 
-export { remarkCite, remarkHtmlBreak };
+// Not a markdown `break`: it is rendered as `<br>` followed by a newline,
+// which `pre-wrap` of a paragraph shows as one more, empty line.
+const createSoftBreakNode = (): PhrasingContent =>
+  ({
+    type: 'softBreak',
+    data: { hName: 'br' },
+  }) as unknown as PhrasingContent;
+
+const splitSoftBreaks = (value: string): PhrasingContent[] =>
+  value
+    .split('\n')
+    .flatMap((line, index): PhrasingContent[] =>
+      index === 0
+        ? [{ type: 'text', value: line }]
+        : [createSoftBreakNode(), { type: 'text', value: line }],
+    )
+    .filter((node) => node.type !== 'text' || node.value !== '');
+
+// Models put each clause on its own line without blank lines between them
+// (`1. Title` then `1.1. Text`). In markdown such a newline is a space, so
+// the lines were joined into one line of a list item.
+const remarkSoftBreak: Plugin<[], Root> = () => (tree) => {
+  const transform = (parent: Parent) => {
+    parent.children = parent.children.flatMap((child) => {
+      if (child.type === 'text' && child.value.includes('\n')) {
+        return splitSoftBreaks(child.value);
+      }
+      if ('children' in child) {
+        transform(child as Parent);
+      }
+      return [child];
+    }) as Parent['children'];
+  };
+
+  transform(tree);
+};
+
+export { remarkCite, remarkHtmlBreak, remarkSoftBreak };

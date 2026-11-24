@@ -1,3 +1,5 @@
+import { formatDocumentLines } from './document-lines';
+
 type SegmentKind = 'code' | 'math' | 'text';
 
 interface Segment {
@@ -150,6 +152,65 @@ function splitFencedCode(content: string): FencedCodeSplit {
  */
 export function getOpenCodeFenceStart(content: string): number | null {
   return splitFencedCode(content).openFenceStart;
+}
+
+// Blocks shown as a document with its own copy button, not as code.
+const DOCUMENT_LANGUAGES = new Set(['doc', 'result', 'tg']);
+
+const isDocumentFence = (prefix: string, info: string): boolean =>
+  prefix.trim() === '' &&
+  DOCUMENT_LANGUAGES.has(info.trim().split(/\s/)[0].toLowerCase());
+
+/**
+ * The content of document blocks (```doc, ```result, ```tg) as the markdown
+ * of the message itself, so it is copied formatted and not as code.
+ */
+export function unwrapDocumentBlocks(content: string): string {
+  const lines: string[] = [];
+  let fence: { char: string; length: number; isDocument: boolean } | null =
+    null;
+
+  for (const line of content.split('\n')) {
+    if (fence) {
+      const close = FENCE_CLOSE_PATTERN.exec(line);
+      const isClose =
+        close && close[1][0] === fence.char && close[1].length >= fence.length;
+
+      if (!(isClose && fence.isDocument)) {
+        lines.push(line);
+      }
+      if (isClose) {
+        fence = null;
+      }
+      continue;
+    }
+
+    const open = FENCE_OPEN_PATTERN.exec(line);
+    // A backtick fence info string cannot contain backticks (```a``` is inline code).
+    if (open && !(open[2][0] === '`' && open[3].includes('`'))) {
+      const isDocument = isDocumentFence(open[1], open[3]);
+      fence = { char: open[2][0], length: open[2].length, isDocument };
+      if (!isDocument) {
+        lines.push(line);
+      }
+      continue;
+    }
+
+    lines.push(line);
+  }
+
+  return lines.join('\n');
+}
+
+/** `formatDocumentLines` for the text of the content, code is kept as is. */
+export function formatMessageDocumentLines(content: string): string {
+  return splitFencedCode(content)
+    .segments.map((segment) =>
+      segment.kind === 'text'
+        ? formatDocumentLines(segment.value)
+        : segment.value,
+    )
+    .join('');
 }
 
 function splitInlineCode(content: string): Segment[] {

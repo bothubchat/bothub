@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useSyncExternalStore } from 'react';
 import remarkGfm from 'remark-gfm';
 import type { PluggableList } from 'unified';
-import { remarkCite, remarkHtmlBreak } from './markdown-plugins';
+import {
+  remarkCite,
+  remarkHtmlBreak,
+  remarkSoftBreak,
+} from './markdown-plugins';
 import {
   getLoadedMath,
   loadMath,
@@ -17,7 +21,7 @@ export interface MarkdownPlugins {
 
 // The lists keep their identity: parsed blocks are cached by them.
 const basePlugins: MarkdownPlugins = {
-  remarkPlugins: [remarkGfm, remarkCite, remarkHtmlBreak],
+  remarkPlugins: [remarkGfm, remarkCite, remarkHtmlBreak, remarkSoftBreak],
   rehypePlugins: [],
 };
 
@@ -35,6 +39,7 @@ const getMathPlugins = ({
       [remarkMath, { singleDollarTextMath: true }],
       remarkCite,
       remarkHtmlBreak,
+      remarkSoftBreak,
     ],
     rehypePlugins: [rehypeMath],
   };
