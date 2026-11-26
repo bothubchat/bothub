@@ -11,7 +11,7 @@ import {
 import { IconProvider } from '@/ui/components/icon';
 import { BadgeProgressColor } from './types';
 import { useTheme } from '@/ui/theme';
-import { useTooltip } from '@/ui/components/tooltip';
+import { useTooltip } from '@/ui/components/tooltip/context';
 
 export interface BadgeProgressProps extends React.ComponentProps<'div'> {
   className?: string;

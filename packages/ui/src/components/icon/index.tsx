@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconContextValue, useIconOrNull } from './context';
 import { IconStyled } from './styled';
-import { useTooltip } from '@/ui/components/tooltip';
+import { useTooltip } from '@/ui/components/tooltip/context';
 
 export interface IconProps
   extends Omit<

@@ -13,7 +13,7 @@ import {
 } from './styled';
 import { BadgeText } from '@/ui/components/badge';
 import { IconProvider } from '@/ui/components/icon';
-import { TooltipConsumer } from '../tooltip';
+import { TooltipConsumer } from '../tooltip/context';
 import {
   AttachFileIcon,
   PdfIcon,

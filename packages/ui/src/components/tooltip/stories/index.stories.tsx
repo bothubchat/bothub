@@ -72,6 +72,15 @@ export const Markdown: TooltipStory = {
   },
 };
 
+export const MarkdownParagraphs: TooltipStory = {
+  args: {
+    ...Markdown.args,
+    label:
+      '**Температура** влияет на случайность ответа.\n\nНизкие значения (`0.2`) дают точные ответы, высокие (`1.5`) — творческие.',
+    contentWidth: 300,
+  },
+};
+
 export const Code: TooltipStory = {
   args: {
     ...Markdown.args,

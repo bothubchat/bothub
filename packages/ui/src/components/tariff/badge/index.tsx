@@ -4,7 +4,7 @@ import {
   UserTariffBadgeStyled,
   UserTariffBadgeText,
 } from './styled';
-import { useTooltip } from '@/ui/components/tooltip';
+import { useTooltip } from '@/ui/components/tooltip/context';
 import { UserTariff } from './types';
 
 export interface UserTariffBadgeProps
