@@ -21,6 +21,15 @@ export const Basic: AvatarStory = {
   },
 };
 
+export const LazyImage: AvatarStory = {
+  args: {
+    ...Basic.args,
+    loading: 'lazy',
+    decoding: 'async',
+    fetchPriority: 'low',
+  },
+};
+
 export const Default: AvatarStory = {
   args: {
     alt: '@dev2alert',

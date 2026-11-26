@@ -3,8 +3,14 @@ import botAvatar from './assets/bot-avatar.png';
 import { AvatarBg, AvatarImage, AvatarSkeleton, AvatarStyled } from './styled';
 import { AvatarVariant } from './types';
 import { IconProvider } from '../icon';
-import { UserProfileIcon } from '@/ui/icons';
+import { UserProfileIcon } from '@/ui/icons/user-profile';
 
+/**
+ * Attributes of the image itself (`loading`, `decoding`, `fetchPriority`,
+ * `crossOrigin`, `referrerPolicy`, `srcSet`, `sizes`) go to the `<img>`, the
+ * rest to the wrapper. `onLoad` and `onError` of the image reach the wrapper
+ * as before (React dispatches them to its ancestors too).
+ */
 export interface AvatarProps extends React.ComponentProps<'img'> {
   variant?: AvatarVariant;
   size?: number;
@@ -18,6 +24,13 @@ export const Avatar: React.FC<AvatarProps> = ({
   src,
   children,
   alt,
+  loading,
+  decoding,
+  fetchPriority,
+  crossOrigin,
+  referrerPolicy,
+  srcSet,
+  sizes,
   ...props
 }) => {
   const isChildren = React.isValidElement(children);
@@ -47,9 +60,16 @@ export const Avatar: React.FC<AvatarProps> = ({
       {!isSkeleton && !isChildren && (
         <AvatarImage
           src={src}
+          srcSet={srcSet}
+          sizes={sizes}
           width={size}
           height={size}
           alt={alt ?? ''}
+          loading={loading}
+          decoding={decoding}
+          fetchPriority={fetchPriority}
+          crossOrigin={crossOrigin}
+          referrerPolicy={referrerPolicy}
           onError={() => setFailedSrc(src)}
         />
       )}
