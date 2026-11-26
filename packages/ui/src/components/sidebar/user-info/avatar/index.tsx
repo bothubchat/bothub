@@ -1,7 +1,7 @@
 import React from 'react';
 import { AvatarProps } from '@/ui/components/avatar';
 import { SidebarUserInfoAvatarStyled } from './styled';
-import { useTooltip } from '@/ui/components/tooltip';
+import { useTooltip } from '@/ui/components/tooltip/context';
 import { TariffPlan } from '@/ui/components/types';
 
 export type SidebarUserInfoAvatarProps = Omit<

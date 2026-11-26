@@ -4,7 +4,7 @@ import { IconProvider } from '@/ui/components/icon';
 import { useTheme } from '@/ui/theme';
 import { BadgeVariant } from './types';
 import { ErrorIcon } from '@/ui/icons/error';
-import { useTooltip } from '@/ui/components/tooltip';
+import { useTooltip } from '@/ui/components/tooltip/context';
 
 export interface BadgeProps extends React.ComponentProps<'div'> {
   variant?: BadgeVariant;

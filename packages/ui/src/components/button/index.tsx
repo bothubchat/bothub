@@ -8,7 +8,7 @@ import {
   ButtonSize,
   ButtonVariant,
 } from './types';
-import { useTooltip } from '@/ui/components/tooltip';
+import { useTooltip } from '@/ui/components/tooltip/context';
 import { Skeleton } from '@/ui/components/skeleton';
 import { InfoIcon } from '@/ui/icons/info';
 import { isBrightColor } from './utils';

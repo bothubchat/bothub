@@ -104,6 +104,20 @@ export function createConfig({
   return [
     {
       input: path.resolve(srcPath, './index.ts'),
+      treeshake: {
+        // Rollup keeps the imports of a module it skips (e.g. tooltip/index.js,
+        // passed through only for `useTooltip`) in every importer as bare
+        // `import "react-markdown"` / `import "@react-spring/web"`. Packages
+        // without a `sideEffects` flag (@react-spring/web) are then loaded and
+        // run by every page that has a Button or an icon. Nothing imports an
+        // external package for its side effects, so those imports are dropped.
+        // Our own modules keep the default: styled components register their
+        // CSS in import order, and it must not change.
+        moduleSideEffects: 'no-external',
+        // An icon module only wraps its component, so an icon picked from the
+        // icons barrel doesn't leave a bare import of all the others behind.
+        manualPureFunctions: ['icon'],
+      },
       output: [
         {
           dir: distPath,

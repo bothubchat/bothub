@@ -1,19 +1,28 @@
-import React, { useCallback, useEffect, useId, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from 'react';
 import { useTransition } from '@react-spring/web';
-import ReactMarkdown, { type Components } from 'react-markdown';
 import { Portal } from '@/ui/components/portal';
 import { useEventCallback } from '@/ui/utils/useEventCallback';
 import { useIsomorphicLayoutEffect } from '@/ui/utils/useIsomorphicLayoutEffect';
 import {
   TooltipBlock,
-  TooltipCode,
   TooltipLabel,
-  TooltipLabelBold,
   TooltipMarkdown,
   TooltipStyled,
 } from './styled';
 import { TooltipArrow } from './arrow';
 import { TooltipProvider } from './context';
+import {
+  getLoadedTooltipMarkdown,
+  loadTooltipMarkdown,
+  subscribeToTooltipMarkdown,
+} from './markdown-loader';
 import { TooltipAlign, TooltipPlacement, TooltipVariant } from './types';
 
 export const TooltipAnimationDuration = {
@@ -38,13 +47,52 @@ export interface TooltipProps extends React.PropsWithChildren {
   hideOnScroll?: boolean;
 }
 
-const markdownComponents: Components = {
-  p: ({ children }) => <TooltipLabel component="p">{children}</TooltipLabel>,
-  b: ({ children }) => <TooltipLabelBold>{children}</TooltipLabelBold>,
-  strong: ({ children }) => (
-    <TooltipLabelBold component="strong">{children}</TooltipLabelBold>
-  ),
-  code: ({ children }) => <TooltipCode>{children}</TooltipCode>,
+const getServerMarkdown = () => null;
+
+const preloadTooltipMarkdown = () => {
+  loadTooltipMarkdown().catch(() => {});
+};
+
+interface TooltipMarkdownLabelProps {
+  children: string;
+  onLoad: () => void;
+}
+
+/**
+ * A markdown label is plain text until the markdown chunk is loaded (the
+ * Tooltip starts loading it when it mounts, so it is usually there by the
+ * first hover), then the parsed markdown.
+ */
+const TooltipMarkdownLabel: React.FC<TooltipMarkdownLabelProps> = ({
+  children,
+  onLoad,
+}) => {
+  const markdownModule = useSyncExternalStore(
+    subscribeToTooltipMarkdown,
+    getLoadedTooltipMarkdown,
+    getServerMarkdown,
+  );
+
+  useEffect(() => {
+    if (!markdownModule) {
+      preloadTooltipMarkdown();
+    }
+  }, [markdownModule]);
+
+  // The parsed label has another size than the plain text it replaced.
+  useIsomorphicLayoutEffect(() => {
+    if (markdownModule) {
+      onLoad();
+    }
+  }, [markdownModule, onLoad]);
+
+  if (!markdownModule) {
+    return <TooltipLabel component="p">{children}</TooltipLabel>;
+  }
+
+  const { TooltipMarkdownContent } = markdownModule;
+
+  return <TooltipMarkdownContent>{children}</TooltipMarkdownContent>;
 };
 
 const getTooltipPosition = (
@@ -168,6 +216,7 @@ interface TooltipPopupProps {
   top: string;
   left: string;
   onExited: () => void;
+  onMarkdownLoad: () => void;
 }
 
 /**
@@ -190,6 +239,7 @@ const TooltipPopup: React.FC<TooltipPopupProps> = ({
   top,
   left,
   onExited,
+  onMarkdownLoad,
 }) => {
   // No item while hidden: a `false` item would own its own controller and
   // its (invisible) enter animation would delay the unmount after leave.
@@ -251,9 +301,9 @@ const TooltipPopup: React.FC<TooltipPopupProps> = ({
                 )}
                 {typeof label === 'string' && markdown && (
                   <TooltipMarkdown>
-                    <ReactMarkdown components={markdownComponents}>
+                    <TooltipMarkdownLabel onLoad={onMarkdownLoad}>
                       {label}
-                    </ReactMarkdown>
+                    </TooltipMarkdownLabel>
                   </TooltipMarkdown>
                 )}
                 {typeof label !== 'string' && label}
@@ -295,6 +345,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const [coords, setCoords] = useState<[number, number]>([0, 0]);
   const isDisabled = !label || disabled;
   const visible = hoveredElement !== null && !isDisabled;
+  const isMarkdownLabel = markdown && typeof label === 'string';
 
   const showTooltip = useCallback((element: Element) => {
     setHoveredElement(element);
@@ -348,6 +399,14 @@ export const Tooltip: React.FC<TooltipProps> = ({
       updatePosition();
     },
   );
+
+  // Only tooltips with a markdown label load react-markdown, ahead of the
+  // first hover.
+  useEffect(() => {
+    if (isMarkdownLabel) {
+      preloadTooltipMarkdown();
+    }
+  }, [isMarkdownLabel]);
 
   // Position before paint, so the first frame isn't drawn at a stale place.
   useIsomorphicLayoutEffect(() => {
@@ -464,6 +523,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
         top={top.length <= 1 ? top[0] : `calc(${top.join(' + ')})`}
         left={left.length <= 1 ? left[0] : `calc(${left.join(' + ')})`}
         onExited={handlePopupExited}
+        onMarkdownLoad={updatePosition}
       />
     );
   }

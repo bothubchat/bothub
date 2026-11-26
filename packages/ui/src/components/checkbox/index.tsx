@@ -7,7 +7,7 @@ import {
   CheckboxBlock,
   CheckboxBlockSkeleton,
 } from './styled';
-import { useTooltip } from '@/ui/components/tooltip';
+import { useTooltip } from '@/ui/components/tooltip/context';
 import { Skeleton } from '@/ui/components/skeleton';
 
 export type CheckboxValueChangeEventHandler = (checked: boolean) => unknown;
