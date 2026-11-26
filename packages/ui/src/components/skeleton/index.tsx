@@ -1,5 +1,6 @@
 import React from 'react';
-import { SkeletonStyled, skeletonProperties } from './styled';
+import { skeleton } from './skeleton.css';
+import { skeletonProperties } from './properties';
 import { SkeletonVariant } from './types';
 
 export interface SkeletonProps {
@@ -50,10 +51,11 @@ export const Skeleton: React.FC<SkeletonProps> = ({
     style[skeletonProperties.opacityTo] = String(opacityTo);
   }
 
+  const classes = skeleton({ variant });
+
   return (
-    <SkeletonStyled
-      $variant={variant}
-      className={className}
+    <span
+      className={className ? `${classes} ${className}` : classes}
       style={style}
     />
   );

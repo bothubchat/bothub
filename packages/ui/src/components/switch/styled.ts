@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { getTypographyStyles } from '@/ui/components/typography/styled';
+import { getTypographyStyles } from '@/ui/components/typography/mixin';
 import { themeVar } from '@/ui/theme';
 
 const defaultSize = 56;

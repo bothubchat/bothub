@@ -21,8 +21,9 @@ export const BothubStyleSheetDashboardPlugin: Middleware = (element) => {
   }
 };
 
-const MIN_FONT_SIZE = 12;
-const MIN_LINE_HEIGHT = 16;
+/** The smallest font size and line height the main plugin scales down to, px. */
+export const MIN_FONT_SIZE = 12;
+export const MIN_LINE_HEIGHT = 16;
 
 export const BothubStyleSheetMainPlugin: Middleware = (element) => {
   if (

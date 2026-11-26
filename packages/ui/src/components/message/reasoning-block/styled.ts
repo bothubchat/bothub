@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import { TypographyStyled } from '@/ui/components/typography/styled';
+import { typographyClassName } from '@/ui/components/typography/typography.css';
 import { ChevronDownLineIcon } from '@/ui/icons/chevron-down-line';
 import { colorToRgba } from '@/ui/utils';
 import { themeVar } from '@/ui/theme';
@@ -50,7 +50,7 @@ export const ReasoningBlockContentWrapper = styled.div<{
     padding-left: 12px;
   }
 
-  & ${TypographyStyled} {
+  & .${typographyClassName} {
     color: ${({ theme }) => themeVar(theme, 'tokens.reasoningText')};
   }
 
@@ -83,7 +83,7 @@ export const ReasoningBlockButton = styled.button`
     background-color 120ms ease-out,
     color 120ms ease-out;
 
-  & ${TypographyStyled} {
+  & .${typographyClassName} {
     color: inherit;
     font-size: inherit;
     line-height: inherit;

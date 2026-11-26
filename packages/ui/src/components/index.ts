@@ -2,6 +2,9 @@ export * from './button';
 export * from './adaptive-button';
 export * from './icon';
 export * from './typography';
+// styled-components mixin, a separate module: Typography itself doesn't
+// load styled-components
+export { getTypographyStyles } from './typography/mixin';
 export * from './text-field';
 export * from './header';
 export * from './logo';

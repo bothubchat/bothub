@@ -1,5 +1,5 @@
 import { css } from 'styled-components';
-import { getTypographyStyles } from '@/ui/components/typography';
+import { getTypographyStyles } from '@/ui/components/typography/mixin';
 import { themeVar } from '@/ui/theme';
 import { cachedStyles } from '@/ui/utils/styles/cachedStyles';
 import { MessageColor, MessageVariant } from '../types';

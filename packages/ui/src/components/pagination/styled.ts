@@ -1,5 +1,5 @@
 import { css, styled } from 'styled-components';
-import { getTypographyStyles } from '@/ui/components/typography/styled';
+import { getTypographyStyles } from '@/ui/components/typography/mixin';
 import { ArrowDownIcon, ArrowNarrowLeftIcon } from '@/ui/icons';
 import { themeVar } from '@/ui/theme';
 

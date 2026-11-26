@@ -12,6 +12,7 @@ import {
   themeVar,
   withThemeCssVariablesFlag,
 } from './vars';
+import { createZeroRuntimeCssVariables } from './zero-runtime';
 import { ThemeValueContext } from './hook';
 
 export const StorybookGlobalStyle = createGlobalStyle`
@@ -26,10 +27,18 @@ const ThemeCssVariablesStyle = createGlobalStyle<{ $declarations: string }>`
   }
 `;
 
-// Only the outermost ThemeProvider defines the variables: they are set on
-// :root, so portals get them too, while nested providers (theme previews)
+// The CSS variables of the outer ThemeProvider. The outermost one sets them
+// on :root, so portals get them too: every color and token with
+// `cssVariables`, else the ones zero-runtime styles read, which always read
+// colors through them. A nested provider sets the ones its theme changes on
+// a `display: contents` wrapper of its children, while its styled components
 // keep literal colors.
-const NestedThemeContext = React.createContext(false);
+const ThemeVariablesContext = React.createContext<Record<
+  string,
+  string
+> | null>(null);
+
+const nestedThemeStyle = { display: 'contents' } as const;
 
 // With CSS variables styles get this theme whatever the current one is: they
 // read colors only through `var(--bothub-…)`, so switching the theme changes
@@ -45,9 +54,12 @@ export interface ThemeProviderProps extends React.PropsWithChildren {
   /** Tokens of a custom theme are always computed from its own colors. */
   customTheme?: ThemeTokenSource | null;
   /**
-   * Styles read theme colors through CSS variables set on :root, so
-   * switching the theme only changes the variables instead of generating
-   * new CSS for every component. Applies to the outermost ThemeProvider.
+   * Styled components read theme colors through the CSS variables set on
+   * :root, so switching the theme only changes the variables instead of
+   * generating new CSS for every component. Applies to the outermost
+   * ThemeProvider. Without it only the variables of `zeroRuntimeThemePaths`
+   * are set: components styled without styled-components read colors only
+   * through them.
    */
   cssVariables?: boolean;
   /**
@@ -69,7 +81,8 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = React.memo(
     stableTheme = false,
     children,
   }) => {
-    const isNested = useContext(NestedThemeContext);
+    const outerVariables = useContext(ThemeVariablesContext);
+    const isNested = outerVariables !== null;
     const withCssVariables = cssVariables && !isNested;
 
     const theme = useMemo(
@@ -94,28 +107,60 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = React.memo(
       [providedTheme, styleTheme],
     );
 
-    const variableDeclarations = useMemo(
+    const variables = useMemo(
       () =>
         withCssVariables
-          ? Object.entries(createThemeCssVariables(theme))
-              .map(([name, value]) => `${name}: ${value};`)
-              .join('\n')
-          : '',
+          ? createThemeCssVariables(theme)
+          : createZeroRuntimeCssVariables(theme),
       [theme, withCssVariables],
     );
 
+    const variableDeclarations = useMemo(
+      () =>
+        isNested
+          ? ''
+          : Object.entries(variables)
+              .map(([name, value]) => `${name}: ${value};`)
+              .join('\n'),
+      [variables, isNested],
+    );
+
+    // Only what differs from the outer theme. The wrapper is there even
+    // without differences, so that a theme change doesn't remount children.
+    const nestedVariablesStyle = useMemo(
+      () =>
+        outerVariables &&
+        Object.entries(variables).reduce<React.CSSProperties>(
+          (style, [name, value]) =>
+            outerVariables[name] === value
+              ? style
+              : { ...style, [name]: value },
+          nestedThemeStyle,
+        ),
+      [outerVariables, variables],
+    );
+
     return (
-      <NestedThemeContext.Provider value>
+      <ThemeVariablesContext.Provider value={variables}>
         <ThemeValueContext.Provider value={themeValue}>
           <StyledThemeProvider theme={styleTheme}>
-            {withCssVariables && (
+            {!isNested && (
               <ThemeCssVariablesStyle $declarations={variableDeclarations} />
             )}
-            {children}
+            {nestedVariablesStyle ? (
+              <div
+                data-bothub-theme=""
+                style={nestedVariablesStyle}
+              >
+                {children}
+              </div>
+            ) : (
+              children
+            )}
             {sbMode && <StorybookGlobalStyle />}
           </StyledThemeProvider>
         </ThemeValueContext.Provider>
-      </NestedThemeContext.Provider>
+      </ThemeVariablesContext.Provider>
     );
   },
 );

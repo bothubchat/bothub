@@ -3,6 +3,7 @@ import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import type { StorybookConfig } from '@storybook/react-vite';
 import { mergeConfig } from 'vite';
+import { vanillaExtractPlugin } from '@vanilla-extract/vite-plugin';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
@@ -22,6 +23,7 @@ export const config: StorybookConfig = {
   framework: { name: getAbsolutePath('@storybook/react-vite'), options: {} },
   async viteFinal(baseConfig) {
     return mergeConfig(baseConfig, {
+      plugins: [vanillaExtractPlugin()],
       resolve: {
         alias: {
           '@/ui': fileURLToPath(new URL('../packages/ui/src', import.meta.url)),

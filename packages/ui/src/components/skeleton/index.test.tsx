@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { describe, test, expect, afterEach } from 'vitest';
 import { act, cleanup } from '@testing-library/react';
+import { renderToString } from 'react-dom/server';
+import { ServerStyleSheet } from 'styled-components';
 import { customRender } from '@/ui/tests';
 import { Skeleton, SkeletonProps } from '.';
+import { skeleton } from './skeleton.css';
 
 const renderSkeleton = (props: SkeletonProps) => {
   const { container } = customRender(<Skeleton {...props} />);
@@ -93,6 +96,41 @@ describe('skeleton', () => {
       expect(skeleton.style.getPropertyValue('--bothub-skeleton-width')).toBe(
         `${value}px`,
       );
+    }
+  });
+
+  test('variants are classes, rounded by default', () => {
+    const { variants } = skeleton.classNames;
+
+    expect(renderSkeleton({})).toHaveClass(
+      skeleton.classNames.base,
+      variants.variant.rounded,
+    );
+    cleanup();
+    expect(renderSkeleton({ variant: 'circular' })).toHaveClass(
+      variants.variant.circular,
+    );
+    cleanup();
+    expect(renderSkeleton({ variant: 'rectangular' })).toHaveClass(
+      variants.variant.rectangular,
+    );
+  });
+
+  test('keeps the className of a styled() wrapper', () => {
+    expect(renderSkeleton({ className: 'custom' })).toHaveClass(
+      'custom',
+      skeleton.classNames.base,
+    );
+  });
+
+  test('renders no styled-components CSS', () => {
+    const sheet = new ServerStyleSheet();
+    try {
+      renderToString(sheet.collectStyles(<Skeleton width={10} />));
+
+      expect(sheet.getStyleTags()).toBe('');
+    } finally {
+      sheet.seal();
     }
   });
 });

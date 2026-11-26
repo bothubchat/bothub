@@ -1,5 +1,5 @@
 import { styled } from 'styled-components';
-import { getTypographyStyles } from '../typography';
+import { getTypographyStyles } from '../typography/mixin';
 import { themeVar } from '@/ui/theme';
 
 export const SwitcherContainer = styled.div`

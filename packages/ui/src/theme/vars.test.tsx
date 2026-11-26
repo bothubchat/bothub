@@ -1,3 +1,4 @@
+import React from 'react';
 import { describe, expect, test } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import {
@@ -16,6 +17,7 @@ import {
   themeVariableName,
   withThemeCssVariablesFlag,
 } from './vars';
+import { zeroRuntimeThemePaths } from './zero-runtime';
 import { useTheme } from './hook';
 
 const Box = styled.div`
@@ -138,8 +140,102 @@ describe('theme CSS variables', () => {
       </ThemeProvider>,
     );
 
-    expect(css).not.toContain(':root{');
     expect(css).toContain(`color:${standardDark.colors.grayScale.gray4};`);
+    expect(css).not.toContain('color:var(');
+  });
+
+  test('without cssVariables :root gets the variables of zero-runtime styles', () => {
+    const css = renderCss(
+      <ThemeProvider mode="light">
+        <Box />
+      </ThemeProvider>,
+    );
+
+    expect(css).toContain(':root{');
+    expect(css).toContain(
+      `--bothub-tokens-interface-text:${standardLight.tokens.interfaceText};`,
+    );
+    expect(css).not.toContain('--bothub-colors-gray-scale-gray4');
+    expect(css.match(/--bothub-/g)).toHaveLength(zeroRuntimeThemePaths.length);
+  });
+
+  test('only the outermost provider sets variables on :root', () => {
+    const css = renderCss(
+      <ThemeProvider>
+        <ThemeProvider mode="light">
+          <Box />
+        </ThemeProvider>
+      </ThemeProvider>,
+    );
+
+    expect(css.match(/:root\{/g)).toHaveLength(1);
+    expect(css).toContain(
+      `--bothub-colors-gray-scale-gray2:${standardDark.colors.grayScale.gray2};`,
+    );
+  });
+});
+
+describe('nested ThemeProvider variables', () => {
+  test('are set on a display: contents wrapper, only the changed ones', () => {
+    const { container } = render(
+      <ThemeProvider>
+        <ThemeProvider mode="light">
+          <span data-testid="child" />
+        </ThemeProvider>
+      </ThemeProvider>,
+    );
+    const wrapper = container.querySelector<HTMLElement>(
+      '[data-bothub-theme]',
+    )!;
+
+    expect(wrapper.style.display).toBe('contents');
+    expect(wrapper.firstElementChild?.getAttribute('data-testid')).toBe(
+      'child',
+    );
+    expect(
+      wrapper.style.getPropertyValue('--bothub-colors-gray-scale-gray2'),
+    ).toBe(standardLight.colors.grayScale.gray2);
+    // The same in both modes, so not repeated on the wrapper
+    expect(
+      wrapper.style.getPropertyValue('--bothub-default-colors-base-white'),
+    ).toBe('');
+  });
+
+  test('the wrapper stays when the themes match, children are not remounted', () => {
+    let mounts = 0;
+    const Child = () => {
+      React.useEffect(() => {
+        mounts++;
+      }, []);
+      return null;
+    };
+    const element = (mode: 'dark' | 'light') => (
+      <ThemeProvider>
+        <ThemeProvider mode={mode}>
+          <Child />
+        </ThemeProvider>
+      </ThemeProvider>
+    );
+
+    const { container, rerender } = render(element('dark'));
+    const wrapper = container.querySelector<HTMLElement>(
+      '[data-bothub-theme]',
+    )!;
+    expect(wrapper.getAttribute('style')).toBe('display: contents;');
+
+    rerender(element('light'));
+    rerender(element('dark'));
+    expect(mounts).toBe(1);
+  });
+
+  test('the root provider renders no wrapper', () => {
+    const { container } = render(
+      <ThemeProvider>
+        <span />
+      </ThemeProvider>,
+    );
+
+    expect(container.querySelector('[data-bothub-theme]')).toBeNull();
   });
 });
 

@@ -1,6 +1,6 @@
 import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { TypographyStyled } from '@/ui/components/typography/styled';
+import { typographyClassName } from '@/ui/components/typography/typography.css';
 import { themeVar } from '@/ui/theme';
 
 export const SearchResultsList = styled.ul`
@@ -23,7 +23,7 @@ export const SearchResultsItemStyled = styled.li`
   background-color: transparent;
   transition: background-color 0.3s ease-out;
 
-  & > div[data-source-content] ${TypographyStyled} {
+  & > div[data-source-content] .${typographyClassName} {
     transition: color 0.3s ease-out;
   }
 
@@ -31,7 +31,7 @@ export const SearchResultsItemStyled = styled.li`
     background-color: ${({ theme }) =>
       themeVar(theme, 'tokens.searchResultHoverBackground')};
 
-    & > div[data-source-content] ${TypographyStyled} {
+    & > div[data-source-content] .${typographyClassName} {
       color: ${({ theme }) => themeVar(theme, 'colors.base.white')};
     }
   }

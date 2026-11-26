@@ -1,8 +1,13 @@
-import { css, styled } from 'styled-components';
+import { styled } from 'styled-components';
 import { Typography } from '@/ui/components/typography';
-import { BadgeVariant } from './types';
 import { Skeleton } from '@/ui/components/skeleton';
-import { themeVar } from '@/ui/theme';
+import { BadgeVariant } from './types';
+import { badge, badgeSkeleton, badgeText } from './badge.css';
+import { BADGE_TEXT_CLASS_NAME } from './constants';
+
+// Badge renders plain elements with the classes of `badge.css.ts`. The styled
+// parts below are kept for apps that use them directly; they add those
+// classes and no rules of their own.
 
 export interface BadgeStyledProps {
   $variant: BadgeVariant;
@@ -11,62 +16,33 @@ export interface BadgeStyledProps {
   $skeleton: boolean;
 }
 
-export const BadgeStyled = styled.div<BadgeStyledProps>`
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 0px 12px;
-  height: 26px;
-  cursor: default;
-  border-radius: ${({ $brick }) => {
-    if ($brick) {
-      return 6;
-    }
-
-    return 13;
-  }}px;
-  background: ${({ theme, $variant, $skeleton }) => {
-    if ($skeleton) {
-      return themeVar(theme, 'colors.grayScale.gray2');
-    }
-    switch ($variant) {
-      case 'info':
-        return themeVar(theme, 'tokens.badgeBackground');
-      case 'blue':
-        return themeVar(theme, 'colors.accent.primary');
-      case 'critic':
-      case 'error':
-        return themeVar(theme, 'colors.critic');
-      case 'success':
-        return themeVar(theme, 'colors.green');
-    }
-  }};
-  ${({ $skeleton }) =>
-    $skeleton &&
-    css`
-      cursor: progress;
-    `}
-`;
+/** @deprecated Use `Badge`. */
+export const BadgeStyled = styled.div.attrs<BadgeStyledProps>(
+  ({ $variant, $brick, $skeleton }) => ({
+    className: badge({ variant: $variant, brick: $brick, skeleton: $skeleton }),
+  }),
+)``;
 
 export interface BadgeTextProps {
   $variant?: BadgeVariant;
 }
 
-export const BadgeText = styled(Typography).attrs({
-  variant: 'body-s-medium',
-})<BadgeTextProps>`
-  color: ${({ theme, $variant }) => {
-    switch ($variant) {
-      case 'info':
-        return themeVar(theme, 'default.colors.base.white');
-      default:
-        return themeVar(theme, 'default.colors.base.white');
-    }
-  }};
-  cursor: inherit;
-  white-space: nowrap;
-`;
+/**
+ * Text of a badge, for children that aren't a plain string. Its component
+ * id is the class Badge gives its own text, so `${BadgeText}` in a styled
+ * component selects both. Called without a template literal, so that
+ * babel-plugin-styled-components doesn't replace the id.
+ */
+export const BadgeText = styled(Typography)
+  .attrs<BadgeTextProps>({
+    variant: 'body-s-medium',
+    className: badgeText,
+  })
+  .withConfig({ componentId: BADGE_TEXT_CLASS_NAME })({});
 
-export const BadgeSkeleton = styled(Skeleton).attrs({ width: 60, height: 12 })`
-  border-radius: 8px;
-`;
+/** @deprecated Use `Badge` with `skeleton`. */
+export const BadgeSkeleton = styled(Skeleton).attrs({
+  width: 60,
+  height: 12,
+  className: badgeSkeleton,
+})``;
